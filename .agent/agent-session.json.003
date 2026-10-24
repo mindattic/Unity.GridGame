@@ -1,0 +1,12 @@
+﻿{
+    "protocolVersion":  "1.1",
+    "updatedAt":  "2026-10-21T03:29:04.5265193Z",
+    "task":  "Rename MindAttic.Toolkit -\u003e MindAttic.Agency; then the Unity Fleet Rename: GridGameGaiden/UnityCursory/UnityEve/UnitySpace/MindAttic.Unity.Multiplayer all take a Unity. prefix. Both executed via /autopilot -repo=... crossrepo from this GridGameGaiden(now Unity.GridGame)-scoped window.",
+    "decisions":  "MindAttic.Toolkit -\u003e MindAttic.Agency (name undersold the prompt/agent-catalog half of the repo). Unity fleet: GridGameGaiden-\u003eUnity.GridGame, UnityCursory-\u003eUnity.Cursory, UnityEve-\u003eUnity.Eve, UnitySpace-\u003eUnity.SpaceGod, MindAttic.Unity.Multiplayer-\u003eUnity.Multiplayer (its a Unity library, not MindAttic-specific). Physical in-repo folder/file names (Assets/UnityEve/, UnitySpace_Data build output, etc.) deliberately left unrenamed -- Unity resolves by GUID not folder name; renaming those was out of scope. Illustrative old-name mentions in unrelated repos (MindAttic.Telemetry, MindAttic.Capture, MindAttic.Tickets test fixtures) left untouched as not functional couplings. The cross-repo Edit/Write/ticket-close gate initially refused work outside this windows home repo despite the recorded /autopilot -repo= grant, then caught up and opened for all 5 repos mid-session -- observed, not root-caused.",
+    "state":  "Both renames fully complete and verified: GitHub repo renamed, local folder renamed, git remote updated, ticket-DB repo key renamed (tickets repos rename), docs/USER_STORIES.md regenerated, tests green, rename ticket closed -- for MAT-T21 (Toolkit-\u003eAgency), GG-T158, UC-T16, U.EVE-T20, U.SPC-T361, UM-T35. 14 ride-along tickets in the same autopilot batch also landed and closed (U.EVE-T14/T15/T16/T17/T21/T22, U.SPC-T315/T317/T318/T319/T323, UM-T17/T25). Workspace-wide docs/workspace-repos.json and mindattic-agent-standard/command-catalog.json regenerated (MAT-T22). Cross-repo text references fixed in TownWalker (GGC-T23) and UnityRonin (U.RON-T14). All worktrees for these tickets removed after landing.",
+    "next":  "Nothing outstanding from this sessions own work -- both renames are done and verified. Pre-existing open tickets outside this sessions scope remain: UnityEve U.EVE-T3/T18/T19, Unity.SpaceGod backlog, Unity.Multiplayer hosting profile tickets UM-T18/T26..T31, UM-T19 DocFX, UM-T20 v1.0, UM-T33 (needs owner approval). Resume with a plain /autopilot on this CLIs own repo (Unity.GridGame) or any of the above.",
+    "queued":  [
+
+               ],
+    "universe":  ""
+}
