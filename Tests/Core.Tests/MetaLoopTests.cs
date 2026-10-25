@@ -115,8 +115,8 @@ namespace GridGame.Tests
                     hero.WeaponDurability = 1;
                     Assert.That(Repair.Cost(forged, hero.WeaponDurability, hero.WeaponRepairs) > 0, Is.True);
                     Assert.That(Repair.RepairWeapon(c, s, hero).Ok, Is.True);
-                    Assert.That(hero.WeaponDurability, Is.EqualTo(forged.Durability));
-                    Assert.That(Repair.EffectiveMax(forged, hero.WeaponRepairs), Is.EqualTo(forged.Durability - 1));
+                    // Restored to the *new* effective max (after this repair's cap drop), not the old one (GG-T196).
+                    Assert.That(hero.WeaponDurability, Is.EqualTo(Repair.EffectiveMax(forged, hero.WeaponRepairs, hero.WeaponMastery)));
                 }
             }
 

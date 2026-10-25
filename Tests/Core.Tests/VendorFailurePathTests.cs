@@ -318,8 +318,10 @@ namespace GridGame.Tests
 
             s.Gold = 10000;
             Assert.That(Repair.RepairWeapon(c, s, hero).Ok, Is.True);
-            Assert.That(hero.WeaponDurability, Is.EqualTo(Repair.EffectiveMax(c.Item("warhammer"), 0)));
+            // Restored to the new effective max (after this repair's cap drop), so the row never reads
+            // above its max (GG-T196) — not the pre-repair max at EffectiveMax(item, 0).
             Assert.That(hero.WeaponRepairs, Is.EqualTo(1));
+            Assert.That(hero.WeaponDurability, Is.EqualTo(Repair.EffectiveMax(c.Item("warhammer"), 1)));
         }
 
         [Test]
@@ -334,8 +336,38 @@ namespace GridGame.Tests
 
             s.Gold = 10000;
             Assert.That(Repair.RepairArmor(c, s, hero, EquipmentSlot.Torso).Ok, Is.True);
-            Assert.That(hero.Armor[EquipmentSlot.Torso].Durability, Is.EqualTo(Repair.EffectiveMax(c.Item("plate"), 0)));
+            // Restored to the new effective max (after this repair's cap drop), so the row never reads
+            // above its max (GG-T196) — not the pre-repair max at EffectiveMax(item, 0).
             Assert.That(hero.Armor[EquipmentSlot.Torso].Repairs, Is.EqualTo(1));
+            Assert.That(hero.Armor[EquipmentSlot.Torso].Durability, Is.EqualTo(Repair.EffectiveMax(c.Item("plate"), 1)));
+        }
+
+        [Test]
+        public void Repair_row_never_reads_above_its_max_right_after_a_repair()
+        {
+            // GG-T196: a repair used to restore the piece to its *old* max and only then drop the cap by
+            // one, so the Blacksmith row briefly read e.g. "150/149" until the next battle. It must read
+            // e.g. "149/149" the instant the repair lands — for every repair, not just the first.
+            var c = BuildContent();
+            var hero = Progression.NewHero(c, "knight");
+            hero.WeaponId = "warhammer";
+            hero.WeaponDurability = 1;
+            hero.WeaponRepairs = 0;
+            hero.Armor[EquipmentSlot.Torso] = new EquippedArmor { ItemId = "plate", Durability = 1, Repairs = 0 };
+            var s = NewSave(10000);
+            s.Roster.Add(hero);
+
+            for (int i = 0; i < 3; i++)
+            {
+                // Simulate a battle wearing the gear down by 1 before the next repair, the way play
+                // actually reaches the "repaired but reads over max" state.
+                hero.WeaponDurability--;
+                hero.Armor[EquipmentSlot.Torso].Durability--;
+                Assert.That(Repair.RepairWeapon(c, s, hero).Ok, Is.True);
+                Assert.That(Repair.RepairArmor(c, s, hero, EquipmentSlot.Torso).Ok, Is.True);
+                foreach (var piece in Repair.Pieces(c, s))
+                    Assert.That(piece.Durability, Is.LessThanOrEqualTo(piece.Max), $"{piece.RowName} read {piece.Durability}/{piece.Max}");
+            }
         }
 
         // ── Inn ──

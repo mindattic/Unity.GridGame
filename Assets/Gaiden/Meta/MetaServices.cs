@@ -1500,8 +1500,8 @@ namespace GridGame.Meta
             if (cost == 0) return Result.Fail("Already in top shape");
             if (s.Gold < cost) return Result.Fail("Not enough gold");
             s.Gold -= cost;
-            h.WeaponDurability = EffectiveMax(item, h.WeaponRepairs, h.WeaponMastery);
             h.WeaponRepairs++;
+            h.WeaponDurability = EffectiveMax(item, h.WeaponRepairs, h.WeaponMastery);
             StationProgress.Gain(s, StationKind.Blacksmith, RepairXp);
             return Result.Success($"Repaired {item.Name}");
         }
@@ -1517,8 +1517,8 @@ namespace GridGame.Meta
             if (cost == 0) return Result.Fail("Already in top shape");
             if (s.Gold < cost) return Result.Fail("Not enough gold");
             s.Gold -= cost;
-            piece.Durability = EffectiveMax(item, piece.Repairs, piece.Mastery);
             piece.Repairs++;
+            piece.Durability = EffectiveMax(item, piece.Repairs, piece.Mastery);
             StationProgress.Gain(s, StationKind.Blacksmith, RepairXp);
             return Result.Success($"Repaired {item.Name}");
         }
