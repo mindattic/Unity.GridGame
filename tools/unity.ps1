@@ -75,8 +75,12 @@ Repair-SiblingPackageLinks $root
 $ver = (Select-String -Path "$root/ProjectSettings/ProjectVersion.txt" -Pattern "m_EditorVersion: (.+)").Matches[0].Groups[1].Value.Trim()
 $unity = "C:\Program Files\Unity\Hub\Editor\$ver\Editor\Unity.exe"
 if (-not (Test-Path $unity)) { throw "Unity $ver not installed at $unity" }
-if (Get-Process -Name Unity -ErrorAction SilentlyContinue | Where-Object { $_.MainWindowTitle -like "*GridGameGaiden*" }) {
-    throw "GridGameGaiden is open in the Unity Editor. Close it (File > Quit) and re-run."
+# Unity's Editor window title includes the project folder's leaf name (e.g. "Unity.GridGame" in
+# the main checkout, or the ticket folder name in a per-ticket worktree) -- match that instead of
+# a hardcoded pre-Fleet-Rename name so this guard actually fires wherever the project lives.
+$projectName = Split-Path -Leaf $root
+if (Get-Process -Name Unity -ErrorAction SilentlyContinue | Where-Object { $_.MainWindowTitle -like "*$projectName*" }) {
+    throw "$projectName is open in the Unity Editor. Close it (File > Quit) and re-run."
 }
 New-Item -ItemType Directory -Force "$root/Logs" | Out-Null
 $logFile = "$root/Logs/$Log.log"

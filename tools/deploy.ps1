@@ -31,7 +31,7 @@ param([switch]$Launch)
 $ErrorActionPreference = 'Stop'
 Set-StrictMode -Version Latest
 
-$repoDir  = Split-Path $PSScriptRoot   # tools\ -> GridGameGaiden\
+$repoDir  = Split-Path $PSScriptRoot   # tools\ -> Unity.GridGame\
 $out      = 'C:\Apps\GridGameGaiden'
 $exeName  = 'GridGameGaiden.exe'
 $buildDir = Join-Path $repoDir 'Build\WindowsRelease'

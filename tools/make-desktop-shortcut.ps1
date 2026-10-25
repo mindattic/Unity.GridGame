@@ -13,7 +13,7 @@
 #>
 $ErrorActionPreference = 'Stop'
 
-$repoDir = Split-Path $PSScriptRoot   # tools\ -> GridGameGaiden\
+$repoDir = Split-Path $PSScriptRoot   # tools\ -> Unity.GridGame\
 $deployBat = Join-Path $repoDir 'deploy.bat'
 $exe = 'C:\Apps\GridGameGaiden\GridGameGaiden.exe'
 $lnk = Join-Path ([Environment]::GetFolderPath('Desktop')) 'GridGame Gaiden.lnk'
