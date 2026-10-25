@@ -2201,6 +2201,12 @@ A hero's starting bar is unaffected: `Progression.NewHero` already makes every `
 
 This audit is read-only — no `ClassDef`, `SkillTreeDef` or other content changed, no new tests (none apply to a docs-only pass). *(Source: `Assets/Gaiden/Resources/Content/classes.json` × `skilltrees.json`, matched by script against every `Team.Hero` entry's `HomeTree` and `DefaultLoadout`.)*
 
+### 25.6.2 Cross-tree specialization: topology open (GG-T83)
+
+**Not decided; nothing here ships.** How a hero crosses from its home tree into another archetype's is still an open design question. The six trees in §25.6.1 have no bridge, toll or adjacency rule between them yet. The 10-point "open a second tree" figure referenced above comes from GG-T51's original toll-gate draft (option A below), which the owner rejected as a tax. It stays only as the rough investment §25.6.1's Finale was tuned against.
+
+Topologies tried and rejected so far: (A) six trees plus a toll-gated bridge (GG-T51/GG-T76); (B) one hex map of six wedges, cost = path length (GG-T79, which also got its own opposite-pair arithmetic wrong); (C) an octagon of the 8 stats; (D) the owner's own archetype wheel of 8 pure plus 8 hybrid archetypes, the closest so far but "not quite right". The two references are FF12's Zodiac License Boards (pick 2 of 12 boards) and FFX's Sphere Grid (one shared lattice, different start points). The full record, including why each was rejected and the later GG-T166/167/168 attempts (GG-T168, stat-threshold unlocks with no board, is awaiting owner review), is in [`docs/research-skill-map-topology.md`](research-skill-map-topology.md). The GG-T80 audit findings above don't depend on this decision.
+
 ### 25.7 Shared Camp utilities
 
 `App/UI/Ui.cs` (windows, menu rows, lists, tabs, gauges, cost pips, buttons, gold formatting), `ItemUi` (item rows, glyphs, detail pane), `Confirm` (modal), `GameApp.Toast`.
