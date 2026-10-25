@@ -35,6 +35,9 @@ namespace GridGame.Meta
             new CampTip { Station = Forging.TipStation, Title = "The Forge",
                 Text = "Forge gear from what enemies drop. Pick a recipe, then Craft.",
                 Target = "recipe-" },
+            new CampTip { Station = Forging.ArmorTipStation, Title = "Forge Armor",
+                Text = "Armor recipes are open. Forge a set piece from what enemies drop, then Craft.",
+                Target = "recipe-" },
             new CampTip { Station = "alchemist", Title = "The Alchemist",
                 Text = "Brew potions from what enemies drop — far cheaper than buying them. Pick a recipe, then Brew.",
                 Target = "recipe-" },
@@ -68,6 +71,7 @@ namespace GridGame.Meta
             if (tip == null || c == null) return tip;
             if (tip.Station == "alchemist") return ResolveAlchemist(c, s, tip);
             if (tip.Station == Forging.TipStation) return ResolveForge(c, s, tip);
+            if (tip.Station == Forging.ArmorTipStation) return ResolveArmor(c, s, tip);
             if (tip.Station != "blacksmith") return tip;
             var worn = Repair.MostWorn(c, s);
             if (worn == null || worn.Durability >= worn.Max) return tip;
@@ -125,6 +129,37 @@ namespace GridGame.Meta
             {
                 Station = tip.Station, Title = tip.Title, Target = RecipeRowPrefix + plan.Recipe.Id,
                 Text = $"A {plan.Weapon.Name} would suit the {hero}, free to forge from battle drops. Bring back {missing}, then Craft it here.",
+            };
+        }
+
+        /// <summary>The Forge's armor tip (GG-T178, §25.0.7), shown once the first weapon is made: it walks the first armor
+        /// piece <see cref="Forging.FirstArmor"/> picks (the Forge preselects it), its set, what goes in and the hero who
+        /// wears it on forging, ringing Craft; with materials or gold still short it rings the recipe row and says what's
+        /// missing.</summary>
+        private static CampTip ResolveArmor(ContentDb c, SaveData s, CampTip tip)
+        {
+            var plan = Forging.FirstArmor(c, s);
+            if (plan == null) return tip;
+            string hero = c.TryClass(plan.Hero.ClassId)?.Name ?? plan.Hero.ClassId;
+            string set = c.TryArmorSetOf(plan.Weapon.Id)?.Name;
+            string piece = plan.Weapon.Name + (set != null && !plan.Weapon.Name.StartsWith(set) ? $" ({set} set)" : "");
+            string Name(ItemCount i) => c.TryItem(i.Item)?.Name ?? i.Item;
+            if (plan.Ready)
+            {
+                string loot = string.Join(" and ", plan.Recipe.Inputs.Select(i => (i.Count > 1 ? i.Count + " " : "") + Name(i)));
+                return new CampTip
+                {
+                    Station = tip.Station, Title = tip.Title, Target = CraftButton,
+                    Text = $"Armor recipes are open. Your {loot} make {piece} for the {hero}, the first piece of a set. Tap Craft and the {hero} wears it.",
+                };
+            }
+            var short1 = plan.Recipe.Inputs.Where(i => s.Count(i.Item) < i.Count)
+                .Select(i => (i.Count - s.Count(i.Item)) + " more " + Name(i)).ToList();
+            if (s.Gold < plan.Recipe.Gold) short1.Add($"{plan.Recipe.Gold - s.Gold} more gold");
+            return new CampTip
+            {
+                Station = tip.Station, Title = tip.Title, Target = RecipeRowPrefix + plan.Recipe.Id,
+                Text = $"Armor recipes are open. {piece} would suit the {hero}. Bring back {string.Join(" and ", short1)}, then Craft it here.",
             };
         }
 

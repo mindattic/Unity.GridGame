@@ -722,8 +722,9 @@ namespace GridGame.App
         protected override string Backdrop => "cave";
         protected override string Subtitle => StationProgress.HeaderText(S, StationKind.Blacksmith);
         protected override string Npc => CampNpcs.Blacksmith;
-        /// <summary>The Forge tab has its own tip, the first forge (GG-T177); Repair keeps the Blacksmith's.</summary>
-        protected override string TipStation => tab == 0 ? Forging.TipStation : Id;
+        /// <summary>The Forge tab has its own tip, the first forge (GG-T177), then the first armor once the weapon is made
+        /// (GG-T178); Repair keeps the Blacksmith's.</summary>
+        protected override string TipStation => tab != 0 ? Id : Forging.ArmorStep(S) ? Forging.ArmorTipStation : Forging.TipStation;
 
         protected override void BuildBody(VisualElement body)
         {
@@ -746,7 +747,9 @@ namespace GridGame.App
             var detail = Ui.Window(null, body);
             detail.style.minHeight = 330;
             // GG-T177 (§25.0.6): until the first forge is made, the Forge opens on the starter weapon its tip walks.
-            if (tab == 0 && selected == null) selected = Forging.First(C, S)?.Recipe;
+            // GG-T178 (§25.0.7): once it's made (the starter still selected), it moves on to the first armor piece.
+            if (tab == 0 && (selected == null || (Forging.IsStarter(selected) && Forging.Done(S))))
+                selected = Forging.First(C, S)?.Recipe ?? Forging.FirstArmor(C, S)?.Recipe ?? selected;
             if (tab <= 1) RecipeList(list, detail, C, S, CraftStation.Forge, tab == 1, ref selected, this);
             else if (tab == 2) SalvageList(list, detail);
             else RepairList(list, detail);
@@ -758,7 +761,8 @@ namespace GridGame.App
             if (station == CraftStation.Enchant) recipes = Crafting.Recipes(c, station).ToList();
             // Recipe discovery (§24.6.2, GG-T36): undiscovered recipes are hidden, except a "???" tease
             // for ones the player is exactly one input away from.
-            var visible = recipes.Where(r => RecipeDiscovery.IsDiscovered(s, r) || RecipeDiscovery.OneAwayMissing(s, r) != null).ToList();
+            // Armor-set recipes open after the first forge (GG-T178, §25.0.7).
+            var visible = recipes.Where(r => Forging.ArmorOpen(c, s, r) && (RecipeDiscovery.IsDiscovered(s, r) || RecipeDiscovery.OneAwayMissing(s, r) != null)).ToList();
             if (visible.Count == 0) Ui.Text("No recipes.", "small dim", list);
             RecipeDef sel = selected;
             foreach (var r in visible)
@@ -836,10 +840,12 @@ namespace GridGame.App
                 Ui.Text($"★ {Math.Round(Crafting.MasterworkChance(c, s) * 100)}% chance of a Masterwork result", "small gold", need).style.whiteSpace = WhiteSpace.Normal;
             if (Forging.IsGuided(s, r) && Forging.SuitedHero(c, s, result) is HeroSave suited)
                 Ui.Text($"First forge: free, and the {c.TryClass(suited.ClassId)?.Name ?? suited.ClassId} equips it", "small gold", need).style.whiteSpace = WhiteSpace.Normal;
+            if (Forging.IsGuidedArmor(c, s, r) && Forging.SuitedWearer(c, s, result) is HeroSave wearer)
+                Ui.Text($"First armor: the {c.TryClass(wearer.ClassId)?.Name ?? wearer.ClassId} wears it", "small gold", need).style.whiteSpace = WhiteSpace.Normal;
             string verb = r.Station == CraftStation.Alchemy ? "Brew" : r.Station == CraftStation.Enchant ? "Enchant" : "Craft";
             var btn = Ui.Button(verb, () =>
             {
-                // The guided first forge (GG-T177) also equips the starter weapon on the hero it suits.
+                // The guided first forge (GG-T177) and first armor (GG-T178) also equip what they make on the hero it suits.
                 var res = Forging.Forge(c, s, r);
                 GameApp.I.Toast(res.Message);
                 GameApp.I.Audio.Sfx(res.Ok ? "ui.buy" : "ui.error");

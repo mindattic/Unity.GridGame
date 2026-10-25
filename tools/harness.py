@@ -713,6 +713,63 @@ def firstforge(run="firstforge"):
     return not fails
 
 
+def firstarmor(run="firstarmor"):
+    """GG-T178: onboarding step 5. Before the first forge no armor-set recipe is open; forging the starter lantern
+    (as in firstforge) opens them and the Forge's armor tip appears at once, naming Wayfarer's Trousers for the
+    Barbarian and ringing Craft; dismissing it and tapping Craft forges them (15 G) and the Barbarian wears them."""
+    fails = []
+    launch(run, extra=("-campTips",), fresh=True)
+    call("newgame", slot=0, gold=100, npcs="merchant,blacksmith,alchemist", seen="blacksmith"); time.sleep(1)
+    for item, n in (("mat_slime_gel", 2), ("mat_tattered_cloth", 1), ("mat_leather", 2), ("mat_wolf_pelt", 1)):
+        for _ in range(n):
+            call("devgive", item=item)
+    camp = call("camp")
+    if camp.get("setRecipes") or camp.get("firstArmor"):
+        fails.append(f"armor-set recipes open before the first forge: {camp.get('setRecipes')} {camp.get('firstArmor')}")
+    _goto("blacksmith"); time.sleep(0.8)
+    call("click", name="camp-tip-ok"); time.sleep(0.5)
+    call("click", name="craft"); time.sleep(1.0)
+    shot("01-armor-tip")
+    camp = call("camp")
+    fa = camp.get("firstArmor")
+    if camp.get("weapons", {}).get("cleric") != "eq_lantern_tallow":
+        fails.append(f"first forge didn't go through: {camp.get('weapons')}")
+    if not camp.get("setRecipes"):
+        fails.append("armor-set recipes still shut after the first forge")
+    if not fa or fa["recipe"] != "recipe_wayfarer_legs" or fa["hero"] != "barbarian" or not fa["ready"]:
+        fails.append(f"first armor should be the ready Wayfarer's Trousers for the Barbarian: {fa}")
+    if not call("names", prefix="camp-tip-card"):
+        fails.append("no armor tip after the first forge")
+    elif not call("names", prefix="camp-tip-ring"):
+        fails.append("armor tip has no ring: Craft button not found (piece not preselected?)")
+    texts = " ".join(str(t) for t in call("texts"))
+    if "Wayfarer's Trousers" not in texts or "Barbarian" not in texts or "Tap Craft" not in texts:
+        fails.append("armor tip doesn't name Wayfarer's Trousers for the Barbarian")
+    probs = call("layout").get("problems")
+    if probs:
+        fails.append(f"layout {probs}")
+    call("click", name="camp-tip-ok"); time.sleep(0.5)
+    gold = camp["Gold"]
+    call("click", name="craft"); time.sleep(0.8)
+    shot("02-armor-forged-and-worn")
+    after = call("camp")
+    if "eq_wayfarer_legs" not in after.get("armor", {}).get("barbarian", []):
+        fails.append(f"the Barbarian isn't wearing the trousers: {after.get('armor')}")
+    if after["Gold"] != gold - 15:
+        fails.append(f"the first armor should cost its 15 G ({gold} -> {after['Gold']})")
+    if after.get("firstArmor"):
+        fails.append("first armor still pending after forging")
+    errs = [l[:300] for l in call("logs") if l.startswith(("Error", "Exception"))]
+    if errs:
+        fails.append(f"log errors {errs[:3]}")
+    try:
+        call("quit", timeout=3)
+    except Exception:
+        pass
+    print("FAILURES:" if fails else "FIRST ARMOR OK", *fails, sep="\n  ")
+    return not fails
+
+
 def story_recruits(run="recruits", speed=3):
     """GG-T118: a new game starts small and grows at story beats. Picks the starting three through the real
     party select, clears Green Valley I on autoplay, then launches the next battle and checks that the
@@ -1410,6 +1467,8 @@ if __name__ == "__main__":
         sys.exit(0 if firstbrew() else 1)
     elif cmd == "firstforge":
         sys.exit(0 if firstforge() else 1)
+    elif cmd == "firstarmor":
+        sys.exit(0 if firstarmor() else 1)
     elif cmd == "fullloop":
         sys.exit(0 if fullloop(battles=int(sys.argv[2]) if len(sys.argv) > 2 else 4) else 1)
     elif cmd == "clips":

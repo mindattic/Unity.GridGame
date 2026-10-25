@@ -504,6 +504,7 @@ namespace GridGame.Tests
         public void A_station_starts_at_apprentice_and_levels_up_from_real_crafting_actions()
         {
             var c = Real; var s = Progression.NewGame(c, "Station1");
+            s.Flags.Add(Forging.FirstForgeFlag); // past the onboarding gate on armor-set recipes (GG-T178)
             Assert.That(StationProgress.LevelName(s, StationKind.Blacksmith), Is.EqualTo("Apprentice"));
             Assert.That(StationProgress.HeaderText(s, StationKind.Blacksmith), Is.EqualTo("Apprentice — 0/150 XP to Journeyman"));
 

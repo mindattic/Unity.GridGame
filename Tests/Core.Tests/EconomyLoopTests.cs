@@ -114,6 +114,64 @@ namespace GridGame.Tests
             Assert.That(s.Count("eq_club_oak"), Is.EqualTo(1), "later forges go to the bag");
         }
 
+        /// <summary>GG-T178 (§25.0.7): the armor-set recipes stay shut at the Forge until the first weapon is made; then the
+        /// guided first armor forges one set piece and puts it on the hero it suits, and the next forge is an ordinary one.</summary>
+        [Test]
+        public void Armor_recipes_open_after_the_first_weapon_and_the_first_piece_is_worn()
+        {
+            var s = Progression.NewGame(C, "T");
+            CampNpcs.JoinAll(s);
+            s.Gold = 200;
+            s.AddItem("mat_leather", 2); s.AddItem("mat_wolf_pelt", 1);
+            var legs = C.Recipes["recipe_wayfarer_legs"];
+            Assert.That(Forging.IsSetArmor(C, legs), Is.True);
+            Assert.That(Forging.ArmorOpen(C, s, legs), Is.False, "shut before the first forge");
+            Assert.That(Forging.FirstArmor(C, s), Is.Null);
+            Assert.That(Crafting.Craft(C, s, legs).Ok, Is.False, "can't be forged yet");
+            Assert.That(Forging.ArmorOpen(C, s, C.Recipes["recipe_boots_leather"]), Is.True, "non-set armor isn't gated");
+
+            s.Flags.Add(Forging.FirstForgeFlag);
+            Assert.That(Forging.SetArmorRecipes(C).All(r => Forging.ArmorOpen(C, s, r)), Is.True, "open after the first weapon");
+            var plan = Forging.FirstArmor(C, s);
+            Assert.That(plan, Is.Not.Null);
+            Assert.That(plan.Recipe.Id, Is.EqualTo("recipe_wayfarer_legs"), "the ready set piece");
+            Assert.That(plan.Ready, Is.True);
+            Assert.That(plan.Hero.ClassId, Is.EqualTo("barbarian"), "Speed/Luck trousers suit the Barbarian's even growth best");
+            int gold = s.Gold;
+            var r = Forging.Forge(C, s, plan.Recipe);
+            Assert.That(r.Ok, Is.True, r.Message);
+            Assert.That(r.Message, Does.Contain("Barbarian wears it"));
+            Assert.That(Equipment.Equipped(s.Hero("barbarian"), EquipmentSlot.Legs), Is.EqualTo("eq_wayfarer_legs"));
+            Assert.That(s.Gold, Is.EqualTo(gold - legs.Gold), "armor costs its gold");
+            Assert.That(s.Flags, Does.Contain(Forging.FirstArmorFlag));
+            Assert.That(Forging.FirstArmor(C, s), Is.Null, "the first armor is done");
+            s.AddItem("mat_leather", 2); s.AddItem("mat_wolf_pelt", 1);
+            Forging.Forge(C, s, legs);
+            Assert.That(s.Count("eq_wayfarer_legs"), Is.EqualTo(1), "later forges go to the bag");
+        }
+
+        /// <summary>GG-T178: an Apprentice set piece every starting hero can wear takes only first-theme drops, so the
+        /// guided first armor is reachable from Green Valley; bots and New Game+ skip the gate.</summary>
+        [Test]
+        public void A_first_armor_piece_is_forgeable_from_first_theme_drops()
+        {
+            var first = C.Campaign.Themes[0];
+            var early = new HashSet<string>(first.Stages.Select(id => C.Stages[id]).SelectMany(st => st.Waves).SelectMany(w => w.Enemies)
+                .Select(e => C.TryClass(e.Class)?.DropTable).Where(t => t != null && C.DropTables.ContainsKey(t))
+                .SelectMany(t => C.DropTables[t].Entries.Select(e => e.Item)));
+            var reachable = Forging.SetArmorRecipes(C).Where(r => r.Tier <= 1 && r.Inputs.All(i => early.Contains(i.Item))).ToList();
+            Assert.That(reachable, Is.Not.Empty);
+            var s = Progression.NewGame(C, "T");
+            s.Flags.Add(Forging.FirstForgeFlag);
+            s.Gold = 500;
+            foreach (var r in reachable) foreach (var i in r.Inputs) s.AddItem(i.Item, i.Count);
+            foreach (var id in Progression.StartingRoster)
+                Assert.That(reachable.Any(r => Forging.SuitedWearer(C, s, C.Item(r.Result)) != null && Equipment.Fits(C, s.Hero(id), C.Item(r.Result), C.Item(r.Result).Slot)),
+                    Is.True, $"the {id} can wear a first armor piece");
+            var bot = Progression.NewGame(C, "B"); bot.TestMode = true;
+            Assert.That(Forging.ArmorOpen(C, bot, reachable[0]), Is.True, "bots aren't gated");
+        }
+
         [Test]
         public void Every_recipe_input_can_be_obtained()
         {

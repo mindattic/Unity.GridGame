@@ -97,6 +97,29 @@ namespace GridGame.Tests
         }
 
         [Test]
+        public void The_armor_tip_walks_the_first_armor_piece()
+        {
+            var c = TestKit.Real;
+            var s = Progression.NewGame(c, "T");
+            CampNpcs.JoinAll(s);
+            s.Gold = 200;
+            var tip = CampTips.For(Forging.ArmorTipStation);
+            Assert.That(tip, Is.Not.Null, "the Forge has an armor tip");
+            Assert.That(CampTips.Resolve(c, s, tip), Is.SameAs(tip), "before the first weapon there's no armor step");
+            s.Flags.Add(Forging.FirstForgeFlag);
+            s.AddItem("mat_leather", 1);
+            var short1 = CampTips.Resolve(c, s, tip);
+            Assert.That(short1.Target, Does.StartWith(CampTips.RecipeRowPrefix + "recipe_"));
+            Assert.That(short1.Text, Does.Contain("Bring back"));
+            s.AddItem("mat_leather", 1); s.AddItem("mat_wolf_pelt", 1);
+            var ready = CampTips.Resolve(c, s, tip);
+            Assert.That(ready.Target, Is.EqualTo(CampTips.CraftButton));
+            Assert.That(ready.Text, Does.Contain("Wayfarer's Trousers").And.Contain("2 Leather").And.Contain("Barbarian").And.Contain("Tap Craft"));
+            s.Flags.Add(Forging.FirstArmorFlag);
+            Assert.That(CampTips.Resolve(c, s, tip), Is.SameAs(tip), "after the first armor the tip reads as written");
+        }
+
+        [Test]
         public void Every_tip_has_one_station_a_title_and_a_sentence()
         {
             Assert.That(CampTips.All.Select(t => t.Station).Distinct().Count(), Is.EqualTo(CampTips.All.Count));

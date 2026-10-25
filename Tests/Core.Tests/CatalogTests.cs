@@ -156,6 +156,7 @@ namespace GridGame.Tests
                 // Station tier-gating (§24.6.1, GG-T35) is exercised separately; max both stations here
                 // so this test keeps checking only that a recipe's own inputs are sufficient.
                 var s = new SaveData { Gold = r.Gold, StationXp = { ["blacksmith"] = 9999, ["alchemist"] = 9999 } };
+                s.Flags.Add(Forging.FirstForgeFlag); // the onboarding gate on armor-set recipes (GG-T178) is tested in EconomyLoopTests
                 foreach (var ic in r.Inputs) s.AddItem(ic.Item, ic.Count);
                 if (r.BaseItem != null) s.AddItem(r.BaseItem, 1);
                 var res = Crafting.Craft(c, s, r);

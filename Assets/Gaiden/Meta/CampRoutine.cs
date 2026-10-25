@@ -93,7 +93,7 @@ namespace GridGame.Meta
                     if (workshop && (owned == null || MetaHeuristics.Score(owned) <= current))
                     {
                         var recipe = Crafting.Recipes(c, CraftStation.Forge)
-                            .Where(r => r.BaseItem == null && Equipment.Fits(c, h, c.Item(r.Result), slot) && Crafting.HasInputs(s, r) && r.Gold <= s.Gold / 2)
+                            .Where(r => r.BaseItem == null && Forging.ArmorOpen(c, s, r) && Equipment.Fits(c, h, c.Item(r.Result), slot) && Crafting.HasInputs(s, r) && r.Gold <= s.Gold / 2)
                             .OrderByDescending(r => MetaHeuristics.Score(c.Item(r.Result))).FirstOrDefault();
                         if (recipe != null && MetaHeuristics.Score(c.Item(recipe.Result)) > current) Note(Crafting.Craft(c, s, recipe));
                         owned = MetaHeuristics.BestFirst(Equipment.Candidates(c, s, slot, h)).FirstOrDefault();

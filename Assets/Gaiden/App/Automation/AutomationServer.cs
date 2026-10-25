@@ -508,7 +508,7 @@ namespace GridGame.App.Automation
                         : CampUnlocks.NpcOpen(s, st == CraftStation.Alchemy ? CampNpcs.Alchemist : CampNpcs.Enchantress);
                     object Craftable(CraftStation st) => Crafting.Recipes(c, st)
                         .Where(r => StationOpen(st))
-                        .Where(r => RecipeDiscovery.IsDiscovered(s, r) && Crafting.IsUnlocked(s, r) && Crafting.HasInputs(s, r) && s.Gold >= r.Gold)
+                        .Where(r => RecipeDiscovery.IsDiscovered(s, r) && Forging.ArmorOpen(c, s, r) && Crafting.IsUnlocked(s, r) && Crafting.HasInputs(s, r) && s.Gold >= r.Gold)
                         .Select(r => new { r.Id, r.Result, upgrade = r.BaseItem != null }).ToList();
                     var active = Bounties.Active(c, s);
                     return new
@@ -520,6 +520,9 @@ namespace GridGame.App.Automation
                         smith = CampUnlocks.NpcOpen(s, CampNpcs.Blacksmith), workshop = CampUnlocks.SmithWorkshopOpen(s),
                         weapons = s.Party.Select(s.Hero).Where(h => h != null).ToDictionary(h => h.ClassId, h => h.WeaponId),
                         firstForge = Forging.First(c, s) is var ff && ff != null ? new { recipe = ff.Recipe.Id, weapon = ff.Weapon.Id, hero = ff.Hero.ClassId, ready = ff.Ready } : null,
+                        firstArmor = Forging.FirstArmor(c, s) is var fa && fa != null ? new { recipe = fa.Recipe.Id, piece = fa.Weapon.Id, hero = fa.Hero.ClassId, ready = fa.Ready } : null,
+                        armor = s.Party.Select(s.Hero).Where(h => h != null).ToDictionary(h => h.ClassId, h => h.Armor.Values.Select(ea => ea.ItemId).ToList()),
+                        setRecipes = Crafting.Recipes(c, CraftStation.Forge).Count(r => Forging.IsSetArmor(c, r) && Forging.ArmorOpen(c, s, r)),
                         bounty = new { active = active?.Id, progress = s.Bounty.Progress, complete = active != null && Bounties.IsComplete(c, s), posted = Bounties.Posted(c, s).Select(b => b.Id).ToList() },
                     };
                 }
