@@ -12,7 +12,8 @@ tools/icons.json (or an item rule below); this script does the rest.
 
 Pipeline (same family as make_pixel_icons.py): rasterise the white SVG at 64 px -> paint it with a three-stop
 vertical gradient from its palette (light top, base, dark bottom) -> shrink to 20 px -> hard alpha edge ->
-8 colours, no dither -> 1 px dark outline -> centre on 22x22 -> x4 nearest-neighbour (88x88) + point-filter .meta.
+8 colours, no dither -> 1 px dark outline -> centre on 22x22 -> x4 nearest-neighbour (88x88) + a .meta cloned from
+Thumbs/slime00 (import settings come from GaidenImport in GaidenBuild.cs).
 
 Output: Assets/Gaiden/Resources/{StatusIcons,AbilityIcons,ItemIcons,UI}/<id>.png
 """
@@ -76,8 +77,9 @@ def write_meta(png):
         return
     t = open(TEMPLATE, encoding="utf-8").read()
     t = re.sub(r"^guid: [0-9a-f]+", "guid: " + uuid.uuid4().hex, t, count=1, flags=re.M)
-    t = t.replace("filterMode: 1", "filterMode: 0")
-    t = re.sub(r"textureCompression: \d", "textureCompression: 0", t)
+    # Keep the template's filter/compression as-is: GaidenImport.OnPreprocessTexture (GaidenBuild.cs) forces
+    # bilinear + CompressedHQ on everything under Resources/, so writing point/uncompressed here only made
+    # Unity rewrite the .meta on the next import and leave git dirty (GG-T197).
     open(meta, "w", encoding="utf-8", newline="\n").write(t)
 
 

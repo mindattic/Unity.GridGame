@@ -4,7 +4,7 @@ Pixel-art timeline sprites for every enemy, made from its full-body portrait wit
     python tools/make_pixel_icons.py [--only slime00,bat00]
 
 Writes Assets/Gaiden/Resources/Pixel/<classId>.png (144x144 = a 36x36 sprite at x4, nearest-neighbour)
-plus a .meta with point filtering and no compression, so the pixels stay crisp in the build.
+plus a .meta cloned from Thumbs/slime00 (import settings come from GaidenImport in GaidenBuild.cs).
 
 Recipe: knock out a solid backdrop (flood fill from the corners) -> trim the figure to its silhouette -> median-smooth (kills painterly noise) -> shrink to 32 px ->
 hard alpha edge -> brighter, more saturated, more contrast -> 16-colour palette without dithering ->
@@ -105,8 +105,9 @@ def write_meta(png):
         return
     t = open(TEMPLATE, encoding="utf-8").read()
     t = re.sub(r"^guid: [0-9a-f]+", "guid: " + uuid.uuid4().hex, t, count=1, flags=re.M)
-    t = t.replace("filterMode: 1", "filterMode: 0")
-    t = re.sub(r"textureCompression: \d", "textureCompression: 0", t)
+    # Keep the template's filter/compression as-is: GaidenImport.OnPreprocessTexture (GaidenBuild.cs) forces
+    # bilinear + CompressedHQ on everything under Resources/, so writing point/uncompressed here only made
+    # Unity rewrite the .meta on the next import and leave git dirty (GG-T197).
     open(meta, "w", encoding="utf-8", newline="\n").write(t)
 
 
