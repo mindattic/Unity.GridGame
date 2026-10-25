@@ -1,3 +1,4 @@
+using System;
 using System.Collections.Generic;
 using System.IO;
 using System.Linq;
@@ -66,6 +67,30 @@ namespace GridGame.Tests
                 Assert.That(c.Recipes.Values.Any(r => r.Station == CraftStation.Forge && r.BaseItem == w.Id), Is.True, $"{w.Id}: no upgrade");
                 Assert.That(c.Recipes.Values.Count(r => r.Station == CraftStation.Enchant && r.BaseItem == w.Id), Is.EqualTo(enchants), $"{w.Id}: enchant variants");
             }
+        }
+
+        /// <summary>GG-T194: every enchant variant (all six, for every weapon, originals and the GG-T181 roster
+        /// alike) moves one rarity step up from its base item and keeps the base's durability. The original 13
+        /// weapons' Poison and Holy rows were hand-authored as a flat Uncommon/100, breaking the rule.</summary>
+        [Test]
+        public void Every_enchant_variant_moves_up_one_rarity_and_keeps_base_durability()
+        {
+            var c = Real;
+            var rarityOrder = new[]
+            {
+                ItemRarity.Junk, ItemRarity.Common, ItemRarity.Uncommon, ItemRarity.Rare, ItemRarity.Epic, ItemRarity.Legendary
+            };
+            var bad = new List<string>();
+            foreach (var recipe in c.Recipes.Values.Where(r => r.Station == CraftStation.Enchant))
+            {
+                var baseItem = c.Item(recipe.BaseItem);
+                var result = c.Item(recipe.Result);
+                var baseIndex = Array.IndexOf(rarityOrder, baseItem.Rarity);
+                var expectedRarity = rarityOrder[Math.Min(rarityOrder.Length - 1, baseIndex + 1)];
+                if (result.Rarity != expectedRarity || result.Durability != baseItem.Durability)
+                    bad.Add($"{result.Id}: expected {expectedRarity}/{baseItem.Durability}, got {result.Rarity}/{result.Durability}");
+            }
+            Assert.That(bad, Is.Empty, "enchant variants breaking the shared rule (rarity +1 from base, base durability): " + string.Join("; ", bad));
         }
 
         [Test]
