@@ -45,13 +45,19 @@ $choice = Read-Host "Select (default 1)"
 if ([string]::IsNullOrWhiteSpace($choice)) { $choice = "1" }
 
 try {
+    # Start-Process rejects an empty -ArgumentList (Normal Play with -Sound), so pass it only when there are arguments.
+    function Start-Game([string[]]$GameArgs) {
+        $launch = @{ FilePath = $exe }
+        if ($GameArgs.Count -gt 0) { $launch.ArgumentList = $GameArgs }
+        Start-Process @launch
+    }
     switch ($choice) {
-        "1" { Start-Process -FilePath $exe -ArgumentList $muteArgs }
-        "2" { Start-Process -FilePath $exe -ArgumentList (@("-demo", "-capture", "video", "screen", "5") + $muteArgs) }
+        "1" { Start-Game $muteArgs }
+        "2" { Start-Game (@("-demo", "-capture", "video", "screen", "5") + $muteArgs) }
         "3" { exit 0 }
         default {
             Write-Host "Unrecognized choice, launching Normal Play." -ForegroundColor Yellow
-            Start-Process -FilePath $exe -ArgumentList $muteArgs
+            Start-Game $muteArgs
         }
     }
 } finally {
