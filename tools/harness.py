@@ -66,7 +66,7 @@ def alive():
         return False
 
 
-def launch(run, width=585, height=1266, extra=(), fresh=False):
+def launch(run, width=585, height=1266, extra=(), fresh=False, muted=True):
     if alive():
         try:
             call("quit", timeout=3)
@@ -79,9 +79,15 @@ def launch(run, width=585, height=1266, extra=(), fresh=False):
         import shutil
         shutil.rmtree(saves, ignore_errors=True)
     os.makedirs(saves, exist_ok=True)
+    # GG-T205: muted by default (Unity.Shared's session mute, -muted) -- the harness drives the player
+    # through its automation HTTP endpoint and never listens to it, yet it opens a real windowed process
+    # with real audio output on every smoke/sweep/soak run. Pass muted=False to a caller that specifically
+    # wants to hear it.
     args = [EXE, "-automation", str(PORT), "-artifacts", art, "-saveRoot", saves,
             "-screen-width", str(width), "-screen-height", str(height), "-screen-fullscreen", "0",
             "-logFile", os.path.join(art, "player.log"), *extra]
+    if muted:
+        args.append("-muted")
     subprocess.Popen(args, cwd=ROOT)
     for _ in range(60):
         if alive():

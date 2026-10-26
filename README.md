@@ -73,11 +73,13 @@ pwsh tools/build.ps1 -Release    # Windows Release player
 pwsh tools/build.ps1 -Target Android                          # APK -> Build/Android
 pwsh tools/build.ps1 -Target WebGL; node tools/webcheck.mjs   # browser build + Playwright check
 deploy.bat [-Launch]             # rebuild Release and publish to C:\Apps\GridGameGaiden
-tools\launch.bat                 # deploy, then pick Normal Play or Demo + Capture
+tools\launch.bat                 # deploy, then pick Normal Play or Demo + Capture (muted by default)
 pwsh tools/make-desktop-shortcut.ps1   # Desktop shortcut to the published exe
 ```
 
 Harness and checks (they launch the development player with its automation endpoint):
+
+All of these launch muted by default (see Audio mute below).
 
 ```powershell
 python tools/harness.py smoke          # title -> new game -> camp -> battle on Auto -> results
@@ -121,6 +123,7 @@ python tools/check_glyphs.py     # verify every UI glyph exists in the bundled f
 | `-saveRoot DIR` | Use a different save folder |
 | `-noDiagonalSlip` | Turn off diagonal slip |
 | `-capture-config PATH` | Load MindAttic.Capture trigger rules from this file |
+| `-muted` | Mute all audio for this session only (see Audio mute below); `MINDATTIC_CLI_MUTED=1` does the same |
 
 ## How it works
 
@@ -154,6 +157,25 @@ No prefabs, no hand-built scenes, no Inspector wiring.
 ## Capture
 
 [MindAttic.Capture](https://github.com/mindattic/MindAttic.Capture) auto-starts in Editor Play sessions and development builds, but its trigger rules are only read when the player is launched with `-capture-config PATH`; `Assets/StreamingAssets/capture.json` is never auto-loaded just because it exists. Pass that flag (see `battle_clips()` in `tools/harness.py`) to record a clip from `battle-start` to `battle-end`. Recording is currently disabled project-wide by `"enabled": false` in that file; set it to `true` or remove the key to re-enable it.
+
+## Audio mute
+
+`tools/launch.ps1` (and `tools/launch.bat`) and `tools/harness.py`'s `launch()` launch muted by
+default: Unity.Shared's shared session mute (GG-T205), set either with the `-muted` command-line
+switch or the `MINDATTIC_CLI_MUTED=1` environment variable, read once by
+`Unity.Shared.ProfilesBootstrap` before the first scene loads. `Assets/Gaiden/App/Services/SessionAudio.cs`
+then zeroes `AudioListener.volume` for that run; nothing is written to this game's own save data, so a
+normal launch still has sound. Pass `-Sound` to `tools/launch.ps1` to opt back into audio for manual
+play; the two switches work on their own against a built exe too:
+
+```powershell
+.\Build\Windows\GridGameGaiden.exe -muted
+$env:MINDATTIC_CLI_MUTED = '1'; .\Build\Windows\GridGameGaiden.exe
+```
+
+GridGame's own music/SFX volume (`Assets/Gaiden/App/Services/Audio.cs`, driven by `Meta.SettingsSave`)
+does not yet read from Unity.Shared profiles (that migration is the separate, larger GG-T99); this mute
+is a session-only override independent of it, reaching only `AudioListener.volume`.
 
 ## Limitations
 

@@ -1,7 +1,7 @@
 {
   "name": "GridGame.App",
   "rootNamespace": "GridGame.App",
-  "references": ["GridGame.Core", "GridGame.Meta", "Unity.InputSystem", "MindAttic.Capture.Unity", "MindAttic.Telemetry.Unity"],
+  "references": ["GridGame.Core", "GridGame.Meta", "Unity.InputSystem", "MindAttic.Capture.Unity", "MindAttic.Telemetry.Unity", "Unity.Shared.Core"],
   "includePlatforms": [],
   "excludePlatforms": [],
   "allowUnsafeCode": false,

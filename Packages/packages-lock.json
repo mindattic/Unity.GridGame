@@ -16,6 +16,12 @@
         "com.unity.nuget.newtonsoft-json": "3.2.1"
       }
     },
+    "com.mindattic.unity.shared": {
+      "version": "file:../../Unity.Shared/unity/com.mindattic.unity.shared",
+      "depth": 0,
+      "source": "local",
+      "dependencies": {}
+    },
     "com.unity.ext.nunit": {
       "version": "2.0.5",
       "depth": 1,
