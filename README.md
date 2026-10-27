@@ -60,7 +60,7 @@ pwsh tools/build.ps1
 
 You should see the title screen. Choose New Game, pick a slot and you land at the Camp menu; Adventure starts the first stage. The window letterboxes to portrait and never stretches. Mouse acts as your finger, and Esc is back or pause.
 
-To publish a Release build to `C:\Apps\GridGameGaiden` instead, run `deploy.bat` (add `-Launch` to start it afterwards).
+To publish a Release build to `C:\Apps\GridGameGaiden` instead, run `deploy.bat` (what the Desktop shortcut runs). It asks first: 1) Deploy & Run rebuilds, publishes and launches it; 2) Run launches the build already published. Unattended, run `tools\deploy.ps1` (add `-Launch` to start it afterwards, `-Force` to rebuild even when up to date).
 
 ## Commands
 
@@ -72,9 +72,10 @@ pwsh tools/build.ps1             # Windows development player -> Build/Windows
 pwsh tools/build.ps1 -Release    # Windows Release player
 pwsh tools/build.ps1 -Target Android                          # APK -> Build/Android
 pwsh tools/build.ps1 -Target WebGL; node tools/webcheck.mjs   # browser build + Playwright check
-deploy.bat [-Launch]             # rebuild Release and publish to C:\Apps\GridGameGaiden
+deploy.bat                       # menu: 1) Deploy & Run (rebuild Release, publish to C:\Apps\GridGameGaiden, launch) 2) Run
+pwsh tools/deploy.ps1 [-Launch] [-Force]   # the same deploy, no menu
 tools\launch.bat                 # deploy, then pick Normal Play or Demo + Capture (muted by default)
-pwsh tools/make-desktop-shortcut.ps1   # Desktop shortcut to the published exe
+pwsh tools/make-desktop-shortcut.ps1   # Desktop shortcut to deploy.bat (the menu)
 ```
 
 Harness and checks (they launch the development player with its automation endpoint):

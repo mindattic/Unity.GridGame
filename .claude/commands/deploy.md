@@ -6,19 +6,22 @@ allowed-tools: Read, Bash, PowerShell
 
 # /deploy — GridGameGaiden
 
-`deploy.bat` (repo root) forwards to `tools\deploy.ps1`: stops any running instance launched from
+`tools\deploy.ps1`: stops any running instance launched from
 this repo or from `C:\Apps\GridGameGaiden\`, clears `Build\WindowsRelease` (build output only,
 never `Library\`), rebuilds the Windows Release player via Unity batch mode, and publishes it to
 `C:\Apps\GridGameGaiden\`. Requires the Unity Editor closed first — batchmode fails otherwise; ask
 the owner to quit it, never kill it.
 
-Run `deploy.bat` from the repo root in a single tool call, forwarding `$ARGUMENTS` (e.g. `-Launch`
-to also launch the published exe once it's copied). Don't invoke the `unthrottle` skill yourself:
+Run `powershell -NoProfile -ExecutionPolicy Bypass -File tools\deploy.ps1` from the repo root in a
+single tool call, forwarding `$ARGUMENTS` (e.g. `-Launch` to also launch the published exe once it's
+copied, `-Force` to rebuild even when the deployed commit is up to date). Never run the repo-root
+`deploy.bat` from here: it opens a 1) Deploy & Run / 2) Run menu and waits for a keypress (MAT-T67). Don't invoke the `unthrottle` skill yourself:
 the context gate only writes its exemption marker when the user types `/unthrottle`, so a
 self-invoked one does nothing. If the user wants this to skip the pace hold, they type
 `/unthrottle` first.
 
-Report `deploy.bat`'s own output; don't summarize away a failure.
+Report the script's own output; don't summarize away a failure.
 
-The Desktop shortcut `GridGameGaiden.lnk` (-> `C:\Apps\GridGameGaiden\GridGameGaiden.exe`) is this
-repo's `/run` — it launches whatever is currently published, with no rebuild.
+The Desktop shortcut `GridGame Gaiden.lnk` points at the repo-root `deploy.bat`, whose menu offers
+1) Deploy & Run (this script with `-Force -Launch`) or 2) Run (launch whatever is currently
+published in `C:\Apps\GridGameGaiden\`, with no rebuild).

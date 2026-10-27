@@ -19,14 +19,26 @@
        batch mode (requires the Editor closed) -> Build\WindowsRelease\GridGameGaiden.exe.
     4. Copies Build\WindowsRelease\* -> C:\Apps\GridGameGaiden\.
 
+    Steps 1-4 are skipped when the deployed commit is up to date, unless -Force. The repo-root
+    deploy.bat (the Desktop shortcut's target) opens a menu first (MAT-T67): 1) Deploy & Run calls
+    this script with -Force -Launch; 2) Run starts the published exe without calling it. This
+    script never prompts, so agents and /deploy run it unattended.
+
 .PARAMETER Launch
     After publishing, immediately run the deployed GridGameGaiden.exe.
+
+.PARAMETER Force
+    Rebuild and republish even when the deployed commit is up to date. It skips only that check.
 
 .EXAMPLE
     powershell -ExecutionPolicy Bypass -File tools\deploy.ps1
     powershell -ExecutionPolicy Bypass -File tools\deploy.ps1 -Launch
+    powershell -ExecutionPolicy Bypass -File tools\deploy.ps1 -Force -Launch
 #>
-param([switch]$Launch)
+param(
+    [switch]$Launch,
+    [switch]$Force
+)
 
 $ErrorActionPreference = 'Stop'
 Set-StrictMode -Version Latest
@@ -54,7 +66,7 @@ $head = (git -C $repoDir rev-parse HEAD).Trim()
 # Up to date when nothing the player is built from (Assets, Packages, ProjectSettings) differs between
 # the deployed commit and HEAD: a docs- or tickets-only commit doesn't rebuild the game (GG-T162).
 $upToDate = $false
-if ((Test-Path (Join-Path $out $exeName)) -and (Test-Path $marker)) {
+if (-not $Force -and (Test-Path (Join-Path $out $exeName)) -and (Test-Path $marker)) {
     $deployed = (Get-Content -LiteralPath $marker -Raw).Trim()
     git -C $repoDir diff --quiet $deployed $head -- Assets Packages ProjectSettings 2>$null
     $upToDate = $LASTEXITCODE -eq 0
@@ -130,14 +142,13 @@ if (-not (Test-Path $exe)) {
 Set-Content -LiteralPath $marker -Value $head -NoNewline
 
 # ── Desktop shortcut ─────────────────────────────────────────────────────────
-# Points at deploy.bat (not the exe directly), so double-clicking it always pulls latest and
-# only rebuilds if the source actually changed, before launching.
+# Points at deploy.bat (not the exe directly), which asks first: Deploy & Run, or Run (MAT-T67).
 $shortcut = Join-Path ([Environment]::GetFolderPath('Desktop')) 'GridGame Gaiden.lnk'
 $link = (New-Object -ComObject WScript.Shell).CreateShortcut($shortcut)
 $link.TargetPath       = $deployBat
 $link.WorkingDirectory = $repoDir
 $link.IconLocation     = "$exe,0"
-$link.Description      = 'Pull latest, build Release if changed, and launch GridGame Gaiden'
+$link.Description      = 'GridGame Gaiden: 1) Deploy & Run (pull, rebuild, launch) or 2) Run the published build'
 $link.Save()
 Write-Host "    Shortcut -> $shortcut" -ForegroundColor Gray
 

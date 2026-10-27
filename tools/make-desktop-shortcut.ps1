@@ -1,8 +1,8 @@
 #Requires -Version 5.1
 <#
 .SYNOPSIS
-    Creates (or refreshes) the "GridGame Gaiden" Desktop shortcut, pointing at deploy.bat so a
-    double-click always pulls latest and only rebuilds if the source actually changed.
+    Creates (or refreshes) the "GridGame Gaiden" Desktop shortcut, pointing at deploy.bat, whose
+    menu asks first: 1) Deploy & Run (pull, rebuild if changed, launch) or 2) Run the published build.
 
 .DESCRIPTION
     tools\deploy.ps1 already recreates this same shortcut on every run; this script exists to
@@ -23,7 +23,7 @@ $shortcut = $shell.CreateShortcut($lnk)
 $shortcut.TargetPath = $deployBat
 $shortcut.WorkingDirectory = $repoDir
 if (Test-Path $exe) { $shortcut.IconLocation = "$exe,0" }
-$shortcut.Description = 'Pull latest, build Release if changed, and launch GridGame Gaiden'
+$shortcut.Description = 'GridGame Gaiden: 1) Deploy & Run (pull, rebuild, launch) or 2) Run the published build'
 $shortcut.Save()
 
 Write-Host "Shortcut created: $lnk -> $deployBat" -ForegroundColor Green
