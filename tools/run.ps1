@@ -20,7 +20,7 @@
     4. Copies Build\WindowsRelease\* -> C:\Apps\GridGameGaiden\.
 
     Steps 1-4 are skipped when the deployed commit is up to date, unless -Force. The repo-root
-    deploy.bat (the Desktop shortcut's target) opens a menu first (MAT-T67): 1) Deploy & Run calls
+    run.bat (the Desktop shortcut's target) opens a menu first (MAT-T67): 1) Deploy & Run calls
     this script with -Force -Launch; 2) Run starts the published exe without calling it. This
     script never prompts, so agents and /deploy run it unattended.
 
@@ -31,9 +31,9 @@
     Rebuild and republish even when the deployed commit is up to date. It skips only that check.
 
 .EXAMPLE
-    powershell -ExecutionPolicy Bypass -File tools\deploy.ps1
-    powershell -ExecutionPolicy Bypass -File tools\deploy.ps1 -Launch
-    powershell -ExecutionPolicy Bypass -File tools\deploy.ps1 -Force -Launch
+    powershell -ExecutionPolicy Bypass -File tools\run.ps1
+    powershell -ExecutionPolicy Bypass -File tools\run.ps1 -Launch
+    powershell -ExecutionPolicy Bypass -File tools\run.ps1 -Force -Launch
 #>
 param(
     [switch]$Launch,
@@ -47,7 +47,7 @@ $repoDir  = Split-Path $PSScriptRoot   # tools\ -> Unity.GridGame\
 $out      = 'C:\Apps\GridGameGaiden'
 $exeName  = 'GridGameGaiden.exe'
 $buildDir = Join-Path $repoDir 'Build\WindowsRelease'
-$deployBat = Join-Path $repoDir 'deploy.bat'
+$runBat = Join-Path $repoDir 'run.bat'
 $marker    = Join-Path $out '.deploy-commit'
 
 # ── Pull latest, skip the rebuild entirely if nothing changed ──────────────
@@ -142,10 +142,10 @@ if (-not (Test-Path $exe)) {
 Set-Content -LiteralPath $marker -Value $head -NoNewline
 
 # ── Desktop shortcut ─────────────────────────────────────────────────────────
-# Points at deploy.bat (not the exe directly), which asks first: Deploy & Run, or Run (MAT-T67).
+# Points at run.bat (not the exe directly), which asks first: Deploy & Run, or Run (MAT-T67).
 $shortcut = Join-Path ([Environment]::GetFolderPath('Desktop')) 'GridGame Gaiden.lnk'
 $link = (New-Object -ComObject WScript.Shell).CreateShortcut($shortcut)
-$link.TargetPath       = $deployBat
+$link.TargetPath       = $runBat
 $link.WorkingDirectory = $repoDir
 $link.IconLocation     = "$exe,0"
 $link.Description      = 'GridGame Gaiden: 1) Deploy & Run (pull, rebuild, launch) or 2) Run the published build'

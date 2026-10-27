@@ -7,7 +7,7 @@
   MINDATTIC_CLI_MUTED=1), in effect for this run only -- nothing is written to the player's
   settings.
 .NOTES
-  Always redeploys from source first (tools\deploy.ps1), so this never runs a stale build.
+  Always redeploys from source first (tools\run.ps1), so this never runs a stale build.
   Requires the Unity Editor closed for this project.
 #>
 param(
@@ -15,7 +15,7 @@ param(
 )
 $ErrorActionPreference = "Stop"
 
-& (Join-Path $PSScriptRoot "deploy.ps1")
+& (Join-Path $PSScriptRoot "run.ps1")
 if ($LASTEXITCODE -ne 0) {
     Write-Host "Deploy failed (exit $LASTEXITCODE); not launching." -ForegroundColor Red
     exit $LASTEXITCODE
