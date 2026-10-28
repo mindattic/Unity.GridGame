@@ -93,10 +93,11 @@ namespace GridGame.Meta
             if (itemId == null || n == 0) return;
             int v = Count(itemId) + n;
             if (v <= 0) Inventory.Remove(itemId); else Inventory[itemId] = v;
-            // Worn copies can't outnumber owned copies; when copies leave the bag the most-worn go first.
+            // Worn copies can't outnumber owned copies; when copies leave the bag the most-worn go first (an enchanted
+            // copy, GG-T179, last).
             if (Worn.TryGetValue(itemId, out var worn))
             {
-                worn.Sort((a, b) => b.Durability.CompareTo(a.Durability));
+                worn.Sort((a, b) => { int e = (b.Enchant != null).CompareTo(a.Enchant != null); return e != 0 ? e : b.Durability.CompareTo(a.Durability); });
                 while (worn.Count > Count(itemId)) worn.RemoveAt(worn.Count - 1);
                 if (worn.Count == 0) Worn.Remove(itemId);
             }
@@ -154,6 +155,9 @@ namespace GridGame.Meta
         public int Durability;
         public int Repairs;
         public float Mastery = 1f;
+        /// <summary>Armor enchant id (armorenchants.json, GG-T179) bound into this piece by the Enchantress; null = none.
+        /// It grants its passive while the piece is worn and intact, and is lost if the piece breaks.</summary>
+        public string Enchant;
     }
 
     public sealed class WornGear
@@ -162,6 +166,8 @@ namespace GridGame.Meta
         public int Repairs;
         /// <summary>Masterwork stat multiplier this specific copy rolled at craft time (§24.6.2, GG-T46); 1 = normal.</summary>
         public float Mastery = 1f;
+        /// <summary>Armor enchant this copy carries (GG-T179), kept while it sits in the bag; null = none.</summary>
+        public string Enchant;
     }
 
     public sealed class BountySave

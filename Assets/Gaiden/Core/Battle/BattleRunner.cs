@@ -317,6 +317,8 @@ namespace GridGame.Core.Battle
             foreach (var h in S.LivingList(Team.Hero))
             {
                 if (h.RegenPerTurn > 0 && h.Hp < h.MaxHp) Heal(h, h.RegenPerTurn, h);
+                // A Regeneration-enchanted armor piece (GG-T179) knits the hero like the enemy kit does.
+                if (h.Hp < h.MaxHp && HasPassive(h, "regenerate")) Heal(h, Math.Max(1, h.MaxHp * BattleConfig.RegeneratePercent / 100), h);
                 TickTurnBuffs(h, false);
                 var keys = new List<string>(h.Cooldowns.Keys);
                 foreach (var k in keys)
@@ -428,7 +430,11 @@ namespace GridGame.Core.Battle
             target.Hp = Math.Max(0, target.Hp - amount);
             Emit(new DamagedEvent { TargetId = target.Id, SourceId = source?.Id ?? -1, Amount = amount, Hit = hit, Type = type, HpAfter = target.Hp, Note = note });
             if (source != null && source.IsHero && target.Team == Team.Enemy) source.DamageDealt += amount;
-            if (source != null && hit != HitKind.Miss && amount > 0 && target.IsHero && source.Team == Team.Enemy) WearArmor(target);
+            if (source != null && hit != HitKind.Miss && amount > 0 && target.IsHero && source.Team == Team.Enemy)
+            {
+                MaybeThorns(target, source, amount); // checked before WearArmor: the blow that breaks the piece still pricks
+                WearArmor(target);
+            }
 
             if (target.Hp <= 0) { Kill(target, source); ResolveDeathBursts(); return; }
             if (source == null || hit == HitKind.Miss) return;
@@ -612,6 +618,7 @@ namespace GridGame.Core.Battle
             if (!u.Alive || def == null) return;
             duration = Math.Max(1, duration);
             if (u.Def.ImmuneBuffs != null && u.Def.ImmuneBuffs.Contains(def.Id)) { Announce("Immune!", u.Id); return; }
+            if (WardedAgainst(u, def.Id)) { Announce("Warded!", u.Id); return; } // armor enchant passives (GG-T179)
             var existing = u.Buffs.Find(b => b.Def.Id == def.Id);
             if (existing != null)
             {

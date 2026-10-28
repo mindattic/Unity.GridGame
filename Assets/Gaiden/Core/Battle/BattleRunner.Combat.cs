@@ -241,11 +241,48 @@ namespace GridGame.Core.Battle
             chainBonusDepth = 0;
         }
 
+        /// <summary>The unit has passive <paramref name="id"/>: from its class kit, or (GG-T179) from an enchant on an
+        /// intact armor piece it wears (a broken piece leaves <see cref="Unit.Gear"/>, taking its enchant with it).</summary>
         private bool HasPassive(Unit u, string id)
         {
-            if (u.Def.Abilities == null || !u.Def.Abilities.Contains(id)) return false;
             var a = C.TryAbility(id);
-            return a != null && a.Kind == AbilityKind.Passive;
+            if (a == null || a.Kind != AbilityKind.Passive) return false;
+            if (u.Def.Abilities != null && u.Def.Abilities.Contains(id)) return true;
+            foreach (var piece in u.Gear.Values)
+                if (piece.Durability > 0 && piece.Enchant != null && C.TryArmorEnchant(piece.Enchant)?.Passive == id) return true;
+            return false;
+        }
+
+        /// <summary>Armor enchant passives that ward off buffs (GG-T179): passive id → the buff ids it makes the wearer immune to.</summary>
+        private static readonly Dictionary<string, string[]> WardingPassives = new Dictionary<string, string[]>
+        {
+            { "poison_ward", new[] { "poisoned" } },
+            { "steadfast", new[] { "frozen", "sleep" } },
+        };
+
+        /// <summary>A passive the unit has makes it immune to <paramref name="buffId"/>.</summary>
+        private bool WardedAgainst(Unit u, string buffId)
+        {
+            foreach (var kv in WardingPassives)
+                if (Array.IndexOf(kv.Value, buffId) >= 0 && HasPassive(u, kv.Key)) return true;
+            return false;
+        }
+
+        private bool reflecting;
+
+        /// <summary>Thorns (GG-T179): a hero wearing it reflects a share of a landed enemy hit back at the attacker.</summary>
+        private void MaybeThorns(Unit target, Unit source, int amount)
+        {
+            if (reflecting || amount <= 0 || source == null || !source.Alive || !target.IsHero || source.Team != Team.Enemy || !HasPassive(target, "thorns")) return;
+            reflecting = true;
+            Damage(source, Math.Max(1, (int)Math.Round(amount * BattleConfig.ThornsFraction)), target, HitKind.Normal, DamageType.Physical, "Thorns", canPush: false);
+            reflecting = false;
+        }
+
+        /// <summary>Mana Siphon (GG-T179): every hit the wearer lands adds a little charge to the mana meter.</summary>
+        private void MaybeSiphon(Unit attacker, int dealt)
+        {
+            if (dealt > 0 && attacker.IsHero && HasPassive(attacker, "mana_siphon")) AddCharge(BattleConfig.ManaSiphonCharge, attacker.Id, "siphon");
         }
 
         /// <summary>Named weapon passive (§24.6.1, GG-T47): a landed pincer strike (not a supporter or counter hit)
@@ -295,6 +332,7 @@ namespace GridGame.Core.Battle
                 int dealt = before - target.Hp;
                 AfterLandedHit(attacker, target, dealt);
                 TryWeaponLifesteal(attacker, dealt);
+                MaybeSiphon(attacker, dealt);
                 MaybeCounter(target, attacker);
             }
         }

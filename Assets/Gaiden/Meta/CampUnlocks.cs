@@ -51,6 +51,8 @@ namespace GridGame.Meta
                 return $"Joins when gear wears below {beat.Trigger.Percent}%";
             if (beat.Trigger.Kind == DialogueTriggerKind.CanBrew)
                 return "Joins once you've looted enough to brew";
+            if (beat.Trigger.Kind == DialogueTriggerKind.FirstArmor)
+                return "Joins once you've forged your first armor";
             if (beat.Trigger.Kind == DialogueTriggerKind.ThemeStart)
                 return "Joins at " + (c.Campaign.Themes.FirstOrDefault(t => t.Id == beat.Trigger.Id)?.Name ?? beat.Trigger.Id);
             return "Joins after " + (c.Stages.TryGetValue(beat.Trigger.Id ?? "", out var st) ? st.Name : beat.Trigger.Id);

@@ -21,6 +21,8 @@ namespace GridGame.Core.Battle
         public string ItemId;
         public int Durability;
         public float Mastery = 1f;
+        /// <summary>Armor enchant id (GG-T179): grants its passive while this piece is worn (a broken piece leaves Gear).</summary>
+        public string Enchant;
 
         public EquippedPiece Clone() => (EquippedPiece)MemberwiseClone();
     }

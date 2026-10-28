@@ -182,7 +182,7 @@ namespace GridGame.Core.Battle
         {
             if (enemy.Alive) FaceTarget(enemy);
             // Regenerate kit: knits 6% of MaxHP at the end of its own turn.
-            if (enemy.Alive && HasPassive(enemy, "regenerate") && enemy.Hp < enemy.MaxHp) Heal(enemy, Math.Max(1, enemy.MaxHp * 6 / 100), enemy);
+            if (enemy.Alive && HasPassive(enemy, "regenerate") && enemy.Hp < enemy.MaxHp) Heal(enemy, Math.Max(1, enemy.MaxHp * BattleConfig.RegeneratePercent / 100), enemy);
             if (enemy.Alive) TickTurnBuffs(enemy, false);
             CheckEnd();
         }

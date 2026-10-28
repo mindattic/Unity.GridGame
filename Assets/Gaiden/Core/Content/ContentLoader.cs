@@ -44,6 +44,9 @@ namespace GridGame.Core.Content
             AddAll(db.Traps, ReadList<TrapDef>(readText, "traps"), c => c.Id);
             AddAll(db.Bounties, ReadList<BountyDef>(readText, "bounties"), c => c.Id);
             AddAll(db.Enchants, ReadList<EnchantDef>(readText, "enchants"), c => c.Id);
+            var armorEnchants = ReadList<ArmorEnchantDef>(readText, "armorenchants");
+            AddAll(db.ArmorEnchants, armorEnchants, x => x.Id);
+            db.ArmorEnchantOrder.AddRange(armorEnchants);
             db.Campaign = ReadOne<CampaignDef>(readText, "campaign") ?? new CampaignDef();
             db.Summon = ReadOne<SummonDef>(readText, "summon") ?? new SummonDef();
             AddAll(db.Caravan, ReadList<CaravanUpgradeDef>(readText, "caravan"), x => x.Id);
@@ -175,6 +178,18 @@ namespace GridGame.Core.Content
             foreach (var b in db.Bounties.Values) { NeedClass(b.TargetClass, $"bounty {b.Id}"); NeedItem(b.RewardItem, $"bounty {b.Id}"); }
             foreach (var c in db.Summon.Pool) NeedClass(c, "summon pool");
             foreach (var e in db.Enchants.Values) NeedItem(e.Essence, $"enchant {e.Id}");
+            // GG-T179: an armor enchant grants a real Passive ability and costs real materials.
+            foreach (var e in db.ArmorEnchantOrder)
+            {
+                string w = $"armor enchant {e.Id}";
+                if (string.IsNullOrWhiteSpace(e.Name)) p.Add($"{w}: needs a Name");
+                if (!db.Abilities.TryGetValue(e.Passive ?? "", out var passive)) p.Add($"{w}: unknown passive '{e.Passive}'");
+                else if (passive.Kind != AbilityKind.Passive) p.Add($"{w}: '{e.Passive}' isn't a Passive ability");
+                if (e.Inputs.Count == 0) p.Add($"{w}: needs inputs");
+                foreach (var ic in e.Inputs) { NeedItem(ic.Item, w); if (ic.Count <= 0) p.Add($"{w}: input counts must be positive"); }
+                if (e.Gold < 0) p.Add($"{w}: gold can't be negative");
+                if (e.Tier < 1 || e.Tier > 3) p.Add($"{w}: tier must be 1-3");
+            }
 
             // Skill trees (§25.6.1, GG-T50): every node's grant and prerequisites must resolve, and every
             // hero class must name a home tree that exists.
@@ -294,6 +309,9 @@ namespace GridGame.Core.Content
                     if (!new List<RecipeDef>(db.Recipes.Values).Exists(r => r.Station == CraftStation.Alchemy && r.Tier <= 1 && r.Inputs.Exists(i => i.Item == EmptyBottle)))
                         p.Add($"{w}: CanBrew needs an Apprentice-tier Alchemy recipe that takes an {EmptyBottle}");
                     if (trigger.Id != null && !db.Campaign.Themes.Exists(t => string.Equals(t.Id, trigger.Id, StringComparison.OrdinalIgnoreCase))) p.Add($"{w}: unknown CanBrew fallback theme '{trigger.Id}'");
+                    break;
+                case DialogueTriggerKind.FirstArmor:
+                    if (trigger.Id != null && !db.Campaign.Themes.Exists(t => string.Equals(t.Id, trigger.Id, StringComparison.OrdinalIgnoreCase))) p.Add($"{w}: unknown FirstArmor fallback theme '{trigger.Id}'");
                     break;
                 case DialogueTriggerKind.Talk:
                     if (trigger.Id == "party") break;

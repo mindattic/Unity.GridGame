@@ -105,6 +105,23 @@ namespace GridGame.Tests
             Assert.That(met[CampNpcs.Enchantress], Is.EqualTo("swamp-01"));
         }
 
+        /// <summary>GG-T179 (§25.0.8): the Enchantress joins once the first armor piece is forged — wherever the party is —
+        /// and hands over an Arcane Dust toward the first enchant; a party that never forges armor meets her at the Fens.</summary>
+        [Test]
+        public void The_enchantress_joins_after_the_first_armor_piece()
+        {
+            var c = Real;
+            var s = Progression.NewGame(c, "T");
+            DialogueRunner.PlayPendingBeatsHeadless(c, s, "greenvalley-02");
+            Assert.That(CampNpcs.Joined(s, CampNpcs.Enchantress), Is.False, "no armor yet");
+            s.Flags.Add(Forging.FirstArmorFlag);
+            int dust = s.Count("mat_arcane_dust");
+            DialogueRunner.PlayPendingBeatsHeadless(c, s, "greenvalley-02");
+            Assert.That(CampNpcs.Joined(s, CampNpcs.Enchantress), Is.True, "joins after the first armor, still in Green Valley");
+            Assert.That(s.Count("mat_arcane_dust"), Is.EqualTo(dust + 1), "she brings an Arcane Dust");
+            Assert.That(CampUnlocks.JoinHint(c, CampNpcs.Enchantress), Is.EqualTo("Joins once you've forged your first armor"));
+        }
+
         /// <summary>Gives the lead a weapon worn to <paramref name="fraction"/> of its max, as battles would.</summary>
         internal static Repair.WornPiece WearLeadWeapon(ContentDb c, SaveData s, float fraction)
         {

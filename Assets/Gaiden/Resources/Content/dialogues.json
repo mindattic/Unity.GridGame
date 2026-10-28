@@ -303,24 +303,24 @@
   },
   {
     "Id": "swamp_enchantress",
-    "Title": "Lights in the fen",
-    "Trigger": { "Kind": "ThemeStart", "Id": "swamp" },
+    "Title": "Lights on the road",
+    "Trigger": { "Kind": "FirstArmor", "Id": "swamp" },
     "Speakers": [
       { "Id": "enchantress", "Name": "Enchantress", "Portrait": "whitewitch" },
       { "Id": "lead", "Class": "$lead" }
     ],
     "Nodes": [
-      { "Id": "hail", "Speaker": "enchantress", "Text": "You followed my lights a long way through that muck. Most crews turn back at the first will-o'-wisp.", "Next": "reply" },
-      { "Id": "reply", "Speaker": "lead", "Text": "Most crews haven't seen what we've seen. Who are you?", "Next": "ask" },
+      { "Id": "hail", "Speaker": "enchantress", "Text": "You followed my lights a long way to show me fresh armor. Honest work -- but it's only leather and stitching. It could be more.", "Next": "reply" },
+      { "Id": "reply", "Speaker": "lead", "Text": "More how? Who are you?", "Next": "ask" },
       {
-        "Id": "ask", "Speaker": "enchantress", "Text": "One who binds workings into steel instead of trusting them to the air -- which, out here, the air doesn't deserve. Your caravan could use that.",
+        "Id": "ask", "Speaker": "enchantress", "Text": "One who binds workings into what you wear instead of trusting them to the air. A rune in a jerkin can knit wounds, keep out venom, or bite back at whatever strikes it. Your caravan could use that.",
         "Choices": [
           { "Label": "Then come with us.", "Next": "joined", "Effects": [ { "Type": "JoinNpc", "Id": "enchantress" } ] },
           { "Label": "Show us a rune.", "Next": "rune" }
         ]
       },
-      { "Id": "rune", "Speaker": "enchantress", "Text": "Fair enough -- there. Bound tight enough to survive this fen; most spells aren't, anymore.", "Effects": [ { "Type": "JoinNpc", "Id": "enchantress" } ], "Next": "joined" },
-      { "Id": "joined", "Speaker": "enchantress", "Text": "Good. My table's at camp when your gear needs runework the mire won't unravel." }
+      { "Id": "rune", "Speaker": "enchantress", "Text": "Fair enough -- there. Bound tight enough to last a march; most spells aren't, anymore.", "Effects": [ { "Type": "JoinNpc", "Id": "enchantress" } ], "Next": "joined" },
+      { "Id": "joined", "Speaker": "enchantress", "Text": "Good. Take this pinch of Arcane Dust -- bring it to my table with a few trophies from the road, and I'll bind your first rune into that armor for nothing.", "Effects": [ { "Type": "GrantItem", "Id": "mat_arcane_dust", "Amount": 1 } ] }
     ]
   },
   {

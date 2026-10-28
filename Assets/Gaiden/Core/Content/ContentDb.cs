@@ -17,6 +17,10 @@ namespace GridGame.Core.Content
         public readonly Dictionary<string, PickupDef> Pickups = new Dictionary<string, PickupDef>(StringComparer.OrdinalIgnoreCase);
         public readonly Dictionary<string, BountyDef> Bounties = new Dictionary<string, BountyDef>(StringComparer.OrdinalIgnoreCase);
         public readonly Dictionary<string, EnchantDef> Enchants = new Dictionary<string, EnchantDef>(StringComparer.OrdinalIgnoreCase);
+        /// <summary>armorenchants.json (GG-T179): passive-granting armor enchants, in file order, and by id.</summary>
+        public readonly List<ArmorEnchantDef> ArmorEnchantOrder = new List<ArmorEnchantDef>();
+        public readonly Dictionary<string, ArmorEnchantDef> ArmorEnchants = new Dictionary<string, ArmorEnchantDef>(StringComparer.OrdinalIgnoreCase);
+        public ArmorEnchantDef TryArmorEnchant(string id) => id != null && ArmorEnchants.TryGetValue(id, out var e) ? e : null;
         public readonly List<StageDef> StageOrder = new List<StageDef>();
         public CampaignDef Campaign = new CampaignDef();
         public SummonDef Summon = new SummonDef();

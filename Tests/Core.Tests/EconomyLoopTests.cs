@@ -150,6 +150,69 @@ namespace GridGame.Tests
             Assert.That(s.Count("eq_wayfarer_legs"), Is.EqualTo(1), "later forges go to the bag");
         }
 
+        /// <summary>GG-T179 (§25.0.8): armor enchants grant real Passive abilities; the Apprentice ones take Arcane Dust and
+        /// first-theme drops only, so the guided first enchant is reachable from Green Valley.</summary>
+        [Test]
+        public void Armor_enchants_grant_passives_and_the_first_ones_take_first_theme_drops()
+        {
+            var all = ArmorEnchanting.All(C);
+            Assert.That(all.Count, Is.GreaterThanOrEqualTo(6));
+            Assert.That(all.Select(e => e.Passive).Distinct().Count(), Is.EqualTo(all.Count), "each enchant grants its own passive");
+            foreach (var e in all) Assert.That(C.Ability(e.Passive).Kind, Is.EqualTo(AbilityKind.Passive), e.Id);
+            var first = C.Campaign.Themes[0];
+            var early = new HashSet<string>(first.Stages.Select(id => C.Stages[id]).SelectMany(st => st.Waves).SelectMany(w => w.Enemies)
+                .Select(e => C.TryClass(e.Class)?.DropTable).Where(t => t != null && C.DropTables.ContainsKey(t))
+                .SelectMany(t => C.DropTables[t].Entries.Select(e => e.Item)));
+            var apprentice = all.Where(e => e.Tier <= 1).ToList();
+            Assert.That(apprentice.Count, Is.GreaterThanOrEqualTo(3));
+            foreach (var e in apprentice)
+            {
+                Assert.That(e.Inputs.Select(i => i.Item), Does.Contain("mat_arcane_dust"), e.Id);
+                foreach (var i in e.Inputs) Assert.That(early, Does.Contain(i.Item), $"{e.Id}: {i.Item} drops in {first.Name}");
+            }
+        }
+
+        /// <summary>GG-T179: the first armor enchant is free and binds its passive into the worn piece; the piece keeps it
+        /// through unequip and re-equip and carries it into battle; the next enchant costs its gold and replaces it.</summary>
+        [Test]
+        public void An_armor_enchant_binds_into_the_worn_piece_and_stays_with_it()
+        {
+            var s = Progression.NewGame(C, "T");
+            CampNpcs.JoinAll(s);
+            s.Flags.Add(Forging.FirstForgeFlag);
+            s.Gold = 300;
+            s.AddItem("mat_leather", 2); s.AddItem("mat_wolf_pelt", 1);
+            Forging.Forge(C, s, C.Recipes["recipe_wayfarer_legs"]);
+            var barb = s.Hero("barbarian");
+            Assert.That(ArmorEnchanting.First(C, s), Is.Not.Null, "the first enchant is ahead once armor is worn");
+            var regen = C.TryArmorEnchant("ae_regeneration");
+            Assert.That(ArmorEnchanting.Enchant(C, s, barb, EquipmentSlot.Legs, regen).Ok, Is.False, "materials missing");
+            s.AddItem("mat_arcane_dust", 2); s.AddItem("mat_frog_gland", 2); s.AddItem("mat_slime_gel", 2);
+            int gold = s.Gold;
+            var r = ArmorEnchanting.Enchant(C, s, barb, EquipmentSlot.Legs, regen);
+            Assert.That(r.Ok, Is.True, r.Message);
+            Assert.That(r.Message, Does.Contain("Regenerate"));
+            Assert.That(s.Gold, Is.EqualTo(gold), "the first rune is free");
+            Assert.That(barb.Armor[EquipmentSlot.Legs].Enchant, Is.EqualTo("ae_regeneration"));
+            Assert.That(s.Count("mat_frog_gland"), Is.EqualTo(0));
+            Assert.That(s.Flags, Does.Contain(ArmorEnchanting.FirstEnchantFlag));
+            Assert.That(ArmorEnchanting.First(C, s), Is.Null, "the first enchant is done");
+            Assert.That(BattleFactory.SpecFor(C, barb).Armor[EquipmentSlot.Legs].Enchant, Is.EqualTo("ae_regeneration"), "carried into battle");
+
+            Equipment.Unequip(C, s, barb, EquipmentSlot.Legs);
+            Assert.That(barb.Armor.ContainsKey(EquipmentSlot.Legs), Is.False);
+            Assert.That(Equipment.Equip(C, s, barb, EquipmentSlot.Legs, "eq_wayfarer_legs").Ok, Is.True);
+            Assert.That(barb.Armor[EquipmentSlot.Legs].Enchant, Is.EqualTo("ae_regeneration"), "kept through unequip and re-equip");
+
+            var ward = C.TryArmorEnchant("ae_poison_ward");
+            gold = s.Gold;
+            r = ArmorEnchanting.Enchant(C, s, barb, EquipmentSlot.Legs, ward);
+            Assert.That(r.Ok, Is.True, r.Message);
+            Assert.That(r.Message, Does.Contain("replacing Regeneration"));
+            Assert.That(s.Gold, Is.EqualTo(gold - ward.Gold), "later enchants cost their gold");
+            Assert.That(barb.Armor[EquipmentSlot.Legs].Enchant, Is.EqualTo("ae_poison_ward"));
+        }
+
         /// <summary>GG-T178: an Apprentice set piece every starting hero can wear takes only first-theme drops, so the
         /// guided first armor is reachable from Green Valley; bots and New Game+ skip the gate.</summary>
         [Test]

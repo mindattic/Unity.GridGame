@@ -117,6 +117,14 @@ namespace GridGame.Core.Battle
         public const int InterruptCharge = 25;
         public const int AmplifierCharge = 30;
 
+        // ── Armor enchant passives (GG-T179): granted by an intact enchanted armor piece ──────────────────────────
+        /// <summary>Regenerate: percent of MaxHP knit back (an enemy at the end of its turn, a hero each time control returns).</summary>
+        public const int RegeneratePercent = 6;
+        /// <summary>Thorns: share of a landed enemy hit reflected back at the attacker (min 1).</summary>
+        public const float ThornsFraction = 0.25f;
+        /// <summary>Mana Siphon: charge each landed hit by the wearer adds to the meter.</summary>
+        public const int ManaSiphonCharge = 5;
+
         /// <summary>Global weight on enemy physical strikes (difficulty knob; tuned with BalanceReport after the brains, §14.6).</summary>
         public const float EnemyStrikeMultiplier = 0.9f;
 

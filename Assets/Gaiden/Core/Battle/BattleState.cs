@@ -40,6 +40,8 @@ namespace GridGame.Core.Battle
         public string ItemId;
         public int Durability;
         public float Mastery = 1f;
+        /// <summary>Armor enchant id (GG-T179): the piece grants that enchant's passive while intact; null = none.</summary>
+        public string Enchant;
     }
 
     public sealed class BattleSetup

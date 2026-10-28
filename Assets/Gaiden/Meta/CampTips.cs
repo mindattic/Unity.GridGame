@@ -42,8 +42,8 @@ namespace GridGame.Meta
                 Text = "Brew potions from what enemies drop — far cheaper than buying them. Pick a recipe, then Brew.",
                 Target = "recipe-" },
             new CampTip { Station = "enchantress", Title = "The Enchantress",
-                Text = "Bind an essence into a piece of gear to give it a lasting effect. Pick a recipe, then Enchant.",
-                Target = "recipe-" },
+                Text = "Bind a rune into a piece of worn armor to give its wearer a lasting passive. Pick a piece and an enchant, then Enchant.",
+                Target = ArmorEnchanting.PieceRowPrefix },
             new CampTip { Station = "abilities", Title = "Training",
                 Text = "Learn new skills and spells here, then set them on a hero's bar so they can use them in battle.",
                 Target = null },
@@ -72,6 +72,7 @@ namespace GridGame.Meta
             if (tip.Station == "alchemist") return ResolveAlchemist(c, s, tip);
             if (tip.Station == Forging.TipStation) return ResolveForge(c, s, tip);
             if (tip.Station == Forging.ArmorTipStation) return ResolveArmor(c, s, tip);
+            if (tip.Station == "enchantress") return ResolveEnchantress(c, s, tip);
             if (tip.Station != "blacksmith") return tip;
             var worn = Repair.MostWorn(c, s);
             if (worn == null || worn.Durability >= worn.Max) return tip;
@@ -160,6 +161,34 @@ namespace GridGame.Meta
             {
                 Station = tip.Station, Title = tip.Title, Target = RecipeRowPrefix + plan.Recipe.Id,
                 Text = $"Armor recipes are open. {piece} would suit the {hero}. Bring back {string.Join(" and ", short1)}, then Craft it here.",
+            };
+        }
+
+        /// <summary>The Enchantress's tip (GG-T179, §25.0.8) walks the first armor enchant: the piece and enchant
+        /// <see cref="ArmorEnchanting.First"/> picks (her Armor tab preselects both), the passive it grants and what goes
+        /// in, ringing Enchant; with materials still to find it rings the enchant row and says what to bring back.</summary>
+        private static CampTip ResolveEnchantress(ContentDb c, SaveData s, CampTip tip)
+        {
+            var plan = ArmorEnchanting.First(c, s);
+            if (plan == null) return tip;
+            string hero = c.TryClass(plan.Target.Hero.ClassId)?.Name ?? plan.Target.Hero.ClassId;
+            string passive = c.TryAbility(plan.Enchant.Passive)?.Name ?? plan.Enchant.Name;
+            string Name(ItemCount i) => c.TryItem(i.Item)?.Name ?? i.Item;
+            if (plan.Ready)
+            {
+                string loot = string.Join(" and ", plan.Enchant.Inputs.Select(i => (i.Count > 1 ? i.Count + " " : "") + Name(i)));
+                return new CampTip
+                {
+                    Station = tip.Station, Title = tip.Title, Target = CraftButton,
+                    Text = $"Your {loot} bind {plan.Enchant.Name} into the {hero}'s {plan.Target.Item.Name}: {passive} while it's worn, and the first rune is free. Tap Enchant.",
+                };
+            }
+            string missing = string.Join(" and ", plan.Enchant.Inputs.Where(i => s.Count(i.Item) < i.Count)
+                .Select(i => (i.Count - s.Count(i.Item)) + " more " + Name(i)));
+            return new CampTip
+            {
+                Station = tip.Station, Title = tip.Title, Target = ArmorEnchanting.EnchantRowPrefix + plan.Enchant.Id,
+                Text = $"{plan.Enchant.Name} would give the {hero}'s {plan.Target.Item.Name} {passive}, and the first rune is free. Bring back {missing}, then Enchant it here.",
             };
         }
 

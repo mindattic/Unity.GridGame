@@ -1,0 +1,70 @@
+[
+  {
+    "Id": "ae_regeneration",
+    "Name": "Regeneration",
+    "Passive": "regenerate",
+    "Inputs": [
+      { "Item": "mat_arcane_dust", "Count": 1 },
+      { "Item": "mat_frog_gland", "Count": 2 }
+    ],
+    "Gold": 40,
+    "Tier": 1
+  },
+  {
+    "Id": "ae_poison_ward",
+    "Name": "Poison Ward",
+    "Passive": "poison_ward",
+    "Inputs": [
+      { "Item": "mat_arcane_dust", "Count": 1 },
+      { "Item": "mat_slime_gel", "Count": 2 }
+    ],
+    "Gold": 40,
+    "Tier": 1
+  },
+  {
+    "Id": "ae_thorns",
+    "Name": "Thorns",
+    "Passive": "thorns",
+    "Inputs": [
+      { "Item": "mat_arcane_dust", "Count": 1 },
+      { "Item": "mat_cracked_fang", "Count": 2 }
+    ],
+    "Gold": 40,
+    "Tier": 1
+  },
+  {
+    "Id": "ae_steadfast",
+    "Name": "Steadfast",
+    "Passive": "steadfast",
+    "Inputs": [
+      { "Item": "mat_arcane_dust", "Count": 1 },
+      { "Item": "mat_wolf_pelt", "Count": 2 }
+    ],
+    "Gold": 40,
+    "Tier": 1
+  },
+  {
+    "Id": "ae_riposte",
+    "Name": "Riposte",
+    "Passive": "counter_attack",
+    "Inputs": [
+      { "Item": "mat_arcane_dust", "Count": 2 },
+      { "Item": "mat_essence_shadow", "Count": 1 },
+      { "Item": "mat_broken_blade", "Count": 2 }
+    ],
+    "Gold": 150,
+    "Tier": 3
+  },
+  {
+    "Id": "ae_mana_siphon",
+    "Name": "Mana Siphon",
+    "Passive": "mana_siphon",
+    "Inputs": [
+      { "Item": "mat_arcane_dust", "Count": 2 },
+      { "Item": "mat_essence_spark", "Count": 1 },
+      { "Item": "mat_goblin_ear", "Count": 2 }
+    ],
+    "Gold": 150,
+    "Tier": 3
+  }
+]

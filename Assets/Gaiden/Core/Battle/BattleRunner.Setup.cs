@@ -128,6 +128,7 @@ namespace GridGame.Core.Battle
                     ItemId = armor.Id,
                     Durability = piece.Durability > 0 ? piece.Durability : armor.Durability,
                     Mastery = piece.Mastery,
+                    Enchant = piece.Enchant,
                 };
             }
             ResolveSetBonuses(u);

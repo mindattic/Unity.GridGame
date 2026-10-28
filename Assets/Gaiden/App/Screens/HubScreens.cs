@@ -296,7 +296,7 @@ namespace GridGame.App
             Stat("LCK", baseStats.Luck, eff.Luck);
 
             var gear = Ui.El("col", w); gear.style.marginTop = 16;
-            void G(string label, string id, int dur = -1, int repairs = 0, float mastery = 1f)
+            void G(string label, string id, int dur = -1, int repairs = 0, float mastery = 1f, string enchant = null)
             {
                 var it = C.TryItem(id);
                 var r = Ui.El("row", gear);
@@ -304,12 +304,15 @@ namespace GridGame.App
                 string name = it == null ? "—" : (mastery > 1f ? "★ " : "") + it.Name +
                     (dur >= 0 && it.Durability > 0 ? $"  ({dur}/{Repair.EffectiveMax(it, repairs, mastery)})" : "");
                 Ui.Text(name, "small " + (it != null ? Ui.RarityClass(it.Rarity) : "dim"), r);
+                // GG-T179: an enchanted armor piece names the passive it grants.
+                var passive = it != null ? ArmorEnchanting.PassiveOf(C, enchant) : null;
+                if (passive != null) Ui.Text($"  ✦ {passive.Name}", "small gold", r);
             }
             G("Weapon", h.WeaponId, h.WeaponDurability, h.WeaponRepairs, h.WeaponMastery);
             foreach (var slot in BattleEngine.ArmorSlots)
             {
                 h.Armor.TryGetValue(slot, out var piece);
-                G(slot.ToString(), piece?.ItemId, piece?.Durability ?? -1, piece?.Repairs ?? 0, piece?.Mastery ?? 1f);
+                G(slot.ToString(), piece?.ItemId, piece?.Durability ?? -1, piece?.Repairs ?? 0, piece?.Mastery ?? 1f, piece?.Enchant);
             }
             foreach (var slot in Equipment.JewelrySlots)
                 G(ItemUi.SlotName(slot), h.Jewelry.TryGetValue(slot, out var jid) ? jid : null);
@@ -389,7 +392,8 @@ namespace GridGame.App
                     var s2 = sl;
                     var it = C.TryItem(Equipment.Equipped(h, sl));
                     bool mastery = MasteryFor(sl);
-                    var row = Ui.MenuRow(ItemUi.SlotName(sl), it == null ? "—" : (mastery ? "★ " : "") + it.Name, () => { slot = s2; previewId = null; Refresh(); }, w);
+                    bool enchanted = h.Armor.TryGetValue(sl, out var worn) && ArmorEnchanting.PassiveOf(C, worn.Enchant) != null; // GG-T179
+                    var row = Ui.MenuRow(ItemUi.SlotName(sl), it == null ? "—" : (mastery ? "★ " : "") + it.Name + (enchanted ? " ✦" : ""), () => { slot = s2; previewId = null; Refresh(); }, w);
                     if (it != null) row.Q<Label>("value").AddToClassList(Ui.RarityClass(it.Rarity));
                     if (sl == slot) Ui.Select(row);
                 }
@@ -419,6 +423,9 @@ namespace GridGame.App
                 if (!string.IsNullOrEmpty(thenItem?.PassiveName) && thenId != curId)
                     Ui.Text($"Then: {thenItem.PassiveName} — {thenItem.PassiveDescription}", "small gold", prow).style.whiteSpace = WhiteSpace.Normal;
             }
+            // GG-T179: the worn piece's armor enchant goes with it if it's swapped out.
+            if (h.Armor.TryGetValue(slot, out var cur) && ArmorEnchanting.PassiveOf(C, cur.Enchant) is AbilityDef ench)
+                Ui.Text($"✦ Enchanted: {ench.Name} — {ench.Description}", "small gold", cmp).style.whiteSpace = WhiteSpace.Normal;
             // GG-T182: set progress for the set(s) this slot's current and previewed pieces belong to — "2/5 → 3/5"
             // when the preview would change it, with each bonus tier lit once it's reached.
             if (Array.IndexOf(BattleEngine.ArmorSlots, slot) >= 0)
@@ -997,13 +1004,92 @@ namespace GridGame.App
     public sealed class EnchantressScreen : HubPage
     {
         private RecipeDef selected;
+        /// <summary>0 = Armor (GG-T179: bind a passive into a worn piece), 1 = Weapons (the elemental weapon enchants).</summary>
+        private int tab;
+        private ArmorEnchanting.Target piece;
+        private ArmorEnchantDef enchant;
         public override string Id => "enchantress";
         protected override string Title => "Enchantress";
         protected override string Backdrop => "swamp";
         protected override string Subtitle => "Unlocks with the Alchemist: " + StationProgress.HeaderText(S, StationKind.Alchemist);
         protected override string Npc => CampNpcs.Enchantress;
 
-        protected override void BuildBody(VisualElement body) => AlchemistScreen.StationBody(body, CraftStation.Enchant, true, ref selected, this);
+        protected override void BuildBody(VisualElement body)
+        {
+            Ui.Tabs(new[] { "Armor", "Weapons" }, tab, i => { tab = i; Refresh(); }, body);
+            if (tab == 1) { AlchemistScreen.StationBody(body, CraftStation.Enchant, true, ref selected, this); return; }
+            ArmorBody(body);
+        }
+
+        /// <summary>Armor enchants (GG-T179, §25.0.8): pick a worn piece, then an enchant; Enchant binds its passive into
+        /// the piece. Until the first enchant is done, both start on what her camp tip walks (<see cref="ArmorEnchanting.First"/>).</summary>
+        private void ArmorBody(VisualElement body)
+        {
+            var pieces = ArmorEnchanting.Pieces(C, S);
+            var plan = ArmorEnchanting.First(C, S);
+            if (plan != null && piece == null && enchant == null) { piece = plan.Target; enchant = plan.Enchant; }
+            piece = piece != null ? pieces.FirstOrDefault(p => p.Hero == piece.Hero && p.Slot == piece.Slot) : null;
+            piece ??= pieces.FirstOrDefault();
+
+            var top = Ui.Window("Worn armor", body);
+            top.style.maxHeight = 260;
+            var plist = Ui.List(top).contentContainer;
+            if (pieces.Count == 0)
+                Ui.Text("Nobody wears armor yet. Forge a piece at the Blacksmith, then bring it here.", "small dim", plist).style.whiteSpace = WhiteSpace.Normal;
+            foreach (var t in pieces)
+            {
+                var target = t;
+                string hero = C.TryClass(t.Hero.ClassId)?.Name ?? t.Hero.ClassId;
+                var bound = ArmorEnchanting.PassiveOf(C, t.Piece.Enchant);
+                var row = ItemUi.Row(t.Item, bound != null ? $"{hero} ✦ {bound.Name}" : hero, () => { piece = target; Refresh(); }, plist, true);
+                row.name = t.RowName;
+                if (piece != null && piece.Hero == t.Hero && piece.Slot == t.Slot) Ui.Select(row);
+            }
+
+            var w = Ui.Window("Enchants", body);
+            w.style.flexGrow = 1;
+            var elist = Ui.List(w).contentContainer;
+            foreach (var e in ArmorEnchanting.All(C))
+            {
+                var ench = e;
+                bool locked = !ArmorEnchanting.IsUnlocked(S, e);
+                bool can = !locked && ArmorEnchanting.HasInputs(S, e) && ArmorEnchanting.CanAfford(S, e);
+                var passive = C.TryAbility(e.Passive);
+                var row = Ui.MenuRow(e.Name, locked ? $"🔒 {StationProgress.TierName(e.Tier)}" : Ui.Gold(ArmorEnchanting.Gold(S, e)),
+                    () => { enchant = ench; Refresh(); }, elist, passive != null ? Art.AbilityIcon(passive) : null);
+                row.name = ArmorEnchanting.EnchantRowPrefix + e.Id;
+                if (!can) row.style.opacity = 0.55f;
+                if (enchant == e) Ui.Select(row);
+            }
+
+            var detail = Ui.Window(null, body);
+            detail.style.minHeight = 200;
+            if (enchant == null) { Ui.Text("Pick an enchant to see what it binds.", "small dim", detail); return; }
+            var p = C.TryAbility(enchant.Passive);
+            Ui.Text($"{enchant.Name} — {p?.Name ?? enchant.Passive}", "h2", detail);
+            Ui.Text(p?.Description ?? "", "small dim", detail).style.whiteSpace = WhiteSpace.Normal;
+            var need = Ui.El("col", detail); need.style.marginTop = 10;
+            foreach (var ic in enchant.Inputs)
+            {
+                int have = S.Count(ic.Item);
+                Ui.Text($"{(have >= ic.Count ? "✔" : "✘")} {C.TryItem(ic.Item)?.Name ?? ic.Item} ×{ic.Count}   (have {have})", "small " + (have >= ic.Count ? "good" : "bad"), need);
+            }
+            int gold = ArmorEnchanting.Gold(S, enchant);
+            Ui.Text($"{(S.Gold >= gold ? "✔" : "✘")} {Ui.Gold(gold)}" + (gold == 0 && enchant.Gold > 0 ? "  (first rune free)" : ""), "small " + (S.Gold >= gold ? "good" : "bad"), need);
+            bool unlocked = ArmorEnchanting.IsUnlocked(S, enchant);
+            if (!unlocked)
+                Ui.Text($"🔒 Requires {StationProgress.TierName(enchant.Tier)} (alchemist is {StationProgress.LevelName(S, StationKind.Alchemist)})", "small bad", need).style.whiteSpace = WhiteSpace.Normal;
+            if (piece != null)
+            {
+                string hero = C.TryClass(piece.Hero.ClassId)?.Name ?? piece.Hero.ClassId;
+                var old = C.TryArmorEnchant(piece.Piece.Enchant);
+                Ui.Text($"Into the {hero}'s {piece.Item.Name}" + (old != null && old != enchant ? $" (replaces {old.Name})" : ""), "small gold", need).style.whiteSpace = WhiteSpace.Normal;
+            }
+            var btn = Ui.Button("Enchant", () => Done(ArmorEnchanting.Enchant(C, S, piece?.Hero, piece?.Slot ?? EquipmentSlot.Head, enchant)), "btn--primary", detail);
+            btn.name = CampTips.CraftButton;
+            btn.style.marginTop = 10;
+            Ui.SetEnabled(btn, piece != null && unlocked && ArmorEnchanting.HasInputs(S, enchant) && ArmorEnchanting.CanAfford(S, enchant) && piece.Piece.Enchant != enchant.Id);
+        }
     }
 
     // ── Caravan upgrades (§25.12) ────────────────────────────────────────────────

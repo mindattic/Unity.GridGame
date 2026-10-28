@@ -610,6 +610,25 @@ namespace GridGame.Core.Content
     }
 
     /// <summary>
+    /// An armor enchant (GG-T179, armorenchants.json): the Enchantress binds a <see cref="AbilityKind.Passive"/>
+    /// ability into one worn armor piece (Head/Torso/Legs/Gloves/Boots). Unlike the weapon-only elemental
+    /// <see cref="EnchantDef"/>s, which turn a weapon into an "(Element)" variant item, an armor enchant lives on the
+    /// piece itself (its save entry's <c>Enchant</c>), so set membership, wear and Masterwork rolls are untouched; the
+    /// wearer has <see cref="Passive"/> in battle while the piece is intact. One enchant per piece (a new one replaces it).
+    /// </summary>
+    public sealed class ArmorEnchantDef
+    {
+        public string Id;
+        public string Name;
+        /// <summary>The passive ability (abilities.json, Kind Passive) the enchanted piece grants its wearer.</summary>
+        public string Passive;
+        public List<ItemCount> Inputs = new List<ItemCount>();
+        public int Gold;
+        /// <summary>Tier ladder rung (§24.6.1): unlocks with the Alchemist's station level, like every Enchantress recipe.</summary>
+        public int Tier = 1;
+    }
+
+    /// <summary>
     /// One node in an archetype skill tree (§25.6.1, GG-T50). Unlocking it costs <see cref="Cost"/> skill
     /// points and grants the ability or passive named by <see cref="Grants"/>. Gated by
     /// <see cref="RequiredPointsInTree"/> (total points already spent anywhere in the tree) and
@@ -649,14 +668,16 @@ namespace GridGame.Core.Content
     /// of its max durability — the moment a repair first matters — or, if <see cref="DialogueTrigger.Id"/> names a theme,
     /// at the latest on launching any stage of that theme or a later one (so a party that never wears gear still meets him).
     /// CanBrew (GG-T176) fires once the bag holds every looted input — everything but the Empty Bottle — of some
-    /// Apprentice-tier bottle recipe (the player's first brew), with the same optional fallback theme in <see cref="DialogueTrigger.Id"/>.</summary>
-    public enum DialogueTriggerKind { ThemeStart, StageCleared, Talk, GearWorn, CanBrew }
+    /// Apprentice-tier bottle recipe (the player's first brew), with the same optional fallback theme in <see cref="DialogueTrigger.Id"/>.
+    /// FirstArmor (GG-T179) fires once the guided first armor piece has been forged (the save flag
+    /// <c>onboard:first-armor</c>), with the same optional fallback theme in <see cref="DialogueTrigger.Id"/>.</summary>
+    public enum DialogueTriggerKind { ThemeStart, StageCleared, Talk, GearWorn, CanBrew, FirstArmor }
 
     public sealed class DialogueTrigger
     {
         public DialogueTriggerKind Kind;
         /// <summary>ThemeStart: the theme id. StageCleared: the stage id. Talk: who it's with — a hero class id,
-        /// "party" (any party member; speaker class "$with" is them) or "npc:&lt;id&gt;" (a joined Camp NPC). GearWorn, CanBrew: optional fallback theme id.</summary>
+        /// "party" (any party member; speaker class "$with" is them) or "npc:&lt;id&gt;" (a joined Camp NPC). GearWorn, CanBrew, FirstArmor: optional fallback theme id.</summary>
         public string Id;
         /// <summary>GearWorn only: the durability percentage (1-99) a piece must fall below.</summary>
         public int Percent;

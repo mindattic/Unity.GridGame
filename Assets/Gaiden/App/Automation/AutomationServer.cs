@@ -523,6 +523,10 @@ namespace GridGame.App.Automation
                         firstArmor = Forging.FirstArmor(c, s) is var fa && fa != null ? new { recipe = fa.Recipe.Id, piece = fa.Weapon.Id, hero = fa.Hero.ClassId, ready = fa.Ready } : null,
                         armor = s.Party.Select(s.Hero).Where(h => h != null).ToDictionary(h => h.ClassId, h => h.Armor.Values.Select(ea => ea.ItemId).ToList()),
                         setRecipes = Crafting.Recipes(c, CraftStation.Forge).Count(r => Forging.IsSetArmor(c, r) && Forging.ArmorOpen(c, s, r)),
+                        // GG-T179: the Enchantress (joins after the first armor) and the guided first armor enchant.
+                        enchantress = CampUnlocks.NpcOpen(s, CampNpcs.Enchantress),
+                        firstEnchant = ArmorEnchanting.First(c, s) is var fe && fe != null ? new { enchant = fe.Enchant.Id, row = fe.Target.RowName, piece = fe.Target.Item.Id, hero = fe.Target.Hero.ClassId, ready = fe.Ready } : null,
+                        enchants = ArmorEnchanting.Pieces(c, s).Where(t => t.Piece.Enchant != null).ToDictionary(t => t.RowName, t => t.Piece.Enchant),
                         bounty = new { active = active?.Id, progress = s.Bounty.Progress, complete = active != null && Bounties.IsComplete(c, s), posted = Bounties.Posted(c, s).Select(b => b.Id).ToList() },
                     };
                 }

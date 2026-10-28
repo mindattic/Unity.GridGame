@@ -776,6 +776,66 @@ def firstarmor(run="firstarmor"):
     return not fails
 
 
+def firstenchant(run="firstenchant"):
+    """GG-T179: onboarding step 6. Forge the starter lantern and the Wayfarer's Trousers (as in firstarmor), then with
+    an Arcane Dust and 2 Frog Glands in the bag the Enchantress opens on her Armor tab with the trousers and
+    Regeneration preselected; her tip names both and the Barbarian and rings Enchant; dismissing it and tapping Enchant
+    binds Regeneration into the trousers for no gold."""
+    fails = []
+    launch(run, extra=("-campTips",), fresh=True)
+    call("newgame", slot=0, gold=100, npcs="merchant,blacksmith,alchemist,enchantress", seen="blacksmith"); time.sleep(1)
+    for item, n in (("mat_slime_gel", 2), ("mat_tattered_cloth", 1), ("mat_leather", 2), ("mat_wolf_pelt", 1)):
+        for _ in range(n):
+            call("devgive", item=item)
+    _goto("blacksmith"); time.sleep(0.8)
+    call("click", name="camp-tip-ok"); time.sleep(0.5)
+    call("click", name="craft"); time.sleep(1.0)
+    call("click", name="camp-tip-ok"); time.sleep(0.5)
+    call("click", name="craft"); time.sleep(0.8)
+    camp = call("camp")
+    if "eq_wayfarer_legs" not in camp.get("armor", {}).get("barbarian", []):
+        fails.append(f"first armor didn't go through: {camp.get('armor')}")
+    for item, n in (("mat_arcane_dust", 1), ("mat_frog_gland", 2)):
+        for _ in range(n):
+            call("devgive", item=item)
+    camp = call("camp")
+    fe = camp.get("firstEnchant")
+    if not fe or fe["enchant"] != "ae_regeneration" or fe["hero"] != "barbarian" or fe["piece"] != "eq_wayfarer_legs" or not fe["ready"]:
+        fails.append(f"first enchant should be ready Regeneration on the Barbarian's trousers: {fe}")
+    _goto("enchantress"); time.sleep(0.8)
+    shot("01-enchant-tip")
+    if not call("names", prefix="camp-tip-card"):
+        fails.append("no Enchantress tip on opening her station")
+    elif not call("names", prefix="camp-tip-ring"):
+        fails.append("Enchantress tip has no ring: Enchant button not found (piece/enchant not preselected?)")
+    texts = " ".join(str(t) for t in call("texts"))
+    if "Regeneration" not in texts or "Barbarian" not in texts or "Tap Enchant" not in texts:
+        fails.append("tip doesn't name Regeneration for the Barbarian")
+    probs = call("layout").get("problems")
+    if probs:
+        fails.append(f"layout {probs}")
+    call("click", name="camp-tip-ok"); time.sleep(0.5)
+    gold = camp["Gold"]
+    call("click", name="craft"); time.sleep(0.8)
+    shot("02-armor-enchanted")
+    after = call("camp")
+    if fe and after.get("enchants", {}).get(fe["row"]) != "ae_regeneration":
+        fails.append(f"the trousers weren't enchanted: {after.get('enchants')}")
+    if after["Gold"] != gold:
+        fails.append(f"the first enchant cost gold ({gold} -> {after['Gold']})")
+    if after.get("firstEnchant"):
+        fails.append("first enchant still pending after enchanting")
+    errs = [l[:300] for l in call("logs") if l.startswith(("Error", "Exception"))]
+    if errs:
+        fails.append(f"log errors {errs[:3]}")
+    try:
+        call("quit", timeout=3)
+    except Exception:
+        pass
+    print("FAILURES:" if fails else "FIRST ENCHANT OK", *fails, sep="\n  ")
+    return not fails
+
+
 def story_recruits(run="recruits", speed=3):
     """GG-T118: a new game starts small and grows at story beats. Picks the starting three through the real
     party select, clears Green Valley I on autoplay, then launches the next battle and checks that the
@@ -1475,6 +1535,8 @@ if __name__ == "__main__":
         sys.exit(0 if firstforge() else 1)
     elif cmd == "firstarmor":
         sys.exit(0 if firstarmor() else 1)
+    elif cmd == "firstenchant":
+        sys.exit(0 if firstenchant() else 1)
     elif cmd == "fullloop":
         sys.exit(0 if fullloop(battles=int(sys.argv[2]) if len(sys.argv) > 2 else 4) else 1)
     elif cmd == "clips":

@@ -119,6 +119,33 @@ namespace GridGame.Tests
             Assert.That(CampTips.Resolve(c, s, tip), Is.SameAs(tip), "after the first armor the tip reads as written");
         }
 
+        /// <summary>GG-T179 (§25.0.8): once the first armor piece is worn, the Enchantress's tip walks binding the first
+        /// armor enchant into it — what's missing first, then ringing Enchant — and reads as written once that's done.</summary>
+        [Test]
+        public void The_enchantress_tip_walks_the_first_armor_enchant()
+        {
+            var c = TestKit.Real;
+            var s = Progression.NewGame(c, "T");
+            CampNpcs.JoinAll(s);
+            var tip = CampTips.For("enchantress");
+            Assert.That(CampTips.Resolve(c, s, tip), Is.SameAs(tip), "no armor worn: the tip reads as written");
+            s.Flags.Add(Forging.FirstForgeFlag);
+            s.Gold = 200;
+            s.AddItem("mat_leather", 2); s.AddItem("mat_wolf_pelt", 1);
+            Assert.That(Forging.Forge(c, s, c.Recipes["recipe_wayfarer_legs"]).Ok, Is.True);
+            s.AddItem("mat_frog_gland", 2);
+            var short1 = CampTips.Resolve(c, s, tip);
+            Assert.That(short1.Target, Is.EqualTo(ArmorEnchanting.EnchantRowPrefix + "ae_regeneration"));
+            Assert.That(short1.Text, Does.Contain("Bring back").And.Contain("Arcane Dust").And.Contain("Wayfarer's Trousers"));
+            s.AddItem("mat_arcane_dust", 1);
+            var ready = CampTips.Resolve(c, s, tip);
+            Assert.That(ready.Target, Is.EqualTo(CampTips.CraftButton));
+            Assert.That(ready.Text, Does.Contain("Regeneration").And.Contain("Barbarian").And.Contain("Tap Enchant"));
+            var plan = ArmorEnchanting.First(c, s);
+            Assert.That(ArmorEnchanting.Enchant(c, s, plan.Target.Hero, plan.Target.Slot, plan.Enchant).Ok, Is.True);
+            Assert.That(CampTips.Resolve(c, s, tip), Is.SameAs(tip), "after the first enchant the tip reads as written");
+        }
+
         [Test]
         public void Every_tip_has_one_station_a_title_and_a_sentence()
         {
