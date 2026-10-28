@@ -213,6 +213,37 @@ namespace GridGame.Tests
             Assert.That(barb.Armor[EquipmentSlot.Legs].Enchant, Is.EqualTo("ae_poison_ward"));
         }
 
+        /// <summary>GG-T180 (§25.0.9): after the first armor enchant, the guided first skill is free, lands in the first empty
+        /// bar slot and completes the onboarding chain; the next skill costs its usual price and isn't slotted for you.</summary>
+        [Test]
+        public void The_first_skill_after_the_first_enchant_is_free_and_goes_on_the_bar()
+        {
+            var s = Progression.NewGame(C, "T");
+            Assert.That(Training.First(C, s), Is.Null, "step 7 waits for the first armor enchant");
+            s.Flags.Add(ArmorEnchanting.FirstEnchantFlag);
+            s.Gold = 0;
+            var plan = Training.First(C, s);
+            Assert.That(plan, Is.Not.Null);
+            Assert.That(plan.Skill.Kind, Is.EqualTo(AbilityKind.Skill));
+            Assert.That(plan.Hero.ClassId, Is.EqualTo(s.Party[0]), "the party lead first");
+            Assert.That(Abilities.Price(s, plan.Skill), Is.EqualTo(0));
+            int slot = Training.SlotFor(s, plan.Hero);
+            var r = Abilities.Learn(C, s, plan.Hero, plan.Skill.Id);
+            Assert.That(r.Ok, Is.True, r.Message);
+            Assert.That(plan.Hero.Known, Does.Contain(plan.Skill.Id));
+            Assert.That(slot, Is.GreaterThanOrEqualTo(0));
+            Assert.That(plan.Hero.Bar[slot], Is.EqualTo(plan.Skill.Id), "slotted on the battle bar");
+            Assert.That(s.Flags, Does.Contain(Training.FirstSkillFlag));
+            Assert.That(Training.Step(s), Is.False, "the onboarding chain is complete");
+
+            var next = Training.SkillFor(C, plan.Hero);
+            if (next != null)
+            {
+                Assert.That(Abilities.Price(s, next), Is.EqualTo(Abilities.Price(next)), "later skills cost their price");
+                Assert.That(Abilities.Learn(C, s, plan.Hero, next.Id).Ok, Is.False, "no gold, no lesson");
+            }
+        }
+
         /// <summary>GG-T178: an Apprentice set piece every starting hero can wear takes only first-theme drops, so the
         /// guided first armor is reachable from Green Valley; bots and New Game+ skip the gate.</summary>
         [Test]

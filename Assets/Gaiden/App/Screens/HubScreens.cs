@@ -473,13 +473,22 @@ namespace GridGame.App
     public sealed class AbilitiesScreen : HeroPage
     {
         private int slot;
-        private int tab;
+        private int tab = -1;
         public AbilitiesScreen(string heroId) : base(heroId) { }
         public override string Id => "abilities";
         protected override string Title => "Abilities";
+        /// <summary>GG-T180: while onboarding step 7 is ahead, the screen introduces the Learn tab with its own tip.</summary>
+        protected override string TipStation => Training.Step(S) ? Training.TipStation : Id;
 
         protected override void BuildBody(VisualElement body)
         {
+            // GG-T180 (§25.0.9): during step 7 the screen opens on Learn, on the hero the guided first skill is for.
+            var plan = Training.First(C, S);
+            if (tab < 0)
+            {
+                tab = plan != null ? Training.LearnTab : 0;
+                if (plan != null) HeroId = plan.Hero.ClassId;
+            }
             HeroSwitcher(body);
             var h = Hero;
             int unlocked = Progression.UnlockedSlots(S);
@@ -544,14 +553,46 @@ namespace GridGame.App
             }
             else
             {
+                if (plan != null && plan.Hero == h) GuidedLesson(plan, list);
                 foreach (var a in Abilities.Learnable(C, h))
                 {
                     var ab = a;
-                    int price = Abilities.Price(a);
-                    var row = Ui.MenuRow(a.Name, Ui.Gold(price), () => Confirm.Show($"Teach {C.Class(h.ClassId).Name} {ab.Name} for {Ui.Gold(price)}?", "Learn", () => Done(Abilities.Learn(C, S, h, ab.Id))), list, Art.AbilityIcon(a), S.Gold >= price);
+                    int price = Abilities.Price(S, a);
+                    var row = Ui.MenuRow(a.Name, price == 0 ? "Free" : Ui.Gold(price), () => Confirm.Show($"Teach {C.Class(h.ClassId).Name} {ab.Name} for {(price == 0 ? "free" : Ui.Gold(price))}?", "Learn", () => LearnDone(Abilities.Learn(C, S, h, ab.Id), h, ab.Id)), list, Art.AbilityIcon(a), S.Gold >= price);
+                    row.name = Training.LearnRowPrefix + a.Id;
                     Describe(a, list);
                 }
             }
+        }
+
+        /// <summary>The guided first skill (GG-T180, §25.0.9) heads the Learn tab: what it does, that it's free and which bar
+        /// slot it lands in, with a Learn button (the camp tip's target) that trains and slots it in one tap.</summary>
+        private void GuidedLesson(Training.Plan plan, VisualElement list)
+        {
+            var card = Ui.Window(null, list);
+            card.name = "guided-lesson";
+            var head = Ui.El("row", card);
+            head.style.alignItems = Align.Center;
+            var icon = Art.AbilityIcon(plan.Skill);
+            if (icon != null) { var ic = Ui.El("menu-icon", head); ic.style.backgroundImage = new StyleBackground(icon); }
+            Ui.Text($"{plan.Skill.Name} — {KindLabel(plan.Skill)}", "h2 grow", head);
+            Ui.Text(plan.Skill.Description ?? "", "small dim", card).style.whiteSpace = WhiteSpace.Normal;
+            string hero = C.TryClass(plan.Hero.ClassId)?.Name ?? plan.Hero.ClassId;
+            Ui.Text($"First lesson free — it goes onto the {hero}'s battle bar" + (plan.Slot >= 0 ? $", slot {plan.Slot + 1}." : "."), "small gold", card).style.whiteSpace = WhiteSpace.Normal;
+            var btn = Ui.Button("Learn", () => LearnDone(Abilities.Learn(C, S, plan.Hero, plan.Skill.Id), plan.Hero, plan.Skill.Id), "btn--primary", card);
+            btn.name = CampTips.CraftButton;
+            btn.style.marginTop = 10;
+        }
+
+        /// <summary>After learning, select the bar slot the skill went into (the guided first one is slotted automatically).</summary>
+        private void LearnDone(Result r, HeroSave h, string abilityId)
+        {
+            if (r.Ok)
+            {
+                int at = h.Bar.IndexOf(abilityId);
+                if (at >= 0) { slot = at; tab = 0; }
+            }
+            Done(r);
         }
 
         private void Describe(AbilityDef a, VisualElement list)

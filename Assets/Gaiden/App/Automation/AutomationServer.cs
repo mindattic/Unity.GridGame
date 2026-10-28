@@ -527,6 +527,10 @@ namespace GridGame.App.Automation
                         enchantress = CampUnlocks.NpcOpen(s, CampNpcs.Enchantress),
                         firstEnchant = ArmorEnchanting.First(c, s) is var fe && fe != null ? new { enchant = fe.Enchant.Id, row = fe.Target.RowName, piece = fe.Target.Item.Id, hero = fe.Target.Hero.ClassId, ready = fe.Ready } : null,
                         enchants = ArmorEnchanting.Pieces(c, s).Where(t => t.Piece.Enchant != null).ToDictionary(t => t.RowName, t => t.Piece.Enchant),
+                        // GG-T180: onboarding step 7, the guided first skill, and each party hero's battle bar.
+                        firstSkill = Training.First(c, s) is var fk && fk != null ? new { skill = fk.Skill.Id, hero = fk.Hero.ClassId, slot = fk.Slot } : null,
+                        onboarded = s.Flags.Contains(Training.FirstSkillFlag),
+                        bars = s.Party.Select(s.Hero).Where(h => h != null).ToDictionary(h => h.ClassId, h => h.Bar.ToList()),
                         bounty = new { active = active?.Id, progress = s.Bounty.Progress, complete = active != null && Bounties.IsComplete(c, s), posted = Bounties.Posted(c, s).Select(b => b.Id).ToList() },
                     };
                 }

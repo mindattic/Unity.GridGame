@@ -146,6 +146,27 @@ namespace GridGame.Tests
             Assert.That(CampTips.Resolve(c, s, tip), Is.SameAs(tip), "after the first enchant the tip reads as written");
         }
 
+        /// <summary>GG-T180 (§25.0.9): once the first armor enchant is bound, the Abilities screen's training tip names the
+        /// guided first skill and its hero and rings Learn; it reads as written once that skill is trained.</summary>
+        [Test]
+        public void The_training_tip_walks_the_first_skill_after_the_first_enchant()
+        {
+            var c = TestKit.Real;
+            var s = Progression.NewGame(c, "T");
+            var tip = CampTips.For(Training.TipStation);
+            Assert.That(Training.Step(s), Is.False, "no enchant yet: training isn't introduced");
+            Assert.That(CampTips.Resolve(c, s, tip), Is.SameAs(tip));
+            s.Flags.Add(ArmorEnchanting.FirstEnchantFlag);
+            var plan = Training.First(c, s);
+            Assert.That(plan, Is.Not.Null);
+            var ready = CampTips.Resolve(c, s, tip);
+            Assert.That(ready.Target, Is.EqualTo(CampTips.CraftButton));
+            string hero = c.Class(plan.Hero.ClassId).Name;
+            Assert.That(ready.Text, Does.Contain(plan.Skill.Name).And.Contain(hero).And.Contain("free").And.Contain("Tap Learn"));
+            Assert.That(Abilities.Learn(c, s, plan.Hero, plan.Skill.Id).Ok, Is.True);
+            Assert.That(CampTips.Resolve(c, s, tip), Is.SameAs(tip), "after the first skill the tip reads as written");
+        }
+
         [Test]
         public void Every_tip_has_one_station_a_title_and_a_sentence()
         {

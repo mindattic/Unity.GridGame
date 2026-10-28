@@ -836,6 +836,65 @@ def firstenchant(run="firstenchant"):
     return not fails
 
 
+def firstskill(run="firstskill"):
+    """GG-T180: onboarding step 7, the end of the chain. Forge the starter lantern and the Wayfarer's Trousers and bind
+    Regeneration into them (as in firstenchant); the Abilities screen then opens on Learn with the guided first skill at
+    the top, its tip names the skill and rings Learn, and tapping Learn trains it for no gold onto the lead's bar."""
+    fails = []
+    launch(run, extra=("-campTips",), fresh=True)
+    call("newgame", slot=0, gold=100, npcs="merchant,blacksmith,alchemist,enchantress", seen="blacksmith,abilities"); time.sleep(1)
+    for item, n in (("mat_slime_gel", 2), ("mat_tattered_cloth", 1), ("mat_leather", 2), ("mat_wolf_pelt", 1),
+                    ("mat_arcane_dust", 1), ("mat_frog_gland", 2)):
+        for _ in range(n):
+            call("devgive", item=item)
+    _goto("blacksmith"); time.sleep(0.8)
+    call("click", name="camp-tip-ok"); time.sleep(0.5)
+    call("click", name="craft"); time.sleep(1.0)
+    call("click", name="camp-tip-ok"); time.sleep(0.5)
+    call("click", name="craft"); time.sleep(0.8)
+    _goto("enchantress"); time.sleep(0.8)
+    call("click", name="camp-tip-ok"); time.sleep(0.5)
+    call("click", name="craft"); time.sleep(0.8)
+    camp = call("camp")
+    fk = camp.get("firstSkill")
+    if not fk:
+        fails.append(f"no guided first skill after the first enchant (enchants {camp.get('enchants')})")
+    _goto("abilities"); time.sleep(0.8)
+    shot("01-learn-tip")
+    if not call("names", prefix="camp-tip-card"):
+        fails.append("no training tip on opening Abilities")
+    elif not call("names", prefix="camp-tip-ring"):
+        fails.append("training tip has no ring: guided Learn button not found")
+    if not call("names", prefix="guided-lesson"):
+        fails.append("Abilities didn't open on Learn with the guided lesson")
+    texts = " ".join(str(t) for t in call("texts"))
+    if "Tap Learn" not in texts:
+        fails.append("tip doesn't ring Learn")
+    probs = call("layout").get("problems")
+    if probs:
+        fails.append(f"layout {probs}")
+    call("click", name="camp-tip-ok"); time.sleep(0.5)
+    gold = camp["Gold"]
+    call("click", name="craft"); time.sleep(0.8)
+    shot("02-skill-slotted")
+    after = call("camp")
+    if fk and fk["skill"] not in after.get("bars", {}).get(fk["hero"], []):
+        fails.append(f"the skill isn't on the {fk['hero']}'s bar: {after.get('bars')}")
+    if after["Gold"] != gold:
+        fails.append(f"the first skill cost gold ({gold} -> {after['Gold']})")
+    if not after.get("onboarded") or after.get("firstSkill"):
+        fails.append("onboarding chain not complete after the first skill")
+    errs = [l[:300] for l in call("logs") if l.startswith(("Error", "Exception"))]
+    if errs:
+        fails.append(f"log errors {errs[:3]}")
+    try:
+        call("quit", timeout=3)
+    except Exception:
+        pass
+    print("FAILURES:" if fails else "FIRST SKILL OK", *fails, sep="\n  ")
+    return not fails
+
+
 def story_recruits(run="recruits", speed=3):
     """GG-T118: a new game starts small and grows at story beats. Picks the starting three through the real
     party select, clears Green Valley I on autoplay, then launches the next battle and checks that the
@@ -1537,6 +1596,8 @@ if __name__ == "__main__":
         sys.exit(0 if firstarmor() else 1)
     elif cmd == "firstenchant":
         sys.exit(0 if firstenchant() else 1)
+    elif cmd == "firstskill":
+        sys.exit(0 if firstskill() else 1)
     elif cmd == "fullloop":
         sys.exit(0 if fullloop(battles=int(sys.argv[2]) if len(sys.argv) > 2 else 4) else 1)
     elif cmd == "clips":

@@ -1926,12 +1926,23 @@ namespace GridGame.Meta
         {
             var a = c.TryAbility(abilityId);
             if (a == null || !Learnable(c, h).Contains(a)) return Result.Fail("Can't learn that");
-            int price = Price(a);
+            int price = Price(s, a);
             if (s.Gold < price) return Result.Fail("Not enough gold");
+            bool guided = Training.Guides(s, a);
             s.Gold -= price;
             h.Known.Add(a.Id);
-            return Result.Success($"Learned {a.Name}");
+            if (!guided) return Result.Success($"Learned {a.Name}");
+            // GG-T180 (§25.0.9): the guided first skill goes straight onto the battle bar and ends the onboarding chain.
+            int slot = Training.SlotFor(s, h);
+            if (slot >= 0) Assign(c, s, h, slot, a.Id);
+            s.Flags.Add(Training.FirstSkillFlag);
+            string hero = c.TryClass(h.ClassId)?.Name ?? h.ClassId;
+            return Result.Success(slot >= 0 ? $"{hero} learned {a.Name}: it's on the battle bar, slot {slot + 1}" : $"{hero} learned {a.Name}");
         }
+
+        /// <summary>What <paramref name="a"/> costs this save at the Learn screen: <see cref="Price(AbilityDef)"/>, except the
+        /// guided first skill (GG-T180), which the trainer teaches for nothing.</summary>
+        public static int Price(SaveData s, AbilityDef a) => a == null ? 0 : Training.Guides(s, a) ? 0 : Price(a);
 
         /// <summary>Reorder the bar (owner direction 2026-10-11: organise your abilities): swap two unlocked slots.</summary>
         public static Result Swap(SaveData s, HeroSave h, int a, int b)
@@ -1967,6 +1978,73 @@ namespace GridGame.Meta
             }
             h.Bar[slot] = entry;
             return Result.Success();
+        }
+    }
+
+    // ─────────────────────────────────────────────────────────────────────────────
+    // Training (GG-T180, §25.0.9): onboarding step 7, the last of the chain. Once the first armor enchant is bound, the
+    // Abilities screen's Learn tab is introduced: a guided prompt trains one new skill (free) and slots it on the bar.
+    // ─────────────────────────────────────────────────────────────────────────────
+
+    public static class Training
+    {
+        /// <summary>Save flag set by the guided first skill; the onboarding chain is complete once it is set.</summary>
+        public const string FirstSkillFlag = "onboard:first-skill";
+        /// <summary>The Abilities screen's camp tip while this step is ahead (its plain "abilities" tip otherwise).</summary>
+        public const string TipStation = "abilities-learn";
+        /// <summary>The Abilities screen's Learn tab index, and its learn-row name prefix.</summary>
+        public const int LearnTab = 2;
+        public const string LearnRowPrefix = "learn-";
+
+        /// <summary>The guided first skill: which hero learns which skill, and whether the bar has room for it.</summary>
+        public sealed class Plan
+        {
+            public HeroSave Hero;
+            public AbilityDef Skill;
+            public int Slot;
+        }
+
+        /// <summary>The first skill is behind this save: trained, or a bot's or New Game+ save.</summary>
+        public static bool FirstDone(SaveData s) => s == null || s.TestMode || s.NewGamePlus > 0 || s.Flags.Contains(FirstSkillFlag);
+
+        /// <summary>Step 7 is the current onboarding step: the first armor enchant is done (§25.0.8) and the first skill isn't.</summary>
+        public static bool Step(SaveData s) => !FirstDone(s) && s.Flags.Contains(ArmorEnchanting.FirstEnchantFlag);
+
+        /// <summary>Is learning <paramref name="a"/> right now the guided first skill (free, auto-slotted)?</summary>
+        public static bool Guides(SaveData s, AbilityDef a) => a != null && a.Kind == AbilityKind.Skill && Step(s);
+
+        /// <summary>The bar slot a newly trained skill goes into: the first empty unlocked slot, else the last unlocked one.</summary>
+        public static int SlotFor(SaveData s, HeroSave h)
+        {
+            int unlocked = Math.Min(Progression.UnlockedSlots(s), Progression.MaxBarSlots);
+            if (h == null || unlocked <= 0) return -1;
+            while (h.Bar.Count < Progression.MaxBarSlots) h.Bar.Add(null);
+            for (int i = 0; i < unlocked; i++) if (h.Bar[i] == null) return i;
+            return unlocked - 1;
+        }
+
+        /// <summary>The skill the Learn screen's guided prompt trains, or null outside step 7: for the party lead first (then
+        /// the rest of the party, then the reserve), the first skill on its own class list it hasn't learned, else the first
+        /// universal skill.</summary>
+        public static Plan First(ContentDb c, SaveData s)
+        {
+            if (c == null || !Step(s)) return null;
+            var heroes = s.Party.Select(s.Hero).Where(h => h != null).Concat(s.Roster.Where(h => !s.Party.Contains(h.ClassId)));
+            foreach (var h in heroes)
+            {
+                var skill = SkillFor(c, h);
+                if (skill != null) return new Plan { Hero = h, Skill = skill, Slot = SlotFor(s, h) };
+            }
+            return null;
+        }
+
+        /// <summary>The skill <paramref name="h"/> would be guided to train, or null when it has none left to learn.</summary>
+        public static AbilityDef SkillFor(ContentDb c, HeroSave h)
+        {
+            var learnable = Abilities.Learnable(c, h).Where(a => a.Kind == AbilityKind.Skill).ToList();
+            var classList = c.TryClass(h.ClassId)?.Abilities ?? new List<string>();
+            return learnable.Where(a => classList.Contains(a.Id)).OrderBy(a => classList.IndexOf(a.Id)).FirstOrDefault()
+                ?? learnable.OrderBy(a => a.Name).FirstOrDefault();
         }
     }
 

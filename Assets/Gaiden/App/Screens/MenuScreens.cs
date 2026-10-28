@@ -500,7 +500,8 @@ namespace GridGame.App
             Item("Items", () => new ItemsScreen());
             Item("Status", () => new StatusScreen(s.Party.FirstOrDefault()));
             Item("Equip", () => new EquipScreen(s.Party.FirstOrDefault()));
-            Item("Abilities", () => new AbilitiesScreen(s.Party.FirstOrDefault()));
+            // GG-T180 (§25.0.9): onboarding step 7 introduces training here once the first armor enchant is bound.
+            Item("Abilities", () => new AbilitiesScreen(s.Party.FirstOrDefault()), Training.Step(s) ? "Train a skill!" : "");
             Item("Party", () => new PartyScreen());
             // Talk (§27.1, GG-T117): chat with party members and joined Camp NPCs.
             int newTalks = DialogueRunner.TalkPartners(s).Count(p => { var t = DialogueRunner.TalkTopic(c, s, p); return t != null && !s.SeenDialogues.Contains(t.Id); });

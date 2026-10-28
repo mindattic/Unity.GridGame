@@ -47,6 +47,9 @@ namespace GridGame.Meta
             new CampTip { Station = "abilities", Title = "Training",
                 Text = "Learn new skills and spells here, then set them on a hero's bar so they can use them in battle.",
                 Target = null },
+            new CampTip { Station = Training.TipStation, Title = "Train a Skill",
+                Text = "Training is open: learn a new skill with gold, then set it on a hero's battle bar. Pick a skill, then Learn.",
+                Target = Training.LearnRowPrefix },
             new CampTip { Station = "bounties", Title = "Bounties",
                 Text = "Take one contract at a time. Defeat the target enemy as you fight, then come back to Claim the reward.",
                 Target = "bounty-" },
@@ -73,6 +76,7 @@ namespace GridGame.Meta
             if (tip.Station == Forging.TipStation) return ResolveForge(c, s, tip);
             if (tip.Station == Forging.ArmorTipStation) return ResolveArmor(c, s, tip);
             if (tip.Station == "enchantress") return ResolveEnchantress(c, s, tip);
+            if (tip.Station == Training.TipStation) return ResolveTraining(c, s, tip);
             if (tip.Station != "blacksmith") return tip;
             var worn = Repair.MostWorn(c, s);
             if (worn == null || worn.Durability >= worn.Max) return tip;
@@ -189,6 +193,22 @@ namespace GridGame.Meta
             {
                 Station = tip.Station, Title = tip.Title, Target = ArmorEnchanting.EnchantRowPrefix + plan.Enchant.Id,
                 Text = $"{plan.Enchant.Name} would give the {hero}'s {plan.Target.Item.Name} {passive}, and the first rune is free. Bring back {missing}, then Enchant it here.",
+            };
+        }
+
+        /// <summary>The Learn screen's tip (GG-T180, §25.0.9), shown once the first armor enchant is bound: it introduces
+        /// training and walks the guided first skill <see cref="Training.First"/> picks (the Abilities screen opens on Learn
+        /// with it at the top) — the hero, the skill, that it's free and lands on the battle bar — ringing its Learn button.</summary>
+        private static CampTip ResolveTraining(ContentDb c, SaveData s, CampTip tip)
+        {
+            var plan = Training.First(c, s);
+            if (plan == null) return tip;
+            string hero = c.TryClass(plan.Hero.ClassId)?.Name ?? plan.Hero.ClassId;
+            string where = plan.Slot >= 0 ? $" and it goes straight onto the battle bar (slot {plan.Slot + 1})" : "";
+            return new CampTip
+            {
+                Station = tip.Station, Title = tip.Title, Target = CraftButton,
+                Text = $"Heroes learn new skills here for gold. The {hero} can train {plan.Skill.Name}: the first lesson is free{where}. Tap Learn.",
             };
         }
 
