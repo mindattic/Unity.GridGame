@@ -445,6 +445,22 @@
    "lorc/crossed-bones",
    "arcane"
   ],
+  "poison_ward": [
+   "lorc/checked-shield",
+   "poison"
+  ],
+  "steadfast": [
+   "lorc/checked-shield",
+   "steel"
+  ],
+  "thorns": [
+   "lorc/spiked-mace",
+   "green"
+  ],
+  "mana_siphon": [
+   "lorc/aura",
+   "water"
+  ],
   "operative_shock": [
    "lorc/focused-lightning",
    "spark"
