@@ -1091,6 +1091,10 @@
    "lorc/round-bottom-flask",
    "gold"
   ],
+  "empty_bottle": [
+   "sbed/vial",
+   "silver"
+  ],
   "smoke_bomb": [
    "darkzaitzev/smoke-bomb",
    "gray"
