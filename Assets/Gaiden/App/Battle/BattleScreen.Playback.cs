@@ -1807,7 +1807,7 @@ namespace GridGame.App
                 heroesStanding = State.Units.Count(u => u.IsHero && u.Alive),
             });
             yield return Tween.Wait(0.6f);
-            if (setupOverride != null || App.Save == null)
+            if (!CommitsToSave || App.Save == null)
             {
                 App.Router.Back();
                 yield break;

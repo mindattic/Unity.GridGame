@@ -324,9 +324,12 @@ namespace GridGame.App
     public static class DemoMode
     {
         public static bool Active => CommandLine.Has("-demo");
+        /// <summary>`-demo -endless` (GG-T57): see <see cref="EndlessDemo"/>.</summary>
+        public static bool Endless => Active && CommandLine.Has("-endless");
 
         public static void Start()
         {
+            if (Endless) { EndlessDemo.Start(); return; }
             GameApp.I.Router.ResetTo(new TitleScreen());
             Restart();
         }
@@ -334,6 +337,7 @@ namespace GridGame.App
         /// <summary>Called from PostBattleScreen once the results are up: does whatever a human would click next.</summary>
         public static void AfterBattle(BattleReport report, string stageId)
         {
+            if (Endless) { EndlessDemo.AfterBattle(report, stageId); return; }
             var app = GameApp.I;
             var c = app.Content;
             if (!report.Victory)
@@ -379,6 +383,90 @@ namespace GridGame.App
             }
             app.Router.Changed += OnShown;
             app.Router.ResetTo(new HubScreen());
+        }
+    }
+
+    /// <summary>
+    /// `-demo -endless` (GG-T57): an endless stream of fresh synthetic encounters with no Title, Hub, Camp or crawl —
+    /// generate an encounter (<see cref="EncounterGenerator"/>, GG-T55) and a level-appropriate geared party for it
+    /// (<see cref="EncounterParty"/>, GG-T56) → autoplayed battle → results (auto-advance) → the next encounter,
+    /// forever. `-seed S` sets the base seed (default: the clock) and encounter i (0-based) uses seed S+i, so a run
+    /// is reproducible encounter by encounter; `-count N` stops cleanly (quits) after N encounters. Every encounter
+    /// runs on its own throwaway in-memory save on slot -1 (Persist never writes it, so no real slot is touched),
+    /// and each synthetic `endless-` stage is pruned from the live ContentDb once it's done (the GG-T23 rule: a
+    /// throwaway stage must never pile up in, or be borrowed back out of, the content).
+    /// </summary>
+    public static class EndlessDemo
+    {
+        /// <summary>Encounters finished (results reached).</summary>
+        public static int Completed { get; private set; }
+        private static int baseSeed;
+        private static int? count;
+
+        public static void Start()
+        {
+            var seedArg = CommandLine.Value("-seed");
+            baseSeed = seedArg != null && int.TryParse(seedArg, out var s) ? s : Environment.TickCount;
+            var countArg = CommandLine.Value("-count");
+            count = countArg != null && int.TryParse(countArg, out var n) && n > 0 ? n : (int?)null;
+            Completed = 0;
+            Debug.Log($"[EndlessDemo] started: base seed {baseSeed}, {(count.HasValue ? count + " encounters" : "endless")}");
+            Next();
+        }
+
+        /// <summary>Called from PostBattleScreen once the results are up.</summary>
+        public static void AfterBattle(BattleReport report, string stageId)
+        {
+            Completed++;
+            Debug.Log($"[EndlessDemo] encounter {Completed} ({stageId}): {(report.Victory ? "victory" : report.Escaped ? "escaped" : report.Retreated ? "retreated" : "defeat")}");
+            if (count.HasValue && Completed >= count.Value) { Stop(); return; }
+            Next();
+        }
+
+        /// <summary>Removes every synthetic endless stage from the live content (GG-T23).</summary>
+        private static void Prune(ContentDb c)
+        {
+            var stale = new List<string>();
+            foreach (var id in c.Stages.Keys) if (id.StartsWith(EncounterGenerator.IdPrefix, StringComparison.Ordinal)) stale.Add(id);
+            foreach (var id in stale) c.Stages.Remove(id);
+        }
+
+        private static void Next()
+        {
+            var app = GameApp.I;
+            var c = app.Content;
+            Prune(c); // the previous encounter's stage — safe now: its results screen reads name/theme from the report
+            int seed = unchecked(baseSeed + Completed);
+            var stage = EncounterGenerator.Generate(c, seed);
+            c.Stages[stage.Id] = stage;
+            int level = stage.LevelOverride ?? 1;
+
+            // A fresh throwaway save per encounter: BattleFactory.Commit has somewhere to land (so the results screen
+            // shows), nothing accumulates across encounters, and slot -1 means Persist never writes it.
+            app.Save = Progression.NewGame(c, "Endless");
+            app.Slot = -1;
+            var setup = new BattleSetup
+            {
+                Stage = stage,
+                Seed = seed,
+                UnlockedSlots = Progression.UnlockedSlots(app.Save),
+                RecommendedLevel = 1, // waves keep their own rising levels (GG-T55); no campaign floor
+                Party = EncounterParty.Generate(c, seed, level),
+            };
+            Debug.Log($"[EndlessDemo] encounter {Completed + 1} seed {seed}: {stage.Id} ({stage.Name}) Lv {level} | party {string.Join(", ", setup.Party.ConvertAll(h => h.ClassId))}");
+            // ResetTo, not Push: the stack never grows however long this runs.
+            app.Router.ResetTo(new BattleScreen(setup));
+        }
+
+        private static void Stop()
+        {
+            Prune(GameApp.I.Content);
+            Debug.Log($"[EndlessDemo] done: {Completed} encounters");
+#if UNITY_EDITOR
+            UnityEditor.EditorApplication.isPlaying = false;
+#else
+            Application.Quit();
+#endif
         }
     }
 

@@ -108,6 +108,11 @@ namespace GridGame.App
         public BattleScreen(string stageId) { this.stageId = stageId; }
         public BattleScreen(BattleSetup setup) { setupOverride = setup; stageId = setup.Stage.Id; }
 
+        /// <summary>The end of this battle is committed to App.Save and routed to the results screen. A battle built
+        /// from an explicit setup normally just pops back instead — except under `-demo -endless` (GG-T57), whose
+        /// setup is a generated party fought on a throwaway slot -1 save, and whose loop runs through the results.</summary>
+        private bool CommitsToSave => setupOverride == null || DemoMode.Endless;
+
         /// <summary>A still-open pause veil lives on the global Overlay (see OpenMenu), which outlives this screen's
         /// own root — remove it explicitly so it doesn't linger on top of whatever screen comes next.</summary>
         public override void OnHidden()
@@ -1226,7 +1231,7 @@ namespace GridGame.App
             if (playing || ended || State.IsOver) return;
             ended = true;
             SaveRecord();
-            if (App.Save != null && setupOverride == null)
+            if (App.Save != null && CommitsToSave)
             {
                 State.Phase = BattlePhase.Retreated;
                 var rep = BattleFactory.Commit(App.Content, App.Save, State);
