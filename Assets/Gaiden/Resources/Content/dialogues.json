@@ -455,5 +455,1305 @@
       { "Id": "merchant", "Speaker": "hero", "Text": "He talks too much and prices everything, but he hasn't steered us wrong yet. I'll take it." },
       { "Id": "rest", "Speaker": "hero", "Text": "You too. Try to actually sleep -- the ground'll still be there in the morning. Probably." }
     ]
+  },
+  {
+    "Id": "talk_quiz_defender",
+    "Title": "Advice",
+    "Trigger": { "Kind": "Talk", "Id": "defender" },
+    "Speakers": [
+      { "Id": "hero", "Class": "$with" }
+    ],
+    "Nodes": [
+      {
+        "Id": "ask", "Speaker": "hero", "Text": "Same fight again today. I held the line. Didn't move a tile. That's a win, isn't it?",
+        "Choices": [
+          { "Label": "Holding still isn't winning. Keep one hit on your bar and use it.", "Next": "right", "Effects": [ { "Type": "GrantSkillPoint", "Id": "$with" } ] },
+          { "Label": "Exactly. A wall that never moves never loses.", "Next": "wrong" },
+          { "Label": "Move less, even. Let them wear themselves out on you.", "Next": "wrong" }
+        ]
+      },
+      { "Id": "right", "Speaker": "hero", "Text": "...Huh. A wall with a door in it. I can hold that thought. Same as everything else." },
+      { "Id": "wrong", "Speaker": "hero", "Text": "Yeah. That's what I keep telling myself. Same thing every fight." }
+    ]
+  },
+  {
+    "Id": "talk_quiz_knight",
+    "Title": "Advice",
+    "Trigger": { "Kind": "Talk", "Id": "knight" },
+    "Speakers": [
+      { "Id": "hero", "Class": "$with" }
+    ],
+    "Nodes": [
+      {
+        "Id": "ask", "Speaker": "hero", "Text": "I swore an oath long before this caravan. Lately I can't remember to whom. Does it still bind me?",
+        "Choices": [
+          { "Label": "Then it's void. Swear a new one to the Longmother.", "Next": "wrong" },
+          { "Label": "An oath kept for no one in particular is still kept. Keeping it is the point.", "Next": "right", "Effects": [ { "Type": "GrantSkillPoint", "Id": "$with" } ] },
+          { "Label": "Forget oaths. Just fight for yourself.", "Next": "wrong" }
+        ]
+      },
+      { "Id": "right", "Speaker": "hero", "Text": "Kept, then, and that is the point. ...I believe that was meant to be the joke. It landed late. As usual." },
+      { "Id": "wrong", "Speaker": "hero", "Text": "Perhaps. It does not sit right, though. I shall keep thinking on it." }
+    ]
+  },
+  {
+    "Id": "talk_quiz_paladin",
+    "Title": "Advice",
+    "Trigger": { "Kind": "Talk", "Id": "paladin" },
+    "Speakers": [
+      { "Id": "hero", "Class": "$with" }
+    ],
+    "Nodes": [
+      {
+        "Id": "ask", "Speaker": "hero", "Text": "The Barbarian out-hit me again. Should I trade my potion slot for another attack? Everyone's hurt anyway.",
+        "Choices": [
+          { "Label": "Yes -- matching the Barbarian's damage is how you earn your place.", "Next": "wrong" },
+          { "Label": "Drop the potion and let the Cleric carry you.", "Next": "wrong" },
+          { "Label": "Keep the potion. You don't need to out-damage anyone; you just need to never run out.", "Next": "right", "Effects": [ { "Type": "GrantSkillPoint", "Id": "$with" } ] }
+        ]
+      },
+      { "Id": "right", "Speaker": "hero", "Text": "Right. The potion stays. Now -- let me see that cut. You first, then me." },
+      { "Id": "wrong", "Speaker": "hero", "Text": "Maybe. Hold still, you're bleeding. We'll argue about my bar later." }
+    ]
+  },
+  {
+    "Id": "talk_quiz_myrmidon",
+    "Title": "Advice",
+    "Trigger": { "Kind": "Talk", "Id": "myrmidon" },
+    "Speakers": [
+      { "Id": "hero", "Class": "$with" }
+    ],
+    "Nodes": [
+      {
+        "Id": "ask", "Speaker": "hero", "Text": "Left. Right. Hold. ...There's no line beside me. I keep counting cadence for a formation that isn't there.",
+        "Choices": [
+          { "Label": "A formation of one is still a formation -- hold it as discipline, not as missing someone.", "Next": "right", "Effects": [ { "Type": "GrantSkillPoint", "Id": "$with" } ] },
+          { "Label": "Wait for the others to catch up before you fight at all.", "Next": "wrong" },
+          { "Label": "Stop counting. Formations are for armies, not caravans.", "Next": "wrong" }
+        ]
+      },
+      { "Id": "right", "Speaker": "hero", "Text": "Formation of one. Hold. ...Steady. That I can do." },
+      { "Id": "wrong", "Speaker": "hero", "Text": "Negative. Without the cadence I'm just a man standing in a field." }
+    ]
+  },
+  {
+    "Id": "talk_quiz_tank",
+    "Title": "Advice",
+    "Trigger": { "Kind": "Talk", "Id": "tank" },
+    "Speakers": [
+      { "Id": "hero", "Class": "$with" }
+    ],
+    "Nodes": [
+      {
+        "Id": "ask", "Speaker": "hero", "Text": "Tank. I'm the Tank. That's all there is to me, right? Nothing to learn when you're the obvious pick.",
+        "Choices": [
+          { "Label": "Right. You're simple, and that's all you need to be.", "Next": "wrong" },
+          { "Label": "Obvious doesn't mean finished. There's plenty left to learn about yourself.", "Next": "right", "Effects": [ { "Type": "GrantSkillPoint", "Id": "$with" } ] },
+          { "Label": "Pick a fancier class. Nobody remembers the obvious one.", "Next": "wrong" }
+        ]
+      },
+      { "Id": "right", "Speaker": "hero", "Text": "Plenty left to learn. Huh. ...Tank, still learning. I'll put that on the shield." },
+      { "Id": "wrong", "Speaker": "hero", "Text": "Okay. Tank. Glad that's settled." }
+    ]
+  },
+  {
+    "Id": "talk_quiz_shieldmaiden",
+    "Title": "Advice",
+    "Trigger": { "Kind": "Talk", "Id": "shieldmaiden" },
+    "Speakers": [
+      { "Id": "hero", "Class": "$with" }
+    ],
+    "Nodes": [
+      {
+        "Id": "ask", "Speaker": "hero", "Text": "I marked our target for us -- for all of us! So why are we hitting three different things?",
+        "Choices": [
+          { "Label": "Mark it louder. They'll follow eventually.", "Next": "wrong" },
+          { "Label": "Stop marking things. Let everyone pick their own fight.", "Next": "wrong" },
+          { "Label": "Marking the target isn't the same as us following you there. Bring them with you.", "Next": "right", "Effects": [ { "Type": "GrantSkillPoint", "Id": "$with" } ] }
+        ]
+      },
+      { "Id": "right", "Speaker": "hero", "Text": "Bring them with us. Yes. We mark it together, then we go together. That's ours to fix." },
+      { "Id": "wrong", "Speaker": "hero", "Text": "Louder, then! We'll get there. All of us. Eventually." }
+    ]
+  },
+  {
+    "Id": "talk_quiz_warchief",
+    "Title": "Advice",
+    "Trigger": { "Kind": "Talk", "Id": "warchief" },
+    "Speakers": [
+      { "Id": "hero", "Class": "$with" }
+    ],
+    "Nodes": [
+      {
+        "Id": "ask", "Speaker": "hero", "Text": "...Planted my banner at the first fight of the season. Long time back, now. The banner's still there. Still counts, eh?",
+        "Choices": [
+          { "Label": "A banner only means something while someone's standing under it. Keep renewing it.", "Next": "right", "Effects": [ { "Type": "GrantSkillPoint", "Id": "$with" } ] },
+          { "Label": "It counts forever. You earned your rest.", "Next": "wrong" },
+          { "Label": "Banners are old ways. Let the young ones lead.", "Next": "wrong" }
+        ]
+      },
+      { "Id": "right", "Speaker": "hero", "Text": "...Renew it. Hm. That's a thing my old chief said, once. Took me forty years to hear it." },
+      { "Id": "wrong", "Speaker": "hero", "Text": "...Maybe. When I was your age, we didn't ask whether banners counted." }
+    ]
+  },
+  {
+    "Id": "talk_quiz_darktemplar",
+    "Title": "Advice",
+    "Trigger": { "Kind": "Talk", "Id": "darktemplar" },
+    "Speakers": [
+      { "Id": "hero", "Class": "$with" }
+    ],
+    "Nodes": [
+      {
+        "Id": "ask", "Speaker": "hero", "Text": "The caravan doesn't ask how I keep them safe. Only that I do. That should settle it, shouldn't it?",
+        "Choices": [
+          { "Label": "If nobody's judging, there's nothing to worry about.", "Next": "wrong" },
+          { "Label": "Them not judging the method doesn't make it free. Count the cost yourself.", "Next": "right", "Effects": [ { "Type": "GrantSkillPoint", "Id": "$with" } ] },
+          { "Label": "Go back to a Knight's methods. Leave the dark rites alone.", "Next": "wrong" }
+        ]
+      },
+      { "Id": "right", "Speaker": "hero", "Text": "Count it myself. Yes. Someone ought to, and it should be the one paying." },
+      { "Id": "wrong", "Speaker": "hero", "Text": "Then it's settled. It doesn't feel settled. But fine." }
+    ]
+  },
+  {
+    "Id": "talk_quiz_jadeknight",
+    "Title": "Advice",
+    "Trigger": { "Kind": "Talk", "Id": "jadeknight" },
+    "Speakers": [
+      { "Id": "hero", "Class": "$with" }
+    ],
+    "Nodes": [
+      {
+        "Id": "ask", "Speaker": "hero", "Text": "Sorry -- I know draining them works, I just -- it feels wrong every time. Am I doing it badly? Sorry.",
+        "Choices": [
+          { "Label": "If it feels wrong, it probably is. Stop draining.", "Next": "wrong" },
+          { "Label": "Get used to it. Feelings slow you down.", "Next": "wrong" },
+          { "Label": "Being uncomfortable with a tactic isn't the same as doing it wrong.", "Next": "right", "Effects": [ { "Type": "GrantSkillPoint", "Id": "$with" } ] }
+        ]
+      },
+      { "Id": "right", "Speaker": "hero", "Text": "Uncomfortable, not wrong. Oh. That's -- thank you. Sorry. I mean, thank you." },
+      { "Id": "wrong", "Speaker": "hero", "Text": "Ah. Right. Sorry. I'll... try that, I suppose." }
+    ]
+  },
+  {
+    "Id": "talk_quiz_alchemist",
+    "Title": "Advice",
+    "Trigger": { "Kind": "Talk", "Id": "alchemist" },
+    "Speakers": [
+      { "Id": "hero", "Class": "$with" }
+    ],
+    "Nodes": [
+      {
+        "Id": "ask", "Speaker": "hero", "Text": "My output is forty percent below the Red Mage's. Should I convert my reagents into offense to close the gap?",
+        "Choices": [
+          { "Label": "Out-damaging the mages was never your job. Never running out is the brag.", "Next": "right", "Effects": [ { "Type": "GrantSkillPoint", "Id": "$with" } ] },
+          { "Label": "Yes, damage is the only number anyone reads.", "Next": "wrong" },
+          { "Label": "Hoard the reagents for the boss and do nothing until then.", "Next": "wrong" }
+        ]
+      },
+      { "Id": "right", "Speaker": "hero", "Text": "Never running out. Correct. The sum checks. I'll stop measuring myself against the wrong column." },
+      { "Id": "wrong", "Speaker": "hero", "Text": "Hm. My math disagrees, but I'll note your figure." }
+    ]
+  },
+  {
+    "Id": "talk_quiz_cleric",
+    "Title": "Advice",
+    "Trigger": { "Kind": "Talk", "Id": "cleric" },
+    "Speakers": [
+      { "Id": "hero", "Class": "$with" }
+    ],
+    "Nodes": [
+      {
+        "Id": "ask", "Speaker": "hero", "Text": "That beast was one hit from falling. I nearly stepped up to finish it myself. Would that have been wrong?",
+        "Choices": [
+          { "Label": "No -- a kill is a kill. Take it when you can.", "Next": "wrong" },
+          { "Label": "Yes. Chasing a kill on the front line is the one way to lose the sustain war.", "Next": "right", "Effects": [ { "Type": "GrantSkillPoint", "Id": "$with" } ] },
+          { "Label": "Only if your bar has nothing better. Otherwise go for it.", "Next": "wrong" }
+        ]
+      },
+      { "Id": "right", "Speaker": "hero", "Text": "Then I'll stay back, and keep them alive when they shouldn't be. That is the job." },
+      { "Id": "wrong", "Speaker": "hero", "Text": "Perhaps. I'll consider it. Calmly." }
+    ]
+  },
+  {
+    "Id": "talk_quiz_doctor",
+    "Title": "Advice",
+    "Trigger": { "Kind": "Talk", "Id": "doctor" },
+    "Speakers": [
+      { "Id": "hero", "Class": "$with" }
+    ],
+    "Nodes": [
+      {
+        "Id": "ask", "Speaker": "hero", "Text": "I treated the worst wound first. The one I treated last hasn't spoken to me since. Was I wrong?",
+        "Choices": [
+          { "Label": "You should treat friends first. That's loyalty.", "Next": "wrong" },
+          { "Label": "Treat whoever complains loudest. Keeps the peace.", "Next": "wrong" },
+          { "Label": "You triaged right. Done right, triage still looks cold to whoever's last.", "Next": "right", "Effects": [ { "Type": "GrantSkillPoint", "Id": "$with" } ] }
+        ]
+      },
+      { "Id": "right", "Speaker": "hero", "Text": "Right is still cold. Yes. I'll go explain it to them. After I check who's bleeding." },
+      { "Id": "wrong", "Speaker": "hero", "Text": "Noted. Now -- who's bleeding worse? Not you. Next." }
+    ]
+  },
+  {
+    "Id": "talk_quiz_sage",
+    "Title": "Advice",
+    "Trigger": { "Kind": "Talk", "Id": "sage" },
+    "Speakers": [
+      { "Id": "hero", "Class": "$with" }
+    ],
+    "Nodes": [
+      {
+        "Id": "ask", "Speaker": "hero", "Text": "I saw the mirror-curse coming three turns out. As I expected, it landed. Why does nobody thank me?",
+        "Choices": [
+          { "Label": "Being right isn't the same as warning anyone in time to use it.", "Next": "right", "Effects": [ { "Type": "GrantSkillPoint", "Id": "$with" } ] },
+          { "Label": "They're jealous of your foresight. Ignore them.", "Next": "wrong" },
+          { "Label": "Stop predicting. It only makes you miserable.", "Next": "wrong" }
+        ]
+      },
+      { "Id": "right", "Speaker": "hero", "Text": "Warned in time. Yes. Knowing alone was never the gift. As I should have expected." },
+      { "Id": "wrong", "Speaker": "hero", "Text": "As I expected. ...Which is the trouble, isn't it." }
+    ]
+  },
+  {
+    "Id": "talk_quiz_whitewitch",
+    "Title": "Advice",
+    "Trigger": { "Kind": "Talk", "Id": "whitewitch" },
+    "Speakers": [
+      { "Id": "hero", "Class": "$with" }
+    ],
+    "Nodes": [
+      {
+        "Id": "ask", "Speaker": "hero", "Text": "My ward was so lovely after the hit landed -- everyone was healed in one glow. Isn't that the point?",
+        "Choices": [
+          { "Label": "Yes. A pretty ward after the fact is still a ward.", "Next": "wrong" },
+          { "Label": "A ward is for before the hit. Cast it early, don't admire it after.", "Next": "right", "Effects": [ { "Type": "GrantSkillPoint", "Id": "$with" } ] },
+          { "Label": "Skip wards. Heal one at a time.", "Next": "wrong" }
+        ]
+      },
+      { "Id": "right", "Speaker": "hero", "Text": "Before, not after. How rude of me to keep them waiting. Thank you, dear." },
+      { "Id": "wrong", "Speaker": "hero", "Text": "How kind of you. I'm sure it will all work out, somehow." }
+    ]
+  },
+  {
+    "Id": "talk_quiz_monk",
+    "Title": "Advice",
+    "Trigger": { "Kind": "Talk", "Id": "monk" },
+    "Speakers": [
+      { "Id": "hero", "Class": "$with" }
+    ],
+    "Nodes": [
+      {
+        "Id": "ask", "Speaker": "hero", "Text": "Where does peace live, I wonder? I hand it to the party, and it's gone before they sit down.",
+        "Choices": [
+          { "Label": "Peace lives in the heart. Keep wandering.", "Next": "wrong" },
+          { "Label": "Stop handing it out. Peace is a private thing.", "Next": "wrong" },
+          { "Label": "Peace has to be somewhere they can stand -- put it on the ground, not just in the feeling.", "Next": "right", "Effects": [ { "Type": "GrantSkillPoint", "Id": "$with" } ] }
+        ]
+      },
+      { "Id": "right", "Speaker": "hero", "Text": "Peace you can stand on. ...That is a better question than mine. Thank you." },
+      { "Id": "wrong", "Speaker": "hero", "Text": "Is the heart where you stand, though? We'll see." }
+    ]
+  },
+  {
+    "Id": "talk_quiz_sister",
+    "Title": "Advice",
+    "Trigger": { "Kind": "Talk", "Id": "sister" },
+    "Speakers": [
+      { "Id": "hero", "Class": "$with" }
+    ],
+    "Nodes": [
+      {
+        "Id": "ask", "Speaker": "hero", "Text": "I blessed us all before we left the town. That should hold us the whole way, as the old saying goes.",
+        "Choices": [
+          { "Label": "One blessing doesn't cover the expedition. It's a line item, not a shield.", "Next": "right", "Effects": [ { "Type": "GrantSkillPoint", "Id": "$with" } ] },
+          { "Label": "It does. A blessing given in faith never runs out.", "Next": "wrong" },
+          { "Label": "Bless only yourself. You matter most.", "Next": "wrong" }
+        ]
+      },
+      { "Id": "right", "Speaker": "hero", "Text": "A line item -- my, how practical. Then I'll bless us again before every fight." },
+      { "Id": "wrong", "Speaker": "hero", "Text": "Ah, 'the old saying goes.' Wherever it goes. I'm sure it holds." }
+    ]
+  },
+  {
+    "Id": "talk_quiz_whiteninja",
+    "Title": "Advice",
+    "Trigger": { "Kind": "Talk", "Id": "whiteninja" },
+    "Speakers": [
+      { "Id": "hero", "Class": "$with" }
+    ],
+    "Nodes": [
+      {
+        "Id": "ask", "Speaker": "hero", "Text": "I reached three allies in one turn. Fast. ...One of them was the one who was dying, wasn't it.",
+        "Choices": [
+          { "Label": "Three is more than one. Speed is everything.", "Next": "wrong" },
+          { "Label": "Speed covers a lot, but not for skipping the one who's actually dying.", "Next": "right", "Effects": [ { "Type": "GrantSkillPoint", "Id": "$with" } ] },
+          { "Label": "Slow down entirely. Speed is a trap.", "Next": "wrong" }
+        ]
+      },
+      { "Id": "right", "Speaker": "hero", "Text": "Dying first. Speed second. Understood." },
+      { "Id": "wrong", "Speaker": "hero", "Text": "...Fast. Yes." }
+    ]
+  },
+  {
+    "Id": "talk_quiz_harbinger",
+    "Title": "Advice",
+    "Trigger": { "Kind": "Talk", "Id": "harbinger" },
+    "Speakers": [
+      { "Id": "hero", "Class": "$with" }
+    ],
+    "Nodes": [
+      {
+        "Id": "ask", "Speaker": "hero", "Text": "The weather says a bad fight tomorrow. I told everyone. Done. Warning discharged.",
+        "Choices": [
+          { "Label": "Then your part's done. Let them deal with it.", "Next": "wrong" },
+          { "Label": "Keep omens to yourself. They just scare people.", "Next": "wrong" },
+          { "Label": "Saying the omen out loud doesn't discharge it. We still have to act on it.", "Next": "right", "Effects": [ { "Type": "GrantSkillPoint", "Id": "$with" } ] }
+        ]
+      },
+      { "Id": "right", "Speaker": "hero", "Text": "Act on it. ...Very well. I'll ask what we're doing about it. That part's actually reassuring." },
+      { "Id": "wrong", "Speaker": "hero", "Text": "Done, then. It will rain, regardless." }
+    ]
+  },
+  {
+    "Id": "talk_quiz_redmage",
+    "Title": "Advice",
+    "Trigger": { "Kind": "Talk", "Id": "redmage" },
+    "Speakers": [
+      { "Id": "hero", "Class": "$with" }
+    ],
+    "Nodes": [
+      {
+        "Id": "ask", "Speaker": "hero", "Text": "Blade, then fire, then blade -- I'm good at both, so why not be best at both? Just need more practice!",
+        "Choices": [
+          { "Label": "Chasing best-at-both is how you end up merely good at both. Pick what the fight needs.", "Next": "right", "Effects": [ { "Type": "GrantSkillPoint", "Id": "$with" } ] },
+          { "Label": "Exactly. Practice both twice as hard.", "Next": "wrong" },
+          { "Label": "Drop the blade. Mages shouldn't touch steel.", "Next": "wrong" }
+        ]
+      },
+      { "Id": "right", "Speaker": "hero", "Text": "Pick what it needs. Huh. That's -- okay, that's one thing at a time. I can try one thing at a time." },
+      { "Id": "wrong", "Speaker": "hero", "Text": "Twice as hard! On it -- right after this cast and this swing and--" }
+    ]
+  },
+  {
+    "Id": "talk_quiz_drifter",
+    "Title": "Advice",
+    "Trigger": { "Kind": "Talk", "Id": "drifter" },
+    "Speakers": [
+      { "Id": "hero", "Class": "$with" }
+    ],
+    "Nodes": [
+      {
+        "Id": "ask", "Speaker": "hero", "Text": "I'll stay with this caravan for now. Just for now. I haven't committed to anything.",
+        "Choices": [
+          { "Label": "Good. Keep your options open.", "Next": "wrong" },
+          { "Label": "You've been here long enough that staying already is the commitment.", "Next": "right", "Effects": [ { "Type": "GrantSkillPoint", "Id": "$with" } ] },
+          { "Label": "Then leave. Nobody needs a maybe.", "Next": "wrong" }
+        ]
+      },
+      { "Id": "right", "Speaker": "hero", "Text": "...Already committed. Huh. I suppose I have been. For now. -- No. Just: I have been." },
+      { "Id": "wrong", "Speaker": "hero", "Text": "For now, then." }
+    ]
+  },
+  {
+    "Id": "talk_quiz_operative",
+    "Title": "Advice",
+    "Trigger": { "Kind": "Talk", "Id": "operative" },
+    "Speakers": [
+      { "Id": "hero", "Class": "$with" }
+    ],
+    "Nodes": [
+      {
+        "Id": "ask", "Speaker": "hero", "Text": "Debrief: four enemies down, one ally hurt, objective met. Do you want the written report as well?",
+        "Choices": [
+          { "Label": "Yes. File it with the Merchant.", "Next": "wrong" },
+          { "Label": "Make the reports longer. More detail.", "Next": "wrong" },
+          { "Label": "We don't need a report. We need a teammate.", "Next": "right", "Effects": [ { "Type": "GrantSkillPoint", "Id": "$with" } ] }
+        ]
+      },
+      { "Id": "right", "Speaker": "hero", "Text": "...Copy. No report. Teammate. Adjusting. -- That was a joke. Mostly." },
+      { "Id": "wrong", "Speaker": "hero", "Text": "Report filed. Moving on." }
+    ]
+  },
+  {
+    "Id": "talk_quiz_blackwitch",
+    "Title": "Advice",
+    "Trigger": { "Kind": "Talk", "Id": "blackwitch" },
+    "Speakers": [
+      { "Id": "hero", "Class": "$with" }
+    ],
+    "Nodes": [
+      {
+        "Id": "ask", "Speaker": "hero", "Text": "...The party goes quiet when I walk past. Good. Quiet is efficient.",
+        "Choices": [
+          { "Label": "A party that's a bit scared of you won't tell you when something's wrong.", "Next": "right", "Effects": [ { "Type": "GrantSkillPoint", "Id": "$with" } ] },
+          { "Label": "Good. Fear keeps them in line.", "Next": "wrong" },
+          { "Label": "Then stay out of their way entirely.", "Next": "wrong" }
+        ]
+      },
+      { "Id": "right", "Speaker": "hero", "Text": "...Then I'll be less frightening. Slightly. Don't tell anyone I said that." },
+      { "Id": "wrong", "Speaker": "hero", "Text": "...Efficient." }
+    ]
+  },
+  {
+    "Id": "talk_quiz_ritualist",
+    "Title": "Advice",
+    "Trigger": { "Kind": "Talk", "Id": "ritualist" },
+    "Speakers": [
+      { "Id": "hero", "Class": "$with" }
+    ],
+    "Nodes": [
+      {
+        "Id": "ask", "Speaker": "hero", "Text": "Seven ticks of the working, seven measures of pain. It is a rite, not cruelty.",
+        "Choices": [
+          { "Label": "Right. A rite is holy; holy things cost nothing.", "Next": "wrong" },
+          { "Label": "Calling it a rite doesn't make the cost to the target any less real.", "Next": "right", "Effects": [ { "Type": "GrantSkillPoint", "Id": "$with" } ] },
+          { "Label": "Stop the rites. Use plain spells.", "Next": "wrong" }
+        ]
+      },
+      { "Id": "right", "Speaker": "hero", "Text": "The cost remains. The rite does not wash it. ...Let it be counted honestly, then." },
+      { "Id": "wrong", "Speaker": "hero", "Text": "So it is written. So it is done." }
+    ]
+  },
+  {
+    "Id": "talk_quiz_barbarian",
+    "Title": "Advice",
+    "Trigger": { "Kind": "Talk", "Id": "barbarian" },
+    "Speakers": [
+      { "Id": "hero", "Class": "$with" }
+    ],
+    "Nodes": [
+      {
+        "Id": "ask", "Speaker": "hero", "Text": "One, two, three, FIGHT! I'll smash the front rank eventually, right? Warm-up turns are fine!",
+        "Choices": [
+          { "Label": "Sure. Take your time and build up to it.", "Next": "wrong" },
+          { "Label": "Hang back and let the Paladin go first.", "Next": "wrong" },
+          { "Label": "'I delete the front rank' has to be true on turn one, not eventually.", "Next": "right", "Effects": [ { "Type": "GrantSkillPoint", "Id": "$with" } ] }
+        ]
+      },
+      { "Id": "right", "Speaker": "hero", "Text": "Turn one! Okay, okay -- three, two, one, SMASH. Got it." },
+      { "Id": "wrong", "Speaker": "hero", "Text": "Eventually it is! Warm-ups are the fun part." }
+    ]
+  },
+  {
+    "Id": "talk_quiz_basher",
+    "Title": "Advice",
+    "Trigger": { "Kind": "Talk", "Id": "basher" },
+    "Speakers": [
+      { "Id": "hero", "Class": "$with" }
+    ],
+    "Nodes": [
+      {
+        "Id": "ask", "Speaker": "hero", "Text": "Hit. Simple. People think simple means dumb.",
+        "Choices": [
+          { "Label": "Simple and thoughtless aren't the same word, and you've earned the difference.", "Next": "right", "Effects": [ { "Type": "GrantSkillPoint", "Id": "$with" } ] },
+          { "Label": "Simple is dumb. Learn some fancy moves.", "Next": "wrong" },
+          { "Label": "Don't worry about what people think. Just hit.", "Next": "wrong" }
+        ]
+      },
+      { "Id": "right", "Speaker": "hero", "Text": "...Earned. Good." },
+      { "Id": "wrong", "Speaker": "hero", "Text": "...Hm." }
+    ]
+  },
+  {
+    "Id": "talk_quiz_bruiser",
+    "Title": "Advice",
+    "Trigger": { "Kind": "Talk", "Id": "bruiser" },
+    "Speakers": [
+      { "Id": "hero", "Class": "$with" }
+    ],
+    "Nodes": [
+      {
+        "Id": "ask", "Speaker": "hero", "Text": "Swung for the knockout and missed, ha! Lost again! Next time it'll land, right?",
+        "Choices": [
+          { "Label": "Ha! Keep swinging. Luck evens out.", "Next": "wrong" },
+          { "Label": "A haymaker that misses costs the same turn as one that lands. Recklessness has a clock too.", "Next": "right", "Effects": [ { "Type": "GrantSkillPoint", "Id": "$with" } ] },
+          { "Label": "Never swing big. Only jab.", "Next": "wrong" }
+        ]
+      },
+      { "Id": "right", "Speaker": "hero", "Text": "Same turn either way. Huh. ...That's a lot of turns I've spent. Okay. I'll pick my moments." },
+      { "Id": "wrong", "Speaker": "hero", "Text": "That's the spirit! Next one lands for sure! Probably!" }
+    ]
+  },
+  {
+    "Id": "talk_quiz_pandagirl",
+    "Title": "Advice",
+    "Trigger": { "Kind": "Talk", "Id": "pandagirl" },
+    "Speakers": [
+      { "Id": "hero", "Class": "$with" }
+    ],
+    "Nodes": [
+      {
+        "Id": "ask", "Speaker": "hero", "Text": "Hehe, they always think I'm harmless right up until the Slam! That works on everybody, right?",
+        "Choices": [
+          { "Label": "Yep! Keep the cute act forever.", "Next": "wrong" },
+          { "Label": "Drop the cute act. Be scary all the time.", "Next": "wrong" },
+          { "Label": "Being underestimated works once per stranger. The party already knows -- we need something else from you.", "Next": "right", "Effects": [ { "Type": "GrantSkillPoint", "Id": "$with" } ] }
+        ]
+      },
+      { "Id": "right", "Speaker": "hero", "Text": "Something else, for you all... okay! Less surprise, more teamwork. Then the Slam." },
+      { "Id": "wrong", "Speaker": "hero", "Text": "Hehe! Everybody. Always. ...Right?" }
+    ]
+  },
+  {
+    "Id": "talk_quiz_assassain",
+    "Title": "Advice",
+    "Trigger": { "Kind": "Talk", "Id": "assassain" },
+    "Speakers": [
+      { "Id": "hero", "Class": "$with" }
+    ],
+    "Nodes": [
+      {
+        "Id": "ask", "Speaker": "hero", "Text": "Buy heavier armor. Survive longer. Yes?",
+        "Choices": [
+          { "Label": "No. Gearing for survival is gearing away from the point. Hit and harvest.", "Next": "right", "Effects": [ { "Type": "GrantSkillPoint", "Id": "$with" } ] },
+          { "Label": "Yes. Survival comes first.", "Next": "wrong" },
+          { "Label": "Become a tank for a while.", "Next": "wrong" }
+        ]
+      },
+      { "Id": "right", "Speaker": "hero", "Text": "Hit. Harvest. Light." },
+      { "Id": "wrong", "Speaker": "hero", "Text": "Heavier, then." }
+    ]
+  },
+  {
+    "Id": "talk_quiz_duelist",
+    "Title": "Advice",
+    "Trigger": { "Kind": "Talk", "Id": "duelist" },
+    "Speakers": [
+      { "Id": "hero", "Class": "$with" }
+    ],
+    "Nodes": [
+      {
+        "Id": "ask", "Speaker": "hero", "Text": "My opponent stumbled. I waited for them to recover their guard. It seemed only proper.",
+        "Choices": [
+          { "Label": "Of course. Honor matters more than winning.", "Next": "wrong" },
+          { "Label": "Respecting an opponent isn't the same as waiting for them to be ready.", "Next": "right", "Effects": [ { "Type": "GrantSkillPoint", "Id": "$with" } ] },
+          { "Label": "Never respect an enemy. They're monsters.", "Next": "wrong" }
+        ]
+      },
+      { "Id": "right", "Speaker": "hero", "Text": "A fair point, fairly made. I shall respect them -- and strike while they stumble." },
+      { "Id": "wrong", "Speaker": "hero", "Text": "Quite. One must observe the forms." }
+    ]
+  },
+  {
+    "Id": "talk_quiz_fencer",
+    "Title": "Advice",
+    "Trigger": { "Kind": "Talk", "Id": "fencer" },
+    "Speakers": [
+      { "Id": "hero", "Class": "$with" }
+    ],
+    "Nodes": [
+      {
+        "Id": "ask", "Speaker": "hero", "Text": "Lunge, lunge, and -- nobody was ready for my lunge, which is their problem, not mine, right? Right.",
+        "Choices": [
+          { "Label": "Right. Lunge first, explain never.", "Next": "wrong" },
+          { "Label": "Learn to retreat. Lunging is reckless.", "Next": "wrong" },
+          { "Label": "A lunge that can't reverse is something the party has to plan around. Tell them first.", "Next": "right", "Effects": [ { "Type": "GrantSkillPoint", "Id": "$with" } ] }
+        ]
+      },
+      { "Id": "right", "Speaker": "hero", "Text": "Tell them first -- yes, so they can, exactly, plan for -- got it. Telling them." },
+      { "Id": "wrong", "Speaker": "hero", "Text": "Right, their problem, exactly what I was--" }
+    ]
+  },
+  {
+    "Id": "talk_quiz_ronin",
+    "Title": "Advice",
+    "Trigger": { "Kind": "Talk", "Id": "ronin" },
+    "Speakers": [
+      { "Id": "hero", "Class": "$with" }
+    ],
+    "Nodes": [
+      {
+        "Id": "ask", "Speaker": "hero", "Text": "You give orders. I consider them. Sometimes I follow. I chose this caravan, after all.",
+        "Choices": [
+          { "Label": "Choosing to stay means choosing to take direction sometimes, or the choice stops meaning anything.", "Next": "right", "Effects": [ { "Type": "GrantSkillPoint", "Id": "$with" } ] },
+          { "Label": "Exactly. Masterless means you owe no one.", "Next": "wrong" },
+          { "Label": "Then leave, if orders bother you.", "Next": "wrong" }
+        ]
+      },
+      { "Id": "right", "Speaker": "hero", "Text": "Then I will take direction. Sometimes more than sometimes. I'll consider it seriously." },
+      { "Id": "wrong", "Speaker": "hero", "Text": "A suggestion worth considering. I will consider it." }
+    ]
+  },
+  {
+    "Id": "talk_quiz_sellsword",
+    "Title": "Advice",
+    "Trigger": { "Kind": "Talk", "Id": "sellsword" },
+    "Speakers": [
+      { "Id": "hero", "Class": "$with" }
+    ],
+    "Nodes": [
+      {
+        "Id": "ask", "Speaker": "hero", "Text": "My contract with the merchant ran out ages ago. Should I renegotiate? I don't work for free.",
+        "Choices": [
+          { "Label": "Yes -- ask for double. You're worth it.", "Next": "wrong" },
+          { "Label": "The contract ended and you stayed anyway. That's a choice, not a line item -- say it out loud.", "Next": "right", "Effects": [ { "Type": "GrantSkillPoint", "Id": "$with" } ] },
+          { "Label": "Quit. No pay, no work.", "Next": "wrong" }
+        ]
+      },
+      { "Id": "right", "Speaker": "hero", "Text": "Not a line item. ...Fine. I'm staying because I want to. Don't put that in the ledger." },
+      { "Id": "wrong", "Speaker": "hero", "Text": "Double, then. I'll draw up the papers." }
+    ]
+  },
+  {
+    "Id": "talk_quiz_swordmaster",
+    "Title": "Advice",
+    "Trigger": { "Kind": "Talk", "Id": "swordmaster" },
+    "Speakers": [
+      { "Id": "hero", "Class": "$with" }
+    ],
+    "Nodes": [
+      {
+        "Id": "ask", "Speaker": "hero", "Text": "The battle was lost, but the final cut was perfect. Truly, the form was flawless.",
+        "Choices": [
+          { "Label": "The form is all that matters. Bless the blade.", "Next": "wrong" },
+          { "Label": "Forget form entirely. Swing wildly.", "Next": "wrong" },
+          { "Label": "A perfect cut on a lost fight is still a loss. We need the win more than the form.", "Next": "right", "Effects": [ { "Type": "GrantSkillPoint", "Id": "$with" } ] }
+        ]
+      },
+      { "Id": "right", "Speaker": "hero", "Text": "The win over the form. ...Then the form must serve the win. That is a deeper discipline." },
+      { "Id": "wrong", "Speaker": "hero", "Text": "Flawless. As it should be." }
+    ]
+  },
+  {
+    "Id": "talk_quiz_thief",
+    "Title": "Advice",
+    "Trigger": { "Kind": "Talk", "Id": "thief" },
+    "Speakers": [
+      { "Id": "hero", "Class": "$with" }
+    ],
+    "Nodes": [
+      {
+        "Id": "ask", "Speaker": "hero", "Text": "Got a ring, two coins, a weird spoon -- from every fight! The party should be thrilled, right? Anyway--",
+        "Choices": [
+          { "Label": "Grabbing loot every fight isn't the same as having something to show the party for it.", "Next": "right", "Effects": [ { "Type": "GrantSkillPoint", "Id": "$with" } ] },
+          { "Label": "Absolutely. Keep picking pockets.", "Next": "wrong" },
+          { "Label": "Give up stealing. It's beneath you.", "Next": "wrong" }
+        ]
+      },
+      { "Id": "right", "Speaker": "hero", "Text": "Something to show them... okay, the spoon goes in the camp pot. Contributions!" },
+      { "Id": "wrong", "Speaker": "hero", "Text": "Thrilled! Ooh, what's in your bag?" }
+    ]
+  },
+  {
+    "Id": "talk_quiz_blackninja",
+    "Title": "Advice",
+    "Trigger": { "Kind": "Talk", "Id": "blackninja" },
+    "Speakers": [
+      { "Id": "hero", "Class": "$with" }
+    ],
+    "Nodes": [
+      {
+        "Id": "ask", "Speaker": "hero", "Text": "...The others are variations on me. I'm the plain one.",
+        "Choices": [
+          { "Label": "Right. Plain is all you are.", "Next": "wrong" },
+          { "Label": "Being the template doesn't mean you have nothing of your own to say. Just say it shorter.", "Next": "right", "Effects": [ { "Type": "GrantSkillPoint", "Id": "$with" } ] },
+          { "Label": "Change colors. Be different.", "Next": "wrong" }
+        ]
+      },
+      { "Id": "right", "Speaker": "hero", "Text": "...Shorter. Mine." },
+      { "Id": "wrong", "Speaker": "hero", "Text": "..." }
+    ]
+  },
+  {
+    "Id": "talk_quiz_blueninja",
+    "Title": "Advice",
+    "Trigger": { "Kind": "Talk", "Id": "blueninja" },
+    "Speakers": [
+      { "Id": "hero", "Class": "$with" }
+    ],
+    "Nodes": [
+      {
+        "Id": "ask", "Speaker": "hero", "Text": "I remain calm under pressure. Why does the party think I'm absent?",
+        "Choices": [
+          { "Label": "They're just jealous of your composure.", "Next": "wrong" },
+          { "Label": "Panic a little more. It's relatable.", "Next": "wrong" },
+          { "Label": "Calm that reads as distance is still distance. Let them see that you care.", "Next": "right", "Effects": [ { "Type": "GrantSkillPoint", "Id": "$with" } ] }
+        ]
+      },
+      { "Id": "right", "Speaker": "hero", "Text": "...Visible, then. Acceptable. I'll try to look as present as I am." },
+      { "Id": "wrong", "Speaker": "hero", "Text": "Obviously." }
+    ]
+  },
+  {
+    "Id": "talk_quiz_chromaninja",
+    "Title": "Advice",
+    "Trigger": { "Kind": "Talk", "Id": "chromaninja" },
+    "Speakers": [
+      { "Id": "hero", "Class": "$with" }
+    ],
+    "Nodes": [
+      {
+        "Id": "ask", "Speaker": "hero", "Text": "Red one fight, blue the next, green after -- I'm wonderfully flexible! Why don't they rely on me?",
+        "Choices": [
+          { "Label": "Flexibility without a throughline reads as unreliable. Give them one thing they can count on.", "Next": "right", "Effects": [ { "Type": "GrantSkillPoint", "Id": "$with" } ] },
+          { "Label": "Be even more unpredictable!", "Next": "wrong" },
+          { "Label": "Pick one color forever and never change.", "Next": "wrong" }
+        ]
+      },
+      { "Id": "right", "Speaker": "hero", "Text": "One thing to count on... the throughline. Every color, still me. I like that." },
+      { "Id": "wrong", "Speaker": "hero", "Text": "Even more! Watch -- purple!" }
+    ]
+  },
+  {
+    "Id": "talk_quiz_greenninja",
+    "Title": "Advice",
+    "Trigger": { "Kind": "Talk", "Id": "greenninja" },
+    "Speakers": [
+      { "Id": "hero", "Class": "$with" }
+    ],
+    "Nodes": [
+      {
+        "Id": "ask", "Speaker": "hero", "Text": "Ta-da! Teleported right behind it! ...It wasn't really in a better spot, but did you see that?",
+        "Choices": [
+          { "Label": "Flashy counts! Keep the show going.", "Next": "wrong" },
+          { "Label": "A sooner position has to mean something tactically, not just look flashy.", "Next": "right", "Effects": [ { "Type": "GrantSkillPoint", "Id": "$with" } ] },
+          { "Label": "Never teleport. Walk like everybody else.", "Next": "wrong" }
+        ]
+      },
+      { "Id": "right", "Speaker": "hero", "Text": "Something tactically -- ugh, fine. A trick with a point. That's the harder trick." },
+      { "Id": "wrong", "Speaker": "hero", "Text": "Ha! See? Flashy counts!" }
+    ]
+  },
+  {
+    "Id": "talk_quiz_redninja",
+    "Title": "Advice",
+    "Trigger": { "Kind": "Talk", "Id": "redninja" },
+    "Speakers": [
+      { "Id": "hero", "Class": "$with" }
+    ],
+    "Nodes": [
+      {
+        "Id": "ask", "Speaker": "hero", "Text": "Reached their backline before the Assassin again. That's two-to-one. Not that I'm counting.",
+        "Choices": [
+          { "Label": "Keep beating the Assassin. That's what matters.", "Next": "wrong" },
+          { "Label": "Copy the Assassin exactly. It works for them.", "Next": "wrong" },
+          { "Label": "Find what you do that the Assassin doesn't. Racing to the backline isn't a personality.", "Next": "right", "Effects": [ { "Type": "GrantSkillPoint", "Id": "$with" } ] }
+        ]
+      },
+      { "Id": "right", "Speaker": "hero", "Text": "What I do that they don't... Flamefang. The fire. Fine. That's mine." },
+      { "Id": "wrong", "Speaker": "hero", "Text": "Two-to-one. Not counting. Three soon." }
+    ]
+  },
+  {
+    "Id": "talk_quiz_yellowninja",
+    "Title": "Advice",
+    "Trigger": { "Kind": "Talk", "Id": "yellowninja" },
+    "Speakers": [
+      { "Id": "hero", "Class": "$with" }
+    ],
+    "Nodes": [
+      {
+        "Id": "ask", "Speaker": "hero", "Text": "There was an opening -- so I went -- immediately -- and it was a trap -- but it WAS an opening!",
+        "Choices": [
+          { "Label": "Not every opening needs taking the instant it appears. Some are worth waiting a turn on.", "Next": "right", "Effects": [ { "Type": "GrantSkillPoint", "Id": "$with" } ] },
+          { "Label": "Faster is always better! Go go go!", "Next": "wrong" },
+          { "Label": "Never take openings. They're all traps.", "Next": "wrong" }
+        ]
+      },
+      { "Id": "right", "Speaker": "hero", "Text": "Wait one turn. One. One whole turn. ...Okay. Okay okay. I can do one." },
+      { "Id": "wrong", "Speaker": "hero", "Text": "Go go go! Yes! Exactly what I--" }
+    ]
+  },
+  {
+    "Id": "talk_quiz_lancer",
+    "Title": "Advice",
+    "Trigger": { "Kind": "Talk", "Id": "lancer" },
+    "Speakers": [
+      { "Id": "hero", "Class": "$with" }
+    ],
+    "Nodes": [
+      {
+        "Id": "ask", "Speaker": "hero", "Text": "I announce my charge, and then I charge. A courtesy. After the charge, I... think about it later.",
+        "Choices": [
+          { "Label": "Charge harder and the after takes care of itself.", "Next": "wrong" },
+          { "Label": "Telegraphing is fine, but only if there's still a plan for after it lands.", "Next": "right", "Effects": [ { "Type": "GrantSkillPoint", "Id": "$with" } ] },
+          { "Label": "Stop announcing it. Surprise is everything.", "Next": "wrong" }
+        ]
+      },
+      { "Id": "right", "Speaker": "hero", "Text": "A plan for after. Then I shall announce that, too. Courteously." },
+      { "Id": "wrong", "Speaker": "hero", "Text": "Harder, then. Understood. Charging." }
+    ]
+  },
+  {
+    "Id": "talk_quiz_raider",
+    "Title": "Advice",
+    "Trigger": { "Kind": "Talk", "Id": "raider" },
+    "Speakers": [
+      { "Id": "hero", "Class": "$with" }
+    ],
+    "Nodes": [
+      {
+        "Id": "ask", "Speaker": "hero", "Text": "Bag's heavy! Fight was rough -- we barely made it -- but look at all this! Next stage?",
+        "Choices": [
+          { "Label": "Heavy bag means a good day. Next stage!", "Next": "wrong" },
+          { "Label": "Leave the loot behind entirely.", "Next": "wrong" },
+          { "Label": "Plunder from a fight we barely survived isn't a win just because the bag's heavier.", "Next": "right", "Effects": [ { "Type": "GrantSkillPoint", "Id": "$with" } ] }
+        ]
+      },
+      { "Id": "right", "Speaker": "hero", "Text": "Barely survived... right. Fewer grabs, more of us walking out. Bag's still heavy, though." },
+      { "Id": "wrong", "Speaker": "hero", "Text": "Exactly! Next stage!" }
+    ]
+  },
+  {
+    "Id": "talk_quiz_speedster",
+    "Title": "Advice",
+    "Trigger": { "Kind": "Talk", "Id": "speedster" },
+    "Speakers": [
+      { "Id": "hero", "Class": "$with" }
+    ],
+    "Nodes": [
+      {
+        "Id": "ask", "Speaker": "hero", "Text": "Whyisthiscampsoslow? I'm faster than everyone. Speed is the plan. The whole plan.",
+        "Choices": [
+          { "Label": "Speed isn't a plan. It's a resource, and it runs out just like mana.", "Next": "right", "Effects": [ { "Type": "GrantSkillPoint", "Id": "$with" } ] },
+          { "Label": "Yes! Just keep going faster.", "Next": "wrong" },
+          { "Label": "Slow down to everyone else's pace.", "Next": "wrong" }
+        ]
+      },
+      { "Id": "right", "Speaker": "hero", "Text": "A resource. Spend it, don't burn it. Okay -- slower thought, faster feet." },
+      { "Id": "wrong", "Speaker": "hero", "Text": "Faster! Already ahead of you!" }
+    ]
+  },
+  {
+    "Id": "talk_quiz_streetfighter",
+    "Title": "Advice",
+    "Trigger": { "Kind": "Talk", "Id": "streetfighter" },
+    "Speakers": [
+      { "Id": "hero", "Class": "$with" }
+    ],
+    "Nodes": [
+      {
+        "Id": "ask", "Speaker": "hero", "Text": "Pocket sand worked great last week, heh. Using it again tomorrow on the same pack.",
+        "Choices": [
+          { "Label": "Never change a winning move.", "Next": "wrong" },
+          { "Label": "A trick that works once stops being a trick the second time an enemy remembers it.", "Next": "right", "Effects": [ { "Type": "GrantSkillPoint", "Id": "$with" } ] },
+          { "Label": "Fight fair, like the Duelist.", "Next": "wrong" }
+        ]
+      },
+      { "Id": "right", "Speaker": "hero", "Text": "Heh. Fair -- they'll remember. Guess I need a new pocket." },
+      { "Id": "wrong", "Speaker": "hero", "Text": "Exactly, champ. Never change." }
+    ]
+  },
+  {
+    "Id": "talk_quiz_striker",
+    "Title": "Advice",
+    "Trigger": { "Kind": "Talk", "Id": "striker" },
+    "Speakers": [
+      { "Id": "hero", "Class": "$with" }
+    ],
+    "Nodes": [
+      {
+        "Id": "ask", "Speaker": "hero", "Text": "That fight ran two turns long, and I didn't land the finishing blow. Unacceptable.",
+        "Choices": [
+          { "Label": "Agreed. Finishes are your whole job.", "Next": "wrong" },
+          { "Label": "Stop finishing things. Let it run long.", "Next": "wrong" },
+          { "Label": "Not every fight is owed a finish from you. It belongs to whoever has the opening.", "Next": "right", "Effects": [ { "Type": "GrantSkillPoint", "Id": "$with" } ] }
+        ]
+      },
+      { "Id": "right", "Speaker": "hero", "Text": "Whoever has the opening. ...Fine. Faster that way, anyway." },
+      { "Id": "wrong", "Speaker": "hero", "Text": "Next time. On schedule." }
+    ]
+  },
+  {
+    "Id": "talk_quiz_fighter",
+    "Title": "Advice",
+    "Trigger": { "Kind": "Talk", "Id": "fighter" },
+    "Speakers": [
+      { "Id": "hero", "Class": "$with" }
+    ],
+    "Nodes": [
+      {
+        "Id": "ask", "Speaker": "hero", "Text": "One, two, three -- the chain broke at three. So I started over at one. Like I was taught.",
+        "Choices": [
+          { "Label": "A chain broken early isn't a restart cue. It's a signal to change the plan for that fight.", "Next": "right", "Effects": [ { "Type": "GrantSkillPoint", "Id": "$with" } ] },
+          { "Label": "Yes. Always restart the chain.", "Next": "wrong" },
+          { "Label": "Stop chaining entirely.", "Next": "wrong" }
+        ]
+      },
+      { "Id": "right", "Speaker": "hero", "Text": "Change the plan. ...Nobody taught me that part. Thank you." },
+      { "Id": "wrong", "Speaker": "hero", "Text": "One, two, three. One, two, three." }
+    ]
+  },
+  {
+    "Id": "talk_quiz_martialartist",
+    "Title": "Advice",
+    "Trigger": { "Kind": "Talk", "Id": "martialartist" },
+    "Speakers": [
+      { "Id": "hero", "Class": "$with" }
+    ],
+    "Nodes": [
+      {
+        "Id": "ask", "Speaker": "hero", "Text": "Note how my palm strike transfers force through the hips! I explained it to the party mid-fight -- with diagrams!",
+        "Choices": [
+          { "Label": "More diagrams. Teaching never stops.", "Next": "wrong" },
+          { "Label": "The lesson can wait until the enemy's down. Narrating mid-fight is a liability.", "Next": "right", "Effects": [ { "Type": "GrantSkillPoint", "Id": "$with" } ] },
+          { "Label": "Stop teaching altogether.", "Next": "wrong" }
+        ]
+      },
+      { "Id": "right", "Speaker": "hero", "Text": "A good lesson for the teacher. Fight first, lecture after. Note it down." },
+      { "Id": "wrong", "Speaker": "hero", "Text": "Indeed! Now observe the footwork--" }
+    ]
+  },
+  {
+    "Id": "talk_quiz_prizefighter",
+    "Title": "Advice",
+    "Trigger": { "Kind": "Talk", "Id": "prizefighter" },
+    "Speakers": [
+      { "Id": "hero", "Class": "$with" }
+    ],
+    "Nodes": [
+      {
+        "Id": "ask", "Speaker": "hero", "Text": "Did you see that knockout? The crowd -- I mean the party -- loved it! Gotta give 'em a show!",
+        "Choices": [
+          { "Label": "Yes! Bigger show next time!", "Next": "wrong" },
+          { "Label": "Stop fighting flashy. Hide in the back.", "Next": "wrong" },
+          { "Label": "The party isn't an audience. Coordinate with them, don't play to them.", "Next": "right", "Effects": [ { "Type": "GrantSkillPoint", "Id": "$with" } ] }
+        ]
+      },
+      { "Id": "right", "Speaker": "hero", "Text": "Not an audience. A corner team. ...I can work with a corner team." },
+      { "Id": "wrong", "Speaker": "hero", "Text": "Bigger! Ladies and gentlemen--" }
+    ]
+  },
+  {
+    "Id": "talk_quiz_pugilist",
+    "Title": "Advice",
+    "Trigger": { "Kind": "Talk", "Id": "pugilist" },
+    "Speakers": [
+      { "Id": "hero", "Class": "$with" }
+    ],
+    "Nodes": [
+      {
+        "Id": "ask", "Speaker": "hero", "Text": "...Jab. Cross. Done. They say I don't care. I care about the next hit.",
+        "Choices": [
+          { "Label": "Economy of motion doesn't need economy of warmth. Let them see you're with them.", "Next": "right", "Effects": [ { "Type": "GrantSkillPoint", "Id": "$with" } ] },
+          { "Label": "Good. Keep quiet. Focus.", "Next": "wrong" },
+          { "Label": "Throw bigger punches.", "Next": "wrong" }
+        ]
+      },
+      { "Id": "right", "Speaker": "hero", "Text": "...Fair. I'll say 'good hit' more. When it is one." },
+      { "Id": "wrong", "Speaker": "hero", "Text": "...Mm." }
+    ]
+  },
+  {
+    "Id": "talk_quiz_nighthunter",
+    "Title": "Advice",
+    "Trigger": { "Kind": "Talk", "Id": "nighthunter" },
+    "Speakers": [
+      { "Id": "hero", "Class": "$with" }
+    ],
+    "Nodes": [
+      {
+        "Id": "ask", "Speaker": "hero", "Text": "I tracked it across the whole field. The opening never came. I'll keep waiting.",
+        "Choices": [
+          { "Label": "Patience always pays. Keep waiting.", "Next": "wrong" },
+          { "Label": "Sometimes we can't afford the wait. Make the opening instead of finding it.", "Next": "right", "Effects": [ { "Type": "GrantSkillPoint", "Id": "$with" } ] },
+          { "Label": "Stop tracking. Just charge.", "Next": "wrong" }
+        ]
+      },
+      { "Id": "right", "Speaker": "hero", "Text": "Make it. ...The prey would never expect that. Neither would I." },
+      { "Id": "wrong", "Speaker": "hero", "Text": "Then I wait." }
+    ]
+  },
+  {
+    "Id": "talk_quiz_ripper",
+    "Title": "Advice",
+    "Trigger": { "Kind": "Talk", "Id": "ripper" },
+    "Speakers": [
+      { "Id": "hero", "Class": "$with" }
+    ],
+    "Nodes": [
+      {
+        "Id": "ask", "Speaker": "hero", "Text": "Heh. I'm always right there when they're hurt. Collecting. The party gives me looks for it.",
+        "Choices": [
+          { "Label": "Keep circling. Who cares about their looks.", "Next": "wrong" },
+          { "Label": "Hit first for once. Take the hard part.", "Next": "wrong" },
+          { "Label": "Collecting only works if the party trusts you're collecting, not just circling. Tell them.", "Next": "right", "Effects": [ { "Type": "GrantSkillPoint", "Id": "$with" } ] }
+        ]
+      },
+      { "Id": "right", "Speaker": "hero", "Text": "Tell them. Heh. Fine -- I'll call my collections." },
+      { "Id": "wrong", "Speaker": "hero", "Text": "Heh. Circling." }
+    ]
+  },
+  {
+    "Id": "talk_quiz_odachi",
+    "Title": "Advice",
+    "Trigger": { "Kind": "Talk", "Id": "odachi" },
+    "Speakers": [
+      { "Id": "hero", "Class": "$with" }
+    ],
+    "Nodes": [
+      {
+        "Id": "ask", "Speaker": "hero", "Text": "...One draw. One cut. Then I rest.",
+        "Choices": [
+          { "Label": "The perfect draw is still only one action. The fight goes on after your turn.", "Next": "right", "Effects": [ { "Type": "GrantSkillPoint", "Id": "$with" } ] },
+          { "Label": "Yes. One cut is enough.", "Next": "wrong" },
+          { "Label": "Draw twice. Always twice.", "Next": "wrong" }
+        ]
+      },
+      { "Id": "right", "Speaker": "hero", "Text": "...Then the next breath, too." },
+      { "Id": "wrong", "Speaker": "hero", "Text": "..." }
+    ]
+  },
+  {
+    "Id": "talk_quiz_slasher",
+    "Title": "Advice",
+    "Trigger": { "Kind": "Talk", "Id": "slasher" },
+    "Speakers": [
+      { "Id": "hero", "Class": "$with" }
+    ],
+    "Nodes": [
+      {
+        "Id": "ask", "Speaker": "hero", "Text": "Twelve cuts! Thirteen! Fourteen! That's a lot of cuts, that guard's gotta be broken, right? Right?!",
+        "Choices": [
+          { "Label": "Yes! More cuts means more broken.", "Next": "wrong" },
+          { "Label": "Count of hits isn't the same as the guard actually being broken. Check the result.", "Next": "right", "Effects": [ { "Type": "GrantSkillPoint", "Id": "$with" } ] },
+          { "Label": "Use one big cut instead.", "Next": "wrong" }
+        ]
+      },
+      { "Id": "right", "Speaker": "hero", "Text": "Check the result. ...Fourteen cuts and -- oh, it's still standing. Good catch." },
+      { "Id": "wrong", "Speaker": "hero", "Text": "Fifteen! Sixteen!" }
+    ]
+  },
+  {
+    "Id": "talk_quiz_vampire",
+    "Title": "Advice",
+    "Trigger": { "Kind": "Talk", "Id": "vampire" },
+    "Speakers": [
+      { "Id": "hero", "Class": "$with" }
+    ],
+    "Nodes": [
+      {
+        "Id": "ask", "Speaker": "hero", "Text": "I have endured past what should have ended me. Is that survival... or only a longer refusal to stop?",
+        "Choices": [
+          { "Label": "It's just survival. Don't think about it.", "Next": "wrong" },
+          { "Label": "You should have stopped. Stop now.", "Next": "wrong" },
+          { "Label": "That's your question to answer -- but enduring for the caravan, not away from it, is a reason, not a refusal.", "Next": "right", "Effects": [ { "Type": "GrantSkillPoint", "Id": "$with" } ] }
+        ]
+      },
+      { "Id": "right", "Speaker": "hero", "Text": "A reason, and not a refusal. ...I have not been offered that before. I'll keep it." },
+      { "Id": "wrong", "Speaker": "hero", "Text": "Perhaps. Time will tell. Time always does, for me." }
+    ]
+  },
+  {
+    "Id": "talk_quiz_bluelion",
+    "Title": "Advice",
+    "Trigger": { "Kind": "Talk", "Id": "bluelion" },
+    "Speakers": [
+      { "Id": "hero", "Class": "$with" }
+    ],
+    "Nodes": [
+      {
+        "Id": "ask", "Speaker": "hero", "Text": "I roared and every foe came for me! Glorious! ...Then I fell over. But glorious!",
+        "Choices": [
+          { "Label": "A roar that draws attention has to be backed by surviving the attention it draws.", "Next": "right", "Effects": [ { "Type": "GrantSkillPoint", "Id": "$with" } ] },
+          { "Label": "Roar louder next time!", "Next": "wrong" },
+          { "Label": "Never roar. Hide.", "Next": "wrong" }
+        ]
+      },
+      { "Id": "right", "Speaker": "hero", "Text": "Survive the attention... then I'll eat my potion before the roar. Still glorious." },
+      { "Id": "wrong", "Speaker": "hero", "Text": "LOUDER! Yes!" }
+    ]
+  },
+  {
+    "Id": "talk_quiz_wildchild",
+    "Title": "Advice",
+    "Trigger": { "Kind": "Talk", "Id": "wildchild" },
+    "Speakers": [
+      { "Id": "hero", "Class": "$with" }
+    ],
+    "Nodes": [
+      {
+        "Id": "ask", "Speaker": "hero", "Text": "Pack knows. I move, pack follows. Don't need words.",
+        "Choices": [
+          { "Label": "Right. Words are useless.", "Next": "wrong" },
+          { "Label": "The pack includes people who need the plan said out loud, not just felt.", "Next": "right", "Effects": [ { "Type": "GrantSkillPoint", "Id": "$with" } ] },
+          { "Label": "Talk constantly so no one is confused.", "Next": "wrong" }
+        ]
+      },
+      { "Id": "right", "Speaker": "hero", "Text": "...Said out loud. Okay. 'Left.' Like that?" },
+      { "Id": "wrong", "Speaker": "hero", "Text": "Yes. No words." }
+    ]
+  },
+  {
+    "Id": "talk_quiz_courier",
+    "Title": "Advice",
+    "Trigger": { "Kind": "Talk", "Id": "courier" },
+    "Speakers": [
+      { "Id": "hero", "Class": "$with" }
+    ],
+    "Nodes": [
+      {
+        "Id": "ask", "Speaker": "hero", "Text": "I passed the warning to everyone -- left flank, two turns -- and then I was off to the next thing! Message delivered!",
+        "Choices": [
+          { "Label": "Delivered is done. Next message!", "Next": "wrong" },
+          { "Label": "Stop relaying. People should find out themselves.", "Next": "wrong" },
+          { "Label": "Relaying it isn't the same as making sure someone actually acted on it.", "Next": "right", "Effects": [ { "Type": "GrantSkillPoint", "Id": "$with" } ] }
+        ]
+      },
+      { "Id": "right", "Speaker": "hero", "Text": "Acted on, not just heard -- I'll circle back! One loop, quick!" },
+      { "Id": "wrong", "Speaker": "hero", "Text": "Delivered! Next--" }
+    ]
+  },
+  {
+    "Id": "talk_quiz_dervish",
+    "Title": "Advice",
+    "Trigger": { "Kind": "Talk", "Id": "dervish" },
+    "Speakers": [
+      { "Id": "hero", "Class": "$with" }
+    ],
+    "Nodes": [
+      {
+        "Id": "ask", "Speaker": "hero", "Text": "Round and round I go, and somewhere in the spin it all lands, doesn't it? You'll trust it lands?",
+        "Choices": [
+          { "Label": "We need to catch you mid-spin before we can trust where it's going. Tell us where.", "Next": "right", "Effects": [ { "Type": "GrantSkillPoint", "Id": "$with" } ] },
+          { "Label": "Spin faster -- it'll land somewhere good.", "Next": "wrong" },
+          { "Label": "Stop spinning. Stand still.", "Next": "wrong" }
+        ]
+      },
+      { "Id": "right", "Speaker": "hero", "Text": "Tell you where... a spin with a destination. That's still a spin. I'll aim it." },
+      { "Id": "wrong", "Speaker": "hero", "Text": "Faster, faster, round and--" }
+    ]
+  },
+  {
+    "Id": "talk_quiz_engineer",
+    "Title": "Advice",
+    "Trigger": { "Kind": "Talk", "Id": "engineer" },
+    "Speakers": [
+      { "Id": "hero", "Class": "$with" }
+    ],
+    "Nodes": [
+      {
+        "Id": "ask", "Speaker": "hero", "Text": "Overclocked the mine, the turret, and myself -- third expedition running. Tolerance is fine. Probably.",
+        "Choices": [
+          { "Label": "Push harder. Limits are suggestions.", "Next": "wrong" },
+          { "Label": "Overclocking a mine is a trick. Overclocking yourself every trip is burnout with better branding.", "Next": "right", "Effects": [ { "Type": "GrantSkillPoint", "Id": "$with" } ] },
+          { "Label": "Stop building devices.", "Next": "wrong" }
+        ]
+      },
+      { "Id": "right", "Speaker": "hero", "Text": "...Rated capacity. For me too. Fine. Running at spec tonight." },
+      { "Id": "wrong", "Speaker": "hero", "Text": "Pushing to one-twenty, then." }
+    ]
+  },
+  {
+    "Id": "talk_quiz_machinist",
+    "Title": "Advice",
+    "Trigger": { "Kind": "Talk", "Id": "machinist" },
+    "Speakers": [
+      { "Id": "hero", "Class": "$with" }
+    ],
+    "Nodes": [
+      {
+        "Id": "ask", "Speaker": "hero", "Text": "My turret's still running from last fight. Beautiful machine. I'll build a second one beside it.",
+        "Choices": [
+          { "Label": "Two turrets is twice as good.", "Next": "wrong" },
+          { "Label": "Sell the turret.", "Next": "wrong" },
+          { "Label": "Know when to stop building and fight directly. A turret past its fight is scrap waiting to jam.", "Next": "right", "Effects": [ { "Type": "GrantSkillPoint", "Id": "$with" } ] }
+        ]
+      },
+      { "Id": "right", "Speaker": "hero", "Text": "Stop building, start fighting. ...Then the turret earns its rest, and so do I." },
+      { "Id": "wrong", "Speaker": "hero", "Text": "Two it is. Hand me the wrench." }
+    ]
+  },
+  {
+    "Id": "talk_quiz_technician",
+    "Title": "Advice",
+    "Trigger": { "Kind": "Talk", "Id": "technician" },
+    "Speakers": [
+      { "Id": "hero", "Class": "$with" }
+    ],
+    "Nodes": [
+      {
+        "Id": "ask", "Speaker": "hero", "Text": "Probability of success, sixty-two percent. Running the diagnostic again to refine that. Out loud.",
+        "Choices": [
+          { "Label": "A diagnostic out loud mid-fight costs time we may not have. Sometimes guess at speed.", "Next": "right", "Effects": [ { "Type": "GrantSkillPoint", "Id": "$with" } ] },
+          { "Label": "Refine it to ninety-nine before acting.", "Next": "wrong" },
+          { "Label": "Never calculate anything.", "Next": "wrong" }
+        ]
+      },
+      { "Id": "right", "Speaker": "hero", "Text": "Guess at speed. ...Estimated confidence: higher than before. Fine." },
+      { "Id": "wrong", "Speaker": "hero", "Text": "Refining. Sixty-two point four..." }
+    ]
+  },
+  {
+    "Id": "talk_quiz_tinkerer",
+    "Title": "Advice",
+    "Trigger": { "Kind": "Talk", "Id": "tinkerer" },
+    "Speakers": [
+      { "Id": "hero", "Class": "$with" }
+    ],
+    "Nodes": [
+      {
+        "Id": "ask", "Speaker": "hero", "Text": "Patched the gear with tape and wire, works fine now, see? Oh -- that strap's loose, hold on--",
+        "Choices": [
+          { "Label": "Works is works. Move on to the next fix.", "Next": "wrong" },
+          { "Label": "'It works' isn't the same as 'it'll keep working.' Patch it to last.", "Next": "right", "Effects": [ { "Type": "GrantSkillPoint", "Id": "$with" } ] },
+          { "Label": "Throw it away and buy new.", "Next": "wrong" }
+        ]
+      },
+      { "Id": "right", "Speaker": "hero", "Text": "Patch it to last. Right, the shatter. ...Two more wraps of tape. Three, actually." },
+      { "Id": "wrong", "Speaker": "hero", "Text": "Works! Next one-- where's my--" }
+    ]
+  },
+  {
+    "Id": "talk_quiz_hexsniper",
+    "Title": "Advice",
+    "Trigger": { "Kind": "Talk", "Id": "hexsniper" },
+    "Speakers": [
+      { "Id": "hero", "Class": "$with" }
+    ],
+    "Nodes": [
+      {
+        "Id": "ask", "Speaker": "hero", "Text": "I took the shot. Got paid. Why does the rest of you want an explanation?",
+        "Choices": [
+          { "Label": "You don't owe them anything. Paid is paid.", "Next": "wrong" },
+          { "Label": "Stop taking shots for coin.", "Next": "wrong" },
+          { "Label": "Being paid doesn't mean the shot owes the party no explanation. Mercenary isn't the same as silent.", "Next": "right", "Effects": [ { "Type": "GrantSkillPoint", "Id": "$with" } ] }
+        ]
+      },
+      { "Id": "right", "Speaker": "hero", "Text": "...An explanation. Fine. Billed as a courtesy." },
+      { "Id": "wrong", "Speaker": "hero", "Text": "Paid is paid." }
+    ]
+  },
+  {
+    "Id": "talk_quiz_hexwarden",
+    "Title": "Advice",
+    "Trigger": { "Kind": "Talk", "Id": "hexwarden" },
+    "Speakers": [
+      { "Id": "hero", "Class": "$with" }
+    ],
+    "Nodes": [
+      {
+        "Id": "ask", "Speaker": "hero", "Text": "This fen is mine to guard. You trample it, you get a snare. Why should I stand down?",
+        "Choices": [
+          { "Label": "We're crossing the fen out of need, not malice. Your suspicion can stand down for that.", "Next": "right", "Effects": [ { "Type": "GrantSkillPoint", "Id": "$with" } ] },
+          { "Label": "Never stand down. Snare everyone.", "Next": "wrong" },
+          { "Label": "Leave the fen behind. It's just mud.", "Next": "wrong" }
+        ]
+      },
+      { "Id": "right", "Speaker": "hero", "Text": "Need, not malice... fine. The fen will let you pass. This once. Mind the reeds." },
+      { "Id": "wrong", "Speaker": "hero", "Text": "Snare everyone. Good. The fen agrees." }
+    ]
+  },
+  {
+    "Id": "talk_quiz_hexstalker",
+    "Title": "Advice",
+    "Trigger": { "Kind": "Talk", "Id": "hexstalker" },
+    "Speakers": [
+      { "Id": "hero", "Class": "$with" }
+    ],
+    "Nodes": [
+      {
+        "Id": "ask", "Speaker": "hero", "Text": "Shoot, fall back, shoot again. Never where I fired from. Never where they can reach me. Never anywhere, really.",
+        "Choices": [
+          { "Label": "Good. Keep running, from everyone.", "Next": "wrong" },
+          { "Label": "Keeping your distance from foes is the job. You don't have to keep it from us.", "Next": "right", "Effects": [ { "Type": "GrantSkillPoint", "Id": "$with" } ] },
+          { "Label": "Stop falling back. Plant your feet and trade hits.", "Next": "wrong" }
+        ]
+      },
+      { "Id": "right", "Speaker": "hero", "Text": "From foes, not from you lot. ...I'll drift a little closer to the fire tonight." },
+      { "Id": "wrong", "Speaker": "hero", "Text": "Never anywhere. That's safest." }
+    ]
   }
 ]

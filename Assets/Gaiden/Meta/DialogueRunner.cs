@@ -111,7 +111,7 @@ namespace GridGame.Meta
 
         private void Apply(DialogueEffect e)
         {
-            var msg = e?.Type == DialogueEffectType.JoinHero && recruits.TryGetValue(e, out var who) ? JoinStoryHero(c, s, who) : ApplyEffect(c, s, e);
+            var msg = e?.Type == DialogueEffectType.JoinHero && recruits.TryGetValue(e, out var who) ? JoinStoryHero(c, s, who) : ApplyEffect(c, s, e, Def.Id, With);
             if (msg != null) Log.Add(msg);
         }
 
@@ -150,14 +150,17 @@ namespace GridGame.Meta
         public static bool NpcJoined(SaveData s, string npcId) => npcId != null && s.Flags.Contains(ContentLoader.NpcFlagPrefix + npcId);
 
         /// <summary>Applies one effect; returns a short player-facing note, or null when there's nothing to say.
-        /// Nothing here removes a hero (owner rule: nobody dies permanently).</summary>
-        public static string ApplyEffect(ContentDb c, SaveData s, DialogueEffect e)
+        /// Nothing here removes a hero (owner rule: nobody dies permanently). <paramref name="dialogueId"/> and
+        /// <paramref name="with"/> are the dialogue the effect belongs to and its Talk partner ("$with") — GrantSkillPoint
+        /// needs them to know who to reward and to guard the reward once per dialogue per hero.</summary>
+        public static string ApplyEffect(ContentDb c, SaveData s, DialogueEffect e, string dialogueId = null, string with = null)
         {
             if (e == null) return null;
             switch (e.Type)
             {
                 case DialogueEffectType.SetFlag: s.Flags.Add(e.Id); return null;
-                case DialogueEffectType.ClearFlag: if (!e.Id.StartsWith(ContentLoader.NpcFlagPrefix)) s.Flags.Remove(e.Id); return null;
+                case DialogueEffectType.ClearFlag: if (!e.Id.StartsWith(ContentLoader.NpcFlagPrefix) && !e.Id.StartsWith(SkillPointFlagPrefix)) s.Flags.Remove(e.Id); return null;
+                case DialogueEffectType.GrantSkillPoint: return GrantSkillPoint(c, s, e, dialogueId, with);
                 case DialogueEffectType.GrantGold:
                 {
                     int delta = e.Amount < 0 ? -Math.Min(s.Gold, -e.Amount) : e.Amount; // never below zero
@@ -184,6 +187,27 @@ namespace GridGame.Meta
                     return JoinStoryHero(c, s, Summon.StoryPick(c, s, e.Id, e.Role));
                 default: return null;
             }
+        }
+
+        /// <summary>Save-flag prefix guarding GrantSkillPoint ("sp:&lt;dialogue&gt;:&lt;hero&gt;"); ClearFlag can't touch it.</summary>
+        public const string SkillPointFlagPrefix = "sp:";
+
+        /// <summary>The flag that records <paramref name="heroId"/> already earned <paramref name="dialogueId"/>'s skill point.</summary>
+        public static string SkillPointFlag(string dialogueId, string heroId) => $"{SkillPointFlagPrefix}{dialogueId ?? "-"}:{heroId}";
+
+        /// <summary>GG-T133: a dialogue's skill point, once per dialogue per hero. The recipient is the effect's class
+        /// id, or the Talk partner for "$with"/null; it must be in the roster. A replay that picks the rewarded answer
+        /// again only says so — the guard flag is set the first time and never cleared (ClearFlag can't touch "sp:").</summary>
+        private static string GrantSkillPoint(ContentDb c, SaveData s, DialogueEffect e, string dialogueId, string with)
+        {
+            string heroId = e.Id == null || e.Id == "$with" ? with : e.Id;
+            var h = heroId == null ? null : s.Hero(heroId);
+            if (h == null) return null;
+            string name = c.TryClass(heroId)?.Name ?? heroId;
+            if (!s.Flags.Add(SkillPointFlag(dialogueId, heroId))) return $"{name}'s Skill Point was already earned";
+            int n = Math.Max(1, e.Amount);
+            h.SkillPoints += n;
+            return n == 1 ? $"{name} gains a Skill Point!" : $"{name} gains {n} Skill Points!";
         }
 
         /// <summary>A story recruit joins (GG-T118): free, at the roster's average experience, into the party if

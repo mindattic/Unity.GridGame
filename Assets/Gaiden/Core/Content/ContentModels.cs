@@ -700,14 +700,17 @@ namespace GridGame.Core.Content
     /// <summary>Nothing here can remove a hero for good (owner rule: nobody dies permanently).
     /// RecruitHero hires exactly the named class (no-op if owned); JoinHero (GG-T118) is a story recruit that
     /// always brings someone new: the named class if it's free, else a hero of <see cref="DialogueEffect.Role"/>
-    /// (or of a role the roster lacks) the player doesn't have yet.</summary>
-    public enum DialogueEffectType { SetFlag, ClearFlag, GrantGold, GrantItem, RecruitHero, JoinNpc, JoinHero }
+    /// (or of a role the roster lacks) the player doesn't have yet.
+    /// GrantSkillPoint (GG-T133) gives a hero — <see cref="DialogueEffect.Id"/> as a class id, or "$with"/null for the
+    /// Talk partner — <see cref="DialogueEffect.Amount"/> skill points (default 1), once per dialogue per hero: the
+    /// save flag <c>sp:&lt;dialogue&gt;:&lt;hero&gt;</c> guards it, so a replayed Talk can't farm it.</summary>
+    public enum DialogueEffectType { SetFlag, ClearFlag, GrantGold, GrantItem, RecruitHero, JoinNpc, JoinHero, GrantSkillPoint }
 
     public sealed class DialogueEffect
     {
         public DialogueEffectType Type;
         public string Id;
-        /// <summary>GrantGold amount (negative = pay) or GrantItem count (default 1).</summary>
+        /// <summary>GrantGold amount (negative = pay), GrantItem count (default 1) or GrantSkillPoint count (default 1).</summary>
         public int Amount;
         /// <summary>JoinHero only: the role to fall back on when <see cref="Id"/> is missing or already owned.</summary>
         public string Role;

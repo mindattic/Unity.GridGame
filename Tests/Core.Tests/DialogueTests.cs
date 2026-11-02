@@ -272,6 +272,8 @@ namespace GridGame.Tests
             Assert.That(DialogueRunner.TalkPartners(s).Last(), Is.EqualTo("npc:merchant"));
             Assert.That(DialogueRunner.TalkTopic(Real, s, "npc:merchant")?.Id, Is.EqualTo("camp_merchant_chat"));
             var hero = s.Party[1];
+            Assert.That(DialogueRunner.TalkTopic(Real, s, hero)?.Id, Is.EqualTo("talk_quiz_" + hero), "the hero's own unseen quiz (GG-T133) comes first");
+            s.SeenDialogues.Add("talk_quiz_" + hero);
             var topic = DialogueRunner.TalkTopic(Real, s, hero);
             Assert.That(topic?.Id, Is.EqualTo("camp_party_chat"));
             var r = new DialogueRunner(Real, s, topic, hero);
@@ -292,6 +294,52 @@ namespace GridGame.Tests
             Assert.That(s.Gold, Is.EqualTo(100));
             var again = new DialogueRunner(Real, s, DialogueRunner.TalkTopic(Real, s, "npc:merchant"));
             Assert.That(again.Choices.Select(c => c.Label), Has.None.Contains("guard"), "RosterLacks hides it once hired");
+        }
+
+        [Test]
+        public void Every_hero_class_has_a_talk_quiz_whose_right_answer_pays_one_skill_point_once()
+        {
+            var heroes = Real.Classes.Values.Where(k => k.Team == Team.Hero).Select(k => k.Id).ToList();
+            Assert.That(heroes, Is.Not.Empty);
+            foreach (var id in heroes)
+            {
+                var quiz = Real.DialogueOrder.FirstOrDefault(d => d.Id == "talk_quiz_" + id);
+                Assert.That(quiz, Is.Not.Null, $"{id} has no Talk quiz");
+                Assert.That(quiz.Trigger.Kind, Is.EqualTo(DialogueTriggerKind.Talk));
+                Assert.That(quiz.Trigger.Id, Is.EqualTo(id));
+                Assert.That(quiz.Once, Is.False, "the quiz is replayable");
+                var rewarded = quiz.Nodes.SelectMany(n => n.Choices).Where(ch => ch.Effects.Any(e => e.Type == DialogueEffectType.GrantSkillPoint)).ToList();
+                Assert.That(rewarded, Has.Count.EqualTo(1), $"{id}: exactly one right answer");
+                Assert.That(quiz.Nodes.SelectMany(n => n.Choices).Count(), Is.GreaterThanOrEqualTo(3), $"{id}: needs wrong answers too");
+            }
+        }
+
+        [Test]
+        public void Talk_quiz_right_answer_grants_a_skill_point_once_and_a_wrong_one_never()
+        {
+            var s = NewSave();
+            var hero = s.Party[0];
+            var quiz = Real.Dialogues["talk_quiz_" + hero];
+            int before = s.Hero(hero).SkillPoints;
+
+            int Pick(bool right)
+            {
+                var r = new DialogueRunner(Real, s, quiz, hero);
+                while (!r.AwaitingChoice && !r.Finished) r.Advance();
+                int i = r.Choices.FindIndex(ch => ch.Effects.Any(e => e.Type == DialogueEffectType.GrantSkillPoint) == right);
+                r.Choose(i);
+                while (!r.Finished) { if (!r.Advance()) r.Choose(0); }
+                return s.Hero(hero).SkillPoints;
+            }
+
+            Assert.That(Pick(false), Is.EqualTo(before), "a wrong answer earns nothing");
+            Assert.That(Pick(true), Is.EqualTo(before + 1), "the right answer earns the point");
+            Assert.That(Pick(true), Is.EqualTo(before + 1), "replaying can't farm it");
+            Assert.That(DialogueRunner.TalkTopic(Real, s, hero), Is.Not.Null, "still offered after it's been played");
+
+            var clear = new DialogueEffect { Type = DialogueEffectType.ClearFlag, Id = DialogueRunner.SkillPointFlag(quiz.Id, hero) };
+            DialogueRunner.ApplyEffect(Real, s, clear);
+            Assert.That(s.Flags, Does.Contain(DialogueRunner.SkillPointFlag(quiz.Id, hero)), "ClearFlag can't reset the guard");
         }
 
         [Test]

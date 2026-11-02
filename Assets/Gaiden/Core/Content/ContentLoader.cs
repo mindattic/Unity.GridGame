@@ -352,6 +352,12 @@ namespace GridGame.Core.Content
                     case DialogueEffectType.ClearFlag:
                         if (string.IsNullOrEmpty(e.Id)) p.Add($"{where}: {e.Type} needs a flag Id");
                         else if (e.Id.StartsWith(NpcFlagPrefix)) p.Add($"{where}: flag '{e.Id}' is reserved — use JoinNpc");
+                        else if (e.Id.StartsWith("sp:")) p.Add($"{where}: flag '{e.Id}' is reserved — use GrantSkillPoint");
+                        break;
+                    case DialogueEffectType.GrantSkillPoint:
+                        if (e.Id == null || e.Id == "$with") { if (!talkWithHero) p.Add($"{where}: GrantSkillPoint to \"$with\" only fits a Talk with a party member — name a hero class otherwise"); }
+                        else if (!IsHero(e.Id)) p.Add($"{where}: GrantSkillPoint needs a hero class or \"$with\", has '{e.Id}'");
+                        if (e.Amount < 0) p.Add($"{where}: GrantSkillPoint can't take points away");
                         break;
                     case DialogueEffectType.GrantGold:
                         if (e.Amount == 0) p.Add($"{where}: GrantGold needs a non-zero Amount"); break;
