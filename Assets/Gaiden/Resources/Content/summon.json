@@ -8,7 +8,8 @@
     "thief",
     "vampire",
     "hexsniper",
-    "hexwarden"
+    "hexwarden",
+    "hexstalker"
   ],
   "BasePrice": 250,
   "PriceStep": 250

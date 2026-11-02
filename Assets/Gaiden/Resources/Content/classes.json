@@ -19987,10 +19987,10 @@
     ],
     "DefaultLoadout": [
       "ranged_quickshot",
-      "ranged_calledshot",
+      "marksman_deadeye_shot",
       "item:x_potion",
       "hexsniper_piercingshot",
-      "ranged_suppressingfire"
+      "marksman_execution_shot"
     ],
     "DropTable": null,
     "MoveRange": 1,
@@ -20109,10 +20109,131 @@
     ],
     "DefaultLoadout": [
       "ranged_quickshot",
-      "ranged_calledshot",
+      "trapper_binding_shot",
       "item:x_potion",
       "hexwarden_snareshot",
-      "ranged_suppressingfire"
+      "trapper_snare_net"
+    ],
+    "DropTable": null,
+    "MoveRange": 1,
+    "XpReward": 10,
+    "BossPhases": [],
+    "ChargeAbility": null,
+    "ChargeShape": "Single",
+    "Trap": null,
+    "SnakeSegments": 0,
+    "Role": "Ranged",
+    "HomeTree": "ranger",
+    "WeaponProficiencies": [
+      "Martial"
+    ]
+  },
+  {
+    "Id": "hexstalker",
+    "Name": "Hex Stalker",
+    "Team": "Hero",
+    "Tags": [
+      "Humanoid"
+    ],
+    "Description": "A ranged skirmisher \u2014 shoots, falls back and shoots again, never letting a foe close the distance it keeps.",
+    "Lore": "A swamp hag who never stays where she fired from, drifting through the reeds a step ahead of whatever is chasing her.",
+    "Card": "Ranged skirmish. Converts [footwork] into [shots] that keep a whole lane at arm's length.",
+    "Portrait": "hexstalker",
+    "Footprint": {
+      "W": 1,
+      "H": 1
+    },
+    "BaseStats": {
+      "Strength": 12,
+      "Vitality": 12,
+      "Agility": 12,
+      "Speed": 12,
+      "Stamina": 12,
+      "Intelligence": 12,
+      "Wisdom": 12,
+      "Luck": 12
+    },
+    "Growth": {
+      "Strength": 0.7,
+      "Vitality": 0.7,
+      "Agility": 0.7,
+      "Speed": 0.7,
+      "Stamina": 0.7,
+      "Intelligence": 0.7,
+      "Wisdom": 0.7,
+      "Luck": 0.7
+    },
+    "Milestones": [
+      {
+        "Level": 5,
+        "Growth": {
+          "Strength": 0.24,
+          "Vitality": 0.24,
+          "Agility": 0.24,
+          "Speed": 0.24,
+          "Stamina": 0.24,
+          "Intelligence": 0.24,
+          "Wisdom": 0.24,
+          "Luck": 0.24
+        }
+      },
+      {
+        "Level": 10,
+        "Growth": {
+          "Strength": 0.32,
+          "Vitality": 0.32,
+          "Agility": 0.32,
+          "Speed": 0.32,
+          "Stamina": 0.32,
+          "Intelligence": 0.32,
+          "Wisdom": 0.32,
+          "Luck": 0.32
+        }
+      },
+      {
+        "Level": 20,
+        "Growth": {
+          "Strength": 0.42,
+          "Vitality": 0.42,
+          "Agility": 0.42,
+          "Speed": 0.42,
+          "Stamina": 0.42,
+          "Intelligence": 0.42,
+          "Wisdom": 0.42,
+          "Luck": 0.42
+        }
+      },
+      {
+        "Level": 40,
+        "Growth": {
+          "Strength": 0.56,
+          "Vitality": 0.56,
+          "Agility": 0.56,
+          "Speed": 0.56,
+          "Stamina": 0.56,
+          "Intelligence": 0.56,
+          "Wisdom": 0.56,
+          "Luck": 0.56
+        }
+      }
+    ],
+    "Resistances": {},
+    "Abilities": [
+      "ranged_quickshot",
+      "ranged_calledshot",
+      "ranged_suppressingfire",
+      "hexstalker_fadingshot",
+      "skirmisher_covering_volley",
+      "skirmisher_retreat_shot",
+      "skirmisher_rapid_barrage",
+      "pinning_shot"
+    ],
+    "DefaultLoadout": [
+      "ranged_quickshot",
+      "skirmisher_covering_volley",
+      "item:x_potion",
+      "hexstalker_fadingshot",
+      "skirmisher_rapid_barrage"
     ],
     "DropTable": null,
     "MoveRange": 1,

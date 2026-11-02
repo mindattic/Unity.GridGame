@@ -421,16 +421,16 @@ talking about a device instead of itself.
 
 ---
 
-## Ranged — 2 classes, home tree `ranger`
+## Ranged — 3 classes, home tree `ranger`
 
 **Job:** precision single-target/line damage that never needs to be adjacent (`docs/BIBLE.md` §25.13) —
-the newest role (added GG-T11) and the only one with no sub-archetype clusters yet: both classes still
-run the shared `ranged_*` baseline kit, and the tree's three branches (Marksman, Trapper, Skirmisher)
-currently have nobody assigned to them (`docs/BIBLE.md` §25.6.1, GG-T82 follow-up). **Voice register:**
-distance made literal in how they talk — both keep people at arm's length, one coldly, one playfully.
-**What the role needs advice about, in general:** that two classes, both reused from the same `hag00`/
-`hag01` portraits (`docs/BIBLE.md` §25.13), is a small enough roster that each one has to work twice as
-hard to not read as the same person twice.
+the newest role (added GG-T11), split since GG-T18 into one class per Ranger branch: Marksman
+(`hexsniper`), Trapper (`hexwarden`) and Skirmisher (`hexstalker`) (`docs/BIBLE.md` §25.13).
+**Voice register:** distance made literal in how they talk — all three keep people at arm's length, one
+coldly, one territorially, one by simply never being where you left her. **What the role needs advice
+about, in general:** that three classes, all reused from the same hag-family portraits (`hag00`/`hag01`/
+`hag02`, `docs/BIBLE.md` §25.13), is a small enough roster that each one has to work twice as hard to not
+read as the same person three times.
 
 - **Hex Sniper** (`hexsniper`, signature *Piercing Shot*) — Bio: a swamp hag who traded curses for coin,
   picks off the toughest target in a fight from well outside its reach (its own classes.json lore line,
@@ -442,3 +442,8 @@ hard to not read as the same person twice.
   — guards a place, not a contract. Voice: proprietary, a little territorial, warmer about the fen than
   about the people in it. Needs advice about: that the fens it's warding are the same ground the
   caravan's crossing out of necessity, not malice — the warden's suspicion needs a reason to stand down.
+- **Hex Stalker** (`hexstalker`, signature *Fading Shot*) — Bio: a swamp hag who never stays where she
+  fired from, drifting through the reeds a step ahead of whatever is chasing her (its own classes.json
+  lore line). Voice: light, evasive, answers a question with a question and is gone before the reply.
+  Needs advice about: that keeping her distance from every fight is a tactic, but keeping it from every
+  person in the caravan is just running — someone has to know where she'll be.

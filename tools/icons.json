@@ -961,6 +961,10 @@
    "lorc/poison-bottle",
    "poison"
   ],
+  "hexstalker_fadingshot": [
+   "lorc/feather",
+   "jade"
+  ],
   "marksman_deadeye_shot": [
    "delapouite/bow-arrow",
    "bronze"
