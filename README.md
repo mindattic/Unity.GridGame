@@ -121,7 +121,9 @@ python tools/check_glyphs.py     # verify every UI glyph exists in the bundled f
 | `-skill N` | Bot skill level for autoplay |
 | `-records DIR` | Write JSON battle records to this folder |
 | `-telemetry` | Enable bot telemetry |
-| `-saveRoot DIR` | Use a different save folder |
+| `-saveRoot DIR` | Keep every profile under `DIR/Profiles` instead of the real ones (the harness passes its run folder) |
+| `-profile NAME` | Play as this player profile, creating it if missing (`-demo`/`-testmode` use a throwaway profile) |
+| `-profiles-root DIR` | Unity.Shared's override for the Profiles folder itself; `MINDATTIC_PROFILES_ROOT` does the same |
 | `-noDiagonalSlip` | Turn off diagonal slip |
 | `-capture-config PATH` | Load MindAttic.Capture trigger rules from this file |
 | `-muted` | Mute all audio for this session only (see Audio mute below); `MINDATTIC_CLI_MUTED=1` does the same |

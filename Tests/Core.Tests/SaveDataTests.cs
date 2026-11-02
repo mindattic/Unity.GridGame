@@ -34,11 +34,10 @@ namespace GridGame.Tests
             var s = NewSave();
             s.Bounty = null;
             s.Worn = null;
-            s.Settings = null;
             var back = SaveMigrations.Migrate(s);
             Assert.That(back.Bounty, Is.Not.Null);
             Assert.That(back.Worn, Is.Not.Null);
-            Assert.That(back.Settings, Is.Not.Null);
+            // Settings left the save for the player profile (GG-T99): see ProfileTests.
         }
 
         [Test]

@@ -10,13 +10,14 @@ namespace GridGame.App.Automation
         {
             "title", "hub", "stages", "items", "status", "equip", "abilities", "party", "shop", "blacksmith",
             "alchemist", "enchantress", "talk", "summon", "bounties", "crucible", "bestiary", "settings", "credits", "newgame", "load",
+            "profiles", "newprofile",
         };
 
         public static bool TryGet(string id, out GameScreen screen)
         {
             screen = null;
             var app = GameApp.I;
-            bool needsSave = id != "title" && id != "credits" && id != "newgame" && id != "load";
+            bool needsSave = id != "title" && id != "credits" && id != "newgame" && id != "load" && id != "profiles" && id != "newprofile";
             if (needsSave && app.Save == null)
             {
                 app.Save = Meta.Progression.NewGame(app.Content, "Preview");
@@ -47,6 +48,8 @@ namespace GridGame.App.Automation
                 case "credits": screen = new CreditsScreen(); break;
                 case "newgame": screen = new SaveSlotScreen(true); break;
                 case "load": screen = new SaveSlotScreen(false); break;
+                case "profiles": screen = new ProfileSelectScreen(); break; // GG-T99
+                case "newprofile": screen = new ProfileNameScreen(null); break;
             }
             return screen != null;
         }

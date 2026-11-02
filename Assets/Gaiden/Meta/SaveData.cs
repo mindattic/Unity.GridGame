@@ -82,7 +82,8 @@ namespace GridGame.Meta
         /// <summary>Crucible record (§22.10): best waves survived and runs fought on this save.</summary>
         public CrucibleSave Crucible = new CrucibleSave();
         public Dictionary<string, BestiaryEntry> Bestiary = new Dictionary<string, BestiaryEntry>();
-        public SettingsSave Settings = new SettingsSave();
+        // Settings no longer live in a save slot (GG-T99): they belong to the player profile's settings.json
+        // (PlayerProfiles.cs). An older slot's "Settings" block is ignored on load; LegacySaveMigration reads it once.
 
         public HeroSave Hero(string classId) => Roster.Find(h => string.Equals(h.ClassId, classId, StringComparison.OrdinalIgnoreCase));
 
@@ -193,6 +194,8 @@ namespace GridGame.Meta
         public int Defeated;
     }
 
+    /// <summary>The player's settings — one set per profile, stored in Profiles/&lt;Name&gt;/settings.json through
+    /// <see cref="GaidenSettings"/> (GG-T99), not in a save slot.</summary>
     public sealed class SettingsSave
     {
         public float MusicVolume = 0.6f;
@@ -260,7 +263,6 @@ namespace GridGame.Meta
             s.Crucible ??= new CrucibleSave();
             s.Worn ??= new Dictionary<string, List<WornGear>>();
             s.Broken ??= new Dictionary<string, int>();
-            s.Settings ??= new SettingsSave();
             s.StationXp ??= new Dictionary<string, int>();
             s.DiscoveredRecipes ??= new HashSet<string>();
             s.Flags ??= new HashSet<string>();

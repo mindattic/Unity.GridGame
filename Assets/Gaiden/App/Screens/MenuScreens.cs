@@ -105,6 +105,11 @@ namespace GridGame.App
             if (recent >= 0) Ui.MenuRow("Continue", "", () => Continue(recent), menu);
             Ui.MenuRow("New Game", "", () => App.Router.Push(new SaveSlotScreen(true)), menu);
             Ui.MenuRow("Load Game", "", () => App.Router.Push(new SaveSlotScreen(false)), menu, null, recent >= 0);
+            // GG-T99 (§15.4): the player profile owns the settings and these three slots; switch / create / rename / delete here.
+            var profile = Ui.MenuRow("Profile", App.Profile?.Name ?? "", () => App.Router.Push(new ProfileSelectScreen()), menu);
+            profile.name = "title-profile";
+            profile.Q<Label>("value").AddToClassList("gold");
+            Ui.MenuRow("Settings", "", () => App.Router.Push(new SettingsScreen()), menu).name = "title-settings";
             Ui.MenuRow("Credits", "", () => App.Router.Push(new CreditsScreen()), menu);
             Ui.SelectFirst(menu);
 

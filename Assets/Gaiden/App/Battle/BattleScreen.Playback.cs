@@ -363,7 +363,7 @@ namespace GridGame.App
         // board "camera" pushes in on the pincer and settles back afterwards.
 
         public int CutInsShown { get; private set; }
-        private bool CutInsEnabled => App.Save?.Settings.PincerCutIns ?? true;
+        private bool CutInsEnabled => App.Settings.PincerCutIns;
 
         private static readonly AnimationCurve CutInCurve = new AnimationCurve(
             new Keyframe(0.0f, -1.0f, 0f, 0f, 0f, 0f),

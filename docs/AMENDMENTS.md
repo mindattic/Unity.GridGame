@@ -39,7 +39,8 @@ updated: 2026-10-09
   a missing clip is silent; feedback is code-drawn. *Why:* fewer moving parts for the rebuild; VFX stay ⬜.
 - **AnnouncementWindow + combat feed → one action banner.** *Why:* the banner is an awaited beat in
   the event player; the feed stays ⬜.
-- **Settings are per save slot** (no profile-level settings). *Why:* profiles are gone.
+- ~~**Settings are per save slot** (no profile-level settings). *Why:* profiles are gone.~~ **Reversed
+  2026-11-02 (owner, GG-T99):** settings belong to the player profile again — see the 2026-11-02 entry below.
 
 ## Timeline & time
 
@@ -128,7 +129,8 @@ updated: 2026-10-09
   price 120 + 80 per orb, skills 300; the bar accepts only Known abilities. *Why:* a gold sink and
   build expression beyond fixed class presets.
 - **Three save slots replace profiles** (owner); fixed party name "Lightbearer"; JSON with
-  migrations; dictionaries/sets serialize natively. *Why:* simpler and testable.
+  migrations; dictionaries/sets serialize natively. *Why:* simpler and testable. **Amended 2026-11-02
+  (GG-T99):** profiles are back, each holding its own three slots (2026-11-02 entry below).
 - **Stage list shows unlocked stages newest-first and collapses locked ones into one teaser row**
   (owner). *Why:* the frontier is always on top; no wall of locked rows.
 - **Stage names are "<Theme> I/II/III"** (owner).
@@ -530,6 +532,22 @@ updated: 2026-10-09
 - **Unaffected:** §1 (the biomechanical-plague/Longmother narrative merge, already landed GG-T120), §3
   (the dialogue engine, already landed GG-T117–120) and §4 (mid-battle recruitment, still open) — none of
   the three ever depended on an overworld.
+
+## 2026-11-02 — Player profiles return, on Unity.Shared (owner, GG-T99)
+
+- **Reverses "Settings are per save slot"** and amends "Three save slots replace profiles". A player
+  **profile** (`Profiles/<Name>/`, the shared `com.mindattic.unity.shared` package's `ProfileStore`) owns one
+  `settings.json` and its own three slots (`Saves/slot1-3.json`). Settings left `SaveData`: the shared
+  `common` block holds volumes, mutes, reduce motion and language; Gaiden-only settings (battle speed, drag
+  timer, colorblind palette, pincer close-ups, confirm-before-acting, menu theme, font, difficulty) live under
+  `game`. Changing a setting writes the profile's settings.json, not the loaded slot, and the settings apply on
+  the Title too. *Why:* the owner wants several players (or several runs with different preferences) on one
+  device, the same way every MindAttic Unity game keeps profiles. [BIBLE §15.1, §15.2, §15.4](BIBLE.md).
+- **Migration:** on first launch the old `persistentDataPath/Saves/slot*.json` are copied into a `Default`
+  profile, the most recently played slot's settings seed its settings.json, and the old folder is kept as
+  `Saves.migrated`. Nothing is deleted; deleting a profile moves it to `Profiles/.trash`.
+- **Automation:** `-saveRoot DIR` now holds `DIR/Profiles`; `-profile NAME` picks (or makes) a profile;
+  `-demo`/`-testmode` play under a throwaway profile in the temp cache, never the real ones.
 
 ## 2026-10-22 — 100+ distinct enemy groups (owner direction, epic W, GG-T184)
 

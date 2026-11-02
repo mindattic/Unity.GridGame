@@ -343,7 +343,7 @@ namespace GridGame.App.Automation
                     return new { error = "not in battle" };
                 case "speed":
                     Tween.Speed = F(q["x"], 1);
-                    if (app.Save != null) app.Save.Settings.BattleSpeed = Tween.Speed;
+                    app.Settings.BattleSpeed = Tween.Speed;
                     return new { ok = true, Tween.Speed };
                 case "cmd":
                 {
@@ -387,8 +387,7 @@ namespace GridGame.App.Automation
                 }
                 case "setting":
                 {
-                    if (app.Save == null) return new { error = "no save" };
-                    var st = app.Save.Settings;
+                    var st = app.Settings; // the active profile's (GG-T99); in memory, so a harness run never writes it
                     bool on = q["value"] == "1" || q["value"] == "true";
                     switch (q["key"])
                     {
@@ -404,6 +403,25 @@ namespace GridGame.App.Automation
                     }
                     app.ApplySettings();
                     return new { ok = true };
+                }
+                case "profile":
+                {
+                    // GG-T99: profiles under the run's own root (-saveRoot), never the real ones.
+                    // op=list | switch&name= | create&name= | rename&name=&to= | delete&name=
+                    try
+                    {
+                        switch (q["op"] ?? "list")
+                        {
+                            case "list": break;
+                            case "switch": app.SwitchProfile(q["name"]); break;
+                            case "create": app.CreateProfile(q["name"]); break;
+                            case "rename": app.RenameProfile(q["name"], q["to"]); break;
+                            case "delete": app.DeleteProfile(q["name"]); break;
+                            default: return new { error = "unknown op" };
+                        }
+                    }
+                    catch (Exception e) when (e is ArgumentException || e is InvalidOperationException) { return new { error = e.Message }; }
+                    return new { ok = true, current = app.Profile.Name, profiles = app.Profile.List(), root = app.Profile.Store.Root };
                 }
                 case "givemana":
                     if (app.Router.Current is BattleScreen gm) { gm.DevGiveMana(int.TryParse(q["n"], out var gn) ? gn : 6, int.TryParse(q["charge"], out var gc) ? gc : -1); return new { ok = true, bank = gm.State.Bank.ToString(), charge = gm.State.ManaCharge }; }
@@ -784,6 +802,7 @@ namespace GridGame.App.Automation
                 ["screen_size"] = new[] { Screen.width, Screen.height },
                 ["fps"] = Mathf.Round(1f / Mathf.Max(0.0001f, Time.smoothDeltaTime)),
                 ["board_audit"] = BoardAudit.Snapshot(),
+                ["profile"] = app.Profile?.Name,
             };
             if (app.Save != null)
                 dump["save"] = new { app.Save.Gold, app.Save.HighestClearedStage, party = app.Save.Party, inventory = app.Save.Inventory, levels = app.Save.Roster.ToDictionary(h => h.ClassId, Progression.Level), xp = app.Save.Roster.ToDictionary(h => h.ClassId, h => h.TotalXp), hp = app.Save.Roster.ToDictionary(h => h.ClassId, h => h.Hp), crucible = new { app.Save.Crucible.Best, app.Save.Crucible.Runs, app.Save.Crucible.TotalWaves }, expedition = app.Save.Expedition?.ThemeId };

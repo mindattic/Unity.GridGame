@@ -1533,7 +1533,7 @@ Owner: "sometimes enemies can lay eggs that hatch, sometimes new enemies don't s
 
 ### 15.1 Data model
 
-**Amended 2026-10-09:** **three save slots** replace profiles and save-state lists.
+**Amended 2026-10-09:** **three save slots** replace profiles and save-state lists. **Amended 2026-11-02 (GG-T99):** profiles are back — each player profile owns its own three slots and its own settings ([§15.4](#154-player-profiles)); `Settings` is no longer part of `SaveData`.
 
 ```
 SaveData                       (Meta/SaveData.cs; one per slot)
@@ -1546,7 +1546,7 @@ SaveData                       (Meta/SaveData.cs; one per slot)
 ├─ Inventory { itemId → count }, Recruits
 ├─ Bounty    ActiveId, Progress, Claimed{}
 ├─ Bestiary  { classId → Seen, Scanned, Defeated }
-└─ Settings  MusicVolume, SfxVolume, MuteMusic, MuteSfx, ColorblindMode, ReduceMotion, DragTimer, BattleSpeed
+└─ (Settings moved to the profile's settings.json, §15.4 — an old slot's Settings block is ignored on load)
 ```
 
 Level is **derived** from `TotalXp` (`Formulas.LevelFromTotalXp`, `XpToNext(L) = 50 + 10·L²`), so the curve can change without migration. `SaveMigrations.Migrate` upgrades in place (v1 is the first shape; it backfills missing sections and pads Bar/Relics) and rejects saves newer than the build. Dictionaries and sets serialize natively (Newtonsoft) — the old "lists only" limit is gone.
@@ -1555,13 +1555,13 @@ Level is **derived** from `TotalXp` (`Formulas.LevelFromTotalXp`, `XpToNext(L) =
 
 ### 15.2 Persistence flow
 
-`App/Services/SaveStore`: `slot1.json`…`slot3.json` under `persistentDataPath/Saves` (or `-saveRoot`), written atomically (temp file + `File.Replace`). `GameApp.Persist` writes:
+`App/Services/SaveStore`: `slot1.json`…`slot3.json` under the active profile's `persistentDataPath/Profiles/<Name>/Saves` (**amended 2026-11-02, GG-T99**; was `persistentDataPath/Saves`; `-saveRoot DIR` puts the whole Profiles folder under `DIR/Profiles`), written atomically (temp file + `File.Replace`). `GameApp.Persist` writes the slot; a settings change is written by `GameApp.SaveSettings` to the profile's settings.json instead:
 
 | Trigger | Saved? |
 |---|---|
 | New game in a slot | yes |
 | Every successful Camp action (buy, sell, craft, repair, equip, learn, assign, party, summon, bounty, inn, camp item) | yes, immediately |
-| Settings change | yes |
+| Settings change | the profile's settings.json, not the slot (GG-T99) |
 | Story crawl first shown | yes |
 | Battle end (victory, defeat, retreat, escape) | yes, after `BattleFactory.Commit` |
 | Save & Quit | yes |
@@ -1573,6 +1573,29 @@ Level is **derived** from `TotalXp` (`Formulas.LevelFromTotalXp`, `XpToNext(L) =
 
 - `HeroSave.Known` lists learned ability ids; `HeroSave.Bar` the five bar entries. The battle reads the bar through `BattleFactory.SpecFor`. *(Tests: `Save_round_trips_through_json`, `Full_loop_battle_commit_then_every_vendor`.)*
 - Bestiary: **Seen** for every class spawned or scanned, **Scanned** for Scan targets — recorded at commit even on defeat; **Defeated** counts kills on victory.
+
+### 15.4 Player profiles
+
+**Added 2026-11-02 (owner, GG-T99; reverses the "settings are per save slot" amendment).** Profiles come from the shared `com.mindattic.unity.shared` package (`Packages/manifest.json` → `file:../../Unity.Shared/unity/com.mindattic.unity.shared`; its engine-free `Unity.Shared.Core` is referenced by `GridGame.Meta` and compiled into the dotnet test build):
+
+```
+persistentDataPath/Profiles/
+├─ current.txt                 the profile in use
+├─ <Name>/settings.json        {"format":"mindattic.settings","version":1,"common":{…},"game":{…}}
+│   common: musicVolume, sfxVolume, muteMusic, muteSfx, reduceMotion, language   (every MindAttic game)
+│   game:   battleSpeed, dragTimer, colorblindMode, pincerCutIns, confirmActions,
+│           menuTheme, fontName, difficulty{preset, enemyHp, enemyDamage, enemySpeed, rewardGold, rewardXp, itemDropRate}
+├─ <Name>/Saves/slot1-3.json   that profile's save slots (§15.1)
+└─ .trash/<Name>~<UTC>         deleted profiles, moved aside, never erased
+```
+
+- `Meta/PlayerProfiles.cs`: `GaidenSettings` maps `SettingsSave` ↔ settings.json (unknown fields are kept; the CLI `-muted` session mute is never written back); `ProfileSession` is the active profile + its settings (switch / create / rename / delete; switching reloads settings from the new profile's file); `SaveFiles` is the slot file shape shared by `SaveStore` and the tests.
+- **Settings follow the profile, not the slot:** `GameApp.Settings` is the active profile's, applied at boot (so the Title already wears the player's theme, font and volumes) and the same whichever slot is loaded. The Settings screen (reachable from the Title as well as Camp) edits it and writes settings.json on every change.
+- **Title:** a **Profile** row shows the current profile; it opens the picker (`ProfileSelectScreen`: tap to switch; Rename; Delete with a confirm; **+ New profile**), and `ProfileNameScreen` takes a name (create — which also switches to it — or rename), refusing names that can't be a folder on every platform or already exist. Deleting the last profile leaves a fresh `Default`. Code-built like every other screen.
+- **Migration** (`LegacySaveMigration`, once, first launch): `persistentDataPath/Saves/slot*.json` are copied into the `Default` profile (a slot it already has is never overwritten), the most recently played slot's (by its `UpdatedUtc`) old `Settings` block seeds `Default/settings.json`, and the old folder is renamed `Saves.migrated`. Nothing is deleted.
+- **Automation:** `-saveRoot DIR` keeps every profile under `DIR/Profiles` (the harness passes its run folder, so harness and tests never touch real profiles); Unity.Shared's `-profiles-root DIR` / `MINDATTIC_PROFILES_ROOT` name the folder outright; `-profile NAME` picks (or creates) a profile; `-demo` and `-testmode` play under a throwaway `Throwaway` profile in a temp-cache folder cleared at launch. The automation endpoint has `profile?op=list|switch|create|rename|delete`, `goto` knows `profiles` and `newprofile`, and `python tools/harness.py profiles` shoots the picker, the name screen and Settings and checks settings follow the profile.
+
+*(Tests: `ProfileTests` — `Migration_moves_every_legacy_slot_into_the_Default_profile_and_keeps_the_old_folder`, `Migration_seeds_settings_from_the_most_recently_played_slot`, `Migration_runs_once_and_does_nothing_without_a_legacy_folder`, `Migration_never_overwrites_a_slot_the_profile_already_has`, `Each_profile_has_its_own_save_slots`, `Each_profile_has_its_own_settings`, `Switching_profiles_reloads_settings_and_remembers_the_choice`, `A_session_mute_never_reaches_settings_json`.)*
 
 ---
 

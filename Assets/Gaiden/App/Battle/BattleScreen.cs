@@ -48,7 +48,7 @@ namespace GridGame.App
         /// <summary>The picked anchor awaiting Confirm (owner direction 2026-10-11: select, confirm, act).</summary>
         public Coord? PendingTarget { get; private set; }
         public bool Confirming => PendingTarget.HasValue;
-        private bool ConfirmActions => App.Save?.Settings.ConfirmActions ?? true;
+        private bool ConfirmActions => App.Settings.ConfirmActions;
         /// <summary>HeroBot plays this battle. Forced on by <c>-autobattle</c> or <c>-demo</c>
         /// (the tour, see GameApp.DemoMode); otherwise toggled from the pause menu or the automation
         /// "autoplay" endpoint.</summary>
@@ -129,10 +129,10 @@ namespace GridGame.App
             if (bannerScrollRoutine != null) { App.StopCoroutine(bannerScrollRoutine); bannerScrollRoutine = null; }
         }
 
-        private bool Colorblind => App.Save?.Settings.ColorblindMode ?? false;
+        private bool Colorblind => App.Settings.ColorblindMode;
         /// <summary>This battle is a Crucible run (§22.10): open-ended wave count, keep-everything retreat.</summary>
         private bool InCrucible => Crucible.IsStage(stageId);
-        private bool ReduceMotion => App.Save?.Settings.ReduceMotion ?? false;
+        private bool ReduceMotion => App.Settings.ReduceMotion;
 
         protected override void Build(VisualElement root)
         {
@@ -154,7 +154,7 @@ namespace GridGame.App
                 var setup = setupOverride ?? BattleFactory.Build(App.Content, App.Save, stageId, seed);
                 State = BattleEngine.Create(App.Content, setup, initial);
                 recorder = new BattleRecorder(State, setup, "player", initial);
-                var diff = App.Save?.Settings.Difficulty;
+                var diff = App.Settings.Difficulty;
                 TelemetryUnity.Begin("GridGameGaiden", seed: setup.Seed, contentVersion: Application.version,
                     tags: new TelemetryData
                     {
@@ -1265,7 +1265,7 @@ namespace GridGame.App
                 SyncAll();
             }
             TickLinger(dt);
-            if (dragging && !simulatingDrag && App.Save != null && App.Save.Settings.DragTimer)
+            if (dragging && !simulatingDrag && App.Settings.DragTimer)
             {
                 dragTimeLeft -= dt;
                 timerLabel.text = $"{Mathf.Max(0, dragTimeLeft):0.0}";

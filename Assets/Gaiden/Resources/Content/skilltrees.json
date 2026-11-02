@@ -910,20 +910,6 @@
     "Prerequisites": []
    },
    {
-    "Id": "warden_stat1",
-    "Name": "Intelligence +3",
-    "Description": "Arcane Warden conditioning: a permanent +3 Intelligence.",
-    "GrantsStat": {
-     "Stat": "Intelligence",
-     "Amount": 3
-    },
-    "Cost": 1,
-    "RequiredPointsInTree": 2,
-    "Prerequisites": [
-     "warden_opener"
-    ]
-   },
-   {
     "Id": "warden_core",
     "Name": "Spellshield",
     "Description": "A mirrored shell of mana that unpicks hexes and wards an ally.",
@@ -932,20 +918,6 @@
     "RequiredPointsInTree": 3,
     "Prerequisites": [
      "warden_opener"
-    ]
-   },
-   {
-    "Id": "warden_stat2",
-    "Name": "Wisdom +2",
-    "Description": "Arcane Warden conditioning: a permanent +2 Wisdom.",
-    "GrantsStat": {
-     "Stat": "Wisdom",
-     "Amount": 2
-    },
-    "Cost": 1,
-    "RequiredPointsInTree": 5,
-    "Prerequisites": [
-     "warden_core"
     ]
    },
    {

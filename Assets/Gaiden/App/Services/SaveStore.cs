@@ -8,33 +8,32 @@ using UnityEngine;
 
 namespace GridGame.App
 {
-    /// <summary>Three save slots as JSON files (atomic write via temp + replace). Root is overridable for tests/automation.</summary>
+    /// <summary>Three save slots as JSON files (atomic write via temp + replace) in one folder: the active player
+    /// profile's <c>Profiles/&lt;Name&gt;/Saves</c> (GG-T99), or a test folder.</summary>
     public sealed class SaveStore
     {
-        public const int Slots = 3;
+        public const int Slots = SaveFiles.Slots;
         public readonly string Root;
 
         /// <summary>
         /// Save files get their own settings rather than reusing <see cref="ContentLoader.Settings"/>: that one's
         /// MissingMemberHandling.Error is right for strict content validation, but applied to a save it would throw
         /// on deserialization the moment any field is renamed/removed — before SaveMigrations.Migrate ever runs,
-        /// defeating the migration path SaveData documents. Saves tolerate unknown/stale properties instead.
+        /// defeating the migration path SaveData documents. Saves tolerate unknown/stale properties instead
+        /// (<see cref="SaveFiles.Settings"/>, shared with the engine-free tests).
         /// </summary>
-        private static readonly JsonSerializerSettings SaveSettings = new JsonSerializerSettings
-        {
-            Converters = { new StringEnumConverter() },
-            MissingMemberHandling = MissingMemberHandling.Ignore,
-            NullValueHandling = NullValueHandling.Ignore,
-            ObjectCreationHandling = ObjectCreationHandling.Replace,
-        };
+        private static JsonSerializerSettings SaveSettings => SaveFiles.Settings;
 
-        public SaveStore(string root = null)
+        /// <summary><paramref name="root"/> is required: the old default (persistentDataPath/Saves) is the pre-profile
+        /// folder LegacySaveMigration moves away, and recreating it would migrate it again on the next launch.</summary>
+        public SaveStore(string root)
         {
-            Root = root ?? Path.Combine(Application.persistentDataPath, "Saves");
+            if (string.IsNullOrEmpty(root)) throw new ArgumentException("A save folder is needed.", nameof(root));
+            Root = root;
             Directory.CreateDirectory(Root);
         }
 
-        private string PathFor(int slot) => Path.Combine(Root, $"slot{slot + 1}.json");
+        private string PathFor(int slot) => SaveFiles.PathFor(Root, slot);
 
         public bool Exists(int slot) => File.Exists(PathFor(slot));
 
@@ -102,6 +101,10 @@ namespace GridGame.App
         private static void Flush() { }
 #endif
 
+        /// <summary>Pushes file writes made outside this store (profile settings.json, profile create/rename/delete) to
+        /// durable storage — a no-op everywhere but WebGL.</summary>
+        public static void SyncFiles() => Flush();
+
         public void Delete(int slot)
         {
             var p = PathFor(slot);
@@ -109,18 +112,6 @@ namespace GridGame.App
             Flush();
         }
 
-        public int MostRecent()
-        {
-            int best = -1;
-            DateTime bestTime = DateTime.MinValue;
-            for (int i = 0; i < Slots; i++)
-            {
-                var p = PathFor(i);
-                if (!File.Exists(p)) continue;
-                var t = File.GetLastWriteTimeUtc(p);
-                if (t > bestTime) { bestTime = t; best = i; }
-            }
-            return best;
-        }
+        public int MostRecent() => SaveFiles.MostRecent(Root);
     }
 }

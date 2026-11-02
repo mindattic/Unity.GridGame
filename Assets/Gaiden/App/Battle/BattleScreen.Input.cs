@@ -330,7 +330,7 @@ namespace GridGame.App
                 SyncAll();
                 return;
             }
-            float timeLeft = App.Save != null && App.Save.Settings.DragTimer ? Mathf.Max(0f, dragTimeLeft) : 0f;
+            float timeLeft = App.Settings.DragTimer ? Mathf.Max(0f, dragTimeLeft) : 0f;
             var cmd = new MoveCommand { HeroId = dragHeroId, Path = new List<Coord>(dragPath), TimeLeftSeconds = timeLeft };
             // Snap the dragged hero onto its final tile before playback.
             App.StartCoroutine(Tween.Move(v.Root, new Vector2(v.Root.resolvedStyle.left, v.Root.resolvedStyle.top), BoardView.PosOf(dragTile), 0.06f));

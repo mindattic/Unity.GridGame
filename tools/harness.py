@@ -13,6 +13,7 @@ Self-play harness: launches the development player with the automation endpoint 
     python tools/harness.py crucible [WAVES [RUN]]  # GG-T95: camp -> Crucible -> Auto -> leave after WAVES (99 = fight to a wipe) -> results -> camp
     python tools/harness.py stress HOURS     # unattended soak test (GG-T21); default 4h
     python tools/harness.py testmode N       # GG-T93: -testmode self-play, N full battle→results→camp cycles
+    python tools/harness.py profiles         # GG-T99: profile picker / new profile / Settings shots; settings follow the profile
     python tools/harness.py shot NAME        # screenshot the running player
     python tools/harness.py call PATH [k=v]  # raw endpoint call, e.g. call state
 
@@ -1574,6 +1575,53 @@ def stress(run="stress", hours=4.0, speed=3, timeout=240):
     return clips
 
 
+def profiles(run="profiles"):
+    """GG-T99 (bible 15.4): player profiles. Runs under the run's own -saveRoot (artifacts/<run>/saves/Profiles), never
+    the real ones. Shoots the Title (profile row), the profile picker, the New Profile name screen and Settings; checks a
+    setting saved in one profile doesn't show in another and comes back when switching back. Exit 1 on any failure."""
+    fails = []
+    launch(run, fresh=True)
+    _wait_screen("title"); time.sleep(0.8)
+    shot("01-title")
+    print(call("profile", op="create", name="Second"))
+    call("goto", screen="profiles"); time.sleep(0.9)
+    shot("02-profiles"); problems = call("layout").get("problems")
+    if problems: fails.append(f"profiles layout: {problems}")
+    call("goto", screen="newprofile"); time.sleep(0.9)
+    shot("03-new-profile")
+    call("goto", screen="settings"); time.sleep(0.9)
+    shot("04-settings-default")
+    # Settings belong to the profile: flip one in Default, save it through the real Settings row, then compare.
+    call("clicktext", text="Colorblind palette"); time.sleep(0.6)
+    shot("05-settings-colorblind-on")
+    r = call("profile", op="switch", name="Second")
+    if r.get("current") != "Second": fails.append(f"switch: {r}")
+    call("goto", screen="settings"); time.sleep(0.9)
+    shot("06-settings-second")
+    if not any("Colorblind palette" in t and "OFF" in t for t in _row_texts()):
+        fails.append("Second profile shows Default's colorblind setting")
+    call("profile", op="switch", name="Default")
+    call("goto", screen="settings"); time.sleep(0.9)
+    if not any("Colorblind palette" in t and "ON" in t for t in _row_texts()):
+        fails.append("Default's colorblind setting didn't come back after switching")
+    call("goto", screen="title"); time.sleep(0.9)
+    shot("07-title-default")
+    root = call("profile").get("root", "")
+    if os.path.normcase(os.path.join(ROOT, "artifacts", run)) not in os.path.normcase(root):
+        fails.append(f"profiles root is not the run's own folder: {root}")
+    logs = call("logs")
+    errs = [l for l in logs if l.startswith(("Error", "Exception"))]
+    if errs: fails.append(f"errors: {errs}")
+    print("FAIL:\n  " + "\n  ".join(fails) if fails else "profiles: OK")
+    return not fails
+
+
+def _row_texts():
+    """Menu rows as 'label value' strings (texts lists every label; a row's label and value are adjacent)."""
+    t = call("texts")
+    return [f"{a} {b}" for a, b in zip(t, t[1:])]
+
+
 if __name__ == "__main__":
     cmd = sys.argv[1] if len(sys.argv) > 1 else "smoke"
     if cmd == "smoke":
@@ -1620,6 +1668,8 @@ if __name__ == "__main__":
         stress(hours=float(sys.argv[2]) if len(sys.argv) > 2 else 4.0)
     elif cmd == "recruits":
         sys.exit(0 if story_recruits() else 1)
+    elif cmd == "profiles":
+        sys.exit(0 if profiles(sys.argv[2] if len(sys.argv) > 2 else "profiles") else 1)
     elif cmd == "testmode":
         sys.exit(0 if testmode(cycles=int(sys.argv[2]) if len(sys.argv) > 2 else 4) else 1)
     elif cmd == "shot":

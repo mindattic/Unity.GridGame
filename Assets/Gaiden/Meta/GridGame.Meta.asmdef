@@ -1,7 +1,7 @@
 {
   "name": "GridGame.Meta",
   "rootNamespace": "GridGame.Meta",
-  "references": ["GridGame.Core"],
+  "references": ["GridGame.Core", "Unity.Shared.Core"],
   "includePlatforms": [],
   "excludePlatforms": [],
   "allowUnsafeCode": false,

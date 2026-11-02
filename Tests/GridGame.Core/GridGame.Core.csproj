@@ -12,6 +12,9 @@
   <ItemGroup>
     <Compile Include="../../Assets/Gaiden/Core/**/*.cs" />
     <Compile Include="../../Assets/Gaiden/Meta/**/*.cs" />
+    <!-- The shared com.mindattic.unity.shared package's engine-free core (profiles, settings.json), the same
+         source Packages/manifest.json references; Meta's player profiles build on it (GG-T99). -->
+    <Compile Include="../../../Unity.Shared/unity/com.mindattic.unity.shared/Runtime/Core/**/*.cs" LinkBase="Unity.Shared.Core" />
   </ItemGroup>
   <ItemGroup>
     <PackageReference Include="Newtonsoft.Json" Version="13.0.3" />

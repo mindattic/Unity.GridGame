@@ -35,7 +35,13 @@ namespace GridGame.App
         public static GameApp I { get; private set; }
 
         public ContentDb Content { get; private set; }
+        /// <summary>The active player profile's save slots (Profiles/&lt;Name&gt;/Saves, GG-T99).</summary>
         public SaveStore Saves { get; private set; }
+        /// <summary>The active player profile and its settings (bible §15.4, GG-T99).</summary>
+        public ProfileSession Profile { get; private set; }
+        /// <summary>The active profile's settings — the same whichever save slot is loaded, and on the title screen.</summary>
+        public SettingsSave Settings => Profile?.Settings ?? fallbackSettings;
+        private readonly SettingsSave fallbackSettings = new SettingsSave();
         public Audio Audio { get; private set; }
         public ScreenRouter Router { get; private set; }
         public VisualElement Stage { get; private set; }
@@ -77,11 +83,12 @@ namespace GridGame.App
 
             Content = LoadContent();
             Art.IndexSpells(Content.Abilities.Keys);
-            Saves = new SaveStore(CommandLine.Value("-saveRoot"));
+            OpenProfiles();
             Audio = Audio.Create(transform);
 
             BuildPanel();
             Router = new ScreenRouter(Stage.Q("screens"), Stage.Q("fade"));
+            ApplySettings(); // the profile's settings hold on the title screen too, before any save is loaded
 
             if (CommandLine.Has("-noDiagonalSlip")) BattleConfig.DiagonalSlipEnabled = false;
             var skill = CommandLine.Value("-skill");
@@ -287,12 +294,98 @@ namespace GridGame.App
 
         public void ApplySettings()
         {
-            if (Save == null) return;
-            Audio.Apply(Save.Settings);
-            Tween.Speed = Mathf.Clamp(Save.Settings.BattleSpeed, 0.5f, 3f);
-            Art.ApplyTheme(Save.Settings.MenuTheme);
+            var st = Settings;
+            Audio?.Apply(st);
+            Tween.Speed = Mathf.Clamp(st.BattleSpeed, 0.5f, 3f);
+            Art.ApplyTheme(st.MenuTheme);
             Ui.ApplyMenuTheme(Document?.rootVisualElement);
-            Fonts.ApplyFont(Save.Settings.FontName);
+            Fonts.ApplyFont(st.FontName);
+        }
+
+        /// <summary>Writes the active profile's settings to its settings.json (a settings change, bible §15.2).</summary>
+        public void SaveSettings()
+        {
+            if (Profile == null) return;
+            if (!Profile.SaveSettings()) Toast("Couldn't save settings!");
+            SaveStore.SyncFiles();
+        }
+
+        // ── Player profiles (bible §15.4, GG-T99) ──────────────────────────────────
+
+        /// <summary>Name of the profile `-demo` / `-testmode` play under, in a throwaway folder outside the real profiles.</summary>
+        public const string ThrowawayProfile = "Throwaway";
+
+        /// <summary>
+        /// Picks the Profiles folder and the profile, then points <see cref="Saves"/> at that profile's slots:
+        /// `-saveRoot DIR` (harness/tests) keeps everything under DIR/Profiles; Unity.Shared's `-profiles-root DIR` /
+        /// MINDATTIC_PROFILES_ROOT name the folder outright; `-demo` / `-testmode` use a throwaway folder under the
+        /// temp cache. Only the real folder (persistentDataPath/Profiles) gets the one-time legacy migration.
+        /// `-profile NAME` selects (or creates) that profile; otherwise the last one used.
+        /// </summary>
+        private void OpenProfiles()
+        {
+            var saveRoot = CommandLine.Value("-saveRoot");
+            bool throwaway = DemoMode.Active || TestMode.Active;
+            Unity.Shared.Core.ProfileStore store;
+            if (!string.IsNullOrEmpty(saveRoot)) store = Unity.Shared.Core.Profiles.UseRoot(System.IO.Path.Combine(saveRoot, Unity.Shared.Core.ProfileStore.FolderName));
+            else if (Unity.Shared.Core.Profiles.OverrideRoot() != null) store = Unity.Shared.Core.Profiles.UseDataPath(Application.persistentDataPath);
+            else if (throwaway)
+            {
+                var dir = System.IO.Path.Combine(Application.temporaryCachePath, "ThrowawayProfiles");
+                try { if (System.IO.Directory.Exists(dir)) System.IO.Directory.Delete(dir, true); }
+                catch (Exception e) { Debug.LogWarning("[Profiles] couldn't clear the throwaway folder: " + e.Message); }
+                store = Unity.Shared.Core.Profiles.UseRoot(dir);
+            }
+            else
+            {
+                store = Unity.Shared.Core.Profiles.UseDataPath(Application.persistentDataPath);
+                try
+                {
+                    var m = LegacySaveMigration.Run(Application.persistentDataPath, store);
+                    if (m.Ran) Debug.Log($"[Profiles] migrated legacy saves into '{Unity.Shared.Core.ProfileStore.DefaultName}': copied [{string.Join(", ", m.Copied)}], kept [{string.Join(", ", m.Skipped)}], settings from slot {m.SeededFromSlot + 1}, old folder now {m.MovedTo}");
+                }
+                catch (Exception e) { Debug.LogError("[Profiles] legacy save migration failed (the old Saves folder is untouched): " + e.Message); }
+            }
+
+            var requested = CommandLine.Value("-profile") ?? (throwaway ? ThrowawayProfile : null);
+            try { Profile = new ProfileSession(store, requested); }
+            catch (ArgumentException e)
+            {
+                Debug.LogError($"[Profiles] -profile \"{requested}\": {e.Message} Using the last profile instead.");
+                Profile = new ProfileSession(store);
+            }
+            Saves = new SaveStore(Profile.SavesFolder);
+            SaveStore.SyncFiles();
+            Debug.Log($"[Profiles] profile '{Profile.Name}' ({store.Root})");
+        }
+
+        /// <summary>Makes <paramref name="name"/> the active profile: its settings apply at once and its slots replace the old ones.</summary>
+        public void SwitchProfile(string name)
+        {
+            Save = null; Slot = -1;
+            Profile.Switch(name);
+            ProfileChanged();
+        }
+
+        public void CreateProfile(string name) { Profile.Create(name); SaveStore.SyncFiles(); }
+
+        public void RenameProfile(string name, string newName)
+        {
+            Profile.Rename(name, newName);
+            ProfileChanged(); // the active profile's folder may have moved
+        }
+
+        public void DeleteProfile(string name)
+        {
+            Profile.Delete(name);
+            ProfileChanged();
+        }
+
+        private void ProfileChanged()
+        {
+            Saves = new SaveStore(Profile.SavesFolder);
+            SaveStore.SyncFiles();
+            ApplySettings();
         }
     }
 
@@ -494,7 +587,7 @@ namespace GridGame.App
             var app = GameApp.I;
             app.Save = TestLoop.NewSave(app.Content);
             app.Slot = -1;
-            app.Save.Settings.BattleSpeed = 3f;
+            app.Settings.BattleSpeed = 3f; // the throwaway profile's settings, in memory only
             app.ApplySettings();
             Debug.Log($"[TestMode] started: throwaway save (slot -1), party {string.Join(", ", app.Save.Party)}, {app.Save.Gold}g");
             GoToCamp(runRoutine: false);

@@ -1379,20 +1379,24 @@ namespace GridGame.App
 
         protected override void BuildBody(VisualElement body)
         {
-            var st = S.Settings;
+            // The active profile's settings (GG-T99, §15.4): one set for every save slot, kept in its settings.json.
+            var st = App.Settings;
+            var who = Ui.Text($"Profile: {App.Profile?.Name}", "small gold", body);
+            who.name = "settings-profile";
+            who.style.marginLeft = 16; who.style.marginBottom = 6;
             var w = Ui.Window(null, body);
-            void Toggle(string label, bool value, Action<bool> set) => Ui.MenuRow(label, value ? "ON" : "OFF", () => { set(!value); App.ApplySettings(); App.Persist(); Refresh(); }, w);
+            void Toggle(string label, bool value, Action<bool> set) => Ui.MenuRow(label, value ? "ON" : "OFF", () => { set(!value); App.ApplySettings(); App.SaveSettings(); Refresh(); }, w);
             void Cycle(string label, float value, float[] opts, string fmt, Action<float> set)
             {
                 int i = Array.FindIndex(opts, o => Mathf.Abs(o - value) < 0.01f);
-                Ui.MenuRow(label, string.Format(fmt, value), () => { set(opts[(i + 1) % opts.Length]); App.ApplySettings(); App.Persist(); Refresh(); }, w);
+                Ui.MenuRow(label, string.Format(fmt, value), () => { set(opts[(i + 1) % opts.Length]); App.ApplySettings(); App.SaveSettings(); Refresh(); }, w);
             }
             void CycleTheme()
             {
                 var names = Art.Themes.Select(t => t.Name).ToArray();
                 int i = Array.IndexOf(names, st.MenuTheme);
                 st.MenuTheme = names[(i + 1) % names.Length];
-                App.ApplySettings(); App.Persist(); Refresh();
+                App.ApplySettings(); App.SaveSettings(); Refresh();
             }
             Ui.MenuRow("Menu theme", st.MenuTheme, CycleTheme, w);
             void CycleFont()
@@ -1400,7 +1404,7 @@ namespace GridGame.App
                 var names = Fonts.Presets.Select(p => p.Name).ToArray();
                 int i = Array.IndexOf(names, st.FontName);
                 st.FontName = names[(i + 1) % names.Length];
-                App.ApplySettings(); App.Persist(); Refresh();
+                App.ApplySettings(); App.SaveSettings(); Refresh();
             }
             Ui.MenuRow("Font", st.FontName, CycleFont, w);
             var diff = st.Difficulty;
@@ -1415,7 +1419,7 @@ namespace GridGame.App
                 {
                     diff.EnemyHp = diff.EnemyDamage = diff.EnemySpeed = diff.RewardGold = diff.RewardXp = diff.ItemDropRate = 1f;
                 }
-                App.Persist(); Refresh();
+                App.SaveSettings(); Refresh();
             }
             Ui.MenuRow("Difficulty", diff.Preset, CycleDifficulty, w);
             if (diff.Preset == "Custom")
@@ -1425,7 +1429,7 @@ namespace GridGame.App
                 {
                     int i = Array.FindIndex(mults, o => Mathf.Abs(o - value) < 0.01f);
                     if (i < 0) i = 2; // default to the ×1 slot if the stored value doesn't land on a step
-                    var row = Ui.MenuRow(label, $"×{value:0.##}", () => { set(mults[(i + 1) % mults.Length]); App.Persist(); Refresh(); }, w);
+                    var row = Ui.MenuRow(label, $"×{value:0.##}", () => { set(mults[(i + 1) % mults.Length]); App.SaveSettings(); Refresh(); }, w);
                     row.style.marginLeft = 40;
                 }
                 CycleMult("Enemy HP", diff.EnemyHp, v => diff.EnemyHp = v);
