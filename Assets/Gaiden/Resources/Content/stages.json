@@ -143,29 +143,29 @@
     "IsTest": false,
     "Waves": [
       {
-        "Group": "wolf-line-3"
-      },
-      {
         "Enemies": [
           {
             "Class": "slime00",
             "Level": 1,
-            "X": -1,
-            "Y": -1
+            "X": 2,
+            "Y": 5
           },
           {
             "Class": "slime01",
             "Level": 1,
-            "X": -1,
-            "Y": -1
+            "X": 3,
+            "Y": 5
           },
           {
             "Class": "slime02",
             "Level": 1,
-            "X": -1,
-            "Y": -1
+            "X": 4,
+            "Y": 2
           }
         ]
+      },
+      {
+        "Group": "wolf-line-3"
       },
       {
         "Enemies": [
@@ -254,14 +254,14 @@
           {
             "Class": "slime02",
             "Level": 1,
-            "X": -1,
-            "Y": -1
+            "X": 2,
+            "Y": 5
           },
           {
             "Class": "slime03",
             "Level": 1,
-            "X": -1,
-            "Y": -1
+            "X": 4,
+            "Y": 3
           }
         ]
       },

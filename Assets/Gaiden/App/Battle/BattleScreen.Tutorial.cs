@@ -42,6 +42,11 @@ namespace GridGame.App
                 Text = "Trap an enemy in a straight line between two heroes to PINCER it — both heroes strike. Heroes linked to an attacker by an unbroken chain of allies join in as supporters, each with its class's support action.",
                 Example = "Example: Hero · Slime · Hero in a row or column.",
                 Done = (b, c, e) => e.Exists(x => x is PincerFormedEvent p && p.Team == Team.Hero) },
+            // GG-T190: shoving is a tactic, not an accident — the held hero moves other heroes and enemies into place.
+            new Lesson { Title = "Shoving", Patience = 4,
+                Text = "Your held hero is a lever. Drag it through an enemy and the enemy slides into the tile you just left — so shove a foe into line between two heroes and the drop pincers it. While you drag, arrows show where everyone will slide and gold outlines show the pincers the drop completes.",
+                Example = "Example: a slime sits above the gap beside your hero. Step into the gap, then up through the slime: it drops into the gap, between your heroes.",
+                Done = (b, c, e) => ShovedIntoPincer(e) },
             new Lesson { Title = "Mana",
                 Text = "Pincers fill the mana bubble at the end of your orb row; at 100 it becomes an orb. Lean pincers earn the most: every extra hero divides the mana, every chain link multiplies it.",
                 Example = "Example: two heroes taking half a foe's HP earn 60 of the 100.",
@@ -75,6 +80,19 @@ namespace GridGame.App
                 Example = "Tip: Settings → How to play has all of this.",
                 Done = (b, c, e) => false },
         };
+
+        /// <summary>GG-T190: did this command's drag shove an enemy into a line that its drop then pincered?</summary>
+        private static bool ShovedIntoPincer(List<BattleEvent> events)
+        {
+            var shoved = new HashSet<int>();
+            foreach (var x in events)
+            {
+                if (x is DisplacedEvent d) shoved.Add(d.UnitId);
+                else if (x is PincerFormedEvent p && p.Team == Team.Hero && p.Opponents.Exists(shoved.Contains)) return true;
+                else if (x is TimelineAdvancedEvent) return false; // the move is over; later slides are enemy turns
+            }
+            return false;
+        }
 
         public int TutorialStep { get; private set; } = -1;
         private int tutorialActions;

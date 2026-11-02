@@ -232,6 +232,10 @@ namespace GridGame.App
             board.ClearMarks();
             foreach (var u in State.Units)
                 if (board.Units.TryGetValue(u.Id, out var uv) && u.Alive && u.Id != heroId) uv.SetGlow(Color.white, 0f);
+            // GG-T190: shoving is a tactic, so show the whole migration — a ghost on every displaced hero's and
+            // enemy's current tile and an arrow to where the drop leaves it (the tokens themselves already slid there).
+            var shove = ShovePreview.Of(State, heroId, pv);
+            foreach (var d in shove.Displaced) DrawShoveArrow(d);
             foreach (var p in pv.Pincers)
             {
                 pv.Positions.TryGetValue(p.A.Id, out var a);
@@ -261,8 +265,23 @@ namespace GridGame.App
                 foreach (var s in p.SupportersA) if (board.Units.TryGetValue(s.Id, out var sv)) sv.SetGlow(new Color(0.4f, 0.8f, 1f), 0.7f);
                 foreach (var s in p.SupportersB) if (board.Units.TryGetValue(s.Id, out var sv)) sv.SetGlow(new Color(0.4f, 0.8f, 1f), 0.7f);
             }
-            if (pv.Pincers.Count == 0) { ShowBanner(""); return; }
+            // A pincer a shove completes: the shoved foe (or the shoved partner) pulses so the cause reads at a glance.
+            foreach (var p in pv.Pincers)
+            {
+                if (!shove.CompletedByShove(p)) continue;
+                foreach (var u in p.Opponents.Concat(new[] { p.A, p.B }))
+                    if (u.Id != heroId && shove.IsShoved(u.Id) && board.Units.TryGetValue(u.Id, out var sv))
+                        App.StartCoroutine(Tween.Pop(sv.Root, 1.1f, 0.2f));
+            }
+            if (pv.Pincers.Count == 0)
+            {
+                int foes = shove.Displaced.Count(d => d.IsEnemy);
+                ShowBanner(foes > 0 ? (foes > 1 ? $"Shoving {foes} foes" : "Shoving a foe") : "");
+                return;
+            }
             string banner = pv.Pincers.Count > 1 ? $"PINCER ×{pv.Pincers.Count}!" : "PINCER!";
+            int shoved = shove.ShovePincerCount;
+            if (shoved > 0) banner = (shoved == pv.Pincers.Count ? "SHOVE → " : $"SHOVE ×{shoved} → ") + banner;
             // GG-T39: the attacker (either endpoint, never a supporter) whose weapon is on its last point
             // would wear it to 0 and shatter in this very drop (§24.5) — call that out before it's a surprise.
             Unit shatterer = null;
@@ -274,6 +293,26 @@ namespace GridGame.App
             if (shatterer != null)
                 banner += $"  This pincer will shatter your {App.Content.TryItem(shatterer.WeaponId)?.Name ?? "weapon"}!";
             ShowBanner(banner);
+        }
+
+        /// <summary>GG-T190: a displaced actor's ghost tile plus an arrow to where the drop leaves it (amber for a foe, blue for a hero).</summary>
+        private void DrawShoveArrow(ShovedActor d)
+        {
+            var col = d.IsEnemy ? new Color(1f, 0.55f, 0.2f, 0.9f) : new Color(0.45f, 0.85f, 1f, 0.9f);
+            board.Mark(d.From, col, 0.16f);
+            var a = BoardView.CenterOf(d.From);
+            var b = BoardView.CenterOf(d.To);
+            var dir = b - a;
+            if (dir.sqrMagnitude < 1f) return;
+            dir.Normalize();
+            // Stop short of both token centres so the arrow reads between them, not over the art.
+            a += dir * (BoardView.Tile * 0.22f);
+            b -= dir * (BoardView.Tile * 0.22f);
+            board.Lines.Add(a, b, col, 6f);
+            var side = new Vector2(-dir.y, dir.x);
+            float head = BoardView.Tile * 0.16f;
+            board.Lines.Add(b, b - dir * head + side * head * 0.7f, col, 6f);
+            board.Lines.Add(b, b - dir * head - side * head * 0.7f, col, 6f);
         }
 
         private void CommitDrag(BattleCommand perfectCmd = null)
