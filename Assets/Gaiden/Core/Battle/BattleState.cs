@@ -122,7 +122,7 @@ namespace GridGame.Core.Battle
                 WeaponDurability = new Dictionary<string, int>(WeaponDurability),
                 ArmorDurability = CloneArmorMap(ArmorDurability),
                 FinalWeapon = new Dictionary<string, string>(FinalWeapon),
-                FinalBar = new Dictionary<string, List<string>>(FinalBar),
+                FinalBar = CloneListMap(FinalBar),
                 BrokenWeapons = CloneListMap(BrokenWeapons),
                 BrokenArmors = CloneListMap(BrokenArmors),
             };
