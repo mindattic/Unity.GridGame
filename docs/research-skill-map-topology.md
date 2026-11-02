@@ -1,5 +1,5 @@
 ---
-status: paused, unresolved (research spike, GG-T83)
+status: resolved 2026-11-02 by GG-T51 (research spike, GG-T83; kept as history)
 date: 2026-10-16 (recorded 2026-10-25)
 purpose: Keep every topology tried for the unified build-a-character skill map, why each one was
   rejected, and the two real-game references that came up, so a later session can pick the question
@@ -8,6 +8,11 @@ purpose: Keep every topology tried for the unified build-a-character skill map, 
 ---
 
 # Skill map topology: research spike (GG-T83)
+
+> **Decided 2026-11-02 (owner, "do" on GG-T51):** the separate trees stay and GG-T51's home-tree threshold ships
+> (10 home points open a second tree, 20 a third; off-tree nodes +1 point; off-tree gates x1.5). BIBLE.md §25.6.2 has
+> the rules. The notes below are the history of how the question was explored; where they call option A rejected or
+> GG-T168 pending, the decision above replaces them.
 
 ## The question
 

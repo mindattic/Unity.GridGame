@@ -191,11 +191,18 @@ namespace GridGame.Meta
         /// <see cref="TalentState.Available"/>. Deepening a branch the hero is already in (a node with prerequisites —
         /// stat nodes, cores, capstones, the finale) beats opening a new one, deepest first, then authored order —
         /// so points pile into one branch until its capstone instead of spreading thin across every opener.</summary>
-        public static SkillNodeDef NextTalent(HeroSave h, SkillTreeDef t)
+        public static SkillNodeDef NextTalent(HeroSave h, SkillTreeDef t) =>
+            NextTalent(h, t, n => Talents.State(h, t, n) == TalentState.Available);
+
+        /// <summary><see cref="NextTalent(HeroSave, SkillTreeDef)"/> with §25.6.2's cross-tree gates applied (GG-T51).</summary>
+        public static SkillNodeDef NextTalent(ContentDb c, HeroSave h, SkillTreeDef t) =>
+            NextTalent(h, t, n => Talents.State(c, h, t, n) == TalentState.Available);
+
+        private static SkillNodeDef NextTalent(HeroSave h, SkillTreeDef t, System.Func<SkillNodeDef, bool> available)
         {
             if (h == null || t == null) return null;
             return t.Nodes.Select((n, i) => (n, i))
-                .Where(x => Talents.State(h, t, x.n) == TalentState.Available)
+                .Where(x => available(x.n))
                 .OrderByDescending(x => x.n.Prerequisites.Count > 0)
                 .ThenByDescending(x => x.n.RequiredPointsInTree)
                 .ThenBy(x => x.i)
@@ -204,9 +211,10 @@ namespace GridGame.Meta
 
         /// <summary>Spend every roster hero's banked skill points (GG-T54): the home tree first, by <see cref="NextTalent"/>;
         /// when that node costs more than the hero has, the points bank for it rather than leak into a cheaper sideline.
-        /// Only once the home tree has nothing left to buy do points go off-tree — into a tree the hero has already opened
-        /// (<see cref="Talents.Trees"/>: one it holds a node in, e.g. through a gold-Learned ability), by the same rule;
-        /// opening a brand-new tree is a player's call (GG-T51/T83), not the routine's.</summary>
+        /// Only once the home tree has nothing left to buy do points go off-tree — into a tree the hero is already in
+        /// (<see cref="Talents.HeldTrees"/>: opened, or holding a Known node e.g. through a gold-Learned ability), by the same
+        /// rule and at the off-tree price and gates (§25.6.2, GG-T51); opening a tree the hero has no foot in is a player's
+        /// call, not the routine's.</summary>
         private static void SpendSkillPoints(ContentDb c, SaveData s, List<string> log)
         {
             foreach (var h in s.Roster)
@@ -216,17 +224,19 @@ namespace GridGame.Meta
                 // Bounded by the node count: every pass either buys a node (strictly fewer left) or stops.
                 for (int guard = 0; guard < 500 && h.SkillPoints > 0; guard++)
                 {
-                    var trees = Talents.Trees(c, h);
+                    var trees = Talents.HeldTrees(c, h);
                     SkillTreeDef tree = null; SkillNodeDef node = null;
                     foreach (var t in trees)
                     {
-                        node = NextTalent(h, t);
+                        node = NextTalent(c, h, t);
                         if (node != null) { tree = t; break; }
                     }
-                    if (node == null || node.Cost > h.SkillPoints) break;
+                    if (node == null) break;
+                    int cost = Talents.Cost(c, h, tree, node);
+                    if (cost > h.SkillPoints) break;
                     var r = Talents.Unlock(c, s, h, tree.Id, node.Id);
                     if (!r.Ok) break;
-                    log.Add($"{heroName} spent {node.Cost}{TalentMarker}{node.Name ?? node.Id} ({tree.Name})");
+                    log.Add($"{heroName} spent {cost}{TalentMarker}{node.Name ?? node.Id} ({tree.Name})");
                 }
             }
         }

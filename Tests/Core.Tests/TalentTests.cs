@@ -78,6 +78,172 @@ namespace GridGame.Tests
             Assert.That(Talents.RespecCost(h), Is.GreaterThan(low));
         }
 
+        // ── Cross-tree specialization (§25.6.2, GG-T51) ─────────────────────────────────────────────
+
+        /// <summary>Off-trees the hero has no node in at all (not even a Known one), by name.</summary>
+        private static SkillTreeDef[] Untouched(ContentDb c, HeroSave h, SkillTreeDef home) =>
+            c.SkillTrees.Values.Where(t => t != home && !t.Nodes.Any(n => Talents.Unlocked(h, t, n)))
+                .OrderBy(t => t.Name).ToArray();
+
+        /// <summary>Buys home-tree nodes the way the camp routine would until the home tree holds <paramref name="target"/> points.</summary>
+        private static void InvestHome(ContentDb c, SaveData s, HeroSave h, SkillTreeDef home, int target)
+        {
+            for (int guard = 0; guard < 100 && Talents.PointsIn(h, home) < target; guard++)
+            {
+                var next = CampRoutine.NextTalent(c, h, home);
+                Assert.That(next, Is.Not.Null, $"home tree ran out of nodes below {target} pts");
+                Assert.That(Talents.Unlock(c, s, h, home.Id, next.Id).Ok, Is.True, next.Id);
+            }
+            Assert.That(Talents.PointsIn(h, home), Is.GreaterThanOrEqualTo(target));
+        }
+
+        private static SkillNodeDef StartNode(SkillTreeDef t) =>
+            t.Nodes.First(n => n.RequiredPointsInTree == 0 && n.Prerequisites.Count == 0);
+
+        [Test]
+        public void A_second_tree_opens_only_once_the_home_tree_has_enough_points()
+        {
+            var (c, s, h, home) = Setup();
+            h.SkillPoints = 500;
+            var off = Untouched(c, h, home);
+            Assume.That(off.Length, Is.GreaterThanOrEqualTo(1));
+            var tree = off[0];
+            var node = StartNode(tree);
+            int threshold = TalentConfig.OpenTreeAt[0];
+
+            if (Talents.PointsIn(h, home) < threshold)
+            {
+                Assert.That(Talents.OffTreeSlots(c, h), Is.Zero);
+                Assert.That(Talents.Trees(c, h), Does.Not.Contain(tree), "a closed tree isn't offered");
+                Assert.That(Talents.State(c, h, tree, node), Is.EqualTo(TalentState.Locked));
+                Assert.That(Talents.WhyLocked(c, h, tree, node), Does.Contain($"{threshold} pts in {home.Name}"));
+                int before = h.SkillPoints;
+                Assert.That(Talents.Unlock(c, s, h, tree.Id, node.Id).Ok, Is.False);
+                Assert.That(h.SkillPoints, Is.EqualTo(before), "a refused buy costs nothing");
+                Assert.That(h.TreeNodes, Has.None.StartsWith(tree.Id + "/"));
+            }
+
+            InvestHome(c, s, h, home, threshold);
+            Assert.That(Talents.OffTreeSlots(c, h), Is.EqualTo(1));
+            Assert.That(Talents.Trees(c, h), Does.Contain(tree), "a free slot offers every other tree");
+            Assert.That(Talents.State(c, h, tree, node), Is.EqualTo(TalentState.Available));
+            Assert.That(Talents.Opened(c, h, tree), Is.False);
+            Assert.That(Talents.Unlock(c, s, h, tree.Id, node.Id).Ok, Is.True);
+            Assert.That(Talents.Opened(c, h, tree), Is.True, "the first node bought opens the tree");
+            Assert.That(Talents.OpenedOffTrees(c, h), Is.EqualTo(new[] { tree }));
+        }
+
+        [Test]
+        public void Off_tree_nodes_cost_the_premium_and_home_nodes_do_not()
+        {
+            var (c, s, h, home) = Setup();
+            h.SkillPoints = 500;
+            var tree = Untouched(c, h, home).First();
+            foreach (var n in home.Nodes) Assert.That(Talents.Cost(c, h, home, n), Is.EqualTo(n.Cost), n.Id);
+            foreach (var n in tree.Nodes) Assert.That(Talents.Cost(c, h, tree, n), Is.EqualTo(n.Cost + TalentConfig.OffTreePremium), n.Id);
+
+            InvestHome(c, s, h, home, TalentConfig.OpenTreeAt[0]);
+            var node = StartNode(tree);
+            int before = h.SkillPoints;
+            Assert.That(Talents.Unlock(c, s, h, tree.Id, node.Id).Ok, Is.True);
+            Assert.That(h.SkillPoints, Is.EqualTo(before - node.Cost - TalentConfig.OffTreePremium));
+            Assert.That(Talents.PointsIn(h, tree), Is.EqualTo(node.Cost), "the premium is a price, not points in the tree");
+
+            var another = tree.Nodes.First(n => n != node && Talents.State(c, h, tree, n) == TalentState.Available);
+            h.SkillPoints = another.Cost; // enough at the home price, one short at the off-tree price
+            var r = Talents.Unlock(c, s, h, tree.Id, another.Id);
+            Assert.That(r.Ok, Is.False);
+            Assert.That(r.Message, Is.EqualTo("Not enough skill points"));
+            Assert.That(h.SkillPoints, Is.EqualTo(another.Cost));
+        }
+
+        [Test]
+        public void Deeper_off_tree_tiers_need_more_points_in_that_tree()
+        {
+            var (c, s, h, home) = Setup();
+            h.SkillPoints = 500;
+            var tree = Untouched(c, h, home).First();
+            foreach (var n in home.Nodes)
+                Assert.That(Talents.Required(c, h, home, n), Is.EqualTo(n.RequiredPointsInTree), n.Id);
+            foreach (var n in tree.Nodes)
+            {
+                int scaled = Talents.Required(c, h, tree, n);
+                if (n.RequiredPointsInTree == 0) Assert.That(scaled, Is.Zero, n.Id);
+                else Assert.That(scaled, Is.GreaterThan(n.RequiredPointsInTree), n.Id);
+            }
+
+            InvestHome(c, s, h, home, TalentConfig.OpenTreeAt[0]);
+            // The shallowest gated node with no prerequisites (a branch Opener): its home-tree gate is met before its
+            // off-tree gate is, so there is a stretch where it would be open at home but is still locked here.
+            var opener = tree.Nodes.Where(n => n.RequiredPointsInTree > 0 && n.Prerequisites.Count == 0)
+                .OrderBy(n => n.RequiredPointsInTree).First();
+            int need = Talents.Required(c, h, tree, opener);
+            bool sawScaledGate = false;
+            foreach (var start in tree.Nodes.Where(n => n.RequiredPointsInTree == 0 && n.Prerequisites.Count == 0))
+            {
+                Assert.That(Talents.Unlock(c, s, h, tree.Id, start.Id).Ok, Is.True, start.Id);
+                int have = Talents.PointsIn(h, tree);
+                if (have >= opener.RequiredPointsInTree && have < need)
+                {
+                    sawScaledGate = true;
+                    Assert.That(Talents.State(h, tree, opener), Is.EqualTo(TalentState.Available), "met by the tree's own gate");
+                    Assert.That(Talents.State(c, h, tree, opener), Is.EqualTo(TalentState.Locked), "but not by the off-tree gate");
+                    Assert.That(Talents.WhyLocked(c, h, tree, opener), Does.Contain($"Needs {need} pts in {tree.Name}"));
+                }
+                if (have >= need) break;
+            }
+            Assert.That(sawScaledGate, Is.True, "the start tier should land between the home and off-tree gates");
+            Assert.That(Talents.PointsIn(h, tree), Is.GreaterThanOrEqualTo(need));
+            Assert.That(Talents.State(c, h, tree, opener), Is.EqualTo(TalentState.Available));
+        }
+
+        [Test]
+        public void A_third_tree_needs_the_next_threshold_and_there_is_no_fourth()
+        {
+            var (c, s, h, home) = Setup();
+            h.SkillPoints = 1000;
+            var off = Untouched(c, h, home);
+            Assume.That(off.Length, Is.GreaterThanOrEqualTo(3));
+            Assume.That(TalentConfig.OpenTreeAt.Length, Is.EqualTo(2));
+
+            InvestHome(c, s, h, home, TalentConfig.OpenTreeAt[0]);
+            Assert.That(Talents.Unlock(c, s, h, off[0].Id, StartNode(off[0]).Id).Ok, Is.True);
+            if (Talents.PointsIn(h, home) < TalentConfig.OpenTreeAt[1])
+            {
+                Assert.That(Talents.State(c, h, off[1], StartNode(off[1])), Is.EqualTo(TalentState.Locked), "one off-tree per slot");
+                Assert.That(Talents.WhyClosed(c, h, off[1]), Does.Contain("third tree"));
+                Assert.That(Talents.Trees(c, h), Does.Not.Contain(off[1]));
+                Assert.That(Talents.State(c, h, off[0], StartNode(off[0])), Is.EqualTo(TalentState.Purchased), "the opened tree stays open");
+            }
+
+            InvestHome(c, s, h, home, TalentConfig.OpenTreeAt[1]);
+            Assert.That(Talents.OffTreeSlots(c, h), Is.EqualTo(2));
+            Assert.That(Talents.Unlock(c, s, h, off[1].Id, StartNode(off[1]).Id).Ok, Is.True);
+            Assert.That(Talents.OpenedOffTrees(c, h).Count, Is.EqualTo(2));
+
+            var fourth = Talents.Unlock(c, s, h, off[2].Id, StartNode(off[2]).Id);
+            Assert.That(fourth.Ok, Is.False, "two off-trees is the cap");
+            Assert.That(fourth.Message, Does.Contain("Already specialized in 2 other trees"));
+            Assert.That(Talents.Trees(c, h), Does.Contain(off[0]).And.Contain(off[1]).And.Not.Contain(off[2]));
+        }
+
+        [Test]
+        public void Respec_refunds_the_off_tree_premium_and_closes_the_off_tree()
+        {
+            var (c, s, h, home) = Setup();
+            h.SkillPoints = 500;
+            var tree = Untouched(c, h, home).First();
+            InvestHome(c, s, h, home, TalentConfig.OpenTreeAt[0]);
+            Assert.That(Talents.Unlock(c, s, h, tree.Id, StartNode(tree).Id).Ok, Is.True);
+            Assert.That(h.SkillPoints + Talents.PointsSpent(c, h), Is.EqualTo(500), "spent + banked = earned, premium included");
+
+            s.Gold = Talents.RespecCost(h);
+            Assert.That(Talents.Respec(c, s, h).Ok, Is.True);
+            Assert.That(h.SkillPoints, Is.EqualTo(500));
+            Assert.That(Talents.Opened(c, h, tree), Is.False);
+            Assert.That(Talents.OpenedOffTrees(c, h), Is.Empty);
+        }
+
         [Test]
         public void Respec_needs_the_Innkeeper()
         {

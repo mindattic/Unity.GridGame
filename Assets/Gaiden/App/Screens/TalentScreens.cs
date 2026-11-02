@@ -68,10 +68,18 @@ namespace GridGame.App
             }
             tab = Mathf.Clamp(tab, 0, trees.Count - 1);
             if (trees.Count > 1)
-                Ui.Tabs(trees.Select((t, i) => i == 0 ? t.Name + " (home)" : t.Name).ToArray(), tab, i => { tab = i; selected = null; Refresh(); }, body);
+                Ui.Tabs(trees.Select(t => Talents.IsHome(C, h, t) ? t.Name + " (home)" : Talents.Opened(C, h, t) ? t.Name : t.Name + " (new)").ToArray(),
+                    tab, i => { tab = i; selected = null; Refresh(); }, body);
             var tree = trees[tab];
 
-            var w = Ui.Window($"{tree.Name} — {Talents.PointsIn(h, tree)} pts in tree", body);
+            // §25.6.2 (GG-T51): an off-tree says what it costs; an unopened one also says whether a slot is free.
+            string offNote = "";
+            if (!Talents.IsHome(C, h, tree))
+            {
+                offNote = $" · off-tree: +{TalentConfig.OffTreePremium} pt a node, deeper tiers need more";
+                if (!Talents.Opened(C, h, tree)) offNote += " · " + (Talents.WhyClosed(C, h, tree) ?? "buying a node opens it");
+            }
+            var w = Ui.Window($"{tree.Name} — {Talents.PointsIn(h, tree)} pts in tree{offNote}", body);
             w.style.flexGrow = 1;
             if (trees.Count > 1) w.style.marginTop = 0;
             var list = Ui.List(w).contentContainer;
@@ -83,7 +91,7 @@ namespace GridGame.App
             var cards = Graph(tree, h, list);
 
             var sel = tree.Nodes.FirstOrDefault(n => n.Id == selected)
-                ?? tree.Nodes.FirstOrDefault(n => Talents.State(h, tree, n) == TalentState.Available)
+                ?? tree.Nodes.FirstOrDefault(n => Talents.State(C, h, tree, n) == TalentState.Available)
                 ?? tree.Nodes.FirstOrDefault();
             if (sel != null)
             {
@@ -123,7 +131,8 @@ namespace GridGame.App
                 var row = Ui.El("row", graph);
                 row.style.alignItems = Align.Center;
                 row.style.marginBottom = 34;
-                var lbl = Ui.Text(tier.Key == 0 ? "Start" : $"{tier.Key} pts", "tiny dim", row);
+                int need = Talents.IsHome(C, h, tree) ? tier.Key : Talents.ScaledRequirement(tier.Key);
+                var lbl = Ui.Text(need == 0 ? "Start" : $"{need} pts", "tiny dim", row);
                 lbl.style.width = 100; lbl.style.unityTextAlign = TextAnchor.MiddleCenter;
                 var cells = Ui.El("row grow", row);
                 cells.style.justifyContent = Justify.SpaceAround; // cards shrink to share a wide tier rather than wrap
@@ -133,14 +142,14 @@ namespace GridGame.App
             foreach (var n in tree.Nodes)
                 foreach (var pre in n.Prerequisites)
                     if (cards.TryGetValue(pre, out var from) && cards.TryGetValue(n.Id, out var to))
-                        links.Links.Add((from, to, Talents.Unlocked(h, tree, n) ? PurchasedColor : Talents.State(h, tree, n) == TalentState.Available ? AvailableColor : LockedColor));
+                        links.Links.Add((from, to, Talents.Unlocked(h, tree, n) ? PurchasedColor : Talents.State(C, h, tree, n) == TalentState.Available ? AvailableColor : LockedColor));
             graph.RegisterCallback<GeometryChangedEvent>(_ => links.MarkDirtyRepaint());
             return cards;
         }
 
         private VisualElement Card(SkillTreeDef tree, SkillNodeDef n, HeroSave h, VisualElement parent)
         {
-            var state = Talents.State(h, tree, n);
+            var state = Talents.State(C, h, tree, n);
             var a = C.TryAbility(n.Grants);
             var card = Ui.El("col center talent-node", parent);
             card.name = "talent-" + n.Id;
@@ -165,7 +174,8 @@ namespace GridGame.App
             }
             var name = Ui.Text(n.Name ?? a?.Name ?? n.Id, "tiny" + (state == TalentState.Locked ? " dim" : ""), card);
             name.style.whiteSpace = WhiteSpace.Normal; name.style.unityTextAlign = TextAnchor.MiddleCenter;
-            string tag = state == TalentState.Purchased || state == TalentState.Innate ? "✔ " + StateLabel(state) : $"{n.Cost} pt{(n.Cost == 1 ? "" : "s")}";
+            int cost = Talents.Cost(C, h, tree, n);
+            string tag = state == TalentState.Purchased || state == TalentState.Innate ? "✔ " + StateLabel(state) : $"{cost} pt{(cost == 1 ? "" : "s")}";
             var tagLbl = Ui.Text(tag, "tiny", card);
             tagLbl.style.color = StateColor(state);
             card.AddToClassList("card-tap");
@@ -176,7 +186,7 @@ namespace GridGame.App
         /// <summary>The tapped node's tooltip: what it grants, its cost and gate, and the confirm-to-spend button.</summary>
         private void Detail(SkillTreeDef tree, SkillNodeDef n, HeroSave h, VisualElement body)
         {
-            var state = Talents.State(h, tree, n);
+            var state = Talents.State(C, h, tree, n);
             var a = C.TryAbility(n.Grants);
             var w = Ui.Window(null, body);
             w.name = "talent-detail";
@@ -199,25 +209,30 @@ namespace GridGame.App
             }
             var foot = Ui.El("row", w);
             foot.style.alignItems = Align.Center; foot.style.marginTop = 10;
-            string gate = state == TalentState.Locked ? Talents.WhyLocked(h, tree, n)
+            int cost = Talents.Cost(C, h, tree, n);
+            string pts = $"{cost} skill point{(cost == 1 ? "" : "s")}";
+            bool offTree = !Talents.IsHome(C, h, tree);
+            string premium = offTree && cost > n.Cost ? $" (off-tree: +{cost - n.Cost})" : "";
+            string gate = state == TalentState.Locked ? Talents.WhyLocked(C, h, tree, n)
                 : state == TalentState.Innate ? "Already in this hero's kit — no points needed"
                 : state == TalentState.Purchased ? "Bought with skill points (Respec at the Inn refunds it)"
-                : h.SkillPoints < n.Cost ? $"Needs {n.Cost} skill point{(n.Cost == 1 ? "" : "s")} ({h.SkillPoints} now)"
-                : $"Costs {n.Cost} skill point{(n.Cost == 1 ? "" : "s")}";
-            var g = Ui.Text(gate, "tiny " + (state == TalentState.Locked || (state == TalentState.Available && h.SkillPoints < n.Cost) ? "bad" : "dim") + " grow", foot);
+                : h.SkillPoints < cost ? $"Needs {pts}{premium} ({h.SkillPoints} now)"
+                : $"Costs {pts}{premium}";
+            var g = Ui.Text(gate, "tiny " + (state == TalentState.Locked || (state == TalentState.Available && h.SkillPoints < cost) ? "bad" : "dim") + " grow", foot);
             g.style.whiteSpace = WhiteSpace.Normal;
             if (state == TalentState.Available)
             {
                 var hero = C.Class(h.ClassId).Name;
-                var learn = Ui.Button($"Learn · {n.Cost} pt{(n.Cost == 1 ? "" : "s")}", () => Confirm.Show(
-                    $"Spend {n.Cost} skill point{(n.Cost == 1 ? "" : "s")} to teach {hero} {n.Name ?? a?.Name}?", "Spend", () =>
+                bool opens = offTree && !Talents.Opened(C, h, tree);
+                var learn = Ui.Button($"Learn · {cost} pt{(cost == 1 ? "" : "s")}", () => Confirm.Show(
+                    $"Spend {pts} to teach {hero} {n.Name ?? a?.Name}?" + (opens ? $" This opens {tree.Name} as an off-tree." : ""), "Spend", () =>
                     {
                         var r = Talents.Unlock(C, S, h, tree.Id, n.Id);
                         if (r.Ok) { popNode = n.Id; selected = n.Id; }
                         Done(r);
                     }), "btn--primary btn--small", foot);
                 learn.name = "talent-learn";
-                Ui.SetEnabled(learn, h.SkillPoints >= n.Cost);
+                Ui.SetEnabled(learn, h.SkillPoints >= cost);
             }
         }
     }
