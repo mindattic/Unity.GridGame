@@ -39,6 +39,18 @@
         "Chance": 0.04,
         "Min": 1,
         "Max": 1
+      },
+      {
+        "Item": "eq_ring_ironwill",
+        "Chance": 0.015,
+        "Min": 1,
+        "Max": 1
+      },
+      {
+        "Item": "eq_ring_titan",
+        "Chance": 0.006,
+        "Min": 1,
+        "Max": 1
       }
     ]
   },
@@ -106,6 +118,24 @@
         "Chance": 0.1,
         "Min": 1,
         "Max": 1
+      },
+      {
+        "Item": "eq_amulet_wyrmheart",
+        "Chance": 0.006,
+        "Min": 1,
+        "Max": 1
+      },
+      {
+        "Item": "eq_ring_runelord",
+        "Chance": 0.006,
+        "Min": 1,
+        "Max": 1
+      },
+      {
+        "Item": "eq_earring_dragon",
+        "Chance": 0.006,
+        "Min": 1,
+        "Max": 1
       }
     ]
   },
@@ -167,6 +197,12 @@
         "Chance": 0.05,
         "Min": 1,
         "Max": 1
+      },
+      {
+        "Item": "eq_amulet_warhorn",
+        "Chance": 0.03,
+        "Min": 1,
+        "Max": 1
       }
     ]
   },
@@ -208,6 +244,18 @@
       {
         "Item": "eq_heartwood_gloves",
         "Chance": 0.04,
+        "Min": 1,
+        "Max": 1
+      },
+      {
+        "Item": "eq_amulet_mossheart",
+        "Chance": 0.03,
+        "Min": 1,
+        "Max": 1
+      },
+      {
+        "Item": "eq_ring_thorn",
+        "Chance": 0.05,
         "Min": 1,
         "Max": 1
       }
@@ -271,6 +319,18 @@
         "Chance": 0.04,
         "Min": 1,
         "Max": 1
+      },
+      {
+        "Item": "eq_amulet_aegis",
+        "Chance": 0.015,
+        "Min": 1,
+        "Max": 1
+      },
+      {
+        "Item": "eq_ring_titan",
+        "Chance": 0.006,
+        "Min": 1,
+        "Max": 1
       }
     ]
   },
@@ -332,6 +392,24 @@
         "Chance": 0.05,
         "Min": 1,
         "Max": 1
+      },
+      {
+        "Item": "eq_amulet_viper",
+        "Chance": 0.05,
+        "Min": 1,
+        "Max": 1
+      },
+      {
+        "Item": "eq_ring_venom",
+        "Chance": 0.015,
+        "Min": 1,
+        "Max": 1
+      },
+      {
+        "Item": "eq_earring_sand",
+        "Chance": 0.05,
+        "Min": 1,
+        "Max": 1
       }
     ]
   },
@@ -367,6 +445,24 @@
       {
         "Item": "eq_trident_naga",
         "Chance": 0.04,
+        "Min": 1,
+        "Max": 1
+      },
+      {
+        "Item": "eq_amulet_viper",
+        "Chance": 0.05,
+        "Min": 1,
+        "Max": 1
+      },
+      {
+        "Item": "eq_ring_venom",
+        "Chance": 0.015,
+        "Min": 1,
+        "Max": 1
+      },
+      {
+        "Item": "eq_earring_coral",
+        "Chance": 0.05,
         "Min": 1,
         "Max": 1
       }
@@ -418,6 +514,24 @@
         "Chance": 0.04,
         "Min": 1,
         "Max": 1
+      },
+      {
+        "Item": "eq_ring_moonsilver",
+        "Chance": 0.03,
+        "Min": 1,
+        "Max": 1
+      },
+      {
+        "Item": "eq_earring_bell",
+        "Chance": 0.05,
+        "Min": 1,
+        "Max": 1
+      },
+      {
+        "Item": "eq_earring_ghostlight",
+        "Chance": 0.015,
+        "Min": 1,
+        "Max": 1
       }
     ]
   },
@@ -449,6 +563,18 @@
         "Chance": 0.4,
         "Min": 1,
         "Max": 2
+      },
+      {
+        "Item": "eq_ring_moonsilver",
+        "Chance": 0.03,
+        "Min": 1,
+        "Max": 1
+      },
+      {
+        "Item": "eq_ring_wolfking",
+        "Chance": 0.015,
+        "Min": 1,
+        "Max": 1
       }
     ]
   },
@@ -478,6 +604,12 @@
       {
         "Item": "mat_pure_slime_gel",
         "Chance": 0.06,
+        "Min": 1,
+        "Max": 1
+      },
+      {
+        "Item": "eq_earring_dew",
+        "Chance": 0.03,
         "Min": 1,
         "Max": 1
       }
@@ -515,6 +647,18 @@
       {
         "Item": "eq_bramblehide_gloves",
         "Chance": 0.05,
+        "Min": 1,
+        "Max": 1
+      },
+      {
+        "Item": "eq_ring_wolfking",
+        "Chance": 0.015,
+        "Min": 1,
+        "Max": 1
+      },
+      {
+        "Item": "eq_earring_hunter",
+        "Chance": 0.03,
         "Min": 1,
         "Max": 1
       }
@@ -566,6 +710,12 @@
         "Chance": 0.04,
         "Min": 1,
         "Max": 1
+      },
+      {
+        "Item": "eq_earring_bell",
+        "Chance": 0.05,
+        "Min": 1,
+        "Max": 1
       }
     ]
   },
@@ -609,6 +759,18 @@
         "Chance": 0.05,
         "Min": 1,
         "Max": 1
+      },
+      {
+        "Item": "eq_ring_thorn",
+        "Chance": 0.05,
+        "Min": 1,
+        "Max": 1
+      },
+      {
+        "Item": "eq_earring_dew",
+        "Chance": 0.03,
+        "Min": 1,
+        "Max": 1
       }
     ]
   },
@@ -640,6 +802,12 @@
         "Chance": 0.04,
         "Min": 1,
         "Max": 1
+      },
+      {
+        "Item": "eq_ring_duelist",
+        "Chance": 0.03,
+        "Min": 1,
+        "Max": 1
       }
     ]
   },
@@ -663,6 +831,18 @@
       {
         "Item": "mat_cloth",
         "Chance": 0.25,
+        "Min": 1,
+        "Max": 1
+      },
+      {
+        "Item": "eq_amulet_warhorn",
+        "Chance": 0.03,
+        "Min": 1,
+        "Max": 1
+      },
+      {
+        "Item": "eq_ring_sentinel",
+        "Chance": 0.03,
         "Min": 1,
         "Max": 1
       }
@@ -702,6 +882,12 @@
         "Chance": 0.05,
         "Min": 1,
         "Max": 1
+      },
+      {
+        "Item": "eq_ring_duelist",
+        "Chance": 0.03,
+        "Min": 1,
+        "Max": 1
       }
     ]
   },
@@ -739,6 +925,12 @@
         "Chance": 0.05,
         "Min": 1,
         "Max": 1
+      },
+      {
+        "Item": "eq_earring_fang",
+        "Chance": 0.05,
+        "Min": 1,
+        "Max": 1
       }
     ]
   },
@@ -768,6 +960,18 @@
       {
         "Item": "eq_sandstrider_gloves",
         "Chance": 0.05,
+        "Min": 1,
+        "Max": 1
+      },
+      {
+        "Item": "eq_ring_sunstone",
+        "Chance": 0.015,
+        "Min": 1,
+        "Max": 1
+      },
+      {
+        "Item": "eq_earring_hunter",
+        "Chance": 0.03,
         "Min": 1,
         "Max": 1
       }
@@ -801,6 +1005,18 @@
         "Chance": 0.05,
         "Min": 1,
         "Max": 1
+      },
+      {
+        "Item": "eq_ring_ember",
+        "Chance": 0.05,
+        "Min": 1,
+        "Max": 1
+      },
+      {
+        "Item": "eq_earring_sand",
+        "Chance": 0.05,
+        "Min": 1,
+        "Max": 1
       }
     ]
   },
@@ -824,6 +1040,24 @@
       {
         "Item": "mat_arcane_dust",
         "Chance": 0.15,
+        "Min": 1,
+        "Max": 1
+      },
+      {
+        "Item": "eq_amulet_voidlocket",
+        "Chance": 0.006,
+        "Min": 1,
+        "Max": 1
+      },
+      {
+        "Item": "eq_ring_scholar",
+        "Chance": 0.03,
+        "Min": 1,
+        "Max": 1
+      },
+      {
+        "Item": "eq_ring_runelord",
+        "Chance": 0.006,
         "Min": 1,
         "Max": 1
       }
@@ -869,6 +1103,18 @@
         "Chance": 0.05,
         "Min": 1,
         "Max": 1
+      },
+      {
+        "Item": "eq_amulet_stormglass",
+        "Chance": 0.03,
+        "Min": 1,
+        "Max": 1
+      },
+      {
+        "Item": "eq_ring_spark",
+        "Chance": 0.05,
+        "Min": 1,
+        "Max": 1
       }
     ]
   },
@@ -898,6 +1144,30 @@
       {
         "Item": "eq_cogwright_gloves",
         "Chance": 0.05,
+        "Min": 1,
+        "Max": 1
+      },
+      {
+        "Item": "eq_amulet_stormglass",
+        "Chance": 0.03,
+        "Min": 1,
+        "Max": 1
+      },
+      {
+        "Item": "eq_ring_sentinel",
+        "Chance": 0.03,
+        "Min": 1,
+        "Max": 1
+      },
+      {
+        "Item": "eq_ring_chrono",
+        "Chance": 0.03,
+        "Min": 1,
+        "Max": 1
+      },
+      {
+        "Item": "eq_earring_thunder",
+        "Chance": 0.015,
         "Min": 1,
         "Max": 1
       }
@@ -943,6 +1213,18 @@
         "Chance": 0.05,
         "Min": 1,
         "Max": 1
+      },
+      {
+        "Item": "eq_earring_coral",
+        "Chance": 0.05,
+        "Min": 1,
+        "Max": 1
+      },
+      {
+        "Item": "eq_earring_whisper",
+        "Chance": 0.03,
+        "Min": 1,
+        "Max": 1
       }
     ]
   },
@@ -978,6 +1260,12 @@
       {
         "Item": "eq_fenwalker_gloves",
         "Chance": 0.05,
+        "Min": 1,
+        "Max": 1
+      },
+      {
+        "Item": "eq_amulet_mossheart",
+        "Chance": 0.03,
         "Min": 1,
         "Max": 1
       }
@@ -1023,6 +1311,18 @@
         "Chance": 0.05,
         "Min": 1,
         "Max": 1
+      },
+      {
+        "Item": "eq_amulet_nightshade",
+        "Chance": 0.015,
+        "Min": 1,
+        "Max": 1
+      },
+      {
+        "Item": "eq_ring_scholar",
+        "Chance": 0.03,
+        "Min": 1,
+        "Max": 1
       }
     ]
   },
@@ -1052,6 +1352,24 @@
       {
         "Item": "eq_lantern_mistveil",
         "Chance": 0.03,
+        "Min": 1,
+        "Max": 1
+      },
+      {
+        "Item": "eq_amulet_nightshade",
+        "Chance": 0.015,
+        "Min": 1,
+        "Max": 1
+      },
+      {
+        "Item": "eq_earring_whisper",
+        "Chance": 0.03,
+        "Min": 1,
+        "Max": 1
+      },
+      {
+        "Item": "eq_earring_oracle",
+        "Chance": 0.006,
         "Min": 1,
         "Max": 1
       }
@@ -1091,6 +1409,12 @@
         "Chance": 0.04,
         "Min": 1,
         "Max": 1
+      },
+      {
+        "Item": "eq_earring_ash",
+        "Chance": 0.05,
+        "Min": 1,
+        "Max": 1
       }
     ]
   },
@@ -1128,6 +1452,30 @@
         "Chance": 0.04,
         "Min": 1,
         "Max": 1
+      },
+      {
+        "Item": "eq_amulet_saint",
+        "Chance": 0.05,
+        "Min": 1,
+        "Max": 1
+      },
+      {
+        "Item": "eq_amulet_aegis",
+        "Chance": 0.015,
+        "Min": 1,
+        "Max": 1
+      },
+      {
+        "Item": "eq_ring_ironwill",
+        "Chance": 0.015,
+        "Min": 1,
+        "Max": 1
+      },
+      {
+        "Item": "eq_earring_ward",
+        "Chance": 0.03,
+        "Min": 1,
+        "Max": 1
       }
     ]
   },
@@ -1163,6 +1511,24 @@
       {
         "Item": "eq_frostmaw_gloves",
         "Chance": 0.04,
+        "Min": 1,
+        "Max": 1
+      },
+      {
+        "Item": "eq_amulet_frostheart",
+        "Chance": 0.03,
+        "Min": 1,
+        "Max": 1
+      },
+      {
+        "Item": "eq_ring_frost",
+        "Chance": 0.05,
+        "Min": 1,
+        "Max": 1
+      },
+      {
+        "Item": "eq_earring_ward",
+        "Chance": 0.03,
         "Min": 1,
         "Max": 1
       }
@@ -1214,6 +1580,30 @@
         "Chance": 0.04,
         "Min": 1,
         "Max": 1
+      },
+      {
+        "Item": "eq_amulet_wyrmheart",
+        "Chance": 0.006,
+        "Min": 1,
+        "Max": 1
+      },
+      {
+        "Item": "eq_ring_ember",
+        "Chance": 0.05,
+        "Min": 1,
+        "Max": 1
+      },
+      {
+        "Item": "eq_earring_ash",
+        "Chance": 0.05,
+        "Min": 1,
+        "Max": 1
+      },
+      {
+        "Item": "eq_earring_dragon",
+        "Chance": 0.006,
+        "Min": 1,
+        "Max": 1
       }
     ]
   },
@@ -1249,6 +1639,18 @@
       {
         "Item": "eq_frostmaw_gloves",
         "Chance": 0.04,
+        "Min": 1,
+        "Max": 1
+      },
+      {
+        "Item": "eq_amulet_frostheart",
+        "Chance": 0.03,
+        "Min": 1,
+        "Max": 1
+      },
+      {
+        "Item": "eq_ring_frost",
+        "Chance": 0.05,
         "Min": 1,
         "Max": 1
       }
@@ -1294,6 +1696,30 @@
         "Chance": 0.04,
         "Min": 1,
         "Max": 1
+      },
+      {
+        "Item": "eq_amulet_saint",
+        "Chance": 0.05,
+        "Min": 1,
+        "Max": 1
+      },
+      {
+        "Item": "eq_amulet_reliquary",
+        "Chance": 0.015,
+        "Min": 1,
+        "Max": 1
+      },
+      {
+        "Item": "eq_ring_sunstone",
+        "Chance": 0.015,
+        "Min": 1,
+        "Max": 1
+      },
+      {
+        "Item": "eq_earring_sanctum",
+        "Chance": 0.015,
+        "Min": 1,
+        "Max": 1
       }
     ]
   },
@@ -1331,6 +1757,18 @@
         "Chance": 0.04,
         "Min": 1,
         "Max": 1
+      },
+      {
+        "Item": "eq_ring_spark",
+        "Chance": 0.05,
+        "Min": 1,
+        "Max": 1
+      },
+      {
+        "Item": "eq_earring_thunder",
+        "Chance": 0.015,
+        "Min": 1,
+        "Max": 1
       }
     ]
   },
@@ -1360,6 +1798,18 @@
       {
         "Item": "eq_porcelain_gloves",
         "Chance": 0.04,
+        "Min": 1,
+        "Max": 1
+      },
+      {
+        "Item": "eq_amulet_glassheart",
+        "Chance": 0.015,
+        "Min": 1,
+        "Max": 1
+      },
+      {
+        "Item": "eq_ring_chrono",
+        "Chance": 0.03,
         "Min": 1,
         "Max": 1
       }
@@ -1403,6 +1853,24 @@
       {
         "Item": "eq_wispweave_gloves",
         "Chance": 0.04,
+        "Min": 1,
+        "Max": 1
+      },
+      {
+        "Item": "eq_amulet_glassheart",
+        "Chance": 0.015,
+        "Min": 1,
+        "Max": 1
+      },
+      {
+        "Item": "eq_amulet_voidlocket",
+        "Chance": 0.006,
+        "Min": 1,
+        "Max": 1
+      },
+      {
+        "Item": "eq_earring_ghostlight",
+        "Chance": 0.015,
         "Min": 1,
         "Max": 1
       }
@@ -1460,6 +1928,24 @@
         "Chance": 0.04,
         "Min": 1,
         "Max": 1
+      },
+      {
+        "Item": "eq_amulet_reliquary",
+        "Chance": 0.015,
+        "Min": 1,
+        "Max": 1
+      },
+      {
+        "Item": "eq_ring_eclipse",
+        "Chance": 0.006,
+        "Min": 1,
+        "Max": 1
+      },
+      {
+        "Item": "eq_earring_oracle",
+        "Chance": 0.006,
+        "Min": 1,
+        "Max": 1
       }
     ]
   },
@@ -1507,6 +1993,18 @@
       {
         "Item": "eq_sanguine_boots",
         "Chance": 0.04,
+        "Min": 1,
+        "Max": 1
+      },
+      {
+        "Item": "eq_ring_bloodpact",
+        "Chance": 0.015,
+        "Min": 1,
+        "Max": 1
+      },
+      {
+        "Item": "eq_ring_eclipse",
+        "Chance": 0.006,
         "Min": 1,
         "Max": 1
       }
