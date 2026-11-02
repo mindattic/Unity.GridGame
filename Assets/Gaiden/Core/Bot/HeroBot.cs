@@ -114,7 +114,7 @@ namespace GridGame.Core.Bot
             }
             // A lone hero (GG-T123, §22.10) can't pincer: with no damage, pickup or heal worth taking it guards rather
             // than wandering — foes no longer flee a lone hero (EnemyPlanner.LoneHero), so they come to its bar.
-            if (!movesOnly && best < 0.5f && (lone || rng.Chance(0.2f))) return new ShieldCommand();
+            if (!movesOnly && best < BattleConfig.BotGuardBelowScore && (lone || rng.Chance(BattleConfig.BotGuardChance))) return new ShieldCommand();
             if (SkillLevel < 99.9f) return SkillWeightedPick(candidates, best);
             return bestList[rng.Range(0, bestList.Count)];
         }

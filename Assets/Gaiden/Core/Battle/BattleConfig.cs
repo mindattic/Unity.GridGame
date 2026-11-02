@@ -42,6 +42,10 @@ namespace GridGame.Core.Battle
         /// <summary>How long the bot driver takes per dragged tile: a path longer than its turn window is cut short
         /// where the time runs out (forced drop), exactly like a human's.</summary>
         public const float BotSecondsPerStep = 0.25f;
+        /// <summary>Bot driver (GG-T191): a best move scoring under this is not worth a turn; the bot may Guard instead.</summary>
+        public const float BotGuardBelowScore = 0.5f;
+        /// <summary>Bot driver (GG-T191): chance of Guarding on such a turn (a lone hero always does).</summary>
+        public const float BotGuardChance = 0.2f;
         /// <summary>Max random head-start IP for icons at wave spawn (staggered entry).</summary>
         public const int SpawnStaggerIp = 250;
 

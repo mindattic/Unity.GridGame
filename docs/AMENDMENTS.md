@@ -572,3 +572,18 @@ updated: 2026-10-09
   bots drag at `BotSecondsPerStep` = 0.25 s a tile. Countdown badges now count turns, not 20-tick
   actions. Tuning (and whether a slot use should end the turn) is the GG-T191 balance pass; Guard banking
   the unused time is GG-T189. [BIBLE §0, §0.1 pillar 2, §0.2, §2.0, §2.10](BIBLE.md).
+
+## 2026-11-02 — Held-turn / Guard / support balance instrument (GG-T191, partial)
+
+- **Every tuning number is now in `BattleConfig`:** the held turn (`MinTurnSeconds` 2, `BotSecondsPerStep` 0.25), the
+  Guard bank (`GuardChargePerSecond` 10, `GuardMaxCharge` 40) and the bot's Guard habit (`BotGuardBelowScore` 0.5,
+  `BotGuardChance` 0.2, previously literals in `HeroBot`). Class support magnitudes are content data (each class's
+  `support` block), not code constants.
+- **Soak metrics:** `HeldTurnSoakReport` (Tests/Core.Tests) plays the campaign with greedy and casual bots and prints,
+  per stage, win rate, share of the turn window used, Guard share of turns, forced-drop share, mana charge from Guard
+  vs pincers vs other sources, support heal / buff / haste / cleanse totals.
+- **Values are unchanged.** No numbers were retuned: the soak has not been run (agents do not run tests) and the
+  targets still need to be agreed with the owner, so there is nothing yet to justify a change. Next step: run the
+  report, propose targets (e.g. turn used 50-80 %, Guard 5-20 % of turns, Guard mana a minority of pincer mana, no
+  stage under the §0.3 win band), agree them, tune, and record the chosen values and why in the BIBLE (§2.0, §2.5,
+  §29.2 item 5). The BIBLE edit was held back because `docs/BIBLE.md` carries another agent's uncommitted changes.
