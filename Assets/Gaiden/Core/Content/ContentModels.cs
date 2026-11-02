@@ -589,6 +589,9 @@ namespace GridGame.Core.Content
         public int Kills;
         public int RewardGold;
         public string RewardItem;
+        /// <summary>Optional skill-point payout (GG-T134): on Claim every hero in the active party gains this
+        /// many skill points. 0 (the default) pays none.</summary>
+        public int RewardSkillPoints;
     }
 
     public sealed class SummonDef
@@ -642,9 +645,6 @@ namespace GridGame.Core.Content
         public string Name;
         public string Description;
         /// <summary>Ability or passive id granted when this node unlocks.</summary>
-        /// <summary>Optional skill-point payout (GG-T134): on Claim every hero in the active party gains this
-        /// many skill points. 0 (the default) pays none.</summary>
-        public int RewardSkillPoints;
         public string Grants;
         public int Cost = 1;
         public int RequiredPointsInTree;
