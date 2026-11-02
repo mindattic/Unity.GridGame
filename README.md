@@ -95,6 +95,8 @@ python tools/harness.py call PATH k=v  # raw endpoint call, e.g. call state
 python tools/uicheck.py                # behavioral UI assertions against the running player
 python tools/androidcheck.py           # play a session on a device or emulator
 python tools/records.py [dir]          # balance picture from JSON battle records
+python tools/telemetry_report.py RUN   # endless-run telemetry report (win rates, heatmaps, outliers + repro seeds)
+                                       #   -> artifacts/endless/RUN/report.md + report.html
 ```
 
 Each worktree's harness gets its own port derived from its path; set `GAIDEN_PORT` to override. Screenshots land in `artifacts/<run>/`.
