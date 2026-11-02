@@ -956,7 +956,7 @@ namespace GridGame.App
             foreach (var it in broken)
             {
                 var item = it;
-                var yield = Crafting.SalvageBrokenPreview(C, item.Id);
+                var yield = Crafting.SalvageBrokenPreview(C, S, item.Id);
                 string y = yield.Count == 0 ? "—" : string.Join(", ", yield.Select(ic => $"{C.TryItem(ic.Item)?.Name}×{ic.Count}"));
                 var row = Ui.MenuRow($"Broken {item.Name}", $"×{S.BrokenCount(item.Id)}",
                     () => Confirm.Show($"Salvage Broken {item.Name} into {y}?", "Salvage", () => Done(Crafting.SalvageBroken(C, S, item.Id))), list, Art.ItemIcon(item.Id), yield.Count > 0);
@@ -1108,9 +1108,9 @@ namespace GridGame.App
             {
                 var ench = e;
                 bool locked = !ArmorEnchanting.IsUnlocked(S, e);
-                bool can = !locked && ArmorEnchanting.HasInputs(S, e) && ArmorEnchanting.CanAfford(S, e);
+                bool can = !locked && ArmorEnchanting.HasInputs(S, e) && ArmorEnchanting.CanAfford(C, S, e);
                 var passive = C.TryAbility(e.Passive);
-                var row = Ui.MenuRow(e.Name, locked ? $"🔒 {StationProgress.TierName(e.Tier)}" : Ui.Gold(ArmorEnchanting.Gold(S, e)),
+                var row = Ui.MenuRow(e.Name, locked ? $"🔒 {StationProgress.TierName(e.Tier)}" : Ui.Gold(ArmorEnchanting.Gold(C, S, e)),
                     () => { enchant = ench; Refresh(); }, elist, passive != null ? Art.AbilityIcon(passive) : null);
                 row.name = ArmorEnchanting.EnchantRowPrefix + e.Id;
                 if (!can) row.style.opacity = 0.55f;
@@ -1129,8 +1129,8 @@ namespace GridGame.App
                 int have = S.Count(ic.Item);
                 Ui.Text($"{(have >= ic.Count ? "✔" : "✘")} {C.TryItem(ic.Item)?.Name ?? ic.Item} ×{ic.Count}   (have {have})", "small " + (have >= ic.Count ? "good" : "bad"), need);
             }
-            int gold = ArmorEnchanting.Gold(S, enchant);
-            Ui.Text($"{(S.Gold >= gold ? "✔" : "✘")} {Ui.Gold(gold)}" + (gold == 0 && enchant.Gold > 0 ? "  (first rune free)" : ""), "small " + (S.Gold >= gold ? "good" : "bad"), need);
+            int gold = ArmorEnchanting.Gold(C, S, enchant);
+            Ui.Text($"{(S.Gold >= gold ? "✔" : "✘")} {Ui.Gold(gold)}" + (gold == 0 && enchant.Gold > 0 ? "  (first rune free)" : gold > 0 && gold < enchant.Gold ? "  (Enchanter's Wagon)" : ""), "small " + (S.Gold >= gold ? "good" : "bad"), need);
             bool unlocked = ArmorEnchanting.IsUnlocked(S, enchant);
             if (!unlocked)
                 Ui.Text($"🔒 Requires {StationProgress.TierName(enchant.Tier)} (alchemist is {StationProgress.LevelName(S, StationKind.Alchemist)})", "small bad", need).style.whiteSpace = WhiteSpace.Normal;
@@ -1143,7 +1143,7 @@ namespace GridGame.App
             var btn = Ui.Button("Enchant", () => Done(ArmorEnchanting.Enchant(C, S, piece?.Hero, piece?.Slot ?? EquipmentSlot.Head, enchant)), "btn--primary", detail);
             btn.name = CampTips.CraftButton;
             btn.style.marginTop = 10;
-            Ui.SetEnabled(btn, piece != null && unlocked && ArmorEnchanting.HasInputs(S, enchant) && ArmorEnchanting.CanAfford(S, enchant) && piece.Piece.Enchant != enchant.Id);
+            Ui.SetEnabled(btn, piece != null && unlocked && ArmorEnchanting.HasInputs(S, enchant) && ArmorEnchanting.CanAfford(C, S, enchant) && piece.Piece.Enchant != enchant.Id);
         }
     }
 
@@ -1159,6 +1159,7 @@ namespace GridGame.App
         {
             var head = Ui.Window(null, body);
             Ui.Text("The caravan travels with the party — its wagons are the shops between battles. Upgrade it for the long road.", "small", head).style.whiteSpace = WhiteSpace.Normal;
+            BarkLine(C, S, head);
             var w = Ui.Window(null, body);
             w.style.flexGrow = 1;
             var list = Ui.List(w).contentContainer;
@@ -1177,12 +1178,29 @@ namespace GridGame.App
                 var top = Ui.El("row", col);
                 Ui.Text(d.Name, "h2 grow", top);
                 Ui.Text($"Lv {lv}/{d.Levels.Count}", "small gold", top);
+                if (!string.IsNullOrEmpty(d.Crew)) Ui.Text("Crew: " + CaravanUpgrades.CrewName(d), "tiny gold", col);
                 Ui.Text(d.Description, "tiny dim", col).style.whiteSpace = WhiteSpace.Normal;
                 if (lv > 0) Ui.Text("Now: " + d.Levels[lv - 1].Text, "tiny good", col);
                 if (next != null) Ui.Text("Next: " + next.Text, "tiny", col);
                 var b = Ui.Button(next == null ? "Maxed" : Ui.Gold(next.Cost), () => Confirm.Show($"Buy {d.Name} ({next.Text}) for {Ui.Gold(next.Cost)}?", "Buy", () => Done(CaravanUpgrades.Buy(C, S, d.Id))), "btn--small", card);
                 Ui.SetEnabled(b, next != null && S.Gold >= next.Cost);
             }
+        }
+
+        private static int barkTurn = Environment.TickCount & 0xFFFF;
+
+        /// <summary>One rotating crew bark (GG-T75, §25.12.1): a quoted line and who said it — flavor only, nothing to
+        /// tap or answer. Each call advances the rotation, so every rebuild of Camp or the Caravan shows the next line.</summary>
+        public static VisualElement BarkLine(ContentDb c, SaveData s, VisualElement parent)
+        {
+            var (crew, line) = CaravanUpgrades.Bark(c, s, barkTurn++);
+            if (line == null) return null;
+            var box = Ui.El("col", parent);
+            box.name = "caravan-bark";
+            box.style.marginTop = 8;
+            Ui.Text($"\"{line}\"", "small", box).style.whiteSpace = WhiteSpace.Normal;
+            Ui.Text("— " + CaravanUpgrades.CrewName(crew), "tiny dim", box);
+            return box;
         }
     }
 

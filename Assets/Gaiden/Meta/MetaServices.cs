@@ -413,6 +413,46 @@ namespace GridGame.Meta
             s.Caravan[id] = Level(s, id) + 1;
             return Result.Success($"{def.Name}: {next.Text}");
         }
+
+        /// <summary>Upgrade id of the Enchanter's Wagon: armor enchants cost less gold (GG-T75).</summary>
+        public const string EnchanterWagon = "enchanter_wagon";
+        /// <summary>Upgrade id of the Quartermaster's Ledger: salvage returns more materials (GG-T75).</summary>
+        public const string QuartermasterLedger = "quartermaster_ledger";
+
+        /// <summary>Gold after the Enchanter's Wagon discount (never below 1 for a priced enchant).</summary>
+        public static int EnchantGold(ContentDb c, SaveData s, int gold)
+        {
+            if (c == null || s == null || gold <= 0) return gold;
+            float off = Value(c, s, EnchanterWagon);
+            return off <= 0f ? gold : Math.Max(1, (int)Math.Ceiling(gold * (1f - off)));
+        }
+
+        /// <summary>Salvage yield after the Quartermaster's Ledger: each material stack grows by its level's fraction (rounded half up).</summary>
+        public static List<ItemCount> LedgerYield(ContentDb c, SaveData s, List<ItemCount> yield)
+        {
+            if (c == null || s == null || yield == null) return yield;
+            float bonus = Value(c, s, QuartermasterLedger);
+            if (bonus <= 0f) return yield;
+            return yield.Select(ic => new ItemCount { Item = ic.Item, Count = ic.Count + (int)Math.Floor(ic.Count * bonus + 0.5f) }).ToList();
+        }
+
+        /// <summary>A rotating one-line crew bark (GG-T75): flavor only — no branching, no choices, nothing to answer.
+        /// Drawn from the crews whose wagon this save has upgraded, or from every crew before the first upgrade.
+        /// <paramref name="turn"/> picks the line, so callers rotate it by passing a counter.</summary>
+        public static (CaravanUpgradeDef Crew, string Line) Bark(ContentDb c, SaveData s, int turn)
+        {
+            if (c == null) return (null, null);
+            var crews = c.Caravan.Values.Where(d => d.Barks != null && d.Barks.Count > 0).ToList();
+            var bought = s == null ? new List<CaravanUpgradeDef>() : crews.Where(d => Level(s, d.Id) > 0).ToList();
+            var pool = (bought.Count > 0 ? bought : crews).SelectMany(d => d.Barks.Select(line => (d, line))).ToList();
+            if (pool.Count == 0) return (null, null);
+            int i = ((turn % pool.Count) + pool.Count) % pool.Count;
+            return pool[i];
+        }
+
+        /// <summary>How a crew member is named on screen: "Brannoc, cask-keeper".</summary>
+        public static string CrewName(CaravanUpgradeDef d) =>
+            d == null || string.IsNullOrEmpty(d.Crew) ? "" : string.IsNullOrEmpty(d.CrewRole) ? d.Crew : $"{d.Crew}, {d.CrewRole}";
     }
 
     public static class BattleFactory
@@ -1089,7 +1129,7 @@ namespace GridGame.Meta
             var item = c.TryItem(itemId);
             if (item == null || s.Count(itemId) < 1) return Result.Fail("Nothing to salvage");
             int durability = TakeWorstDurability(s, item);
-            var yield = SalvageYield(c, item, durability);
+            var yield = CaravanUpgrades.LedgerYield(c, s, SalvageYield(c, item, durability));
             if (yield.Count == 0) return Result.Fail("Can't be salvaged");
             s.AddItem(itemId, -1);
             foreach (var ic in yield) s.AddItem(ic.Item, ic.Count);
@@ -1105,7 +1145,7 @@ namespace GridGame.Meta
             var item = itemId != null ? c.TryItem(itemId) : null;
             if (item == null) return Result.Fail("Nothing equipped");
             int durability = slot == EquipmentSlot.Weapon ? h.WeaponDurability : h.Armor.TryGetValue(slot, out var ap) ? ap.Durability : 0;
-            var yield = SalvageYield(c, item, durability);
+            var yield = CaravanUpgrades.LedgerYield(c, s, SalvageYield(c, item, durability));
             if (yield.Count == 0) return Result.Fail("Can't be salvaged");
             switch (slot)
             {
@@ -1129,10 +1169,14 @@ namespace GridGame.Meta
         /// <summary>Scraps one Broken fragment of <paramref name="itemId"/> for materials — Broken pieces
         /// can't be equipped or repaired, so salvage is their only use (GG-T41).</summary>
         public static Result SalvageBroken(ContentDb c, SaveData s, string itemId)
+        /// <summary><see cref="SalvageBrokenPreview(ContentDb, string)"/> with this save's Quartermaster's Ledger bonus (GG-T75).</summary>
+        public static List<ItemCount> SalvageBrokenPreview(ContentDb c, SaveData s, string itemId) =>
+            CaravanUpgrades.LedgerYield(c, s, SalvageBrokenPreview(c, itemId));
+
         {
             var item = c.TryItem(itemId);
             if (item == null || s.BrokenCount(itemId) < 1) return Result.Fail("Nothing to salvage");
-            var yield = SalvageYield(c, item, 0);
+            var yield = CaravanUpgrades.LedgerYield(c, s, SalvageYield(c, item, 0));
             if (yield.Count == 0) return Result.Fail("Can't be salvaged");
             s.AddBroken(itemId, -1);
             foreach (var ic in yield) s.AddItem(ic.Item, ic.Count);
@@ -1400,8 +1444,13 @@ namespace GridGame.Meta
         public static bool CanAfford(SaveData s, ArmorEnchantDef e) => s != null && s.Gold >= Gold(s, e);
 
         /// <summary>Every intact armor piece the roster wears, party heroes first.</summary>
+        /// <summary>Gold an enchant costs this save after the caravan's Enchanter's Wagon discount (GG-T75).</summary>
+        public static int Gold(ContentDb c, SaveData s, ArmorEnchantDef e) => CaravanUpgrades.EnchantGold(c, s, Gold(s, e));
+
         public static List<Target> Pieces(ContentDb c, SaveData s)
         {
+        public static bool CanAfford(ContentDb c, SaveData s, ArmorEnchantDef e) => s != null && s.Gold >= Gold(c, s, e);
+
             var list = new List<Target>();
             if (c == null || s == null) return list;
             var heroes = s.Party.Select(s.Hero).Where(h => h != null).Concat(s.Roster.Where(h => !s.Party.Contains(h.ClassId))).ToList();
@@ -1442,7 +1491,7 @@ namespace GridGame.Meta
             if (piece.Enchant == e.Id) return Result.Fail($"Already bound with {e.Name}");
             if (!IsUnlocked(s, e)) return Result.Fail($"Requires {StationProgress.TierName(e.Tier)}");
             if (!HasInputs(s, e)) return Result.Fail("Missing materials");
-            int gold = Gold(s, e);
+            int gold = Gold(c, s, e);
             if (s.Gold < gold) return Result.Fail("Not enough gold");
             s.Gold -= gold;
             foreach (var ic in e.Inputs) s.AddItem(ic.Item, -ic.Count);

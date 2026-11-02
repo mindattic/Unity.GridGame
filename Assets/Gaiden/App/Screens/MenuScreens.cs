@@ -565,6 +565,14 @@ namespace GridGame.App
         {
             var r = Inn.Rest(App.Content, App.Save);
             App.Toast(r.Message);
+            // GG-T75 (§25.12.1): once the Caravan station is open, a rotating one-line crew bark — flavor, not dialogue.
+            if (CampUnlocks.CaravanOpen(s))
+            {
+                var gossip = Ui.Window(null, side);
+                gossip.name = "camp-gossip";
+                Ui.Text("Around the wagons", "small dim", gossip);
+                CaravanScreen.BarkLine(c, s, gossip);
+            }
             App.Audio.Sfx(r.Ok ? "heal" : "ui.error");
             if (r.Ok) { App.Persist(); Refresh(); }
         }
