@@ -65,11 +65,14 @@ namespace GridGame.App
             return string.Join("   ", parts);
         }
 
-        /// <summary>Standard item row: glyph · rarity-colored name · right value. <paramref name="masterwork"/> prefixes a ★ (GG-T46).</summary>
-        public static VisualElement Row(ItemDef i, string value, Action onClick, VisualElement parent, bool enabled = true, bool masterwork = false)
+        /// <summary>Standard item row: glyph · rarity-colored name · right value. <paramref name="masterwork"/> prefixes a ★ (GG-T46).
+        /// <paramref name="nameOverride"/> replaces the item's own name in the label (GG-T198: lets a recipe row show
+        /// "Result — key inputs" instead of the bare item name, e.g. when two recipes share a result).</summary>
+        public static VisualElement Row(ItemDef i, string value, Action onClick, VisualElement parent, bool enabled = true, bool masterwork = false, string nameOverride = null)
         {
             var icon = Art.ItemIcon(i.Id);
-            string label = (icon != null ? i.Name : $"{Glyph(i)}  {i.Name}");
+            string name = nameOverride ?? i.Name;
+            string label = (icon != null ? name : $"{Glyph(i)}  {name}");
             if (masterwork) label = "★ " + label;
             var row = Ui.MenuRow(label, value, onClick, parent, icon, enabled);
             row.Q<Label>("label").AddToClassList(Ui.RarityClass(i.Rarity));
@@ -813,6 +816,11 @@ namespace GridGame.App
             var visible = recipes.Where(r => Forging.ArmorOpen(c, s, r) && (RecipeDiscovery.IsDiscovered(s, r) || RecipeDiscovery.OneAwayMissing(s, r) != null)).ToList();
             if (visible.Count == 0) Ui.Text("No recipes.", "small dim", list);
             RecipeDef sel = selected;
+            // GG-T198: two discovered recipes can share a Result (the old Slime Gel brew and the new Empty Bottle
+            // brew, GG-T176) and otherwise look identical in the list apart from price. When that happens, name
+            // each row's key inputs so a player can tell them apart without opening both.
+            var resultCounts = visible.Where(x => RecipeDiscovery.IsDiscovered(s, x)).GroupBy(x => x.Result)
+                .ToDictionary(g => g.Key, g => g.Count());
             foreach (var r in visible)
             {
                 var rec = r;
@@ -822,7 +830,8 @@ namespace GridGame.App
                     var result = c.Item(r.Result);
                     bool locked = !Crafting.IsUnlocked(s, r);
                     bool can = !locked && Crafting.HasInputs(s, r) && s.Gold >= r.Gold;
-                    row = ItemUi.Row(result, locked ? $"🔒 {StationProgress.TierName(r.Tier)}" : $"{r.Gold} G", () => ShowRecipe(detail, c, s, rec, page), list, true);
+                    string nameOverride = resultCounts[r.Result] > 1 ? $"{result.Name} — {InputSummary(c, r)}" : null;
+                    row = ItemUi.Row(result, locked ? $"🔒 {StationProgress.TierName(r.Tier)}" : $"{r.Gold} G", () => ShowRecipe(detail, c, s, rec, page), list, true, false, nameOverride);
                     row.name = "recipe-" + r.Id;
                     if (!can) row.style.opacity = 0.55f;
                 }
@@ -838,6 +847,11 @@ namespace GridGame.App
             if (sel != null) ShowRecipe(detail, c, s, sel, page);
             else Ui.Text("Pick a recipe to see what it needs.", "small dim", detail);
         }
+
+        /// <summary>"Slime Gel" or "Empty Bottle + Wolf Pelt + Tattered Cloth" — the recipe's own inputs, joined,
+        /// used to tell apart two recipes that share a Result (GG-T198).</summary>
+        private static string InputSummary(ContentDb c, RecipeDef r) =>
+            string.Join(" + ", r.Inputs.Select(ic => c.TryItem(ic.Item)?.Name ?? ic.Item));
 
         internal static void ShowRecipe(VisualElement w, ContentDb c, SaveData s, RecipeDef r, HubPage page)
         {
