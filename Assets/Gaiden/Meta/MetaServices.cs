@@ -1169,13 +1169,13 @@ namespace GridGame.Meta
             return item == null ? new List<ItemCount>() : SalvageYield(c, item, 0);
         }
 
-        /// <summary>Scraps one Broken fragment of <paramref name="itemId"/> for materials — Broken pieces
-        /// can't be equipped or repaired, so salvage is their only use (GG-T41).</summary>
-        public static Result SalvageBroken(ContentDb c, SaveData s, string itemId)
         /// <summary><see cref="SalvageBrokenPreview(ContentDb, string)"/> with this save's Quartermaster's Ledger bonus (GG-T75).</summary>
         public static List<ItemCount> SalvageBrokenPreview(ContentDb c, SaveData s, string itemId) =>
             CaravanUpgrades.LedgerYield(c, s, SalvageBrokenPreview(c, itemId));
 
+        /// <summary>Scraps one Broken fragment of <paramref name="itemId"/> for materials — Broken pieces
+        /// can't be equipped or repaired, so salvage is their only use (GG-T41).</summary>
+        public static Result SalvageBroken(ContentDb c, SaveData s, string itemId)
         {
             var item = c.TryItem(itemId);
             if (item == null || s.BrokenCount(itemId) < 1) return Result.Fail("Nothing to salvage");
@@ -1444,16 +1444,16 @@ namespace GridGame.Meta
         /// <summary>Gold an enchant costs this save: nothing for the guided first one.</summary>
         public static int Gold(SaveData s, ArmorEnchantDef e) => e == null ? 0 : FirstDone(s) ? e.Gold : 0;
 
-        public static bool CanAfford(SaveData s, ArmorEnchantDef e) => s != null && s.Gold >= Gold(s, e);
-
-        /// <summary>Every intact armor piece the roster wears, party heroes first.</summary>
         /// <summary>Gold an enchant costs this save after the caravan's Enchanter's Wagon discount (GG-T75).</summary>
         public static int Gold(ContentDb c, SaveData s, ArmorEnchantDef e) => CaravanUpgrades.EnchantGold(c, s, Gold(s, e));
 
-        public static List<Target> Pieces(ContentDb c, SaveData s)
-        {
+        public static bool CanAfford(SaveData s, ArmorEnchantDef e) => s != null && s.Gold >= Gold(s, e);
+
         public static bool CanAfford(ContentDb c, SaveData s, ArmorEnchantDef e) => s != null && s.Gold >= Gold(c, s, e);
 
+        /// <summary>Every intact armor piece the roster wears, party heroes first.</summary>
+        public static List<Target> Pieces(ContentDb c, SaveData s)
+        {
             var list = new List<Target>();
             if (c == null || s == null) return list;
             var heroes = s.Party.Select(s.Hero).Where(h => h != null).Concat(s.Roster.Where(h => !s.Party.Contains(h.ClassId))).ToList();
