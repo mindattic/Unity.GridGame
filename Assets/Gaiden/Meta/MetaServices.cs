@@ -1131,9 +1131,10 @@ namespace GridGame.Meta
         {
             var item = c.TryItem(itemId);
             if (item == null || s.Count(itemId) < 1) return Result.Fail("Nothing to salvage");
-            int durability = TakeWorstDurability(s, item);
-            var yield = CaravanUpgrades.LedgerYield(c, s, SalvageYield(c, item, durability));
+            // Peek first: a failed salvage must not consume the copy's tracked wear (it would silently turn fresh).
+            var yield = CaravanUpgrades.LedgerYield(c, s, SalvageYield(c, item, PeekWorstDurability(s, item)));
             if (yield.Count == 0) return Result.Fail("Can't be salvaged");
+            TakeWorstDurability(s, item);
             s.AddItem(itemId, -1);
             foreach (var ic in yield) s.AddItem(ic.Item, ic.Count);
             StationProgress.Gain(s, StationKind.Blacksmith, SalvageXp);

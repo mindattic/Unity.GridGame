@@ -368,7 +368,7 @@ namespace GridGame.Core.Battle
                 if (shot != null)
                 {
                     Emit(new AttackEvent { AttackerId = enemy.Id, TargetId = shot.Id, IsRanged = true });
-                    var r = Formulas.Physical(enemy, shot, S.Rng, KitDamageMultiplier(enemy));
+                    var r = Formulas.Physical(enemy, shot, S.Rng, KitDamageMultiplier(enemy) * enemy.OutgoingDamageMultiplier);
                     int hp0 = shot.Hp;
                     Damage(shot, r.Damage, enemy, r.Hit, DamageType.Physical);
                     if (r.Hit != HitKind.Miss) AfterLandedHit(enemy, shot, hp0 - shot.Hp);
@@ -377,14 +377,14 @@ namespace GridGame.Core.Battle
             }
             if (target == null) return;
             Emit(new AttackEvent { AttackerId = enemy.Id, TargetId = target.Id, IsMelee = true });
-            var roll = Formulas.Physical(enemy, target, S.Rng, KitDamageMultiplier(enemy));
+            var roll = Formulas.Physical(enemy, target, S.Rng, KitDamageMultiplier(enemy) * enemy.OutgoingDamageMultiplier);
             int hpBefore = target.Hp;
             Damage(target, roll.Damage, enemy, roll.Hit, DamageType.Physical);
             if (roll.Hit != HitKind.Miss) { AfterLandedHit(enemy, target, hpBefore - target.Hp); MaybeCounter(target, enemy); }
             if (HasPassive(enemy, "double_attack") && target.Alive && enemy.Alive)
             {
                 Emit(new AttackEvent { AttackerId = enemy.Id, TargetId = target.Id, IsMelee = true });
-                var r2 = Formulas.Physical(enemy, target, S.Rng, 0.5f * KitDamageMultiplier(enemy));
+                var r2 = Formulas.Physical(enemy, target, S.Rng, 0.5f * KitDamageMultiplier(enemy) * enemy.OutgoingDamageMultiplier);
                 int hp2 = target.Hp;
                 Damage(target, r2.Damage, enemy, r2.Hit, DamageType.Physical);
                 if (r2.Hit != HitKind.Miss) AfterLandedHit(enemy, target, hp2 - target.Hp);
