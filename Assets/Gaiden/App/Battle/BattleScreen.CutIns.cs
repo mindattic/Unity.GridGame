@@ -286,6 +286,8 @@ namespace GridGame.App
                 if (mc.Chain > 1) why += $" · chain ×{1f + BattleConfig.ChargeChainBonus * (mc.Chain - 1):0.##}";
                 Billboard($"Mana +{mc.Amount}{why}", null, new Color(0.55f, 0.85f, 1f));
             }
+            else if (mc.Reason == "guard") // GG-T189: the unused turn time Guard gave up, banked into the bubble
+                Billboard($"Guard · Mana +{mc.Amount} · {mc.Amount / BattleConfig.GuardChargePerSecond:0.#}s banked", null, new Color(0.55f, 0.85f, 1f));
             App.Audio.Sfx("orb", 0.35f, 0.7f + 0.5f * (to / (float)BattleConfig.ManaChargePerOrb));
             yield return Tween.Run(0.22f, k =>
             {

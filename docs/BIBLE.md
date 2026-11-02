@@ -156,7 +156,7 @@ Same row OR column, every tile strictly between them covered by opponents — no
 Adding a spell is a new `abilities.json` row picking targeting axes and effect knobs; it never touches `BattleRunner.ResolveAbility`. *(Source: `TargetResolver.cs`, `BattleRunner.Abilities.cs`; test `Every_hero_ability_resolves_against_a_live_board`.)*
 
 ### {#GG-LAW-6} Mana is one shared, visible, capped pool
-A single 12-orb `ManaBank` for the whole party — no per-hero MP. Over-minting past 12 fades out (felt as "leaving value on the table"). *(Source: `ManaBank.Add`; test `Bank_overflow_fades_extra_orbs`.)*
+A single 12-orb `ManaBank` for the whole party — no per-hero MP. Over-minting past 12 fades out (felt as "leaving value on the table"). **Amended 2026-11-02 (GG-T189):** orbs have fractional progress — the one forming bubble (`BattleState.ManaCharge`, [§3.1.9](#319-mana-charge)) fills toward the next orb; a bubble that rolls over while the bank holds 12 mints an orb that fades like any other, keeping the remainder. *(Source: `ManaBank.Add`, `BattleRunner.AddCharge`; tests `Bank_overflow_fades_extra_orbs`, `Guard_bubble_rolls_into_an_orb_and_fades_when_the_bank_holds_12`.)*
 
 ### {#GG-LAW-7} Verify-then-checkpoint; the bible is the brief
 Land a feature end-to-end and verify it before committing — no mid-phase commits. If code and bible disagree, reconcile in writing. **Amended 2026-10-09:** the old "every system ships a `DebugManager.Demo_*` button" rule is replaced by harness evidence ([GG-LAW-12](#GG-LAW-12)) — a scripted automation step or a test is the demo.
@@ -593,6 +593,15 @@ The **GUARD** button (right of the timeline) issues `ShieldCommand`:
 
 **Amended 2026-10-09:** it never auto-presses (there is no real-time window to run out). *(Test: `Shield_protects_heroes_and_skips_to_next_enemy_turn`.)*
 
+**Amended 2026-11-02 (GG-T189, owner 2026-10-21): Guard banks unused turn time into mana.** Guard ends the turn early, and the turn time it gives up fills the forming mana bubble ([§3.1.9](#319-mana-charge)) before the clock runs:
+- `charge = min(GuardMaxCharge, round(secondsLeft × GuardChargePerSecond))` — `BattleEngine.GuardCharge` / `GuardChargeFor`, reason `guard` (`ManaChargedEvent`; a rollover mints an orb with the same reason).
+- `secondsLeft` = the turn window ([§2.0](#20-the-held-turn), `TurnWindowSeconds`) minus `ShieldCommand.HeldSeconds` already used (0 for the GUARD button); with no enemy icon able to arrive, the window is the `ActionTicks` turn it spends (2 s).
+- Tuning in `BattleConfig`: `GuardChargePerSecond` = **10**, `GuardMaxCharge` = **40** (under half an orb). Guard ends the turn, so one conversion per turn is the per-turn limit by construction.
+- Protection is kept as Guard's defensive effect. The drag-timer time bank ([§3.1.8](#318-time-banked-orbs)) is fed only by moves; Guard still clears any pending drag remainder, so the two never stack.
+- The HUD shows it as the filling bubble plus a "Guard · Mana +N · Xs banked" billboard.
+
+*(Tests: `GuardBankTests` — conversion maths, time-left proportionality, overflow at 12 orbs, Guard ending the turn after banking.)*
+
 ### 2.6 One timeline, two lanes — turn icons above, cast icons below
 
 **Amended 2026-10-10 (owner requests): one line, every icon on it.** The track is a thin 6 px line; every icon is centred on it.
@@ -659,7 +668,7 @@ A spell's cost is a whole number of orbs (`AbilityDef.Cost`, an int in `abilitie
 #### 3.1.2 Harvesting
 
 **Amended 2026-10-11 (owner: "mana needs to be a more rare resource … the number of participants in the attack increases the multiplier needed to earn a mana bubble"):** pincers, crits, interrupts and the amplifier no longer mint whole orbs — they fill the **mana charge** meter ([§3.1.9](#319-mana-charge)). Orbs still mint whole through `BattleRunner.MintOrb` (event `OrbMintedEvent`, reason string) from:
-- **Mana charge** rolling over 100 (reason = what filled it: `pincer`, `critical`, `interrupt`, `amplifier`).
+- **Mana charge** rolling over 100 (reason = what filled it: `pincer`, `critical`, `interrupt`, `amplifier`, `guard`).
 - **Steal / Mug** (`steal`): per target, chance `clamp01((LCK + 0.5 × AGI) / 50)` → 1 orb.
 - **Battle-start gear** (`battle start`): `ItemDef.BattleStartManaOrbs` summed over the party's equipped items before wave 1 (Mage Robes 2, Wizard Robe 3).
 - **Time bank** (`time bank`): see [§3.1.8](#318-time-banked-orbs).
@@ -697,6 +706,7 @@ The view flies each orb from its source to its slot in a 0.22 s arc (overflowing
 | Cancel an enemy charge | +25 charge |
 | Battle start, one Mage Robes equipped | 2 |
 | Drop with ≥ 3.75 s left on the drag timer, then an enemy turn | 3 (cap) |
+| Guard with 2 s of turn left (GG-T189) | 20 charge (cap 40) |
 
 #### 3.1.8 Time-banked orbs
 
@@ -711,6 +721,7 @@ Added 2026-10-11 (owner direction). `BattleState.ManaCharge` (0–99) is the for
 
 - **Pincer:** `charge = PincerChargePerHp (120) × share × (1 + 0.25 × chainIndex) ÷ (1 + 0.5 × (participants − 2))`, minimum 2 when it lands. `share` = Σ over the trapped foes of `min(1, HP removed by this pincer ÷ MaxHP)`; `participants` = the two attackers + every supporter. So a lean two-hero pincer earns at full rate, a four-hero dog-pile at half, and chaining is the way to farm.
 - **Critical** +12, **interrupt** +25, **amplifier** +30. Kills alone earn nothing.
+- **Guard** (GG-T189): the unused turn time at 10 charge per second, max 40 ([§2.5](#25-auto-skip--shield)). This is the "fractional orb": the bubble is progress toward the next orb, and a rollover with the bank at 12 fades ([§3.1.4](#314-bank-full-rules-overflow)) while the remainder stays in the bubble.
 - The billboard shows the arithmetic ("Mana +34 · 3 heroes ÷1.5 · chain ×1.25").
 
 *(Tests: `More_heroes_in_a_pincer_earn_less_mana_per_hp_taken`, `Charge_rolls_over_into_orbs_and_keeps_the_remainder`, `A_killing_pincer_earns_mana_by_hp_taken_not_per_hero`, `Supporters_join_but_dilute_the_mana_charge`.)*

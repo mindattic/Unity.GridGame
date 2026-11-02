@@ -34,9 +34,13 @@ namespace GridGame.Core.Battle
         public override string ToString() => $"Use {HeroId} slot{Slot} @{Target}";
     }
 
-    /// <summary>Raise shields: every hero gains Protection and the clock runs to the next enemy turn (§2.5).</summary>
+    /// <summary>Raise shields (Guard): every hero gains Protection, the unused turn time fills the mana bubble
+    /// (GG-T189) and the clock runs to the next enemy turn (§2.5).</summary>
     public sealed class ShieldCommand : BattleCommand
     {
+        /// <summary>Real seconds of the turn already used before Guard (0 for a Guard pressed at the turn's start);
+        /// only the rest of the turn window converts to mana charge.</summary>
+        public float HeldSeconds;
         public override string ToString() => "Shield";
     }
 }

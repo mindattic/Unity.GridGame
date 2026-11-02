@@ -207,6 +207,27 @@ namespace GridGame.Core.Battle
             return System.Math.Max(BattleConfig.MinTurnSeconds, t / (float)BattleConfig.TicksPerSecond);
         }
 
+        /// <summary>
+        /// Guard bank (GG-T189, §2.5): the mana charge a Guard pressed after <paramref name="heldSeconds"/> of the turn
+        /// earns — the turn's window minus the time already used, at <see cref="BattleConfig.GuardChargePerSecond"/>,
+        /// capped at <see cref="BattleConfig.GuardMaxCharge"/>. With no enemy icon able to arrive the turn is the fixed
+        /// <see cref="BattleConfig.ActionTicks"/> it would spend.
+        /// </summary>
+        public static int GuardCharge(BattleState s, float heldSeconds = 0f)
+        {
+            float w = TurnWindowSeconds(s);
+            if (w < 0f) w = BattleConfig.ActionTicks / (float)BattleConfig.TicksPerSecond;
+            return GuardChargeFor(w - System.Math.Max(0f, heldSeconds));
+        }
+
+        /// <summary>The conversion maths alone: <paramref name="secondsLeft"/> of unused turn → mana charge (0..GuardMaxCharge).</summary>
+        public static int GuardChargeFor(float secondsLeft)
+        {
+            if (!(secondsLeft > 0f)) return 0;
+            double raw = System.Math.Round(secondsLeft * (double)BattleConfig.GuardChargePerSecond);
+            return (int)System.Math.Min(BattleConfig.GuardMaxCharge, raw);
+        }
+
         /// <summary>Did a hold of <paramref name="heldSeconds"/> run out the turn (a forced drop)?</summary>
         public static bool IsTimeUp(BattleState s, float heldSeconds)
         {

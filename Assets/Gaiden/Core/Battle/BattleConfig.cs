@@ -86,6 +86,13 @@ namespace GridGame.Core.Battle
         public const float SecondsPerTimeBankOrb = 1.25f;
         public const int MaxTimeBankOrbs = 3;
 
+        // ── Guard bank (§2.5 / §3.1.9, GG-T189, owner 2026-10-21): Guard ends the turn early and the turn time it
+        //    gives up fills the forming mana bubble (charge toward the next orb), proportional to the time left ──
+        /// <summary>Mana charge per real second of turn left when Guard is pressed (100 charge = one orb).</summary>
+        public const float GuardChargePerSecond = 10f;
+        /// <summary>Most charge one Guard can bank — Guard ends the turn, so this is also the per-turn limit.</summary>
+        public const int GuardMaxCharge = 40;
+
         // ── Steal (§6 stage 8) ──────────────────────────────────────────────────────
         public const float StealDivisor = 50f;
 

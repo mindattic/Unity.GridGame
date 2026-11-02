@@ -53,7 +53,7 @@ namespace GridGame.Core.Battle
             {
                 case MoveCommand m: acted = DoMove(m); break;
                 case UseSlotCommand u: acted = DoUseSlot(u); break;
-                case ShieldCommand _: acted = DoShield(); break;
+                case ShieldCommand sh: acted = DoShield(sh); break;
                 case TalkCommand t: acted = DoTalk(t); break;
                 default: acted = false; break;
             }
@@ -271,13 +271,17 @@ namespace GridGame.Core.Battle
         // Shield (§2.5)
         // ─────────────────────────────────────────────────────────────────────────────
 
-        private bool DoShield()
+        private bool DoShield(ShieldCommand cmd)
         {
             Emit(new ActionBeganEvent { ActorId = -1, Label = "Shield" });
             var prot = C.TryBuff(BattleConfig.ShieldBuffId);
             if (prot != null)
                 foreach (var h in S.LivingList(Team.Hero)) ApplyBuff(h, prot, prot.Duration);
+            // GG-T189: Guard ends the turn early and banks the turn time it gives up as mana charge (the forming bubble,
+            // §3.1.9) — measured before the clock runs. It replaces the drag-timer time bank (§3.1.8), which only a
+            // move feeds, so a pending drag remainder is dropped rather than stacked on top.
             S.PendingTimeBankSeconds = 0f;
+            AddCharge(BattleEngine.GuardCharge(S, cmd.HeldSeconds), -1, "guard");
             return true;
         }
 
