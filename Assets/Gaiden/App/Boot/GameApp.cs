@@ -516,44 +516,32 @@ namespace GridGame.App
             Next();
         }
 
-        /// <summary>Removes every synthetic endless stage from the live content (GG-T23).</summary>
-        private static void Prune(ContentDb c)
-        {
-            var stale = new List<string>();
-            foreach (var id in c.Stages.Keys) if (id.StartsWith(EncounterGenerator.IdPrefix, StringComparison.Ordinal)) stale.Add(id);
-            foreach (var id in stale) c.Stages.Remove(id);
-        }
-
         private static void Next()
         {
             var app = GameApp.I;
             var c = app.Content;
-            Prune(c); // the previous encounter's stage — safe now: its results screen reads name/theme from the report
             int seed = unchecked(baseSeed + Completed);
-            var stage = EncounterGenerator.Generate(c, seed);
-            c.Stages[stage.Id] = stage;
-            int level = stage.LevelOverride ?? 1;
+            // GG-T64: the same pure seed -> encounter build a headless Core replay uses (EndlessEncounter.Replay), so
+            // `-demo -endless -seed S -count 1` reproduces exactly the encounter a record/report flagged with seed S.
+            // Build prunes the previous encounter's stage first — safe now: its results screen reads name/theme from the report.
+            var setup = EndlessEncounter.Build(c, seed);
+            var stage = setup.Stage;
 
             // A fresh throwaway save per encounter: BattleFactory.Commit has somewhere to land (so the results screen
             // shows), nothing accumulates across encounters, and slot -1 means Persist never writes it.
             app.Save = Progression.NewGame(c, "Endless");
             app.Slot = -1;
-            var setup = new BattleSetup
-            {
-                Stage = stage,
-                Seed = seed,
-                UnlockedSlots = Progression.UnlockedSlots(app.Save),
-                RecommendedLevel = 1, // waves keep their own rising levels (GG-T55); no campaign floor
-                Party = EncounterParty.Generate(c, seed, level),
-            };
-            Debug.Log($"[EndlessDemo] encounter {Completed + 1} seed {seed}: {stage.Id} ({stage.Name}) Lv {level} | party {string.Join(", ", setup.Party.ConvertAll(h => h.ClassId))}");
-            // ResetTo, not Push: the stack never grows however long this runs.
-            app.Router.ResetTo(new BattleScreen(setup));
+            // The view's own randomness (the simulated cursor's overshoot/slip rolls) starts from the encounter seed too.
+            UnityEngine.Random.InitState(seed);
+            Debug.Log($"[EndlessDemo] encounter {Completed + 1} seed {seed}: {stage.Id} ({stage.Name}) Lv {stage.LevelOverride ?? 1} | party {string.Join(", ", setup.Party.ConvertAll(h => h.ClassId))}");
+            // ResetTo, not Push: the stack never grows however long this runs. The autoplay bot's RNG is seeded from
+            // the encounter seed (GG-T64), so its decisions match EndlessEncounter.Bot(seed) in a headless replay.
+            app.Router.ResetTo(new BattleScreen(setup) { BotSeed = seed });
         }
 
         private static void Stop()
         {
-            Prune(GameApp.I.Content);
+            EndlessEncounter.Prune(GameApp.I.Content);
             Debug.Log($"[EndlessDemo] done: {Completed} encounters");
 #if UNITY_EDITOR
             UnityEditor.EditorApplication.isPlaying = false;

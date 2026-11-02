@@ -108,6 +108,10 @@ namespace GridGame.App
         public BattleScreen(string stageId) { this.stageId = stageId; }
         public BattleScreen(BattleSetup setup) { setupOverride = setup; stageId = setup.Stage.Id; }
 
+        /// <summary>Seeds the autoplay bot's RNG (null = the clock). `-demo -endless` sets it to the encounter seed
+        /// (GG-T64) so the bot decides exactly as <c>EndlessEncounter.Bot(seed)</c> does in a headless replay.</summary>
+        public int? BotSeed { get; set; }
+
         /// <summary>The end of this battle is committed to App.Save and routed to the results screen. A battle built
         /// from an explicit setup normally just pops back instead — except under `-demo -endless` (GG-T57), whose
         /// setup is a generated party fought on a throwaway slot -1 save, and whose loop runs through the results.</summary>
@@ -1291,13 +1295,13 @@ namespace GridGame.App
 
             if (AutoPlay && CanCommand() && !pressing)
             {
-                autoBot ??= new HeroBot(Environment.TickCount);
+                autoBot ??= new HeroBot(BotSeed ?? Environment.TickCount);
                 autoBot.SkillLevel = BotSkillProfile.Level;
                 var cmd = autoBot.Decide(State);
                 BattleCommand perfect = null;
                 if (BotSkillProfile.TelemetryEnabled && BotSkillProfile.Level < 99.9f)
                 {
-                    perfectBot ??= new HeroBot(Environment.TickCount) { SkillLevel = 100f };
+                    perfectBot ??= new HeroBot(BotSeed ?? Environment.TickCount) { SkillLevel = 100f };
                     perfect = perfectBot.Decide(State);
                 }
                 if (cmd is MoveCommand m && m.Path.Count > 0) App.StartCoroutine(SimulatedHumanDrag(m, perfect));
