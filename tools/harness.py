@@ -12,6 +12,7 @@ Self-play harness: launches the development player with the automation endpoint 
     python tools/harness.py durability       # GG-T39: last-strike weapon badge + drag-preview shatter warning
     python tools/harness.py crucible [WAVES [RUN]]  # GG-T95: camp -> Crucible -> Auto -> leave after WAVES (99 = fight to a wipe) -> results -> camp
     python tools/harness.py stress HOURS     # unattended soak test (GG-T21); default 4h
+    python tools/harness.py endless N [--seed S] [--capture] [--speed X]  # GG-T62: -demo -endless run of N encounters, auto-relaunching on crash/hang
     python tools/harness.py testmode N       # GG-T93: -testmode self-play, N full battle→results→camp cycles
     python tools/harness.py profiles         # GG-T99: profile picker / new profile / Settings shots; settings follow the profile
     python tools/harness.py shot NAME        # screenshot the running player
@@ -1575,6 +1576,272 @@ def stress(run="stress", hours=4.0, speed=3, timeout=240):
     return clips
 
 
+def endless(count, seed=None, capture=False, run="endless", speed=None,
+            stall_secs=90, encounter_timeout=1200, unresponsive_secs=120, max_dead_launches=3):
+    """GG-T62: endless-run driver. Launches the player with `-demo -endless -seed S -count N` (GG-T57) and babysits
+    it: tails each launch's Player.log for the "[EndlessDemo]" progress lines (encounter start "encounter K seed X:",
+    result "encounter K (stage): victory", "done:"), polls the automation endpoint's battle clock, and watches the OS
+    process. When the process dies (crash) or hangs, it is killed and relaunched with -seed/-count moved on to the
+    next unplayed seed: encounter i of the run always uses seed S+i, so the encounter that was in flight when it went
+    down is recorded against its seed (to replay it later) and skipped — a deterministic crash can't loop forever.
+      * stall  — in battle, battle clock frozen and nothing busy for `stall_secs`.
+      * hang   — endpoint unresponsive for `unresponsive_secs`, or one encounter running past `encounter_timeout`.
+    `max_dead_launches` launches in a row that finish no encounter at all abort the run (a boot crash, a broken build).
+    --capture passes -capture-config with an enabled copy of capture.json (battle-start/battle-end rules: one clip per
+    encounter) written into the run folder; the committed capture.json stays disabled. Telemetry needs no flag: every
+    battle in a development build writes a MindAttic.Telemetry session (the log line names its folder).
+    Per-launch logs land in artifacts/<run>/player-<k>.log, crash evidence in crash-report-<k>.txt, the summary in
+    endless-summary.json. Returns the summary dict."""
+    import re
+    import shutil
+    sys.stdout.reconfigure(encoding="utf-8", errors="replace")
+    art = os.path.join(ROOT, "artifacts", run)
+    saves = os.path.join(art, "saves")
+    shutil.rmtree(saves, ignore_errors=True)
+    os.makedirs(saves, exist_ok=True)
+    if seed is None:
+        seed = int(time.time()) % 1_000_000_000  # picked here, not by the player's clock, so a relaunch can resume it
+
+    extra = []
+    if capture:
+        src = os.path.join(os.path.dirname(EXE), "GridGameGaiden_Data", "StreamingAssets", "capture.json")
+        if not os.path.exists(src):
+            src = os.path.join(ROOT, "Assets", "StreamingAssets", "capture.json")
+        with open(src, encoding="utf-8") as f:
+            cfg = json.load(f)
+        cfg["enabled"] = True
+        cfg_path = os.path.join(art, "capture-endless.json")
+        with open(cfg_path, "w", encoding="utf-8") as f:
+            json.dump(cfg, f, indent=2)
+        extra = ["-capture-config", cfg_path]
+
+    re_start = re.compile(r"\[EndlessDemo\] encounter (\d+) seed (-?\d+): (\S+)")
+    re_result = re.compile(r"\[EndlessDemo\] encounter (\d+) \(([^)]*)\): (\w+)")
+    re_done = re.compile(r"\[EndlessDemo\] done: (\d+)")
+    re_telemetry = re.compile(r'Telemetry session "([^"]+)" recording to (.+?)\s*$')
+    re_capture_dir = re.compile(r"Recording this session to (.+?)\s*$")
+    re_clip_start = re.compile(r'Recording "[^"]*" started')
+
+    encounters = []          # {"seed", "stage", "result"} per finished encounter
+    failures = []            # {"seed", "kind", "launch", ...} per encounter lost to a crash/stall/hang
+    errors = []              # exception lines seen in any Player.log
+    telemetry_dirs, capture_dirs = [], []
+    clip_starts = 0
+    crashes = stalls = hangs = relaunches = launches = dead_streak = 0
+    consumed = 0             # encounter slots used up (finished + failed): the next launch starts at seed + consumed
+    t_run = time.time()
+
+    def note_dir(lst, d):
+        d = d.strip().strip('"')
+        if d and d not in lst:
+            lst.append(d)
+
+    while consumed < count:
+        if launches:
+            relaunches += 1
+        launches += 1
+        k = launches
+        base = seed + consumed
+        remaining = count - consumed
+        if alive():  # something already on this worktree's port (a previous run's leftover): ask it to quit
+            try:
+                call("quit", timeout=3)
+            except Exception:
+                pass
+            time.sleep(1.5)
+        log_path = os.path.join(art, f"player-{k}.log")
+        args = [EXE, "-automation", str(PORT), "-artifacts", art, "-saveRoot", saves,
+                "-screen-width", "585", "-screen-height", "1266", "-screen-fullscreen", "0",
+                "-logFile", log_path, "-muted", "-demo", "-endless", "-seed", str(base), "-count", str(remaining), *extra]
+        print(f"endless: launch {k}: seeds {base}..{base + remaining - 1} ({remaining} encounter{'s' if remaining != 1 else ''})")
+        proc = subprocess.Popen(args, cwd=ROOT)
+        offset, partial = 0, ""
+        finished_here = 0           # encounters completed in this launch (the player's own 1-based counter)
+        current = None              # (index, seed, stage) of the encounter in flight
+        current_t0 = time.time()
+        last_ok = time.time()       # last successful endpoint reply
+        last_clock, stuck_since = None, None
+        speed_set = speed is None
+        done_seen = False
+        outcome = None              # None (clean), "crash", "stall", "hang"
+
+        while True:
+            time.sleep(1.0)
+            # Tail Player.log.
+            try:
+                with open(log_path, "rb") as f:
+                    f.seek(offset)
+                    chunk = f.read()
+                    offset += len(chunk)
+            except OSError:
+                chunk = b""
+            if chunk:
+                text = partial + chunk.decode("utf-8", errors="replace")
+                lines = text.split("\n")
+                partial = lines.pop()
+                for line in lines:
+                    line = line.rstrip("\r")
+                    m = re_start.search(line)
+                    if m:
+                        current = (int(m.group(1)), int(m.group(2)), m.group(3))
+                        current_t0 = time.time()
+                        stuck_since, last_clock = None, None
+                        continue
+                    m = re_result.search(line)
+                    if m:
+                        idx = int(m.group(1))
+                        if idx > finished_here:
+                            finished_here = idx
+                            s_ = base + idx - 1
+                            encounters.append({"seed": s_, "stage": m.group(2), "result": m.group(3), "launch": k})
+                            consumed += 1
+                            dead_streak = 0
+                            print(f"endless: {len(encounters)}/{count} seed {s_} {m.group(2)}: {m.group(3)}"
+                                  f" ({time.time() - current_t0:.0f}s)")
+                        current = None
+                        continue
+                    if re_done.search(line):
+                        done_seen = True
+                        continue
+                    m = re_telemetry.search(line)
+                    if m:
+                        note_dir(telemetry_dirs, os.path.dirname(m.group(2).strip().strip('"').rstrip("\\/")))
+                        continue
+                    m = re_capture_dir.search(line)
+                    if m:
+                        note_dir(capture_dirs, m.group(1))
+                        continue
+                    if re_clip_start.search(line):
+                        clip_starts += 1
+                        continue
+                    if re.match(r"^\w*Exception\b", line) and "first mouse" not in line and len(errors) < 50:
+                        errors.append(f"launch {k}: {line[:300]}")
+
+            # Process gone?
+            if proc.poll() is not None:
+                if not done_seen and consumed < count:
+                    outcome = "crash"
+                break
+            if done_seen:
+                # The player quits itself after "done:"; give it a moment to finalize clips/telemetry, then insist.
+                try:
+                    proc.wait(timeout=60)
+                except subprocess.TimeoutExpired:
+                    proc.kill()
+                break
+
+            # Endpoint: speed once, then battle-clock stall detection.
+            try:
+                st = call("state", timeout=5)
+                last_ok = time.time()
+                if not speed_set:
+                    call("speed", x=speed)
+                    speed_set = True
+                b = st.get("battle") if isinstance(st, dict) and st.get("screen") == "battle" else None
+                if b:
+                    if b.get("clock") == last_clock and not b.get("busy"):
+                        stuck_since = stuck_since or time.time()
+                    else:
+                        stuck_since = None
+                    last_clock = b.get("clock")
+                else:
+                    stuck_since, last_clock = None, None
+            except Exception:
+                pass
+            now = time.time()
+            if stuck_since and now - stuck_since > stall_secs:
+                outcome = "stall"
+            elif now - last_ok > unresponsive_secs:
+                outcome = "hang"
+            elif current and now - current_t0 > encounter_timeout:
+                outcome = "hang"
+            if outcome:
+                proc.kill()
+                try:
+                    proc.wait(timeout=30)
+                except subprocess.TimeoutExpired:
+                    pass
+                break
+
+        if outcome:
+            if outcome == "crash":
+                crashes += 1
+                _report_death(art, proc.returncode, consumed, extra_note=f"endless launch {k}, in flight: {current}")
+                try:
+                    report = os.path.join(art, f"crash-report-{k}.txt")
+                    os.replace(os.path.join(art, "crash-report.txt"), report)
+                    with open(log_path, "r", errors="replace") as f:
+                        tail = f.readlines()[-40:]
+                    with open(report, "a") as f:
+                        f.write(f"\n{os.path.basename(log_path)} tail:\n" + "".join(tail))
+                except OSError:
+                    pass
+            elif outcome == "stall":
+                stalls += 1
+            else:
+                hangs += 1
+            if current:
+                failures.append({"seed": current[1], "stage": current[2], "kind": outcome, "launch": k,
+                                 "after_s": round(time.time() - current_t0)})
+                consumed += 1  # skip the encounter that went down; it's listed by seed for a replay
+            print(f"endless: launch {k} ended in a {outcome}"
+                  f"{f' during seed {current[1]} ({current[2]})' if current else ' between encounters'}; "
+                  f"{count - consumed} left")
+            dead_streak = dead_streak + 1 if finished_here == 0 else 0
+            if dead_streak >= max_dead_launches:
+                print(f"endless: {dead_streak} launches in a row finished nothing; giving up")
+                break
+        elif not done_seen and consumed < count:
+            # Clean exit with no "done:" line — treat like a crash so the run still finishes.
+            crashes += 1
+            dead_streak = dead_streak + 1 if finished_here == 0 else 0
+            if dead_streak >= max_dead_launches:
+                break
+
+    # Clips: every per-battle recording exports into the launch's capture session folder; the whole-session
+    # export (if any) is *_Video.mp4 and isn't a clip.
+    clips = []
+    if capture:
+        time.sleep(5)  # the last clip's export can trail the process exit by a moment
+        for d in capture_dirs:
+            try:
+                clips += [os.path.join(d, f) for f in os.listdir(d)
+                          if f.lower().endswith(".mp4") and not f.lower().endswith("_video.mp4")]
+            except OSError:
+                pass
+    by_result = {}
+    for e in encounters:
+        by_result[e["result"]] = by_result.get(e["result"], 0) + 1
+    summary = {
+        "requested": count, "base_seed": seed, "completed": len(encounters), "results": by_result,
+        "launches": launches, "relaunches": relaunches, "crashes": crashes, "stalls": stalls, "hangs": hangs,
+        "lost_encounters": failures,
+        "clips_expected": len(encounters) if capture else 0,
+        "clip_recordings_started": clip_starts,
+        "clips_recorded": len(clips),
+        "clip_dirs": capture_dirs, "telemetry_dirs": telemetry_dirs,
+        "logs": art, "errors": errors[:20], "minutes": round((time.time() - t_run) / 60, 1),
+    }
+    with open(os.path.join(art, "endless-summary.json"), "w", encoding="utf-8") as f:
+        json.dump({**summary, "encounters": encounters, "clips": clips}, f, indent=1)
+    print("\n=== endless summary ===")
+    print(f"encounters completed : {len(encounters)}/{count}  {by_result}  (base seed {seed}, {summary['minutes']} min)")
+    print(f"crashes / relaunches : {crashes} / {relaunches}  (launches: {launches}, hangs: {hangs})")
+    print(f"stalls               : {stalls}")
+    for f_ in failures:
+        print(f"  lost seed {f_['seed']} ({f_['stage']}): {f_['kind']} after {f_['after_s']}s on launch {f_['launch']}")
+    if capture:
+        print(f"clips recorded       : {len(clips)} / {len(encounters)} expected  ({clip_starts} recordings started)")
+    else:
+        print("clips recorded       : capture off (pass --capture)")
+    print(f"telemetry            : {', '.join(telemetry_dirs) or 'none logged'}")
+    print(f"clips                : {', '.join(capture_dirs) or 'none'}")
+    print(f"logs + summary       : {art}")
+    if errors:
+        print(f"exceptions logged    : {len(errors)} (first: {errors[0]})")
+    return summary
+
+
 def profiles(run="profiles"):
     """GG-T99 (bible 15.4): player profiles. Runs under the run's own -saveRoot (artifacts/<run>/saves/Profiles), never
     the real ones. Shoots the Title (profile row), the profile picker, the New Profile name screen and Settings; checks a
@@ -1666,6 +1933,17 @@ if __name__ == "__main__":
         bestiary_drops(sys.argv[2] if len(sys.argv) > 2 else "bestiary")
     elif cmd == "stress":
         stress(hours=float(sys.argv[2]) if len(sys.argv) > 2 else 4.0)
+    elif cmd == "endless":
+        import argparse
+        ap = argparse.ArgumentParser(prog="harness.py endless")
+        ap.add_argument("count", type=int, nargs="?", default=10)
+        ap.add_argument("--seed", type=int, default=None)
+        ap.add_argument("--capture", action="store_true")
+        ap.add_argument("--speed", type=float, default=None)
+        ap.add_argument("--run", default="endless")
+        a = ap.parse_args(sys.argv[2:])
+        s = endless(a.count, seed=a.seed, capture=a.capture, run=a.run, speed=a.speed)
+        sys.exit(0 if s["completed"] == a.count and not s["crashes"] and not s["stalls"] and not s["hangs"] else 1)
     elif cmd == "recruits":
         sys.exit(0 if story_recruits() else 1)
     elif cmd == "profiles":
