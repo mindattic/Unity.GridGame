@@ -38,6 +38,38 @@ namespace GridGame.Core.Content
             int campaignMax = Math.Max(1, db.CampaignStages().Count);
             var levels = RisingLevels(rng, WaveCount, campaignMax);
 
+            return Build(db, rng, seed, donor, waveFamilies, levels, levels[WaveCount / 2]);
+        }
+
+        /// <summary>GG-T60: the encounter an <see cref="EncounterSchedule"/> planned — its donor stage, one family per
+        /// wave and its level are fixed by the plan (stratified for even coverage); wave sizes, groups and foes are
+        /// still drawn from <see cref="EncounterPlan.Seed"/>. The plan's level is the stage's
+        /// <see cref="StageDef.LevelOverride"/> (the middle wave); the waves rise around it.</summary>
+        public static StageDef Generate(ContentDb db, EncounterPlan plan)
+        {
+            if (plan == null) throw new ArgumentNullException(nameof(plan));
+            var rng = new Rng(plan.Seed);
+            var donor = db.Stage(plan.StageId);
+
+            var waveFamilies = new List<List<ClassDef>>(WaveCount);
+            for (int i = 0; i < WaveCount; i++)
+            {
+                string family = plan.Families[i % plan.Families.Count];
+                var pool = db.Classes.Values
+                    .Where(c => c.Team == Team.Enemy && string.Equals(c.DropTable, family, StringComparison.OrdinalIgnoreCase))
+                    .OrderBy(c => c.Id, StringComparer.Ordinal).ToList();
+                if (pool.Count == 0) throw new InvalidOperationException($"EncounterGenerator: no enemy class in family '{family}'");
+                waveFamilies.Add(pool);
+            }
+
+            int campaignMax = Math.Max(1, db.CampaignStages().Count);
+            int level = Math.Max(1, Math.Min(campaignMax, plan.Level));
+            var levels = LevelsAround(level, WaveCount, campaignMax);
+            return Build(db, rng, plan.Seed, donor, waveFamilies, levels, level);
+        }
+
+        private static StageDef Build(ContentDb db, Rng rng, int seed, StageDef donor, List<List<ClassDef>> waveFamilies, int[] levels, int headlineLevel)
+        {
             var stage = new StageDef
             {
                 Id = IdPrefix + unchecked((uint)seed).ToString("x8"),
@@ -46,7 +78,7 @@ namespace GridGame.Core.Content
                 Background = donor.Background,
                 Music = donor.Music,
                 IsTest = false,
-                LevelOverride = levels[WaveCount / 2],
+                LevelOverride = headlineLevel,
                 Blocks = donor.Blocks.Select(c => new Coord(c.X, c.Y)).ToList(),
             };
 
@@ -64,6 +96,15 @@ namespace GridGame.Core.Content
             }
 
             return stage;
+        }
+
+        /// <summary>Non-decreasing wave levels with the middle wave at <paramref name="level"/>, clamped to 1..campaignMax.</summary>
+        private static int[] LevelsAround(int level, int waveCount, int campaignMax)
+        {
+            var levels = new int[waveCount];
+            for (int i = 0; i < waveCount; i++)
+                levels[i] = Math.Max(1, Math.Min(campaignMax, level + i - waveCount / 2));
+            return levels;
         }
 
         private static List<List<ClassDef>> PickFamilies(Rng rng, List<List<ClassDef>> families, int count)

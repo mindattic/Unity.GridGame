@@ -41,14 +41,24 @@ namespace GridGame.Meta
 
         /// <summary>Builds the party: <see cref="PartySize"/> distinct hero classes drawn deterministically
         /// from <paramref name="seed"/>, each built for <paramref name="level"/> (clamped to at least 1).</summary>
-        public static List<HeroSpec> Generate(ContentDb db, int seed, int level)
-        {
-            var rng = new Rng(seed);
-            var classes = db.Classes.Values.Where(c => c.Team == Team.Hero)
-                .OrderBy(c => c.Id, StringComparer.Ordinal).ToList();
-            if (classes.Count == 0) throw new InvalidOperationException("EncounterParty: no hero class to draw from");
+        public static List<HeroSpec> Generate(ContentDb db, int seed, int level) => Generate(db, seed, level, null);
 
-            var picked = Shuffle(rng, classes).Take(Math.Min(PartySize, classes.Count)).ToList();
+        /// <summary>GG-T60: as above, but with the party's classes fixed by the caller (an
+        /// <see cref="EncounterSchedule"/>'s stratified <see cref="EncounterPlan.HeroClasses"/>) instead of drawn
+        /// from <paramref name="seed"/>. A null list falls back to the seeded draw.</summary>
+        public static List<HeroSpec> Generate(ContentDb db, int seed, int level, IReadOnlyList<string> classIds)
+        {
+            List<ClassDef> picked;
+            if (classIds != null && classIds.Count > 0)
+                picked = classIds.Select(db.Class).ToList();
+            else
+            {
+                var rng = new Rng(seed);
+                var classes = db.Classes.Values.Where(c => c.Team == Team.Hero)
+                    .OrderBy(c => c.Id, StringComparer.Ordinal).ToList();
+                if (classes.Count == 0) throw new InvalidOperationException("EncounterParty: no hero class to draw from");
+                picked = Shuffle(rng, classes).Take(Math.Min(PartySize, classes.Count)).ToList();
+            }
             int campaignMax = Math.Max(1, db.CampaignStages().Count);
             int clampedLevel = Math.Max(1, level);
             float band = campaignMax > 1 ? Clamp01((clampedLevel - 1) / (float)(campaignMax - 1)) : 1f;
