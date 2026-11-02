@@ -143,6 +143,56 @@ namespace GridGame.Core.Content
         public string Announce;
     }
 
+    /// <summary>What a supporter does when it joins a pincer (§1.2.3, GG-T187).</summary>
+    public enum SupportEffect
+    {
+        /// <summary>Strike every trapped opponent at <see cref="SupportDef.Magnitude"/> × damage (the classic 50% support hit).</summary>
+        Strike,
+        /// <summary>Heal each target <see cref="SupportDef.Magnitude"/> × its max HP.</summary>
+        Heal,
+        /// <summary>Apply buff <see cref="SupportDef.Buff"/> to each target (ATK up, shield, regen, taunt…).</summary>
+        Buff,
+        /// <summary>Slide each target's turn icon forward <see cref="SupportDef.Magnitude"/> of the bar (or rush its cast).</summary>
+        Haste,
+        /// <summary>Add <see cref="SupportDef.Magnitude"/> charge to the mana meter (100 = one orb). Hero team only.</summary>
+        Mana,
+        /// <summary>Strip every debuff from each target.</summary>
+        Cleanse,
+    }
+
+    /// <summary>Who a supporter's effect lands on (§1.2.3, GG-T187). Strike always hits the trapped opponents.</summary>
+    public enum SupportTarget
+    {
+        /// <summary>The pincer attacker the supporter's chain reaches.</summary>
+        Attacker,
+        /// <summary>Every ally on the chain from the supporter to that attacker (both ends included).</summary>
+        Chain,
+        /// <summary>Every living member of the supporter's team.</summary>
+        Party,
+        /// <summary>The supporter itself (taunt).</summary>
+        Self,
+    }
+
+    /// <summary>A class's support action (§1.2.3, GG-T187): what it does when it joins a pincer as a supporter.
+    /// Classes without one (every enemy) use <see cref="Default"/>, the classic 50% strike from beside an attacker.</summary>
+    public sealed class SupportDef
+    {
+        public SupportEffect Effect = SupportEffect.Strike;
+        /// <summary>Strike: damage fraction. Heal: fraction of the target's max HP. Haste: fraction of the bar. Mana: charge.</summary>
+        public float Magnitude = 0.5f;
+        public SupportTarget Target = SupportTarget.Attacker;
+        /// <summary>How many links along the chain of allies the supporter may stand from the attacker (1 = adjacent).</summary>
+        public int Range = 1;
+        /// <summary>Buff id applied by <see cref="SupportEffect.Buff"/>.</summary>
+        public string Buff;
+        /// <summary>Short name shown on the cut-in and float text ("Mend", "Guard", "Haste"…); defaults to the effect.</summary>
+        public string Label;
+
+        public static readonly SupportDef Default = new SupportDef();
+
+        public string DisplayLabel => string.IsNullOrEmpty(Label) ? Effect.ToString() : Label;
+    }
+
     public sealed class ClassDef
     {
         public string Id;
@@ -200,6 +250,9 @@ namespace GridGame.Core.Content
         public int SnakeSegments;
         /// <summary>Hero role (§25.13): Tank, Healer, Mage, Striker or Support — what the class is for in a party.</summary>
         public string Role;
+        /// <summary>Support action (§1.2.3, GG-T187) this class performs when chained to a pincer attacker; null = the
+        /// default 50% strike from an adjacent tile (<see cref="SupportDef.Default"/>).</summary>
+        public SupportDef Support;
         /// <summary>Archetype skill tree id (§25.6.1, GG-T50) every hero of this class spends skill points in.
         /// Hero-only; required for Team.Hero, left null for Team.Enemy. The class's own starting kit
         /// (<see cref="DefaultLoadout"/>) is known from level 1 regardless of what's unlocked in the tree.</summary>

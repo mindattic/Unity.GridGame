@@ -244,9 +244,12 @@ namespace GridGame.App
                 var geometryError = PincerGeometry.Error(new UnitFootprint { UnitId = p.A.Id, At = a, W = p.A.W, H = p.A.H }, new UnitFootprint { UnitId = p.B.Id, At = b, W = p.B.W, H = p.B.H }, oppAt);
                 if (geometryError != null && Debug.isDebugBuild) Debug.LogError($"[GG-T98] malformed preview pincer outline: {geometryError}");
                 board.Lines.Outline(BoardView.GroupRect(group), new Color(1f, 0.85f, 0.3f, 0.9f), 8f, 1f);
-                foreach (var (sup, partner) in p.SupportersA.Select(x => (x, a)).Concat(p.SupportersB.Select(x => (x, b))))
+                foreach (var sup in p.SupportersA.Concat(p.SupportersB).Distinct())
                 {
+                    // GG-T187: link each supporter to the unit its chain runs through (an attacker or the next ally).
+                    var via = p.LinkOf(sup) ?? p.AttackerOf(sup);
                     var sp = pv.Positions.TryGetValue(sup.Id, out var spp) ? spp : sup.Pos;
+                    var partner = pv.Positions.TryGetValue(via.Id, out var vp) ? vp : via.Pos;
                     var (la, lb) = BoardView.EdgeLink(sp, partner);
                     board.Lines.Add(la, lb, new Color(0.4f, 0.8f, 1f, 0.9f), 10f);
                 }

@@ -120,6 +120,13 @@
     "Trap": null,
     "SnakeSegments": 0,
     "Role": "Healer",
+    "Support": {
+      "Effect": "Heal",
+      "Magnitude": 0.15,
+      "Target": "Attacker",
+      "Range": 3,
+      "Label": "Tonic"
+    },
     "HomeTree": "cleric"
   },
   {
@@ -241,6 +248,13 @@
     "Trap": null,
     "SnakeSegments": 0,
     "Role": "Striker",
+    "Support": {
+      "Effect": "Strike",
+      "Magnitude": 0.5,
+      "Target": "Attacker",
+      "Range": 1,
+      "Label": "Strike"
+    },
     "HomeTree": "warrior",
     "WeaponProficiencies": [
       "Martial"
@@ -364,6 +378,13 @@
     "Trap": null,
     "SnakeSegments": 0,
     "Role": "Striker",
+    "Support": {
+      "Effect": "Strike",
+      "Magnitude": 0.5,
+      "Target": "Attacker",
+      "Range": 1,
+      "Label": "Strike"
+    },
     "HomeTree": "warrior",
     "WeaponProficiencies": [
       "Martial"
@@ -487,6 +508,13 @@
     "Trap": null,
     "SnakeSegments": 0,
     "Role": "Striker",
+    "Support": {
+      "Effect": "Strike",
+      "Magnitude": 0.5,
+      "Target": "Attacker",
+      "Range": 1,
+      "Label": "Strike"
+    },
     "HomeTree": "warrior",
     "WeaponProficiencies": [
       "Martial"
@@ -930,6 +958,13 @@
     "Trap": null,
     "SnakeSegments": 0,
     "Role": "Striker",
+    "Support": {
+      "Effect": "Strike",
+      "Magnitude": 0.5,
+      "Target": "Attacker",
+      "Range": 1,
+      "Label": "Strike"
+    },
     "HomeTree": "warrior",
     "WeaponProficiencies": [
       "Martial"
@@ -1058,6 +1093,13 @@
     "Trap": null,
     "SnakeSegments": 0,
     "Role": "Mage",
+    "Support": {
+      "Effect": "Mana",
+      "Magnitude": 35,
+      "Target": "Attacker",
+      "Range": 2,
+      "Label": "Mana Well"
+    },
     "HomeTree": "mage",
     "WeaponProficiencies": [
       "Arcane"
@@ -1183,6 +1225,14 @@
     "Trap": null,
     "SnakeSegments": 0,
     "Role": "Support",
+    "Support": {
+      "Effect": "Buff",
+      "Magnitude": 0,
+      "Target": "Attacker",
+      "Range": 2,
+      "Buff": "empowered",
+      "Label": "Roar"
+    },
     "HomeTree": "alchemist"
   },
   {
@@ -1303,6 +1353,13 @@
     "Trap": null,
     "SnakeSegments": 0,
     "Role": "Striker",
+    "Support": {
+      "Effect": "Strike",
+      "Magnitude": 0.5,
+      "Target": "Attacker",
+      "Range": 1,
+      "Label": "Strike"
+    },
     "HomeTree": "warrior",
     "WeaponProficiencies": [
       "Martial"
@@ -1426,6 +1483,13 @@
     "Trap": null,
     "SnakeSegments": 0,
     "Role": "Striker",
+    "Support": {
+      "Effect": "Strike",
+      "Magnitude": 0.5,
+      "Target": "Attacker",
+      "Range": 1,
+      "Label": "Strike"
+    },
     "HomeTree": "warrior",
     "WeaponProficiencies": [
       "Martial"
@@ -2447,6 +2511,13 @@
     "Trap": null,
     "SnakeSegments": 0,
     "Role": "Striker",
+    "Support": {
+      "Effect": "Strike",
+      "Magnitude": 0.5,
+      "Target": "Attacker",
+      "Range": 1,
+      "Label": "Strike"
+    },
     "HomeTree": "warrior",
     "WeaponProficiencies": [
       "Martial"
@@ -2573,6 +2644,13 @@
     "Trap": null,
     "SnakeSegments": 0,
     "Role": "Healer",
+    "Support": {
+      "Effect": "Heal",
+      "Magnitude": 0.08,
+      "Target": "Party",
+      "Range": 3,
+      "Label": "Prayer"
+    },
     "HomeTree": "cleric"
   },
   {
@@ -2695,6 +2773,13 @@
     "Trap": null,
     "SnakeSegments": 0,
     "Role": "Support",
+    "Support": {
+      "Effect": "Haste",
+      "Magnitude": 0.25,
+      "Target": "Attacker",
+      "Range": 3,
+      "Label": "Express"
+    },
     "HomeTree": "alchemist"
   },
   {
@@ -4018,6 +4103,14 @@
     "Trap": null,
     "SnakeSegments": 0,
     "Role": "Tank",
+    "Support": {
+      "Effect": "Buff",
+      "Magnitude": 0,
+      "Target": "Self",
+      "Range": 2,
+      "Buff": "taunting",
+      "Label": "Provoke"
+    },
     "HomeTree": "guardian",
     "WeaponProficiencies": [
       "Martial"
@@ -4143,6 +4236,14 @@
     "Trap": null,
     "SnakeSegments": 0,
     "Role": "Tank",
+    "Support": {
+      "Effect": "Buff",
+      "Magnitude": 0,
+      "Target": "Self",
+      "Range": 2,
+      "Buff": "taunting",
+      "Label": "Taunt"
+    },
     "HomeTree": "guardian",
     "WeaponProficiencies": [
       "Martial"
@@ -4375,6 +4476,13 @@
     "Trap": null,
     "SnakeSegments": 0,
     "Role": "Support",
+    "Support": {
+      "Effect": "Haste",
+      "Magnitude": 0.12,
+      "Target": "Chain",
+      "Range": 2,
+      "Label": "Whirl"
+    },
     "HomeTree": "alchemist"
   },
   {
@@ -4498,6 +4606,13 @@
     "Trap": null,
     "SnakeSegments": 0,
     "Role": "Healer",
+    "Support": {
+      "Effect": "Heal",
+      "Magnitude": 0.2,
+      "Target": "Attacker",
+      "Range": 3,
+      "Label": "Triage"
+    },
     "HomeTree": "cleric"
   },
   {
@@ -4622,6 +4737,13 @@
     "Trap": null,
     "SnakeSegments": 0,
     "Role": "Mage",
+    "Support": {
+      "Effect": "Haste",
+      "Magnitude": 0.15,
+      "Target": "Attacker",
+      "Range": 2,
+      "Label": "Tailwind"
+    },
     "HomeTree": "mage",
     "WeaponProficiencies": [
       "Arcane"
@@ -4745,6 +4867,13 @@
     "Trap": null,
     "SnakeSegments": 0,
     "Role": "Striker",
+    "Support": {
+      "Effect": "Strike",
+      "Magnitude": 0.5,
+      "Target": "Attacker",
+      "Range": 1,
+      "Label": "Strike"
+    },
     "HomeTree": "warrior",
     "WeaponProficiencies": [
       "Martial"
@@ -4870,6 +4999,14 @@
     "Trap": null,
     "SnakeSegments": 0,
     "Role": "Support",
+    "Support": {
+      "Effect": "Buff",
+      "Magnitude": 0,
+      "Target": "Chain",
+      "Range": 2,
+      "Buff": "protection",
+      "Label": "Barrier"
+    },
     "HomeTree": "alchemist"
   },
   {
@@ -4990,6 +5127,13 @@
     "Trap": null,
     "SnakeSegments": 0,
     "Role": "Striker",
+    "Support": {
+      "Effect": "Strike",
+      "Magnitude": 0.5,
+      "Target": "Attacker",
+      "Range": 1,
+      "Label": "Strike"
+    },
     "HomeTree": "warrior",
     "WeaponProficiencies": [
       "Martial"
@@ -5113,6 +5257,13 @@
     "Trap": null,
     "SnakeSegments": 0,
     "Role": "Striker",
+    "Support": {
+      "Effect": "Strike",
+      "Magnitude": 0.5,
+      "Target": "Attacker",
+      "Range": 1,
+      "Label": "Strike"
+    },
     "HomeTree": "warrior",
     "WeaponProficiencies": [
       "Martial"
@@ -6713,6 +6864,13 @@
     "Trap": null,
     "SnakeSegments": 0,
     "Role": "Striker",
+    "Support": {
+      "Effect": "Strike",
+      "Magnitude": 0.5,
+      "Target": "Attacker",
+      "Range": 1,
+      "Label": "Strike"
+    },
     "HomeTree": "warrior",
     "WeaponProficiencies": [
       "Martial"
@@ -7264,6 +7422,13 @@
     "Trap": null,
     "SnakeSegments": 0,
     "Role": "Mage",
+    "Support": {
+      "Effect": "Mana",
+      "Magnitude": 35,
+      "Target": "Attacker",
+      "Range": 2,
+      "Label": "Omen"
+    },
     "HomeTree": "mage",
     "WeaponProficiencies": [
       "Arcane"
@@ -7496,6 +7661,14 @@
     "Trap": null,
     "SnakeSegments": 0,
     "Role": "Tank",
+    "Support": {
+      "Effect": "Buff",
+      "Magnitude": 0,
+      "Target": "Chain",
+      "Range": 2,
+      "Buff": "protection",
+      "Label": "Jade Wall"
+    },
     "HomeTree": "guardian",
     "WeaponProficiencies": [
       "Martial"
@@ -7621,6 +7794,14 @@
     "Trap": null,
     "SnakeSegments": 0,
     "Role": "Tank",
+    "Support": {
+      "Effect": "Buff",
+      "Magnitude": 0,
+      "Target": "Attacker",
+      "Range": 2,
+      "Buff": "protection",
+      "Label": "Guard"
+    },
     "HomeTree": "guardian",
     "WeaponProficiencies": [
       "Martial"
@@ -7746,6 +7927,13 @@
     "Trap": null,
     "SnakeSegments": 0,
     "Role": "Striker",
+    "Support": {
+      "Effect": "Strike",
+      "Magnitude": 0.5,
+      "Target": "Attacker",
+      "Range": 1,
+      "Label": "Strike"
+    },
     "HomeTree": "warrior",
     "WeaponProficiencies": [
       "Martial"
@@ -8189,6 +8377,13 @@
     "Trap": null,
     "SnakeSegments": 0,
     "Role": "Support",
+    "Support": {
+      "Effect": "Mana",
+      "Magnitude": 30,
+      "Target": "Attacker",
+      "Range": 2,
+      "Label": "Dynamo"
+    },
     "HomeTree": "alchemist"
   },
   {
@@ -8733,6 +8928,13 @@
     "Trap": null,
     "SnakeSegments": 0,
     "Role": "Striker",
+    "Support": {
+      "Effect": "Strike",
+      "Magnitude": 0.5,
+      "Target": "Attacker",
+      "Range": 1,
+      "Label": "Strike"
+    },
     "HomeTree": "warrior",
     "WeaponProficiencies": [
       "Martial"
@@ -9181,6 +9383,13 @@
     "Trap": null,
     "SnakeSegments": 0,
     "Role": "Healer",
+    "Support": {
+      "Effect": "Heal",
+      "Magnitude": 0.12,
+      "Target": "Chain",
+      "Range": 2,
+      "Label": "Chi Mend"
+    },
     "HomeTree": "cleric"
   },
   {
@@ -9409,6 +9618,14 @@
     "Trap": null,
     "SnakeSegments": 0,
     "Role": "Tank",
+    "Support": {
+      "Effect": "Buff",
+      "Magnitude": 0,
+      "Target": "Attacker",
+      "Range": 2,
+      "Buff": "protection",
+      "Label": "Shield Wall"
+    },
     "HomeTree": "guardian",
     "WeaponProficiencies": [
       "Martial"
@@ -9642,6 +9859,13 @@
     "Trap": null,
     "SnakeSegments": 0,
     "Role": "Striker",
+    "Support": {
+      "Effect": "Strike",
+      "Magnitude": 0.5,
+      "Target": "Attacker",
+      "Range": 1,
+      "Label": "Strike"
+    },
     "HomeTree": "warrior",
     "WeaponProficiencies": [
       "Martial"
@@ -9766,6 +9990,13 @@
     "Trap": null,
     "SnakeSegments": 0,
     "Role": "Striker",
+    "Support": {
+      "Effect": "Strike",
+      "Magnitude": 0.5,
+      "Target": "Attacker",
+      "Range": 1,
+      "Label": "Strike"
+    },
     "HomeTree": "warrior",
     "WeaponProficiencies": [
       "Martial"
@@ -10211,6 +10442,13 @@
     "Trap": null,
     "SnakeSegments": 0,
     "Role": "Mage",
+    "Support": {
+      "Effect": "Haste",
+      "Magnitude": 0.2,
+      "Target": "Attacker",
+      "Range": 2,
+      "Label": "Overclock"
+    },
     "HomeTree": "mage",
     "WeaponProficiencies": [
       "Arcane"
@@ -10335,6 +10573,13 @@
     "Trap": null,
     "SnakeSegments": 0,
     "Role": "Tank",
+    "Support": {
+      "Effect": "Cleanse",
+      "Magnitude": 0,
+      "Target": "Chain",
+      "Range": 2,
+      "Label": "Purify"
+    },
     "HomeTree": "guardian",
     "WeaponProficiencies": [
       "Martial"
@@ -10460,6 +10705,13 @@
     "Trap": null,
     "SnakeSegments": 0,
     "Role": "Striker",
+    "Support": {
+      "Effect": "Strike",
+      "Magnitude": 0.5,
+      "Target": "Attacker",
+      "Range": 1,
+      "Label": "Strike"
+    },
     "HomeTree": "warrior",
     "WeaponProficiencies": [
       "Martial"
@@ -10688,6 +10940,13 @@
     "Trap": null,
     "SnakeSegments": 0,
     "Role": "Striker",
+    "Support": {
+      "Effect": "Strike",
+      "Magnitude": 0.5,
+      "Target": "Attacker",
+      "Range": 1,
+      "Label": "Strike"
+    },
     "HomeTree": "warrior",
     "WeaponProficiencies": [
       "Martial"
@@ -10811,6 +11070,13 @@
     "Trap": null,
     "SnakeSegments": 0,
     "Role": "Striker",
+    "Support": {
+      "Effect": "Strike",
+      "Magnitude": 0.5,
+      "Target": "Attacker",
+      "Range": 1,
+      "Label": "Strike"
+    },
     "HomeTree": "warrior",
     "WeaponProficiencies": [
       "Martial"
@@ -11460,6 +11726,13 @@
     "Trap": null,
     "SnakeSegments": 0,
     "Role": "Striker",
+    "Support": {
+      "Effect": "Strike",
+      "Magnitude": 0.5,
+      "Target": "Attacker",
+      "Range": 1,
+      "Label": "Strike"
+    },
     "HomeTree": "warrior",
     "WeaponProficiencies": [
       "Martial"
@@ -11693,6 +11966,13 @@
     "Trap": null,
     "SnakeSegments": 0,
     "Role": "Mage",
+    "Support": {
+      "Effect": "Mana",
+      "Magnitude": 30,
+      "Target": "Attacker",
+      "Range": 2,
+      "Label": "Focus"
+    },
     "HomeTree": "mage",
     "WeaponProficiencies": [
       "Arcane"
@@ -11816,6 +12096,13 @@
     "Trap": null,
     "SnakeSegments": 0,
     "Role": "Striker",
+    "Support": {
+      "Effect": "Strike",
+      "Magnitude": 0.5,
+      "Target": "Attacker",
+      "Range": 1,
+      "Label": "Strike"
+    },
     "HomeTree": "warrior",
     "WeaponProficiencies": [
       "Martial"
@@ -11940,6 +12227,13 @@
     "Trap": null,
     "SnakeSegments": 0,
     "Role": "Striker",
+    "Support": {
+      "Effect": "Strike",
+      "Magnitude": 0.5,
+      "Target": "Attacker",
+      "Range": 1,
+      "Label": "Strike"
+    },
     "HomeTree": "warrior",
     "WeaponProficiencies": [
       "Martial"
@@ -12068,6 +12362,13 @@
     "Trap": null,
     "SnakeSegments": 0,
     "Role": "Mage",
+    "Support": {
+      "Effect": "Mana",
+      "Magnitude": 40,
+      "Target": "Attacker",
+      "Range": 2,
+      "Label": "Rite"
+    },
     "HomeTree": "mage",
     "WeaponProficiencies": [
       "Arcane"
@@ -12191,6 +12492,13 @@
     "Trap": null,
     "SnakeSegments": 0,
     "Role": "Striker",
+    "Support": {
+      "Effect": "Strike",
+      "Magnitude": 0.5,
+      "Target": "Attacker",
+      "Range": 1,
+      "Label": "Strike"
+    },
     "HomeTree": "warrior",
     "WeaponProficiencies": [
       "Martial"
@@ -12321,6 +12629,13 @@
     "Trap": null,
     "SnakeSegments": 0,
     "Role": "Healer",
+    "Support": {
+      "Effect": "Heal",
+      "Magnitude": 0.08,
+      "Target": "Party",
+      "Range": 3,
+      "Label": "Blessing"
+    },
     "HomeTree": "cleric"
   },
   {
@@ -12653,6 +12968,13 @@
     "Trap": null,
     "SnakeSegments": 0,
     "Role": "Striker",
+    "Support": {
+      "Effect": "Strike",
+      "Magnitude": 0.5,
+      "Target": "Attacker",
+      "Range": 1,
+      "Label": "Strike"
+    },
     "HomeTree": "warrior",
     "WeaponProficiencies": [
       "Martial"
@@ -12776,6 +13098,14 @@
     "Trap": null,
     "SnakeSegments": 0,
     "Role": "Tank",
+    "Support": {
+      "Effect": "Buff",
+      "Magnitude": 0,
+      "Target": "Attacker",
+      "Range": 2,
+      "Buff": "protection",
+      "Label": "Shield"
+    },
     "HomeTree": "guardian",
     "WeaponProficiencies": [
       "Martial"
@@ -12903,6 +13233,13 @@
     "Trap": null,
     "SnakeSegments": 0,
     "Role": "Healer",
+    "Support": {
+      "Effect": "Heal",
+      "Magnitude": 0.12,
+      "Target": "Chain",
+      "Range": 3,
+      "Label": "Mercy"
+    },
     "HomeTree": "cleric"
   },
   {
@@ -13345,6 +13682,13 @@
     "Trap": null,
     "SnakeSegments": 0,
     "Role": "Striker",
+    "Support": {
+      "Effect": "Strike",
+      "Magnitude": 0.5,
+      "Target": "Attacker",
+      "Range": 1,
+      "Label": "Strike"
+    },
     "HomeTree": "warrior",
     "WeaponProficiencies": [
       "Martial"
@@ -14304,6 +14648,13 @@
     "Trap": null,
     "SnakeSegments": 0,
     "Role": "Striker",
+    "Support": {
+      "Effect": "Strike",
+      "Magnitude": 0.5,
+      "Target": "Attacker",
+      "Range": 1,
+      "Label": "Strike"
+    },
     "HomeTree": "warrior",
     "WeaponProficiencies": [
       "Martial"
@@ -14952,6 +15303,13 @@
     "Trap": null,
     "SnakeSegments": 0,
     "Role": "Striker",
+    "Support": {
+      "Effect": "Strike",
+      "Magnitude": 0.5,
+      "Target": "Attacker",
+      "Range": 1,
+      "Label": "Strike"
+    },
     "HomeTree": "warrior",
     "WeaponProficiencies": [
       "Martial"
@@ -15075,6 +15433,13 @@
     "Trap": null,
     "SnakeSegments": 0,
     "Role": "Striker",
+    "Support": {
+      "Effect": "Strike",
+      "Magnitude": 0.5,
+      "Target": "Attacker",
+      "Range": 1,
+      "Label": "Strike"
+    },
     "HomeTree": "warrior",
     "WeaponProficiencies": [
       "Martial"
@@ -15305,6 +15670,13 @@
     "Trap": null,
     "SnakeSegments": 0,
     "Role": "Striker",
+    "Support": {
+      "Effect": "Strike",
+      "Magnitude": 0.5,
+      "Target": "Attacker",
+      "Range": 1,
+      "Label": "Strike"
+    },
     "HomeTree": "warrior",
     "WeaponProficiencies": [
       "Martial"
@@ -15429,6 +15801,14 @@
     "Trap": null,
     "SnakeSegments": 0,
     "Role": "Tank",
+    "Support": {
+      "Effect": "Buff",
+      "Magnitude": 0,
+      "Target": "Self",
+      "Range": 2,
+      "Buff": "taunting",
+      "Label": "Taunt"
+    },
     "HomeTree": "guardian",
     "WeaponProficiencies": [
       "Martial"
@@ -15864,6 +16244,13 @@
     "Trap": null,
     "SnakeSegments": 0,
     "Role": "Support",
+    "Support": {
+      "Effect": "Cleanse",
+      "Magnitude": 0,
+      "Target": "Chain",
+      "Range": 2,
+      "Label": "Repair"
+    },
     "HomeTree": "alchemist"
   },
   {
@@ -16627,6 +17014,13 @@
     "Trap": null,
     "SnakeSegments": 0,
     "Role": "Striker",
+    "Support": {
+      "Effect": "Strike",
+      "Magnitude": 0.5,
+      "Target": "Attacker",
+      "Range": 1,
+      "Label": "Strike"
+    },
     "HomeTree": "warrior",
     "WeaponProficiencies": [
       "Martial"
@@ -16752,6 +17146,13 @@
     "Trap": null,
     "SnakeSegments": 0,
     "Role": "Support",
+    "Support": {
+      "Effect": "Mana",
+      "Magnitude": 25,
+      "Target": "Attacker",
+      "Range": 2,
+      "Label": "Gadget"
+    },
     "HomeTree": "alchemist"
   },
   {
@@ -18076,6 +18477,13 @@
     "Trap": null,
     "SnakeSegments": 0,
     "Role": "Striker",
+    "Support": {
+      "Effect": "Strike",
+      "Magnitude": 0.5,
+      "Target": "Attacker",
+      "Range": 1,
+      "Label": "Strike"
+    },
     "HomeTree": "warrior",
     "WeaponProficiencies": [
       "Martial"
@@ -18303,6 +18711,14 @@
     "Trap": null,
     "SnakeSegments": 0,
     "Role": "Tank",
+    "Support": {
+      "Effect": "Buff",
+      "Magnitude": 0,
+      "Target": "Attacker",
+      "Range": 2,
+      "Buff": "empowered",
+      "Label": "War Cry"
+    },
     "HomeTree": "guardian",
     "WeaponProficiencies": [
       "Martial"
@@ -18544,6 +18960,13 @@
     "Trap": null,
     "SnakeSegments": 0,
     "Role": "Healer",
+    "Support": {
+      "Effect": "Heal",
+      "Magnitude": 0.15,
+      "Target": "Attacker",
+      "Range": 2,
+      "Label": "Field Aid"
+    },
     "HomeTree": "cleric"
   },
   {
@@ -18669,6 +19092,13 @@
     "Trap": null,
     "SnakeSegments": 0,
     "Role": "Healer",
+    "Support": {
+      "Effect": "Heal",
+      "Magnitude": 0.1,
+      "Target": "Chain",
+      "Range": 3,
+      "Label": "White Mend"
+    },
     "HomeTree": "cleric"
   },
   {
@@ -18791,6 +19221,14 @@
     "Trap": null,
     "SnakeSegments": 0,
     "Role": "Support",
+    "Support": {
+      "Effect": "Buff",
+      "Magnitude": 0,
+      "Target": "Attacker",
+      "Range": 2,
+      "Buff": "regen",
+      "Label": "Wild Growth"
+    },
     "HomeTree": "alchemist"
   },
   {
@@ -19351,6 +19789,13 @@
     "Trap": null,
     "SnakeSegments": 0,
     "Role": "Striker",
+    "Support": {
+      "Effect": "Strike",
+      "Magnitude": 0.5,
+      "Target": "Attacker",
+      "Range": 1,
+      "Label": "Strike"
+    },
     "HomeTree": "warrior",
     "WeaponProficiencies": [
       "Martial"
@@ -20001,6 +20446,13 @@
     "Trap": null,
     "SnakeSegments": 0,
     "Role": "Ranged",
+    "Support": {
+      "Effect": "Strike",
+      "Magnitude": 0.5,
+      "Target": "Attacker",
+      "Range": 2,
+      "Label": "Cover Fire"
+    },
     "HomeTree": "ranger",
     "WeaponProficiencies": [
       "Martial"
@@ -20123,6 +20575,13 @@
     "Trap": null,
     "SnakeSegments": 0,
     "Role": "Ranged",
+    "Support": {
+      "Effect": "Strike",
+      "Magnitude": 0.5,
+      "Target": "Attacker",
+      "Range": 2,
+      "Label": "Cover Fire"
+    },
     "HomeTree": "ranger",
     "WeaponProficiencies": [
       "Martial"
@@ -20244,6 +20703,13 @@
     "Trap": null,
     "SnakeSegments": 0,
     "Role": "Ranged",
+    "Support": {
+      "Effect": "Strike",
+      "Magnitude": 0.5,
+      "Target": "Attacker",
+      "Range": 2,
+      "Label": "Cover Fire"
+    },
     "HomeTree": "ranger",
     "WeaponProficiencies": [
       "Martial"

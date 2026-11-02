@@ -88,6 +88,9 @@ namespace GridGame.Core.Battle
         public UnitFootprint Attacker1At, Attacker2At;
         public List<UnitFootprint> OpponentsAt = new List<UnitFootprint>();
         public List<UnitFootprint> SupportersAt = new List<UnitFootprint>();
+        /// <summary>Parallel to <see cref="Supporters"/> (GG-T187): the unit each supporter's chain connects through —
+        /// an attacker when adjacent, else the next ally along the chain — so the view can draw the chain link by link.</summary>
+        public List<int> SupporterLinks = new List<int>();
         public override string ToString() => $"Pincer {Team} {Attacker1}+{Attacker2} vs [{string.Join(",", Opponents)}] sup[{string.Join(",", Supporters)}] #{ChainIndex}";
 
         /// <summary>Null when this pincer's formation geometry is a legal line; otherwise what's wrong with it.</summary>
@@ -141,6 +144,15 @@ namespace GridGame.Core.Battle
     {
         public int AttackerId; public int TargetId; public bool IsSupport; public bool IsMelee; public bool IsRanged;
         public override string ToString() => $"Attack {AttackerId}->{TargetId}{(IsSupport ? " (support)" : "")}{(IsMelee ? " (melee)" : "")}";
+    }
+
+    /// <summary>A supporter performs its class's support action (§1.2.3, GG-T187). The effect's own events (attacks,
+    /// heals, buffs, hastes, mana) follow it.</summary>
+    public sealed class SupportActionEvent : BattleEvent
+    {
+        public int SupporterId; public int AttackerId; public SupportEffect Effect; public string Label;
+        public List<int> Targets = new List<int>();
+        public override string ToString() => $"Support {SupporterId}->{AttackerId} {Effect} '{Label}' [{string.Join(",", Targets)}]";
     }
 
     public sealed class DamagedEvent : BattleEvent

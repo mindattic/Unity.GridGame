@@ -195,6 +195,111 @@ namespace GridGame.Tests
             Assert.That(ev.Any(e => e is AttackEvent a && a.IsSupport), Is.True);
         }
 
+        // ── Support actions along a chain of allies (§1.2.3, GG-T187) ──
+
+        private static ContentDb SupportDb()
+        {
+            var db = Mini();
+            db.Classes["tank"].BaseStats.Vitality = 30; // a foe the pincer can dent but not kill
+            db.Classes["medic"] = new ClassDef { Id = "medic", Name = "Medic", Team = Team.Hero, Tags = { "Humanoid" }, BaseStats = new Stats { Strength = 10, Vitality = 10, Agility = 10, Speed = 10 },
+                Support = new SupportDef { Effect = SupportEffect.Heal, Magnitude = 0.25f, Target = SupportTarget.Attacker, Range = 3 } };
+            db.Classes["squire"] = new ClassDef { Id = "squire", Name = "Squire", Team = Team.Hero, Tags = { "Humanoid" }, BaseStats = new Stats { Strength = 10, Vitality = 10, Agility = 10, Speed = 10 } };
+            return db;
+        }
+
+        [Test]
+        public void Supporters_join_through_an_unbroken_chain_of_allies_within_their_range()
+        {
+            // knight(1,3) tank(2,3) cleric→(3,3). mage(1,4) touches the knight; medic(1,5) touches the mage (2 links, range 3);
+            // squire(0,4) touches the mage too (2 links) but has the default range of 1.
+            var db = SupportDb();
+            var (s, _) = Battle(db, Stage(("tank", 2, 3)), ("knight", 1, 3), ("cleric", 3, 4), ("mage", 1, 4), ("medic", 1, 5), ("squire", 0, 4));
+            var ev = BattleEngine.Apply(s, new MoveCommand { HeroId = Hero(s, "cleric").Id, Path = P((3, 3)) });
+            var p = ev.OfType<PincerFormedEvent>().Single();
+            Assert.That(p.Supporters, Does.Contain(Hero(s, "mage").Id));
+            Assert.That(p.Supporters, Does.Contain(Hero(s, "medic").Id), "two links down the chain, within the medic's range");
+            Assert.That(p.Supporters, Does.Not.Contain(Hero(s, "squire").Id), "two links away but a striker only supports from beside the attacker");
+            int medicAt = p.Supporters.IndexOf(Hero(s, "medic").Id);
+            Assert.That(p.SupporterLinks[medicAt], Is.EqualTo(Hero(s, "mage").Id), "the medic links through the mage");
+            var act = ev.OfType<SupportActionEvent>().Single(a => a.SupporterId == Hero(s, "medic").Id);
+            Assert.That(act.Effect, Is.EqualTo(SupportEffect.Heal));
+            Assert.That(act.AttackerId, Is.EqualTo(Hero(s, "knight").Id));
+            Assert.That(ev.Any(e => e is AttackEvent a && a.AttackerId == Hero(s, "medic").Id), Is.False, "a healer heals instead of striking");
+            AssertInvariants(s);
+        }
+
+        [Test]
+        public void A_gap_in_the_chain_breaks_support()
+        {
+            // medic(1,6) with an empty tile at (1,5) between it and the mage: no chain, no support.
+            var db = SupportDb();
+            var (s, _) = Battle(db, Stage(("tank", 2, 3)), ("knight", 1, 3), ("cleric", 3, 4), ("mage", 1, 4), ("medic", 1, 6));
+            var ev = BattleEngine.Apply(s, new MoveCommand { HeroId = Hero(s, "cleric").Id, Path = P((3, 3)) });
+            var p = ev.OfType<PincerFormedEvent>().Single();
+            Assert.That(p.Supporters, Does.Contain(Hero(s, "mage").Id));
+            Assert.That(p.Supporters, Does.Not.Contain(Hero(s, "medic").Id));
+            Assert.That(ev.OfType<SupportActionEvent>().Any(a => a.SupporterId == Hero(s, "medic").Id), Is.False);
+        }
+
+        [Test]
+        public void A_healer_supporter_heals_the_attacker_it_is_chained_to()
+        {
+            var db = SupportDb();
+            var (s, _) = Battle(db, Stage(("tank", 2, 3)), ("knight", 1, 3), ("cleric", 3, 4), ("mage", 1, 4), ("medic", 1, 5));
+            var knight = Hero(s, "knight");
+            knight.Hp = knight.MaxHp / 2;
+            var ev = BattleEngine.Apply(s, new MoveCommand { HeroId = Hero(s, "cleric").Id, Path = P((3, 3)) });
+            var heal = ev.OfType<HealedEvent>().First(h => h.SourceId == Hero(s, "medic").Id);
+            Assert.That(heal.TargetId, Is.EqualTo(knight.Id));
+            Assert.That(heal.Amount, Is.EqualTo(System.Math.Min(knight.MaxHp - knight.MaxHp / 2, (int)System.Math.Round(knight.MaxHp * 0.25f))));
+        }
+
+        [Test]
+        public void Every_hero_class_performs_its_own_support_action()
+        {
+            // Each real hero class's SupportDef, worn by a supporter beside the knight, does what it says.
+            var real = Real;
+            int checkedClasses = 0;
+            foreach (var cls in real.Classes.Values.Where(c => c.Team == Team.Hero).OrderBy(c => c.Id))
+            {
+                Assert.That(cls.Support, Is.Not.Null, $"{cls.Id} has no support action");
+                var def = cls.Support;
+                var db = SupportDb();
+                foreach (var b in real.Buffs) db.Buffs[b.Key] = b.Value;
+                db.Classes["mage"].Support = def;
+                var (s, _) = Battle(db, Stage(("tank", 2, 3)), ("knight", 1, 3), ("cleric", 3, 4), ("mage", 1, 4));
+                var knight = Hero(s, "knight"); var mage = Hero(s, "mage");
+                knight.Hp = knight.MaxHp / 2;
+                knight.Buffs.Add(new BuffInstance { Def = db.Buffs["wet"], Remaining = 5 });
+                var hadTurn = s.Units.Where(u => s.TurnEntryOf(u.Id) != null || s.CastEntryOf(u.Id) != null).Select(u => u.Id).ToList();
+                var ev = BattleEngine.Apply(s, new MoveCommand { HeroId = Hero(s, "cleric").Id, Path = P((3, 3)) });
+                var act = ev.OfType<SupportActionEvent>().SingleOrDefault(a => a.SupporterId == mage.Id);
+                Assert.That(act, Is.Not.Null, $"{cls.Id}: no support action");
+                Assert.That(act.Effect, Is.EqualTo(def.Effect), cls.Id);
+                Assert.That(act.Targets, Is.Not.Empty, $"{cls.Id}: support lands on nobody");
+                string why = $"{cls.Id} ({def.Effect} → {def.Target})";
+                switch (def.Effect)
+                {
+                    case SupportEffect.Strike:
+                        Assert.That(ev.Any(e => e is AttackEvent a && a.AttackerId == mage.Id && a.IsSupport), Is.True, why); break;
+                    case SupportEffect.Heal:
+                        Assert.That(ev.Any(e => e is HealedEvent h && h.SourceId == mage.Id && act.Targets.Contains(h.TargetId)), Is.True, why); break;
+                    case SupportEffect.Buff:
+                        foreach (var t in act.Targets) Assert.That(ev.Any(e => e is BuffAppliedEvent b && b.UnitId == t && b.BuffId == def.Buff), Is.True, why); break;
+                    case SupportEffect.Haste:
+                        if (act.Targets.Any(hadTurn.Contains)) Assert.That(ev.Any(e => e is HastenedEvent h && act.Targets.Contains(h.UnitId)), Is.True, why); break;
+                    case SupportEffect.Mana:
+                        Assert.That(ev.Any(e => e is ManaChargedEvent m && m.Reason == "support" && m.SourceId == mage.Id), Is.True, why); break;
+                    case SupportEffect.Cleanse:
+                        if (act.Targets.Contains(knight.Id)) Assert.That(ev.Any(e => e is BuffRemovedEvent r && r.UnitId == knight.Id && r.Reason == "cleansed"), Is.True, why); break;
+                }
+                if (def.Effect != SupportEffect.Strike)
+                    Assert.That(ev.Any(e => e is AttackEvent a && a.AttackerId == mage.Id), Is.False, $"{why}: only strikers strike in support");
+                checkedClasses++;
+            }
+            Assert.That(checkedClasses, Is.GreaterThan(0));
+        }
+
         [Test]
         public void Chain_pincers_resolve_in_order()
         {

@@ -39,7 +39,7 @@ namespace GridGame.App
                 Example = "Example: follow the glowing path to the glowing tile.",
                 Done = (b, c, e) => c is MoveCommand },
             new Lesson { Title = "Pincers", DemoMove = true,
-                Text = "Trap an enemy in a straight line between two heroes to PINCER it — both heroes strike. Heroes touching the attackers join in as supporters.",
+                Text = "Trap an enemy in a straight line between two heroes to PINCER it — both heroes strike. Heroes linked to an attacker by an unbroken chain of allies join in as supporters, each with its class's support action.",
                 Example = "Example: Hero · Slime · Hero in a row or column.",
                 Done = (b, c, e) => e.Exists(x => x is PincerFormedEvent p && p.Team == Team.Hero) },
             new Lesson { Title = "Mana",

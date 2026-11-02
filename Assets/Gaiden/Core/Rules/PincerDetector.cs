@@ -13,6 +13,45 @@ namespace GridGame.Core.Rules
         public List<Unit> Opponents = new List<Unit>();
         public List<Unit> SupportersA = new List<Unit>();
         public List<Unit> SupportersB = new List<Unit>();
+        /// <summary>Chain links toward A / toward B (§1.2.3, GG-T187): each ally → the unit it connects through on its
+        /// way to that attacker (the attacker itself when adjacent, otherwise the next ally along the chain).</summary>
+        public Dictionary<Unit, Unit> LinksA = new Dictionary<Unit, Unit>();
+        public Dictionary<Unit, Unit> LinksB = new Dictionary<Unit, Unit>();
+
+        /// <summary>The attacker a supporter is chained to (A when it supports both).</summary>
+        public Unit AttackerOf(Unit supporter) => SupportersA.Contains(supporter) || !SupportersB.Contains(supporter) ? A : B;
+
+        /// <summary>The unit a supporter connects through toward its attacker (null if it isn't one).</summary>
+        public Unit LinkOf(Unit supporter)
+        {
+            var links = AttackerOf(supporter) == A ? LinksA : LinksB;
+            return links.TryGetValue(supporter, out var next) ? next : null;
+        }
+
+        /// <summary>The chain from a supporter to its attacker, both ends included.</summary>
+        public List<Unit> ChainOf(Unit supporter)
+        {
+            var attacker = AttackerOf(supporter);
+            var links = attacker == A ? LinksA : LinksB;
+            var chain = new List<Unit>();
+            var cur = supporter;
+            for (int guard = 0; guard < 64 && cur != null; guard++)
+            {
+                chain.Add(cur);
+                if (cur == attacker) break;
+                cur = links.TryGetValue(cur, out var next) ? next : null;
+            }
+            return chain;
+        }
+
+        /// <summary>Swap the ends (A↔B) with everything that hangs off them.</summary>
+        public void Flip()
+        {
+            var t = A; A = B; B = t;
+            var ts = SupportersA; SupportersA = SupportersB; SupportersB = ts;
+            var tl = LinksA; LinksA = LinksB; LinksB = tl;
+            Opponents.Reverse();
+        }
     }
 
     /// <summary>
@@ -53,22 +92,45 @@ namespace GridGame.Core.Rules
                 if (!opponents.Contains(occ)) opponents.Add(occ);
             }
             if (opponents.Count == 0) return null;
-            return new Pincer
-            {
-                A = a, B = b, Opponents = opponents,
-                SupportersA = FindSupporters(s, a, b),
-                SupportersB = FindSupporters(s, b, a),
-            };
+            var p = new Pincer { A = a, B = b, Opponents = opponents };
+            p.SupportersA = FindSupporters(s, a, b, p.LinksA);
+            p.SupportersB = FindSupporters(s, b, a, p.LinksB);
+            return p;
         }
 
-        /// <summary>Allies cardinally adjacent to <paramref name="attacker"/> (not its partner) join as supporters (§1.2.3).</summary>
-        public static List<Unit> FindSupporters(BattleState s, Unit attacker, Unit partner)
+        /// <summary>The support action a unit performs (§1.2.3, GG-T187): its class's, else the default 50% strike.</summary>
+        public static SupportDef SupportOf(Unit u) => u?.Def?.Support ?? SupportDef.Default;
+
+        /// <summary>
+        /// Supporters (§1.2.3, GG-T187): every living ally (not the partner) connected to <paramref name="attacker"/> by an
+        /// uninterrupted cardinal chain of allies — any gap breaks it — whose distance along that chain (1 = adjacent) is
+        /// within its class's <see cref="SupportDef.Range"/>. Every ally is a link, whatever its own range.
+        /// <paramref name="links"/> (optional) records which unit each one connects through.
+        /// </summary>
+        public static List<Unit> FindSupporters(BattleState s, Unit attacker, Unit partner, Dictionary<Unit, Unit> links = null)
         {
-            var list = new List<Unit>();
+            var allies = new List<Unit>();
             foreach (var u in s.Units)
+                if (u.Alive && u.Team == attacker.Team && u != attacker && u != partner) allies.Add(u);
+            allies.Sort((x, y) => x.Id.CompareTo(y.Id));
+
+            var dist = new Dictionary<Unit, int> { [attacker] = 0 };
+            var queue = new Queue<Unit>();
+            queue.Enqueue(attacker);
+            var list = new List<Unit>();
+            while (queue.Count > 0)
             {
-                if (!u.Alive || u.Team != attacker.Team || u == attacker || u == partner) continue;
-                if (u.IsAdjacentTo(attacker)) list.Add(u);
+                var cur = queue.Dequeue();
+                foreach (var u in allies)
+                {
+                    if (dist.ContainsKey(u) || !u.IsAdjacentTo(cur)) continue;
+                    int d = dist[cur] + 1;
+                    dist[u] = d;
+                    queue.Enqueue(u);
+                    if (links != null) links[u] = cur;
+                    int range = SupportOf(u).Range;
+                    if (range <= 0 || d <= range) list.Add(u);
+                }
             }
             list.Sort((x, y) => x.Id.CompareTo(y.Id));
             return list;
@@ -105,8 +167,8 @@ namespace GridGame.Core.Rules
                     }
                 }
                 // Orient so the chain flows: the shared hero is A of the next link.
-                if (chainEnd != null && next.B == chainEnd) { var t = next.A; next.A = next.B; next.B = t; var ts = next.SupportersA; next.SupportersA = next.SupportersB; next.SupportersB = ts; next.Opponents.Reverse(); }
-                else if (ordered.Count == 0 && dropped != null && next.B == dropped) { var t = next.A; next.A = next.B; next.B = t; var ts = next.SupportersA; next.SupportersA = next.SupportersB; next.SupportersB = ts; next.Opponents.Reverse(); }
+                if (chainEnd != null && next.B == chainEnd) next.Flip();
+                else if (ordered.Count == 0 && dropped != null && next.B == dropped) next.Flip();
                 ordered.Add(next);
                 remaining.Remove(next);
                 chainEnd = next.B;

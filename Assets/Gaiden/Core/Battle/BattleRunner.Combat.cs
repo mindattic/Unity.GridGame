@@ -184,7 +184,7 @@ namespace GridGame.Core.Battle
             // command, and any member may have moved since (enemy turns, knockback, a later chain link — GG-T98).
             formed.Attacker1At = UnitFootprint.Of(p.A); formed.Attacker2At = UnitFootprint.Of(p.B);
             foreach (var o in p.Opponents) { formed.Opponents.Add(o.Id); formed.OpponentsAt.Add(UnitFootprint.Of(o)); }
-            foreach (var su in supporters) { formed.Supporters.Add(su.Id); formed.SupportersAt.Add(UnitFootprint.Of(su)); }
+            foreach (var su in supporters) { formed.Supporters.Add(su.Id); formed.SupportersAt.Add(UnitFootprint.Of(su)); formed.SupporterLinks.Add(p.LinkOf(su)?.Id ?? p.AttackerOf(su).Id); }
             Emit(formed);
 
             // Power Amplifier: a hero attacker standing on it strikes amplified and uses it up (§1.2.6).
@@ -221,8 +221,7 @@ namespace GridGame.Core.Battle
             }
 
             foreach (var sup in supporters)
-                foreach (var target in p.Opponents)
-                    if (sup.Alive && target.Alive) Strike(sup, target, BattleConfig.SupporterDamageFraction, true);
+                if (sup.Alive && !S.IsOver) PerformSupport(p, sup, team);
 
             if (team == Team.Hero)
             {
@@ -239,6 +238,55 @@ namespace GridGame.Core.Battle
                 if (amplified != null && amplified.Alive) AddCharge(BattleConfig.AmplifierCharge, amplified.Id, "amplifier");
             }
             chainBonusDepth = 0;
+        }
+
+        /// <summary>
+        /// A supporter's class support action (§1.2.3, GG-T187): the classic strike on every trapped opponent, or a
+        /// heal / buff / haste / mana / cleanse on the attacker it's chained to, the chain itself, the party or itself.
+        /// </summary>
+        private void PerformSupport(Pincer p, Unit sup, Team team)
+        {
+            var def = PincerDetector.SupportOf(sup);
+            var attacker = p.AttackerOf(sup);
+            var targets = new List<Unit>();
+            if (def.Effect == SupportEffect.Strike) { foreach (var o in p.Opponents) if (o.Alive) targets.Add(o); }
+            else
+                switch (def.Target)
+                {
+                    case SupportTarget.Self: targets.Add(sup); break;
+                    case SupportTarget.Chain: foreach (var u in p.ChainOf(sup)) if (u.Alive) targets.Add(u); break;
+                    case SupportTarget.Party: foreach (var u in S.Living(team)) targets.Add(u); break;
+                    default: if (attacker.Alive) targets.Add(attacker); break;
+                }
+            var ev = new SupportActionEvent { SupporterId = sup.Id, AttackerId = attacker.Id, Effect = def.Effect, Label = def.DisplayLabel };
+            foreach (var t in targets) ev.Targets.Add(t.Id);
+            Emit(ev);
+
+            switch (def.Effect)
+            {
+                case SupportEffect.Strike:
+                    float frac = def.Magnitude > 0f ? def.Magnitude : BattleConfig.SupporterDamageFraction;
+                    foreach (var target in targets)
+                        if (sup.Alive && target.Alive) Strike(sup, target, frac, true);
+                    break;
+                case SupportEffect.Heal:
+                    foreach (var t in targets)
+                        if (t.Alive && t.Hp < t.MaxHp) Heal(t, Math.Max(1, (int)Math.Round(t.MaxHp * def.Magnitude)), sup);
+                    break;
+                case SupportEffect.Buff:
+                    var buff = C.TryBuff(def.Buff);
+                    if (buff != null) foreach (var t in targets) ApplyBuff(t, buff, buff.Duration);
+                    break;
+                case SupportEffect.Haste:
+                    foreach (var t in targets) if (t.Alive) Hasten(t, def.Magnitude);
+                    break;
+                case SupportEffect.Mana:
+                    if (team == Team.Hero) AddCharge(Math.Max(1, (int)Math.Round(def.Magnitude)), sup.Id, "support");
+                    break;
+                case SupportEffect.Cleanse:
+                    foreach (var t in targets) RemoveBuffsWhere(t, b => b.Def.Kind == BuffKind.Debuff, "cleansed");
+                    break;
+            }
         }
 
         /// <summary>The unit has passive <paramref name="id"/>: from its class kit, or (GG-T179) from an enchant on an

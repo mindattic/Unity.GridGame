@@ -133,6 +133,7 @@ namespace GridGame.App
                 case PincerFormedEvent p: FlushTallies(); return PincerAnim(p);
                 case RespiteEvent rs: return RespiteAnim(rs);
                 case AttackEvent at: return AttackAnim(at);
+                case SupportActionEvent sa: return SupportAnim(sa);
                 case DamagedEvent dm: return DamageAnim(dm);
                 case HealedEvent h: return HealAnim(h);
                 case DiedEvent d: EndGhost(d.UnitId, null); return DeathAnim(d);
@@ -314,9 +315,15 @@ namespace GridGame.App
             foreach (var o in oppAt) group.Add((o.At, o.W, o.H));
             var rect = BoardView.GroupRect(group);
             var links = new List<(Vector2, Vector2)>();
-            foreach (var s in p.SupportersAt)
+            // GG-T187: a supporter links to the unit its chain runs through (an attacker or the next ally on the chain).
+            var members = new List<UnitFootprint> { aAt, bAt };
+            members.AddRange(p.SupportersAt);
+            for (int si = 0; si < p.SupportersAt.Count; si++)
             {
-                var partner = FootprintTiles(s).Any(t => t.IsCardinalNeighbor(aAt.At)) ? aAt : bAt;
+                var s = p.SupportersAt[si];
+                int linkId = si < p.SupporterLinks.Count ? p.SupporterLinks[si] : -1;
+                var hit = members.Where(m => m.UnitId == linkId).ToList();
+                var partner = hit.Count > 0 ? hit[0] : FootprintTiles(s).Any(t => t.IsCardinalNeighbor(aAt.At)) ? aAt : bAt;
                 links.Add(BoardView.EdgeLink(s.At, partner.At));
             }
             App.Audio.Sfx("pincer", 1f, 1f + 0.08f * (chainCount - 1));
@@ -551,6 +558,37 @@ namespace GridGame.App
                 if (board.Units.TryGetValue(id, out var v))
                     App.StartCoroutine(Tween.Run(0.45f, k => v.Root.style.rotate = new Rotate(k >= 1f ? 0f : 360f * Tween.EaseInOut(k))));
             yield return FloatText(rs.Attacker1, "Respite", new Color(0.8f, 0.95f, 1f), 0.45f, 56);
+        }
+
+        /// <summary>GG-T187 (§1.2.3): a supporter performs its class's support action — its cut-in card carries the action's
+        /// name and the action floats over it; the effect's own beats (heal, buff, haste, mana, strikes) follow.</summary>
+        private IEnumerator SupportAnim(SupportActionEvent sa)
+        {
+            var sup = State.UnitById(sa.SupporterId);
+            if (sup == null || !board.Units.TryGetValue(sup.Id, out var sv)) yield break;
+            string label = string.IsNullOrEmpty(sa.Label) ? sa.Effect.ToString() : sa.Label;
+            SupporterPop(sup, sup.Team, label.ToUpperInvariant());
+            if (sa.Effect == SupportEffect.Strike) yield break; // the support strikes animate themselves
+            var color = SupportColor(sa.Effect);
+            Feed($"✦ {sup.Name}: {label}", color);
+            App.Audio.Sfx(sa.Effect == SupportEffect.Heal ? "heal" : sa.Effect == SupportEffect.Mana ? "orb" : "cast", 0.7f, 1.2f);
+            App.StartCoroutine(Tween.Pop(sv.Root, 1.12f, 0.18f));
+            var at = BoardView.CenterOf(sv.Tile, sv.W, sv.H);
+            App.StartCoroutine(FloatAway(board.Float(label + "!", at, color, 60), 0.6f));
+            yield return Tween.Wait(ReduceMotion ? 0.08f : 0.2f);
+        }
+
+        private static Color SupportColor(SupportEffect e)
+        {
+            switch (e)
+            {
+                case SupportEffect.Heal: return new Color(0.45f, 1f, 0.55f);
+                case SupportEffect.Buff: return new Color(1f, 0.75f, 0.3f);
+                case SupportEffect.Haste: return new Color(0.5f, 0.85f, 1f);
+                case SupportEffect.Mana: return new Color(0.6f, 0.7f, 1f);
+                case SupportEffect.Cleanse: return new Color(0.9f, 1f, 1f);
+                default: return new Color(0.6f, 0.92f, 1f);
+            }
         }
 
         private IEnumerator AttackAnim(AttackEvent at)

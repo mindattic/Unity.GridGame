@@ -238,7 +238,8 @@ A story is ✅ only when 1–6 hold; otherwise 🟡/⬜ ([GG-LAW-12](#GG-LAW-12)
 
 - **Slide / displacement** — dragging a hero onto an occupied tile moves the displaced actor (ally or foe) into the tile the hero just left. ([§1.1](#11-sliding-and-displacement))
 - **Pincer** — two allies in the same row/column with a contiguous, ally-free, ≥1-opponent line between them; the only source of hero physical damage. ([§1.2](#12-pincer-attacks))
-- **Supporter** — an ally cardinally adjacent to a pincer attacker; strikes every trapped opponent at 50% and mints its own orb. ([§1.2.3](#123-supporters))
+- **Supporter** — an ally connected to a pincer attacker by an unbroken cardinal chain of allies, within its class's support range; performs its class's **support action** (strike the trapped line at 50%, heal, buff, haste, mana, cleanse…). ([§1.2.3](#123-supporters))
+- **Support action** (`SupportDef`) — a class's effect as a supporter: Effect, Magnitude, Target (Attacker / Chain / Party / Self), Range along the chain. Enemies and classes without one strike at 50% from beside the attacker. ([§1.2.3](#123-supporters))
 - **Action** — one committed command (move, slot use, shield); costs `BattleConfig.ActionTicks` = 20 ticks = 2.0 s of game clock (Shield instead runs to the next enemy turn). ([§2.0](#20-the-act-advanced-clock))
 - **Tick / IP** — the clock unit (10 per second); turn icons hold Initiative Points 0..1000 (`u = IP/1000`).
 - **Pushback Zone** — the rightmost 35% of the bar (IP ≥ 650); hitting an enemy there shoves its icon back and stuns it. ([§2.3](#23-pushback-the-interrupt-by-hitting-mechanic))
@@ -430,13 +431,28 @@ The scan (`PincerDetector.Detect`) is **board-wide** — every valid pair resolv
 
 #### 1.2.3 Supporters
 
-**Amended 2026-10-09:** any **living ally cardinally adjacent to a pincer attacker** (other than its partner) is a supporter — there is no line-of-sight/axis requirement (`PincerDetector.FindSupporters`). Supporters of both attackers are merged and de-duplicated. Each supporter strikes **every trapped opponent** with a physical attack at **`BattleConfig.SupporterDamageFraction` = 50%** damage, then mints one orb of its own color ([§3.1.2](#312-harvesting)). Supporters need not be Humanoid.
+~~**Amended 2026-10-09:** any living ally cardinally adjacent to a pincer attacker is a supporter and strikes every trapped opponent at 50%.~~
+
+**Amended 2026-10-21 (GG-T187, owner — "Terra Battle's best idea"): every class gets a support action.** A living ally (other than the partner) **connected to a pincer attacker by an uninterrupted cardinal chain of allies** is a supporter when its distance along that chain (1 = touching the attacker) is within its class's support **Range** (`PincerDetector.FindSupporters`, a breadth-first walk over allies only). Any empty tile, foe or obstacle **breaks the chain**; every ally is a link whatever its own range, so a striker standing beside the attacker carries a healer two tiles back. There is no line-of-sight/axis requirement. Supporters of both attackers are merged and de-duplicated; one reached from both sides supports attacker A. Supporters need not be Humanoid.
+
+Each supporter then performs its class's **`SupportDef`** (`classes.json` → `Support`: `Effect`, `Magnitude`, `Target`, `Range`, optional `Buff` and cut-in `Label`) — `BattleRunner.PerformSupport`, announced by a `SupportActionEvent`:
+
+| Effect | What it does | Magnitude |
+|---|---|---|
+| **Strike** | a physical strike on **every trapped opponent** (the old supporter hit — now one support type among many) | damage fraction (0.5 = `BattleConfig.SupporterDamageFraction`) |
+| **Heal** | heals each target | fraction of the target's max HP |
+| **Buff** | applies `Buff` to each target — ATK up (`empowered`), shield (`protection`), `regen`, taunt (`taunting` on Self) | — (the buff's own duration) |
+| **Haste** | slides each target's turn icon forward on the timeline (or rushes its cast), like Quicken | fraction of the bar |
+| **Mana** | fills the mana meter (100 charge = one orb, [§3.1.9](#319-mana-charge)); hero team only | charge |
+| **Cleanse** | strips every debuff from each target | — |
+
+**Target** is **Attacker** (the attacker the chain reaches), **Chain** (every ally on the chain from the supporter to that attacker, both ends), **Party** (every living ally) or **Self**; Strike always hits the trapped line. A class with no `Support` — every enemy — uses the default: Strike at 50% from range 1, exactly the pre-amendment rule. Hero defaults by role: Strikers strike (range 1), Ranged strike from range 2, Healers heal (attacker, chain or party, range 2–3), Tanks guard/taunt/rally (range 2), Mages give mana or haste (range 2), Supports haste, buff, shield, regen, cleanse or give mana (range 2–3). Supporters still count as participants for the mana charge divisor ([§3.1.9](#319-mana-charge)). The pincer outline links each supporter to the unit its chain runs through (`PincerFormedEvent.SupporterLinks`), and each supporter's cut-in card and float text name its action. *(Tests: `Supporters_join_through_an_unbroken_chain_of_allies_within_their_range`, `A_gap_in_the_chain_breaks_support`, `A_healer_supporter_heals_the_attacker_it_is_chained_to`, `Every_hero_class_performs_its_own_support_action`.)*
 
 #### 1.2.4 Resolution order inside one pincer
 
 1. `PincerFormedEvent` (attackers, opponents, supporters).
 2. Attacker A strikes each living opponent in line order; then attacker B does the same. **Both endpoints hit the whole line.** A hero whose weapon is on its last durability point strikes at ×1.5 and then shatters ([§24.5](#245-weapon-durability)). An attacker with the **Double Attack** passive strikes each opponent a second time at ×0.5; any struck defender with **Counter Attack** that survives a landing hit strikes back at ×0.5 ([§7](#7-the-spell-catalog)).
-3. Each supporter strikes each living opponent at 50%.
+3. Each supporter performs its support action (`SupportActionEvent`, then its effect): a Strike supporter strikes each living opponent at 50%; the others heal, buff, haste, charge mana or cleanse ([§1.2.3](#123-supporters)).
 4. (Hero team only) each living attacker, then each living supporter, mints one orb.
 
 A pair whose opponents are all already dead (killed by an earlier link) is skipped. **Amended 2026-10-09:** the old cosmetic "Respite" spin is not built.

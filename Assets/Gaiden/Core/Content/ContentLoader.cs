@@ -174,7 +174,22 @@ namespace GridGame.Core.Content
                 if (pk.Weight <= 0) p.Add($"pickup {pk.Id}: weight must be positive");
             }
             foreach (var c in db.Classes.Values)
+            {
                 if (c.Team == Team.Hero && (c.Role == null || !HeroRoles.Contains(c.Role))) p.Add($"class {c.Id}: hero needs a Role (Tank/Healer/Mage/Striker/Support/Ranged), has '{c.Role}'");
+                // GG-T187 (§1.2.3): a class's support action must be playable.
+                if (c.Support != null)
+                {
+                    if (c.Support.Range < 0) p.Add($"class {c.Id}: support range can't be negative");
+                    if (c.Support.Magnitude < 0f) p.Add($"class {c.Id}: support magnitude can't be negative");
+                    if (c.Support.Effect == SupportEffect.Buff)
+                    {
+                        if (string.IsNullOrEmpty(c.Support.Buff)) p.Add($"class {c.Id}: a Buff support needs a Buff id");
+                        else NeedBuff(c.Support.Buff, $"class {c.Id} support");
+                    }
+                    if ((c.Support.Effect == SupportEffect.Heal || c.Support.Effect == SupportEffect.Haste || c.Support.Effect == SupportEffect.Mana) && c.Support.Magnitude <= 0f)
+                        p.Add($"class {c.Id}: a {c.Support.Effect} support needs a positive magnitude");
+                }
+            }
             foreach (var b in db.Bounties.Values) { NeedClass(b.TargetClass, $"bounty {b.Id}"); NeedItem(b.RewardItem, $"bounty {b.Id}"); }
             foreach (var c in db.Summon.Pool) NeedClass(c, "summon pool");
             foreach (var e in db.Enchants.Values) NeedItem(e.Essence, $"enchant {e.Id}");

@@ -260,11 +260,12 @@ namespace GridGame.App
         // ── Supporters pop in as they strike, tagged with their contribution ──
         private readonly HashSet<int> supportersShown = new HashSet<int>();
 
-        private void SupporterPop(Unit sup, Team team)
+        /// <param name="tag">The supporter's class support action (GG-T187), e.g. "HEAL", "GUARD" — "SUPPORT" if unknown.</param>
+        private void SupporterPop(Unit sup, Team team, string tag = "SUPPORT")
         {
             if (!CutInsEnabled || ReduceMotion || !supportersShown.Add(sup.Id)) return;
             int index = supportersShown.Count - 1;
-            var card = ActionCard(sup, 300f, team, "SUPPORT", new Color(0.6f, 0.92f, 1f), out var portrait);
+            var card = ActionCard(sup, 300f, team, tag, new Color(0.6f, 0.92f, 1f), out var portrait);
             bool left = index % 2 == 0;
             var at = new Vector2(left ? 170f : GameApp.StageWidth - 170f, BoardTop + 330f + 300f * (index / 2));
             App.Audio.Sfx("pickup", 0.6f, 1.3f + 0.1f * index);
