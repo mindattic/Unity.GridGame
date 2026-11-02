@@ -969,6 +969,18 @@
    "delapouite/bow-arrow",
    "bronze"
   ],
+  "warden_runeward": [
+   "lorc/rune-stone",
+   "arcane"
+  ],
+  "warden_spellshield": [
+   "lorc/shield-reflect",
+   "arcane"
+  ],
+  "warden_barrier": [
+   "lorc/checked-shield",
+   "arcane"
+  ],
   "marksman_piercing_volley": [
    "delapouite/dart",
    "steel"

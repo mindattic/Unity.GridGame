@@ -537,6 +537,37 @@
     ]
    },
    {
+    "Id": "warden_opener",
+    "Name": "Rune Ward",
+    "Description": "Etch a protective rune onto an ally before the blow lands.",
+    "Grants": "warden_runeward",
+    "Cost": 1,
+    "RequiredPointsInTree": 1,
+    "Prerequisites": []
+   },
+   {
+    "Id": "warden_core",
+    "Name": "Spellshield",
+    "Description": "A mirrored shell of mana that unpicks hexes and wards an ally.",
+    "Grants": "warden_spellshield",
+    "Cost": 2,
+    "RequiredPointsInTree": 3,
+    "Prerequisites": [
+     "warden_opener"
+    ]
+   },
+   {
+    "Id": "warden_capstone",
+    "Name": "Barrier",
+    "Description": "A dome of solid mana that wards the whole party at once.",
+    "Grants": "warden_barrier",
+    "Cost": 2,
+    "RequiredPointsInTree": 6,
+    "Prerequisites": [
+     "warden_core"
+    ]
+   },
+   {
     "Id": "mage_finale",
     "Name": "Archmage's Focus",
     "Description": "Mana discipline that knits a little strength back every turn.",
