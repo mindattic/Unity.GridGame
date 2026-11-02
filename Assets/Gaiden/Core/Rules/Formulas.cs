@@ -21,7 +21,39 @@ namespace GridGame.Core.Rules
         private const float PenetrationFromAttack = 0.25f;
         private const float OffenseFloorFraction = 0.20f;
 
+        /// <summary>Unarmed Mastery (GG-T86): flat part of the bare-handed offense bonus.</summary>
+        public const float UnarmedMasteryFlat = 2f;
+        /// <summary>Unarmed Mastery (GG-T86): bare-handed offense per point of AGI.</summary>
+        public const float UnarmedMasteryPerAgility = 0.5f;
+        /// <summary>Tag a class carries in content to fight bare-handed with Unarmed Mastery.</summary>
+        public const string UnarmedTag = "Unarmed";
+
+        /// <summary>Hero classes built around unarmed / martial-arts fighting (signature moves like
+        /// martialartist_palm, pugilist_jabcross, monk_peace). They get Unarmed Mastery even before their
+        /// content carries the <see cref="UnarmedTag"/> tag.</summary>
+        public static readonly HashSet<string> UnarmedMasteryClasses = new HashSet<string>(StringComparer.Ordinal)
+        {
+            "monk", "martialartist", "pugilist", "streetfighter",
+        };
+
         private static float Clamp(float v, float lo, float hi) => v < lo ? lo : (v > hi ? hi : v);
+
+        /// <summary>Whether this class fights with Unarmed Mastery (GG-T86).</summary>
+        public static bool HasUnarmedMastery(ClassDef def) =>
+            def != null && def.Team == Team.Hero && (UnarmedMasteryClasses.Contains(def.Id) || def.HasTag(UnarmedTag));
+
+        /// <summary>
+        /// Unarmed Mastery (GG-T86): a hero of an unarmed class with an empty weapon hand adds
+        /// <c>2 + 0.5·AGI</c> to physical offense in place of a weapon (≈8 at level 1, growing with AGI, on par
+        /// with what a Common–Rare weapon's stats add), and never has a weapon to wear down or shatter. Holding
+        /// a weapon switches it off, so these classes are rewarded for fighting bare-handed. Every other class
+        /// and every enemy gets 0, keeping a weapon the better choice for them.
+        /// </summary>
+        public static float UnarmedPower(Unit u)
+        {
+            if (u == null || !u.IsHero || !string.IsNullOrEmpty(u.WeaponId) || !HasUnarmedMastery(u.Def)) return 0f;
+            return UnarmedMasteryFlat + UnarmedMasteryPerAgility * Math.Max(0f, u.Effective.Agility);
+        }
 
         public static int MaxHp(Stats s, int level) => (int)Math.Floor(12f + s.Vitality * 5f + level * 1f);
 
@@ -87,7 +119,7 @@ namespace GridGame.Core.Rules
         {
             var a = attacker.Effective;
             var d = defender.Effective;
-            float off = a.Strength + attacker.WeaponPower;
+            float off = a.Strength + attacker.WeaponPower + UnarmedPower(attacker);
             float def = d.Vitality;
             float raw = Mitigate(off, def);
             raw *= defender.ResistanceMultiplier(DamageType.Physical);
