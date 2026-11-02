@@ -29,7 +29,8 @@
     "TargetClass": "cyclops00",
     "Kills": 2,
     "RewardGold": 500,
-    "RewardItem": "flame_oil"
+    "RewardItem": "flame_oil",
+    "RewardSkillPoints": 1
   },
   {
     "Id": "bounty_vampire_lord",
@@ -37,6 +38,7 @@
     "TargetClass": "vampire",
     "Kills": 1,
     "RewardGold": 2000,
-    "RewardItem": "revival_charm"
+    "RewardItem": "revival_charm",
+    "RewardSkillPoints": 2
   }
 ]

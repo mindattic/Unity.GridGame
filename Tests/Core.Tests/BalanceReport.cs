@@ -79,7 +79,7 @@ namespace GridGame.Tests
         public void Campaign_pacing_table(float randomness, string label, bool manageCamp, int startingHeroes, bool story)
         {
             var total = new Dictionary<string, Row>();
-            int finishedRuns = 0, recruits = 0, bountiesClaimed = 0, roster = 0;
+            int finishedRuns = 0, recruits = 0, bountiesClaimed = 0, bountySp = 0, roster = 0;
             const int seeds = 4;
             var party = FiveStart.Take(startingHeroes).ToList();
             for (int seed = 1; seed <= seeds; seed++)
@@ -88,6 +88,7 @@ namespace GridGame.Tests
                 recruits += save.Recruits;
                 roster += save.Roster.Count;
                 bountiesClaimed += save.Bounty.Claimed.Count;
+                bountySp += Bounties.SkillPointsClaimed(Real, save); // GG-T134: skill points paid each party hero
                 if (finished) finishedRuns++;
                 foreach (var kv in rows)
                 {
@@ -96,7 +97,7 @@ namespace GridGame.Tests
                 }
             }
             var sb = new StringBuilder();
-            sb.AppendLine($"=== {label} bot (randomness {randomness}) — campaign finished {finishedRuns}/{seeds} — summon recruits {recruits}, roster at the end {roster / (float)seeds:F1}, bounties claimed {bountiesClaimed} ===");
+            sb.AppendLine($"=== {label} bot (randomness {randomness}) — campaign finished {finishedRuns}/{seeds} — summon recruits {recruits}, roster at the end {roster / (float)seeds:F1}, bounties claimed {bountiesClaimed} (+{bountySp / (float)seeds:F1} SP each per run) ===");
             sb.AppendLine("stage                  win%   actions   hp-left%");
             foreach (var kv in total)
                 sb.AppendLine($"{kv.Key,-22} {100 * kv.Value.Wins / kv.Value.Runs,4}%   {kv.Value.Actions / (float)kv.Value.Runs,7:F1}   {kv.Value.HpPct / kv.Value.Runs,6}%");

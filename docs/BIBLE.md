@@ -126,7 +126,7 @@ GridGame Gaiden is **NOT**:
 | `encounters.json` | 182 `EncounterGroupDef`s (GG-T184) — one enemy family's mix on fixed enemy-half tiles (a named formation: Pincer, Wedge, Crown ...) at a level; 2-5 foes, every Crucible family has a group of every wave size. `EncounterCatalog.Validate`: no two groups are the same foes on the same tiles, no two campaign waves are the same foes, levels and tiles, a group backs one campaign wave at most |
 | `campaign.json` | 5 main themes × 3 stages + 5 postgame themes × 2 bonus stages (added 2026-10-13, GG-T7/T10; each bonus stage carries a `StageDef.LevelOverride` instead of relying on flattened-index `RecommendedLevel`), in play order, with each theme's story-crawl text |
 | `traps.json` | 1 `TrapDef` (`venom_snare`: 6 dmg + Poisoned, lay chance 0.45) |
-| `bounties.json` | 5 `BountyDef`s — target class, kill count, gold + item reward |
+| `bounties.json` | 5 `BountyDef`s — target class, kill count, gold + item reward, optional skill points (GG-T134) |
 | `summon.json` | Summon Circle pool (7 classes), base price 250, step 250 |
 | `enchants.json` | 6 `EnchantDef`s (Flame/Frost/Spark/Shadow/Poison/Holy, the last 2 added 2026-10-13) — reference data; the actual enchant crafts are `Station: Enchant` recipes |
 
@@ -1720,15 +1720,15 @@ Campaign (`campaign.json`): Green Valley, Sandsea Reaches, Mireholt Fens, Frostm
 
 ### 22.4 Bounty board
 
-**Amended 2026-10-09:** a Camp screen (`BountyScreen`, "Bounties"), not a StageSelect strip. Posted = every `bounties.json` contract not yet claimed (claimed ones never repost). One active slot (`Bounties.Accept` refuses while one is active); kills of the target class count **on victory only** (in the Crucible, on any ending — [§22.10](#2210-the-crucible)), capped at the goal; **Claim** pays gold + item; **Abandon** resets. *(Test: `Full_loop_battle_commit_then_every_vendor`.)*
+**Amended 2026-10-09:** a Camp screen (`BountyScreen`, "Bounties"), not a StageSelect strip. Posted = every `bounties.json` contract not yet claimed (claimed ones never repost). One active slot (`Bounties.Accept` refuses while one is active); kills of the target class count **on victory only** (in the Crucible, on any ending — [§22.10](#2210-the-crucible)), capped at the goal; **Claim** pays gold + item, plus an optional skill-point payout (`BountyDef.RewardSkillPoints`, *added 2026-11-02, GG-T134*) that every hero in the active party gains; **Abandon** resets. The camp routine prefers a skill-point contract when two finish equally soon, and the balance table reports the SP bounties paid. *(Test: `Full_loop_battle_commit_then_every_vendor`.)*
 
 | Bounty | Target | Kills | Reward |
 |---|---|---|---|
 | Slime Culling | slime00 | 5 | 200 G + Healing Potion |
 | Wolf Pack | wolf00 | 3 | 300 G + Hi-Potion |
 | Restless Dead | undead00 | 4 | 400 G + Holy Water |
-| Cave Dweller | cyclops00 | 2 | 500 G + Flame Oil |
-| The Vampire Lord | vampire | 1 | 2000 G + Revival Charm |
+| Cave Dweller | cyclops00 | 2 | 500 G + Flame Oil + 1 SP each |
+| The Vampire Lord | vampire | 1 | 2000 G + Revival Charm + 2 SP each |
 
 ---
 

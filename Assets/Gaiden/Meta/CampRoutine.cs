@@ -216,8 +216,9 @@ namespace GridGame.Meta
         }
 
         /// <summary>Claim a completed bounty; abandon an active one the stages still ahead can no longer finish;
-        /// with none active, accept the posted contract the road ahead completes soonest (cheapest reward
-        /// breaks ties). A playthrough meets each stage once, so a contract is only "achievable" if the
+        /// with none active, accept the posted contract the road ahead completes soonest (a skill-point payout
+        /// breaks ties first, GG-T134 — points feed the Learn step that follows — then the cheapest gold reward).
+        /// The claim runs before FillBars, so a payout is spent on the same visit. A playthrough meets each stage once, so a contract is only "achievable" if the
         /// uncleared campaign stages spawn enough of its target — e.g. Slime Culling wants 5 slime00 kills
         /// but the whole campaign spawns 3, so this player (who doesn't grind replays) never takes it.</summary>
         private static void ManageBounty(ContentDb c, SaveData s, System.Action<Result> note)
@@ -241,7 +242,7 @@ namespace GridGame.Meta
             var pick = Bounties.Posted(c, s)
                 .Select(b => (b, at: CompletesAt(b.TargetClass, b.Kills)))
                 .Where(x => x.at >= 0)
-                .OrderBy(x => x.at).ThenBy(x => x.b.RewardGold)
+                .OrderBy(x => x.at).ThenByDescending(x => Bounties.SkillPointsPaid(x.b)).ThenBy(x => x.b.RewardGold)
                 .Select(x => x.b).FirstOrDefault();
             if (pick != null) note(Bounties.Accept(c, s, pick.Id));
         }

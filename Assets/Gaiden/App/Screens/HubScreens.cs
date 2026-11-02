@@ -1280,7 +1280,7 @@ namespace GridGame.App
                 if (target != null) Ui.Thumb(target.Id, card, 120);
                 var col = Ui.El("col grow", card);
                 Ui.Text(b.Name, "h2", col);
-                Ui.Text($"Defeat {b.Kills}× {target?.Name}.  Reward {Ui.Gold(b.RewardGold)}{(reward != null ? " + " + reward.Name : "")}", "tiny dim", col).style.whiteSpace = WhiteSpace.Normal;
+                Ui.Text($"Defeat {b.Kills}× {target?.Name}.  Reward {Ui.Gold(b.RewardGold)}{(reward != null ? " + " + reward.Name : "")}{(Bounties.SkillPointsPaid(b) > 0 ? $" + {Bounties.SkillPointsPaid(b)} SP each" : "")}", "tiny dim", col).style.whiteSpace = WhiteSpace.Normal;
                 var btn = Ui.Button(S.Bounty.ActiveId == b.Id ? "Active" : "Accept", () => Done(Bounties.Accept(C, S, bounty.Id)), "btn--small", card);
                 btn.name = "bounty-" + b.Id;
                 Ui.SetEnabled(btn, S.Bounty.ActiveId == null);

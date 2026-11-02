@@ -157,8 +157,11 @@ namespace GridGame.Tests
             Assert.That(Bounties.Accept(c, s, bounty.Id).Ok, Is.True);
             Bounties.RecordKills(c, s, new Dictionary<string, int> { [bounty.TargetClass] = bounty.Kills });
             int g = s.Gold;
+            var sp = s.Party.ToDictionary(id => id, id => s.Hero(id).SkillPoints);
             Assert.That(Bounties.Claim(c, s).Ok, Is.True);
             Assert.That(s.Gold, Is.EqualTo(g + bounty.RewardGold));
+            // GG-T134: an optional skill-point payout goes to every active-party hero.
+            foreach (var id in s.Party) Assert.That(s.Hero(id).SkillPoints, Is.EqualTo(sp[id] + Bounties.SkillPointsPaid(bounty)));
         }
 
         [Test]

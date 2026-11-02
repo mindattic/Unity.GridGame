@@ -2195,10 +2195,24 @@ namespace GridGame.Meta
             if (s.Bounty.Progress < b.Kills) return Result.Fail("Not finished yet");
             s.Gold += b.RewardGold;
             if (b.RewardItem != null) s.AddItem(b.RewardItem, 1);
+            int sp = SkillPointsPaid(b);
+            if (sp > 0)
+                foreach (var id in s.Party)
+                {
+                    var h = s.Hero(id);
+                    if (h != null) h.SkillPoints += sp;
+                }
             s.Bounty.Claimed.Add(b.Id);
             s.Bounty.ActiveId = null;
             s.Bounty.Progress = 0;
-            return Result.Success($"Claimed {b.RewardGold}g");
+            return Result.Success(sp > 0 ? $"Claimed {b.RewardGold}g + {sp} SP each" : $"Claimed {b.RewardGold}g");
         }
+
+        /// <summary>Skill points each active-party hero gains when this contract is claimed (GG-T134); never negative.</summary>
+        public static int SkillPointsPaid(BountyDef b) => b == null ? 0 : Math.Max(0, b.RewardSkillPoints);
+
+        /// <summary>Skill points the claimed contracts have paid each party hero over this save (GG-T134).</summary>
+        public static int SkillPointsClaimed(ContentDb c, SaveData s) =>
+            s.Bounty.Claimed.Sum(id => c.Bounties.TryGetValue(id, out var b) ? SkillPointsPaid(b) : 0);
     }
 }
