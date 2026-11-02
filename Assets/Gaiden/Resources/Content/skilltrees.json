@@ -628,7 +628,7 @@
     ]
    },
    {
-    "Id": "skirmisher_opener",
+    "Id": "rogue_skirmisher_opener",
     "Name": "Blindside",
     "Description": "Dart to a foe's blind side before it can turn.",
     "Grants": "skirmisher_blindside",
@@ -637,7 +637,7 @@
     "Prerequisites": []
    },
    {
-    "Id": "skirmisher_stat1",
+    "Id": "rogue_skirmisher_stat1",
     "Name": "Agility +3",
     "Description": "Skirmisher conditioning: a permanent +3 Agility.",
     "GrantsStat": {
@@ -647,22 +647,22 @@
     "Cost": 1,
     "RequiredPointsInTree": 2,
     "Prerequisites": [
-     "skirmisher_opener"
+     "rogue_skirmisher_opener"
     ]
    },
    {
-    "Id": "skirmisher_core",
+    "Id": "rogue_skirmisher_core",
     "Name": "Hit and Run",
     "Description": "Land a quick strike and peel back out of reach.",
     "Grants": "skirmisher_hitandrun",
     "Cost": 2,
     "RequiredPointsInTree": 3,
     "Prerequisites": [
-     "skirmisher_opener"
+     "rogue_skirmisher_opener"
     ]
    },
    {
-    "Id": "skirmisher_stat2",
+    "Id": "rogue_skirmisher_stat2",
     "Name": "Speed +2",
     "Description": "Skirmisher conditioning: a permanent +2 Speed.",
     "GrantsStat": {
@@ -672,18 +672,18 @@
     "Cost": 1,
     "RequiredPointsInTree": 5,
     "Prerequisites": [
-     "skirmisher_core"
+     "rogue_skirmisher_core"
     ]
    },
    {
-    "Id": "skirmisher_capstone",
+    "Id": "rogue_skirmisher_capstone",
     "Name": "Running Riot",
     "Description": "Sprint a whole row, clipping every foe along the way.",
     "Grants": "skirmisher_runningriot",
     "Cost": 2,
     "RequiredPointsInTree": 6,
     "Prerequisites": [
-     "skirmisher_core"
+     "rogue_skirmisher_core"
     ]
    },
    {
@@ -813,7 +813,7 @@
     "RequiredPointsInTree": 10,
     "Prerequisites": [
      "shadowstep_capstone",
-     "skirmisher_capstone"
+     "rogue_skirmisher_capstone"
     ]
    }
   ]

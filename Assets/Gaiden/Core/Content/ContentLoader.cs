@@ -209,6 +209,8 @@ namespace GridGame.Core.Content
 
             // Skill trees (§25.6.1, GG-T50): every node's grant and prerequisites must resolve, and every
             // hero class must name a home tree that exists.
+            // GG-T213: node ids are global (a learned node is saved by id alone), so a clash across trees is rejected too.
+            var allNodeIds = new Dictionary<string, string>(StringComparer.OrdinalIgnoreCase);
             foreach (var t in db.SkillTrees.Values)
             {
                 var nodeIds = new HashSet<string>(StringComparer.OrdinalIgnoreCase);
@@ -216,6 +218,8 @@ namespace GridGame.Core.Content
                 {
                     if (string.IsNullOrEmpty(n.Id)) { p.Add($"tree {t.Id}: node with empty Id"); continue; }
                     if (!nodeIds.Add(n.Id)) p.Add($"tree {t.Id}: duplicate node id '{n.Id}'");
+                    else if (allNodeIds.TryGetValue(n.Id, out var otherTree)) p.Add($"tree {t.Id}: node id '{n.Id}' is already used in tree {otherTree}");
+                    else allNodeIds[n.Id] = t.Id;
                 }
                 foreach (var n in t.Nodes)
                 {
