@@ -43,6 +43,9 @@ namespace GridGame.Core.Bot
             var heroes = s.LivingList(Team.Hero);
             bool lone = EnemyPlanner.LoneHero(s);
             var candidates = new List<(BattleCommand cmd, float score)>();
+            // GG-T66: displacement bonus per move candidate (index into candidates), applied only when no pincer is on offer.
+            var displacement = new List<(int index, float bonus)>();
+            bool pincerAvailable = false;
 
             foreach (var h in heroes)
             {
@@ -57,6 +60,9 @@ namespace GridGame.Core.Bot
                             var pv = BattleEngine.PreviewMove(s, h.Id, path);
                             if (pv.StepsTaken.Count == 0) continue;
                             float score = ScoreMove(s, pv, h);
+                            if (!pincerAvailable && HasRealPincer(s, pv)) pincerAvailable = true;
+                            float push = lone ? 0f : DisplacementScore(s, pv, h);
+                            if (push > 0f) displacement.Add((candidates.Count, push));
                             candidates.Add((new MoveCommand { HeroId = h.Id, Path = new List<Coord>(pv.StepsTaken) }, score));
                         }
                     }
@@ -79,6 +85,13 @@ namespace GridGame.Core.Bot
                     }
                 }
             }
+
+            // GG-T66: with no pincer on offer anywhere, sliding a hero through an ally or foe to reposition it is the
+            // next-best way to make progress (it sets up the next turn's pincer), so it becomes a deliberate,
+            // high-priority move rather than an incidental side effect of walking somewhere.
+            if (!pincerAvailable)
+                foreach (var (index, bonus) in displacement)
+                    candidates[index] = (candidates[index].cmd, candidates[index].score + bonus);
 
             if (candidates.Count == 0) return movesOnly ? null : new ShieldCommand();
             if (Randomness > 0f && rng.Chance(Randomness)) return candidates[rng.Range(0, candidates.Count)].cmd;
@@ -190,6 +203,38 @@ namespace GridGame.Core.Bot
                 }
             }
             return score + rng.NextFloat() * 0.01f;
+        }
+
+        /// <summary>True when this move would land a pincer on a real (unarmored, living, non-corpse) foe.</summary>
+        private static bool HasRealPincer(BattleState s, MovePreview pv)
+        {
+            foreach (var p in pv.Pincers)
+                foreach (var o in p.Opponents)
+                    if (!o.IsCorpse && !BattleEngine.IsArmored(s, o)) return true;
+            return false;
+        }
+
+        /// <summary>
+        /// GG-T66: value of the units this move slides out of the way (a hero passing through an ally or foe
+        /// displaces it). Each repositioned unit is worth a solid bonus, more when it ends somewhere that sets up
+        /// a pincer next turn: a displaced ally beside a foe, or a displaced foe beside a hero.
+        /// </summary>
+        private static float DisplacementScore(BattleState s, MovePreview pv, Unit mover)
+        {
+            float score = 0f;
+            foreach (var u in s.Units)
+            {
+                if (!u.Alive || u.IsCorpse || u.Id == mover.Id) continue;
+                if (!pv.Positions.TryGetValue(u.Id, out var to) || to == u.Pos) continue;
+                score += 6f;
+                var other = u.Team == Team.Hero ? Team.Enemy : Team.Hero;
+                foreach (var v in s.LivingList(other))
+                {
+                    if (v.IsCorpse || !pv.Positions.TryGetValue(v.Id, out var vp)) continue;
+                    if (Math.Abs(vp.X - to.X) + Math.Abs(vp.Y - to.Y) == 1) { score += 3f; break; }
+                }
+            }
+            return score;
         }
 
         private static bool SideFacing(Unit o, Coord at)
