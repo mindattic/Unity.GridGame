@@ -116,6 +116,37 @@
     ]
    },
    {
+    "Id": "deathguard_opener",
+    "Name": "Mana Siphon",
+    "Description": "Drain a foe's focus and choke off its next spell.",
+    "Grants": "deathguard_mana_siphon",
+    "Cost": 1,
+    "RequiredPointsInTree": 1,
+    "Prerequisites": []
+   },
+   {
+    "Id": "deathguard_core",
+    "Name": "Venomous Grip",
+    "Description": "A venom-laced grip that keeps gnawing after you let go.",
+    "Grants": "deathguard_venomous_grip",
+    "Cost": 2,
+    "RequiredPointsInTree": 3,
+    "Prerequisites": [
+     "deathguard_opener"
+    ]
+   },
+   {
+    "Id": "deathguard_capstone",
+    "Name": "Dark Communion",
+    "Description": "Feed on the fight's violence to mend your own wounds.",
+    "Grants": "deathguard_dark_communion",
+    "Cost": 2,
+    "RequiredPointsInTree": 6,
+    "Prerequisites": [
+     "deathguard_core"
+    ]
+   },
+   {
     "Id": "guardian_finale",
     "Name": "Last Bastion",
     "Description": "Anything that lands a blow on you pays for it.",

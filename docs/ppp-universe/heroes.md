@@ -65,10 +65,10 @@ the right moment. Its blind spot is believing the buff matters more than the per
   that circle before they land. Needs advice about: that the banner only means something while someone's
   still standing under it — leading is a renewable promise, not a one-time plant.
 
-### Deathguard — drain/poison (2, orphan: no tree branch of its own — GG-T80/82)
-Fights by taking something from the enemy, not just absorbing what's thrown; the one Tank cluster the
-skill tree itself hasn't caught up to yet (`docs/BIBLE.md` §25.6.1). That makes its blind spot literal:
-it half-expects not to be understood.
+### Deathguard — drain/poison (2, Guardian's 4th branch since GG-T82)
+Fights by taking something from the enemy, not just absorbing what's thrown; the last Tank cluster the
+skill tree caught up to (it was an orphan until GG-T82 gave it the Guardian tree's 4th branch,
+`docs/BIBLE.md` §25.6.1). It still half-expects not to be understood.
 
 - **Dark Templar** (`darktemplar`, signature *Rite*) — Bio: a Knight's vow gone a shade darker — still
   defends the caravan, just by means the Knight wouldn't use. Voice: quiet, matter-of-fact about things

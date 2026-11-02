@@ -133,10 +133,19 @@ on under any of these topologies. Its follow-ups do not need to wait for this de
 
 - **Warrior is overloaded:** 8 real clusters across 31 classes but only 3 branches, so 14 classes
   (45%) match nothing (GG-T81: carve a Rogue region out of the excess).
-- **Guardian's Deathguard is orphaned:** `darktemplar` and `jadeknight` run `deathguard_*` kits with
-  no branch (GG-T82).
-- **Ranger has branches but no classes:** Marksman/Trapper/Skirmisher have zero classes walking
-  them, and `hexsniper`/`hexwarden` still run the `ranged_*` baseline kit (GG-T82).
+- **Guardian's Deathguard was orphaned (closed 2026-11-02, GG-T82):** `darktemplar` and
+  `jadeknight` run `deathguard_*` kits that matched no branch. Two fixes were on the table:
+  (a) add Deathguard as a 4th Guardian branch, or (b) swap it in for one of Aegis Guard, Juggernaut
+  or Warlord. Option (b) only moves the gap, since Juggernaut (`myrmidon`, `tank`) and Warlord
+  (`shieldmaiden`, `warchief`) have 2 classes each and Aegis Guard has 3, so the swap would orphan
+  2 to 3 classes to un-orphan 2. Option (a) shipped: `deathguard_opener`/`_core`/`_capstone` grant
+  the cluster's existing `deathguard_mana_siphon` / `deathguard_venomous_grip` /
+  `deathguard_dark_communion`, so 1-3-6 points on the same Opener-Core-Capstone shape as the other
+  branches. Guardian now has 15 nodes, and its Finale still needs the Aegis Guard and Juggernaut
+  Capstones. The cost: Guardian is the only tree with 4 branches. If the owner prefers (b), revert
+  those 3 nodes and drop whichever branch is chosen.
+- **Ranger had branches but no classes (closed 2026-11-02, GG-T18):** `hexsniper` (Marksman) and
+  `hexwarden` (Trapper) were retrofitted, and a new `hexstalker` (Skirmisher) reuses `hag02` art.
 
 GG-T168, if adopted, would reframe these region audits (see its ticket text). Even then, the
-underlying content gaps (missing Deathguard and Rogue content, Ranger kits not retrofitted) are real.
+underlying Rogue content gap is real.
