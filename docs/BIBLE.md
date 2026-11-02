@@ -27,7 +27,7 @@ The feel target: *Terra Battle pincers + Grandia II timeline + Final Fantasy cam
 
 - **Position is the only weapon.** Damage is dealt by the *pincer* a new position completes, never by the move itself. Every drop asks "does this finish the line?" ([§1.2](#12-pincer-attacks))
 - **The slide.** Dragging a hero onto an occupied tile displaces that actor — friend or foe — into the tile you just left. Set up flanks, eject allies, feed enemies into kill zones. ([§1.1](#11-sliding-and-displacement))
-- **The Timeline is a clock you advance.** Enemy icons load left→right, but the clock only runs when you commit an action (2.0 s of game time each). Hit a foe whose icon sits in the rightmost **Pushback Zone** and its turn is shoved back. ([§2](#2-the-timeline))
+- **The Timeline runs while you hold a hero.** Enemy icons load left→right. The clock stands still while you look; picking up a hero starts it in real time, and your turn lasts until the next enemy icon reaches ACT — then the hero drops where it is and that enemy acts (dropping earlier ends the turn early). Hit a foe whose icon sits in the rightmost **Pushback Zone** and its turn is shoved back. ([§2](#2-the-timeline), GG-T188)
 - **Shared, visible mana.** A 12-orb `ManaBank` of generic orbs is the whole party's spell budget; pincers, crits, steals and enemy-cast interrupts refill it. ([§3.1](#31-mana-the-orb-economy))
 - **Casts ride the Timeline.** A spell with a cast time rides the same axis as a small icon below the line and fires when it arrives; every hit on the caster staggers it, enough stagger cancels it, and a rare LCK Clutch lets a dying healer let off one last miracle. ([§13.4](#134-the-interrupt-path))
 - **Beyond the battlefield.** Five themed campaigns of hand-built stages with a skippable story crawl per theme, a Final Fantasy–style **Camp** menu (merchant, blacksmith, alchemist, inn, abilities, party, summon circle, bounties, bestiary), weapon durability with shatter rebound. **Amended 2026-10-19 (GG-T120):** the caravan story has landed — the town rides a titan, "the Longmother," who can never stop walking because standing ground sours into a biomechanical blight; crawl text, NPC/hero join scenes and party banter are real narrative, not lorem ipsum. ([§22](#22-the-macro-loop), [§25](#25-the-camp-merged-hub), [§27](#27-story-crawl-no-dialog))
@@ -240,7 +240,8 @@ A story is ✅ only when 1–6 hold; otherwise 🟡/⬜ ([GG-LAW-12](#GG-LAW-12)
 - **Pincer** — two allies in the same row/column with a contiguous, ally-free, ≥1-opponent line between them; the only source of hero physical damage. ([§1.2](#12-pincer-attacks))
 - **Supporter** — an ally connected to a pincer attacker by an unbroken cardinal chain of allies, within its class's support range; performs its class's **support action** (strike the trapped line at 50%, heal, buff, haste, mana, cleanse…). ([§1.2.3](#123-supporters))
 - **Support action** (`SupportDef`) — a class's effect as a supporter: Effect, Magnitude, Target (Attacker / Chain / Party / Self), Range along the chain. Enemies and classes without one strike at 50% from beside the attacker. ([§1.2.3](#123-supporters))
-- **Action** — one committed command (move, slot use, shield); costs `BattleConfig.ActionTicks` = 20 ticks = 2.0 s of game clock (Shield instead runs to the next enemy turn). ([§2.0](#20-the-act-advanced-clock))
+- **Action** — one committed command (move, slot use, shield); it ends the player's turn: the clock runs to the next enemy arrival (`BattleConfig.ActionTicks` = 20 ticks only when no enemy icon can arrive). ([§2.0](#20-the-held-turn), GG-T188)
+- **Held turn** — the real-time window from picking a hero up until the next enemy icon reaches ACT; when it runs out the hero is dropped where it is (forced drop). ([§2.0](#20-the-held-turn))
 - **Tick / IP** — the clock unit (10 per second); turn icons hold Initiative Points 0..1000 (`u = IP/1000`).
 - **Pushback Zone** — the rightmost 35% of the bar (IP ≥ 650); hitting an enemy there shoves its icon back and stuns it. ([§2.3](#23-pushback-the-interrupt-by-hitting-mechanic))
 - **Hasten / Quicken** — the inverse: slide an icon forward toward the trigger. ([§2.7.1](#271-hasten--quicken--the-inverse))
@@ -278,7 +279,7 @@ The game is a **deterministic pure-C# simulation** (`Gaiden.Core`) with a **code
 ### 0.1 Design pillars
 
 1. **The verb is "slide".** Heroes never "land on" enemies. They flank into tiles; damage comes from the geometry that forms, not the move itself.
-2. **Time is the resource the player manages.** Every decision trades against "whose icon lands first?" — but the clock waits for you. **Amended 2026-10-09:** time is spent per action, not per real second.
+2. **Time is the resource the player manages.** Every decision trades against "whose icon lands first?" — but the clock waits for you. **Amended 2026-10-09:** time is spent per action, not per real second. **Amended again 2026-10-21 (owner, GG-T188 — reverses the act-advanced clock):** the clock waits while you *look*, but runs in real time while you *hold* a hero; your turn is the time from pickup until the next enemy icon reaches ACT.
 3. **Mana is a shared, visible pool.** The 12-slot ManaBank is the whole party's spell budget.
 4. **Every spell is a (shape × mode × filter) triad.** Adding a spell is a data row.
 5. **The simulation is the truth.** **Amended 2026-10-09:** replaces "Code is the source of truth; the builder is the spec". Core decides; the view only animates what Core already resolved.
@@ -287,7 +288,7 @@ The game is a **deterministic pure-C# simulation** (`Gaiden.Core`) with a **code
 
 ### 0.2 Non-goals (what this game is NOT)
 
-- **Not real-time, and not "press attack, wait for enemy to press attack."** **Amended 2026-10-09:** the old bible said "the timeline is continuous; thinking time is also game-clock time." In GridGame Gaiden the clock is **act-advanced**: it does not move while you look, drag or pick a target. Each committed action spends 2.0 s of game clock, during which any number of enemy icons and casts may arrive and resolve in arrival order. There is no hero turn order — any living, mobile hero may act each time. The pressure comes from the countdown badges and the Zone, not from a ticking wall clock (an optional drag timer restores Terra Battle's hand pressure, §2.9).
+- **Not real-time, and not "press attack, wait for enemy to press attack."** **Amended 2026-10-09:** the old bible said "the timeline is continuous; thinking time is also game-clock time." In GridGame Gaiden the clock is **act-advanced**: it does not move while you look, drag or pick a target. Each committed action spends 2.0 s of game clock, during which any number of enemy icons and casts may arrive and resolve in arrival order. There is no hero turn order — any living, mobile hero may act each time. The pressure comes from the countdown badges and the Zone, not from a ticking wall clock (an optional drag timer restores Terra Battle's hand pressure, §2.9). **Amended 2026-10-21 (owner, GG-T188):** still not real-time while you think — but a held hero runs the clock in real time, and each committed action ends your turn at the next enemy arrival ([§2.0](#20-the-held-turn)).
 - Every other non-goal is unchanged from [§3](#GG-§3): not a deck-builder, roguelike, gacha / live service, multiplayer game, grid-puzzle, free-form mover or stat-spreadsheet.
 
 ### 0.3 Session shape (target pacing)
@@ -502,7 +503,7 @@ Step 0:   col: 0  1  2   3   4   5          Step 1 (Knight drags west one tile):
 3. The Knight (the dropped hero, attacker A) strikes, then the Cleric; no supporters.
 4. Two orbs mint, one per attacker.
 5. If the goblin's icon was in the Zone, each landing hit pushes it back and stuns it ([§2.3](#23-pushback-the-interrupt-by-hitting-mechanic)).
-6. The clock advances 20 ticks; any enemy whose icon reaches 1000 in that window takes its turn; any cast that reaches 0 resolves.
+6. The clock runs until the next enemy icon reaches 1000 and that enemy takes its turn (GG-T188, [§2.0](#20-the-held-turn)); any cast that reaches 0 on the way resolves.
 7. Control returns: hero turn-unit buffs and skill cooldowns tick, enemy Frozen ticks, `PlayerControlEvent`.
 
 That is the full beat: **drag → slide cascade → pincer → strikes → orbs → pushback → clock → enemy turns/casts → control returns.** *(Test: `Worked_example_1_4_slide_then_pincer`.)*
@@ -532,15 +533,20 @@ u = 0.0 (IP 0)                         u = 0.65 (IP 650)             u = 1.0 (IP
    ┃═════════════════════════════════════║════════════════════════════╣
 ```
 
-### 2.0 The act-advanced clock
+<a id="20-the-act-advanced-clock"></a>
 
-**Amended 2026-10-09 (owner decision):** the clock is **act-advanced**.
+### 2.0 The held turn
+
+**Amended 2026-10-09 (owner decision):** the clock is **act-advanced**. **Amended again 2026-10-21 (owner, GG-T188 — reverses the act-advanced clock's "an action is 2.0 s"):** the timeline **runs while a hero is held**.
 
 - Time is integer **ticks**, `BattleConfig.TicksPerSecond` = 10. The bar is `BarLength` = 1000 IP; `u = IP / 1000`.
-- The clock advances **only** inside `BattleEngine.Apply`, after a command is accepted:
-  - **Move** or **slot use** → `AdvanceClock(ActionTicks)` = **20 ticks (2.0 s)**.
-  - **Shield** → `AdvanceUntilEnemyTurn` ([§2.5](#25-auto-skip--shield)).
-- Refused commands and no-op drags cost **nothing** (no ticks, `ActionsTaken` unchanged).
+- **Looking is free.** Nothing moves while you inspect, select or pick a target.
+- **Picking up a hero starts the turn.** The timeline then runs in real time: the player's turn is the time from pickup until the **next enemy icon reaches ACT** — `BattleEngine.TurnTicks` (the soonest `TicksUntilTurn`, no future pushback assumed), shown as `TurnWindowSeconds` = max(`MinTurnSeconds` 2 s, ticks ÷ 10) real seconds (the floor slows the playback on a very short turn so it stays a playable drag).
+- **Forced drop.** When the window runs out the hero is dropped **where it is** — the path walked so far is the move — and that enemy acts. `MoveCommand.HeldSeconds` carries the seconds held; at or past the window (`BattleEngine.IsTimeUp`) the drop is forced (`TurnTimeUpEvent`) and the turn ends **even if the hero never left its tile**.
+- **Dropping earlier ends the turn early.** Every accepted command (move, slot use, Guard) ends the player's turn: inside `BattleEngine.Apply` the clock runs (`AdvanceUntilEnemyTurn`) until an enemy turn resolves — the next arrival acts. Two exceptions: an action that clears a wave hands the fresh wave's first turn to the player (no advance), and when no enemy icon can arrive at all (none left, all Frozen) a turn spends the fixed `ActionTicks` = 20 ticks instead.
+- **The view, not Core, runs the held clock.** Core never ticks during a hold; `BattleEngine.TimelineUAfter(ticks)` gives the view where every icon would be, so the icons glide right in real time. The remaining time shows twice: a gold **lane** from the next icon to the right edge with the seconds left under it, and a **drain bar** under the held hero (green → red). A paused battle stops the hold.
+- **Bot driver.** `HeroBot` drags at `BotSecondsPerStep` = 0.25 s a tile: a path longer than `MaxDragSteps` (window ÷ 0.25) is cut where the time runs out (a forced drop), and every bot move carries its `HeldSeconds`. The soak (`Bots_play_every_stage_without_breaking_invariants`) reports average turn length and forced drops per stage.
+- Refused commands and no-op drags (let go early without moving) cost **nothing** (no ticks, `ActionsTaken` unchanged).
 - Each tick: every turn icon advances (or burns a stun tick), every cast icon counts down, tick-unit buffs accumulate ([§8.3](#83-ticking)), then arrivals resolve ([§2.4](#24-turn-order--arrival-order)).
 - After the advance, **control returns** (`ReturnControl`): hero turn-unit buffs and skill cooldowns tick, enemy timeline-halting buffs (Frozen) tick — skipping the boundary of the action that applied them — and `PlayerControlEvent`. The pending time bank is kept until the next enemy turn mints it.
 - **Only enemies have turn icons.** **Amended 2026-10-09:** heroes have no icons; any living, mobile hero may act on any action. (The old bible drew hero portraits above the line.)
@@ -631,11 +637,11 @@ Net: one deep-Zone hit buys 275 IP (~1.2 actions at Speed 10, since it now re-cr
 
 ### 2.9 Drag timer (optional)
 
-**Amended 2026-10-09 (owner decision):** Settings → "Drag timer (4 s)" (`SettingsSave.DragTimer`, off by default) restores Terra Battle's hand pressure: once a drag starts, `DragTimerSeconds` = 4 s counts down on screen (real time, unscaled by battle speed) and the drag auto-drops at 0. The seconds left at the drop travel in `MoveCommand.TimeLeftSeconds` and feed time-banked orbs ([§3.1.8](#318-time-banked-orbs)). The timer never affects the game clock (an action is always 20 ticks).
+**Amended 2026-10-09 (owner decision):** Settings → "Drag timer (4 s)" (`SettingsSave.DragTimer`, off by default) restores Terra Battle's hand pressure: once a drag starts, `DragTimerSeconds` = 4 s counts down on screen (real time, unscaled by battle speed) and the drag auto-drops at 0. The seconds left at the drop travel in `MoveCommand.TimeLeftSeconds` and feed time-banked orbs ([§3.1.8](#318-time-banked-orbs)). The timer never affects the game clock. **Amended 2026-10-21 (GG-T188):** the held turn ([§2.0](#20-the-held-turn)) now gives every drag a real-time limit of its own; the optional 4 s drag timer is kept as a stricter cap and still feeds the time bank (Guard's banking of unused turn time is GG-T189).
 
 ### 2.10 Countdown badge
 
-**Amended 2026-10-09 (new, Terra Battle–style):** every enemy shows a number on its tile — `BattleEngine.ActionsUntilTurn` = `(TicksUntilTurn − 1) / 20`: the actions you get before it acts (**0** = it acts during your next action, drawn red). `TicksUntilTurn` simulates its icon with stun and the Zone crawl but no future pushback/hasten; Frozen enemies show no number. The actor panel says "Acts in N moves", "Acts after your next move!", "Frozen in time" or "Charging X!".
+**Amended 2026-10-09 (new, Terra Battle–style):** every enemy shows a number on its tile — `BattleEngine.ActionsUntilTurn` = `(TicksUntilTurn − 1) / 20`: the actions you get before it acts (**0** = it acts during your next action, drawn red). **Amended 2026-10-21 (GG-T188):** a turn now ends at each enemy arrival, so the number counts the distinct arrival ticks of the *other* enemies (each re-loading from IP 0) before this one's — the turns you get before it acts (**0** = it acts at the end of your next turn). `TicksUntilTurn` simulates its icon with stun and the Zone crawl but no future pushback/hasten; Frozen enemies show no number. The actor panel says "Acts in N moves", "Acts after your next move!", "Frozen in time" or "Charging X!".
 
 ---
 
@@ -798,7 +804,7 @@ On a fresh save (2 slots) the starting trio's potion sits in locked slot 3 until
 All three go through `UseSlotCommand` → `BattleRunner.DoUseSlot`, which re-checks `GetSlotStatus` and the target ([§4.5](#45-slot-visual-states)); a refusal costs nothing.
 - **Item** — spend a charge → resolve its ability immediately.
 - **Skill** — start its cooldown → resolve immediately.
-- **Spell** — `Bank.Spend(cost)` → if `CastTime > 0` queue a cast icon (target unit remembered for PickActor, tile for PickTile), else resolve immediately. Every accepted use is an action (20 ticks).
+- **Spell** — `Bank.Spend(cost)` → if `CastTime > 0` queue a cast icon (target unit remembered for PickActor, tile for PickTile), else resolve immediately. Every accepted use is an action (it ends the turn at the next enemy arrival, GG-T188).
 
 #### 4.4.1 Select → confirm → act
 
@@ -2455,7 +2461,7 @@ Resolve a question → write the answer into the right section → delete it her
 ### 29.2 Timeline feel (new with the act-advanced clock)
 3. **Frozen length** — should Frozen survive into the next action (Duration 2, or tick at the bearer's own boundary)? Today it ends with the action it lands in (§8.3).
 4. **Time bank** — should banked seconds persist until the next enemy turn instead of clearing at control return (§3.1.8)?
-5. **ActionTicks** — 2.0 s per action makes every 1.5 s spell resolve in-action; keep, or lengthen cast times so casts visibly ride the timeline?
+5. ~~**ActionTicks**~~ — superseded by the held turn (GG-T188, §2.0): a turn now lasts until the next enemy arrival. Open instead: should a slot use (not just a drag) end the turn, and is `MinTurnSeconds` = 2 s the right floor? (balance pass GG-T191)
 
 ### 29.3 Content economy
 6. **Inventory cap** — unbounded apart from `MaxStack`; is a total cap wanted?

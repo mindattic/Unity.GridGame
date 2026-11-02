@@ -46,24 +46,31 @@ namespace GridGame.Core.Bot
             // GG-T66: displacement bonus per move candidate (index into candidates), applied only when no pincer is on offer.
             var displacement = new List<(int index, float bonus)>();
             bool pincerAvailable = false;
+            // GG-T188 (§2.0): picking a hero up starts the clock; a drag takes BotSecondsPerStep a tile, so a path longer
+            // than the turn window is cut where the time runs out — the hero is dropped there (forced drop).
+            float window = BattleEngine.TurnWindowSeconds(s);
+            int maxSteps = BattleEngine.MaxDragSteps(s);
 
             foreach (var h in heroes)
             {
-                if (!BattleEngine.CanMove(s, h.Id)) continue;
+                if (!BattleEngine.CanMove(s, h.Id) || maxSteps <= 0) continue;
                 for (int y = 0; y < BattleConfig.Rows; y++)
                     for (int x = 0; x < BattleConfig.Cols; x++)
                     {
                         var dest = new Coord(x, y);
                         if (dest == h.Pos) continue;
-                        foreach (var path in LPaths(h.Pos, dest))
+                        foreach (var full in LPaths(h.Pos, dest))
                         {
+                            var path = full.Count > maxSteps ? full.GetRange(0, maxSteps) : full;
                             var pv = BattleEngine.PreviewMove(s, h.Id, path);
                             if (pv.StepsTaken.Count == 0) continue;
                             float score = ScoreMove(s, pv, h);
                             if (!pincerAvailable && HasRealPincer(s, pv)) pincerAvailable = true;
                             float push = lone ? 0f : DisplacementScore(s, pv, h);
                             if (push > 0f) displacement.Add((candidates.Count, push));
-                            candidates.Add((new MoveCommand { HeroId = h.Id, Path = new List<Coord>(pv.StepsTaken) }, score));
+                            float held = full.Count > maxSteps ? window : pv.StepsTaken.Count * BattleConfig.BotSecondsPerStep;
+                            if (window > 0f) held = Math.Min(held, window);
+                            candidates.Add((new MoveCommand { HeroId = h.Id, Path = new List<Coord>(pv.StepsTaken), HeldSeconds = held }, score));
                         }
                     }
 

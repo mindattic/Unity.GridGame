@@ -25,10 +25,129 @@ namespace GridGame.Tests
             var (s, _) = Battle(db, Stage(("wolf", 0, 0)), ("knight", 5, 7), ("cleric", 4, 7));
             long c0 = s.Clock;
             int ip0 = s.Timeline[0].Ip;
+            int turn = BattleEngine.TurnTicks(s);
             Assert.That(s.Clock, Is.EqualTo(c0)); // creating/inspecting costs nothing
             Wiggle(s, "knight");
-            Assert.That(s.Clock, Is.EqualTo(c0 + BattleConfig.ActionTicks));
+            Assert.That(s.Clock, Is.EqualTo(c0 + turn)); // GG-T188: the turn runs to the next enemy arrival
             Assert.That(s.Timeline[0].Ip, Is.Not.EqualTo(ip0));
+        }
+
+        // ── GG-T188 (§2.0): the held turn ──────────────────────────────────────────────────────────────
+
+        [Test]
+        public void Turn_length_is_the_time_until_the_next_enemy_icon_reaches_act()
+        {
+            var db = Mini();
+            var (s, _) = Battle(db, Stage(("wolf", 0, 0), ("tank", 2, 0)), ("knight", 5, 7), ("cleric", 4, 7));
+            var wolf = s.Units.Single(u => u.Def.Id == "wolf");
+            var tank = s.Units.Single(u => u.Def.Id == "tank");
+            int expected = System.Math.Min(BattleEngine.TicksUntilTurn(s, wolf.Id), BattleEngine.TicksUntilTurn(s, tank.Id));
+            Assert.That(BattleEngine.TurnTicks(s), Is.EqualTo(expected));
+            Assert.That(BattleEngine.TurnWindowSeconds(s), Is.EqualTo(System.Math.Max(BattleConfig.MinTurnSeconds, expected / (float)BattleConfig.TicksPerSecond)).Within(1e-4));
+
+            // A short turn still gets the minimum real-time window.
+            s.TurnEntryOf(wolf.Id).Ip = BattleConfig.BarLength - 1;
+            Assert.That(BattleEngine.TurnTicks(s), Is.EqualTo(1));
+            Assert.That(BattleEngine.TurnWindowSeconds(s), Is.EqualTo(BattleConfig.MinTurnSeconds).Within(1e-4));
+
+            // The held timeline: the next icon reaches ACT exactly at the end of the turn, never before.
+            int t = BattleEngine.TurnTicks(s);
+            var wolfEntry = s.TurnEntryOf(wolf.Id);
+            Assert.That(BattleEngine.TimelineUAfter(s, t - 1)[wolfEntry.Id], Is.LessThan(1f));
+            Assert.That(BattleEngine.TimelineUAfter(s, t)[wolfEntry.Id], Is.EqualTo(1f));
+
+            // Nothing can arrive (every enemy Frozen): no limit on the hold.
+            foreach (var e in s.LivingList(Team.Enemy)) e.Buffs.Add(new BuffInstance { Def = db.Buffs["frozen"], Remaining = 1 });
+            Assert.That(BattleEngine.TurnTicks(s), Is.EqualTo(-1));
+            Assert.That(BattleEngine.TurnWindowSeconds(s), Is.LessThan(0f));
+            Assert.That(BattleEngine.IsTimeUp(s, 999f), Is.False);
+        }
+
+        [Test]
+        public void Forced_drop_ends_the_turn_where_the_hero_stands()
+        {
+            var db = Mini();
+            var (s, _) = Battle(db, Stage(("wolf", 0, 0)), ("knight", 5, 7), ("cleric", 4, 7));
+            var k = Hero(s, "knight");
+            var start = k.Pos;
+            long c0 = s.Clock;
+            float window = BattleEngine.TurnWindowSeconds(s);
+
+            // Let go before time is up without moving: a cancel, not a turn.
+            var cancel = BattleEngine.Apply(s, new MoveCommand { HeroId = k.Id, HeldSeconds = window * 0.5f });
+            Assert.That(cancel.Any(e => e is AbilityRefusedEvent), Is.True);
+            Assert.That(s.Clock, Is.EqualTo(c0));
+            Assert.That(s.Results.ActionsTaken, Is.EqualTo(0));
+
+            // Held the whole window: dropped where it stands, the turn is spent and the enemy acts.
+            int turn = BattleEngine.TurnTicks(s);
+            var ev = BattleEngine.Apply(s, new MoveCommand { HeroId = k.Id, HeldSeconds = window });
+            Assert.That(ev.OfType<TurnTimeUpEvent>().Single().HeroId, Is.EqualTo(k.Id));
+            Assert.That(ev.Any(e => e is AbilityRefusedEvent), Is.False);
+            Assert.That(k.Pos, Is.EqualTo(start));
+            Assert.That(s.Results.ActionsTaken, Is.EqualTo(1));
+            Assert.That(s.Clock, Is.EqualTo(c0 + turn));
+            Assert.That(ev.OfType<TurnStartedEvent>().Any(), Is.True);
+            Assert.That(ev.Last(), Is.InstanceOf<PlayerControlEvent>());
+        }
+
+        [Test]
+        public void Early_drop_ends_the_turn_and_the_next_enemy_acts_on_arrival()
+        {
+            var db = Mini();
+            var (s, _) = Battle(db, Stage(("wolf", 0, 0), ("tank", 2, 0)), ("knight", 5, 7), ("cleric", 4, 7));
+            for (int turn = 0; turn < 6; turn++)
+            {
+                // Whoever's icon is nearest ACT is the one that acts at the end of this turn.
+                var next = s.LivingList(Team.Enemy).OrderBy(e => BattleEngine.TicksUntilTurn(s, e.Id)).ThenBy(e => s.TurnEntryOf(e.Id).Id).First();
+                int ticks = BattleEngine.TurnTicks(s);
+                long c0 = s.Clock;
+                var k = Hero(s, "knight");
+                var t = new Coord(k.Pos.X, k.Pos.Y == 7 ? 6 : 7);
+                var ev = BattleEngine.Apply(s, new MoveCommand { HeroId = k.Id, Path = new() { t }, HeldSeconds = 0.3f });
+                Assert.That(ev.OfType<TurnTimeUpEvent>(), Is.Empty);
+                Assert.That(s.Clock, Is.EqualTo(c0 + ticks), $"turn {turn}");
+                Assert.That(ev.OfType<TurnStartedEvent>().First().UnitId, Is.EqualTo(next.Id), $"turn {turn}");
+                Assert.That(s.TurnEntryOf(next.Id).Ip, Is.LessThan(BattleConfig.BarLength)); // re-loads after acting
+                AssertInvariants(s);
+            }
+        }
+
+        [Test]
+        public void Countdown_badge_counts_turns_not_ticks()
+        {
+            var db = Mini();
+            var (s, _) = Battle(db, Stage(("wolf", 0, 0), ("tank", 2, 0)), ("knight", 5, 7), ("cleric", 4, 7));
+            var wolf = s.Units.Single(u => u.Def.Id == "wolf");
+            var tank = s.Units.Single(u => u.Def.Id == "tank");
+            s.TurnEntryOf(wolf.Id).Ip = 900;
+            s.TurnEntryOf(tank.Id).Ip = 0;
+            Assert.That(BattleEngine.ActionsUntilTurn(s, wolf.Id), Is.EqualTo(0)); // acts at the end of this turn
+            Assert.That(BattleEngine.ActionsUntilTurn(s, tank.Id), Is.GreaterThanOrEqualTo(1)); // the fast wolf goes first, maybe more than once
+        }
+
+        [Test]
+        public void Bot_drags_fit_inside_the_turn_window()
+        {
+            var db = Mini();
+            var (s, _) = Battle(db, Stage(("wolf", 0, 0)), ("knight", 5, 7), ("cleric", 4, 7));
+            s.TurnEntryOf(s.Units.Single(u => u.Def.Id == "wolf").Id).Ip = BattleConfig.BarLength - 1; // a 1-tick turn
+            float window = BattleEngine.TurnWindowSeconds(s);
+            int maxSteps = BattleEngine.MaxDragSteps(s);
+            Assert.That(maxSteps, Is.EqualTo((int)(BattleConfig.MinTurnSeconds / BattleConfig.BotSecondsPerStep)));
+            var bot = new GridGame.Core.Bot.HeroBot(3);
+            for (int i = 0; i < 4 && !s.IsOver; i++)
+            {
+                var cmd = bot.Decide(s);
+                if (cmd is MoveCommand m)
+                {
+                    Assert.That(m.Path.Count, Is.LessThanOrEqualTo(BattleEngine.MaxDragSteps(s)));
+                    Assert.That(m.HeldSeconds, Is.GreaterThan(0f));
+                    if (BattleEngine.TurnWindowSeconds(s) > 0f) Assert.That(m.HeldSeconds, Is.LessThanOrEqualTo(BattleEngine.TurnWindowSeconds(s) + 1e-4f));
+                }
+                BattleEngine.Apply(s, cmd);
+            }
+            _ = window;
         }
 
         [Test]

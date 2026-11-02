@@ -87,19 +87,27 @@ namespace GridGame.Tests
             foreach (var stage in stages)
             {
                 index++;
-                int stageWins = 0, stageRuns = 0, actions = 0;
+                int stageWins = 0, stageRuns = 0, actions = 0, forced = 0;
+                long ticks = 0;
                 for (int seed = 1; seed <= 12; seed++)
                 {
                     int level = stage.IsTest ? 5 : System.Math.Max(1, index);
                     var setup = new BattleSetup { Stage = stage, Seed = seed * 7919 + index, UnlockedSlots = 5, RecommendedLevel = stage.IsTest ? 1 : index, Party = StarterParty(db, level) };
                     var bot = new HeroBot(seed, randomness);
-                    var s = BotRunner.Play(db, setup, bot, 300, (cmd, ev, st) => { AssertInvariants(st); AssertEventInvariants(ev); });
+                    var s = BotRunner.Play(db, setup, bot, 300, (cmd, ev, st) =>
+                    {
+                        AssertInvariants(st); AssertEventInvariants(ev);
+                        // GG-T188 (§2.0): a bot drag is a held turn — it fits its window, and a forced drop is reported.
+                        if (cmd is MoveCommand m) Assert.That(m.HeldSeconds, Is.GreaterThan(0f), $"{m}: a drag holds the hero for some time");
+                        forced += ev.Count(e => e is TurnTimeUpEvent);
+                    });
                     stageRuns++; total++;
                     if (s.Phase == BattlePhase.Victory) { stageWins++; wins++; }
                     if (!s.IsOver) stalls++;
                     actions += s.Results.ActionsTaken;
+                    ticks += s.Results.TicksElapsed;
                 }
-                report.AppendLine($"{stage.Id,-22} win {stageWins,2}/{stageRuns}  avg actions {actions / (float)stageRuns:F1}");
+                report.AppendLine($"{stage.Id,-22} win {stageWins,2}/{stageRuns}  avg actions {actions / (float)stageRuns:F1}  avg turn {ticks / (float)System.Math.Max(1, actions) / BattleConfig.TicksPerSecond:F2}s  forced drops {forced}");
             }
             report.AppendLine($"TOTAL win {wins}/{total}, unfinished {stalls}");
             TestContext.Out.WriteLine(report.ToString());

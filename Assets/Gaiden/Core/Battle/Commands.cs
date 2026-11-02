@@ -17,6 +17,11 @@ namespace GridGame.Core.Battle
         public List<Coord> Path = new List<Coord>();
         /// <summary>Drag-timer seconds left at drop (0 when the timer is off).</summary>
         public float TimeLeftSeconds;
+        /// <summary>
+        /// Real seconds the hero was held (GG-T188, §2.0). At or past <see cref="BattleEngine.TurnWindowSeconds"/> the
+        /// drop was forced by the next enemy icon reaching ACT: the turn ends even if the hero never left its tile.
+        /// </summary>
+        public float HeldSeconds;
         public override string ToString() => $"Move {HeroId} [{string.Join(" ", Path)}]";
     }
 

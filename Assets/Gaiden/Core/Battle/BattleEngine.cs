@@ -145,12 +145,111 @@ namespace GridGame.Core.Battle
             return System.Math.Max(1, (int)System.Math.Round(rate * u.TimelineSpeedMultiplier)) / (float)BattleConfig.BarLength;
         }
 
-        /// <summary>Player actions until this enemy acts (Terra Battle-style countdown badge). 0 = acts after your next action.</summary>
+        /// <summary>
+        /// Player turns until this enemy acts (Terra Battle-style countdown badge). 0 = it acts at the end of your next
+        /// turn. GG-T188 (§2.0): every turn ends at the next enemy arrival, so this counts the distinct arrival ticks of
+        /// the other enemies (each re-loading from IP 0 after it acts) that land before this one's.
+        /// </summary>
         public static int ActionsUntilTurn(BattleState s, int unitId)
         {
             int t = TicksUntilTurn(s, unitId);
             if (t < 0) return -1;
-            return System.Math.Max(0, (t - 1) / BattleConfig.ActionTicks);
+            var earlier = new HashSet<int>();
+            foreach (var e in s.Timeline)
+            {
+                if (e.Kind != TimelineKind.Turn || e.OwnerId == unitId) continue;
+                var o = s.UnitById(e.OwnerId);
+                if (o == null || !o.Alive || o.IsTimelineHalted) continue;
+                int ip = e.Ip, stun = e.StunTicks;
+                for (int tick = 1; tick < t; tick++)
+                {
+                    if (stun > 0) { stun--; continue; }
+                    ip += IpPerTick(o, ip);
+                    if (ip >= BattleConfig.BarLength) { earlier.Add(tick); ip = 0; }
+                }
+            }
+            return earlier.Count;
+        }
+
+        private static int IpPerTick(Unit u, int ip)
+        {
+            int zoneRate = System.Math.Max(1, (BattleConfig.BarLength - BattleConfig.ZoneStart) / BattleConfig.ZoneCrossingTicks);
+            float rate = ip >= BattleConfig.ZoneStart ? zoneRate : u.Effective.Speed * BattleConfig.OpenRatePerSpeed;
+            return System.Math.Max(1, (int)System.Math.Round(rate * u.TimelineSpeedMultiplier));
+        }
+
+        // ── The held turn (GG-T188, §2.0) ─────────────────────────────────────────────────────────────
+
+        /// <summary>
+        /// Length of the player's turn in clock ticks: until the next enemy turn icon reaches ACT (no pushback/hasten
+        /// assumed). -1 when no enemy icon can arrive (none left, or every one halted) — the hold then has no limit.
+        /// </summary>
+        public static int TurnTicks(BattleState s)
+        {
+            int best = -1;
+            foreach (var e in s.Timeline)
+            {
+                if (e.Kind != TimelineKind.Turn) continue;
+                var o = s.UnitById(e.OwnerId);
+                if (o == null || o.IsHero) continue;
+                int t = TicksUntilTurn(s, e.OwnerId);
+                if (t > 0 && (best < 0 || t < best)) best = t;
+            }
+            return best;
+        }
+
+        /// <summary>Real seconds a held hero has before the forced drop: the turn's ticks at TicksPerSecond, never under
+        /// MinTurnSeconds. -1 = unlimited (no enemy icon can arrive).</summary>
+        public static float TurnWindowSeconds(BattleState s)
+        {
+            int t = TurnTicks(s);
+            if (t < 0) return -1f;
+            return System.Math.Max(BattleConfig.MinTurnSeconds, t / (float)BattleConfig.TicksPerSecond);
+        }
+
+        /// <summary>Did a hold of <paramref name="heldSeconds"/> run out the turn (a forced drop)?</summary>
+        public static bool IsTimeUp(BattleState s, float heldSeconds)
+        {
+            if (heldSeconds <= 0f) return false;
+            float w = TurnWindowSeconds(s);
+            return w > 0f && heldSeconds >= w - 0.001f;
+        }
+
+        /// <summary>How many tiles a bot drag covers before its turn window runs out (int.MaxValue when unlimited).</summary>
+        public static int MaxDragSteps(BattleState s)
+        {
+            float w = TurnWindowSeconds(s);
+            if (w < 0f) return int.MaxValue;
+            return (int)System.Math.Floor(w / BattleConfig.BotSecondsPerStep + 0.0001f);
+        }
+
+        /// <summary>
+        /// Where every timeline icon would sit <paramref name="ticks"/> into the held turn (u by entry id), for the view
+        /// to run the bar in real time while a hero is held. Turn icons stop at ACT; nothing resolves (the hold always
+        /// ends at or before the first arrival).
+        /// </summary>
+        public static Dictionary<int, float> TimelineUAfter(BattleState s, int ticks)
+        {
+            var at = new Dictionary<int, float>();
+            foreach (var e in s.Timeline)
+            {
+                var o = s.UnitById(e.OwnerId);
+                bool halted = o == null || !o.Alive || o.IsTimelineHalted;
+                if (e.Kind == TimelineKind.Cast)
+                {
+                    int rem = halted ? e.RemainingTicks : System.Math.Max(0, e.RemainingTicks - ticks);
+                    at[e.Id] = System.Math.Max(0f, System.Math.Min(1f, 1f - rem / (float)System.Math.Max(1, e.TotalCastTicks + e.AccumulatedDelayTicks)));
+                    continue;
+                }
+                int ip = e.Ip, stun = e.StunTicks;
+                for (int i = 0; i < ticks && !halted && ip < BattleConfig.BarLength; i++)
+                {
+                    if (stun > 0) { stun--; continue; }
+                    ip = System.Math.Min(BattleConfig.BarLength, ip + IpPerTick(o, ip));
+                }
+                at[e.Id] = ip / (float)BattleConfig.BarLength;
+            }
+            return at;
         }
 
         /// <summary>Writes every hero's end-of-battle gear state (weapon/armor durability, final weapon, bar weapons)

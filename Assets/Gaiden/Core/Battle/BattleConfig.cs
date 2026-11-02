@@ -29,8 +29,19 @@ namespace GridGame.Core.Battle
         public const int ZoneCrossingTicks = 30;
         /// <summary>Reference pace (Speed 10) used to draw cast icons on the shared u-axis.</summary>
         public const float ReferencePacePerTick = 16f;
-        /// <summary>Game-clock time one committed hero action costs.</summary>
+        /// <summary>
+        /// Clock a committed action spends when no enemy turn icon can arrive at all (none left, all Frozen, a wave
+        /// still waiting on reinforcements). Otherwise a turn always runs to the next enemy arrival (GG-T188, §2.0).
+        /// </summary>
         public const int ActionTicks = 20;
+
+        // ── Held turn (GG-T188, §2.0): picking up a hero runs the timeline in real time ──────────────────
+        /// <summary>Shortest real-time window a held turn gets, however close the next enemy icon is to ACT: the
+        /// timeline then plays back slower than 1 tick per 0.1 s so a 1-tick turn is still a readable, playable drag.</summary>
+        public const float MinTurnSeconds = 2f;
+        /// <summary>How long the bot driver takes per dragged tile: a path longer than its turn window is cut short
+        /// where the time runs out (forced drop), exactly like a human's.</summary>
+        public const float BotSecondsPerStep = 0.25f;
         /// <summary>Max random head-start IP for icons at wave spawn (staggered entry).</summary>
         public const int SpawnStaggerIp = 250;
 

@@ -180,7 +180,7 @@ namespace GridGame.Core.Battle
         {
             switch (cmd)
             {
-                case MoveCommand m: return new JObject { ["type"] = "move", ["hero"] = m.HeroId, ["path"] = new JArray(m.Path.Select(c => new JArray(c.X, c.Y))), ["timeLeft"] = m.TimeLeftSeconds };
+                case MoveCommand m: return new JObject { ["type"] = "move", ["hero"] = m.HeroId, ["path"] = new JArray(m.Path.Select(c => new JArray(c.X, c.Y))), ["timeLeft"] = m.TimeLeftSeconds, ["held"] = m.HeldSeconds };
                 case UseSlotCommand u: return new JObject { ["type"] = "use", ["hero"] = u.HeroId, ["slot"] = u.Slot, ["target"] = new JArray(u.Target.X, u.Target.Y) };
                 case ShieldCommand _: return new JObject { ["type"] = "guard" };
                 default: return new JObject { ["type"] = cmd?.GetType().Name ?? "none" };

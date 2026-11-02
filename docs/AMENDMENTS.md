@@ -558,3 +558,17 @@ updated: 2026-10-09
 - **Crucible / endless:** each wave is an authored group rather than a random handful of the family, so a
   run shows its formations and no group repeats until its family's same-size groups are used up. Wave
   sizes, levels and the one-family-per-wave rule are unchanged.
+
+## 2026-10-21 — The timeline runs while a hero is held (owner direction, GG-T188)
+
+- **Held turn replaces the act-advanced "2.0 s per action".** The clock still stands still while the player
+  looks, but picking up a hero runs the timeline in real time; the turn lasts until the next enemy icon
+  reaches ACT, when the hero is dropped where it is (forced drop, even with no step taken) and that enemy
+  acts. Dropping earlier ends the turn early: every accepted command now runs the clock to the next enemy
+  arrival (`AdvanceUntilEnemyTurn`), except an action that clears a wave (the player opens the new wave)
+  and a board where no icon can arrive (fixed `ActionTicks`). *Why:* the owner wants Terra Battle's
+  hand pressure back as the core rhythm — one move per enemy turn, with the remaining time shown as the
+  next icon's distance to ACT and a drain bar on the held hero. Real-time floor `MinTurnSeconds` = 2 s;
+  bots drag at `BotSecondsPerStep` = 0.25 s a tile. Countdown badges now count turns, not 20-tick
+  actions. Tuning (and whether a slot use should end the turn) is the GG-T191 balance pass; Guard banking
+  the unused time is GG-T189. [BIBLE §0, §0.1 pillar 2, §0.2, §2.0, §2.10](BIBLE.md).

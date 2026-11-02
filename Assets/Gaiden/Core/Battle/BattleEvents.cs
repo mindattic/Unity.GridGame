@@ -22,6 +22,14 @@ namespace GridGame.Core.Battle
         public override string ToString() => $"ActionBegan {ActorId} '{Label}'";
     }
 
+    /// <summary>GG-T188 (§2.0): the held hero's turn ran out — the next enemy icon reached ACT, so the hero was dropped
+    /// where it stood and the turn ends (even with no step taken).</summary>
+    public sealed class TurnTimeUpEvent : BattleEvent
+    {
+        public int HeroId; public float HeldSeconds;
+        public override string ToString() => $"TurnTimeUp {HeroId} after {HeldSeconds:0.00}s";
+    }
+
     public sealed class SteppedEvent : BattleEvent
     {
         public int UnitId; public Coord From; public Coord To;

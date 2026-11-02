@@ -160,6 +160,113 @@ namespace GridGame.App
             v.SetGlow(new Color(1f, 0.95f, 0.6f), 0.9f);
             App.Audio.Sfx("pickup");
             ShowBanner("");
+            BeginHold();
+        }
+
+        // ─────────────────────────────────────────────────────────────────────────
+        // The held turn (GG-T188, §2.0): picking a hero up runs the timeline in real time. The turn lasts until the
+        // next enemy icon reaches ACT; then the hero is dropped where it is (forced drop) and that enemy acts.
+        // Core never ticks during the hold — the view plays the icons forward (BattleEngine.TimelineUAfter) and the
+        // drop's MoveCommand carries the seconds held; the engine then runs the clock to the enemy's arrival.
+        // ─────────────────────────────────────────────────────────────────────────
+
+        private float holdElapsed, holdWindow = -1f, holdLastTime;
+        private int holdTurnTicks = -1;
+        private VisualElement holdDrain, holdDrainFill, holdLane;
+        private Label holdLabel;
+        private IVisualElementScheduledItem holdTicker;
+        private static readonly Color HoldFull = new Color(0.45f, 0.95f, 0.55f), HoldEmpty = new Color(1f, 0.3f, 0.25f);
+
+        private void BeginHold()
+        {
+            EndHold();
+            holdElapsed = 0f;
+            holdLastTime = Time.unscaledTime;
+            holdTurnTicks = BattleEngine.TurnTicks(State);
+            holdWindow = BattleEngine.TurnWindowSeconds(State);
+            if (!board.Units.TryGetValue(dragHeroId, out var v)) return;
+
+            // A drain bar under the held hero: the share of the turn left.
+            holdDrain = new VisualElement { name = "hold-drain", pickingMode = PickingMode.Ignore };
+            holdDrain.style.position = Position.Absolute;
+            holdDrain.style.left = Length.Percent(8); holdDrain.style.right = Length.Percent(8);
+            holdDrain.style.bottom = -16; holdDrain.style.height = 14;
+            holdDrain.style.backgroundColor = new Color(0.05f, 0.05f, 0.1f, 0.85f);
+            Round(holdDrain, 7);
+            holdDrainFill = new VisualElement { name = "hold-drain-fill", pickingMode = PickingMode.Ignore };
+            holdDrainFill.style.position = Position.Absolute;
+            holdDrainFill.style.left = 2; holdDrainFill.style.top = 2; holdDrainFill.style.bottom = 2;
+            holdDrainFill.style.width = Length.Percent(100);
+            Round(holdDrainFill, 5);
+            holdDrain.Add(holdDrainFill);
+            v.Root.Add(holdDrain);
+
+            // On the timeline: the stretch between the next enemy icon and ACT, and the seconds it stands for.
+            holdLane = new VisualElement { name = "hold-lane", pickingMode = PickingMode.Ignore };
+            holdLane.style.position = Position.Absolute;
+            holdLane.style.right = 0; holdLane.style.top = TrackY - 7; holdLane.style.height = 14;
+            holdLane.style.backgroundColor = new Color(1f, 0.85f, 0.3f, 0.55f);
+            Round(holdLane, 7);
+            timelineFrame.Insert(1, holdLane); // above the track, under the icons
+            holdLabel = Ui.Text("", "tiny warn shadow", timelineFrame);
+            holdLabel.name = "hold-time";
+            holdLabel.pickingMode = PickingMode.Ignore;
+            holdLabel.style.position = Position.Absolute;
+            holdLabel.style.top = TrackY + 30;
+            UpdateHold();
+            holdTicker = timelineFrame.schedule.Execute(TickHold).Every(16);
+        }
+
+        private static void Round(VisualElement e, float r) =>
+            e.style.borderTopLeftRadius = e.style.borderTopRightRadius = e.style.borderBottomLeftRadius = e.style.borderBottomRightRadius = r;
+
+        private void TickHold()
+        {
+            float now = Time.unscaledTime, dt = now - holdLastTime;
+            holdLastTime = now;
+            if (!dragging) { EndHold(); return; }
+            if (Paused) return; // a paused battle holds the clock too (GG-T126)
+            holdElapsed += dt;
+            UpdateHold();
+            // The bot's simulated drag already fits its path inside the window (HeroBot), and its coroutine owns the drop.
+            if (holdWindow > 0f && holdElapsed >= holdWindow && !simulatingDrag)
+            {
+                App.Audio.Sfx("ui.error");
+                ShowBanner("Time's up!");
+                CommitDrag();
+            }
+        }
+
+        private void UpdateHold()
+        {
+            if (holdDrainFill == null) return;
+            float k = holdWindow > 0f ? Mathf.Clamp01(holdElapsed / holdWindow) : 0f;
+            int ticks = holdTurnTicks > 0 ? Mathf.FloorToInt(k * holdTurnTicks) : 0;
+            var at = BattleEngine.TimelineUAfter(State, ticks);
+            SyncTimeline(at);
+            holdDrainFill.style.width = Length.Percent((1f - k) * 100f);
+            holdDrainFill.style.backgroundColor = Color.Lerp(HoldEmpty, HoldFull, 1f - k);
+            float nextU = -1f;
+            foreach (var e in State.Timeline)
+                if (e.Kind == TimelineKind.Turn && State.UnitById(e.OwnerId) is Unit o && !o.IsHero && !o.IsTimelineHalted && at.TryGetValue(e.Id, out var u))
+                    nextU = Mathf.Max(nextU, u);
+            bool limited = holdWindow > 0f && nextU >= 0f;
+            holdLane.style.display = limited ? DisplayStyle.Flex : DisplayStyle.None;
+            holdLabel.style.display = limited ? DisplayStyle.Flex : DisplayStyle.None;
+            if (!limited) return;
+            holdLane.style.left = nextU * TimelineWidth;
+            holdLane.style.backgroundColor = Color.Lerp(new Color(1f, 0.3f, 0.25f, 0.7f), new Color(1f, 0.85f, 0.3f, 0.55f), 1f - k);
+            holdLabel.text = $"{Mathf.Max(0f, holdWindow - holdElapsed):0.0}s";
+            holdLabel.style.left = Mathf.Max(0f, nextU * TimelineWidth - 20f);
+        }
+
+        private void EndHold()
+        {
+            holdTicker?.Pause();
+            holdTicker = null;
+            holdDrain?.RemoveFromHierarchy(); holdDrain = holdDrainFill = null;
+            holdLane?.RemoveFromHierarchy(); holdLane = null;
+            holdLabel?.RemoveFromHierarchy(); holdLabel = null;
         }
 
         /// <summary>Turns the tile under the finger into cardinal steps from the last logical tile (one tile at a
@@ -324,14 +431,18 @@ namespace GridGame.App
             board.ClearMarks();
             var v = board.Units[dragHeroId];
             v.Root.style.scale = new Scale(Vector2.one);
-            if (dragPath.Count == 0)
+            // GG-T188: the seconds held travel with the drop; a hold that ran the window out is a forced drop that
+            // ends the turn even where the hero never left its tile.
+            float held = holdWindow > 0f ? Mathf.Min(holdElapsed, holdWindow) : holdElapsed;
+            EndHold();
+            if (dragPath.Count == 0 && !BattleEngine.IsTimeUp(State, held))
             {
                 board.Place(v, State.UnitById(dragHeroId).Pos);
                 SyncAll();
                 return;
             }
             float timeLeft = App.Settings.DragTimer ? Mathf.Max(0f, dragTimeLeft) : 0f;
-            var cmd = new MoveCommand { HeroId = dragHeroId, Path = new List<Coord>(dragPath), TimeLeftSeconds = timeLeft };
+            var cmd = new MoveCommand { HeroId = dragHeroId, Path = new List<Coord>(dragPath), TimeLeftSeconds = timeLeft, HeldSeconds = held };
             // Snap the dragged hero onto its final tile before playback.
             App.StartCoroutine(Tween.Move(v.Root, new Vector2(v.Root.resolvedStyle.left, v.Root.resolvedStyle.top), BoardView.PosOf(dragTile), 0.06f));
             Commit(cmd, true, perfectCmd);

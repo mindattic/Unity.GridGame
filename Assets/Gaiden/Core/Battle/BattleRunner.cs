@@ -47,13 +47,13 @@ namespace GridGame.Core.Battle
             if (!BattleEngine.IsAuthorized(S, cmd)) { Emit(new AbilityRefusedEvent { CasterId = BattleEngine.CommandHeroId(cmd), Reason = "Not your hero" }); return; }
 
             pushedThisAction.Clear();
+            int waveBefore = S.Wave;
             bool acted;
-            bool shield = false;
             switch (cmd)
             {
                 case MoveCommand m: acted = DoMove(m); break;
                 case UseSlotCommand u: acted = DoUseSlot(u); break;
-                case ShieldCommand _: acted = DoShield(); shield = true; break;
+                case ShieldCommand _: acted = DoShield(); break;
                 default: acted = false; break;
             }
             if (!acted) return;
@@ -61,9 +61,12 @@ namespace GridGame.Core.Battle
 
             S.Results.ActionsTaken++;
             CheckEnd();
-            if (!S.IsOver)
+            // GG-T188 (§2.0): every committed action ends the player's turn — the clock runs on until the next enemy
+            // turn icon reaches ACT and that enemy acts. Clearing a wave hands the fresh wave's first turn to the player;
+            // with no enemy icon able to arrive at all, a turn spends the fixed ActionTicks instead.
+            if (!S.IsOver && S.Wave == waveBefore)
             {
-                if (shield) AdvanceUntilEnemyTurn();
+                if (BattleEngine.TurnTicks(S) > 0) AdvanceUntilEnemyTurn();
                 else AdvanceClock(BattleConfig.ActionTicks);
             }
             if (!S.IsOver) CheckEnd();

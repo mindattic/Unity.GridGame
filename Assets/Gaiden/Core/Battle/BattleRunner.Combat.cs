@@ -21,12 +21,16 @@ namespace GridGame.Core.Battle
             var before = SnapshotPositions();
             int trapsBefore = S.Traps.Count, pickupsBefore = S.Pickups.Count;
             int hpBefore = hero.Hp;
+            // GG-T188 (§2.0): a hold that ran the whole turn window was a forced drop — the turn ends either way.
+            bool timeUp = BattleEngine.IsTimeUp(S, m.HeldSeconds);
             Emit(new ActionBeganEvent { ActorId = hero.Id, Label = "Move" });
+            if (timeUp) Emit(new TurnTimeUpEvent { HeroId = hero.Id, HeldSeconds = m.HeldSeconds });
             var taken = new List<Coord>();
             WalkPath(hero, m.Path, taken);
             bool nothingHappened = taken.Count == 0
                 || (hero.Alive && hero.Hp == hpBefore && S.Traps.Count == trapsBefore && S.Pickups.Count == pickupsBefore && SamePositions(before)
                     && !WouldFormPincer(hero));
+            if (nothingHappened && timeUp) return true; // dropped where it stood: no move, but the turn is spent
             if (nothingHappened)
             {
                 // A drag that changes nothing is a cancel, not a turn (no clock cost) — unless walking out and
