@@ -27,6 +27,17 @@ namespace GridGame.Meta
         {
             var log = new List<string>();
             void Note(Result r) { if (r.Ok && r.Message != null) log.Add(r.Message); }
+
+            // Summon Circle (GG-T87): fill an open party slot with a recruit when the gold is there and the
+            // circle is actually open (GG-T174's milestone unlock). Checked first, before repair/rest/bounty
+            // spend the visit's gold on maintenance, so a recruit the save can already afford isn't crowded out
+            // of an open slot that a stage guest then permanently closes (GG-T199).
+            if (CampUnlocks.SummonOpen(s) && s.Party.Count < Progression.MaxPartySize && Summon.Price(c, s) <= s.Gold)
+            {
+                var recruit = Summon.Pool(c, s).FirstOrDefault(d => s.Hero(d.Id) == null);
+                if (recruit != null) Note(Summon.Recruit(c, s, recruit.Id));
+            }
+
             // Only the Camp NPCs who have joined (GG-T119) — a service whose keeper hasn't been met yet is hidden
             // from the player, so the routine doesn't use it either. Bounties, the Summon Circle and Learn have no keeper.
             bool smith = CampNpcs.Joined(s, CampNpcs.Blacksmith), merchant = CampNpcs.Joined(s, CampNpcs.Merchant);
@@ -68,14 +79,6 @@ namespace GridGame.Meta
             // Bounty Board (GG-T87): cash in a finished contract, drop one whose target no longer appears
             // anywhere ahead, then take the one whose target shows up soonest on the road ahead.
             ManageBounty(c, s, Note);
-
-            // Summon Circle (GG-T87): fill an open party slot with a recruit when the gold is there — done
-            // before the gear pass so the newcomer gets equipped on this same visit.
-            if (s.Party.Count < Progression.MaxPartySize && Summon.Price(c, s) <= s.Gold)
-            {
-                var recruit = Summon.Pool(c, s).FirstOrDefault(d => s.Hero(d.Id) == null);
-                if (recruit != null) Note(Summon.Recruit(c, s, recruit.Id));
-            }
 
             // Fill the ability bar (GG-T100) before the discretionary gear pass, so a full gear shopping list
             // can't starve it every visit.

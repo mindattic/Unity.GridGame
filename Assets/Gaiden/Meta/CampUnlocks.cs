@@ -15,7 +15,11 @@ namespace GridGame.Meta
         public const int BountiesAfter = 2, SummonAfter = 5, CrucibleAfter = 5, CaravanAfter = 10;
 
         private static int Cleared(SaveData s) => s.HighestClearedStage + 1;
-        private static bool Veteran(SaveData s) => s.TestMode || s.NewGamePlus > 0;
+        /// <summary>A save that has already graduated the whole onboarding chain: Test Mode, New Game+, or every Camp
+        /// NPC already joined (the v4 migration's "they'd been using every service already" — <see
+        /// cref="SaveMigrations.Migrate"/> — and the balance sim's no-story yardstick, GG-T199). Such a save never saw the
+        /// milestone locks go up in the first place, so it doesn't see them now either.</summary>
+        private static bool Veteran(SaveData s) => s.TestMode || s.NewGamePlus > 0 || CampNpcs.All.All(n => CampNpcs.Joined(s, n));
 
         public static bool NpcOpen(SaveData s, string npc) => s != null && (CampNpcs.Joined(s, npc) || s.TestMode);
 
