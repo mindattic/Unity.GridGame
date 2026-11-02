@@ -125,7 +125,7 @@ namespace GridGame.Tests
             var c = Real;
             var expected = new Dictionary<string, (string Primary, string Secondary)>
             {
-                ["guardian"] = ("Vitality", "Stamina"), ["warrior"] = ("Strength", "Speed"), ["ranger"] = ("Agility", "Luck"),
+                ["guardian"] = ("Vitality", "Stamina"), ["warrior"] = ("Strength", "Speed"), ["rogue"] = ("Agility", "Speed"), ["ranger"] = ("Agility", "Luck"),
                 ["mage"] = ("Intelligence", "Wisdom"), ["cleric"] = ("Wisdom", "Vitality"), ["alchemist"] = ("Luck", "Stamina"),
             };
             foreach (var t in c.SkillTrees.Values)

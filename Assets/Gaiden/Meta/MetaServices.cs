@@ -239,6 +239,7 @@ namespace GridGame.Meta
             {
                 case "guardian": return "tanks";
                 case "warrior": return "strikes";
+                case "rogue": return "skirmishes";
                 case "ranger": return "shoots";
                 case "mage": return "casts";
                 case "cleric": return "heals";

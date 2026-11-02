@@ -132,7 +132,13 @@ The GG-T80 class/region audit (BIBLE.md §25.6.1, "Amended 2026-10-20") still ho
 on under any of these topologies. Its follow-ups do not need to wait for this decision:
 
 - **Warrior is overloaded:** 8 real clusters across 31 classes but only 3 branches, so 14 classes
-  (45%) match nothing (GG-T81: carve a Rogue region out of the excess).
+  (45%) match nothing (GG-T81: carve a Rogue region out of the excess). **Done 2026-11-02 (GG-T81):**
+  Warrior keeps Berserker/Duelist/Brawler/Attrition, a new Rogue tree takes
+  Shadowstep/Skirmisher/ComboBrawler/Opportunist, and all 31 classes now match a home branch
+  (BIBLE.md §25.6.1). Rogue's neighbors are Warrior and Ranger, whichever topology ships: B's ring
+  becomes Guardian - Warrior - Rogue - Ranger - Alchemist - Mage - Cleric (7 regions, so the
+  longest walk is 3 steps and no region has a single opposite), and D's Thief already sits between
+  Ranger and Warrior.
 - **Guardian's Deathguard was orphaned (closed 2026-11-02, GG-T82):** `darktemplar` and
   `jadeknight` run `deathguard_*` kits that matched no branch. Two fixes were on the table:
   (a) add Deathguard as a 4th Guardian branch, or (b) swap it in for one of Aegis Guard, Juggernaut
@@ -142,10 +148,11 @@ on under any of these topologies. Its follow-ups do not need to wait for this de
   the cluster's existing `deathguard_mana_siphon` / `deathguard_venomous_grip` /
   `deathguard_dark_communion`, so 1-3-6 points on the same Opener-Core-Capstone shape as the other
   branches. Guardian now has 15 nodes, and its Finale still needs the Aegis Guard and Juggernaut
-  Capstones. The cost: Guardian is the only tree with 4 branches. If the owner prefers (b), revert
+  Capstones. The cost: Guardian was the only tree with 4 branches (Warrior and Rogue have since joined it,
+  GG-T81). If the owner prefers (b), revert
   those 3 nodes and drop whichever branch is chosen.
 - **Ranger had branches but no classes (closed 2026-11-02, GG-T18):** `hexsniper` (Marksman) and
   `hexwarden` (Trapper) were retrofitted, and a new `hexstalker` (Skirmisher) reuses `hag02` art.
 
-GG-T168, if adopted, would reframe these region audits (see its ticket text). Even then, the
-underlying Rogue content gap is real.
+GG-T168, if adopted, would reframe these region audits (see its ticket text). All three content
+gaps they found are now closed in the shipped trees.

@@ -275,7 +275,7 @@
  {
   "Id": "warrior",
   "Name": "Warrior",
-  "Description": "The Striker archetype: close the distance and keep swinging.",
+  "Description": "The Striker archetype, brute melee: close the distance and keep swinging.",
   "Nodes": [
    {
     "Id": "warrior_cleaving_strikes",
@@ -414,6 +414,161 @@
     ]
    },
    {
+    "Id": "brawler_opener",
+    "Name": "Guard Break",
+    "Description": "A shoulder-driven blow that staggers a foe back a full stride.",
+    "Grants": "brawler_guard_break",
+    "Cost": 1,
+    "RequiredPointsInTree": 1,
+    "Prerequisites": []
+   },
+   {
+    "Id": "brawler_stat1",
+    "Name": "Strength +3",
+    "Description": "Brawler conditioning: a permanent +3 Strength.",
+    "GrantsStat": {
+     "Stat": "Strength",
+     "Amount": 3
+    },
+    "Cost": 1,
+    "RequiredPointsInTree": 2,
+    "Prerequisites": [
+     "brawler_opener"
+    ]
+   },
+   {
+    "Id": "brawler_core",
+    "Name": "Wide Cleave",
+    "Description": "A sweeping cut that shoves the whole line back a step.",
+    "Grants": "brawler_wide_cleave",
+    "Cost": 2,
+    "RequiredPointsInTree": 3,
+    "Prerequisites": [
+     "brawler_opener"
+    ]
+   },
+   {
+    "Id": "brawler_stat2",
+    "Name": "Speed +2",
+    "Description": "Brawler conditioning: a permanent +2 Speed.",
+    "GrantsStat": {
+     "Stat": "Speed",
+     "Amount": 2
+    },
+    "Cost": 1,
+    "RequiredPointsInTree": 5,
+    "Prerequisites": [
+     "brawler_core"
+    ]
+   },
+   {
+    "Id": "brawler_capstone",
+    "Name": "Second Wind",
+    "Description": "Grit through the pain and patch the worst of it mid-fight.",
+    "Grants": "brawler_second_wind",
+    "Cost": 2,
+    "RequiredPointsInTree": 6,
+    "Prerequisites": [
+     "brawler_core"
+    ]
+   },
+   {
+    "Id": "attrition_opener",
+    "Name": "Bloodletting Bite",
+    "Description": "Mend your own wounds on an adjacent foe's blood.",
+    "Grants": "attrition_bloodletting",
+    "Cost": 1,
+    "RequiredPointsInTree": 1,
+    "Prerequisites": []
+   },
+   {
+    "Id": "attrition_stat1",
+    "Name": "Strength +3",
+    "Description": "Attrition conditioning: a permanent +3 Strength.",
+    "GrantsStat": {
+     "Stat": "Strength",
+     "Amount": 3
+    },
+    "Cost": 1,
+    "RequiredPointsInTree": 2,
+    "Prerequisites": [
+     "attrition_opener"
+    ]
+   },
+   {
+    "Id": "attrition_core",
+    "Name": "Dread Aura",
+    "Description": "A creeping dread that chips and slows every nearby foe.",
+    "Grants": "attrition_dreadaura",
+    "Cost": 2,
+    "RequiredPointsInTree": 3,
+    "Prerequisites": [
+     "attrition_opener"
+    ]
+   },
+   {
+    "Id": "attrition_stat2",
+    "Name": "Speed +2",
+    "Description": "Attrition conditioning: a permanent +2 Speed.",
+    "GrantsStat": {
+     "Stat": "Speed",
+     "Amount": 2
+    },
+    "Cost": 1,
+    "RequiredPointsInTree": 5,
+    "Prerequisites": [
+     "attrition_core"
+    ]
+   },
+   {
+    "Id": "attrition_capstone",
+    "Name": "Soul Feast",
+    "Description": "Drain a distant foe's vitality and claim it as your own.",
+    "Grants": "attrition_soulfeast",
+    "Cost": 2,
+    "RequiredPointsInTree": 6,
+    "Prerequisites": [
+     "attrition_core"
+    ]
+   },
+   {
+    "Id": "warrior_finale",
+    "Name": "Undying Rampage",
+    "Description": "Every landed blow heals for half the damage it deals.",
+    "Grants": "lifesteal",
+    "Cost": 3,
+    "RequiredPointsInTree": 10,
+    "Prerequisites": [
+     "berserker_capstone",
+     "duelist_capstone"
+    ]
+   }
+  ]
+ },
+ {
+  "Id": "rogue",
+  "Name": "Rogue",
+  "Description": "The Striker archetype, mobility and combo: slip in, chain the opening, slip out.",
+  "Nodes": [
+   {
+    "Id": "rogue_light_fingers",
+    "Name": "Light Fingers",
+    "Description": "Lift a little mana off every foe within reach.",
+    "Grants": "steal",
+    "Cost": 1,
+    "RequiredPointsInTree": 0,
+    "Prerequisites": []
+   },
+   {
+    "Id": "rogue_feint",
+    "Name": "Feint",
+    "Description": "Feint low, jab high, and leave a foe grasping at afterimages.",
+    "Grants": "feint",
+    "Cost": 1,
+    "RequiredPointsInTree": 0,
+    "Prerequisites": []
+   },
+   {
     "Id": "shadowstep_opener",
     "Name": "Fade Step",
     "Description": "Slip half-out of the fight for a heartbeat.",
@@ -424,10 +579,10 @@
    },
    {
     "Id": "shadowstep_stat1",
-    "Name": "Strength +3",
-    "Description": "Shadowstep conditioning: a permanent +3 Strength.",
+    "Name": "Agility +3",
+    "Description": "Shadowstep conditioning: a permanent +3 Agility.",
     "GrantsStat": {
-     "Stat": "Strength",
+     "Stat": "Agility",
      "Amount": 3
     },
     "Cost": 1,
@@ -473,15 +628,192 @@
     ]
    },
    {
-    "Id": "warrior_finale",
-    "Name": "Undying Rampage",
-    "Description": "Every landed blow heals for half the damage it deals.",
-    "Grants": "lifesteal",
+    "Id": "skirmisher_opener",
+    "Name": "Blindside",
+    "Description": "Dart to a foe's blind side before it can turn.",
+    "Grants": "skirmisher_blindside",
+    "Cost": 1,
+    "RequiredPointsInTree": 1,
+    "Prerequisites": []
+   },
+   {
+    "Id": "skirmisher_stat1",
+    "Name": "Agility +3",
+    "Description": "Skirmisher conditioning: a permanent +3 Agility.",
+    "GrantsStat": {
+     "Stat": "Agility",
+     "Amount": 3
+    },
+    "Cost": 1,
+    "RequiredPointsInTree": 2,
+    "Prerequisites": [
+     "skirmisher_opener"
+    ]
+   },
+   {
+    "Id": "skirmisher_core",
+    "Name": "Hit and Run",
+    "Description": "Land a quick strike and peel back out of reach.",
+    "Grants": "skirmisher_hitandrun",
+    "Cost": 2,
+    "RequiredPointsInTree": 3,
+    "Prerequisites": [
+     "skirmisher_opener"
+    ]
+   },
+   {
+    "Id": "skirmisher_stat2",
+    "Name": "Speed +2",
+    "Description": "Skirmisher conditioning: a permanent +2 Speed.",
+    "GrantsStat": {
+     "Stat": "Speed",
+     "Amount": 2
+    },
+    "Cost": 1,
+    "RequiredPointsInTree": 5,
+    "Prerequisites": [
+     "skirmisher_core"
+    ]
+   },
+   {
+    "Id": "skirmisher_capstone",
+    "Name": "Running Riot",
+    "Description": "Sprint a whole row, clipping every foe along the way.",
+    "Grants": "skirmisher_runningriot",
+    "Cost": 2,
+    "RequiredPointsInTree": 6,
+    "Prerequisites": [
+     "skirmisher_core"
+    ]
+   },
+   {
+    "Id": "combobrawler_opener",
+    "Name": "Opening Jab",
+    "Description": "A cheap testing jab that sets up the next strike.",
+    "Grants": "combobrawler_openingjab",
+    "Cost": 1,
+    "RequiredPointsInTree": 1,
+    "Prerequisites": []
+   },
+   {
+    "Id": "combobrawler_stat1",
+    "Name": "Agility +3",
+    "Description": "Combo Brawler conditioning: a permanent +3 Agility.",
+    "GrantsStat": {
+     "Stat": "Agility",
+     "Amount": 3
+    },
+    "Cost": 1,
+    "RequiredPointsInTree": 2,
+    "Prerequisites": [
+     "combobrawler_opener"
+    ]
+   },
+   {
+    "Id": "combobrawler_core",
+    "Name": "One-Two Flurry",
+    "Description": "A disciplined one-two that grows with every turn it lands.",
+    "Grants": "combobrawler_onetwoflurry",
+    "Cost": 2,
+    "RequiredPointsInTree": 3,
+    "Prerequisites": [
+     "combobrawler_opener"
+    ]
+   },
+   {
+    "Id": "combobrawler_stat2",
+    "Name": "Speed +2",
+    "Description": "Combo Brawler conditioning: a permanent +2 Speed.",
+    "GrantsStat": {
+     "Stat": "Speed",
+     "Amount": 2
+    },
+    "Cost": 1,
+    "RequiredPointsInTree": 5,
+    "Prerequisites": [
+     "combobrawler_core"
+    ]
+   },
+   {
+    "Id": "combobrawler_capstone",
+    "Name": "Knockout Combo",
+    "Description": "Spend the whole combo on one finishing punch.",
+    "Grants": "combobrawler_knockoutcombo",
+    "Cost": 2,
+    "RequiredPointsInTree": 6,
+    "Prerequisites": [
+     "combobrawler_core"
+    ]
+   },
+   {
+    "Id": "opportunist_opener",
+    "Name": "Exploit",
+    "Description": "A shallow cut that leaves the wound to fester.",
+    "Grants": "opportunist_exploit",
+    "Cost": 1,
+    "RequiredPointsInTree": 1,
+    "Prerequisites": []
+   },
+   {
+    "Id": "opportunist_stat1",
+    "Name": "Agility +3",
+    "Description": "Opportunist conditioning: a permanent +3 Agility.",
+    "GrantsStat": {
+     "Stat": "Agility",
+     "Amount": 3
+    },
+    "Cost": 1,
+    "RequiredPointsInTree": 2,
+    "Prerequisites": [
+     "opportunist_opener"
+    ]
+   },
+   {
+    "Id": "opportunist_core",
+    "Name": "Chain the Opening",
+    "Description": "Strike hardest at a foe already marked.",
+    "Grants": "opportunist_chain_the_opening",
+    "Cost": 2,
+    "RequiredPointsInTree": 3,
+    "Prerequisites": [
+     "opportunist_opener"
+    ]
+   },
+   {
+    "Id": "opportunist_stat2",
+    "Name": "Speed +2",
+    "Description": "Opportunist conditioning: a permanent +2 Speed.",
+    "GrantsStat": {
+     "Stat": "Speed",
+     "Amount": 2
+    },
+    "Cost": 1,
+    "RequiredPointsInTree": 5,
+    "Prerequisites": [
+     "opportunist_core"
+    ]
+   },
+   {
+    "Id": "opportunist_capstone",
+    "Name": "Collect the Debt",
+    "Description": "The more a foe already suffers, the more flows back to you.",
+    "Grants": "opportunist_collect_the_debt",
+    "Cost": 2,
+    "RequiredPointsInTree": 6,
+    "Prerequisites": [
+     "opportunist_core"
+    ]
+   },
+   {
+    "Id": "rogue_finale",
+    "Name": "Flurry of Blades",
+    "Description": "Strike twice at every adjacent foe each turn.",
+    "Grants": "double_attack",
     "Cost": 3,
     "RequiredPointsInTree": 10,
     "Prerequisites": [
-     "berserker_capstone",
-     "duelist_capstone"
+     "shadowstep_capstone",
+     "skirmisher_capstone"
     ]
    }
   ]
