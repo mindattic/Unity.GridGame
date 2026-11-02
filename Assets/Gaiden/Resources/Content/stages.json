@@ -263,6 +263,19 @@
             "X": 4,
             "Y": 3
           }
+        ],
+        "Recruitables": [
+          {
+            "Class": "ronin",
+            "Level": 1,
+            "X": 0,
+            "Y": 4,
+            "Dialogue": "recruit_ronin_greenvalley",
+            "Conditions": [
+              { "Type": "HealedBy" },
+              { "Type": "ParticipatedInPincerWith" }
+            ]
+          }
         ]
       },
       {
@@ -600,6 +613,18 @@
             "Level": 1,
             "X": -1,
             "Y": -1
+          }
+        ],
+        "Recruitables": [
+          {
+            "Class": "sellsword",
+            "Level": 1,
+            "X": 5,
+            "Y": 4,
+            "Dialogue": "recruit_sellsword_desert",
+            "Conditions": [
+              { "Type": "PayGold", "Amount": 150 }
+            ]
           }
         ]
       },

@@ -190,6 +190,7 @@ namespace GridGame.Core.Battle
             foreach (var o in p.Opponents) { formed.Opponents.Add(o.Id); formed.OpponentsAt.Add(UnitFootprint.Of(o)); }
             foreach (var su in supporters) { formed.Supporters.Add(su.Id); formed.SupportersAt.Add(UnitFootprint.Of(su)); formed.SupporterLinks.Add(p.LinkOf(su)?.Id ?? p.AttackerOf(su).Id); }
             Emit(formed);
+            if (team == Team.Hero) MarkPincerWitnesses(p); // a recruitable beside a striking hero fought with them (GG-T132)
 
             // Power Amplifier: a hero attacker standing on it strikes amplified and uses it up (§1.2.6).
             Unit amplified = null;
@@ -464,7 +465,7 @@ namespace GridGame.Core.Battle
                     Announce("Crash!", t.Id);
                     int crash = BattleConfig.KnockbackCrashDamage + baseDamage / 2;
                     Damage(t, crash, caster, HitKind.Normal, DamageType.Physical, "Crash!", canPush: false);
-                    if (other.Alive && other.Team != caster.Team) Damage(other, crash, caster, HitKind.Normal, DamageType.Physical, "Crash!", canPush: false);
+                    if (other.Alive && other.Team != caster.Team && !other.IsNeutral) Damage(other, crash, caster, HitKind.Normal, DamageType.Physical, "Crash!", canPush: false);
                     return;
                 }
                 if (S.MovableAt(next) is MovableTile mv)

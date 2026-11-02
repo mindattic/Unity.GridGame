@@ -88,7 +88,7 @@ namespace GridGame.Core.Rules
             for (var c = pa + step; c != pb; c = c + step)
             {
                 var occ = s.UnitAt(c);
-                if (occ == null || occ.Team == team) return null;
+                if (occ == null || occ.Team == team || occ.IsNeutral) return null; // a neutral in the line is a gap (GG-T132)
                 if (!opponents.Contains(occ)) opponents.Add(occ);
             }
             if (opponents.Count == 0) return null;

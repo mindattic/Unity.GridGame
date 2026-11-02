@@ -72,7 +72,7 @@ namespace GridGame.App
             // A corpse shows the fallen unit's own art, upright and greyed (§14.7; owner 2026-10-19: never turn art sideways).
             Art.style.backgroundImage = new StyleBackground(App.Art.Thumb(u.IsCorpse && u.CorpseOf != null ? u.CorpseOf : u.Def.Id));
             Art.style.backgroundSize = new BackgroundSize(BackgroundSizeType.Cover);
-            if (!u.IsHero) Art.style.scale = new Scale(new Vector2(-1, 1)); // enemies face the party
+            if (!u.IsHero && !u.IsNeutral) Art.style.scale = new Scale(new Vector2(-1, 1)); // enemies face the party
             if (u.IsCorpse)
             {
                 Art.style.unityBackgroundImageTintColor = new Color(0.42f, 0.38f, 0.38f);
@@ -83,17 +83,8 @@ namespace GridGame.App
             // Team keyline just inside the white border, so heroes, foes and bosses still read apart.
             Keyline = new VisualElement { name = "keyline", pickingMode = PickingMode.Ignore };
             Keyline.AddToClassList("unit-keyline");
-            Keyline.AddToClassList(u.IsGuest ? "unit-keyline--guest" : u.IsHero ? "unit-keyline--hero" : (u.Def.HasTag("Boss") || u.IsMultiTile) ? "unit-keyline--boss" : "unit-keyline--foe");
             Frame.Add(Keyline);
-            if (u.IsGuest)
-            {
-                var tag = new Label("GUEST") { name = "guest-" + u.Id, pickingMode = PickingMode.Ignore };
-                tag.AddToClassList("shadow");
-                tag.style.position = Position.Absolute; tag.style.left = 10; tag.style.top = 6;
-                tag.style.fontSize = 22; tag.style.unityFontStyleAndWeight = FontStyle.Bold;
-                tag.style.color = new Color(0.6f, 1f, 0.75f);
-                Frame.Add(tag);
-            }
+            SetTeamLook(u);
 
             Hp = new VisualElement { pickingMode = PickingMode.Ignore };
             Hp.AddToClassList("gauge");
@@ -229,6 +220,23 @@ namespace GridGame.App
                 Frame.style.borderTopLeftRadius = Frame.style.borderTopRightRadius = Frame.style.borderBottomLeftRadius = Frame.style.borderBottomRightRadius = tile * 0.4f;
                 Keyline.style.borderTopLeftRadius = Keyline.style.borderTopRightRadius = Keyline.style.borderBottomLeftRadius = Keyline.style.borderBottomRightRadius = tile * 0.4f - 4;
             }
+        }
+
+        /// <summary>The team keyline and corner tag: hero / foe / boss, a GUEST, or a neutral recruitable's TALK (GG-T132).
+        /// Called again when a recruitable is talked round, so its frame turns guest-green on the spot.</summary>
+        public void SetTeamLook(Unit u)
+        {
+            foreach (var cls in new[] { "unit-keyline--guest", "unit-keyline--hero", "unit-keyline--boss", "unit-keyline--foe", "unit-keyline--neutral" })
+                Keyline.RemoveFromClassList(cls);
+            Keyline.AddToClassList(u.IsNeutral ? "unit-keyline--neutral" : u.IsGuest ? "unit-keyline--guest" : u.IsHero ? "unit-keyline--hero" : (u.Def.HasTag("Boss") || u.IsMultiTile) ? "unit-keyline--boss" : "unit-keyline--foe");
+            Frame.Q<Label>("guest-" + u.Id)?.RemoveFromHierarchy();
+            if (!u.IsGuest && !u.IsNeutral) return;
+            var tag = new Label(u.IsNeutral ? "TALK" : "GUEST") { name = "guest-" + u.Id, pickingMode = PickingMode.Ignore };
+            tag.AddToClassList("shadow");
+            tag.style.position = Position.Absolute; tag.style.left = 10; tag.style.top = 6;
+            tag.style.fontSize = 22; tag.style.unityFontStyleAndWeight = FontStyle.Bold;
+            tag.style.color = u.IsNeutral ? new Color(1f, 0.82f, 0.4f) : new Color(0.6f, 1f, 0.75f);
+            Frame.Add(tag);
         }
 
         public void SetHp(int hp, int max)

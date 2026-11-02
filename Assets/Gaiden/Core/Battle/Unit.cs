@@ -125,6 +125,11 @@ namespace GridGame.Core.Battle
         public int RisesLevel;
         /// <summary>A guest ally (§25.11), hero-team and player-controlled for this battle only.</summary>
         public bool IsGuest;
+        /// <summary>A neutral recruitable's terms (§25.11.1, GG-T132); kept after it joins. Null for everyone else.</summary>
+        public RecruitableDef Recruitable;
+        /// <summary>What heroes have done for a recruitable so far: "healed", "healed:&lt;class&gt;", "pincer", "pincer:&lt;class&gt;".</summary>
+        public HashSet<string> RecruitMarks = new HashSet<string>();
+        public bool IsNeutral => Team == Team.Neutral;
         /// <summary>A risen undead drops nothing the second time.</summary>
         public bool NoLoot;
         public bool IsSnakeSegment => SnakeHeadId >= 0 && SnakeIndex > 0;
@@ -246,6 +251,7 @@ namespace GridGame.Core.Battle
             foreach (var s in Bar) u.Bar.Add(s.Clone());
             u.GearResist = new Dictionary<DamageType, float>(GearResist);
             u.SetBonuses = new List<SetBonusDef>(SetBonuses);
+            u.RecruitMarks = new HashSet<string>(RecruitMarks);
             u.Gear = new Dictionary<EquipmentSlot, EquippedPiece>();
             foreach (var kv in Gear) u.Gear[kv.Key] = kv.Value.Clone();
             return u;

@@ -154,6 +154,7 @@ namespace GridGame.Core.Content
                 {
                     foreach (var e in w.Enemies) NeedClass(e.Class, $"stage {s.Id}");
                     foreach (var g in w.Guests) NeedClass(g.Class, $"stage {s.Id} guest");
+                    foreach (var r in w.Recruitables) RecruitableDef.Validate(db, r, $"stage {s.Id} recruitable", p);
                     NeedClass(w.SurpriseSpeaker, $"stage {s.Id} surprise speaker");
                 }
             // ContentDb.ThemeOf resolves a stage id to the *first* theme that lists it — a stage accidentally
@@ -341,8 +342,15 @@ namespace GridGame.Core.Content
                     if (trigger.Id != null && trigger.Id.StartsWith(NpcFlagPrefix)) { if (!IsNpc(trigger.Id.Substring(NpcFlagPrefix.Length))) p.Add($"{w}: unknown Talk NPC '{trigger.Id}'"); }
                     else if (!IsHero(trigger.Id)) p.Add($"{w}: Talk needs \"party\", \"npc:<id>\" or a hero class, has '{trigger.Id}'");
                     break;
+                case DialogueTriggerKind.Recruit:
+                    // GG-T132: spoken on the battle board, so no save effects or choices; "$with" is the hero talking.
+                    if (!IsHero(trigger.Id)) p.Add($"{w}: Recruit needs the recruitable's hero class, has '{trigger.Id}'");
+                    if (d.AllEffects().GetEnumerator().MoveNext()) p.Add($"{w}: a Recruit dialogue can't have effects (the battle applies none)");
+                    if (d.Nodes.Exists(n => n != null && n.Choices.Count > 0)) p.Add($"{w}: a Recruit dialogue can't have choices");
+                    if (!d.Nodes.Exists(n => n != null && string.Equals(n.Id, RecruitableDef.JoinNode, StringComparison.OrdinalIgnoreCase))) p.Add($"{w}: a Recruit dialogue needs a '{RecruitableDef.JoinNode}' node");
+                    break;
             }
-            bool talkWithHero = trigger.Kind == DialogueTriggerKind.Talk && trigger.Id != null && !trigger.Id.StartsWith(NpcFlagPrefix);
+            bool talkWithHero = (trigger.Kind == DialogueTriggerKind.Talk || trigger.Kind == DialogueTriggerKind.Recruit) && trigger.Id != null && !trigger.Id.StartsWith(NpcFlagPrefix);
             bool joinsHero = false;
             foreach (var e in d.AllEffects()) joinsHero |= e?.Type == DialogueEffectType.JoinHero;
 

@@ -419,7 +419,7 @@ namespace GridGame.Core.Rules
                     var t = new Coord(newAnchor.X + dx, newAnchor.Y + dy);
                     if (!s.Walkable(t)) return false;
                     var occ = s.UnitAt(t);
-                    if (occ != null && occ != enemy && occ.Team == Team.Enemy) return false;
+                    if (occ != null && occ != enemy && !occ.IsHero) return false; // only heroes get shoved aside — never a neutral (GG-T132)
                 }
             return true;
         }

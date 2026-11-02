@@ -221,7 +221,7 @@ namespace GridGame.Core.Battle
 
                 // An ability that both harms and heals harms only foes and mends only friends (GG-T183: Harm into Hope
                 // was scorching allies and knitting enemies).
-                bool friend = t.Team == caster.Team;
+                bool friend = t.Team == caster.Team || (t.IsNeutral && caster.IsHero); // a recruitable is mended, never hurt (GG-T132)
                 bool deals = a.BaseDamage > 0 && !(a.BaseHeal > 0 && friend);
                 if (deals && a.DamageType == DamageType.Fire)
                 {
@@ -257,7 +257,7 @@ namespace GridGame.Core.Battle
                     }
                 }
 
-                if (a.Knockback > 0 && t.Alive && t.Team != caster.Team) Knockback(caster, t, a.Knockback, a.BaseDamage);
+                if (a.Knockback > 0 && t.Alive && !friend) Knockback(caster, t, a.Knockback, a.BaseDamage);
                 if (a.Pull > 0 && t.Alive && t != caster) Pull(caster, t, a.Pull);
                 if (a.SwapsPlaces && t.Alive && t != caster && caster.Alive) SwapPlaces(caster, t);
 
@@ -352,7 +352,7 @@ namespace GridGame.Core.Battle
             Unit nearest = null; int best = int.MaxValue;
             foreach (var o in S.Units)
             {
-                if (!o.Alive || !o.OnBoard || o.Team == u.Team) continue;
+                if (!o.Alive || !o.OnBoard || o.Team == u.Team || o.IsNeutral) continue;
                 int d = o.DistanceTo(u);
                 if (d < best) { best = d; nearest = o; }
             }

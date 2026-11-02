@@ -1,5 +1,32 @@
 [
   {
+    "Id": "recruit_ronin_greenvalley",
+    "Title": "A wounded ronin",
+    "Trigger": { "Kind": "Recruit", "Id": "ronin" },
+    "Speakers": [
+      { "Id": "ronin", "Class": "ronin" },
+      { "Id": "hero", "Class": "$with" }
+    ],
+    "Nodes": [
+      { "Id": "ask", "Speaker": "ronin", "Text": "Keep walking. I owe nobody a sword -- least of all a caravan that wakes the ground wherever it steps.", "Next": "ask2" },
+      { "Id": "ask2", "Speaker": "hero", "Text": "You're bleeding into the grass. Let us patch you up, and stand with us while we clear this field.", "Next": "join" },
+      { "Id": "join", "Speaker": "ronin", "Text": "...You mended a stranger and fought beside him without asking his name. Fine. My blade walks with yours." }
+    ]
+  },
+  {
+    "Id": "recruit_sellsword_desert",
+    "Title": "A sellsword for hire",
+    "Trigger": { "Kind": "Recruit", "Id": "sellsword" },
+    "Speakers": [
+      { "Id": "merc", "Class": "sellsword" },
+      { "Id": "hero", "Class": "$with" }
+    ],
+    "Nodes": [
+      { "Id": "ask", "Speaker": "merc", "Text": "Sand in my boots, no coin in my purse. A hundred and fifty gold and I'm yours till the dunes stop moving.", "Next": "join" },
+      { "Id": "join", "Speaker": "merc", "Text": "Coin's counted. Point me at whatever's crawling out of the sand." }
+    ]
+  },
+  {
     "Id": "greenvalley_road_merchant",
     "Title": "A merchant on the road",
     "Trigger": { "Kind": "ThemeStart", "Id": "greenvalley" },

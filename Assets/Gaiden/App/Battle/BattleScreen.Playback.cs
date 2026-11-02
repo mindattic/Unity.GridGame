@@ -140,6 +140,9 @@ namespace GridGame.App
                 case LootEvent l: return LootAnim(l);
                 case RemainsLeftEvent rl: return RemainsAnim(rl.RemainsId, rl.At, false);
                 case GuestJoinedEvent gj: return GuestAnim(gj);
+                case RecruitableAppearedEvent rap: return RecruitableAppearedAnim(rap);
+                case RecruitOfferedEvent rof: return RecruitOfferedAnim(rof);
+                case RecruitJoinedEvent rj: return RecruitJoinedAnim(rj);
                 case RoseAgainEvent ra: return RiseAnim(ra);
                 case AmplifierSpawnedEvent asp: return AmpSpawnAnim(asp);
                 case AmplifierMovedEvent am: return AmpMoveAnim(am);

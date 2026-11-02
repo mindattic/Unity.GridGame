@@ -62,6 +62,8 @@ namespace GridGame.Core.Battle
         /// GG-T114), which is always off in the normal game; a planned opt-in Ironman mode is the only thing meant to
         /// turn it on. Off: a fallen unit is just down (revivable, back next battle).</summary>
         public bool Permadeath;
+        /// <summary>Gold the caravan has banked going in — a recruitable's PayGold is paid from it (§25.11.1, GG-T132).</summary>
+        public int Purse;
     }
 
     /// <summary>Totals the meta layer commits after the battle (XP, coins, drops, kills, bestiary).</summary>
@@ -90,6 +92,8 @@ namespace GridGame.Core.Battle
         public Dictionary<string, List<string>> BrokenArmors = new Dictionary<string, List<string>>();
         public int ActionsTaken;
         public int TicksElapsed;
+        /// <summary>Banked gold paid out mid-battle (a recruitable's PayGold, GG-T132): the meta layer deducts it whatever the outcome.</summary>
+        public int CoinsSpent;
 
         private static Dictionary<string, List<string>> CloneListMap(Dictionary<string, List<string>> map)
         {
@@ -109,7 +113,7 @@ namespace GridGame.Core.Battle
         {
             return new BattleResults
             {
-                Coins = Coins, Xp = Xp, ActionsTaken = ActionsTaken, TicksElapsed = TicksElapsed,
+                Coins = Coins, Xp = Xp, ActionsTaken = ActionsTaken, TicksElapsed = TicksElapsed, CoinsSpent = CoinsSpent,
                 Items = new Dictionary<string, int>(Items),
                 Kills = new Dictionary<string, int>(Kills),
                 Seen = new HashSet<string>(Seen),
@@ -161,6 +165,8 @@ namespace GridGame.Core.Battle
         public StageDef Stage;
         public int RecommendedLevel = 1;
         public int NewGamePlus;
+        /// <summary>Banked gold going in (<see cref="BattleSetup.Purse"/>); what's left is Purse − Results.CoinsSpent.</summary>
+        public int Purse;
         public Rng Rng;
         public List<Unit> Units = new List<Unit>();
         public List<TimelineEntry> Timeline = new List<TimelineEntry>();

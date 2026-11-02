@@ -40,6 +40,8 @@ namespace GridGame.Core.Bot
 
         private BattleCommand Decide(BattleState s, bool movesOnly)
         {
+            // A recruitable whose every term is met (GG-T132) is worth more than any swing: talk it round first.
+            if (!movesOnly && Recruitment.ReadyTalk(s) is TalkCommand talk) return talk;
             var heroes = s.LivingList(Team.Hero);
             bool lone = EnemyPlanner.LoneHero(s);
             var candidates = new List<(BattleCommand cmd, float score)>();
@@ -231,7 +233,7 @@ namespace GridGame.Core.Bot
             float score = 0f;
             foreach (var u in s.Units)
             {
-                if (!u.Alive || u.IsCorpse || u.Id == mover.Id) continue;
+                if (!u.Alive || u.IsCorpse || u.IsNeutral || u.Id == mover.Id) continue; // shuffling a neutral sets nothing up
                 if (!pv.Positions.TryGetValue(u.Id, out var to) || to == u.Pos) continue;
                 score += 6f;
                 var other = u.Team == Team.Hero ? Team.Enemy : Team.Hero;
@@ -266,7 +268,9 @@ namespace GridGame.Core.Bot
             float score = 0f;
             foreach (var t in targets)
             {
-                if (t.Team != caster.Team)
+                // A recruitable that wants healing (GG-T132) is worth a heal even at half HP.
+                if (t.IsNeutral && a.BaseHeal > 0 && t.Recruitable != null && t.Recruitable.WantsHealing && !t.RecruitMarks.Contains("healed")) score += 10f;
+                if (t.Team != caster.Team && !t.IsNeutral)
                 {
                     if (BattleEngine.IsArmored(s, t)) continue;
                     if (a.BaseDamage > 0)

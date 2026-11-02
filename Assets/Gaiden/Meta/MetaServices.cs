@@ -495,6 +495,7 @@ namespace GridGame.Meta
             foreach (var h in s.Roster) setup.ExcludedGuests.Add(h.ClassId);
             foreach (var g in s.LostGuests) if (Permadeath.IsLost(s, g)) setup.ExcludedGuests.Add(g);
             setup.Permadeath = Permadeath.Enabled(s);
+            setup.Purse = s.Gold; // a recruitable's PayGold comes out of the banked coins (GG-T132)
             foreach (var id in s.Party)
             {
                 var h = s.Hero(id);
@@ -509,6 +510,8 @@ namespace GridGame.Meta
         /// <summary>Commits a finished battle into the save (XP, gold, loot, wounds, durability, kills, bestiary, unlocks).</summary>
         public static BattleReport Commit(ContentDb c, SaveData s, BattleState battle)
         {
+            // Gold paid to a recruitable mid-battle (GG-T132) left the purse at that moment, whatever the outcome.
+            if (battle.Results.CoinsSpent > 0) s.Gold = Math.Max(0, s.Gold - battle.Results.CoinsSpent);
             if (Crucible.IsStage(battle.Stage.Id)) return Crucible.Commit(c, s, battle);
             var r = battle.Results;
             var rep = new BattleReport

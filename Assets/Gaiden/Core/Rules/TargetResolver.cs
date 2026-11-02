@@ -37,6 +37,8 @@ namespace GridGame.Core.Rules
 
         public static bool Passes(TargetFilter filter, Unit caster, Unit u)
         {
+            // A neutral recruitable (GG-T132) is nobody's foe: only a hero's ally-only ability (a heal, a ward) reaches it.
+            if (u.IsNeutral) return filter == TargetFilter.AllyOnly && caster.IsHero;
             switch (filter)
             {
                 case TargetFilter.EnemyOnly: return u.Team != caster.Team;

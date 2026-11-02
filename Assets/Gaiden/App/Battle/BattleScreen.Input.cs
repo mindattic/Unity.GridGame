@@ -50,6 +50,12 @@ namespace GridGame.App
                 lastPointerTime = Time.unscaledTime;
                 board.Root.CapturePointer(evt.pointerId);
             }
+            else if (unit != null && unit.IsNeutral)
+            {
+                panelUnitId = unit.Id;
+                SyncPanel();
+                TapRecruitable(unit);
+            }
             else if (unit != null)
             {
                 panelUnitId = unit.Id;

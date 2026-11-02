@@ -22,8 +22,9 @@ purpose: RFC for three net-new systems the owner described (overworld, dialogue/
 - **§3 Dialogue engine** — **landed** (GG-T117 through GG-T120). See `docs/BIBLE.md` §27.1. The game is
   four kinds of screen: fighting, in-town buying/upgrading, reading a text crawl, or talking with
   people (NPCs, party) — no fifth, overworld kind.
-- **§4 Mid-battle recruitment** — still open, not built; unaffected by the overworld withdrawal (§4
-  never depended on §2, see its own text below).
+- **§4 Mid-battle recruitment** — **landed** (GG-T132, 2026-11-02). See `docs/BIBLE.md` §25.11.1:
+  `Team.Neutral`, `RecruitableDef` on `WaveDef.Recruitables`, `TalkCommand`, Recruit-trigger dialogues. A
+  talked-round recruit joins like a guest ally (roster on a victory); the permanence question (§6.1) stays open.
 - **§5/§6 checklist and open questions** — superseded by this status block for the overworld items;
   the remaining open questions (recruitment permanence, magic-vs-machine depth, plague/town naming,
   recruitment sequencing) still stand.

@@ -5,7 +5,9 @@ namespace GridGame.Core.Content
     // Plain data definitions deserialized from Assets/Gaiden/Resources/Content/*.json.
     // Property names are the JSON keys (PascalCase); enums serialize as strings.
 
-    public enum Team { Hero, Enemy }
+    /// <summary>Neutral (GG-T132): a recruitable bystander on the board — neither side fights it or counts it; a hero who
+    /// meets its <see cref="RecruitableDef.Conditions"/> and talks to it flips it to Hero (a guest ally).</summary>
+    public enum Team { Hero, Enemy, Neutral }
 
     /// <summary>How an enemy chooses which hero to go after (bible §14.1). Auto derives it from INT and tags.</summary>
     public enum Targeting { Auto, Closest, Weakest, Threat, Squishy, Erratic, Caster }
@@ -530,6 +532,8 @@ namespace GridGame.Core.Content
         public List<SpawnDef> Enemies = new List<SpawnDef>();
         /// <summary>Guest allies met in this wave (§25.11): fight with you; standing at a victory (revived counts) and they join, down at the end and you'll meet them again (GG-T114).</summary>
         public List<SpawnDef> Guests = new List<SpawnDef>();
+        /// <summary>Neutral recruitables met in this wave (§25.11.1, GG-T132): they stand aside until a hero talks them round.</summary>
+        public List<RecruitableDef> Recruitables = new List<RecruitableDef>();
         /// <summary>Class id whose portrait/name show when this wave's first delayed reinforcement arrives (§14.8). Optional.</summary>
         public string SurpriseSpeaker;
         /// <summary>The line that speaker says. Null/empty = no dialogue beat, just the spawn (silent reinforcement).</summary>
@@ -768,8 +772,10 @@ namespace GridGame.Core.Content
     /// CanBrew (GG-T176) fires once the bag holds every looted input — everything but the Empty Bottle — of some
     /// Apprentice-tier bottle recipe (the player's first brew), with the same optional fallback theme in <see cref="DialogueTrigger.Id"/>.
     /// FirstArmor (GG-T179) fires once the guided first armor piece has been forged (the save flag
-    /// <c>onboard:first-armor</c>), with the same optional fallback theme in <see cref="DialogueTrigger.Id"/>.</summary>
-    public enum DialogueTriggerKind { ThemeStart, StageCleared, Talk, GearWorn, CanBrew, FirstArmor }
+    /// <c>onboard:first-armor</c>), with the same optional fallback theme in <see cref="DialogueTrigger.Id"/>.
+    /// Recruit (GG-T132) is never played between battles: a stage's <see cref="RecruitableDef.Dialogue"/> names it and the
+    /// battle speaks it when a hero talks to the neutral (<see cref="DialogueTrigger.Id"/> = the recruitable's class).</summary>
+    public enum DialogueTriggerKind { ThemeStart, StageCleared, Talk, GearWorn, CanBrew, FirstArmor, Recruit }
 
     public sealed class DialogueTrigger
     {

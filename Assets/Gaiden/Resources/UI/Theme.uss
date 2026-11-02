@@ -233,6 +233,7 @@
 .unit-keyline--foe { border-color: rgba(235, 70, 75, 0.95); }
 .unit-keyline--boss { border-color: rgb(219, 102, 255); }
 .unit-keyline--guest { border-color: rgb(110, 240, 160); }
+.unit-keyline--neutral { border-color: rgb(255, 205, 95); }
 
 /* ── Orb pips (generic mana) ──────────────────────────────────────────── */
 .pip { width: 34px; height: 34px; border-radius: 17px; margin: 0 3px; border-width: 2px; border-color: rgba(255,255,255,0.8); font-size: 20px; -unity-text-align: middle-center; -unity-font-style: bold; color: rgb(20,20,20); }

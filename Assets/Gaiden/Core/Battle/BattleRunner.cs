@@ -54,6 +54,7 @@ namespace GridGame.Core.Battle
                 case MoveCommand m: acted = DoMove(m); break;
                 case UseSlotCommand u: acted = DoUseSlot(u); break;
                 case ShieldCommand _: acted = DoShield(); break;
+                case TalkCommand t: acted = DoTalk(t); break;
                 default: acted = false; break;
             }
             if (!acted) return;
@@ -347,7 +348,7 @@ namespace GridGame.Core.Battle
             foreach (var u in S.Units)
             {
                 if (!u.Alive) continue;
-                if (u.Team == Team.Hero) heroesAlive = true; else if (!u.IsCorpse) enemiesAlive = true; // bodies don't hold up a wave
+                if (u.Team == Team.Hero) heroesAlive = true; else if (u.Team == Team.Enemy && !u.IsCorpse) enemiesAlive = true; // bodies (and neutrals, GG-T132) don't hold up a wave
             }
             if (!heroesAlive)
             {
@@ -476,6 +477,7 @@ namespace GridGame.Core.Battle
             int before = target.Hp;
             target.Hp = Math.Min(target.MaxHp, target.Hp + amount);
             Emit(new HealedEvent { TargetId = target.Id, SourceId = source?.Id ?? -1, Amount = target.Hp - before, HpAfter = target.Hp });
+            if (target.IsNeutral && source != null && source.IsHero) MarkRecruit(target, "healed", source);
         }
 
         private void Kill(Unit u, Unit killer)

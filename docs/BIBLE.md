@@ -2339,6 +2339,18 @@ Owner: "guest characters that you meet in battle that act as allies — you resc
 - Content: Dervish (Sandsea Reaches II), Drifter (Mireholt Fens II), Lancer (Frostmaw Caverns II), Machinist (first city ruin).
 - *(Tests: `A_guest_who_survives_a_victory_joins_the_roster`, `A_guest_revived_mid_battle_is_recruited`, `A_guest_down_at_battle_end_can_still_be_recruited_later`, `Permadeath_is_off_by_default_and_old_lost_guests_come_back`.)*
 
+#### 25.11.1 Mid-battle recruitment — "talk" (added 2026-11-02, GG-T132; design-draft-overworld-and-dialogue §4)
+
+Fire Emblem's talk on the real grid: some heroes aren't handed over — they have to be won.
+
+- `WaveDef.Recruitables` (`RecruitableDef`: hero `Class`, `Level`, tile, `Dialogue`, `Conditions`) places a hero class on the board on the third team, **`Team.Neutral`**: amber keyline and a TALK tag, no timeline icon, never acts. Neither side fights it — enemies ignore it (no targeting, no pincer through it, a 2×2 won't shove it), hero damage and enemy-only abilities skip it, and it doesn't hold up a wave (a wave clears with it still standing). A hero dragged through it swaps places with it like any one-tile unit. A recruitable that wants healing enters at half HP (`HpPercent` overrides).
+- **Conditions** (all must hold): `HealedBy` (any hero, or `Id` = that class, heals it — a hero ally-only ability reaches a neutral), `ParticipatedInPincerWith` (it stands beside a hero attacker — where a supporter would — when that hero's pincer strikes), `PayGold` (`Amount`, paid from the caravan's banked gold at the moment it joins — `BattleSetup.Purse`, deducted on commit whatever the outcome), `TalkedBy` (only that hero class can talk it round).
+- **`TalkCommand`** (hero id, neutral id; legal only when cardinally adjacent, footprint-aware): tap the neutral with a hero beside it. Terms unmet → `RecruitOfferedEvent`: it speaks its Recruit dialogue up to the `join` node and says what it still wants — **no clock cost** (like a no-op drag). Terms met → one action: `RecruitJoinedEvent`, it speaks the `join` node, flips to `Team.Hero` as a **guest ally** (§25.11 from there on: player-controlled; standing at a victory → joins the roster; down at the end → it'll be back).
+- **Dialogue:** a `DialogueDef` with `Trigger.Kind = Recruit`, `Trigger.Id` = the recruitable's class; linear nodes, no choices or effects, must have a `join` node; `$with` is the hero talking. Never played between battles.
+- **Bot:** `HeroBot` talks a recruitable round the moment every term is met (`Recruitment.ReadyTalk`), values healing one that wants it, and never counts shuffling a neutral as progress.
+- Content: Ronin (Green Valley III, wave 1 — heal me, fight beside me), Sellsword (Sandsea Reaches III, wave 1 — 150 G).
+- Open (§6.1 of the draft): permanence — today a talked-round recruit joins the roster exactly like a guest.
+
 ### 25.12 Caravan upgrades (added 2026-10-10, owner direction: "upgrades … a sense of progression")
 
 The caravan is the party's moving base — its wagons are the Longmother's own shed plates, re-decked, and the shops between battles (US-348 framing; real story text, GG-T120, §27.1). `caravan.json` defines upgrades bought with gold at **Camp → Caravan** (`CaravanUpgrades.Buy`, levels in `SaveData.Caravan`):
