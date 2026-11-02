@@ -76,7 +76,10 @@ namespace GridGame.App
             string offNote = "";
             if (!Talents.IsHome(C, h, tree))
             {
-                offNote = $" · off-tree: +{TalentConfig.OffTreePremium} pt a node, deeper tiers need more";
+                // GG-T135: the premium grows with distance on the archetype ring.
+                int steps = Talents.Distance(C, h, tree);
+                string away = steps == 1 ? "neighbour" : steps == TreeAdjacency.Unreachable ? "off the board" : $"{steps} steps away";
+                offNote = $" · off-tree ({away}): +{Talents.Premium(C, h, tree)} pt a node, deeper tiers need more";
                 if (!Talents.Opened(C, h, tree)) offNote += " · " + (Talents.WhyClosed(C, h, tree) ?? "buying a node opens it");
             }
             var w = Ui.Window($"{tree.Name} — {Talents.PointsIn(h, tree)} pts in tree{offNote}", body);

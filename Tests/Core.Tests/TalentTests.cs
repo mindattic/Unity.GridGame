@@ -80,10 +80,11 @@ namespace GridGame.Tests
 
         // ── Cross-tree specialization (§25.6.2, GG-T51) ─────────────────────────────────────────────
 
-        /// <summary>Off-trees the hero has no node in at all (not even a Known one), by name.</summary>
+        /// <summary>Off-trees the hero has no node in at all (not even a Known one), nearest on the adjacency ring first
+        /// (GG-T135), then by name — so the GG-T51 tests below open the home tree's neighbours, which pay the flat premium.</summary>
         private static SkillTreeDef[] Untouched(ContentDb c, HeroSave h, SkillTreeDef home) =>
             c.SkillTrees.Values.Where(t => t != home && !t.Nodes.Any(n => Talents.Unlocked(h, t, n)))
-                .OrderBy(t => t.Name).ToArray();
+                .OrderBy(t => TreeAdjacency.Distance(home.Id, t.Id)).ThenBy(t => t.Name).ToArray();
 
         /// <summary>Buys home-tree nodes the way the camp routine would until the home tree holds <paramref name="target"/> points.</summary>
         private static void InvestHome(ContentDb c, SaveData s, HeroSave h, SkillTreeDef home, int target)
@@ -242,6 +243,70 @@ namespace GridGame.Tests
             Assert.That(h.SkillPoints, Is.EqualTo(500));
             Assert.That(Talents.Opened(c, h, tree), Is.False);
             Assert.That(Talents.OpenedOffTrees(c, h), Is.Empty);
+        }
+
+        // ── Archetype adjacency (§25.6.2.2, GG-T135) ────────────────────────────────────────────────
+
+        [Test]
+        public void Every_skill_tree_sits_once_on_the_adjacency_ring()
+        {
+            var c = Real;
+            var ring = TreeAdjacency.Ring;
+            Assert.That(ring.Distinct().Count(), Is.EqualTo(ring.Length), "no tree twice");
+            Assert.That(ring, Is.EquivalentTo(c.SkillTrees.Values.Select(t => t.Id)), "the ring is exactly the content's trees");
+        }
+
+        [Test]
+        public void Ring_distance_routes_a_warrior_to_mage_through_guardian()
+        {
+            Assert.That(TreeAdjacency.Adjacent("warrior", "guardian"), Is.True);
+            Assert.That(TreeAdjacency.Adjacent("guardian", "cleric"), Is.True, "the ring wraps");
+            Assert.That(TreeAdjacency.Distance("warrior", "warrior"), Is.Zero);
+            Assert.That(TreeAdjacency.Distance("warrior", "mage"), Is.EqualTo(3), "Warrior - Guardian - Cleric - Mage");
+            Assert.That(TreeAdjacency.DistanceFrom(new[] { "warrior", "guardian" }, "mage"), Is.EqualTo(2), "nearest held tree counts");
+            Assert.That(TreeAdjacency.DistanceFrom(new[] { "warrior", "guardian", "cleric" }, "mage"), Is.EqualTo(1));
+            Assert.That(TreeAdjacency.Distance("warrior", "nowhere"), Is.EqualTo(TreeAdjacency.Unreachable));
+
+            Assert.That(TreeAdjacency.ExtraPremium(1), Is.Zero, "a neighbour pays only GG-T51's flat premium");
+            Assert.That(TreeAdjacency.ExtraPremium(2), Is.EqualTo(TreeAdjacency.PremiumPerExtraStep));
+
+            Assert.That(TreeAdjacency.WhyTooFar(new[] { "warrior" }, "mage"), Does.Contain("open guardian first"));
+            Assert.That(TreeAdjacency.Stepping(new[] { "warrior" }, "mage"), Is.EqualTo(new[] { "guardian" }));
+            Assert.That(TreeAdjacency.WhyTooFar(new[] { "warrior", "guardian" }, "mage"), Is.Null);
+        }
+
+        [Test]
+        public void A_distant_tree_must_be_routed_to_and_costs_more_per_step()
+        {
+            var (c, s, h, home) = Setup();
+            h.SkillPoints = 2000;
+            Assume.That(TalentConfig.OpenTreeAt.Length, Is.GreaterThanOrEqualTo(2));
+            Assume.That(TreeAdjacency.MaxOpenDistance, Is.EqualTo(2));
+            var untouched = Untouched(c, h, home);
+            var far = untouched.FirstOrDefault(t => TreeAdjacency.Distance(home.Id, t.Id) == 3);
+            Assume.That(far, Is.Not.Null, "the 7-ring has trees 3 steps from every home");
+            var via = untouched.First(t => TreeAdjacency.Adjacent(home.Id, t.Id) && TreeAdjacency.Distance(t.Id, far.Id) == 2);
+
+            InvestHome(c, s, h, home, TalentConfig.OpenTreeAt[0]);
+            var farStart = StartNode(far);
+            Assert.That(Talents.State(c, h, far, farStart), Is.EqualTo(TalentState.Locked), "3 steps: too far to open directly");
+            Assert.That(Talents.WhyClosed(c, h, far), Does.Contain("3 steps away").And.Contain(via.Name));
+            int before = h.SkillPoints;
+            Assert.That(Talents.Unlock(c, s, h, far.Id, farStart.Id).Ok, Is.False);
+            Assert.That(h.SkillPoints, Is.EqualTo(before));
+
+            Assert.That(Talents.Premium(c, h, via), Is.EqualTo(TalentConfig.OffTreePremium), "a neighbour pays the flat premium");
+            Assert.That(Talents.Unlock(c, s, h, via.Id, StartNode(via).Id).Ok, Is.True);
+
+            InvestHome(c, s, h, home, TalentConfig.OpenTreeAt[1]);
+            Assert.That(Talents.Distance(c, h, far), Is.EqualTo(2), "the stepping stone brought it closer");
+            Assert.That(Talents.WhyClosed(c, h, far), Is.Null);
+            int premium = Talents.Premium(c, h, far);
+            Assert.That(premium, Is.EqualTo(TalentConfig.OffTreePremium + TreeAdjacency.PremiumPerExtraStep), "two steps cost one more a node");
+            before = h.SkillPoints;
+            Assert.That(Talents.Unlock(c, s, h, far.Id, farStart.Id).Ok, Is.True);
+            Assert.That(h.SkillPoints, Is.EqualTo(before - farStart.Cost - premium));
+            Assert.That(h.SkillPoints + Talents.PointsSpent(c, h), Is.EqualTo(2000), "Respec would refund what was paid");
         }
 
         [Test]

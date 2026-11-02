@@ -75,12 +75,29 @@ namespace GridGame.Meta
             return TalentConfig.OpenTreeAt.Count(at => pts >= at);
         }
 
-        /// <summary>Why the hero can't buy into this tree yet (no free off-tree slot), or null when it is opened or can be.</summary>
+        /// <summary>Ids of the trees the hero holds for adjacency (§25.6.2.2, GG-T135): the home tree plus every opened off-tree.</summary>
+        public static List<string> HeldTreeIds(ContentDb c, HeroSave h)
+        {
+            var ids = new List<string>();
+            var home = HomeTree(c, h);
+            if (home != null) ids.Add(home.Id);
+            ids.AddRange(OpenedOffTrees(c, h).Select(t => t.Id));
+            return ids;
+        }
+
+        /// <summary>Steps from the nearest other held tree to this one on <see cref="TreeAdjacency"/>'s board (0 for home).</summary>
+        public static int Distance(ContentDb c, HeroSave h, SkillTreeDef t) =>
+            t == null || IsHome(c, h, t) ? 0
+                : TreeAdjacency.DistanceFrom(HeldTreeIds(c, h).Where(id => id != t.Id), t.Id);
+
+        /// <summary>Why the hero can't buy into this tree yet (no free off-tree slot, then too far from every held tree on
+        /// the adjacency board — GG-T135), or null when it is opened or can be.</summary>
         public static string WhyClosed(ContentDb c, HeroSave h, SkillTreeDef t)
         {
             if (Opened(c, h, t)) return null;
             int opened = OpenedOffTrees(c, h).Count;
-            if (opened < OffTreeSlots(c, h)) return null;
+            if (opened < OffTreeSlots(c, h))
+                return TreeAdjacency.WhyTooFar(HeldTreeIds(c, h), t.Id, id => c.TrySkillTree(id)?.Name ?? id);
             var home = HomeTree(c, h);
             if (home == null) return "No home tree to specialize from";
             if (opened >= TalentConfig.OpenTreeAt.Length)
@@ -91,8 +108,12 @@ namespace GridGame.Meta
         }
 
         /// <summary>Skill points this node costs this hero: its <see cref="SkillNodeDef.Cost"/>, plus the off-tree premium.</summary>
-        public static int Cost(ContentDb c, HeroSave h, SkillTreeDef t, SkillNodeDef n) =>
-            n.Cost + (IsHome(c, h, t) ? 0 : Math.Max(0, TalentConfig.OffTreePremium));
+        public static int Cost(ContentDb c, HeroSave h, SkillTreeDef t, SkillNodeDef n) => n.Cost + Premium(c, h, t);
+
+        /// <summary>The per-node surcharge in this tree: 0 at home; off-tree, GG-T51's flat <see cref="TalentConfig.OffTreePremium"/>
+        /// plus <see cref="TreeAdjacency.ExtraPremium(int)"/> for each step past a neighbour (GG-T135).</summary>
+        public static int Premium(ContentDb c, HeroSave h, SkillTreeDef t) =>
+            IsHome(c, h, t) ? 0 : Math.Max(0, TalentConfig.OffTreePremium) + TreeAdjacency.ExtraPremium(Distance(c, h, t));
 
         /// <summary>Points in the tree this node needs for this hero: <see cref="SkillNodeDef.RequiredPointsInTree"/>, scaled
         /// up (rounded up) in an off-tree.</summary>
