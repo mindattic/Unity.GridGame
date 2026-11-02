@@ -214,7 +214,7 @@ def sweep(run="sweep", theme=None):
         print(call("setting", key="menutheme", value=theme))
     time.sleep(1)
     report = {}
-    for screen in ["hub", "stages", "items", "status", "equip", "abilities", "party", "shop", "blacksmith",
+    for screen in ["hub", "stages", "items", "status", "equip", "abilities", "talents", "respec", "party", "shop", "blacksmith",
                    "alchemist", "enchantress", "talk", "summon", "bounties", "crucible", "bestiary", "settings", "credits"]:
         call("goto", screen=screen)
         time.sleep(0.9)

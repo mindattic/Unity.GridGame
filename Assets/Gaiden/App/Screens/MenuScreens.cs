@@ -507,6 +507,10 @@ namespace GridGame.App
             Item("Equip", () => new EquipScreen(s.Party.FirstOrDefault()));
             // GG-T180 (§25.0.9): onboarding step 7 introduces training here once the first armor enchant is bound.
             Item("Abilities", () => new AbilitiesScreen(s.Party.FirstOrDefault()), Training.Step(s) ? "Train a skill!" : "");
+            // GG-T53 (§25.6.3): skill trees; opens on the first party hero with points to spend.
+            var talentHero = s.Party.Select(s.Hero).FirstOrDefault(h => h != null && h.SkillPoints > 0);
+            int partyPoints = s.Party.Select(s.Hero).Where(h => h != null).Sum(h => h.SkillPoints);
+            Item("Talents", () => new SkillTreeScreen(talentHero?.ClassId ?? s.Party.FirstOrDefault()), partyPoints > 0 ? $"{partyPoints} pts" : "");
             Item("Party", () => new PartyScreen());
             // Talk (§27.1, GG-T117): chat with party members and joined Camp NPCs.
             int newTalks = DialogueRunner.TalkPartners(s).Count(p => { var t = DialogueRunner.TalkTopic(c, s, p); return t != null && !s.SeenDialogues.Contains(t.Id); });
@@ -517,6 +521,8 @@ namespace GridGame.App
             {
                 if (Expeditions.InnOpen(s)) Ui.MenuRow(s.Expedition != null ? "Inn (Medic Wagon)" : "Inn", Inn.Cost(c, s) > 0 ? Ui.Gold(Inn.Cost(c, s)) : "Rested", Rest, list.contentContainer);
                 else Ui.MenuRow("Inn", "On the road", null, list.contentContainer, null, false);
+                // GG-T53 (§25.6.3): the Innkeeper also sells a Respec that refunds every talent point.
+                if (Expeditions.InnOpen(s)) Item("Inn: Respec", () => new RespecScreen());
             }
             else Station("Inn", false, CampUnlocks.JoinHint(c, CampNpcs.Innkeeper), null);
             Station("Blacksmith", CampUnlocks.NpcOpen(s, CampNpcs.Blacksmith), CampUnlocks.JoinHint(c, CampNpcs.Blacksmith), () => new BlacksmithScreen());

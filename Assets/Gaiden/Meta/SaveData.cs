@@ -126,6 +126,9 @@ namespace GridGame.Meta
         /// <summary>Unspent skill points (§15.1, GG-T49), earned per level plus milestone bonuses
         /// (<see cref="Formulas.SkillPointsForLevelUp"/>). Spent on skill-tree nodes (GG-T50).</summary>
         public int SkillPoints;
+        /// <summary>Skill-tree nodes bought with points, as "treeId/nodeId" (§25.6.3, GG-T53, <see cref="Talents"/>);
+        /// the Inn's Respec clears it and refunds their cost. An older save simply has none.</summary>
+        public List<string> TreeNodes = new List<string>();
 
         public string WeaponId;
         public int WeaponDurability;
