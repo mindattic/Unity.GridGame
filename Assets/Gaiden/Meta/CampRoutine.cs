@@ -8,8 +8,8 @@ namespace GridGame.Meta
 {
     /// <summary>
     /// "What a sensible player does at camp": scrap worn-out gear, rest, repair, forge and equip better
-    /// gear (owned bag, then Forge, then the Merchant's Bargain shelf), learn abilities into dead bar
-    /// slots (GG-T100), keep potions stocked, work the Bounty Board and recruit at the Summon Circle into an open
+    /// gear (owned bag, then Forge, then the Merchant's Bargain shelf), spend skill points on tree nodes
+    /// (home tree first, GG-T54), learn abilities into dead bar slots (GG-T100), keep potions stocked, work the Bounty Board and recruit at the Summon Circle into an open
     /// party slot (GG-T87). Used by the balance simulation and the in-game auto-manage helper;
     /// every step goes through the same services the screens call, and only the services whose Camp NPC has
     /// joined (GG-T119): no Blacksmith means no repair/salvage/forge, no Innkeeper no rest, no Merchant no
@@ -80,6 +80,10 @@ namespace GridGame.Meta
             // anywhere ahead, then take the one whose target shows up soonest on the road ahead.
             ManageBounty(c, s, Note);
 
+            // Spend banked skill points on tree nodes (GG-T54) — home tree first — before filling the bar, so a
+            // freshly granted ability can take a dead slot on this same visit.
+            SpendSkillPoints(c, s, log);
+
             // Fill the ability bar (GG-T100) before the discretionary gear pass, so a full gear shopping list
             // can't starve it every visit.
             FillBars(c, s, log);
@@ -130,7 +134,10 @@ namespace GridGame.Meta
             {
                 int before = s.Count(potion.Id);
                 bool ok = false;
-                var brew = alchemist ? brews.FirstOrDefault(r => Crafting.IsUnlocked(s, r) && Brewing.HasLoot(s, r) && s.Gold >= r.Gold) : null;
+                // GG-T54: a recipe whose inputs are all in the bag beats one still short its bottle — use up the
+                // reagents already held before spending gold on a bottle.
+                var brew = alchemist ? brews.Where(r => Crafting.IsUnlocked(s, r) && Brewing.HasLoot(s, r) && s.Gold >= r.Gold)
+                    .OrderByDescending(r => Crafting.HasInputs(s, r)).FirstOrDefault() : null;
                 if (brew != null && !Crafting.HasInputs(s, brew) && merchant && bottle != null && Brewing.IsBottleRecipe(brew) && s.Gold >= bottle.BaseCost + brew.Gold)
                     Note(Shop.Buy(c, s, new Dictionary<string, int> { [bottle.Id] = 1 }));
                 if (brew != null && Crafting.HasInputs(s, brew) && s.Gold >= brew.Gold)
@@ -177,6 +184,53 @@ namespace GridGame.Meta
                 .FirstOrDefault();
         }
 
+        /// <summary>Text in a camp log line that records a skill-tree purchase ("Paladin spent 2 SP on Aegisguard Core").</summary>
+        public const string TalentMarker = " SP on ";
+
+        /// <summary>The node a sensible player spends points on next in one tree (GG-T54), or null when none is
+        /// <see cref="TalentState.Available"/>. Deepening a branch the hero is already in (a node with prerequisites —
+        /// stat nodes, cores, capstones, the finale) beats opening a new one, deepest first, then authored order —
+        /// so points pile into one branch until its capstone instead of spreading thin across every opener.</summary>
+        public static SkillNodeDef NextTalent(HeroSave h, SkillTreeDef t)
+        {
+            if (h == null || t == null) return null;
+            return t.Nodes.Select((n, i) => (n, i))
+                .Where(x => Talents.State(h, t, x.n) == TalentState.Available)
+                .OrderByDescending(x => x.n.Prerequisites.Count > 0)
+                .ThenByDescending(x => x.n.RequiredPointsInTree)
+                .ThenBy(x => x.i)
+                .Select(x => x.n).FirstOrDefault();
+        }
+
+        /// <summary>Spend every roster hero's banked skill points (GG-T54): the home tree first, by <see cref="NextTalent"/>;
+        /// when that node costs more than the hero has, the points bank for it rather than leak into a cheaper sideline.
+        /// Only once the home tree has nothing left to buy do points go off-tree — into a tree the hero has already opened
+        /// (<see cref="Talents.Trees"/>: one it holds a node in, e.g. through a gold-Learned ability), by the same rule;
+        /// opening a brand-new tree is a player's call (GG-T51/T83), not the routine's.</summary>
+        private static void SpendSkillPoints(ContentDb c, SaveData s, List<string> log)
+        {
+            foreach (var h in s.Roster)
+            {
+                if (h == null || h.SkillPoints <= 0) continue;
+                string heroName = c.TryClass(h.ClassId)?.Name ?? h.ClassId;
+                // Bounded by the node count: every pass either buys a node (strictly fewer left) or stops.
+                for (int guard = 0; guard < 500 && h.SkillPoints > 0; guard++)
+                {
+                    var trees = Talents.Trees(c, h);
+                    SkillTreeDef tree = null; SkillNodeDef node = null;
+                    foreach (var t in trees)
+                    {
+                        node = NextTalent(h, t);
+                        if (node != null) { tree = t; break; }
+                    }
+                    if (node == null || node.Cost > h.SkillPoints) break;
+                    var r = Talents.Unlock(c, s, h, tree.Id, node.Id);
+                    if (!r.Ok) break;
+                    log.Add($"{heroName} spent {node.Cost}{TalentMarker}{node.Name ?? node.Id} ({tree.Name})");
+                }
+            }
+        }
+
         /// <summary>For every party hero, put something useful in each dead bar slot — and upgrade a slot
         /// holding only the stopgap potion: an already-known but unslotted ability first, else learn the
         /// <see cref="BestLearnable"/> one the gold allows, else (dead slots only) the stopgap potion if any is
@@ -195,7 +249,8 @@ namespace GridGame.Meta
                 {
                     bool dead = IsDeadSlot(s, h.Bar[i]);
                     if (!dead && h.Bar[i] != stopgap) continue;
-                    string entry = h.Known.FirstOrDefault(k => !h.Bar.Contains(k));
+                    // Only an ability usable from the bar: a tree-granted passive (GG-T54) works from Known and would waste a slot.
+                    string entry = h.Known.FirstOrDefault(k => !h.Bar.Contains(k) && c.TryAbility(k) is AbilityDef ka && Abilities.IsHeroUsable(ka));
                     if (entry == null)
                     {
                         var learn = BestLearnable(c, h, s.Gold);

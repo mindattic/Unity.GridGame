@@ -79,7 +79,7 @@ namespace GridGame.Tests
         public void Campaign_pacing_table(float randomness, string label, bool manageCamp, int startingHeroes, bool story)
         {
             var total = new Dictionary<string, Row>();
-            int finishedRuns = 0, recruits = 0, bountiesClaimed = 0, bountySp = 0, roster = 0;
+            int finishedRuns = 0, recruits = 0, bountiesClaimed = 0, bountySp = 0, roster = 0, spSpent = 0, spBanked = 0;
             const int seeds = 4;
             var party = FiveStart.Take(startingHeroes).ToList();
             for (int seed = 1; seed <= seeds; seed++)
@@ -89,6 +89,9 @@ namespace GridGame.Tests
                 roster += save.Roster.Count;
                 bountiesClaimed += save.Bounty.Claimed.Count;
                 bountySp += Bounties.SkillPointsClaimed(Real, save); // GG-T134: skill points paid each party hero
+                // GG-T54: the skill-point sink — what the camp routine put into trees vs. what's still banked at the end.
+                spSpent += save.Roster.Sum(h => Talents.PointsSpent(Real, h));
+                spBanked += save.Roster.Sum(h => h.SkillPoints);
                 if (finished) finishedRuns++;
                 foreach (var kv in rows)
                 {
@@ -97,7 +100,7 @@ namespace GridGame.Tests
                 }
             }
             var sb = new StringBuilder();
-            sb.AppendLine($"=== {label} bot (randomness {randomness}) — campaign finished {finishedRuns}/{seeds} — summon recruits {recruits}, roster at the end {roster / (float)seeds:F1}, bounties claimed {bountiesClaimed} (+{bountySp / (float)seeds:F1} SP each per run) ===");
+            sb.AppendLine($"=== {label} bot (randomness {randomness}) — campaign finished {finishedRuns}/{seeds} — summon recruits {recruits}, roster at the end {roster / (float)seeds:F1}, bounties claimed {bountiesClaimed} (+{bountySp / (float)seeds:F1} SP each per run), roster SP spent {spSpent / (float)seeds:F1} / banked {spBanked / (float)seeds:F1} per run ===");
             sb.AppendLine("stage                  win%   actions   hp-left%");
             foreach (var kv in total)
                 sb.AppendLine($"{kv.Key,-22} {100 * kv.Value.Wins / kv.Value.Runs,4}%   {kv.Value.Actions / (float)kv.Value.Runs,7:F1}   {kv.Value.HpPct / kv.Value.Runs,6}%");
@@ -108,6 +111,8 @@ namespace GridGame.Tests
             // (Only a run that finishes is guaranteed to pass a contract's last target — a bot that stalls early may not.)
             if (manageCamp && finishedRuns > 0) Assert.That(bountiesClaimed > 0, Is.True, "the camp routine never claimed a bounty over a played-out campaign");
             if (manageCamp && !story && startingHeroes < Progression.MaxPartySize) Assert.That(recruits > 0, Is.True, "the camp routine never recruited into an open party slot");
+            // GG-T54: a managed campaign actually spends the skill points it earns.
+            if (manageCamp && finishedRuns > 0) Assert.That(spSpent > 0, Is.True, "the camp routine never spent a skill point over a played-out campaign");
         }
     }
 }

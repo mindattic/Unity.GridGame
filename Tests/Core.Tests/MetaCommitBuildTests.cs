@@ -545,6 +545,44 @@ namespace GridGame.Tests
             Assert.That(s.Bounty.ActiveId, Is.Not.Null.And.Not.EqualTo(first.Id));
         }
 
+        /// <summary>GG-T54: banked skill points go into the hero's home tree, deepening one branch, and nothing
+        /// leaks off-tree while the home tree still has a node to buy.</summary>
+        [Test]
+        public void CampRoutine_spends_skill_points_in_the_home_tree_first()
+        {
+            var c = Real; var s = Progression.NewGame(c, "CRTalents"); CampNpcs.JoinAll(s); // every Camp service open (GG-T119)
+            var h = s.Hero(s.Party[0]);
+            var home = Talents.HomeTree(c, h);
+            Assert.That(home, Is.Not.Null, "precondition: the hero has a home tree");
+            h.SkillPoints = 3;
+            var log = CampRoutine.Run(c, s);
+            Assert.That(Talents.PointsSpent(c, h), Is.GreaterThan(0), "the routine should have spent banked points");
+            Assert.That(h.TreeNodes.All(k => k.StartsWith(home.Id + "/")), Is.True, "every point should land in the home tree first");
+            Assert.That(log.Any(m => m.Contains(CampRoutine.TalentMarker)), Is.True);
+            // Deepening beats spreading: the second purchase follows up the first branch rather than opening another.
+            var bought = home.Nodes.Where(n => Talents.Bought(h, home, n)).ToList();
+            Assert.That(bought.Count(n => n.Prerequisites.Count == 0 && n.RequiredPointsInTree > 0), Is.EqualTo(1), "only one branch opener bought");
+        }
+
+        /// <summary>GG-T54: a hero whose next home-tree node costs more than it holds banks the points for it.</summary>
+        [Test]
+        public void CampRoutine_banks_points_for_a_home_node_it_cannot_afford_yet()
+        {
+            var c = Real; var s = Progression.NewGame(c, "CRTalentsBank"); CampNpcs.JoinAll(s); // every Camp service open (GG-T119)
+            var h = s.Hero(s.Party[0]);
+            var home = Talents.HomeTree(c, h);
+            for (int sp = 1; sp <= 6; sp++)
+            {
+                h.SkillPoints += sp;
+                CampRoutine.Run(c, s);
+                var next = CampRoutine.NextTalent(h, home);
+                // Points left over only ever mean the home tree's next pick is dearer than the balance — never a skipped buy
+                // or a point spent off-tree.
+                if (h.SkillPoints > 0) Assert.That(next != null && next.Cost > h.SkillPoints, Is.True, $"{h.SkillPoints} SP left with an affordable home node waiting");
+                Assert.That(h.TreeNodes.All(k => k.StartsWith(home.Id + "/")), Is.True);
+            }
+        }
+
         /// <summary>GG-T54: a Bargain offer at or above the safety threshold is still a legitimate cheap
         /// upgrade the camp routine should take for an empty slot.</summary>
         [Test]
