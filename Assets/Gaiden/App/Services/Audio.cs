@@ -98,6 +98,18 @@ namespace GridGame.App
             held.Clear();
         }
 
+        /// <summary>Silences every sound effect still ringing (held or playing) and drops the hold set — the endless
+        /// loop's between-encounter teardown (GG-T61), so nothing from the last battle bleeds into the next. The pool
+        /// itself is fixed (10 sources, never grown), and music is left alone.</summary>
+        public void StopSfx()
+        {
+            foreach (var s in sfx) if (s != null) s.Stop();
+            held.Clear();
+        }
+
+        /// <summary>Number of AudioSources this service owns (music + the fixed SFX pool), for leak checks.</summary>
+        public int SourceCount => sfx.Count + (music != null ? 1 : 0);
+
         /// <summary>Semantic cue → file. Keep game code speaking in cues, not filenames.</summary>
         private static string Cue(string key)
         {

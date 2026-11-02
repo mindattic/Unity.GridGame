@@ -49,7 +49,15 @@ namespace GridGame.App
         private sealed class Encounter
         {
             public int Index;
-            public BattleScreen Screen;
+            /// <summary>The encounter's battle, held weakly (GG-T61): an ended encounter waits here up to 15 minutes for
+            /// its clip, and a strong reference kept every finished BattleScreen — its whole state and visual tree —
+            /// alive that long (the 300-encounter run's leak check saw each one survive a full GC).</summary>
+            public BattleScreen Screen
+            {
+                get => screen != null && screen.TryGetTarget(out var s) ? s : null;
+                set => screen = value != null ? new WeakReference<BattleScreen>(value) : null;
+            }
+            private WeakReference<BattleScreen> screen;
             public StageDef Stage;
             public int Seed;
             public DateTimeOffset StartedAt;

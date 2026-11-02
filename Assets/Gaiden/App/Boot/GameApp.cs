@@ -511,7 +511,8 @@ namespace GridGame.App
         public static void AfterBattle(BattleReport report, string stageId)
         {
             Completed++;
-            Debug.Log($"[EndlessDemo] encounter {Completed} ({stageId}): {(report.Victory ? "victory" : report.Escaped ? "escaped" : report.Retreated ? "retreated" : "defeat")}");
+            // GG-T61: an encounter the stall guard ended (EndlessStability) reports "stalled", not a defeat.
+            Debug.Log($"[EndlessDemo] encounter {Completed} ({stageId}): {(EndlessStability.IsStalled(report) ? "stalled" : report.Victory ? "victory" : report.Escaped ? "escaped" : report.Retreated ? "retreated" : "defeat")}");
             if (count.HasValue && Completed >= count.Value) { Stop(); return; }
             Next();
         }
