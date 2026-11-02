@@ -403,6 +403,84 @@ def main():
         else:
             check("2×2 boss appears in Frostmaw Caverns II", False)
 
+    with section('Title flow on profiles (GG-T116): create, switch, new, continue, load'):
+        h.call("autoplay", on=0)
+        h.call("goto", screen="title")
+        on_screen("title reachable for the profile flow", "title")
+        time.sleep(0.6)
+        start = h.call("state").get("profile")
+        check("title shows the active profile", until(lambda: has_text(start or "?")), f"profile={start}")
+        # Create: Profile row -> picker -> + New profile -> type a name -> Create (switches to it, back on the Title).
+        h._tap_until(lambda: h.call("click", name="title-profile"), lambda: until(lambda: h.call("state")["screen"] == "profiles", 2.0), tries=3, wait=0.2)
+        on_screen("Profile row opens the picker", "profiles")
+        time.sleep(0.5)
+        h._tap_until(lambda: h.call("click", name="new-profile"), lambda: until(lambda: h.call("state")["screen"] == "profile-name", 2.0), tries=3, wait=0.2)
+        on_screen("+ New profile opens the name screen", "profile-name")
+        time.sleep(0.5)
+        typed = h.call("type", name="profile-name-field", text="Alpha")
+        check("profile name field takes typing", typed.get("value") == "Alpha", str(typed))
+        h.shot("profile-flow-01-name")
+        h._tap_until(lambda: h.call("click", name="profile-name-ok"), lambda: until(lambda: h.call("state")["screen"] == "title", 2.5), tries=3, wait=0.2)
+        on_screen("Create returns to the Title", "title")
+        check("a created profile becomes the active one", h.call("state").get("profile") == "Alpha", str(h.call("state").get("profile")))
+        time.sleep(0.6)
+        check("Title shows the new profile's name", has_text("Alpha"))
+        check("a new profile has no Continue (its slots are its own)", "Continue" not in texts(), str(texts()))
+        h.shot("profile-flow-02-title-alpha")
+        # New Game in the new profile: every slot is empty; take slot 2.
+        h._tap_until(lambda: h.call("clicktext", text="New Game"), lambda: until(lambda: has_text("Slot 2"), 1.5), tries=3, wait=0.2)
+        slots = [t for t in texts() if t.startswith("Slot ")]
+        check("the new profile's New Game lists three empty slots", len(slots) == 3 and all("Empty" in t for t in slots), str(slots))
+        h._tap_until(lambda: h.call("clicktext", text="Slot 2"), lambda: until(lambda: h.call("state")["screen"] == "charselect", 2.0), tries=3, wait=0.2)
+        if on_screen("new profile's New Game opens the party select", "charselect"):
+            h.pick_party()
+        on_screen("new profile's New Game lands at camp", "hub")
+        st = h.call("state")
+        check("new game is in the new profile's slot 2", st.get("profile") == "Alpha" and st.get("slot") == 1, f"profile={st.get('profile')} slot={st.get('slot')}")
+        root = h.call("profile").get("root", "")
+        alpha_saves = [os.path.join(d, f) for d, _, fs in os.walk(os.path.join(root, "Alpha")) for f in fs if f == "slot2.json"]
+        check("the save is written under the new profile's own folder", bool(alpha_saves), root)
+        # Continue: back on the Title the new profile now has a Continue that resumes its most recent slot (2).
+        h.call("clicktext", text="Save & Quit"); until(lambda: has_text("New Game"))
+        time.sleep(0.6)
+        h._tap_until(lambda: h.call("clicktext", text="Continue"), lambda: until(lambda: h.call("state")["screen"] == "hub", 3.0), tries=3, wait=0.2)
+        st = h.call("state")
+        check("Continue resumes the active profile's most recent slot", st.get("screen") == "hub" and st.get("profile") == "Alpha" and st.get("slot") == 1,
+              f"screen={st.get('screen')} profile={st.get('profile')} slot={st.get('slot')}")
+        # Switch: back to the starting profile through the picker; its own Continue resumes its own slot.
+        h.call("clicktext", text="Save & Quit"); until(lambda: has_text("New Game"))
+        time.sleep(0.6)
+        h._tap_until(lambda: h.call("click", name="title-profile"), lambda: until(lambda: h.call("state")["screen"] == "profiles", 2.0), tries=3, wait=0.2)
+        time.sleep(0.5)
+        h.shot("profile-flow-03-picker")
+        h._tap_until(lambda: h.call("click", name=f"profile-{start}"), lambda: until(lambda: h.call("state")["screen"] == "title", 2.5), tries=3, wait=0.2)
+        check("switching profiles from the picker returns to the Title as that profile",
+              h.call("state").get("screen") == "title" and h.call("state").get("profile") == start, str(h.call("state").get("profile")))
+        time.sleep(0.6)
+        h._tap_until(lambda: h.call("clicktext", text="Continue"), lambda: until(lambda: h.call("state")["screen"] == "hub", 3.0), tries=3, wait=0.2)
+        st = h.call("state")
+        check("after switching, Continue resumes that profile's own save, not the other's",
+              st.get("screen") == "hub" and st.get("profile") == start and st.get("slot") == 0, f"profile={st.get('profile')} slot={st.get('slot')}")
+        # Load: switch back to Alpha; Load Game lists only Alpha's slot 2 and loads it.
+        h.call("clicktext", text="Save & Quit"); until(lambda: has_text("New Game"))
+        time.sleep(0.6)
+        h._tap_until(lambda: h.call("click", name="title-profile"), lambda: until(lambda: h.call("state")["screen"] == "profiles", 2.0), tries=3, wait=0.2)
+        time.sleep(0.5)
+        h._tap_until(lambda: h.call("click", name="profile-Alpha"), lambda: until(lambda: h.call("state")["screen"] == "title", 2.5), tries=3, wait=0.2)
+        check("switching back to the new profile", h.call("state").get("profile") == "Alpha", str(h.call("state").get("profile")))
+        time.sleep(0.6)
+        h._tap_until(lambda: h.call("clicktext", text="Load Game"), lambda: until(lambda: h.call("state")["screen"] == "load", 2.0), tries=3, wait=0.2)
+        on_screen("Load Game opens the slot list", "load")
+        time.sleep(0.4)
+        slots = [t for t in texts() if t.startswith("Slot ")]
+        check("Load Game lists only the active profile's saves",
+              len(slots) == 3 and "Empty" in slots[0] and "Empty" not in slots[1] and "Empty" in slots[2], str(slots))
+        h.shot("profile-flow-04-load")
+        h._tap_until(lambda: h.call("clicktext", text="Slot 2"), lambda: until(lambda: h.call("state")["screen"] == "hub", 3.0), tries=3, wait=0.2)
+        st = h.call("state")
+        check("Load Game loads the picked slot of the active profile", st.get("screen") == "hub" and st.get("profile") == "Alpha" and st.get("slot") == 1,
+              f"screen={st.get('screen')} profile={st.get('profile')} slot={st.get('slot')}")
+
     with section('Build settings (US-329)'):
         ps = open(os.path.join(h.ROOT, "ProjectSettings", "ProjectSettings.asset"), encoding="utf-8").read()
         ver = open(os.path.join(h.ROOT, "version.txt"), encoding="utf-8").read().strip()

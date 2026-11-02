@@ -235,6 +235,16 @@ namespace GridGame.App.Automation
                         screen = new[] { Screen.width, Screen.height }, panelPoint = panelPoint.ToString(),
                     };
                 }
+                case "type":
+                {
+                    // GG-T116: types into a named TextField the way a player would (the value-changed
+                    // callbacks run, so a screen's own validation sees it), e.g. the New Profile name field.
+                    var field = app.Stage.Q<TextField>(q["name"]);
+                    if (field == null || field.resolvedStyle.display == DisplayStyle.None || field.worldBound.width <= 0)
+                        return new { error = $"no visible text field named '{q["name"]}'" };
+                    field.value = q["text"] ?? "";
+                    return new { ok = true, value = field.value };
+                }
                 case "back": app.Router.Back(); return new { ok = true };
                 case "wait":
                     StartCoroutine(WaitIdle(F(q["ms"], 0) / 1000f, reply));
@@ -803,6 +813,7 @@ namespace GridGame.App.Automation
                 ["fps"] = Mathf.Round(1f / Mathf.Max(0.0001f, Time.smoothDeltaTime)),
                 ["board_audit"] = BoardAudit.Snapshot(),
                 ["profile"] = app.Profile?.Name,
+                ["slot"] = app.Save != null ? app.Slot : -1, // GG-T116: which of the profile's slots is loaded (0-based)
             };
             if (app.Save != null)
                 dump["save"] = new { app.Save.Gold, app.Save.HighestClearedStage, party = app.Save.Party, inventory = app.Save.Inventory, levels = app.Save.Roster.ToDictionary(h => h.ClassId, Progression.Level), xp = app.Save.Roster.ToDictionary(h => h.ClassId, h => h.TotalXp), hp = app.Save.Roster.ToDictionary(h => h.ClassId, h => h.Hp), crucible = new { app.Save.Crucible.Best, app.Save.Crucible.Runs, app.Save.Crucible.TotalWaves }, expedition = app.Save.Expedition?.ThemeId };
