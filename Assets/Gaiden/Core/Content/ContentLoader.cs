@@ -203,7 +203,15 @@ namespace GridGame.Core.Content
                 }
                 foreach (var n in t.Nodes)
                 {
-                    NeedAbility(n.Grants, $"tree {t.Id} node {n.Id}");
+                    // GG-T77: a node grants either an ability/passive or a flat stat bonus, never both or neither.
+                    if (n.GrantsStat != null)
+                    {
+                        if (!string.IsNullOrEmpty(n.Grants)) p.Add($"tree {t.Id} node {n.Id}: Grants and GrantsStat are mutually exclusive");
+                        if (!StatGrantDef.IsStatName(n.GrantsStat.Stat)) p.Add($"tree {t.Id} node {n.Id}: unknown stat '{n.GrantsStat.Stat}' (use {string.Join("/", StatGrantDef.Names)})");
+                        if (n.GrantsStat.Amount <= 0f) p.Add($"tree {t.Id} node {n.Id}: stat bonus must be positive");
+                    }
+                    else if (string.IsNullOrEmpty(n.Grants)) p.Add($"tree {t.Id} node {n.Id}: needs Grants (an ability) or GrantsStat (a stat bonus)");
+                    else NeedAbility(n.Grants, $"tree {t.Id} node {n.Id}");
                     if (n.Cost <= 0) p.Add($"tree {t.Id} node {n.Id}: cost must be positive");
                     if (n.RequiredPointsInTree < 0) p.Add($"tree {t.Id} node {n.Id}: required points can't be negative");
                     foreach (var req in n.Prerequisites)

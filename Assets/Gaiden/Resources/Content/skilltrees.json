@@ -32,6 +32,20 @@
     "Prerequisites": []
    },
    {
+    "Id": "aegisguard_stat1",
+    "Name": "Vitality +3",
+    "Description": "Aegis Guard conditioning: a permanent +3 Vitality.",
+    "GrantsStat": {
+     "Stat": "Vitality",
+     "Amount": 3
+    },
+    "Cost": 1,
+    "RequiredPointsInTree": 2,
+    "Prerequisites": [
+     "aegisguard_opener"
+    ]
+   },
+   {
     "Id": "aegisguard_core",
     "Name": "Judgment of Warding",
     "Description": "A warded strike that punishes anything that dares test your line.",
@@ -40,6 +54,20 @@
     "RequiredPointsInTree": 3,
     "Prerequisites": [
      "aegisguard_opener"
+    ]
+   },
+   {
+    "Id": "aegisguard_stat2",
+    "Name": "Stamina +2",
+    "Description": "Aegis Guard conditioning: a permanent +2 Stamina.",
+    "GrantsStat": {
+     "Stat": "Stamina",
+     "Amount": 2
+    },
+    "Cost": 1,
+    "RequiredPointsInTree": 5,
+    "Prerequisites": [
+     "aegisguard_core"
     ]
    },
    {
@@ -63,6 +91,20 @@
     "Prerequisites": []
    },
    {
+    "Id": "juggernaut_stat1",
+    "Name": "Vitality +3",
+    "Description": "Juggernaut conditioning: a permanent +3 Vitality.",
+    "GrantsStat": {
+     "Stat": "Vitality",
+     "Amount": 3
+    },
+    "Cost": 1,
+    "RequiredPointsInTree": 2,
+    "Prerequisites": [
+     "juggernaut_opener"
+    ]
+   },
+   {
     "Id": "juggernaut_core",
     "Name": "Unstoppable Momentum",
     "Description": "Charge in a straight line, shrugging off anything in the way.",
@@ -71,6 +113,20 @@
     "RequiredPointsInTree": 3,
     "Prerequisites": [
      "juggernaut_opener"
+    ]
+   },
+   {
+    "Id": "juggernaut_stat2",
+    "Name": "Stamina +2",
+    "Description": "Juggernaut conditioning: a permanent +2 Stamina.",
+    "GrantsStat": {
+     "Stat": "Stamina",
+     "Amount": 2
+    },
+    "Cost": 1,
+    "RequiredPointsInTree": 5,
+    "Prerequisites": [
+     "juggernaut_core"
     ]
    },
    {
@@ -94,6 +150,20 @@
     "Prerequisites": []
    },
    {
+    "Id": "warlord_stat1",
+    "Name": "Vitality +3",
+    "Description": "Warlord conditioning: a permanent +3 Vitality.",
+    "GrantsStat": {
+     "Stat": "Vitality",
+     "Amount": 3
+    },
+    "Cost": 1,
+    "RequiredPointsInTree": 2,
+    "Prerequisites": [
+     "warlord_opener"
+    ]
+   },
+   {
     "Id": "warlord_core",
     "Name": "Rally Point",
     "Description": "Plant a banner the party rallies around.",
@@ -102,6 +172,20 @@
     "RequiredPointsInTree": 3,
     "Prerequisites": [
      "warlord_opener"
+    ]
+   },
+   {
+    "Id": "warlord_stat2",
+    "Name": "Stamina +2",
+    "Description": "Warlord conditioning: a permanent +2 Stamina.",
+    "GrantsStat": {
+     "Stat": "Stamina",
+     "Amount": 2
+    },
+    "Cost": 1,
+    "RequiredPointsInTree": 5,
+    "Prerequisites": [
+     "warlord_core"
     ]
    },
    {
@@ -125,6 +209,20 @@
     "Prerequisites": []
    },
    {
+    "Id": "deathguard_stat1",
+    "Name": "Vitality +3",
+    "Description": "Deathguard conditioning: a permanent +3 Vitality.",
+    "GrantsStat": {
+     "Stat": "Vitality",
+     "Amount": 3
+    },
+    "Cost": 1,
+    "RequiredPointsInTree": 2,
+    "Prerequisites": [
+     "deathguard_opener"
+    ]
+   },
+   {
     "Id": "deathguard_core",
     "Name": "Venomous Grip",
     "Description": "A venom-laced grip that keeps gnawing after you let go.",
@@ -133,6 +231,20 @@
     "RequiredPointsInTree": 3,
     "Prerequisites": [
      "deathguard_opener"
+    ]
+   },
+   {
+    "Id": "deathguard_stat2",
+    "Name": "Stamina +2",
+    "Description": "Deathguard conditioning: a permanent +2 Stamina.",
+    "GrantsStat": {
+     "Stat": "Stamina",
+     "Amount": 2
+    },
+    "Cost": 1,
+    "RequiredPointsInTree": 5,
+    "Prerequisites": [
+     "deathguard_core"
     ]
    },
    {
@@ -193,6 +305,20 @@
     "Prerequisites": []
    },
    {
+    "Id": "berserker_stat1",
+    "Name": "Strength +3",
+    "Description": "Berserker conditioning: a permanent +3 Strength.",
+    "GrantsStat": {
+     "Stat": "Strength",
+     "Amount": 3
+    },
+    "Cost": 1,
+    "RequiredPointsInTree": 2,
+    "Prerequisites": [
+     "berserker_opener"
+    ]
+   },
+   {
     "Id": "berserker_core",
     "Name": "Skull Rattle",
     "Description": "A haymaker that rattles a foe's senses.",
@@ -201,6 +327,20 @@
     "RequiredPointsInTree": 3,
     "Prerequisites": [
      "berserker_opener"
+    ]
+   },
+   {
+    "Id": "berserker_stat2",
+    "Name": "Speed +2",
+    "Description": "Berserker conditioning: a permanent +2 Speed.",
+    "GrantsStat": {
+     "Stat": "Speed",
+     "Amount": 2
+    },
+    "Cost": 1,
+    "RequiredPointsInTree": 5,
+    "Prerequisites": [
+     "berserker_core"
     ]
    },
    {
@@ -224,6 +364,20 @@
     "Prerequisites": []
    },
    {
+    "Id": "duelist_stat1",
+    "Name": "Strength +3",
+    "Description": "Duelist conditioning: a permanent +3 Strength.",
+    "GrantsStat": {
+     "Stat": "Strength",
+     "Amount": 3
+    },
+    "Cost": 1,
+    "RequiredPointsInTree": 2,
+    "Prerequisites": [
+     "duelist_opener"
+    ]
+   },
+   {
     "Id": "duelist_core",
     "Name": "Guard Stance",
     "Description": "A stance that turns the next landed hit into an opening.",
@@ -232,6 +386,20 @@
     "RequiredPointsInTree": 3,
     "Prerequisites": [
      "duelist_opener"
+    ]
+   },
+   {
+    "Id": "duelist_stat2",
+    "Name": "Speed +2",
+    "Description": "Duelist conditioning: a permanent +2 Speed.",
+    "GrantsStat": {
+     "Stat": "Speed",
+     "Amount": 2
+    },
+    "Cost": 1,
+    "RequiredPointsInTree": 5,
+    "Prerequisites": [
+     "duelist_core"
     ]
    },
    {
@@ -255,6 +423,20 @@
     "Prerequisites": []
    },
    {
+    "Id": "shadowstep_stat1",
+    "Name": "Strength +3",
+    "Description": "Shadowstep conditioning: a permanent +3 Strength.",
+    "GrantsStat": {
+     "Stat": "Strength",
+     "Amount": 3
+    },
+    "Cost": 1,
+    "RequiredPointsInTree": 2,
+    "Prerequisites": [
+     "shadowstep_opener"
+    ]
+   },
+   {
     "Id": "shadowstep_core",
     "Name": "Smoke Veil",
     "Description": "A veil of smoke that covers a repositioning strike.",
@@ -263,6 +445,20 @@
     "RequiredPointsInTree": 3,
     "Prerequisites": [
      "shadowstep_opener"
+    ]
+   },
+   {
+    "Id": "shadowstep_stat2",
+    "Name": "Speed +2",
+    "Description": "Shadowstep conditioning: a permanent +2 Speed.",
+    "GrantsStat": {
+     "Stat": "Speed",
+     "Amount": 2
+    },
+    "Cost": 1,
+    "RequiredPointsInTree": 5,
+    "Prerequisites": [
+     "shadowstep_core"
     ]
    },
    {
@@ -323,6 +519,20 @@
     "Prerequisites": []
    },
    {
+    "Id": "marksman_stat1",
+    "Name": "Agility +3",
+    "Description": "Marksman conditioning: a permanent +3 Agility.",
+    "GrantsStat": {
+     "Stat": "Agility",
+     "Amount": 3
+    },
+    "Cost": 1,
+    "RequiredPointsInTree": 2,
+    "Prerequisites": [
+     "marksman_opener"
+    ]
+   },
+   {
     "Id": "marksman_core",
     "Name": "Piercing Volley",
     "Description": "A shot that punches clean through a whole column.",
@@ -331,6 +541,20 @@
     "RequiredPointsInTree": 3,
     "Prerequisites": [
      "marksman_opener"
+    ]
+   },
+   {
+    "Id": "marksman_stat2",
+    "Name": "Luck +2",
+    "Description": "Marksman conditioning: a permanent +2 Luck.",
+    "GrantsStat": {
+     "Stat": "Luck",
+     "Amount": 2
+    },
+    "Cost": 1,
+    "RequiredPointsInTree": 5,
+    "Prerequisites": [
+     "marksman_core"
     ]
    },
    {
@@ -354,6 +578,20 @@
     "Prerequisites": []
    },
    {
+    "Id": "trapper_stat1",
+    "Name": "Agility +3",
+    "Description": "Trapper conditioning: a permanent +3 Agility.",
+    "GrantsStat": {
+     "Stat": "Agility",
+     "Amount": 3
+    },
+    "Cost": 1,
+    "RequiredPointsInTree": 2,
+    "Prerequisites": [
+     "trapper_opener"
+    ]
+   },
+   {
     "Id": "trapper_core",
     "Name": "Pitfall Volley",
     "Description": "A spread of snares across a square of ground.",
@@ -362,6 +600,20 @@
     "RequiredPointsInTree": 3,
     "Prerequisites": [
      "trapper_opener"
+    ]
+   },
+   {
+    "Id": "trapper_stat2",
+    "Name": "Luck +2",
+    "Description": "Trapper conditioning: a permanent +2 Luck.",
+    "GrantsStat": {
+     "Stat": "Luck",
+     "Amount": 2
+    },
+    "Cost": 1,
+    "RequiredPointsInTree": 5,
+    "Prerequisites": [
+     "trapper_core"
     ]
    },
    {
@@ -385,6 +637,20 @@
     "Prerequisites": []
    },
    {
+    "Id": "skirmisher_stat1",
+    "Name": "Agility +3",
+    "Description": "Skirmisher conditioning: a permanent +3 Agility.",
+    "GrantsStat": {
+     "Stat": "Agility",
+     "Amount": 3
+    },
+    "Cost": 1,
+    "RequiredPointsInTree": 2,
+    "Prerequisites": [
+     "skirmisher_opener"
+    ]
+   },
+   {
     "Id": "skirmisher_core",
     "Name": "Retreat Shot",
     "Description": "A shot loosed while falling back.",
@@ -393,6 +659,20 @@
     "RequiredPointsInTree": 3,
     "Prerequisites": [
      "skirmisher_opener"
+    ]
+   },
+   {
+    "Id": "skirmisher_stat2",
+    "Name": "Luck +2",
+    "Description": "Skirmisher conditioning: a permanent +2 Luck.",
+    "GrantsStat": {
+     "Stat": "Luck",
+     "Amount": 2
+    },
+    "Cost": 1,
+    "RequiredPointsInTree": 5,
+    "Prerequisites": [
+     "skirmisher_core"
     ]
    },
    {
@@ -453,6 +733,20 @@
     "Prerequisites": []
    },
    {
+    "Id": "spellblade_stat1",
+    "Name": "Intelligence +3",
+    "Description": "Spellblade conditioning: a permanent +3 Intelligence.",
+    "GrantsStat": {
+     "Stat": "Intelligence",
+     "Amount": 3
+    },
+    "Cost": 1,
+    "RequiredPointsInTree": 2,
+    "Prerequisites": [
+     "spellblade_opener"
+    ]
+   },
+   {
     "Id": "spellblade_core",
     "Name": "Overchannel",
     "Description": "Push a spell past safe limits for a harder hit.",
@@ -461,6 +755,20 @@
     "RequiredPointsInTree": 3,
     "Prerequisites": [
      "spellblade_opener"
+    ]
+   },
+   {
+    "Id": "spellblade_stat2",
+    "Name": "Wisdom +2",
+    "Description": "Spellblade conditioning: a permanent +2 Wisdom.",
+    "GrantsStat": {
+     "Stat": "Wisdom",
+     "Amount": 2
+    },
+    "Cost": 1,
+    "RequiredPointsInTree": 5,
+    "Prerequisites": [
+     "spellblade_core"
     ]
    },
    {
@@ -484,6 +792,20 @@
     "Prerequisites": []
    },
    {
+    "Id": "fieldcaster_stat1",
+    "Name": "Intelligence +3",
+    "Description": "Field Caster conditioning: a permanent +3 Intelligence.",
+    "GrantsStat": {
+     "Stat": "Intelligence",
+     "Amount": 3
+    },
+    "Cost": 1,
+    "RequiredPointsInTree": 2,
+    "Prerequisites": [
+     "fieldcaster_opener"
+    ]
+   },
+   {
     "Id": "fieldcaster_core",
     "Name": "Ward Grid",
     "Description": "A grid of wards that answers a whole square at once.",
@@ -492,6 +814,20 @@
     "RequiredPointsInTree": 3,
     "Prerequisites": [
      "fieldcaster_opener"
+    ]
+   },
+   {
+    "Id": "fieldcaster_stat2",
+    "Name": "Wisdom +2",
+    "Description": "Field Caster conditioning: a permanent +2 Wisdom.",
+    "GrantsStat": {
+     "Stat": "Wisdom",
+     "Amount": 2
+    },
+    "Cost": 1,
+    "RequiredPointsInTree": 5,
+    "Prerequisites": [
+     "fieldcaster_core"
     ]
    },
    {
@@ -515,6 +851,20 @@
     "Prerequisites": []
    },
    {
+    "Id": "hexweaver_stat1",
+    "Name": "Intelligence +3",
+    "Description": "Hexweaver conditioning: a permanent +3 Intelligence.",
+    "GrantsStat": {
+     "Stat": "Intelligence",
+     "Amount": 3
+    },
+    "Cost": 1,
+    "RequiredPointsInTree": 2,
+    "Prerequisites": [
+     "hexweaver_opener"
+    ]
+   },
+   {
     "Id": "hexweaver_core",
     "Name": "Curse of Fate",
     "Description": "Bind a foe's fate to the damage it's already taken.",
@@ -523,6 +873,20 @@
     "RequiredPointsInTree": 3,
     "Prerequisites": [
      "hexweaver_opener"
+    ]
+   },
+   {
+    "Id": "hexweaver_stat2",
+    "Name": "Wisdom +2",
+    "Description": "Hexweaver conditioning: a permanent +2 Wisdom.",
+    "GrantsStat": {
+     "Stat": "Wisdom",
+     "Amount": 2
+    },
+    "Cost": 1,
+    "RequiredPointsInTree": 5,
+    "Prerequisites": [
+     "hexweaver_core"
     ]
    },
    {
@@ -623,6 +987,20 @@
     "Prerequisites": []
    },
    {
+    "Id": "aegiswardens_stat1",
+    "Name": "Wisdom +3",
+    "Description": "Aegis Wardens conditioning: a permanent +3 Wisdom.",
+    "GrantsStat": {
+     "Stat": "Wisdom",
+     "Amount": 3
+    },
+    "Cost": 1,
+    "RequiredPointsInTree": 2,
+    "Prerequisites": [
+     "aegiswardens_opener"
+    ]
+   },
+   {
     "Id": "aegiswardens_core",
     "Name": "Cleansing Vigil",
     "Description": "A standing vigil that cleanses as it watches.",
@@ -631,6 +1009,20 @@
     "RequiredPointsInTree": 3,
     "Prerequisites": [
      "aegiswardens_opener"
+    ]
+   },
+   {
+    "Id": "aegiswardens_stat2",
+    "Name": "Vitality +2",
+    "Description": "Aegis Wardens conditioning: a permanent +2 Vitality.",
+    "GrantsStat": {
+     "Stat": "Vitality",
+     "Amount": 2
+    },
+    "Cost": 1,
+    "RequiredPointsInTree": 5,
+    "Prerequisites": [
+     "aegiswardens_core"
     ]
    },
    {
@@ -654,6 +1046,20 @@
     "Prerequisites": []
    },
    {
+    "Id": "hexmenders_stat1",
+    "Name": "Wisdom +3",
+    "Description": "Hexmenders conditioning: a permanent +3 Wisdom.",
+    "GrantsStat": {
+     "Stat": "Wisdom",
+     "Amount": 3
+    },
+    "Cost": 1,
+    "RequiredPointsInTree": 2,
+    "Prerequisites": [
+     "hexmenders_opener"
+    ]
+   },
+   {
     "Id": "hexmenders_core",
     "Name": "Harm Into Hope",
     "Description": "Turn a foe's own hurt into an ally's healing.",
@@ -662,6 +1068,20 @@
     "RequiredPointsInTree": 3,
     "Prerequisites": [
      "hexmenders_opener"
+    ]
+   },
+   {
+    "Id": "hexmenders_stat2",
+    "Name": "Vitality +2",
+    "Description": "Hexmenders conditioning: a permanent +2 Vitality.",
+    "GrantsStat": {
+     "Stat": "Vitality",
+     "Amount": 2
+    },
+    "Cost": 1,
+    "RequiredPointsInTree": 5,
+    "Prerequisites": [
+     "hexmenders_core"
     ]
    },
    {
@@ -685,6 +1105,20 @@
     "Prerequisites": []
    },
    {
+    "Id": "skirmishmenders_stat1",
+    "Name": "Wisdom +3",
+    "Description": "Skirmish-Menders conditioning: a permanent +3 Wisdom.",
+    "GrantsStat": {
+     "Stat": "Wisdom",
+     "Amount": 3
+    },
+    "Cost": 1,
+    "RequiredPointsInTree": 2,
+    "Prerequisites": [
+     "skirmishmenders_opener"
+    ]
+   },
+   {
     "Id": "skirmishmenders_core",
     "Name": "Flowing Current",
     "Description": "A current of healing that washes over everyone nearby.",
@@ -693,6 +1127,20 @@
     "RequiredPointsInTree": 3,
     "Prerequisites": [
      "skirmishmenders_opener"
+    ]
+   },
+   {
+    "Id": "skirmishmenders_stat2",
+    "Name": "Vitality +2",
+    "Description": "Skirmish-Menders conditioning: a permanent +2 Vitality.",
+    "GrantsStat": {
+     "Stat": "Vitality",
+     "Amount": 2
+    },
+    "Cost": 1,
+    "RequiredPointsInTree": 5,
+    "Prerequisites": [
+     "skirmishmenders_core"
     ]
    },
    {
@@ -762,6 +1210,20 @@
     "Prerequisites": []
    },
    {
+    "Id": "tempoweave_stat1",
+    "Name": "Luck +3",
+    "Description": "Tempo Weavers conditioning: a permanent +3 Luck.",
+    "GrantsStat": {
+     "Stat": "Luck",
+     "Amount": 3
+    },
+    "Cost": 1,
+    "RequiredPointsInTree": 2,
+    "Prerequisites": [
+     "tempoweave_opener"
+    ]
+   },
+   {
     "Id": "tempoweave_core",
     "Name": "Stumbling Ground",
     "Description": "Ground that turns a foe's footing against it.",
@@ -770,6 +1232,20 @@
     "RequiredPointsInTree": 3,
     "Prerequisites": [
      "tempoweave_opener"
+    ]
+   },
+   {
+    "Id": "tempoweave_stat2",
+    "Name": "Stamina +2",
+    "Description": "Tempo Weavers conditioning: a permanent +2 Stamina.",
+    "GrantsStat": {
+     "Stat": "Stamina",
+     "Amount": 2
+    },
+    "Cost": 1,
+    "RequiredPointsInTree": 5,
+    "Prerequisites": [
+     "tempoweave_core"
     ]
    },
    {
@@ -793,6 +1269,20 @@
     "Prerequisites": []
    },
    {
+    "Id": "fieldeng_stat1",
+    "Name": "Luck +3",
+    "Description": "Field Engineers conditioning: a permanent +3 Luck.",
+    "GrantsStat": {
+     "Stat": "Luck",
+     "Amount": 3
+    },
+    "Cost": 1,
+    "RequiredPointsInTree": 2,
+    "Prerequisites": [
+     "fieldeng_opener"
+    ]
+   },
+   {
     "Id": "fieldeng_core",
     "Name": "Field Patch",
     "Description": "A field repair kit turned on flesh instead of steel.",
@@ -801,6 +1291,20 @@
     "RequiredPointsInTree": 3,
     "Prerequisites": [
      "fieldeng_opener"
+    ]
+   },
+   {
+    "Id": "fieldeng_stat2",
+    "Name": "Stamina +2",
+    "Description": "Field Engineers conditioning: a permanent +2 Stamina.",
+    "GrantsStat": {
+     "Stat": "Stamina",
+     "Amount": 2
+    },
+    "Cost": 1,
+    "RequiredPointsInTree": 5,
+    "Prerequisites": [
+     "fieldeng_core"
     ]
    },
    {
@@ -824,6 +1328,20 @@
     "Prerequisites": []
    },
    {
+    "Id": "primalpack_stat1",
+    "Name": "Luck +3",
+    "Description": "Primal Pack conditioning: a permanent +3 Luck.",
+    "GrantsStat": {
+     "Stat": "Luck",
+     "Amount": 3
+    },
+    "Cost": 1,
+    "RequiredPointsInTree": 2,
+    "Prerequisites": [
+     "primalpack_opener"
+    ]
+   },
+   {
     "Id": "primalpack_core",
     "Name": "Pack Rally",
     "Description": "Rally the pack behind whoever leads the charge.",
@@ -832,6 +1350,20 @@
     "RequiredPointsInTree": 3,
     "Prerequisites": [
      "primalpack_opener"
+    ]
+   },
+   {
+    "Id": "primalpack_stat2",
+    "Name": "Stamina +2",
+    "Description": "Primal Pack conditioning: a permanent +2 Stamina.",
+    "GrantsStat": {
+     "Stat": "Stamina",
+     "Amount": 2
+    },
+    "Cost": 1,
+    "RequiredPointsInTree": 5,
+    "Prerequisites": [
+     "primalpack_core"
     ]
    },
    {

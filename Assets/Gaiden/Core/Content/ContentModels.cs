@@ -644,11 +644,47 @@ namespace GridGame.Core.Content
         public string Id;
         public string Name;
         public string Description;
-        /// <summary>Ability or passive id granted when this node unlocks.</summary>
+        /// <summary>Ability or passive id granted when this node unlocks. Exactly one of this and
+        /// <see cref="GrantsStat"/> is set (<see cref="ContentLoader.Validate"/>).</summary>
         public string Grants;
+        /// <summary>Attribute-bonus node (GG-T77): a flat permanent bonus to one stat instead of an ability.
+        /// Mutually exclusive with <see cref="Grants"/>.</summary>
+        public StatGrantDef GrantsStat;
         public int Cost = 1;
         public int RequiredPointsInTree;
         public List<string> Prerequisites = new List<string>();
+
+        public bool IsStatNode => GrantsStat != null;
+    }
+
+    /// <summary>A skill-tree attribute bonus (GG-T77): <see cref="Amount"/> flat points of the stat named by
+    /// <see cref="Stat"/> — one of <see cref="Names"/>, the real <see cref="Stats"/> field names.</summary>
+    public sealed class StatGrantDef
+    {
+        public string Stat;
+        public float Amount;
+
+        public static readonly string[] Names = { "Strength", "Vitality", "Agility", "Speed", "Stamina", "Intelligence", "Wisdom", "Luck" };
+
+        public static bool IsStatName(string s) => s != null && System.Array.IndexOf(Names, s) >= 0;
+
+        /// <summary>This bonus as a <see cref="Stats"/> block (all zero but the named stat), ready to add to a hero's stats.</summary>
+        public Stats ToStats()
+        {
+            var s = new Stats();
+            switch (Stat)
+            {
+                case "Strength": s.Strength = Amount; break;
+                case "Vitality": s.Vitality = Amount; break;
+                case "Agility": s.Agility = Amount; break;
+                case "Speed": s.Speed = Amount; break;
+                case "Stamina": s.Stamina = Amount; break;
+                case "Intelligence": s.Intelligence = Amount; break;
+                case "Wisdom": s.Wisdom = Amount; break;
+                case "Luck": s.Luck = Amount; break;
+            }
+            return s;
+        }
     }
 
     /// <summary>One archetype's skill tree (§25.6.1, GG-T50): named by a <see cref="ClassDef.HomeTree"/> id.</summary>
