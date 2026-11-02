@@ -165,6 +165,7 @@ namespace GridGame.App
                         ["diffEnemyHp"] = diff?.EnemyHp, ["diffEnemyDamage"] = diff?.EnemyDamage, ["diffEnemySpeed"] = diff?.EnemySpeed,
                         ["diffRewardGold"] = diff?.RewardGold, ["diffRewardXp"] = diff?.RewardXp, ["diffItemDropRate"] = diff?.ItemDropRate,
                     });
+                BeginEncounterTelemetry(setup, initial, diff); // GG-T59
             }
 
             var bg = Ui.El("fill", root);
@@ -966,6 +967,7 @@ namespace GridGame.App
             cmd.Player = Session.LocalPlayer;
             var events = Session.SubmitAndStep(cmd);
             recorder?.Add(before, cmd, events, State, perfectCmd, perfectCmd != null ? BotSkillProfile.Level : (float?)null);
+            ObserveEncounterTelemetry(events); // GG-T59
             if (telemetryOn)
             {
                 bool accepted = events.Exists(e => e is PlayerControlEvent || e is BattleEndedEvent);

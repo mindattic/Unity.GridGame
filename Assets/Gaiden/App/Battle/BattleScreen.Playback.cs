@@ -1833,6 +1833,7 @@ namespace GridGame.App
                 ["result"] = lastEnded == null ? "unknown" : lastEnded.Victory ? "victory" : lastEnded.Escaped ? "escaped" : "defeat",
             });
             SaveRecord();
+            RecordEncounterTelemetry(); // GG-T59: one JSONL encounter record, flushed, before the session closes
             TelemetryUnity.Finish(new
             {
                 stage = State.Stage.Id,
