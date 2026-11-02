@@ -51,6 +51,9 @@ namespace GridGame.Core.Battle
     public sealed class Unit
     {
         public int Id;
+        /// <summary>The seat that commands this hero (GG-LAW-13). Seat 0 (the default) in the single-player game;
+        /// only a hero's owner may move it or use its bar. Meaningless for enemies.</summary>
+        public PlayerId Owner;
         public ClassDef Def;
         public Team Team;
         public int Level = 1;

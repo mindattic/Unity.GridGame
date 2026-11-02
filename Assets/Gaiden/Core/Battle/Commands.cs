@@ -2,8 +2,13 @@ using System.Collections.Generic;
 
 namespace GridGame.Core.Battle
 {
-    /// <summary>A player decision. Exactly one command is applied per committed action.</summary>
-    public abstract class BattleCommand { }
+    /// <summary>A player decision. Exactly one command is applied per committed action. Plain data only (ids, tiles,
+    /// numbers) and stamped with the seat that issued it (GG-LAW-13); <see cref="CommandCodec"/> serializes it.</summary>
+    public abstract class BattleCommand
+    {
+        /// <summary>Who issued this command. Seat 0 (the default) is the single-player game's only seat.</summary>
+        public PlayerId Player;
+    }
 
     /// <summary>Drag a hero along a path of cardinal one-tile steps (the first entry is the next tile, not the start).</summary>
     public sealed class MoveCommand : BattleCommand

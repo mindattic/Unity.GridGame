@@ -38,6 +38,10 @@ namespace GridGame.App
         private const float TrackY = 50f;
 
         public BattleState State { get; private set; }
+        private LocalSession session;
+        /// <summary>The battle's session seam (GG-LAW-13): one local seat over the battle authority. Re-wrapped if the
+        /// state is ever replaced, so commands always reach the battle on screen.</summary>
+        private LocalSession Session => session != null && session.State == State ? session : (session = new LocalSession(State));
         public bool Busy => playing || dragging;
         public int SelectedHeroId { get; private set; } = -1;
         public int TargetingSlot { get; private set; } = -1;
@@ -952,7 +956,10 @@ namespace GridGame.App
             if (wasTargeting) { SyncBar(); panelUnitId = -1; SyncPanel(); }
             bool telemetryOn = TelemetryUnity.Current.Enabled;
             var before = recorder != null || telemetryOn ? BattleRecorder.Snapshot(State) : null;
-            var events = BattleEngine.Apply(State, cmd);
+            // GG-LAW-13: input never writes state; the command is stamped with this machine's seat and goes through the
+            // session's one pipeline (LocalSession applies it this frame, exactly as BattleEngine.Apply always did).
+            cmd.Player = Session.LocalPlayer;
+            var events = Session.SubmitAndStep(cmd);
             recorder?.Add(before, cmd, events, State, perfectCmd, perfectCmd != null ? BotSkillProfile.Level : (float?)null);
             if (telemetryOn)
             {

@@ -58,6 +58,26 @@ namespace GridGame.Core.Battle
             return events;
         }
 
+        /// <summary>The hero a command acts for (-1 for party-wide commands like Guard).</summary>
+        public static int CommandHeroId(BattleCommand cmd) => cmd switch
+        {
+            MoveCommand m => m.HeroId,
+            UseSlotCommand u => u.HeroId,
+            _ => -1,
+        };
+
+        /// <summary>
+        /// GG-LAW-13 ownership: a command that acts for a hero must come from that hero's seat. Party-wide commands
+        /// (Guard) are open to every seat. An unknown hero id is left to the rules, which already refuse it.
+        /// </summary>
+        public static bool IsAuthorized(BattleState s, BattleCommand cmd)
+        {
+            int heroId = CommandHeroId(cmd);
+            if (heroId < 0) return true;
+            var h = s.UnitById(heroId);
+            return h == null || h.Owner == cmd.Player;
+        }
+
         public static bool CanMove(BattleState s, int heroId)
         {
             var h = s.UnitById(heroId);

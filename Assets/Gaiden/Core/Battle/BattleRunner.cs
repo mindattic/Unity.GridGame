@@ -43,6 +43,8 @@ namespace GridGame.Core.Battle
         public void Apply(BattleCommand cmd)
         {
             if (S.IsOver) { Emit(new AbilityRefusedEvent { CasterId = -1, Reason = "Battle is over" }); return; }
+            // GG-LAW-13: the authority refuses a command for a hero another seat owns (single-player: everyone is seat 0).
+            if (!BattleEngine.IsAuthorized(S, cmd)) { Emit(new AbilityRefusedEvent { CasterId = BattleEngine.CommandHeroId(cmd), Reason = "Not your hero" }); return; }
 
             pushedThisAction.Clear();
             bool acted;
