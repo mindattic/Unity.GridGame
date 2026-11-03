@@ -48,7 +48,10 @@ namespace GridGame.App
         private readonly VisualElement fade;
         private readonly Stack<GameScreen> stack = new Stack<GameScreen>();
         private bool busy;
-        private int transitionToken;
+        // Set once the in-flight transition has applied its mutation (behind the fade); until then, later
+        // screen changes wait in `queued` and are applied in order right after it (GG-T218).
+        private bool applied;
+        private readonly Queue<Action> queued = new Queue<Action>();
 
         public GameScreen Current => stack.Count > 0 ? stack.Peek() : null;
         public IEnumerable<GameScreen> Stack => stack;
@@ -68,7 +71,7 @@ namespace GridGame.App
         {
             if (stack.Count <= 1 || busy) return;
             if (!Current.OnBack()) return;
-            Go(() => stack.Pop().OnHidden());
+            Go(PopOne);
         }
 
         /// <summary>Back action from the hardware/escape key or a header back button.</summary>
@@ -76,7 +79,13 @@ namespace GridGame.App
         {
             if (Current != null && !Current.OnBack()) return;
             if (stack.Count <= 1) return;
-            Go(() => stack.Pop().OnHidden());
+            Go(PopOne);
+        }
+
+        // A queued pop runs after earlier queued changes, so it re-checks there is still a screen under the top.
+        private void PopOne()
+        {
+            if (stack.Count > 1) stack.Pop().OnHidden();
         }
 
         private void Go(Action mutate)
@@ -86,14 +95,22 @@ namespace GridGame.App
             // ever catches a screen change that left one stranded) it must not outlive that screen, or
             // it silently blocks every future click with no error anywhere (see Confirm.DismissStale).
             Confirm.DismissStale();
-            if (busy) { transitionToken++; mutate(); MountTop(); return; }
+            // During a transition nothing is dropped: before its own mutation lands, the change queues
+            // behind it (so Push(A) then Push(B) mid-fade leaves A under B, as it would without the fade);
+            // after it, the change applies and mounts at once, still under the fade.
+            if (busy)
+            {
+                if (applied) { mutate(); MountTop(); }
+                else queued.Enqueue(mutate);
+                return;
+            }
             GameApp.I.StartCoroutine(Transition(mutate));
         }
 
         private IEnumerator Transition(Action mutate)
         {
             busy = true;
-            int myToken = ++transitionToken;
+            applied = false;
             bool hasScreen = host.childCount > 0;
             if (hasScreen)
             {
@@ -101,14 +118,12 @@ namespace GridGame.App
                 fade.pickingMode = PickingMode.Position;
                 yield return new WaitForSecondsRealtime(0.2f);
             }
-            // A later Go() call may have taken the busy-shortcut above and already applied
-            // its own mutation while this coroutine was waiting out the fade; skip re-applying
-            // this stale one so the screen stack doesn't get mutated/mounted twice.
-            if (myToken == transitionToken)
-            {
-                mutate();
-                MountTop();
-            }
+            // Apply this change, then every change queued while the fade was going on, in call order,
+            // and mount only the resulting top screen once.
+            mutate();
+            while (queued.Count > 0) queued.Dequeue()();
+            applied = true;
+            MountTop();
             yield return null;
             fade.RemoveFromClassList("fade--on");
             fade.pickingMode = PickingMode.Ignore;
