@@ -144,6 +144,61 @@
    "#ffffff",
    "#e8ecf4",
    "#9aa2b4"
+  ],
+  "moss": [
+   "#e4f4c0",
+   "#7aa84a",
+   "#34521e"
+  ],
+  "void": [
+   "#d4c4ff",
+   "#4a347e",
+   "#0e0820"
+  ],
+  "coral": [
+   "#ffdcd0",
+   "#ff7a68",
+   "#9a2e3a"
+  ],
+  "sand": [
+   "#fff2cc",
+   "#e0be78",
+   "#8a6a30"
+  ],
+  "ash": [
+   "#d8ccc8",
+   "#6e605c",
+   "#2a1e1e"
+  ],
+  "moon": [
+   "#faf6ff",
+   "#c8b8f0",
+   "#5a4a9a"
+  ],
+  "blood": [
+   "#ff9a9a",
+   "#b01020",
+   "#40060e"
+  ],
+  "ghost": [
+   "#eafff8",
+   "#8ef0d4",
+   "#2e7486"
+  ],
+  "eclipse": [
+   "#ffe27a",
+   "#8a5aa8",
+   "#1c1030"
+  ],
+  "dragon": [
+   "#ffd88a",
+   "#d8402a",
+   "#4a1010"
+  ],
+  "rune": [
+   "#e0eeff",
+   "#5a86ff",
+   "#1a2a8a"
   ]
  },
  "status": {
@@ -1782,6 +1837,202 @@
   "eq_dreadwyrm_boots": [
    "delapouite/metal-boot",
    "fire"
+  ],
+  "eq_amulet_wolfstooth": [
+   "delapouite/feather-necklace",
+   "bone"
+  ],
+  "eq_amulet_hearth": [
+   "lorc/gem-necklace",
+   "sun"
+  ],
+  "eq_amulet_saint": [
+   "lorc/medal",
+   "holy"
+  ],
+  "eq_amulet_viper": [
+   "delapouite/feather-necklace",
+   "poison"
+  ],
+  "eq_amulet_warhorn": [
+   "delapouite/pearl-necklace",
+   "bronze"
+  ],
+  "eq_amulet_frostheart": [
+   "delapouite/heart-necklace",
+   "ice"
+  ],
+  "eq_amulet_stormglass": [
+   "lorc/gem-pendant",
+   "spark"
+  ],
+  "eq_amulet_mossheart": [
+   "delapouite/emerald-necklace",
+   "moss"
+  ],
+  "eq_amulet_aegis": [
+   "lorc/medal",
+   "steel"
+  ],
+  "eq_amulet_reliquary": [
+   "delapouite/pendant-key",
+   "holy"
+  ],
+  "eq_amulet_nightshade": [
+   "delapouite/pearl-necklace",
+   "shadow"
+  ],
+  "eq_amulet_glassheart": [
+   "delapouite/heart-necklace",
+   "pink"
+  ],
+  "eq_amulet_wyrmheart": [
+   "delapouite/heart-necklace",
+   "dragon"
+  ],
+  "eq_amulet_voidlocket": [
+   "lorc/gem-necklace",
+   "void"
+  ],
+  "eq_ring_iron": [
+   "delapouite/ring",
+   "iron"
+  ],
+  "eq_ring_bone": [
+   "delapouite/ring",
+   "bone"
+  ],
+  "eq_ring_ember": [
+   "lorc/fire-ring",
+   "fire"
+  ],
+  "eq_ring_frost": [
+   "delapouite/ring",
+   "ice"
+  ],
+  "eq_ring_spark": [
+   "lorc/linked-rings",
+   "spark"
+  ],
+  "eq_ring_thorn": [
+   "lorc/fire-ring",
+   "moss"
+  ],
+  "eq_ring_duelist": [
+   "delapouite/diamond-ring",
+   "steel"
+  ],
+  "eq_ring_sentinel": [
+   "lorc/fire-ring",
+   "steel"
+  ],
+  "eq_ring_scholar": [
+   "delapouite/diamond-ring",
+   "arcane"
+  ],
+  "eq_ring_moonsilver": [
+   "delapouite/ring",
+   "moon"
+  ],
+  "eq_ring_chrono": [
+   "lorc/linked-rings",
+   "bronze"
+  ],
+  "eq_ring_sunstone": [
+   "delapouite/diamond-ring",
+   "sun"
+  ],
+  "eq_ring_wolfking": [
+   "delapouite/diamond-ring",
+   "gold"
+  ],
+  "eq_ring_ironwill": [
+   "lorc/linked-rings",
+   "iron"
+  ],
+  "eq_ring_venom": [
+   "lorc/ouroboros",
+   "poison"
+  ],
+  "eq_ring_bloodpact": [
+   "delapouite/diamond-ring",
+   "blood"
+  ],
+  "eq_ring_runelord": [
+   "delapouite/diamond-ring",
+   "rune"
+  ],
+  "eq_ring_titan": [
+   "delapouite/ring",
+   "earth"
+  ],
+  "eq_ring_eclipse": [
+   "lorc/ouroboros",
+   "eclipse"
+  ],
+  "eq_earring_bead": [
+   "delapouite/heart-earrings",
+   "teal"
+  ],
+  "eq_earring_feather": [
+   "delapouite/crystal-earrings",
+   "wood"
+  ],
+  "eq_earring_fang": [
+   "delapouite/earrings",
+   "bone"
+  ],
+  "eq_earring_coral": [
+   "delapouite/crystal-earrings",
+   "coral"
+  ],
+  "eq_earring_bell": [
+   "delapouite/heart-earrings",
+   "silver"
+  ],
+  "eq_earring_ash": [
+   "delapouite/earrings",
+   "ash"
+  ],
+  "eq_earring_sand": [
+   "delapouite/drop-earrings",
+   "sand"
+  ],
+  "eq_earring_whisper": [
+   "delapouite/heart-earrings",
+   "cloth"
+  ],
+  "eq_earring_hunter": [
+   "delapouite/earrings",
+   "jade"
+  ],
+  "eq_earring_ward": [
+   "delapouite/earrings",
+   "rune"
+  ],
+  "eq_earring_dew": [
+   "delapouite/drop-earrings",
+   "water"
+  ],
+  "eq_earring_thunder": [
+   "delapouite/crystal-earrings",
+   "spark"
+  ],
+  "eq_earring_sanctum": [
+   "delapouite/heart-earrings",
+   "holy"
+  ],
+  "eq_earring_ghostlight": [
+   "delapouite/crystal-earrings",
+   "ghost"
+  ],
+  "eq_earring_dragon": [
+   "delapouite/drop-earrings",
+   "dragon"
+  ],
+  "eq_earring_oracle": [
+   "delapouite/drop-earrings",
+   "arcane"
   ]
  },
  "ui": {
