@@ -866,7 +866,7 @@ namespace GridGame.App
             public bool Following = true;
         }
 
-        public const float PointLife = 0.3f;
+        public const float PointLife = 0.15f;
         private const float MinVertexDistance = 4f;
         private readonly List<Trail> trails = new List<Trail>();
         private IVisualElementScheduledItem ticker;
@@ -953,7 +953,7 @@ namespace GridGame.App
                 var normal = new Vector2(-tan.y, tan.x);
                 // The tail stays nearly full width and fades out as a whole, never tapering to a point.
                 float half = width * Mathf.Lerp(0.88f, 1f, fade[i]) * 0.5f;
-                var c = new Color(color.r, color.g, color.b, color.a * alpha * fade[i]);
+                var c = new Color(color.r, color.g, color.b, color.a * alpha * fade[i] * fade[i]);
                 var l = pts[i] - normal * half;
                 var r = pts[i] + normal * half;
                 verts[i * 2] = new Vertex { position = new Vector3(l.x, l.y, Vertex.nearZ), tint = c };
