@@ -92,7 +92,7 @@ namespace GridGame.App
 
             if (CommandLine.Has("-noDiagonalSlip")) BattleConfig.DiagonalSlipEnabled = false;
             var skill = CommandLine.Value("-skill");
-            if (skill != null && float.TryParse(skill, out var skillLevel)) BotSkillProfile.Level = skillLevel;
+            if (skill != null && float.TryParse(skill, System.Globalization.NumberStyles.Float, System.Globalization.CultureInfo.InvariantCulture, out var skillLevel)) BotSkillProfile.Level = skillLevel;
             BotSkillProfile.TelemetryEnabled = CommandLine.Has("-telemetry");
 
             var start = CommandLine.Value("-start");
@@ -241,7 +241,8 @@ namespace GridGame.App
             if (!string.IsNullOrEmpty(ov))
             {
                 var parts = ov.Split(',');
-                if (parts.Length == 2 && float.TryParse(parts[0], out var top) && float.TryParse(parts[1], out var bottom))
+                if (parts.Length == 2 && float.TryParse(parts[0], System.Globalization.NumberStyles.Float, System.Globalization.CultureInfo.InvariantCulture, out var top)
+                    && float.TryParse(parts[1], System.Globalization.NumberStyles.Float, System.Globalization.CultureInfo.InvariantCulture, out var bottom))
                     safe = new Rect(0, bottom, Screen.width, Screen.height - top - bottom);
             }
             float k = logicalH / Screen.height;

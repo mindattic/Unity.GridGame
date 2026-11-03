@@ -23,13 +23,18 @@ namespace GridGame.Core.Battle
                 case MoveCommand m:
                     var path = new JArray();
                     foreach (var c in m.Path) path.Add(new JArray(c.X, c.Y));
-                    o = new JObject { ["type"] = "move", ["hero"] = m.HeroId, ["path"] = path, ["timeLeft"] = m.TimeLeftSeconds };
+                    // "held" (GG-T188): a forced drop at the turn window ends the turn even when nothing moved, so a
+                    // log without it replays a different battle.
+                    o = new JObject { ["type"] = "move", ["hero"] = m.HeroId, ["path"] = path, ["timeLeft"] = m.TimeLeftSeconds, ["held"] = m.HeldSeconds };
                     break;
                 case UseSlotCommand u:
                     o = new JObject { ["type"] = "use", ["hero"] = u.HeroId, ["slot"] = u.Slot, ["target"] = new JArray(u.Target.X, u.Target.Y) };
                     break;
-                case ShieldCommand _:
-                    o = new JObject { ["type"] = "guard" };
+                case ShieldCommand sh:
+                    o = new JObject { ["type"] = "guard", ["held"] = sh.HeldSeconds }; // GG-T189: Guard's mana charge depends on it
+                    break;
+                case TalkCommand t:
+                    o = new JObject { ["type"] = "talk", ["hero"] = t.HeroId, ["target"] = t.TargetId };
                     break;
                 default:
                     throw new NotSupportedException("No codec for command " + cmd.GetType().Name);
@@ -48,14 +53,17 @@ namespace GridGame.Core.Battle
                 case "move":
                     var path = new List<Coord>();
                     foreach (var t in (JArray)o["path"]) path.Add(new Coord((int)t[0], (int)t[1]));
-                    cmd = new MoveCommand { HeroId = (int)o["hero"], Path = path, TimeLeftSeconds = (float?)o["timeLeft"] ?? 0f };
+                    cmd = new MoveCommand { HeroId = (int)o["hero"], Path = path, TimeLeftSeconds = (float?)o["timeLeft"] ?? 0f, HeldSeconds = (float?)o["held"] ?? 0f };
                     break;
                 case "use":
                     var target = (JArray)o["target"];
                     cmd = new UseSlotCommand { HeroId = (int)o["hero"], Slot = (int)o["slot"], Target = new Coord((int)target[0], (int)target[1]) };
                     break;
                 case "guard":
-                    cmd = new ShieldCommand();
+                    cmd = new ShieldCommand { HeldSeconds = (float?)o["held"] ?? 0f };
+                    break;
+                case "talk":
+                    cmd = new TalkCommand { HeroId = (int)o["hero"], TargetId = (int)o["target"] };
                     break;
                 default:
                     throw new NotSupportedException("Unknown command type " + (string)o["type"]);

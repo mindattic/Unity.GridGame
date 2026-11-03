@@ -63,6 +63,7 @@ namespace GridGame.Core.Battle
         {
             MoveCommand m => m.HeroId,
             UseSlotCommand u => u.HeroId,
+            TalkCommand t => t.HeroId, // the talking hero acts (spends the turn), so its seat must own it
             _ => -1,
         };
 
