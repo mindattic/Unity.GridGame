@@ -48,14 +48,6 @@ namespace GridGame.App
             return Color.HSVToRGB(hue, 0.72f, 1f);
         }
 
-        /// <summary>Pixel-art full-body sprite (tools/make_pixel_icons.py; enemies only) — null when the class has none.</summary>
-        public static Texture2D Pixel(string classId)
-        {
-            if (string.IsNullOrEmpty(classId)) return null;
-            string path = "Pixel/" + classId;
-            if (cache.TryGetValue(path, out var t)) return t;
-            return cache[path] = Resources.Load<Texture2D>(path);
-        }
         /// <summary>A unit's one piece of art (full portrait). Every thumbnail is this texture framed by the class's
         /// Thumbnail (Ui.PortraitThumb, BIBLE §12.1.1); there are no separate thumb images.</summary>
         public static Texture2D Portrait(string classId) => Load("Portraits/" + classId);

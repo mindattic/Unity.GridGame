@@ -10,7 +10,7 @@ Owner direction 2026-10-10: "icons that are memorable and identifiable … run t
 continuous effort of building up graphics that match the aesthetic." Adding content = adding a line to
 tools/icons.json (or an item rule below); this script does the rest.
 
-Pipeline (same family as make_pixel_icons.py): rasterise the white SVG at 64 px -> paint it with a three-stop
+Pipeline: rasterise the white SVG at 64 px -> paint it with a three-stop
 vertical gradient from its palette (light top, base, dark bottom) -> shrink to 20 px -> hard alpha edge ->
 8 colours, no dither -> 1 px dark outline -> centre on 22x22 -> x4 nearest-neighbour (88x88) + a .meta cloned from
 Portraits/slime00 (import settings come from GaidenImport in GaidenBuild.cs).

@@ -45,36 +45,6 @@ def ensure(path):
     return path
 
 
-def face_crop(im):
-    """Returns a square crop box (l, t, r, b) around the head/upper body (used by tools/eyezoom.py)."""
-    alpha = im.getchannel("A")
-    bbox = alpha.getbbox()
-    w, h = im.size
-    if not bbox:
-        return (0, 0, w, h)
-    l, t, r, b = bbox
-    bw, bh = r - l, b - t
-    band_h = max(1, int(bh * 0.30))
-    band = alpha.crop((l, t, r, t + band_h))
-    px = band.load()
-    total = 0
-    acc = 0
-    for y in range(0, band.size[1], 4):
-        for x in range(0, band.size[0], 4):
-            a = px[x, y]
-            if a > 32:
-                total += a
-                acc += a * x
-    cx = l + (acc / total if total else bw / 2)
-    size = int(max(min(bw, bh * 0.42), w * 0.28))
-    size = min(size, w, h)
-    top = max(0, int(t - size * 0.06))
-    left = int(cx - size / 2)
-    left = max(0, min(w - size, left))
-    top = min(h - size, top)
-    return (left, top, left + size, top + size)
-
-
 def save_portrait_assets(im, class_id):
     """im: an opened RGBA PIL.Image. Writes Portraits/<id>.png (alpha-bbox-trimmed, max 640px tall) and returns it.
     A new class also needs a "Thumbnail" in classes.json (frame it in tools/ThumbnailStudio)."""

@@ -1,5 +1,5 @@
 """Fails if any sound cue or music track the code references has no bundled file (no silent events),
-or an enemy has no pixel-art timeline sprite."""
+or an ability, item or status has no pixel icon."""
 import glob, os, re, sys
 ROOT = os.path.dirname(os.path.dirname(os.path.abspath(__file__)))
 SFX = os.path.join(ROOT, "Assets", "Gaiden", "Resources", "Audio", "Sfx")
@@ -15,15 +15,10 @@ missing = [c for c in sorted(cues) if not os.path.exists(os.path.join(SFX, SPECI
 tracks = set(re.findall(r'Music => "([A-Za-z]+)"', code)) | set(t for p in re.findall(r'Music => [^;]*?"([A-Z][A-Za-z]+)"\s*:\s*"([A-Z][A-Za-z]+)"', code) for t in p)
 missing += [f"music:{t}" for t in sorted(tracks) if not os.path.exists(os.path.join(MUSIC, t + ".mp3"))]
 import json
-classes = json.load(open(os.path.join(ROOT, "Assets", "Gaiden", "Resources", "Content", "classes.json"), encoding="utf-8"))
-classes = next(iter(classes.values())) if isinstance(classes, dict) else classes
-PIXEL = os.path.join(ROOT, "Assets", "Gaiden", "Resources", "Pixel")
-missing += [f"pixel:{c['Id']} (run tools/make_pixel_icons.py)" for c in classes
-            if c.get("Team") == "Enemy" and not os.path.exists(os.path.join(PIXEL, c["Id"] + ".png"))]
 RESD = os.path.join(ROOT, "Assets", "Gaiden", "Resources")
 def _ids(name): return [x["Id"] for x in json.load(open(os.path.join(RESD, "Content", name), encoding="utf-8"))]
 for folder, ids in (("AbilityIcons", _ids("abilities.json")), ("ItemIcons", _ids("items.json")), ("StatusIcons", _ids("buffs.json") + ["stunned"])):
     missing += [f"icon:{folder}/{i} (run tools/make_icons.py)" for i in ids if not os.path.exists(os.path.join(RESD, folder, i + ".png"))]
 if missing:
     print("MISSING ASSETS:", ", ".join(missing)); sys.exit(1)
-print(f"asset check OK ({len(cues)} cues, {len(tracks)} tracks, enemy pixel sprites, pixel icons)")
+print(f"asset check OK ({len(cues)} cues, {len(tracks)} tracks, pixel icons)")

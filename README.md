@@ -106,7 +106,7 @@ Content and art tools:
 ```powershell
 python tools/make_sfx.py         # regenerate the original sound effects
 python tools/import_art.py       # regenerate art and audio from the GridGame2026 reference project
-python tools/make_pixel_icons.py # regenerate the pixel-art icons
+python tools/make_icons.py       # regenerate the pixel-art icons
 python tools/check_assets.py     # verify every referenced asset exists
 python tools/check_glyphs.py     # verify every UI glyph exists in the bundled fonts
 ```
