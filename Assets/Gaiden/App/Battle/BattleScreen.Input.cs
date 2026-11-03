@@ -164,7 +164,7 @@ namespace GridGame.App
             v.Root.BringToFront();
             v.Root.style.scale = new Scale(new Vector2(1.12f, 1.12f));
             v.SetGlow(new Color(1f, 0.95f, 0.6f), 0.9f);
-            DrawDragTrail();
+            board.Trail.Follow(v.Root, HeroTrail);
             App.Audio.Sfx("pickup");
             ShowBanner("");
             BeginHold();
@@ -329,17 +329,9 @@ namespace GridGame.App
 
         private static readonly Color HeroTrail = new Color(1f, 0.9f, 0.45f), EnemyTrail = new Color(1f, 0.35f, 0.3f);
 
-        /// <summary>GG-T219: the held hero's route so far, from the tile it was lifted off.</summary>
-        private void DrawDragTrail()
-        {
-            var hero = State.UnitById(dragHeroId);
-            if (hero != null) board.Trail.SetLive(hero.Pos, dragPath, HeroTrail);
-        }
-
         /// <summary>Slide displaced actors to their preview tiles and draw the pincers this drop would make.</summary>
         private void ApplyPreview(MovePreview pv, int heroId)
         {
-            DrawDragTrail();
             foreach (var kv in pv.Positions)
             {
                 if (kv.Key == heroId) continue;
@@ -446,8 +438,8 @@ namespace GridGame.App
             pressing = false;
             board.Lines.ClearLines();
             board.ClearMarks();
-            board.Trail.ReleaseLive();
             var v = board.Units[dragHeroId];
+            board.Trail.Release(v.Root);
             v.Root.style.scale = new Scale(Vector2.one);
             // GG-T188: the seconds held travel with the drop; a hold that ran the window out is a forced drop that
             // ends the turn even where the hero never left its tile.

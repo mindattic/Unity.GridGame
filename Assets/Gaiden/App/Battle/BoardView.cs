@@ -406,12 +406,12 @@ namespace GridGame.App
 
             // Order matters: highlights and lines draw OVER the units so targets and pincer previews read clearly.
             TileLayer = Layer("tiles");
-            UnitLayer = Layer("units");
-            // Over the units: the route through the tiles it slid through is the part that matters (GG-T219).
+            // Under the units: the streak trails behind the moving token (GG-T219).
             Trail = new TrailLayer { name = "trail" };
             Trail.style.position = Position.Absolute;
             Trail.style.left = Trail.style.top = Trail.style.right = Trail.style.bottom = 0;
             Root.Add(Trail);
+            UnitLayer = Layer("units");
             MarkLayer = Layer("marks");
             Lines = new LineLayer();
             Lines.style.position = Position.Absolute;
@@ -848,96 +848,137 @@ namespace GridGame.App
     }
 
     /// <summary>
-    /// GG-T219: the floor trail behind a moving unit (Terra Battle style). The held hero's route is live — a ring on
-    /// the tile it was lifted from, then the joined path, older steps fainter — and fades out after the drop. Steps
-    /// played back (enemies walking) leave short trails that fade on their own.
+    /// GG-T219: a trail renderer for moving units (Terra Battle / Friends &amp; Dragons): a fast streak as wide as the
+    /// token, drawn under it, following its real free-hand position. It is never anchored: points age out in
+    /// <see cref="PointLife"/> seconds and the streak is cut at <see cref="MaxLength"/>, fading to nothing over that
+    /// distance, so it shows only where the unit just came from and collapses as soon as it stops.
     /// </summary>
     public sealed class TrailLayer : VisualElement
     {
-        private struct Fading { public Vector2 A, B; public Color Color; public float Born, Life; }
-        private readonly List<Coord> live = new List<Coord>();
-        private Color liveColor;
-        private readonly List<Fading> fading = new List<Fading>();
+        private struct Pt { public Vector2 P; public float T; }
+        private sealed class Trail
+        {
+            public VisualElement Source;
+            public readonly List<Pt> Points = new List<Pt>();
+            public Color Color;
+            public float Width;
+            public bool Following = true;
+        }
+
+        public const float MaxLength = BoardView.Tile * 1.75f, PointLife = 0.35f;
+        private const float MinVertexDistance = 4f;
+        private readonly List<Trail> trails = new List<Trail>();
         private IVisualElementScheduledItem ticker;
 
         public TrailLayer() { generateVisualContent += Draw; pickingMode = PickingMode.Ignore; }
 
-        public void SetLive(Coord start, IReadOnlyList<Coord> path, Color color)
+        /// <summary>Starts (or keeps) a streak behind <paramref name="source"/>, a unit token on the board.</summary>
+        public void Follow(VisualElement source, Color color, float width = BoardView.Tile - 12f)
         {
-            live.Clear();
-            live.Add(start);
-            live.AddRange(path);
-            liveColor = color;
-            MarkDirtyRepaint();
-        }
-
-        /// <summary>The drop: the live route stops following and fades out over <paramref name="life"/> seconds.</summary>
-        public void ReleaseLive(float life = 0.6f)
-        {
-            for (int i = 1; i < live.Count; i++)
-                AddFading(BoardView.CenterOf(live[i - 1]), BoardView.CenterOf(live[i]), WithAlpha(liveColor, SegAlpha(i, live.Count)), life);
-            live.Clear();
-            MarkDirtyRepaint();
-        }
-
-        public void Step(Coord from, Coord to, Color color, float life = 1.1f) =>
-            AddFading(BoardView.CenterOf(from), BoardView.CenterOf(to), color, life);
-
-        public void Clear() { live.Clear(); fading.Clear(); MarkDirtyRepaint(); }
-
-        private void AddFading(Vector2 a, Vector2 b, Color c, float life)
-        {
-            fading.Add(new Fading { A = a, B = b, Color = c, Born = Time.unscaledTime, Life = life });
+            if (trails.Exists(t => t.Source == source && t.Following)) return;
+            var tr = new Trail { Source = source, Color = color, Width = width };
+            tr.Points.Add(new Pt { P = CenterOf(source), T = Time.unscaledTime });
+            trails.Add(tr);
             if (ticker == null) ticker = schedule.Execute(Tick).Every(16);
             else ticker.Resume();
-            MarkDirtyRepaint();
+        }
+
+        /// <summary>Stops sampling <paramref name="source"/>; what is left of its streak ages out on its own.</summary>
+        public void Release(VisualElement source)
+        {
+            foreach (var t in trails)
+                if (t.Source == source && t.Following) { Sample(t, Time.unscaledTime); t.Following = false; }
+        }
+
+        public void Clear() { trails.Clear(); MarkDirtyRepaint(); }
+
+        private static Vector2 CenterOf(VisualElement e) =>
+            new Vector2(e.resolvedStyle.left + BoardView.Tile / 2f, e.resolvedStyle.top + BoardView.Tile / 2f);
+
+        private static void Sample(Trail t, float now)
+        {
+            if (t.Source.panel == null) { t.Following = false; return; }
+            var p = CenterOf(t.Source);
+            var last = t.Points.Count > 0 ? t.Points[t.Points.Count - 1].P : p + Vector2.one * MinVertexDistance * 2f;
+            if ((p - last).sqrMagnitude >= MinVertexDistance * MinVertexDistance) t.Points.Add(new Pt { P = p, T = now });
         }
 
         private void Tick()
         {
             float now = Time.unscaledTime;
-            fading.RemoveAll(f => now - f.Born >= f.Life);
-            if (fading.Count == 0) ticker.Pause();
+            foreach (var t in trails)
+            {
+                if (t.Following) Sample(t, now);
+                t.Points.RemoveAll(q => now - q.T > PointLife);
+                // Cut at MaxLength measured back from the newest point.
+                float len = 0f;
+                for (int i = t.Points.Count - 1; i > 0; i--)
+                {
+                    len += (t.Points[i].P - t.Points[i - 1].P).magnitude;
+                    if (len > MaxLength) { t.Points.RemoveRange(0, i - 1); break; }
+                }
+            }
+            trails.RemoveAll(t => !t.Following && t.Points.Count < 2);
+            if (trails.Count == 0) ticker.Pause();
             MarkDirtyRepaint();
-        }
-
-        private static float SegAlpha(int i, int count) => Mathf.Lerp(0.35f, 0.95f, count <= 2 ? 1f : (i - 1f) / (count - 2f));
-        private static Color WithAlpha(Color c, float a) => new Color(c.r, c.g, c.b, c.a * a);
-
-        private static void Stroke(Painter2D p, Vector2 a, Vector2 b, Color c)
-        {
-            p.strokeColor = WithAlpha(c, 0.25f); p.lineWidth = BoardView.Tile * 0.16f;
-            p.BeginPath(); p.MoveTo(a); p.LineTo(b); p.Stroke();
-            p.strokeColor = WithAlpha(c, 0.85f); p.lineWidth = BoardView.Tile * 0.055f;
-            p.BeginPath(); p.MoveTo(a); p.LineTo(b); p.Stroke();
         }
 
         private void Draw(MeshGenerationContext ctx)
         {
-            var p = ctx.painter2D;
-            p.lineCap = LineCap.Round;
-            p.lineJoin = LineJoin.Round;
             float now = Time.unscaledTime;
-            foreach (var f in fading)
+            var pts = new List<Vector2>();
+            var fade = new List<float>();
+            foreach (var t in trails)
             {
-                float k = 1f - Mathf.Clamp01((now - f.Born) / f.Life);
-                Stroke(p, f.A, f.B, WithAlpha(f.Color, k));
+                pts.Clear(); fade.Clear();
+                // Newest first: the token's own position leads, so the streak meets it with no gap.
+                if (t.Following && t.Source.panel != null) { pts.Add(CenterOf(t.Source)); }
+                for (int i = t.Points.Count - 1; i >= 0; i--)
+                    if (pts.Count == 0 || (pts[pts.Count - 1] - t.Points[i].P).sqrMagnitude > 1f) pts.Add(t.Points[i].P);
+                if (pts.Count < 2) continue;
+                float len = 0f;
+                fade.Add(1f);
+                for (int i = 1; i < pts.Count; i++)
+                {
+                    len += (pts[i] - pts[i - 1]).magnitude;
+                    fade.Add(Mathf.Clamp01(1f - len / MaxLength));
+                }
+                // Age fades the whole streak too, so a stopped unit's streak shrinks and dims instead of hanging.
+                float newest = t.Points.Count > 0 ? t.Points[t.Points.Count - 1].T : now;
+                float age = t.Following ? 1f : Mathf.Clamp01(1f - (now - newest) / PointLife);
+                Ribbon(ctx, pts, fade, t.Width, t.Color, 0.6f * age);
+                Ribbon(ctx, pts, fade, t.Width * 0.45f, t.Color, 0.75f * age);
             }
-            if (live.Count == 0) return;
-            var start = BoardView.CenterOf(live[0]);
-            p.strokeColor = WithAlpha(liveColor, 0.85f); p.lineWidth = 7f;
-            p.BeginPath(); p.Arc(start, BoardView.Tile * 0.3f, Angle.Degrees(0f), Angle.Degrees(360f)); p.Stroke();
-            for (int i = 1; i < live.Count; i++)
+        }
+
+        /// <summary>One triangle strip along <paramref name="pts"/> (newest first); <paramref name="fade"/> scales alpha and narrows the tail.</summary>
+        private static void Ribbon(MeshGenerationContext ctx, List<Vector2> pts, List<float> fade, float width, Color color, float alpha)
+        {
+            int n = pts.Count;
+            var verts = new Vertex[n * 2];
+            var idx = new ushort[(n - 1) * 6];
+            for (int i = 0; i < n; i++)
             {
-                var c = WithAlpha(liveColor, SegAlpha(i, live.Count));
-                var a = BoardView.CenterOf(live[i - 1]);
-                var b = BoardView.CenterOf(live[i]);
-                // The newest step stops at the held hero's tile edge instead of painting over its portrait.
-                if (i == live.Count - 1) b = Vector2.MoveTowards(b, a, BoardView.Tile * 0.4f);
-                Stroke(p, a, b, c);
-                p.fillColor = c;
-                p.BeginPath(); p.Arc(a, BoardView.Tile * 0.07f, Angle.Degrees(0f), Angle.Degrees(360f)); p.Fill();
+                // UI Toolkit culls back faces: this tangent keeps the strip's winding front-facing for newest-first points.
+                var tan = (pts[Mathf.Min(n - 1, i + 1)] - pts[Mathf.Max(0, i - 1)]).normalized;
+                var normal = new Vector2(-tan.y, tan.x);
+                float half = width * Mathf.Lerp(0.55f, 1f, fade[i]) * 0.5f;
+                var c = new Color(color.r, color.g, color.b, color.a * alpha * Mathf.Pow(fade[i], 1.4f));
+                var l = pts[i] - normal * half;
+                var r = pts[i] + normal * half;
+                verts[i * 2] = new Vertex { position = new Vector3(l.x, l.y, Vertex.nearZ), tint = c };
+                verts[i * 2 + 1] = new Vertex { position = new Vector3(r.x, r.y, Vertex.nearZ), tint = c };
             }
+            for (int i = 0; i < n - 1; i++)
+            {
+                ushort l0 = (ushort)(i * 2), r0 = (ushort)(i * 2 + 1), l1 = (ushort)(i * 2 + 2), r1 = (ushort)(i * 2 + 3);
+                int k = i * 6;
+                idx[k] = l0; idx[k + 1] = l1; idx[k + 2] = r0;
+                idx[k + 3] = r0; idx[k + 4] = l1; idx[k + 5] = r1;
+            }
+            var mesh = ctx.Allocate(verts.Length, idx.Length);
+            mesh.SetAllVertices(verts);
+            mesh.SetAllIndices(idx);
         }
     }
 

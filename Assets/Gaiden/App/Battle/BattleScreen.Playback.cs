@@ -277,12 +277,13 @@ namespace GridGame.App
         {
             if (!board.Units.TryGetValue(unitId, out var v)) yield break;
             var from = BoardView.PosOf(v.Tile);
-            // GG-T219: a walking unit leaves a short fading trail; a displaced one is shown by its shove instead.
-            if (sfx == "move" && v.Tile != to)
-                board.Trail.Step(v.Tile, to, State.UnitById(unitId)?.IsHero == true ? HeroTrail : EnemyTrail);
+            // GG-T219: a walking unit streaks; a displaced one is shown by its shove instead.
+            bool trail = sfx == "move" && v.Tile != to;
+            if (trail) board.Trail.Follow(v.Root, State.UnitById(unitId)?.IsHero == true ? HeroTrail : EnemyTrail);
             v.Tile = to;
             App.Audio.Sfx(sfx, 0.6f);
-            yield return Tween.Move(v.Root, from, BoardView.PosOf(to), seconds);
+            try { yield return Tween.Move(v.Root, from, BoardView.PosOf(to), seconds); }
+            finally { if (trail) board.Trail.Release(v.Root); }
         }
 
         private IEnumerator TeleportAnim(TeleportedEvent t)
