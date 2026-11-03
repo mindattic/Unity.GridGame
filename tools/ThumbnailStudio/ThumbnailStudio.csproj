@@ -12,6 +12,12 @@
     <AssemblyName>ThumbnailStudio</AssemblyName>
     <RootNamespace>ThumbnailStudio</RootNamespace>
     <SatelliteResourceLanguages>en</SatelliteResourceLanguages>
+    <!-- GG-T223: the desktop shortcut and taskbar use this; regenerate with make_icon.py. -->
+    <ApplicationIcon>ThumbnailStudio.ico</ApplicationIcon>
   </PropertyGroup>
+
+  <ItemGroup>
+    <Resource Include="ThumbnailStudio.ico" />
+  </ItemGroup>
 
 </Project>

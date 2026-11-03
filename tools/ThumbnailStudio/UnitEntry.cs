@@ -18,6 +18,7 @@ public sealed class UnitEntry : INotifyPropertyChanged
         HasPortrait = File.Exists(portraitPath);
         saved = info.Thumbnail;
         current = info.Thumbnail ?? Thumb.Default;
+        Original = current;
     }
 
     public string Id { get; }
@@ -64,6 +65,28 @@ public sealed class UnitEntry : INotifyPropertyChanged
     }
 
     public void Reset() => Current = Saved;
+
+    /// <summary>What classes.json held when the studio opened (Revert goes back to it; autosave then writes it).</summary>
+    public Thumb Original { get; }
+
+    SyncState state;
+
+    /// <summary>Editing → saved (classes.json) → committed → pushed → deploy started (GG-T223).</summary>
+    public SyncState State
+    {
+        get => state;
+        set { if (state == value) return; state = value; Raise(); Raise(nameof(StateLabel)); }
+    }
+
+    public string StateLabel => state switch
+    {
+        SyncState.Editing => "editing",
+        SyncState.Saved => "saved",
+        SyncState.Committed => "committed",
+        SyncState.Pushed => "pushed",
+        SyncState.DeployStarted => "deploying",
+        _ => "",
+    };
 
     BitmapSource? listImage;
     bool listImageTried;

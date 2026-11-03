@@ -71,10 +71,28 @@ public static class ClassesFile
     /// </summary>
     public static void SaveThumbnail(string path, string id, Thumb thumb)
     {
-        var bytes = File.ReadAllBytes(path);
+        var result = ApplyThumbnail(File.ReadAllBytes(path), id, thumb, path);
+
+        // Write beside the file, then swap it in, so a crash mid-write can't leave a truncated classes.json.
+        string tmp = path + ".thumbstudio.tmp";
+        File.WriteAllBytes(tmp, result);
+        File.Move(tmp, path, overwrite: true);
+    }
+
+    /// <summary>Whether <paramref name="bytes"/> (a classes.json) holds a class with this id.</summary>
+    public static bool HasClass(byte[] bytes, string id) => Find(bytes.AsSpan(BomLength(bytes)), id) != null;
+
+    /// <summary>
+    /// The same targeted edit as <see cref="SaveThumbnail"/>, on bytes in memory: returns a copy of
+    /// <paramref name="bytes"/> in which only class <paramref name="id"/>'s Thumbnail differs. Used both for the
+    /// working-tree file (autosave) and for HEAD's blob (the studio's commits, GG-T223), so the two produce the
+    /// identical block text. Throws when the class is missing or the result doesn't read back.
+    /// </summary>
+    public static byte[] ApplyThumbnail(byte[] bytes, string id, Thumb thumb, string what = "classes.json")
+    {
         int bom = BomLength(bytes);
         var json = bytes.AsSpan(bom);
-        var s = Find(json, id) ?? throw new InvalidOperationException($"Class \"{id}\" was not found in {path}.");
+        var s = Find(json, id) ?? throw new InvalidOperationException($"Class \"{id}\" was not found in {what}.");
         string nl = DetectNewline(json);
         thumb = thumb.Clamped();
         string z = Thumb.Num(thumb.Zoom), x = Thumb.Num(thumb.X), y = Thumb.Num(thumb.Y);
@@ -131,11 +149,7 @@ public static class ClassesFile
         var back = Parse(result).FirstOrDefault(c => c.Id == id)?.Thumbnail;
         if (back is null || back.Value.Rounded() != thumb.Rounded())
             throw new InvalidOperationException("The edited classes.json did not read back the saved Thumbnail; nothing was written.");
-
-        // Write beside the file, then swap it in, so a crash mid-write can't leave a truncated classes.json.
-        string tmp = path + ".thumbstudio.tmp";
-        File.WriteAllBytes(tmp, result);
-        File.Move(tmp, path, overwrite: true);
+        return result;
     }
 
     static string DetectNewline(ReadOnlySpan<byte> json)
