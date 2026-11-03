@@ -1346,7 +1346,7 @@ namespace GridGame.App
                 var t = Ui.Thumb(e.Id, grid, 160);
                 t.name = "beast-" + e.Id;
                 t.style.marginRight = 8; t.style.marginBottom = 8;
-                if (entry == null || !entry.Seen) { t.style.unityBackgroundImageTintColor = new Color(0, 0, 0, 0.92f); }
+                if (entry == null || !entry.Seen) { t.Q(Ui.ThumbArt).style.unityBackgroundImageTintColor = new Color(0, 0, 0, 0.92f); }
                 t.AddToClassList("card-tap");
                 Ui.Tappable(t, () => { selected = def.Id; Show(detail, def, entry); });
             }

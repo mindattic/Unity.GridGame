@@ -156,12 +156,11 @@ namespace GridGame.App
             if (side == 0) box.style.marginRight = 110; else box.style.marginLeft = 110;
             var head = Ui.El("row", box);
             head.style.alignItems = Align.Center;
-            var thumb = line.Portrait != null && Art.Exists("Thumbs/" + line.Portrait) ? Art.Thumb(line.Portrait) : null;
-            if (thumb != null)
+            if (HasFace(line.Portrait))
             {
                 var face = Ui.El("thumb", head);
                 face.style.width = face.style.height = 64; face.style.marginRight = 14;
-                face.style.backgroundImage = new StyleBackground(thumb);
+                Ui.PortraitThumb(face, line.Portrait);
             }
             Ui.Text(line.Name, "small gold", head).style.unityFontStyleAndWeight = FontStyle.Bold;
             var text = Ui.Text(current ? "" : line.Text, "small", box);
@@ -187,6 +186,11 @@ namespace GridGame.App
             if (!sideOf.TryGetValue(speakerId, out var side)) sideOf[speakerId] = side = sideOf.Count % 2;
             return side;
         }
+
+        /// <summary>True when <paramref name="id"/> is a class with portrait art, so its Thumbnail can frame a face (GG-T221).
+        /// Portrait-only speakers (NPC art that isn't a class) have no framing and, as before, show no face.</summary>
+        internal static bool HasFace(string id) => !string.IsNullOrEmpty(id) && !id.StartsWith("$")
+            && GameApp.I?.Content?.TryClass(id)?.Thumbnail != null && Art.Exists("Portraits/" + id);
 
         /// <summary>Brings the talking speaker's frame forward at full brightness and dims the other one behind it.</summary>
         private void ShowPortrait(int side, string portraitId)
@@ -352,10 +356,16 @@ namespace GridGame.App
                 var topic = DialogueRunner.TalkTopic(C, S, who);
                 string name = npc ? DialogueRunner.Npc(npcId) : C.TryClass(who)?.Name ?? who;
                 string value = topic == null ? "Nothing to say" : S.SeenDialogues.Contains(topic.Id) ? topic.Title ?? "" : "New!";
-                // An NPC has no class thumb; borrow the face of the topic's first speaker that has one.
-                string face = npc ? topic?.Speakers.Select(sp => sp.Portrait ?? sp.Class).FirstOrDefault(id => id != null && !id.StartsWith("$") && Art.Exists("Thumbs/" + id)) : who;
+                // An NPC has no class portrait; borrow the face of the topic's first speaker that has one.
+                string face = npc ? topic?.Speakers.Select(sp => sp.Portrait ?? sp.Class).FirstOrDefault(DialogueScreen.HasFace) : who;
                 var row = Ui.MenuRow(name, value, () => App.Router.Push(new DialogueScreen(topic, npc ? null : who, null)),
-                    list.contentContainer, face != null ? Art.Thumb(face) : null, topic != null);
+                    list.contentContainer, null, topic != null);
+                if (DialogueScreen.HasFace(face))
+                {
+                    var ic = Ui.El("menu-icon");
+                    row.Insert(1, ic); // after the cursor, where MenuRow puts an icon
+                    Ui.PortraitThumb(ic, face);
+                }
                 row.name = "talk-" + (npc ? npcId : who);
                 if (topic != null && !S.SeenDialogues.Contains(topic.Id)) row.Q<Label>("value").AddToClassList("gold");
             }

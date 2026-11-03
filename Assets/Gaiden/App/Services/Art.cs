@@ -31,7 +31,6 @@ namespace GridGame.App
 
         public static bool Exists(string path) => Resources.Load<Texture2D>(path) != null;
 
-        public static Texture2D Thumb(string classId) => Load("Thumbs/" + classId);
         private static readonly Dictionary<string, int> spellIndex = new Dictionary<string, int>(System.StringComparer.OrdinalIgnoreCase);
 
         /// <summary>Called once content loads: every ability gets an ordinal, so every spell gets its own colour.</summary>
@@ -57,6 +56,8 @@ namespace GridGame.App
             if (cache.TryGetValue(path, out var t)) return t;
             return cache[path] = Resources.Load<Texture2D>(path);
         }
+        /// <summary>A unit's one piece of art (full portrait). Every thumbnail is this texture framed by the class's
+        /// Thumbnail (Ui.PortraitThumb, BIBLE §12.1.1); there are no separate thumb images.</summary>
         public static Texture2D Portrait(string classId) => Load("Portraits/" + classId);
         /// <summary>The board tile for a campaign theme (tools/make_tiles.py); the original slate tile when a theme has none.</summary>
         private static Texture2D Pixelled(string folder, string id)

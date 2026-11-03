@@ -487,15 +487,14 @@ namespace GridGame.App
                 icon.style.width = icon.style.height = TurnIcon;
                 icon.style.top = TrackY - TurnIcon / 2f; // centred on the line
                 SetBorder(icon, TurnIcon / 2f - 2f, 4, TurnRing(owner));
-                // Opaque disc so the track never shows through; overflow:hidden masks the sprite to the circle.
+                // Opaque disc so the track never shows through; overflow:hidden masks the art to the circle.
                 icon.style.backgroundColor = new Color(0.06f, 0.07f, 0.17f, 1f);
                 icon.style.overflow = Overflow.Hidden;
-                var px = Art.Pixel(owner?.Def.Id);
-                var sprite = new VisualElement { name = px != null ? "px" : "thumb", pickingMode = PickingMode.Ignore };
+                // Heroes and enemies alike: the unit's portrait through its Thumbnail window (§12.1.1, GG-T221).
+                var sprite = new VisualElement { name = "tl-art", pickingMode = PickingMode.Ignore };
                 sprite.style.position = Position.Absolute;
                 sprite.style.left = sprite.style.top = sprite.style.right = sprite.style.bottom = 3;
-                sprite.style.backgroundImage = new StyleBackground(px != null ? px : Art.Thumb(owner?.Def.Id));
-                sprite.style.backgroundSize = new BackgroundSize(px != null ? BackgroundSizeType.Contain : BackgroundSizeType.Cover);
+                Ui.PortraitThumb(sprite, owner?.Def.Id);
                 icon.Add(sprite);
             }
             else
@@ -577,7 +576,7 @@ namespace GridGame.App
                 var owner = State.UnitById(e.OwnerId);
                 var badge = timelineIcons.Q<VisualElement>("tl-status-" + e.Id);
                 var status = owner == null ? null : StatusOf(owner, e);
-                var art = icon.Q("px") ?? icon.Q("thumb");
+                var art = icon.Q("tl-art");
                 if (status == null) { badge?.RemoveFromHierarchy(); if (art != null) art.style.opacity = 1f; continue; }
                 if (badge != null && badge.viewDataKey != status.Value.icon) { badge.RemoveFromHierarchy(); badge = null; }
                 if (badge == null)

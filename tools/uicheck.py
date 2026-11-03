@@ -160,7 +160,7 @@ def main():
         for el in ["board", "abilitybar", "orbs", "shield", "menu", "feed"]:
             check(f"HUD element {el}", el in names)
         check("timeline icons present", any(n.startswith("tl-") for n in names))
-        check("enemy turn icons are pixel-art sprites", "px" in names, "no 'px' sprite under the timeline icons")
+        check("turn icons frame the unit's portrait", "tl-art" in names and "thumb-art" in names, "no 'tl-art'/'thumb-art' under the timeline icons")
         b = battle_state()
         enemies = [u for u in b["units"] if u["team"] == "Enemy"]
         check("no turn-number badges on the board (the timeline shows turn order)", not any(x.strip().isdigit() for x in texts()), str([x for x in texts() if x.strip().isdigit()]))

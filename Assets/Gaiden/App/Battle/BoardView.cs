@@ -66,19 +66,20 @@ namespace GridGame.App
             Frame.style.backgroundImage = new StyleBackground(App.Art.Window);
             Root.Add(Frame);
 
-            Art = new VisualElement { pickingMode = PickingMode.Ignore };
-            Art.style.position = Position.Absolute;
-            Art.style.left = Art.style.top = Art.style.right = Art.style.bottom = 0;
+            // The token is a window onto the unit's real portrait, framed by its class Thumbnail (§12.1.1, GG-T221).
+            // The host flips (so the framing mirrors about the token's centre); Art is the portrait child that tints.
+            var artHost = new VisualElement { name = "token-art", pickingMode = PickingMode.Ignore };
+            artHost.style.position = Position.Absolute;
+            artHost.style.left = artHost.style.top = artHost.style.right = artHost.style.bottom = 0;
+            if (!u.IsHero && !u.IsNeutral) artHost.style.scale = new Scale(new Vector2(-1, 1)); // enemies face the party
+            Frame.Add(artHost);
             // A corpse shows the fallen unit's own art, upright and greyed (§14.7; owner 2026-10-19: never turn art sideways).
-            Art.style.backgroundImage = new StyleBackground(App.Art.Thumb(u.IsCorpse && u.CorpseOf != null ? u.CorpseOf : u.Def.Id));
-            Art.style.backgroundSize = new BackgroundSize(BackgroundSizeType.Cover);
-            if (!u.IsHero && !u.IsNeutral) Art.style.scale = new Scale(new Vector2(-1, 1)); // enemies face the party
+            Art = Ui.PortraitThumb(artHost, u.IsCorpse && u.CorpseOf != null ? u.CorpseOf : u.Def.Id);
             if (u.IsCorpse)
             {
                 Art.style.unityBackgroundImageTintColor = new Color(0.42f, 0.38f, 0.38f);
                 Frame.style.opacity = 0.8f;
             }
-            Frame.Add(Art);
 
             // Team keyline just inside the white border, so heroes, foes and bosses still read apart.
             Keyline = new VisualElement { name = "keyline", pickingMode = PickingMode.Ignore };

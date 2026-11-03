@@ -261,7 +261,9 @@ namespace GridGame.Tests
                 Assert.That(string.IsNullOrEmpty(cls.Name), Is.False, cls.Id);
                 var st = GridGame.Core.Rules.Formulas.StatsAtLevel(cls, 10);
                 Assert.That(GridGame.Core.Rules.Formulas.MaxHp(st, 10) > 0, Is.True, cls.Id);
-                Assert.That(System.IO.File.Exists(System.IO.Path.Combine(RepoRoot, "Assets", "Gaiden", "Resources", "Thumbs", cls.Id + ".png")), Is.True, $"missing thumb for {cls.Id}");
+                Assert.That(System.IO.File.Exists(System.IO.Path.Combine(RepoRoot, "Assets", "Gaiden", "Resources", "Portraits", cls.Id + ".png")), Is.True, $"missing portrait for {cls.Id}");
+                // Every thumbnail is the portrait framed by this window (BIBLE §12.1.1); there are no thumb images.
+                Assert.That(cls.Thumbnail, Is.Not.Null, $"no Thumbnail for {cls.Id}");
             }
         }
     }

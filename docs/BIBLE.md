@@ -975,7 +975,7 @@ Earlier note (2026-10-09, superseded): **Amended 2026-10-09:** there are no part
 
 **Amended 2026-10-13:** damage and buff-tagged spells still read their look from `DamageType`/the applied buff id (`ElementBurst`, `StatusBurst`) — already rich and per-type (Fire/Ice/Lightning/Poison/Holy/Dark each have a bespoke burst, and poisoned/burning/frozen/sleep/slowed/silenced/blinded/taunting/empowered/protection/regen each have a bespoke take-hold animation). What used to fall through to one generic purple ring — Scan, pure cleanse/dispel (`RemovesDebuffs`/`RemovesBuff`), and hasten-only spells (no damage, no heal, no buff) — now get their own bespoke gold bursts (`ScanBurst`/`CleanseBurst`/`HastenBurst`, `BattleScreen.Playback.cs`) and read gold during the cast wind-up too (`CastColor`). The named `CastVfx/ProjectileVfx/ImpactVfx/LingerVfx` strings on individual abilities (e.g. distinguishing Fireball from Meteor) are still not read by any code — still ⬜ for a future pass, still code-drawn UI Toolkit if it happens, never particle prefabs (law #3).
 
-**Amended 2026-10-19 — death-portrait dissolve restored (owner: "the only way to see the complete artwork of these enemies... a quintessential reward for killing an enemy", GG-T96):** on `DiedEvent` the board token vanishes at once and a fresh single image of the unit's **full, uncropped portrait** (`Art.Portrait`, never the token's `Thumbs/` crop, and no frame, HP bar, pips, glow or any other part of the `UnitView`) appears on the board's fx layer (below floating numbers and the coin burst, above every token, mark and line), centred on the fallen unit's footprint (2×2 bosses on their whole footprint) and nudged back inside the board at its edges so the whole art reads. It is sized to fit a box of (2 + footprint) tiles, starts at 196/255 opacity and, frame-rate independently and scaled by Battle speed, jitters up to ±1/12 tile around its start point, shrinks as ×0.99 per 60 fps frame and fades 0.6/s until gone (≈1.3 s), exactly GridGame2026's `PortraitManager.Dissolve` + `Portrait3DInstance.DissolveRoutine`. It is non-blocking: playback waits only a 0.12 s beat, so the loot burst and the next kill in a chain play while it dissolves, and several deaths each get their own. Every dying unit gets one (corpses show the fallen class's art; units with no portrait skip it). The death sfx and the "★ X is defeated" feed line are unchanged. Reduce Motion drops the jitter; the shrink and fade still play. (`BattleScreen.Playback.cs` `DeathAnim`/`DeathDissolve`.)
+**Amended 2026-10-19 — death-portrait dissolve restored (owner: "the only way to see the complete artwork of these enemies... a quintessential reward for killing an enemy", GG-T96):** on `DiedEvent` the board token vanishes at once and a fresh single image of the unit's **full, uncropped portrait** (`Art.Portrait`, the same in-memory texture the token was framing through its Thumbnail ([§12.1.1](#1211-thumbnails-are-a-window-onto-the-portrait-added-2026-11-03-owner-direction-gg-t220)), shown whole, and no frame, HP bar, pips, glow or any other part of the `UnitView`) appears on the board's fx layer (below floating numbers and the coin burst, above every token, mark and line), centred on the fallen unit's footprint (2×2 bosses on their whole footprint) and nudged back inside the board at its edges so the whole art reads. It is sized to fit a box of (2 + footprint) tiles, starts at 196/255 opacity and, frame-rate independently and scaled by Battle speed, jitters up to ±1/12 tile around its start point, shrinks as ×0.99 per 60 fps frame and fades 0.6/s until gone (≈1.3 s), exactly GridGame2026's `PortraitManager.Dissolve` + `Portrait3DInstance.DissolveRoutine`. It is non-blocking: playback waits only a 0.12 s beat, so the loot burst and the next kill in a chain play while it dissolves, and several deaths each get their own. Every dying unit gets one (corpses show the fallen class's art; units with no portrait skip it). The death sfx and the "★ X is defeated" feed line are unchanged. Reduce Motion drops the jitter; the shrink and fade still play. (`BattleScreen.Playback.cs` `DeathAnim`/`DeathDissolve`.)
 
 ### 6.3 Edge cases the dispatcher handles
 
@@ -1276,12 +1276,11 @@ Announcements (`AnnounceEvent`) are played by the event player as an awaited 0.2
 
 | Key | Path | Source |
 |---|---|---|
-| Board/timeline thumb | `Resources/Thumbs/<classId>.png` (256²) | face crop by `import_art.py` |
-| Portrait | `Resources/Portraits/<classId>.png` | full body, ≤ 640 px |
+| Portrait | `Resources/Portraits/<classId>.png` | full body, ≤ 640 px; the unit's only image |
 | Backdrop | `Resources/Backgrounds/<theme>_<n>.jpg` (720×1440, n 0–3) | biome art |
 | Ability icon | `Resources/Icons/<Key>.png` (64²) | `AbilityDef.Icon` / `ItemDef.Icon` |
 
-Every class has a thumb (`Every_class_can_be_instantiated_and_has_art_reference`).
+Every class has a portrait and a `Thumbnail` (`Every_class_can_be_instantiated_and_has_art_reference`). **Amended 2026-11-03 (GG-T221):** there are no thumbnail images: every board token, timeline turn icon (heroes and enemies alike; the enemy `Pixel/` sprites are no longer drawn there), menu/party/bestiary card and dialogue face is the portrait framed live by the class's Thumbnail ([§12.1.1](#1211-thumbnails-are-a-window-onto-the-portrait-added-2026-11-03-owner-direction-gg-t220)).
 
 #### 12.1.1 Thumbnails are a window onto the portrait (added 2026-11-03, owner direction, GG-T220)
 
@@ -1292,6 +1291,7 @@ Owner: "these new coordinates and zoom are kept in memory in the character's Thu
 - `ContentLoader.Validate` requires one on every class, with Zoom in [0.25, 20] and X/Y in [−0.5, 1.5].
 - The owner frames each unit in **Thumbnail Studio** (`tools/ThumbnailStudio`, GG-T222), a separate desktop app that edits these numbers in `classes.json`; nothing is exported.
 - The first values (GG-T220) were recovered from the pre-cut `Resources/Thumbs` images by locating each one inside its portrait (multiscale template match, every result checked by re-rendering it), so every unit first looks exactly as before. `import_art.py` no longer cuts thumbs; a new class needs a Thumbnail before it validates.
+- **Drawn live (GG-T221):** `Ui.PortraitThumb(host, classId)` puts the portrait in a clipped (`overflow: hidden`) square host as a child sized and placed in percent of it (width = Zoom×100%, height = Zoom×aspect×100%, left = 50% − X·width, top = 50% − Y·height), so it is right at any size with no layout pass. `Ui.Thumb` (cards), the board token (`UnitView.Art`; corpses frame their `CorpseOf` class), the timeline turn icon (`tl-art`, inside its circle mask) and dialogue faces all use it. A class with no Thumbnail shows its whole portrait contained; a dialogue speaker that isn't a class shows no face. Tints (bestiary silhouette, corpse grey, frost, hit flash) go on the portrait child (`thumb-art`). `Resources/Thumbs/` and `Art.Thumb` are gone; the death dissolve shows the same `Art.Portrait` texture whole.
 - Separate from `Crop` (the cut-in bust's eye framing, `BattleScreen.CutIns.cs`), which is unchanged.
 
 ### 12.2 Procedural pieces and placeholders
@@ -1680,7 +1680,7 @@ persistentDataPath/Profiles/
 | Change a formula | `Core/Rules/Formulas.cs` | §13.1 |
 | Add a spell / skill | `abilities.json` (+ a class's `Abilities`/`DefaultLoadout`) | §7 row; `CatalogTests` covers it automatically |
 | Add a buff | `buffs.json` (+ a new knob in `BuffDef` and its hook in `BattleRunner` if needed) | §8 |
-| Add an enemy | `classes.json` + a `stages.json` wave (+ `droptables.json`) | thumb in `Resources/Thumbs` |
+| Add an enemy | `classes.json` + a `stages.json` wave (+ `droptables.json`) | `Resources/Portraits/<id>.png` + a `Thumbnail` framed in Thumbnail Studio (§12.1.1) |
 | Add an item / recipe | `items.json` / `recipes.json` | `Every_recipe_is_craftable_with_its_inputs` |
 | Tweak AI weights | `Core/Rules/EnemyPlanner.cs` | §14.1.2 |
 | Add a Camp service | `Meta/MetaServices.cs` + a screen in `App/Screens/HubScreens.cs` + hub row + `StartScreens` id | `MetaLoopTests`, harness sweep list |
@@ -1723,7 +1723,7 @@ Learn price: 120 + 80 × 2 orbs = 280 G. What you don't touch: the dispatcher, t
 ## 20. How to Add a New Enemy — Checklist
 
 1. Add a `ClassDef` to `classes.json` with `Team: "Enemy"`, `Tags` (`Humanoid` if it may pincer), `BaseStats`, `Growth`, `Resistances`, `XpReward`, `MoveRange`, optional `DropTable`, `ChargeAbility`/`ChargeShape`, `Trap`, `BossPhases`, `Footprint`, `SnakeSegments`, `Lore`.
-2. Add `Resources/Thumbs/<id>.png` and `Resources/Portraits/<id>.png` (or run `tools/import_art.py`).
+2. Add `Resources/Portraits/<id>.png` (or run `tools/import_art.py`) and give the class a `Thumbnail`: frame it in Thumbnail Studio (`tools/thumbnail-studio.ps1`, [§12.1.1](#1211-thumbnails-are-a-window-onto-the-portrait-added-2026-11-03-owner-direction-gg-t220)); there is no separate thumb image.
 3. Put it in a `stages.json` wave; optionally add a `droptables.json` table.
 4. `pwsh tools/test.ps1` — validation, catalog and soak include it automatically. The Bestiary lists it (silhouette until seen).
 

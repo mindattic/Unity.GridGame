@@ -125,8 +125,7 @@ namespace GridGame.EditorTools
             ti.filterMode = FilterMode.Bilinear;
             ti.sRGBTexture = true;
             ti.textureCompression = TextureImporterCompression.CompressedHQ;
-            if (assetPath.Contains("/Thumbs/")) ti.maxTextureSize = 256;
-            else if (assetPath.Contains("/Portraits/")) ti.maxTextureSize = 1024;
+            if (assetPath.Contains("/Portraits/")) ti.maxTextureSize = 1024;
             else if (assetPath.Contains("/Backgrounds/")) ti.maxTextureSize = 2048;
             else if (assetPath.Contains("/Icons/")) { ti.maxTextureSize = 128; ti.textureCompression = TextureImporterCompression.Uncompressed; }
         }

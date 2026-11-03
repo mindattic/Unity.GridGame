@@ -237,13 +237,65 @@ namespace GridGame.App
             f.EnableInClassList("gauge-fill--low", frac <= 0.25f);
         }
 
+        /// <summary>A framed card thumbnail: the class's real portrait seen through its Thumbnail window (<see cref="PortraitThumb"/>).
+        /// Tint the art (e.g. the bestiary's unseen silhouette) on <c>t.Q(ThumbArt)</c>, not on the frame.</summary>
         public static VisualElement Thumb(string classId, VisualElement parent, float size = 150)
         {
             var t = El("thumb", parent);
             t.style.width = size;
             t.style.height = size;
-            t.style.backgroundImage = new StyleBackground(Art.Thumb(classId));
+            PortraitThumb(t, classId);
             return t;
+        }
+
+        /// <summary>Name of the portrait child <see cref="PortraitThumb"/> puts in a host (tint/opacity it, not the host).</summary>
+        public const string ThumbArt = "thumb-art";
+
+        /// <summary>
+        /// Fills a square host with the class's real portrait, zoomed and offset by its <see cref="Thumbnail"/>
+        /// (BIBLE §12.1.1, GG-T221): no thumbnail images exist, only the portrait already in memory. The host
+        /// clips (overflow hidden); inside it an inset-0 clip box holds the portrait child, sized and placed in
+        /// percent of that box (width = Zoom×100%, height = Zoom×aspect×100%, left = 50% − X·width,
+        /// top = 50% − Y·height), so the framing is right at any size with no layout pass. A class with no
+        /// Thumbnail (or an id that isn't a class) shows the whole portrait contained. Returns the portrait
+        /// child (named <see cref="ThumbArt"/>), which callers tint.
+        /// </summary>
+        public static VisualElement PortraitThumb(VisualElement host, string classId)
+        {
+            host.style.overflow = Overflow.Hidden;
+            var clip = host.Q("thumb-clip");
+            if (clip == null)
+            {
+                clip = new VisualElement { name = "thumb-clip", pickingMode = PickingMode.Ignore };
+                clip.style.position = Position.Absolute;
+                clip.style.left = clip.style.top = clip.style.right = clip.style.bottom = 0;
+                clip.style.overflow = Overflow.Hidden;
+                host.Insert(0, clip);
+            }
+            var art = clip.Q(ThumbArt);
+            if (art == null)
+            {
+                art = new VisualElement { name = ThumbArt, pickingMode = PickingMode.Ignore };
+                art.style.position = Position.Absolute;
+                clip.Add(art);
+            }
+            var tex = string.IsNullOrEmpty(classId) ? null : Art.Portrait(classId);
+            art.style.backgroundImage = new StyleBackground(tex);
+            var th = GameApp.I?.Content?.TryClass(classId)?.Thumbnail;
+            if (th == null || tex == null || tex.width <= 0)
+            {
+                art.style.left = art.style.top = 0;
+                art.style.width = art.style.height = Length.Percent(100);
+                art.style.backgroundSize = new BackgroundSize(BackgroundSizeType.Contain);
+                return art;
+            }
+            float w = th.Zoom * 100f, h = w * tex.height / tex.width;
+            art.style.width = Length.Percent(w);
+            art.style.height = Length.Percent(h);
+            art.style.left = Length.Percent(50f - th.X * w);
+            art.style.top = Length.Percent(50f - th.Y * h);
+            art.style.backgroundSize = new BackgroundSize(Length.Percent(100), Length.Percent(100));
+            return art;
         }
 
         /// <summary>Mana cost as orb pips: 3 → three orbs.</summary>
