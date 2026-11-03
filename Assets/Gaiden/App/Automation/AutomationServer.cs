@@ -472,6 +472,20 @@ namespace GridGame.App.Automation
                 case "devamp":
                     if (app.Router.Current is BattleScreen dab) { var ampAt = new Coord((int)F(q["x"]), (int)F(q["y"])); if (!dab.State.FreeForSpawn(ampAt) || !dab.State.ItemFree(ampAt)) return new { error = "tile not free" }; dab.State.Amplifier = ampAt; dab.SyncAll(); dab.Feed(BattleScreen.AmpSpawnedFeed, BattleScreen.AmpFeedColor); return new { ok = true }; }
                     return new { error = "not in battle" };
+                case "devpickup":
+                    // GG-T229: drop a pickup (id=pk_..., default the first) on a free tile, drawn with its fade ring.
+                    if (app.Router.Current is BattleScreen dpk)
+                    {
+                        var pkAt = new Coord((int)F(q["x"]), (int)F(q["y"]));
+                        if (!dpk.State.FreeForSpawn(pkAt) || !dpk.State.ItemFree(pkAt)) return new { error = "tile not free" };
+                        var pkId = q["id"] ?? dpk.State.Content.Pickups.Keys.First();
+                        if (!dpk.State.Content.Pickups.ContainsKey(pkId)) return new { error = "unknown pickup " + pkId };
+                        int left = Mathf.Clamp((int)F(q["left"], BattleConfig.PickupLifetimeActions), 1, BattleConfig.PickupLifetimeActions);
+                        dpk.State.Pickups.Add(new Pickup { Id = dpk.State.NextPickupId++, PickupId = pkId, At = pkAt, ActionsLeft = left });
+                        dpk.SyncAll();
+                        return new { ok = true, id = pkId };
+                    }
+                    return new { error = "not in battle" };
                 case "democaster":
                     if (app.Router.Current is BattleScreen democ) { democ.DemoCaster(); return new { ok = true }; }
                     return new { error = "not in battle" };

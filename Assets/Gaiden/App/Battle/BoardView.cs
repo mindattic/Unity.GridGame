@@ -622,8 +622,10 @@ namespace GridGame.App
             if (tex != null) { icon.style.backgroundImage = new StyleBackground(tex); icon.style.backgroundSize = new BackgroundSize(BackgroundSizeType.Contain); }
             disc.Add(icon);
             root.Add(disc);
+            // The fade ring lives inside the bobbing disc so it floats with the token (GG-T229); the disc fills the root,
+            // so the ring's -4 inset is unchanged and it still draws over the icon.
             var ring = new RingTimer(Mathf.Clamp01(p.ActionsLeft / (float)BattleConfig.PickupLifetimeActions)) { name = "life", pickingMode = PickingMode.Ignore };
-            root.Add(ring);
+            disc.Add(ring);
             var centre = CenterOf(p.At);
             root.style.left = centre.x - Tile * 0.28f;
             root.style.top = centre.y - Tile * 0.28f;
@@ -651,7 +653,7 @@ namespace GridGame.App
                 if (!PickupViews.TryGetValue(p.Id, out var v)) v = AddPickup(p, def);
                 var old = v.Q("life");
                 old?.RemoveFromHierarchy();
-                v.Add(new RingTimer(Mathf.Clamp01(p.ActionsLeft / (float)BattleConfig.PickupLifetimeActions)) { name = "life", pickingMode = PickingMode.Ignore });
+                (v.Q("disc") ?? v).Add(new RingTimer(Mathf.Clamp01(p.ActionsLeft / (float)BattleConfig.PickupLifetimeActions)) { name = "life", pickingMode = PickingMode.Ignore });
                 v.style.opacity = p.ActionsLeft <= 1 ? 0.6f : 1f;
             }
             foreach (var id in new List<int>(PickupViews.Keys))
