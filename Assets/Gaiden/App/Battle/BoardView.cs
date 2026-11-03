@@ -850,8 +850,8 @@ namespace GridGame.App
     /// <summary>
     /// GG-T219: a trail renderer for moving units (Terra Battle / Friends &amp; Dragons): a fast streak as wide as the
     /// token, drawn under it, following its real free-hand position. It is never anchored: points age out in
-    /// <see cref="PointLife"/> seconds and the streak is cut at <see cref="MaxLength"/>, fading to nothing over that
-    /// distance, so it shows only where the unit just came from and collapses as soon as it stops.
+    /// <see cref="PointLife"/> seconds, so a faster or longer move draws a longer streak, and it catches up as soon
+    /// as the unit stops. The tail keeps nearly full width and fades out by age rather than tapering to a point.
     /// </summary>
     public sealed class TrailLayer : VisualElement
     {
@@ -865,7 +865,7 @@ namespace GridGame.App
             public bool Following = true;
         }
 
-        public const float MaxLength = BoardView.Tile * 1.75f, PointLife = 0.35f;
+        public const float PointLife = 0.3f;
         private const float MinVertexDistance = 4f;
         private readonly List<Trail> trails = new List<Trail>();
         private IVisualElementScheduledItem ticker;
@@ -910,13 +910,6 @@ namespace GridGame.App
             {
                 if (t.Following) Sample(t, now);
                 t.Points.RemoveAll(q => now - q.T > PointLife);
-                // Cut at MaxLength measured back from the newest point.
-                float len = 0f;
-                for (int i = t.Points.Count - 1; i > 0; i--)
-                {
-                    len += (t.Points[i].P - t.Points[i - 1].P).magnitude;
-                    if (len > MaxLength) { t.Points.RemoveRange(0, i - 1); break; }
-                }
             }
             trails.RemoveAll(t => !t.Following && t.Points.Count < 2);
             if (trails.Count == 0) ticker.Pause();
@@ -931,23 +924,18 @@ namespace GridGame.App
             foreach (var t in trails)
             {
                 pts.Clear(); fade.Clear();
-                // Newest first: the token's own position leads, so the streak meets it with no gap.
-                if (t.Following && t.Source.panel != null) { pts.Add(CenterOf(t.Source)); }
+                // Newest first: the token's own position leads, so the streak meets it with no gap. Each point fades
+                // with its age, so a fast move stretches the streak and it catches up within PointLife of stopping.
+                if (t.Following && t.Source.panel != null) { pts.Add(CenterOf(t.Source)); fade.Add(1f); }
                 for (int i = t.Points.Count - 1; i >= 0; i--)
-                    if (pts.Count == 0 || (pts[pts.Count - 1] - t.Points[i].P).sqrMagnitude > 1f) pts.Add(t.Points[i].P);
+                    if (pts.Count == 0 || (pts[pts.Count - 1] - t.Points[i].P).sqrMagnitude > 1f)
+                    {
+                        pts.Add(t.Points[i].P);
+                        fade.Add(Mathf.Clamp01(1f - (now - t.Points[i].T) / PointLife));
+                    }
                 if (pts.Count < 2) continue;
-                float len = 0f;
-                fade.Add(1f);
-                for (int i = 1; i < pts.Count; i++)
-                {
-                    len += (pts[i] - pts[i - 1]).magnitude;
-                    fade.Add(Mathf.Clamp01(1f - len / MaxLength));
-                }
-                // Age fades the whole streak too, so a stopped unit's streak shrinks and dims instead of hanging.
-                float newest = t.Points.Count > 0 ? t.Points[t.Points.Count - 1].T : now;
-                float age = t.Following ? 1f : Mathf.Clamp01(1f - (now - newest) / PointLife);
-                Ribbon(ctx, pts, fade, t.Width, t.Color, 0.6f * age);
-                Ribbon(ctx, pts, fade, t.Width * 0.45f, t.Color, 0.75f * age);
+                Ribbon(ctx, pts, fade, t.Width, t.Color, 0.6f);
+                Ribbon(ctx, pts, fade, t.Width * 0.45f, t.Color, 0.75f);
             }
         }
 
@@ -962,8 +950,9 @@ namespace GridGame.App
                 // UI Toolkit culls back faces: this tangent keeps the strip's winding front-facing for newest-first points.
                 var tan = (pts[Mathf.Min(n - 1, i + 1)] - pts[Mathf.Max(0, i - 1)]).normalized;
                 var normal = new Vector2(-tan.y, tan.x);
-                float half = width * Mathf.Lerp(0.55f, 1f, fade[i]) * 0.5f;
-                var c = new Color(color.r, color.g, color.b, color.a * alpha * Mathf.Pow(fade[i], 1.4f));
+                // The tail stays nearly full width and fades out as a whole, never tapering to a point.
+                float half = width * Mathf.Lerp(0.88f, 1f, fade[i]) * 0.5f;
+                var c = new Color(color.r, color.g, color.b, color.a * alpha * fade[i]);
                 var l = pts[i] - normal * half;
                 var r = pts[i] + normal * half;
                 verts[i * 2] = new Vertex { position = new Vector3(l.x, l.y, Vertex.nearZ), tint = c };
