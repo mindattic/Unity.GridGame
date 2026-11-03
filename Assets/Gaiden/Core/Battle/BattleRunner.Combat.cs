@@ -120,6 +120,7 @@ namespace GridGame.Core.Battle
                 if (occ != null && Relocate(occ, from))
                 {
                     Emit(new DisplacedEvent { UnitId = occ.Id, From = next, To = from, ByUnitId = hero.Id });
+                    ShovePickupsUnder(occ, next);
                     if (!PreviewOnly && BreaksOnMove(occ)) RemoveBuffsWhere(occ, b => b.Def.BreaksOnMove, "moved");
                     if (!PreviewOnly) TriggerTrap(occ);
                 }
@@ -477,6 +478,7 @@ namespace GridGame.Core.Battle
                 var from = t.Pos;
                 if (!Relocate(t, next)) return;
                 Emit(new DisplacedEvent { UnitId = t.Id, From = from, To = next, ByUnitId = caster.Id });
+                ShovePickupsUnder(t, from); // knocked onto a pickup: a non-hero shoves it back to the tile it left (GG-T228)
                 if (t.IsHero) TriggerTrap(t);
             }
         }

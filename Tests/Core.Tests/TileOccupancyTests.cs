@@ -443,22 +443,117 @@ namespace GridGame.Tests
             }
         }
 
+        // ── GG-T228: a pickup moves like an actor — heroes collect it, anyone else shoves it like a movable ──
+
         [Test]
-        public void An_enemy_leaving_a_pickup_shoves_the_amplifier_aside_never_onto_it()
+        public void An_enemy_stepping_onto_a_pickup_shoves_it_into_the_tile_it_just_left()
         {
             var db = Mini();
             var (s, _) = Battle(db, Stage(("wolf", 2, 3)), ("knight", 2, 6), ("cleric", 5, 7));
             var wolf = Enemy(s, "wolf");
-            var under = Drop(s, 2, 3); // the wolf stands on a pickup (pickups don't block, §13.3.1)
-            s.Amplifier = new Coord(2, 4);
+            var p = Drop(s, 2, 4); // right in the wolf's path to the knight
             s.TurnEntryOf(wolf.Id).Ip = 999;
             var ev = BattleEngine.Apply(s, new ShieldCommand());
             AssertBoardClean(s);
-            Assert.That(wolf.Pos, Is.Not.EqualTo(new Coord(2, 3)), "the wolf walked off its pickup");
-            Assert.That(ev.OfType<AmplifierMovedEvent>().Any(), Is.True, "it shoved the amplifier on its way");
-            Assert.That(s.Pickups, Does.Contain(under), "the pickup stays where it lies");
-            Assert.That(s.Amplifier, Is.Not.Null);
-            Assert.That(s.Amplifier, Is.Not.EqualTo(new Coord(2, 3)));
+            AssertNobodyOnAPickup(s);
+            Assert.That(wolf.Pos, Is.EqualTo(new Coord(2, 4)));
+            Assert.That(p.At, Is.EqualTo(new Coord(2, 3)), "swapped into the tile the wolf just left");
+            Assert.That(ev.OfType<PickupMovedEvent>().Single().From, Is.EqualTo(new Coord(2, 4)));
+            Assert.That(s.Pickups, Does.Contain(p), "shoved, not collected");
+        }
+
+        [Test]
+        public void A_two_by_two_shoves_a_pickup_to_the_tile_vacated_on_its_lane()
+        {
+            var db = Mini();
+            db.Classes["boss"].MoveRange = 1;
+            var st = Stage(("boss", 0, 0));
+            st.Blocks.Add(new Coord(0, 2)); st.Blocks.Add(new Coord(1, 2)); // the only way out is east
+            var (s, _) = Battle(db, st, ("knight", 2, 0), ("mage", 3, 1), ("cleric", 5, 7));
+            var p = Drop(s, 2, 1);
+            var boss = Enemy(s, "boss");
+            s.TurnEntryOf(boss.Id).Ip = 999;
+            BattleEngine.Apply(s, new ShieldCommand());
+            AssertBoardClean(s);
+            AssertNobodyOnAPickup(s);
+            Assert.That(boss.Pos, Is.EqualTo(new Coord(1, 0)));
+            Assert.That(Hero(s, "knight").Pos, Is.EqualTo(new Coord(0, 0)));
+            Assert.That(p.At, Is.EqualTo(new Coord(0, 1)));
+        }
+
+        [Test]
+        public void A_snake_head_stepping_onto_a_pickup_shoves_it_behind_its_tail()
+        {
+            var db = Mini();
+            db.Classes["naga"] = new ClassDef { Id = "naga", Name = "Naga", Team = Team.Enemy, Tags = { "Boss" }, BaseStats = new Stats { Strength = 5, Vitality = 20, Speed = 12, Agility = 5 }, SnakeSegments = 3, MoveRange = 1, Targeting = Targeting.Closest };
+            var (s, _) = Battle(db, Stage(("naga", 2, 3)), ("knight", 2, 7), ("cleric", 5, 7));
+            var head = s.Units.First(u => u.Def.Id == "naga" && u.SnakeIndex == 0);
+            var tailBefore = s.Units.Where(u => u.SnakeHeadId == head.Id).OrderBy(u => u.SnakeIndex).Last().Pos;
+            var p = Drop(s, 2, 4);
+            s.TurnEntryOf(head.Id).Ip = 999;
+            BattleEngine.Apply(s, new ShieldCommand());
+            AssertBoardClean(s);
+            AssertNobodyOnAPickup(s);
+            Assert.That(head.Pos, Is.EqualTo(new Coord(2, 4)));
+            Assert.That(p.At, Is.EqualTo(tailBefore));
+        }
+
+        [Test]
+        public void A_foe_knocked_onto_a_pickup_shoves_it_back_and_a_hero_still_collects()
+        {
+            var db = Mini();
+            var (s, k) = Bash(db, Stage(("tank", 2, 3)));
+            var tank = Enemy(s, "tank");
+            var p = Drop(s, 2, 2);
+            var ev = BattleEngine.Apply(s, new UseSlotCommand { HeroId = k.Id, Slot = 0, Target = tank.Pos });
+            AssertBoardClean(s);
+            AssertNobodyOnAPickup(s);
+            Assert.That(ev.OfType<PickupMovedEvent>().Any(m => m.From == new Coord(2, 2)), Is.True);
+            Assert.That(s.Pickups, Does.Contain(p));
+            // The knight walks onto it: a hero collects.
+            var to = p.At;
+            ev = BattleEngine.Apply(s, new MoveCommand { HeroId = k.Id, Path = P((to.X, to.Y)) });
+            Assert.That(ev.OfType<PickupCollectedEvent>().Any(c => c.UnitId == k.Id), Is.True);
+            Assert.That(s.Pickups, Does.Not.Contain(p));
+        }
+
+        [Test]
+        public void A_pickup_with_nowhere_to_go_fades_rather_than_stay_under_a_unit()
+        {
+            var db = Mini();
+            var st = Stage(("tank", 0, 0));
+            OnlyOpen(st, (0, 0), (1, 0));
+            var (s, _) = Battle(db, st, ("knight", 1, 0));
+            s.StrictTilesOverride = false;
+            var p = Drop(s, 0, 0); // under the tank, on a board with no open tile left
+            var ev = BattleEngine.Apply(s, new ShieldCommand());
+            Assert.That(ev.OfType<PickupExpiredEvent>().Any(e => e.PickupEntryId == p.Id), Is.True);
+            Assert.That(s.Pickups, Does.Not.Contain(p));
+            AssertBoardClean(s);
+        }
+
+        [Test]
+        public void Strict_mode_throws_on_a_unit_standing_on_a_pickup()
+        {
+            var db = Mini();
+            var (s, _) = Battle(db, Stage(("tank", 2, 2)), ("knight", 3, 6), ("cleric", 5, 7));
+            Drop(s, 2, 2);
+            Assert.Throws<TileConflictException>(() => BattleEngine.Apply(s, new ShieldCommand()));
+        }
+
+        [Test]
+        public void Release_mode_heals_a_unit_on_a_pickup_by_sliding_the_pickup_off()
+        {
+            var db = Mini();
+            var (s, _) = Battle(db, Stage(("tank", 2, 2)), ("knight", 3, 6), ("cleric", 5, 7));
+            s.StrictTilesOverride = false;
+            var p = Drop(s, 2, 2);
+            var ev = BattleEngine.Apply(s, new ShieldCommand());
+            Assert.That(ev.OfType<TileConflictEvent>().Count(), Is.EqualTo(1));
+            Assert.That(ev.OfType<PickupMovedEvent>().Single().To, Is.EqualTo(p.At));
+            Assert.That(p.At.Manhattan(new Coord(2, 2)), Is.EqualTo(1));
+            AssertBoardClean(s);
+            AssertNobodyOnAPickup(s);
         }
 
         [Test]
@@ -631,7 +726,7 @@ namespace GridGame.Tests
         public void Strict_soak_with_drops_and_amplifier_shoves_never_stacks_items()
         {
             var db = Real;
-            int drops = 0, ampSpawns = 0, ampShoves = 0;
+            int drops = 0, ampSpawns = 0, ampShoves = 0, pickupShoves = 0;
             var stages = Real.StageOrder;
             for (int i = 0; i < stages.Count; i += 3)
                 for (int seed = 1; seed <= 6; seed++)
@@ -644,11 +739,12 @@ namespace GridGame.Tests
                         drops += ev.OfType<PickupDroppedEvent>().Count();
                         ampSpawns += ev.OfType<AmplifierSpawnedEvent>().Count();
                         ampShoves += ev.OfType<AmplifierMovedEvent>().Count();
+                        pickupShoves += ev.OfType<PickupMovedEvent>().Count();
                         Assert.That(ev.OfType<TileConflictEvent>().Any(), Is.False);
                         AssertItemsApart(st);
                     });
                 }
-            TestContext.Out.WriteLine($"drops {drops}, amplifier spawns {ampSpawns}, shoves {ampShoves}");
+            TestContext.Out.WriteLine($"drops {drops}, amplifier spawns {ampSpawns}, shoves {ampShoves}, pickup shoves {pickupShoves}");
             Assert.That(drops, Is.GreaterThan(0));
             Assert.That(ampSpawns, Is.GreaterThan(0));
             Assert.That(ampShoves, Is.GreaterThan(0));

@@ -587,3 +587,17 @@ updated: 2026-10-09
   report, propose targets (e.g. turn used 50-80 %, Guard 5-20 % of turns, Guard mana a minority of pincer mana, no
   stage under the §0.3 win band), agree them, tune, and record the chosen values and why in the BIBLE (§2.0, §2.5,
   §29.2 item 5). The BIBLE edit was held back because `docs/BIBLE.md` carries another agent's uncommitted changes.
+
+## 2026-11-03 — Nothing spawns on a pickup; pickups move like actors (owner direction, GG-T227, GG-T228)
+
+Owner: "no two units or powerups can share the same tile, make sure nothing spawns on a tile thats already occupied
+and make sure powerups and spawns get moved the same way actors get moved."
+
+- **Was (§1.1.3, §13.3.1, GG-T129):** pickups didn't block — a hero collected one on entry, an enemy could stand on
+  it, and `FreeForSpawn` ignored pickups, so a new wave, reinforcement, guest, recruitable, egg, snake segment,
+  blink, revive, trap or trail could appear on one.
+- **Now (GG-T227):** `FreeForSpawn` also requires `ItemFree`: nothing appears on a pickup (footprint-aware).
+- **Now (GG-T228):** a pickup moves like a movable tile. Heroes still collect on entry; any other unit entering its
+  tile shoves it onto the tile it just left (lane-aware for 2×2s, behind a snake's tail), else the nearest open
+  item-free tile, else it fades — `PickupMovedEvent`, animated as a slide with a cue. A unit on a pickup is a
+  `FindTileConflict` conflict. Enemy AI never targeted pickups, so it is unchanged.

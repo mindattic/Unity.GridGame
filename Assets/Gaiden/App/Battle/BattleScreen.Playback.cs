@@ -72,8 +72,12 @@ namespace GridGame.App
                 // GG-T97: once a beat ends no two tokens may be drawn on one tile. The one legitimate in-between is a
                 // swap still finishing — the stepper has arrived and its partner's DisplacedEvent (or the amplifier's
                 // shove) is the very next beat — so the check waits for that beat.
-                bool swapPending = i + 1 < events.Count && (events[i + 1] is DisplacedEvent || events[i + 1] is AmplifierMovedEvent);
-                if (!swapPending) BoardAudit.Beat(AuditTokens(false), events[i]);
+                bool swapPending = i + 1 < events.Count && (events[i + 1] is DisplacedEvent || events[i + 1] is AmplifierMovedEvent || events[i + 1] is PickupMovedEvent);
+                // GG-T228: a unit token may sit on a pickup token only while the step that shoves the pickup is still
+                // playing out (a snake's segments follow before its head's pickup goes behind the tail, a 2×2's lanes
+                // shove in turn), so the unit-on-pickup check waits until no move beat is next.
+                bool movePending = swapPending || (i + 1 < events.Count && (events[i + 1] is SteppedEvent || events[i + 1] is TeleportedEvent));
+                if (!swapPending) BoardAudit.Beat(AuditTokens(false, unitsOnItems: !movePending), events[i]);
             }
             board.Lines.ClearLines();
             PruneGhosts();
@@ -146,6 +150,7 @@ namespace GridGame.App
                 case RoseAgainEvent ra: return RiseAnim(ra);
                 case AmplifierSpawnedEvent asp: return AmpSpawnAnim(asp);
                 case AmplifierMovedEvent am: return AmpMoveAnim(am);
+                case PickupMovedEvent pm: return PickupMoveAnim(pm);
                 case AmplifierUsedEvent au: return AmpUsedAnim(au);
                 case ManaChargedEvent mc: return ChargeAnim(mc);
                 case OrbMintedEvent o: if (o.Reason == "pincer") FlushTallies(); return OrbAnim(o);
@@ -208,7 +213,9 @@ namespace GridGame.App
         /// unit is drawn exactly where it stands (and nothing fallen is still drawn); with <paramref name="rendered"/>
         /// that each token's actual on-screen position is its tile (no tween left mid-way).
         /// </summary>
-        public List<string> AuditTokens(bool againstState, bool rendered = false)
+        /// <param name="unitsOnItems">Also check that no unit token is drawn on a pickup token's tile (GG-T228). Per beat
+        /// only non-hero tokens count (a hero's collect beat can trail its step by a few beats); against the state every unit.</param>
+        public List<string> AuditTokens(bool againstState, bool rendered = false, bool unitsOnItems = true)
         {
             var problems = new List<string>();
             var drawn = new Dictionary<Coord, int>();
@@ -239,6 +246,12 @@ namespace GridGame.App
                     else if (u.Alive && v.Tile != u.Pos) problems.Add($"{u} drawn on {v.Tile} but stands on {u.Pos}");
                 }
             AuditItemTokens(problems, againstState);
+            if (unitsOnItems)
+                foreach (var kv in board.PickupViews)
+                {
+                    if (!(kv.Value.userData is Coord pat) || !drawn.TryGetValue(pat, out var unitId)) continue;
+                    if (againstState || State.UnitById(unitId)?.IsHero != true) problems.Add($"unit {unitId} drawn on pickup {kv.Key} at {pat}");
+                }
             return problems;
         }
 
@@ -967,6 +980,17 @@ namespace GridGame.App
             board.SyncAmplifier(e.To);
             var by = State.UnitById(e.ByUnitId);
             if (by != null) Feed($"{by.Name} shoved the amplifier", new Color(1f, 0.6f, 0.4f));
+        }
+
+        /// <summary>A non-hero entered a pickup's tile and shoved it aside (§13.3.1, GG-T228): it slides like the amplifier.</summary>
+        private IEnumerator PickupMoveAnim(PickupMovedEvent e)
+        {
+            if (!board.PickupViews.TryGetValue(e.PickupEntryId, out var v)) yield break;
+            var from = BoardView.PickupPos(e.From); var to = BoardView.PickupPos(e.To);
+            v.userData = e.To;
+            App.Audio.Sfx("slide", 0.6f, 1.5f);
+            yield return Tween.Run(0.22f, k => { var p = Vector2.Lerp(from, to, Tween.EaseOut(k)); v.style.left = p.x; v.style.top = p.y; });
+            BoardView.PlacePickup(v, e.To);
         }
 
         private IEnumerator AmpUsedAnim(AmplifierUsedEvent e)

@@ -169,6 +169,7 @@ namespace GridGame.Core.Battle
                 if (!FootprintOpen(caster, anchor) || !Relocate(caster, anchor)) { Announce("Blocked", caster.Id); return; }
                 Emit(new AbilityResolvedEvent { CasterId = caster.Id, AbilityId = a.Id, Anchor = anchor, Tiles = { anchor } });
                 Emit(new TeleportedEvent { UnitId = caster.Id, From = from, To = anchor });
+                ShovePickupsUnder(caster, from); // a non-hero lands and shoves the pickup aside (GG-T228)
                 TriggerTrap(caster);
                 if (a.HastenU > 0f && caster.Alive) Hasten(caster, a.HastenU); // Fade Step: arrive already ahead (GG-T183)
                 if (caster.Alive && caster.IsHero) ResolvePincers(Team.Hero, caster);
@@ -328,6 +329,7 @@ namespace GridGame.Core.Battle
                 var from = t.Pos;
                 if (!Relocate(t, next)) return;
                 Emit(new DisplacedEvent { UnitId = t.Id, From = from, To = next, ByUnitId = caster.Id });
+                ShovePickupsUnder(t, from);
                 if (t.IsHero) TriggerTrap(t);
             }
         }
@@ -366,6 +368,8 @@ namespace GridGame.Core.Battle
                 var from = u.Pos;
                 if (!Relocate(u, next)) return;
                 Emit(new DisplacedEvent { UnitId = u.Id, From = from, To = next, ByUnitId = u.Id });
+                ShovePickupsUnder(u, from);
+                if (u.IsHero) CollectPickup(u); // a hero backing onto a pickup collects it like any entry (GG-T228)
             }
         }
 

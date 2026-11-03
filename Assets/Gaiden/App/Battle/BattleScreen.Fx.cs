@@ -578,7 +578,10 @@ namespace GridGame.App
 
         private IEnumerator PickupDropAnim(PickupDroppedEvent e)
         {
-            var p = State.Pickups.FirstOrDefault(x => x.Id == e.PickupEntryId) ?? new Pickup { Id = e.PickupEntryId, PickupId = e.PickupId, At = e.At, ActionsLeft = BattleConfig.PickupLifetimeActions };
+            // Drawn where it dropped (the event's tile), not where the end-of-command State has it: since GG-T228 a pickup
+            // can be shoved later in the same command, and its PickupMovedEvent slides it from here.
+            var live = State.Pickups.FirstOrDefault(x => x.Id == e.PickupEntryId);
+            var p = new Pickup { Id = e.PickupEntryId, PickupId = e.PickupId, At = e.At, ActionsLeft = live?.ActionsLeft ?? BattleConfig.PickupLifetimeActions };
             App.Content.Pickups.TryGetValue(e.PickupId, out var def);
             var v = board.PickupViews.TryGetValue(p.Id, out var ex) ? ex : board.AddPickup(p, def);
             App.Audio.Sfx("powerup", 0.7f, 0.8f);

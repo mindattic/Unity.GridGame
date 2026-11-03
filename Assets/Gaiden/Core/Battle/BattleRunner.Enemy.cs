@@ -92,6 +92,7 @@ namespace GridGame.Core.Battle
                 var from = enemy.Pos;
                 if (!Relocate(enemy, spot.Value)) return false;
                 Emit(new TeleportedEvent { UnitId = enemy.Id, From = from, To = spot.Value });
+                ShovePickupsUnder(enemy, from); // SurfaceBeside never picks a pickup tile; the net costs nothing
                 Announce(burrow ? $"{enemy.Name} bursts up from below!" : $"{enemy.Name} blinks beside {target.Name}!", enemy.Id);
                 EnemyAttack(enemy);
                 if (CheckEnd()) return true;
@@ -108,6 +109,7 @@ namespace GridGame.Core.Battle
             if (from.Manhattan(dest) != 2 || enemy.IsMultiTile || !FootprintOpen(enemy, dest)) return false; // never onto a unit or a movable
             if (!Relocate(enemy, dest)) return false;
             Emit(new SteppedEvent { UnitId = enemy.Id, From = from, To = dest });
+            ShovePickupsUnder(enemy, from);
             LeaveTrail(enemy, from);
             return true;
         }
@@ -276,6 +278,8 @@ namespace GridGame.Core.Battle
                 foreach (var mv in S.Movables.ToArray())
                     if (enemy.Occupies(mv.Pos) && !OccupiedBefore(enemy, from, mv.Pos))
                         ShoveMovable(mv, VacatedTile(enemy, from, delta, mv.Pos), enemy);
+                // A pickup on an entered tile goes to the tile vacated on its own lane, like a movable (GG-T228).
+                ShovePickupsUnder(enemy, from, t => VacatedTile(enemy, from, delta, t));
                 foreach (var (hero, to) in shoves)
                 {
                     var hf = hero.Pos;
@@ -295,14 +299,15 @@ namespace GridGame.Core.Battle
             // since the body slides into every tile the head vacates (GG-T97: it used to land under segment 1).
             var vacated = enemy.SnakeHeadId == enemy.Id ? FollowSnake(enemy, from) : from;
             if (pushedTile != null) ShoveMovable(pushedTile, vacated, enemy);
+            ShovePickupsUnder(enemy, vacated); // a pickup is shoved exactly like the movable (GG-T228)
             LeaveTrail(enemy, from);
             return true;
         }
 
         /// <summary>
-        /// A movable tile is displaced like an actor: it takes the tile its pusher just left (§1.1.2). That tile can
-        /// hold a pickup (an enemy may stand on one, §13.3.1), and two items never share a tile (§1.1.3, GG-T129), so
-        /// then the movable slides on to the nearest open, item-free tile instead — the pickup stays where it lies.
+        /// A movable tile is displaced like an actor: it takes the tile its pusher just left (§1.1.2). Two items never
+        /// share a tile (§1.1.3, GG-T129), so if that tile holds a pickup (only a hero-swap worst case since GG-T228 —
+        /// no unit stands on a pickup) the movable slides on to the nearest open, item-free tile instead.
         /// </summary>
         private void ShoveMovable(MovableTile mv, Coord to, Unit by)
         {

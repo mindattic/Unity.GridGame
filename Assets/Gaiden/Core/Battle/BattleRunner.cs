@@ -142,20 +142,70 @@ namespace GridGame.Core.Battle
         private bool PickupBlocksMovable(Coord c) => !PreviewOnly && S.PickupAt(c) != null;
 
         /// <summary>The nearest tile a movable may land on (walkable, nobody there, no item), or null on a full board.</summary>
-        private Coord? NearestMovableSpot(MovableTile m, Coord near)
+        private Coord? NearestMovableSpot(MovableTile m, Coord near) =>
+            NearestSpot(near, c => S.Walkable(c) && S.UnitAt(c) == null && !PickupBlocksMovable(c) && (S.MovableAt(c) == null || S.MovableAt(c) == m));
+
+        /// <summary>The open tile nearest <paramref name="near"/> (ties: first in row-major order), or null.</summary>
+        private static Coord? NearestSpot(Coord near, Func<Coord, bool> open)
         {
             Coord? best = null; int bestD = int.MaxValue;
             for (int y = 0; y < BattleConfig.Rows; y++)
                 for (int x = 0; x < BattleConfig.Cols; x++)
                 {
                     var c = new Coord(x, y);
-                    if (!S.Walkable(c) || S.UnitAt(c) != null || PickupBlocksMovable(c)) continue;
-                    var other = S.MovableAt(c);
-                    if (other != null && other != m) continue;
+                    if (!open(c)) continue;
                     int d = c.Manhattan(near);
                     if (d < bestD) { bestD = d; best = c; }
                 }
             return best;
+        }
+
+        // ─────────────────────────────────────────────────────────────────────────────
+        // Pickups move like actors (§13.3.1, GG-T228): a hero entering a pickup's tile collects it; any other unit that
+        // enters one shoves it exactly like a movable tile — onto the tile the mover just left when that is open, else the
+        // nearest open, item-free tile — so no unit ever shares a tile with a pickup.
+        // ─────────────────────────────────────────────────────────────────────────────
+
+        /// <summary>A pickup may land here: walkable, nobody standing there, no movable and no other pickup.</summary>
+        private bool PickupSpotOpen(Pickup p, Coord c)
+        {
+            if (!S.Walkable(c) || S.UnitAt(c) != null || S.MovableAt(c) != null) return false;
+            var other = S.PickupAt(c);
+            return other == null || other == p;
+        }
+
+        /// <summary>Shove one pickup toward <paramref name="to"/> (falling back to the nearest open tile); with nowhere to
+        /// go at all it fades rather than stay under a unit.</summary>
+        private void ShovePickup(Pickup p, Coord to, Unit by)
+        {
+            var from = p.At;
+            Coord? spot = PickupSpotOpen(p, to) ? to : NearestSpot(to, c => PickupSpotOpen(p, c));
+            if (spot == null)
+            {
+                S.Pickups.Remove(p);
+                Emit(new PickupExpiredEvent { PickupEntryId = p.Id, PickupId = p.PickupId, At = p.At });
+                return;
+            }
+            if (spot.Value == from) return;
+            p.At = spot.Value;
+            Emit(new PickupMovedEvent { PickupEntryId = p.Id, PickupId = p.PickupId, From = from, To = spot.Value, ByUnitId = by?.Id ?? -1 });
+        }
+
+        /// <summary>
+        /// A unit just landed (its footprint anchored where it now stands): every pickup under a non-hero is shoved aside.
+        /// <paramref name="laneFrom"/> names the tile the mover vacated on each entered tile's lane (2×2 steps); by default
+        /// it is the same offset from <paramref name="from"/>, the mover's previous anchor. Heroes collect instead (via
+        /// <see cref="TriggerTrap"/>); the drag preview collects nothing and shoves nothing.
+        /// </summary>
+        private void ShovePickupsUnder(Unit u, Coord from, Func<Coord, Coord> laneFrom = null)
+        {
+            if (PreviewOnly || !u.Alive || u.IsHero || S.Pickups.Count == 0) return;
+            foreach (var t in new List<Coord>(u.Tiles()))
+            {
+                var p = S.PickupAt(t);
+                if (p == null) continue;
+                ShovePickup(p, laneFrom != null ? laneFrom(t) : from + (t - u.Pos), u);
+            }
         }
 
         /// <summary>The chokepoint for putting a new unit on the board (spawns, waves, reinforcements, eggs, remains, guests).</summary>
@@ -182,7 +232,7 @@ namespace GridGame.Core.Battle
         /// <summary>
         /// The first tile two actors share (or an actor off the walkable board), or two board items share (§1.1.3,
         /// GG-T129: a pickup on a pickup or under a movable, or a pickup off the walkable board), or null on a healthy
-        /// board. A unit standing on a pickup is fine — pickups don't block (§13.3.1).
+        /// board. Since GG-T228 a unit standing on a pickup is a conflict too — pickups move like actors (§13.3.1).
         /// </summary>
         private (Unit mover, Unit stays, MovableTile movable, Pickup pickup, Coord at)? FindTileConflict()
         {
@@ -207,6 +257,8 @@ namespace GridGame.Core.Battle
             foreach (var p in S.Pickups)
             {
                 if (!S.Walkable(p.At) || !itemTiles.Add(p.At)) return (null, null, S.MovableAt(p.At), p, p.At);
+                // GG-T228: a pickup moves like an actor, so no unit (hero or not) ever stands on one once a step is over.
+                if (seen.TryGetValue(p.At, out var stander)) return (stander, null, null, p, p.At);
             }
             return null;
         }
@@ -222,7 +274,7 @@ namespace GridGame.Core.Battle
         private string Describe((Unit mover, Unit stays, MovableTile movable, Pickup pickup, Coord at) c, string context) =>
             "Tile conflict at " + c.at + " after " + context + ": "
             + (c.pickup != null
-                ? "pickup " + c.pickup.Id + " (" + c.pickup.PickupId + ") vs " + (c.movable != null ? "movable" : S.Walkable(c.at) ? "another pickup" : "off-board")
+                ? "pickup " + c.pickup.Id + " (" + c.pickup.PickupId + ") vs " + (c.mover != null ? c.mover.ToString() : c.movable != null ? "movable" : S.Walkable(c.at) ? "another pickup" : "off-board")
                 : (c.mover?.ToString() ?? "-") + " vs " + (c.movable != null ? "movable" : c.stays?.ToString() ?? "off-board"))
             + " (stage " + S.Stage?.Id + ", wave " + S.Wave + ", clock " + S.Clock + ")";
 
@@ -239,6 +291,13 @@ namespace GridGame.Core.Battle
             if (found == null) return;
             var c = found.Value;
             if (Strict) throw new TileConflictException(Describe(c, lastCommand));
+            if (c.pickup != null && c.mover != null)
+            {
+                // A unit on a pickup (GG-T228): the pickup slides to the nearest open tile (or fades on a full board).
+                Emit(new TileConflictEvent { UnitId = c.mover.Id, OtherUnitId = -1, At = c.at, Command = lastCommand });
+                ShovePickup(c.pickup, c.at, null);
+                return;
+            }
             if (c.pickup != null && c.movable == null)
             {
                 // Two pickups on one tile (or one off the board): the newer one fades, so only one token is ever drawn.

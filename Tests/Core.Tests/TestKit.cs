@@ -146,6 +146,9 @@ namespace GridGame.Tests
             // A movable tile (the Power Amplifier) occupies its tile like an actor: never under a unit (GG-T97).
             foreach (var m in s.Movables)
                 Assert.That(seen.ContainsKey(m.Pos), Is.False, $"Movable at {m.Pos} under unit {(seen.ContainsKey(m.Pos) ? seen[m.Pos] : -1)}");
+            // Pickups move like actors (GG-T228): never under a unit either.
+            foreach (var p in s.Pickups)
+                Assert.That(seen.ContainsKey(p.At), Is.False, $"Pickup {p.Id} at {p.At} under unit {(seen.ContainsKey(p.At) ? seen[p.At] : -1)}");
             AssertItemsApart(s);
             Assert.That(s.Bank.Count, Is.InRange(0, s.Bank.Capacity));
             foreach (var e in s.Timeline)

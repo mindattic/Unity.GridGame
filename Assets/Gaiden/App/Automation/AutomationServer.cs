@@ -849,6 +849,7 @@ namespace GridGame.App.Automation
                         bar = u.IsHero ? Enumerable.Range(0, u.Bar.Count).Select(i => (u.Bar[i].AbilityId ?? u.Bar[i].ItemId ?? "-") + "=" + BattleEngine.GetSlotStatus(s, u.Id, i)).ToList() : null,
                     }).ToList(),
                     timeline = s.Timeline.Select(e => new { e.Id, kind = e.Kind.ToString(), owner = e.OwnerId, u = Math.Round(e.U, 3), e.AbilityId }).ToList(),
+                    pickups = s.Pickups.Select(p => new { p.Id, kind = p.PickupId, x = p.At.X, y = p.At.Y, left = p.ActionsLeft }).ToList(), // GG-T228
                     results = new { s.Results.Coins, s.Results.Xp, s.Results.ActionsTaken },
                 };
             }

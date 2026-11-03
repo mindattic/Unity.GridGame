@@ -626,9 +626,7 @@ namespace GridGame.App
             // so the ring's -4 inset is unchanged and it still draws over the icon.
             var ring = new RingTimer(Mathf.Clamp01(p.ActionsLeft / (float)BattleConfig.PickupLifetimeActions)) { name = "life", pickingMode = PickingMode.Ignore };
             disc.Add(ring);
-            var centre = CenterOf(p.At);
-            root.style.left = centre.x - Tile * 0.28f;
-            root.style.top = centre.y - Tile * 0.28f;
+            PlacePickup(root, p.At);
             float phase = (p.Id * 1.7f) % 6.28f;
             root.schedule.Execute(() =>
             {
@@ -636,13 +634,25 @@ namespace GridGame.App
                 disc.style.translate = new Translate(0, -8f * Mathf.Abs(Mathf.Sin(t)));
                 glow.style.opacity = 0.65f + 0.35f * Mathf.Sin(t * 1.3f);
             }).Every(33);
-            root.userData = p.At; // pickups never move: the tile its token is drawn on (BoardAudit, GG-T129)
             MarkLayer.Add(root);
             PickupViews[p.Id] = root;
             return root;
         }
 
-        /// <summary>Snap pickup tokens to the state: add missing ones, drop collected/faded ones, refresh fade rings.</summary>
+        /// <summary>The top-left of a pickup token centred on <paramref name="at"/>.</summary>
+        public static Vector2 PickupPos(Coord at) => CenterOf(at) - new Vector2(Tile * 0.28f, Tile * 0.28f);
+
+        /// <summary>Put a pickup token on a tile. Pickups move like actors since GG-T228, so its userData — the tile it is
+        /// drawn on, which BoardAudit checks (GG-T129) — follows every placement.</summary>
+        public static void PlacePickup(VisualElement v, Coord at)
+        {
+            var pos = PickupPos(at);
+            v.style.left = pos.x;
+            v.style.top = pos.y;
+            v.userData = at;
+        }
+
+        /// <summary>Snap pickup tokens to the state: add missing ones, put each on its tile, drop collected/faded ones, refresh fade rings.</summary>
         public void SyncPickups(BattleState s)
         {
             var live = new HashSet<int>();
@@ -651,6 +661,7 @@ namespace GridGame.App
                 live.Add(p.Id);
                 s.Content.Pickups.TryGetValue(p.PickupId, out var def);
                 if (!PickupViews.TryGetValue(p.Id, out var v)) v = AddPickup(p, def);
+                if (!(v.userData is Coord drawnAt) || drawnAt != p.At) PlacePickup(v, p.At);
                 var old = v.Q("life");
                 old?.RemoveFromHierarchy();
                 (v.Q("disc") ?? v).Add(new RingTimer(Mathf.Clamp01(p.ActionsLeft / (float)BattleConfig.PickupLifetimeActions)) { name = "life", pickingMode = PickingMode.Ignore });

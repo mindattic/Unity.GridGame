@@ -488,6 +488,13 @@ namespace GridGame.Core.Battle
         public override string ToString() => $"Pickup {PickupId} collected by {UnitId} at {At}";
     }
 
+    /// <summary>A non-hero unit entered a pickup's tile and shoved it aside like a movable tile (§13.3.1, GG-T228).</summary>
+    public sealed class PickupMovedEvent : BattleEvent
+    {
+        public int PickupEntryId; public string PickupId; public Coord From, To; public int ByUnitId;
+        public override string ToString() => $"Pickup {PickupId} shoved {From}->{To} by {ByUnitId}";
+    }
+
     public sealed class PickupExpiredEvent : BattleEvent
     {
         public int PickupEntryId; public string PickupId; public Coord At;
