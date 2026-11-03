@@ -391,6 +391,7 @@ namespace GridGame.App
         private readonly VisualElement[,] marks = new VisualElement[BattleConfig.Cols, BattleConfig.Rows];
         private readonly List<VisualElement> trapMarks = new List<VisualElement>();
         public readonly LineLayer Lines;
+        public readonly TrailLayer Trail;
 
         private readonly string theme;
 
@@ -406,6 +407,11 @@ namespace GridGame.App
             // Order matters: highlights and lines draw OVER the units so targets and pincer previews read clearly.
             TileLayer = Layer("tiles");
             UnitLayer = Layer("units");
+            // Over the units: the route through the tiles it slid through is the part that matters (GG-T219).
+            Trail = new TrailLayer { name = "trail" };
+            Trail.style.position = Position.Absolute;
+            Trail.style.left = Trail.style.top = Trail.style.right = Trail.style.bottom = 0;
+            Root.Add(Trail);
             MarkLayer = Layer("marks");
             Lines = new LineLayer();
             Lines.style.position = Position.Absolute;
@@ -837,6 +843,100 @@ namespace GridGame.App
                 p.BeginPath();
                 p.Arc(c, r, Angle.Degrees(0f), Angle.Degrees(360f));
                 p.Fill();
+            }
+        }
+    }
+
+    /// <summary>
+    /// GG-T219: the floor trail behind a moving unit (Terra Battle style). The held hero's route is live — a ring on
+    /// the tile it was lifted from, then the joined path, older steps fainter — and fades out after the drop. Steps
+    /// played back (enemies walking) leave short trails that fade on their own.
+    /// </summary>
+    public sealed class TrailLayer : VisualElement
+    {
+        private struct Fading { public Vector2 A, B; public Color Color; public float Born, Life; }
+        private readonly List<Coord> live = new List<Coord>();
+        private Color liveColor;
+        private readonly List<Fading> fading = new List<Fading>();
+        private IVisualElementScheduledItem ticker;
+
+        public TrailLayer() { generateVisualContent += Draw; pickingMode = PickingMode.Ignore; }
+
+        public void SetLive(Coord start, IReadOnlyList<Coord> path, Color color)
+        {
+            live.Clear();
+            live.Add(start);
+            live.AddRange(path);
+            liveColor = color;
+            MarkDirtyRepaint();
+        }
+
+        /// <summary>The drop: the live route stops following and fades out over <paramref name="life"/> seconds.</summary>
+        public void ReleaseLive(float life = 0.6f)
+        {
+            for (int i = 1; i < live.Count; i++)
+                AddFading(BoardView.CenterOf(live[i - 1]), BoardView.CenterOf(live[i]), WithAlpha(liveColor, SegAlpha(i, live.Count)), life);
+            live.Clear();
+            MarkDirtyRepaint();
+        }
+
+        public void Step(Coord from, Coord to, Color color, float life = 1.1f) =>
+            AddFading(BoardView.CenterOf(from), BoardView.CenterOf(to), color, life);
+
+        public void Clear() { live.Clear(); fading.Clear(); MarkDirtyRepaint(); }
+
+        private void AddFading(Vector2 a, Vector2 b, Color c, float life)
+        {
+            fading.Add(new Fading { A = a, B = b, Color = c, Born = Time.unscaledTime, Life = life });
+            if (ticker == null) ticker = schedule.Execute(Tick).Every(16);
+            else ticker.Resume();
+            MarkDirtyRepaint();
+        }
+
+        private void Tick()
+        {
+            float now = Time.unscaledTime;
+            fading.RemoveAll(f => now - f.Born >= f.Life);
+            if (fading.Count == 0) ticker.Pause();
+            MarkDirtyRepaint();
+        }
+
+        private static float SegAlpha(int i, int count) => Mathf.Lerp(0.35f, 0.95f, count <= 2 ? 1f : (i - 1f) / (count - 2f));
+        private static Color WithAlpha(Color c, float a) => new Color(c.r, c.g, c.b, c.a * a);
+
+        private static void Stroke(Painter2D p, Vector2 a, Vector2 b, Color c)
+        {
+            p.strokeColor = WithAlpha(c, 0.25f); p.lineWidth = BoardView.Tile * 0.16f;
+            p.BeginPath(); p.MoveTo(a); p.LineTo(b); p.Stroke();
+            p.strokeColor = WithAlpha(c, 0.85f); p.lineWidth = BoardView.Tile * 0.055f;
+            p.BeginPath(); p.MoveTo(a); p.LineTo(b); p.Stroke();
+        }
+
+        private void Draw(MeshGenerationContext ctx)
+        {
+            var p = ctx.painter2D;
+            p.lineCap = LineCap.Round;
+            p.lineJoin = LineJoin.Round;
+            float now = Time.unscaledTime;
+            foreach (var f in fading)
+            {
+                float k = 1f - Mathf.Clamp01((now - f.Born) / f.Life);
+                Stroke(p, f.A, f.B, WithAlpha(f.Color, k));
+            }
+            if (live.Count == 0) return;
+            var start = BoardView.CenterOf(live[0]);
+            p.strokeColor = WithAlpha(liveColor, 0.85f); p.lineWidth = 7f;
+            p.BeginPath(); p.Arc(start, BoardView.Tile * 0.3f, Angle.Degrees(0f), Angle.Degrees(360f)); p.Stroke();
+            for (int i = 1; i < live.Count; i++)
+            {
+                var c = WithAlpha(liveColor, SegAlpha(i, live.Count));
+                var a = BoardView.CenterOf(live[i - 1]);
+                var b = BoardView.CenterOf(live[i]);
+                // The newest step stops at the held hero's tile edge instead of painting over its portrait.
+                if (i == live.Count - 1) b = Vector2.MoveTowards(b, a, BoardView.Tile * 0.4f);
+                Stroke(p, a, b, c);
+                p.fillColor = c;
+                p.BeginPath(); p.Arc(a, BoardView.Tile * 0.07f, Angle.Degrees(0f), Angle.Degrees(360f)); p.Fill();
             }
         }
     }

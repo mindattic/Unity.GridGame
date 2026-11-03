@@ -334,6 +334,10 @@ Side effects of a step: Sleep (and any `BreaksOnMove` buff) is removed from a di
 
 **Damage rule**: movement never deals damage ([GG-LAW-1](#GG-LAW-1)).
 
+**The core strategy (owner, 2026-11-03, GG-T219).** "One of the most important strategies is to slide through allies and opponents to set up even more devastating pincer attacks … moving opponents into lines to execute the best pincer attack." The slide is not travel; it is how a turn *builds* the pincer. Every occupant a hero passes through lands on the tile the hero just left, so a walk drags a column of foes back along its own route — straightening a scattered pack into one unbroken line — while allies passed through are dropped behind it as attackers or supporter-chain links. The best turn walks a route that ends with the most foes in a single line between two heroes, with the longest supporter chains behind them. Features that show or score moves (the shove preview, GG-T190; the drag trail below; bot and hint scoring) serve this play first.
+
+**The drag trail (GG-T219).** Like Terra Battle and Friends & Dragons, the held hero leaves a trail across the board (`TrailLayer`, drawn over the units so the route stays visible through the very tiles it slid through) so the way it came stays readable: a ring on the tile it was lifted from, then the joined path through every tile it has entered, older steps fainter, the newest step stopping at the held hero's tile edge. On the drop the trail fades out over 0.6 s. A unit that walks during playback (an enemy turn, a replayed step) leaves a short trail that fades over ~1.1 s — red for foes, gold for heroes; a displaced actor shows its shove arrow instead (GG-T190).
+
 ### 1.1.1 Physical blocks (added 2026-10-10, owner direction)
 
 Owner: "the grid can have physical blocks that disallow entrance … nobody moving through or landing or spawning on a physical block."
