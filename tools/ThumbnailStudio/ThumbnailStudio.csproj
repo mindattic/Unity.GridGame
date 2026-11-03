@@ -1,0 +1,17 @@
+<Project Sdk="Microsoft.NET.Sdk">
+
+  <!-- Thumbnail Studio (GG-T222): a standalone WPF editor for each class's "Thumbnail" (Zoom/X/Y) in
+       Assets/Gaiden/Resources/Content/classes.json. Lives outside Assets/ so Unity never sees it, and
+       references nothing from the game. -->
+  <PropertyGroup>
+    <OutputType>WinExe</OutputType>
+    <TargetFramework>net10.0-windows</TargetFramework>
+    <UseWPF>true</UseWPF>
+    <Nullable>enable</Nullable>
+    <ImplicitUsings>enable</ImplicitUsings>
+    <AssemblyName>ThumbnailStudio</AssemblyName>
+    <RootNamespace>ThumbnailStudio</RootNamespace>
+    <SatelliteResourceLanguages>en</SatelliteResourceLanguages>
+  </PropertyGroup>
+
+</Project>

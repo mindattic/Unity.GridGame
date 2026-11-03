@@ -1,0 +1,5 @@
+bin/
+obj/
+*.user
+# The repo root ignores *.csproj (Unity regenerates its own); this one is hand-written and tracked.
+!ThumbnailStudio.csproj
