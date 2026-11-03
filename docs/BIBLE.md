@@ -1283,6 +1283,17 @@ Announcements (`AnnounceEvent`) are played by the event player as an awaited 0.2
 
 Every class has a thumb (`Every_class_can_be_instantiated_and_has_art_reference`).
 
+#### 12.1.1 Thumbnails are a window onto the portrait (added 2026-11-03, owner direction, GG-T220)
+
+Owner: "these new coordinates and zoom are kept in memory in the character's Thumbnail properties; it always uses the real existing portrait and simply zooms in and offsets; that way the portrait is always in memory and when the enemy dies you can just spawn a portrait of the actual full portrait to shake and die; no duplicating assets."
+
+- Every class carries `"Thumbnail": { "Zoom", "X", "Y" }` (`ClassDef.Thumbnail`). (`X`, `Y`) is the portrait point — fractions of the portrait's width and height from its top-left — that sits at the thumbnail's centre; `Zoom` is portrait width ÷ thumbnail side (1 = the whole portrait width fills the square). Aspect is always kept, and the numbers are resolution-independent, so one framing serves the board token, the timeline icon and every card.
+- A square of side S shows the portrait at width W = Zoom × S and height H = W × (portrait h ÷ w), placed at left = S/2 − X·W, top = S/2 − Y·H, clipped to the square.
+- `ContentLoader.Validate` requires one on every class, with Zoom in [0.25, 20] and X/Y in [−0.5, 1.5].
+- The owner frames each unit in **Thumbnail Studio** (`tools/ThumbnailStudio`, GG-T222), a separate desktop app that edits these numbers in `classes.json`; nothing is exported.
+- The first values (GG-T220) were recovered from the pre-cut `Resources/Thumbs` images by locating each one inside its portrait (multiscale template match, every result checked by re-rendering it), so every unit first looks exactly as before. `import_art.py` no longer cuts thumbs; a new class needs a Thumbnail before it validates.
+- Separate from `Crop` (the cut-in bust's eye framing, `BattleScreen.CutIns.cs`), which is unchanged.
+
 ### 12.2 Procedural pieces and placeholders
 
 `Art` generates the window gradients, cursor, glow and orb textures at runtime. **Board tiles (amended 2026-10-10, owner):** GridGame2026's own tile art (`Resources/Tiles/tile.png`, its `tile3`, imported by `tools/import_art.py`), recoloured per campaign biome by `tools/make_tiles.py` (moss, sandstone, murky teal, rust-rose; the caverns keep the original slate) and tinted light/dark per square to keep the checkerboard (`Art.BoardTile(theme)`). A missing texture falls back to a purple placeholder and logs once — a gap is visible, never fatal.

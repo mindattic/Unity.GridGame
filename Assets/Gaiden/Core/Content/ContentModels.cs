@@ -135,6 +135,21 @@ namespace GridGame.Core.Content
         public float Y;
     }
 
+    /// <summary>
+    /// GG-T220: a unit's thumbnail is a window onto its one real portrait, never a separate image (owner 2026-11-03:
+    /// "it always uses the real existing portrait and simply zooms in and offsets … no duplicating assets").
+    /// (<see cref="X"/>, <see cref="Y"/>) is the portrait point, as fractions of its width and height from the top-left,
+    /// that sits at the thumbnail's centre; <see cref="Zoom"/> is portrait width ÷ thumbnail side (1 = the whole width
+    /// fills the square). Framed in tools/ThumbnailStudio.
+    /// </summary>
+    public sealed class Thumbnail
+    {
+        public const float MinZoom = 0.25f, MaxZoom = 20f, MinOffset = -0.5f, MaxOffset = 1.5f;
+        public float Zoom = 1f;
+        public float X = 0.5f;
+        public float Y = 0.5f;
+    }
+
     public sealed class BossPhaseDef
     {
         /// <summary>Phase begins when HP fraction drops to or below this (0..1).</summary>
@@ -206,6 +221,7 @@ namespace GridGame.Core.Content
         public string Card;
         public string Portrait;
         public PortraitCrop Crop;
+        public Thumbnail Thumbnail;
         public Footprint Footprint = new Footprint();
         public Stats BaseStats = new Stats();
         public Stats Growth = new Stats();

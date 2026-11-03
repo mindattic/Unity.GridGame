@@ -107,6 +107,11 @@ namespace GridGame.Core.Content
             foreach (var c in db.Classes.Values)
             {
                 if (c.DropTable != null && !db.DropTables.ContainsKey(c.DropTable)) p.Add($"class {c.Id}: unknown drop table '{c.DropTable}'");
+                var th = c.Thumbnail;
+                if (th == null) p.Add($"class {c.Id}: no Thumbnail (frame it in tools/ThumbnailStudio)");
+                else if (!(th.Zoom >= Thumbnail.MinZoom && th.Zoom <= Thumbnail.MaxZoom) || !(th.X >= Thumbnail.MinOffset && th.X <= Thumbnail.MaxOffset)
+                         || !(th.Y >= Thumbnail.MinOffset && th.Y <= Thumbnail.MaxOffset))
+                    p.Add($"class {c.Id}: Thumbnail out of range (Zoom {Thumbnail.MinZoom}..{Thumbnail.MaxZoom}, X/Y {Thumbnail.MinOffset}..{Thumbnail.MaxOffset})");
                 foreach (var a in c.Abilities) NeedAbility(a, $"class {c.Id} abilities");
                 foreach (var s in c.DefaultLoadout)
                 {

@@ -11,6 +11,11 @@
     "Lore": "Knows every reagent, every breath, and when to spend both.",
     "Card": "Backline [healer][buffer]. Restores tempo with [cleanse] and [aid].",
     "Portrait": "Alchemist",
+    "Thumbnail": {
+      "Zoom": 1.4906,
+      "X": 0.5209,
+      "Y": 0.206
+    },
     "Footprint": {
       "W": 1,
       "H": 1
@@ -140,6 +145,11 @@
     "Lore": "Years of quiet training forged a will that moves faster than thought.",
     "Card": "Mobile [striker][flanker]. Leans on [crit] and [backstab] windows.",
     "Portrait": "Assassain",
+    "Thumbnail": {
+      "Zoom": 1.0017,
+      "X": 0.4474,
+      "Y": 0.1817
+    },
     "Footprint": {
       "W": 1,
       "H": 1
@@ -271,6 +281,11 @@
     "Lore": "Walks many roads, never lost for lack of a single path.",
     "Card": "Flexible [fighter]. Converts [openings] into [combo finishes].",
     "Portrait": "Barbarian",
+    "Thumbnail": {
+      "Zoom": 1.8679,
+      "X": 0.3513,
+      "Y": 0.2022
+    },
     "Footprint": {
       "W": 1,
       "H": 1
@@ -401,6 +416,11 @@
     "Lore": "Walks many roads, never lost for lack of a single path.",
     "Card": "Flexible [fighter]. Converts [openings] into [combo finishes].",
     "Portrait": "Basher",
+    "Thumbnail": {
+      "Zoom": 1.9698,
+      "X": 0.5538,
+      "Y": 0.1961
+    },
     "Footprint": {
       "W": 1,
       "H": 1
@@ -532,6 +552,11 @@
     "Lore": "Born to the deep places, it runs by instinct and strikes without doubt.",
     "Card": "Ferocious [pouncer][mauler]. Disrupts with [roar] and [knockdown].",
     "Portrait": "Bat00",
+    "Thumbnail": {
+      "Zoom": 0.9621,
+      "X": 0.4994,
+      "Y": 0.5002
+    },
     "Footprint": {
       "W": 1,
       "H": 1
@@ -638,6 +663,11 @@
     "Lore": "Born to the deep places, it runs by instinct and strikes without doubt.",
     "Card": "Ferocious [pouncer][mauler]. Disrupts with [roar] and [knockdown].",
     "Portrait": "Bat01",
+    "Thumbnail": {
+      "Zoom": 0.9644,
+      "X": 0.4997,
+      "Y": 0.5006
+    },
     "Footprint": {
       "W": 1,
       "H": 1
@@ -745,6 +775,11 @@
     "Lore": "Born to the deep places, it runs by instinct and strikes without doubt.",
     "Card": "Ferocious [pouncer][mauler]. Disrupts with [roar] and [knockdown].",
     "Portrait": "Bat02",
+    "Thumbnail": {
+      "Zoom": 0.9603,
+      "X": 0.5004,
+      "Y": 0.5004
+    },
     "Footprint": {
       "W": 1,
       "H": 1
@@ -851,6 +886,11 @@
     "Lore": "Years of quiet training forged a will that moves faster than thought.",
     "Card": "Mobile [striker][flanker]. Leans on [crit] and [backstab] windows.",
     "Portrait": "BlackNinja",
+    "Thumbnail": {
+      "Zoom": 2.3786,
+      "X": 0.5243,
+      "Y": 0.2102
+    },
     "Footprint": {
       "W": 1,
       "H": 1
@@ -982,6 +1022,11 @@
     "Lore": "Disciplines of ink and flame taught that power begins in focus.",
     "Card": "Arcane [controller][debuffer]. Shapes fights with [aoe][curse].",
     "Portrait": "BlackWitch",
+    "Thumbnail": {
+      "Zoom": 2.3791,
+      "X": 0.4852,
+      "Y": 0.2102
+    },
     "Footprint": {
       "W": 1,
       "H": 1
@@ -1116,6 +1161,11 @@
     "Lore": "Walks many roads, never lost for lack of a single path.",
     "Card": "Flexible [fighter]. Converts [openings] into [combo finishes].",
     "Portrait": "BlueLion",
+    "Thumbnail": {
+      "Zoom": 2.4363,
+      "X": 0.6287,
+      "Y": 0.1986
+    },
     "Footprint": {
       "W": 1,
       "H": 1
@@ -1246,6 +1296,11 @@
     "Lore": "Years of quiet training forged a will that moves faster than thought.",
     "Card": "Mobile [striker][flanker]. Leans on [crit] and [backstab] windows.",
     "Portrait": "BlueNinja",
+    "Thumbnail": {
+      "Zoom": 1.4574,
+      "X": 0.44,
+      "Y": 0.2101
+    },
     "Footprint": {
       "W": 1,
       "H": 1
@@ -1376,6 +1431,11 @@
     "Lore": "Walks many roads, never lost for lack of a single path.",
     "Card": "Flexible [fighter]. Converts [openings] into [combo finishes].",
     "Portrait": "Bruiser",
+    "Thumbnail": {
+      "Zoom": 2.3718,
+      "X": 0.6778,
+      "Y": 0.1845
+    },
     "Footprint": {
       "W": 1,
       "H": 1
@@ -1506,6 +1566,11 @@
     "Lore": "Walks many roads, never lost for lack of a single path.",
     "Card": "Flexible [fighter]. Converts [openings] into [combo finishes].",
     "Portrait": "Captain",
+    "Thumbnail": {
+      "Zoom": 1.7396,
+      "X": 0.3604,
+      "Y": 0.2093
+    },
     "Footprint": {
       "W": 1,
       "H": 1
@@ -1614,6 +1679,11 @@
     "Lore": "Built on vows and iron patience, they stand where others fall back.",
     "Card": "Frontline [guardian][bruiser]. Absorbs pressure and [taunts].",
     "Portrait": "CeramicKnight00",
+    "Thumbnail": {
+      "Zoom": 1.2572,
+      "X": 0.3533,
+      "Y": 0.1913
+    },
     "Footprint": {
       "W": 1,
       "H": 1
@@ -1727,6 +1797,11 @@
     "Lore": "Built on vows and iron patience, they stand where others fall back.",
     "Card": "Frontline [guardian][bruiser]. Absorbs pressure and [taunts].",
     "Portrait": "CeramicKnight01",
+    "Thumbnail": {
+      "Zoom": 1.2868,
+      "X": 0.3683,
+      "Y": 0.1835
+    },
     "Footprint": {
       "W": 1,
       "H": 1
@@ -1840,6 +1915,11 @@
     "Lore": "Built on vows and iron patience, they stand where others fall back.",
     "Card": "Frontline [guardian][bruiser]. Absorbs pressure and [taunts].",
     "Portrait": "CeramicKnight02",
+    "Thumbnail": {
+      "Zoom": 1.7373,
+      "X": 0.5983,
+      "Y": 0.1834
+    },
     "Footprint": {
       "W": 1,
       "H": 1
@@ -1953,6 +2033,11 @@
     "Lore": "Built on vows and iron patience, they stand where others fall back.",
     "Card": "Frontline [guardian][bruiser]. Absorbs pressure and [taunts].",
     "Portrait": "CeramicKnight03",
+    "Thumbnail": {
+      "Zoom": 1.2559,
+      "X": 0.3922,
+      "Y": 0.184
+    },
     "Footprint": {
       "W": 1,
       "H": 1
@@ -2066,6 +2151,11 @@
     "Lore": "Built on vows and iron patience, they stand where others fall back.",
     "Card": "Frontline [guardian][bruiser]. Absorbs pressure and [taunts].",
     "Portrait": "CeramicKnight04",
+    "Thumbnail": {
+      "Zoom": 1.2623,
+      "X": 0.3666,
+      "Y": 0.1879
+    },
     "Footprint": {
       "W": 1,
       "H": 1
@@ -2179,6 +2269,11 @@
     "Lore": "Built on vows and iron patience, they stand where others fall back.",
     "Card": "Frontline [guardian][bruiser]. Absorbs pressure and [taunts].",
     "Portrait": "CeramicKnight05",
+    "Thumbnail": {
+      "Zoom": 1.2718,
+      "X": 0.3171,
+      "Y": 0.1945
+    },
     "Footprint": {
       "W": 1,
       "H": 1
@@ -2292,6 +2387,11 @@
     "Lore": "Built on vows and iron patience, they stand where others fall back.",
     "Card": "Frontline [guardian][bruiser]. Absorbs pressure and [taunts].",
     "Portrait": "CeramicKnight06",
+    "Thumbnail": {
+      "Zoom": 1.2302,
+      "X": 0.3672,
+      "Y": 0.1836
+    },
     "Footprint": {
       "W": 1,
       "H": 1
@@ -2404,6 +2504,11 @@
     "Lore": "Years of quiet training forged a will that moves faster than thought.",
     "Card": "Mobile [striker][flanker]. Leans on [crit] and [backstab] windows.",
     "Portrait": "ChromaNinja",
+    "Thumbnail": {
+      "Zoom": 1.0009,
+      "X": 0.48,
+      "Y": 0.1904
+    },
     "Footprint": {
       "W": 1,
       "H": 1
@@ -2535,6 +2640,11 @@
     "Lore": "Knows every reagent, every breath, and when to spend both.",
     "Card": "Backline [healer][buffer]. Restores tempo with [cleanse] and [aid].",
     "Portrait": "Cleric",
+    "Thumbnail": {
+      "Zoom": 1.3933,
+      "X": 0.5242,
+      "Y": 0.19
+    },
     "Footprint": {
       "W": 1,
       "H": 1
@@ -2664,6 +2774,11 @@
     "Lore": "Knows every reagent, every breath, and when to spend both.",
     "Card": "Backline [healer][buffer]. Restores tempo with [cleanse] and [aid].",
     "Portrait": "Courier",
+    "Thumbnail": {
+      "Zoom": 1.0053,
+      "X": 0.4885,
+      "Y": 0.1577
+    },
     "Footprint": {
       "W": 1,
       "H": 1
@@ -2794,6 +2909,11 @@
     "Lore": "Life ended. Purpose remained. The rest is hunger and memory.",
     "Card": "Grim [attrition][drain]. Pressures with [fear] and [rot].",
     "Portrait": "CyberZombie00",
+    "Thumbnail": {
+      "Zoom": 0.9037,
+      "X": 0.4999,
+      "Y": 0.5
+    },
     "Footprint": {
       "W": 1,
       "H": 1
@@ -2905,6 +3025,11 @@
     "Lore": "Life ended. Purpose remained. The rest is hunger and memory.",
     "Card": "Grim [attrition][drain]. Pressures with [fear] and [rot].",
     "Portrait": "CyberZombie01",
+    "Thumbnail": {
+      "Zoom": 0.873,
+      "X": 0.4987,
+      "Y": 0.4996
+    },
     "Footprint": {
       "W": 1,
       "H": 1
@@ -3016,6 +3141,11 @@
     "Lore": "Life ended. Purpose remained. The rest is hunger and memory.",
     "Card": "Grim [attrition][drain]. Pressures with [fear] and [rot].",
     "Portrait": "CyberZombie02",
+    "Thumbnail": {
+      "Zoom": 0.8828,
+      "X": 0.5,
+      "Y": 0.4992
+    },
     "Footprint": {
       "W": 1,
       "H": 1
@@ -3127,6 +3257,11 @@
     "Lore": "Life ended. Purpose remained. The rest is hunger and memory.",
     "Card": "Grim [attrition][drain]. Pressures with [fear] and [rot].",
     "Portrait": "CyberZombie03",
+    "Thumbnail": {
+      "Zoom": 0.7853,
+      "X": 0.499,
+      "Y": 0.5
+    },
     "Footprint": {
       "W": 1,
       "H": 1
@@ -3238,6 +3373,11 @@
     "Lore": "Life ended. Purpose remained. The rest is hunger and memory.",
     "Card": "Grim [attrition][drain]. Pressures with [fear] and [rot].",
     "Portrait": "CyberZombie04",
+    "Thumbnail": {
+      "Zoom": 0.8616,
+      "X": 0.4999,
+      "Y": 0.4999
+    },
     "Footprint": {
       "W": 1,
       "H": 1
@@ -3349,6 +3489,11 @@
     "Lore": "Walks many roads, never lost for lack of a single path.",
     "Card": "Flexible [fighter]. Converts [openings] into [combo finishes].",
     "Portrait": "Cyclops00",
+    "Thumbnail": {
+      "Zoom": 2.345,
+      "X": 0.5094,
+      "Y": 0.1983
+    },
     "Footprint": {
       "W": 2,
       "H": 2
@@ -3469,6 +3614,11 @@
     "Lore": "Walks many roads, never lost for lack of a single path.",
     "Card": "Flexible [fighter]. Converts [openings] into [combo finishes].",
     "Portrait": "Cyclops01",
+    "Thumbnail": {
+      "Zoom": 2.2046,
+      "X": 0.5359,
+      "Y": 0.2098
+    },
     "Footprint": {
       "W": 1,
       "H": 1
@@ -3575,6 +3725,11 @@
     "Lore": "Walks many roads, never lost for lack of a single path.",
     "Card": "Flexible [fighter]. Converts [openings] into [combo finishes].",
     "Portrait": "Cyclops02",
+    "Thumbnail": {
+      "Zoom": 2.3311,
+      "X": 0.5414,
+      "Y": 0.1976
+    },
     "Footprint": {
       "W": 1,
       "H": 1
@@ -3680,6 +3835,11 @@
     "Lore": "Walks many roads, never lost for lack of a single path.",
     "Card": "Flexible [fighter]. Converts [openings] into [combo finishes].",
     "Portrait": "Cyclops03",
+    "Thumbnail": {
+      "Zoom": 2.3316,
+      "X": 0.551,
+      "Y": 0.1981
+    },
     "Footprint": {
       "W": 1,
       "H": 1
@@ -3785,6 +3945,11 @@
     "Lore": "Walks many roads, never lost for lack of a single path.",
     "Card": "Flexible [fighter]. Converts [openings] into [combo finishes].",
     "Portrait": "Cyclops04",
+    "Thumbnail": {
+      "Zoom": 2.1703,
+      "X": 0.5333,
+      "Y": 0.1982
+    },
     "Footprint": {
       "W": 1,
       "H": 1
@@ -3890,6 +4055,11 @@
     "Lore": "Walks many roads, never lost for lack of a single path.",
     "Card": "Flexible [fighter]. Converts [openings] into [combo finishes].",
     "Portrait": "Cyclops06",
+    "Thumbnail": {
+      "Zoom": 2.4444,
+      "X": 0.5342,
+      "Y": 0.1839
+    },
     "Footprint": {
       "W": 1,
       "H": 1
@@ -3995,6 +4165,11 @@
     "Lore": "Built on vows and iron patience, they stand where others fall back.",
     "Card": "Frontline [guardian][bruiser]. Absorbs pressure and [taunts].",
     "Portrait": "DarkTemplar",
+    "Thumbnail": {
+      "Zoom": 2.152,
+      "X": 0.6067,
+      "Y": 0.2079
+    },
     "Footprint": {
       "W": 1,
       "H": 1
@@ -4128,6 +4303,11 @@
     "Lore": "Built on vows and iron patience, they stand where others fall back.",
     "Card": "Frontline [guardian][bruiser]. Absorbs pressure and [taunts].",
     "Portrait": "Defender",
+    "Thumbnail": {
+      "Zoom": 1.7094,
+      "X": 0.3099,
+      "Y": 0.1848
+    },
     "Footprint": {
       "W": 1,
       "H": 1
@@ -4261,6 +4441,11 @@
     "Lore": "Walks many roads, never lost for lack of a single path.",
     "Card": "Flexible [fighter]. Converts [openings] into [combo finishes].",
     "Portrait": "DemonLord",
+    "Thumbnail": {
+      "Zoom": 1.8344,
+      "X": 0.5027,
+      "Y": 0.2091
+    },
     "Footprint": {
       "W": 1,
       "H": 1
@@ -4367,6 +4552,11 @@
     "Lore": "Knows every reagent, every breath, and when to spend both.",
     "Card": "Backline [healer][buffer]. Restores tempo with [cleanse] and [aid].",
     "Portrait": "Dervish",
+    "Thumbnail": {
+      "Zoom": 1.7127,
+      "X": 0.3505,
+      "Y": 0.2103
+    },
     "Footprint": {
       "W": 1,
       "H": 1
@@ -4497,6 +4687,11 @@
     "Lore": "Knows every reagent, every breath, and when to spend both.",
     "Card": "Backline [healer][buffer]. Restores tempo with [cleanse] and [aid].",
     "Portrait": "Doctor",
+    "Thumbnail": {
+      "Zoom": 2.3786,
+      "X": 0.493,
+      "Y": 0.2102
+    },
     "Footprint": {
       "W": 1,
       "H": 1
@@ -4626,6 +4821,11 @@
     "Lore": "Knows every reagent, every breath, and when to spend both.",
     "Card": "Backline [healer][buffer]. Restores tempo with [cleanse] and [aid].",
     "Portrait": "Drifter",
+    "Thumbnail": {
+      "Zoom": 2.2414,
+      "X": 0.5299,
+      "Y": 0.2102
+    },
     "Footprint": {
       "W": 1,
       "H": 1
@@ -4760,6 +4960,11 @@
     "Lore": "Every scar is a lesson. Every lesson becomes an opening.",
     "Card": "Close-range [brawler][cleaver]. Wins trades with [stagger].",
     "Portrait": "Duelist",
+    "Thumbnail": {
+      "Zoom": 2.0434,
+      "X": 0.5138,
+      "Y": 0.1868
+    },
     "Footprint": {
       "W": 1,
       "H": 1
@@ -4890,6 +5095,11 @@
     "Lore": "Blueprints and boldness turned problems into levers and switches.",
     "Card": "Tactical [engineer][controller]. Deploys [traps][turrets][gadgets].",
     "Portrait": "Engineer",
+    "Thumbnail": {
+      "Zoom": 2.3905,
+      "X": 0.531,
+      "Y": 0.2092
+    },
     "Footprint": {
       "W": 1,
       "H": 1
@@ -5020,6 +5230,11 @@
     "Lore": "Every scar is a lesson. Every lesson becomes an opening.",
     "Card": "Close-range [brawler][cleaver]. Wins trades with [stagger].",
     "Portrait": "Fencer",
+    "Thumbnail": {
+      "Zoom": 1.2737,
+      "X": 0.4043,
+      "Y": 0.191
+    },
     "Footprint": {
       "W": 1,
       "H": 1
@@ -5150,6 +5365,11 @@
     "Lore": "Every scar is a lesson. Every lesson becomes an opening.",
     "Card": "Close-range [brawler][cleaver]. Wins trades with [stagger].",
     "Portrait": "Fighter",
+    "Thumbnail": {
+      "Zoom": 2.3787,
+      "X": 0.4664,
+      "Y": 0.2102
+    },
     "Footprint": {
       "W": 1,
       "H": 1
@@ -5281,6 +5501,11 @@
     "Lore": "Born to the deep places, it runs by instinct and strikes without doubt.",
     "Card": "Ferocious [pouncer][mauler]. Disrupts with [roar] and [knockdown].",
     "Portrait": "FlyingMonkey",
+    "Thumbnail": {
+      "Zoom": 0.9623,
+      "X": 0.4993,
+      "Y": 0.5009
+    },
     "Footprint": {
       "W": 1,
       "H": 1
@@ -5386,6 +5611,11 @@
     "Lore": "Born to the deep places, it runs by instinct and strikes without doubt.",
     "Card": "Ferocious [pouncer][mauler]. Disrupts with [roar] and [knockdown].",
     "Portrait": "Frog00",
+    "Thumbnail": {
+      "Zoom": 0.9615,
+      "X": 0.5,
+      "Y": 0.5
+    },
     "Footprint": {
       "W": 1,
       "H": 1
@@ -5491,6 +5721,11 @@
     "Lore": "Born to the deep places, it runs by instinct and strikes without doubt.",
     "Card": "Ferocious [pouncer][mauler]. Disrupts with [roar] and [knockdown].",
     "Portrait": "Frog01",
+    "Thumbnail": {
+      "Zoom": 0.9615,
+      "X": 0.5,
+      "Y": 0.5
+    },
     "Footprint": {
       "W": 1,
       "H": 1
@@ -5596,6 +5831,11 @@
     "Lore": "Born to the deep places, it runs by instinct and strikes without doubt.",
     "Card": "Ferocious [pouncer][mauler]. Disrupts with [roar] and [knockdown].",
     "Portrait": "Frog02",
+    "Thumbnail": {
+      "Zoom": 0.9615,
+      "X": 0.5,
+      "Y": 0.5
+    },
     "Footprint": {
       "W": 1,
       "H": 1
@@ -5701,6 +5941,11 @@
     "Lore": "Born to the deep places, it runs by instinct and strikes without doubt.",
     "Card": "Ferocious [pouncer][mauler]. Disrupts with [roar] and [knockdown].",
     "Portrait": "Frog03",
+    "Thumbnail": {
+      "Zoom": 0.9615,
+      "X": 0.5,
+      "Y": 0.5
+    },
     "Footprint": {
       "W": 1,
       "H": 1
@@ -5806,6 +6051,11 @@
     "Lore": "Walks many roads, never lost for lack of a single path.",
     "Card": "Flexible [fighter]. Converts [openings] into [combo finishes].",
     "Portrait": "Ganger00",
+    "Thumbnail": {
+      "Zoom": 1.0969,
+      "X": 0.5948,
+      "Y": 0.1992
+    },
     "Footprint": {
       "W": 1,
       "H": 1
@@ -5912,6 +6162,11 @@
     "Lore": "Walks many roads, never lost for lack of a single path.",
     "Card": "Flexible [fighter]. Converts [openings] into [combo finishes].",
     "Portrait": "Ganger01",
+    "Thumbnail": {
+      "Zoom": 1.229,
+      "X": 0.495,
+      "Y": 0.206
+    },
     "Footprint": {
       "W": 1,
       "H": 1
@@ -6018,6 +6273,11 @@
     "Lore": "Walks many roads, never lost for lack of a single path.",
     "Card": "Flexible [fighter]. Converts [openings] into [combo finishes].",
     "Portrait": "Ganger02",
+    "Thumbnail": {
+      "Zoom": 1.0536,
+      "X": 0.4568,
+      "Y": 0.1966
+    },
     "Footprint": {
       "W": 1,
       "H": 1
@@ -6124,6 +6384,11 @@
     "Lore": "Walks many roads, never lost for lack of a single path.",
     "Card": "Flexible [fighter]. Converts [openings] into [combo finishes].",
     "Portrait": "Ganger03",
+    "Thumbnail": {
+      "Zoom": 1.1786,
+      "X": 0.5635,
+      "Y": 0.2001
+    },
     "Footprint": {
       "W": 1,
       "H": 1
@@ -6230,6 +6495,11 @@
     "Lore": "Walks many roads, never lost for lack of a single path.",
     "Card": "Flexible [fighter]. Converts [openings] into [combo finishes].",
     "Portrait": "Ganger04",
+    "Thumbnail": {
+      "Zoom": 1.2497,
+      "X": 0.5727,
+      "Y": 0.2007
+    },
     "Footprint": {
       "W": 1,
       "H": 1
@@ -6336,6 +6606,11 @@
     "Lore": "Walks many roads, never lost for lack of a single path.",
     "Card": "Flexible [fighter]. Converts [openings] into [combo finishes].",
     "Portrait": "Ganger05",
+    "Thumbnail": {
+      "Zoom": 1.2697,
+      "X": 0.4994,
+      "Y": 0.2067
+    },
     "Footprint": {
       "W": 1,
       "H": 1
@@ -6442,6 +6717,11 @@
     "Lore": "Walks many roads, never lost for lack of a single path.",
     "Card": "Flexible [fighter]. Converts [openings] into [combo finishes].",
     "Portrait": "Ganger06",
+    "Thumbnail": {
+      "Zoom": 1.2349,
+      "X": 0.4983,
+      "Y": 0.2054
+    },
     "Footprint": {
       "W": 1,
       "H": 1
@@ -6548,6 +6828,11 @@
     "Lore": "Life ended. Purpose remained. The rest is hunger and memory.",
     "Card": "Grim [attrition][drain]. Pressures with [fear] and [rot].",
     "Portrait": "Ghost",
+    "Thumbnail": {
+      "Zoom": 0.4872,
+      "X": 0.4985,
+      "Y": 0.4992
+    },
     "Footprint": {
       "W": 1,
       "H": 1
@@ -6653,6 +6938,11 @@
     "Lore": "Walks many roads, never lost for lack of a single path.",
     "Card": "Flexible [fighter]. Converts [openings] into [combo finishes].",
     "Portrait": "GoblinThug00",
+    "Thumbnail": {
+      "Zoom": 2.3786,
+      "X": 0.6118,
+      "Y": 0.2102
+    },
     "Footprint": {
       "W": 1,
       "H": 1
@@ -6757,6 +7047,11 @@
     "Lore": "Years of quiet training forged a will that moves faster than thought.",
     "Card": "Mobile [striker][flanker]. Leans on [crit] and [backstab] windows.",
     "Portrait": "GreenNinja",
+    "Thumbnail": {
+      "Zoom": 1.4396,
+      "X": 0.5024,
+      "Y": 0.1897
+    },
     "Footprint": {
       "W": 1,
       "H": 1
@@ -6888,6 +7183,11 @@
     "Lore": "Walks many roads, never lost for lack of a single path.",
     "Card": "Flexible [fighter]. Converts [openings] into [combo finishes].",
     "Portrait": "Hag00",
+    "Thumbnail": {
+      "Zoom": 2.4284,
+      "X": 0.5043,
+      "Y": 0.1996
+    },
     "Footprint": {
       "W": 1,
       "H": 1
@@ -6995,6 +7295,11 @@
     "Lore": "Walks many roads, never lost for lack of a single path.",
     "Card": "Flexible [fighter]. Converts [openings] into [combo finishes].",
     "Portrait": "Hag01",
+    "Thumbnail": {
+      "Zoom": 2.3924,
+      "X": 0.4512,
+      "Y": 0.1827
+    },
     "Footprint": {
       "W": 1,
       "H": 1
@@ -7101,6 +7406,11 @@
     "Lore": "Walks many roads, never lost for lack of a single path.",
     "Card": "Flexible [fighter]. Converts [openings] into [combo finishes].",
     "Portrait": "Hag02",
+    "Thumbnail": {
+      "Zoom": 2.3905,
+      "X": 0.5529,
+      "Y": 0.2092
+    },
     "Footprint": {
       "W": 1,
       "H": 1
@@ -7206,6 +7516,11 @@
     "Lore": "Walks many roads, never lost for lack of a single path.",
     "Card": "Flexible [fighter]. Converts [openings] into [combo finishes].",
     "Portrait": "Hag03",
+    "Thumbnail": {
+      "Zoom": 2.3787,
+      "X": 0.4977,
+      "Y": 0.2102
+    },
     "Footprint": {
       "W": 1,
       "H": 1
@@ -7311,6 +7626,11 @@
     "Lore": "Walks many roads, never lost for lack of a single path.",
     "Card": "Flexible [fighter]. Converts [openings] into [combo finishes].",
     "Portrait": "Harbinger",
+    "Thumbnail": {
+      "Zoom": 2.3786,
+      "X": 0.6336,
+      "Y": 0.2102
+    },
     "Footprint": {
       "W": 1,
       "H": 1
@@ -7447,6 +7767,11 @@
     "Lore": "Walks many roads, never lost for lack of a single path.",
     "Card": "Flexible [fighter]. Converts [openings] into [combo finishes].",
     "Portrait": "IceMauler",
+    "Thumbnail": {
+      "Zoom": 2.54,
+      "X": 0.5703,
+      "Y": 0.1836
+    },
     "Footprint": {
       "W": 1,
       "H": 1
@@ -7554,6 +7879,11 @@
     "Lore": "Built on vows and iron patience, they stand where others fall back.",
     "Card": "Frontline [guardian][bruiser]. Absorbs pressure and [taunts].",
     "Portrait": "JadeKnight",
+    "Thumbnail": {
+      "Zoom": 1.1125,
+      "X": 0.3725,
+      "Y": 0.1897
+    },
     "Footprint": {
       "W": 1,
       "H": 1
@@ -7686,6 +8016,11 @@
     "Lore": "Built on vows and iron patience, they stand where others fall back.",
     "Card": "Frontline [guardian][bruiser]. Absorbs pressure and [taunts].",
     "Portrait": "Knight",
+    "Thumbnail": {
+      "Zoom": 2.0842,
+      "X": 0.7256,
+      "Y": 0.1842
+    },
     "Footprint": {
       "W": 1,
       "H": 1
@@ -7819,6 +8154,11 @@
     "Lore": "Every scar is a lesson. Every lesson becomes an opening.",
     "Card": "Close-range [brawler][cleaver]. Wins trades with [stagger].",
     "Portrait": "Lancer",
+    "Thumbnail": {
+      "Zoom": 2.6062,
+      "X": 0.6856,
+      "Y": 0.1836
+    },
     "Footprint": {
       "W": 1,
       "H": 1
@@ -7950,6 +8290,11 @@
     "Lore": "Walks many roads, never lost for lack of a single path.",
     "Card": "Flexible [fighter]. Converts [openings] into [combo finishes].",
     "Portrait": "Lurker00",
+    "Thumbnail": {
+      "Zoom": 2.3887,
+      "X": 0.4237,
+      "Y": 0.184
+    },
     "Footprint": {
       "W": 1,
       "H": 1
@@ -8056,6 +8401,11 @@
     "Lore": "Walks many roads, never lost for lack of a single path.",
     "Card": "Flexible [fighter]. Converts [openings] into [combo finishes].",
     "Portrait": "Lurker01",
+    "Thumbnail": {
+      "Zoom": 2.3316,
+      "X": 0.4164,
+      "Y": 0.1841
+    },
     "Footprint": {
       "W": 1,
       "H": 1
@@ -8162,6 +8512,11 @@
     "Lore": "Walks many roads, never lost for lack of a single path.",
     "Card": "Flexible [fighter]. Converts [openings] into [combo finishes].",
     "Portrait": "Lurker02",
+    "Thumbnail": {
+      "Zoom": 2.463,
+      "X": 0.6296,
+      "Y": 0.184
+    },
     "Footprint": {
       "W": 1,
       "H": 1
@@ -8268,6 +8623,11 @@
     "Lore": "Blueprints and boldness turned problems into levers and switches.",
     "Card": "Tactical [engineer][controller]. Deploys [traps][turrets][gadgets].",
     "Portrait": "Machinist",
+    "Thumbnail": {
+      "Zoom": 1.0533,
+      "X": 0.5136,
+      "Y": 0.2005
+    },
     "Footprint": {
       "W": 1,
       "H": 1
@@ -8397,6 +8757,11 @@
     "Lore": "Life ended. Purpose remained. The rest is hunger and memory.",
     "Card": "Grim [attrition][drain]. Pressures with [fear] and [rot].",
     "Portrait": "Mannequin",
+    "Thumbnail": {
+      "Zoom": 2.3786,
+      "X": 0.493,
+      "Y": 0.2102
+    },
     "Footprint": {
       "W": 1,
       "H": 1
@@ -8502,6 +8867,11 @@
     "Lore": "Walks many roads, never lost for lack of a single path.",
     "Card": "Flexible [fighter]. Converts [openings] into [combo finishes].",
     "Portrait": "MarshShambler00",
+    "Thumbnail": {
+      "Zoom": 2.3963,
+      "X": 0.5555,
+      "Y": 0.1955
+    },
     "Footprint": {
       "W": 1,
       "H": 1
@@ -8608,6 +8978,11 @@
     "Lore": "Walks many roads, never lost for lack of a single path.",
     "Card": "Flexible [fighter]. Converts [openings] into [combo finishes].",
     "Portrait": "MarshShambler01",
+    "Thumbnail": {
+      "Zoom": 2.4323,
+      "X": 0.5149,
+      "Y": 0.1849
+    },
     "Footprint": {
       "W": 1,
       "H": 1
@@ -8714,6 +9089,11 @@
     "Lore": "Walks many roads, never lost for lack of a single path.",
     "Card": "Flexible [fighter]. Converts [openings] into [combo finishes].",
     "Portrait": "MarshShambler03",
+    "Thumbnail": {
+      "Zoom": 2.3437,
+      "X": 0.5435,
+      "Y": 0.2084
+    },
     "Footprint": {
       "W": 1,
       "H": 1
@@ -8820,6 +9200,11 @@
     "Lore": "Walks many roads, never lost for lack of a single path.",
     "Card": "Flexible [fighter]. Converts [openings] into [combo finishes].",
     "Portrait": "MartialArtist",
+    "Thumbnail": {
+      "Zoom": 1.1464,
+      "X": 0.553,
+      "Y": 0.2068
+    },
     "Footprint": {
       "W": 1,
       "H": 1
@@ -8951,6 +9336,11 @@
     "Lore": "Blueprints and boldness turned problems into levers and switches.",
     "Card": "Tactical [engineer][controller]. Deploys [traps][turrets][gadgets].",
     "Portrait": "MechaArmor00",
+    "Thumbnail": {
+      "Zoom": 2.4424,
+      "X": 0.6438,
+      "Y": 0.1837
+    },
     "Footprint": {
       "W": 1,
       "H": 1
@@ -9058,6 +9448,11 @@
     "Lore": "Blueprints and boldness turned problems into levers and switches.",
     "Card": "Tactical [engineer][controller]. Deploys [traps][turrets][gadgets].",
     "Portrait": "MechaArmor01",
+    "Thumbnail": {
+      "Zoom": 2.4363,
+      "X": 0.6521,
+      "Y": 0.1843
+    },
     "Footprint": {
       "W": 1,
       "H": 1
@@ -9165,6 +9560,11 @@
     "Lore": "Blueprints and boldness turned problems into levers and switches.",
     "Card": "Tactical [engineer][controller]. Deploys [traps][turrets][gadgets].",
     "Portrait": "MechaArmor02",
+    "Thumbnail": {
+      "Zoom": 2.4363,
+      "X": 0.6427,
+      "Y": 0.1843
+    },
     "Footprint": {
       "W": 1,
       "H": 1
@@ -9273,6 +9673,11 @@
     "Lore": "Walks many roads, never lost for lack of a single path.",
     "Card": "Flexible [fighter]. Converts [openings] into [combo finishes].",
     "Portrait": "Monk",
+    "Thumbnail": {
+      "Zoom": 2.3906,
+      "X": 0.5076,
+      "Y": 0.2091
+    },
     "Footprint": {
       "W": 1,
       "H": 1
@@ -9403,6 +9808,11 @@
     "Lore": "Born to the deep places, it runs by instinct and strikes without doubt.",
     "Card": "Ferocious [pouncer][mauler]. Disrupts with [roar] and [knockdown].",
     "Portrait": "MountainTroll",
+    "Thumbnail": {
+      "Zoom": 2.3591,
+      "X": 0.492,
+      "Y": 0.189
+    },
     "Footprint": {
       "W": 1,
       "H": 1
@@ -9510,6 +9920,11 @@
     "Lore": "Built on vows and iron patience, they stand where others fall back.",
     "Card": "Frontline [guardian][bruiser]. Absorbs pressure and [taunts].",
     "Portrait": "Myrmidon",
+    "Thumbnail": {
+      "Zoom": 1.8704,
+      "X": 0.3831,
+      "Y": 0.203
+    },
     "Footprint": {
       "W": 1,
       "H": 1
@@ -9644,6 +10059,11 @@
     "Lore": "Born to the deep places, it runs by instinct and strikes without doubt.",
     "Card": "Ferocious [pouncer][mauler]. Disrupts with [roar] and [knockdown].",
     "Portrait": "Naga00",
+    "Thumbnail": {
+      "Zoom": 0.9616,
+      "X": 0.4996,
+      "Y": 0.4988
+    },
     "Footprint": {
       "W": 1,
       "H": 1
@@ -9751,6 +10171,11 @@
     "Lore": "Walks many roads, never lost for lack of a single path.",
     "Card": "Flexible [fighter]. Converts [openings] into [combo finishes].",
     "Portrait": "NightHunter",
+    "Thumbnail": {
+      "Zoom": 2.3106,
+      "X": 0.5233,
+      "Y": 0.189
+    },
     "Footprint": {
       "W": 1,
       "H": 1
@@ -9882,6 +10307,11 @@
     "Lore": "Every scar is a lesson. Every lesson becomes an opening.",
     "Card": "Close-range [brawler][cleaver]. Wins trades with [stagger].",
     "Portrait": "Odachi",
+    "Thumbnail": {
+      "Zoom": 2.3787,
+      "X": 0.4977,
+      "Y": 0.2102
+    },
     "Footprint": {
       "W": 1,
       "H": 1
@@ -10013,6 +10443,11 @@
     "Lore": "Walks many roads, never lost for lack of a single path.",
     "Card": "Flexible [fighter]. Converts [openings] into [combo finishes].",
     "Portrait": "Oni00",
+    "Thumbnail": {
+      "Zoom": 2.3447,
+      "X": 0.4855,
+      "Y": 0.1921
+    },
     "Footprint": {
       "W": 1,
       "H": 1
@@ -10119,6 +10554,11 @@
     "Lore": "Walks many roads, never lost for lack of a single path.",
     "Card": "Flexible [fighter]. Converts [openings] into [combo finishes].",
     "Portrait": "Oni01",
+    "Thumbnail": {
+      "Zoom": 2.1666,
+      "X": 0.5361,
+      "Y": 0.2087
+    },
     "Footprint": {
       "W": 1,
       "H": 1
@@ -10225,6 +10665,11 @@
     "Lore": "Walks many roads, never lost for lack of a single path.",
     "Card": "Flexible [fighter]. Converts [openings] into [combo finishes].",
     "Portrait": "Oni02",
+    "Thumbnail": {
+      "Zoom": 2.1611,
+      "X": 0.5025,
+      "Y": 0.189
+    },
     "Footprint": {
       "W": 1,
       "H": 1
@@ -10331,6 +10776,11 @@
     "Lore": "Blueprints and boldness turned problems into levers and switches.",
     "Card": "Tactical [engineer][controller]. Deploys [traps][turrets][gadgets].",
     "Portrait": "Operative",
+    "Thumbnail": {
+      "Zoom": 1.0006,
+      "X": 0.4671,
+      "Y": 0.1679
+    },
     "Footprint": {
       "W": 1,
       "H": 1
@@ -10465,6 +10915,11 @@
     "Lore": "Built on vows and iron patience, they stand where others fall back.",
     "Card": "Frontline [guardian][bruiser]. Absorbs pressure and [taunts].",
     "Portrait": "Paladin",
+    "Thumbnail": {
+      "Zoom": 1.711,
+      "X": 0.408,
+      "Y": 0.206
+    },
     "Footprint": {
       "W": 1,
       "H": 1
@@ -10597,6 +11052,11 @@
     "Lore": "Born to the deep places, it runs by instinct and strikes without doubt.",
     "Card": "Ferocious [pouncer][mauler]. Disrupts with [roar] and [knockdown].",
     "Portrait": "PandaGirl",
+    "Thumbnail": {
+      "Zoom": 2.3106,
+      "X": 0.5072,
+      "Y": 0.1874
+    },
     "Footprint": {
       "W": 1,
       "H": 1
@@ -10728,6 +11188,11 @@
     "Lore": "Walks many roads, never lost for lack of a single path.",
     "Card": "Flexible [fighter]. Converts [openings] into [combo finishes].",
     "Portrait": "Phantom",
+    "Thumbnail": {
+      "Zoom": 2.2451,
+      "X": 0.5383,
+      "Y": 0.2095
+    },
     "Footprint": {
       "W": 1,
       "H": 1
@@ -10833,6 +11298,11 @@
     "Lore": "Every scar is a lesson. Every lesson becomes an opening.",
     "Card": "Close-range [brawler][cleaver]. Wins trades with [stagger].",
     "Portrait": "PrizeFighter",
+    "Thumbnail": {
+      "Zoom": 1.0823,
+      "X": 0.572,
+      "Y": 0.2101
+    },
     "Footprint": {
       "W": 1,
       "H": 1
@@ -10963,6 +11433,11 @@
     "Lore": "Every scar is a lesson. Every lesson becomes an opening.",
     "Card": "Close-range [brawler][cleaver]. Wins trades with [stagger].",
     "Portrait": "Pugilist",
+    "Thumbnail": {
+      "Zoom": 1.0037,
+      "X": 0.4833,
+      "Y": 0.2047
+    },
     "Footprint": {
       "W": 1,
       "H": 1
@@ -11093,6 +11568,11 @@
     "Lore": "Blueprints and boldness turned problems into levers and switches.",
     "Card": "Tactical [engineer][controller]. Deploys [traps][turrets][gadgets].",
     "Portrait": "PurplePrototype00",
+    "Thumbnail": {
+      "Zoom": 2.1992,
+      "X": 0.4939,
+      "Y": 0.1842
+    },
     "Footprint": {
       "W": 1,
       "H": 1
@@ -11198,6 +11678,11 @@
     "Lore": "Blueprints and boldness turned problems into levers and switches.",
     "Card": "Tactical [engineer][controller]. Deploys [traps][turrets][gadgets].",
     "Portrait": "PurplePrototype01",
+    "Thumbnail": {
+      "Zoom": 1.9494,
+      "X": 0.4768,
+      "Y": 0.2061
+    },
     "Footprint": {
       "W": 1,
       "H": 1
@@ -11303,6 +11788,11 @@
     "Lore": "Blueprints and boldness turned problems into levers and switches.",
     "Card": "Tactical [engineer][controller]. Deploys [traps][turrets][gadgets].",
     "Portrait": "PurplePrototype02",
+    "Thumbnail": {
+      "Zoom": 1.7456,
+      "X": 0.4208,
+      "Y": 0.2037
+    },
     "Footprint": {
       "W": 1,
       "H": 1
@@ -11408,6 +11898,11 @@
     "Lore": "Blueprints and boldness turned problems into levers and switches.",
     "Card": "Tactical [engineer][controller]. Deploys [traps][turrets][gadgets].",
     "Portrait": "PurplePrototype03",
+    "Thumbnail": {
+      "Zoom": 2.1557,
+      "X": 0.5342,
+      "Y": 0.1927
+    },
     "Footprint": {
       "W": 1,
       "H": 1
@@ -11513,6 +12008,11 @@
     "Lore": "Blueprints and boldness turned problems into levers and switches.",
     "Card": "Tactical [engineer][controller]. Deploys [traps][turrets][gadgets].",
     "Portrait": "PurplePrototype04",
+    "Thumbnail": {
+      "Zoom": 2.0826,
+      "X": 0.6169,
+      "Y": 0.2101
+    },
     "Footprint": {
       "W": 1,
       "H": 1
@@ -11618,6 +12118,11 @@
     "Lore": "Every scar is a lesson. Every lesson becomes an opening.",
     "Card": "Close-range [brawler][cleaver]. Wins trades with [stagger].",
     "Portrait": "Raider",
+    "Thumbnail": {
+      "Zoom": 1.5353,
+      "X": 0.6322,
+      "Y": 0.1841
+    },
     "Footprint": {
       "W": 1,
       "H": 1
@@ -11749,6 +12254,11 @@
     "Lore": "Walks many roads, never lost for lack of a single path.",
     "Card": "Flexible [fighter]. Converts [openings] into [combo finishes].",
     "Portrait": "Reaper",
+    "Thumbnail": {
+      "Zoom": 2.2841,
+      "X": 0.4062,
+      "Y": 0.2006
+    },
     "Footprint": {
       "W": 1,
       "H": 1
@@ -11855,6 +12365,11 @@
     "Lore": "Disciplines of ink and flame taught that power begins in focus.",
     "Card": "Arcane [controller][debuffer]. Shapes fights with [aoe][curse].",
     "Portrait": "RedMage",
+    "Thumbnail": {
+      "Zoom": 1.1683,
+      "X": 0.4853,
+      "Y": 0.2022
+    },
     "Footprint": {
       "W": 1,
       "H": 1
@@ -11989,6 +12504,11 @@
     "Lore": "Years of quiet training forged a will that moves faster than thought.",
     "Card": "Mobile [striker][flanker]. Leans on [crit] and [backstab] windows.",
     "Portrait": "RedNinja",
+    "Thumbnail": {
+      "Zoom": 1.9173,
+      "X": 0.5337,
+      "Y": 0.184
+    },
     "Footprint": {
       "W": 1,
       "H": 1
@@ -12119,6 +12639,11 @@
     "Lore": "Walks many roads, never lost for lack of a single path.",
     "Card": "Flexible [fighter]. Converts [openings] into [combo finishes].",
     "Portrait": "Ripper",
+    "Thumbnail": {
+      "Zoom": 1.6924,
+      "X": 0.2336,
+      "Y": 0.1904
+    },
     "Footprint": {
       "W": 1,
       "H": 1
@@ -12251,6 +12776,11 @@
     "Lore": "Disciplines of ink and flame taught that power begins in focus.",
     "Card": "Arcane [controller][debuffer]. Shapes fights with [aoe][curse].",
     "Portrait": "Ritualist",
+    "Thumbnail": {
+      "Zoom": 2.4363,
+      "X": 0.4771,
+      "Y": 0.1938
+    },
     "Footprint": {
       "W": 1,
       "H": 1
@@ -12385,6 +12915,11 @@
     "Lore": "Every scar is a lesson. Every lesson becomes an opening.",
     "Card": "Close-range [brawler][cleaver]. Wins trades with [stagger].",
     "Portrait": "Ronin",
+    "Thumbnail": {
+      "Zoom": 1.5356,
+      "X": 0.4781,
+      "Y": 0.1851
+    },
     "Footprint": {
       "W": 1,
       "H": 1
@@ -12517,6 +13052,11 @@
     "Lore": "Disciplines of ink and flame taught that power begins in focus.",
     "Card": "Arcane [controller][debuffer]. Shapes fights with [aoe][curse].",
     "Portrait": "Sage",
+    "Thumbnail": {
+      "Zoom": 2.3787,
+      "X": 0.4883,
+      "Y": 0.2008
+    },
     "Footprint": {
       "W": 1,
       "H": 1
@@ -12647,6 +13187,11 @@
     "Lore": "Born to the deep places, it runs by instinct and strikes without doubt.",
     "Card": "Ferocious [pouncer][mauler]. Disrupts with [roar] and [knockdown].",
     "Portrait": "SandMaw",
+    "Thumbnail": {
+      "Zoom": 0.964,
+      "X": 0.4999,
+      "Y": 0.5007
+    },
     "Footprint": {
       "W": 1,
       "H": 1
@@ -12753,6 +13298,11 @@
     "Lore": "Every scar is a lesson. Every lesson becomes an opening.",
     "Card": "Close-range [brawler][cleaver]. Wins trades with [stagger].",
     "Portrait": "Scorpion",
+    "Thumbnail": {
+      "Zoom": 1.8801,
+      "X": 0.5763,
+      "Y": 0.2473
+    },
     "Footprint": {
       "W": 1,
       "H": 1
@@ -12861,6 +13411,11 @@
     "Lore": "Every scar is a lesson. Every lesson becomes an opening.",
     "Card": "Close-range [brawler][cleaver]. Wins trades with [stagger].",
     "Portrait": "Sellsword",
+    "Thumbnail": {
+      "Zoom": 1.7941,
+      "X": 0.5016,
+      "Y": 0.184
+    },
     "Footprint": {
       "W": 1,
       "H": 1
@@ -12991,6 +13546,11 @@
     "Lore": "Built on vows and iron patience, they stand where others fall back.",
     "Card": "Frontline [guardian][bruiser]. Absorbs pressure and [taunts].",
     "Portrait": "ShieldMaiden",
+    "Thumbnail": {
+      "Zoom": 2.3791,
+      "X": 0.6227,
+      "Y": 0.2102
+    },
     "Footprint": {
       "W": 1,
       "H": 1
@@ -13124,6 +13684,11 @@
     "Lore": "Walks many roads, never lost for lack of a single path.",
     "Card": "Flexible [fighter]. Converts [openings] into [combo finishes].",
     "Portrait": "Sister",
+    "Thumbnail": {
+      "Zoom": 1.9019,
+      "X": 0.5296,
+      "Y": 0.1939
+    },
     "Footprint": {
       "W": 1,
       "H": 1
@@ -13254,6 +13819,11 @@
     "Lore": "Life ended. Purpose remained. The rest is hunger and memory.",
     "Card": "Grim [attrition][drain]. Pressures with [fear] and [rot].",
     "Portrait": "Skelepede00",
+    "Thumbnail": {
+      "Zoom": 0.9161,
+      "X": 0.4997,
+      "Y": 0.4998
+    },
     "Footprint": {
       "W": 1,
       "H": 1
@@ -13361,6 +13931,11 @@
     "Lore": "Life ended. Purpose remained. The rest is hunger and memory.",
     "Card": "Grim [attrition][drain]. Pressures with [fear] and [rot].",
     "Portrait": "Skelepede01",
+    "Thumbnail": {
+      "Zoom": 0.9616,
+      "X": 0.4996,
+      "Y": 0.4988
+    },
     "Footprint": {
       "W": 1,
       "H": 1
@@ -13468,6 +14043,11 @@
     "Lore": "Life ended. Purpose remained. The rest is hunger and memory.",
     "Card": "Grim [attrition][drain]. Pressures with [fear] and [rot].",
     "Portrait": "Skelepede02",
+    "Thumbnail": {
+      "Zoom": 0.9512,
+      "X": 0.5003,
+      "Y": 0.5003
+    },
     "Footprint": {
       "W": 1,
       "H": 1
@@ -13574,6 +14154,11 @@
     "Lore": "Every scar is a lesson. Every lesson becomes an opening.",
     "Card": "Close-range [brawler][cleaver]. Wins trades with [stagger].",
     "Portrait": "Slasher",
+    "Thumbnail": {
+      "Zoom": 1.5714,
+      "X": 0.3632,
+      "Y": 0.1832
+    },
     "Footprint": {
       "W": 1,
       "H": 1
@@ -13703,6 +14288,11 @@
     "Lore": "Born to the deep places, it runs by instinct and strikes without doubt.",
     "Card": "Ferocious [pouncer][mauler]. Disrupts with [roar] and [knockdown].",
     "Portrait": "Slime00",
+    "Thumbnail": {
+      "Zoom": 0.9625,
+      "X": 0.4997,
+      "Y": 0.4995
+    },
     "Footprint": {
       "W": 1,
       "H": 1
@@ -13805,6 +14395,11 @@
     "Lore": "Born to the deep places, it runs by instinct and strikes without doubt.",
     "Card": "Ferocious [pouncer][mauler]. Disrupts with [roar] and [knockdown].",
     "Portrait": "Slime01",
+    "Thumbnail": {
+      "Zoom": 0.9636,
+      "X": 0.4997,
+      "Y": 0.4996
+    },
     "Footprint": {
       "W": 1,
       "H": 1
@@ -13907,6 +14502,11 @@
     "Lore": "Born to the deep places, it runs by instinct and strikes without doubt.",
     "Card": "Ferocious [pouncer][mauler]. Disrupts with [roar] and [knockdown].",
     "Portrait": "Slime02",
+    "Thumbnail": {
+      "Zoom": 0.9632,
+      "X": 0.4989,
+      "Y": 0.4984
+    },
     "Footprint": {
       "W": 1,
       "H": 1
@@ -14009,6 +14609,11 @@
     "Lore": "Born to the deep places, it runs by instinct and strikes without doubt.",
     "Card": "Ferocious [pouncer][mauler]. Disrupts with [roar] and [knockdown].",
     "Portrait": "Slime03",
+    "Thumbnail": {
+      "Zoom": 0.9633,
+      "X": 0.4997,
+      "Y": 0.4996
+    },
     "Footprint": {
       "W": 1,
       "H": 1
@@ -14113,6 +14718,11 @@
     "Lore": "Walks many roads, never lost for lack of a single path.",
     "Card": "Flexible [fighter]. Converts [openings] into [combo finishes].",
     "Portrait": "Soldier00",
+    "Thumbnail": {
+      "Zoom": 2.3791,
+      "X": 0.4727,
+      "Y": 0.2102
+    },
     "Footprint": {
       "W": 1,
       "H": 1
@@ -14220,6 +14830,11 @@
     "Lore": "Walks many roads, never lost for lack of a single path.",
     "Card": "Flexible [fighter]. Converts [openings] into [combo finishes].",
     "Portrait": "Soldier01",
+    "Thumbnail": {
+      "Zoom": 2.3791,
+      "X": 0.5477,
+      "Y": 0.2102
+    },
     "Footprint": {
       "W": 1,
       "H": 1
@@ -14327,6 +14942,11 @@
     "Lore": "Walks many roads, never lost for lack of a single path.",
     "Card": "Flexible [fighter]. Converts [openings] into [combo finishes].",
     "Portrait": "Soldier02",
+    "Thumbnail": {
+      "Zoom": 2.3786,
+      "X": 0.5118,
+      "Y": 0.2102
+    },
     "Footprint": {
       "W": 1,
       "H": 1
@@ -14434,6 +15054,11 @@
     "Lore": "Walks many roads, never lost for lack of a single path.",
     "Card": "Flexible [fighter]. Converts [openings] into [combo finishes].",
     "Portrait": "Soldier03",
+    "Thumbnail": {
+      "Zoom": 2.3791,
+      "X": 0.5024,
+      "Y": 0.2102
+    },
     "Footprint": {
       "W": 1,
       "H": 1
@@ -14541,6 +15166,11 @@
     "Lore": "Years of quiet training forged a will that moves faster than thought.",
     "Card": "Mobile [striker][flanker]. Leans on [crit] and [backstab] windows.",
     "Portrait": "Speedster",
+    "Thumbnail": {
+      "Zoom": 0.9957,
+      "X": 0.5957,
+      "Y": 0.1696
+    },
     "Footprint": {
       "W": 1,
       "H": 1
@@ -14671,6 +15301,11 @@
     "Lore": "Walks many roads, never lost for lack of a single path.",
     "Card": "Flexible [fighter]. Converts [openings] into [combo finishes].",
     "Portrait": "SteppinRazor00",
+    "Thumbnail": {
+      "Zoom": 2.2656,
+      "X": 0.5551,
+      "Y": 0.1843
+    },
     "Footprint": {
       "W": 1,
       "H": 1
@@ -14776,6 +15411,11 @@
     "Lore": "Walks many roads, never lost for lack of a single path.",
     "Card": "Flexible [fighter]. Converts [openings] into [combo finishes].",
     "Portrait": "SteppinRazor01",
+    "Thumbnail": {
+      "Zoom": 2.3771,
+      "X": 0.6454,
+      "Y": 0.1897
+    },
     "Footprint": {
       "W": 1,
       "H": 1
@@ -14881,6 +15521,11 @@
     "Lore": "Walks many roads, never lost for lack of a single path.",
     "Card": "Flexible [fighter]. Converts [openings] into [combo finishes].",
     "Portrait": "SteppinRazor02",
+    "Thumbnail": {
+      "Zoom": 2.3088,
+      "X": 0.3687,
+      "Y": 0.1841
+    },
     "Footprint": {
       "W": 1,
       "H": 1
@@ -14986,6 +15631,11 @@
     "Lore": "Walks many roads, never lost for lack of a single path.",
     "Card": "Flexible [fighter]. Converts [openings] into [combo finishes].",
     "Portrait": "SteppinRazor04",
+    "Thumbnail": {
+      "Zoom": 2.3681,
+      "X": 0.6197,
+      "Y": 0.1873
+    },
     "Footprint": {
       "W": 1,
       "H": 1
@@ -15091,6 +15741,11 @@
     "Lore": "Walks many roads, never lost for lack of a single path.",
     "Card": "Flexible [fighter]. Converts [openings] into [combo finishes].",
     "Portrait": "SteppinRazor05",
+    "Thumbnail": {
+      "Zoom": 2.3468,
+      "X": 0.6248,
+      "Y": 0.1906
+    },
     "Footprint": {
       "W": 1,
       "H": 1
@@ -15196,6 +15851,11 @@
     "Lore": "Every scar is a lesson. Every lesson becomes an opening.",
     "Card": "Close-range [brawler][cleaver]. Wins trades with [stagger].",
     "Portrait": "StreetFighter",
+    "Thumbnail": {
+      "Zoom": 2.3428,
+      "X": 0.4991,
+      "Y": 0.1898
+    },
     "Footprint": {
       "W": 1,
       "H": 1
@@ -15326,6 +15986,11 @@
     "Lore": "Years of quiet training forged a will that moves faster than thought.",
     "Card": "Mobile [striker][flanker]. Leans on [crit] and [backstab] windows.",
     "Portrait": "Striker",
+    "Thumbnail": {
+      "Zoom": 1.0055,
+      "X": 0.4509,
+      "Y": 0.1778
+    },
     "Footprint": {
       "W": 1,
       "H": 1
@@ -15457,6 +16122,11 @@
     "Lore": "Walks many roads, never lost for lack of a single path.",
     "Card": "Flexible [fighter]. Converts [openings] into [combo finishes].",
     "Portrait": "SwampMistress00",
+    "Thumbnail": {
+      "Zoom": 2.4264,
+      "X": 0.5139,
+      "Y": 0.2043
+    },
     "Footprint": {
       "W": 1,
       "H": 1
@@ -15563,6 +16233,11 @@
     "Lore": "Every scar is a lesson. Every lesson becomes an opening.",
     "Card": "Close-range [brawler][cleaver]. Wins trades with [stagger].",
     "Portrait": "SwordMaster",
+    "Thumbnail": {
+      "Zoom": 2.3791,
+      "X": 0.5524,
+      "Y": 0.2102
+    },
     "Footprint": {
       "W": 1,
       "H": 1
@@ -15693,6 +16368,11 @@
     "Lore": "Built on vows and iron patience, they stand where others fall back.",
     "Card": "Frontline [guardian][bruiser]. Absorbs pressure and [taunts].",
     "Portrait": "Tank",
+    "Thumbnail": {
+      "Zoom": 2.0236,
+      "X": 0.6364,
+      "Y": 0.1842
+    },
     "Footprint": {
       "W": 1,
       "H": 1
@@ -15826,6 +16506,11 @@
     "Lore": "Blueprints and boldness turned problems into levers and switches.",
     "Card": "Tactical [engineer][controller]. Deploys [traps][turrets][gadgets].",
     "Portrait": "TechGremlin00",
+    "Thumbnail": {
+      "Zoom": 2.2451,
+      "X": 0.4586,
+      "Y": 0.1845
+    },
     "Footprint": {
       "W": 1,
       "H": 1
@@ -15929,6 +16614,11 @@
     "Lore": "Blueprints and boldness turned problems into levers and switches.",
     "Card": "Tactical [engineer][controller]. Deploys [traps][turrets][gadgets].",
     "Portrait": "TechGremlin01",
+    "Thumbnail": {
+      "Zoom": 2.2768,
+      "X": 0.4672,
+      "Y": 0.1843
+    },
     "Footprint": {
       "W": 1,
       "H": 1
@@ -16032,6 +16722,11 @@
     "Lore": "Blueprints and boldness turned problems into levers and switches.",
     "Card": "Tactical [engineer][controller]. Deploys [traps][turrets][gadgets].",
     "Portrait": "TechGremlin02",
+    "Thumbnail": {
+      "Zoom": 2.2618,
+      "X": 0.4727,
+      "Y": 0.1835
+    },
     "Footprint": {
       "W": 1,
       "H": 1
@@ -16135,6 +16830,11 @@
     "Lore": "Blueprints and boldness turned problems into levers and switches.",
     "Card": "Tactical [engineer][controller]. Deploys [traps][turrets][gadgets].",
     "Portrait": "Technician",
+    "Thumbnail": {
+      "Zoom": 1.0008,
+      "X": 0.5579,
+      "Y": 0.178
+    },
     "Footprint": {
       "W": 1,
       "H": 1
@@ -16264,6 +16964,11 @@
     "Lore": "Built on vows and iron patience, they stand where others fall back.",
     "Card": "Frontline [guardian][bruiser]. Absorbs pressure and [taunts].",
     "Portrait": "Templar00",
+    "Thumbnail": {
+      "Zoom": 2.3787,
+      "X": 0.4977,
+      "Y": 0.2102
+    },
     "Footprint": {
       "W": 1,
       "H": 1
@@ -16371,6 +17076,11 @@
     "Lore": "Built on vows and iron patience, they stand where others fall back.",
     "Card": "Frontline [guardian][bruiser]. Absorbs pressure and [taunts].",
     "Portrait": "Templar01",
+    "Thumbnail": {
+      "Zoom": 2.3787,
+      "X": 0.4977,
+      "Y": 0.2102
+    },
     "Footprint": {
       "W": 1,
       "H": 1
@@ -16478,6 +17188,11 @@
     "Lore": "Built on vows and iron patience, they stand where others fall back.",
     "Card": "Frontline [guardian][bruiser]. Absorbs pressure and [taunts].",
     "Portrait": "Templar02",
+    "Thumbnail": {
+      "Zoom": 2.3787,
+      "X": 0.4977,
+      "Y": 0.2102
+    },
     "Footprint": {
       "W": 1,
       "H": 1
@@ -16585,6 +17300,11 @@
     "Lore": "Built on vows and iron patience, they stand where others fall back.",
     "Card": "Frontline [guardian][bruiser]. Absorbs pressure and [taunts].",
     "Portrait": "Templar03",
+    "Thumbnail": {
+      "Zoom": 2.3787,
+      "X": 0.4977,
+      "Y": 0.2102
+    },
     "Footprint": {
       "W": 1,
       "H": 1
@@ -16692,6 +17412,11 @@
     "Lore": "Built on vows and iron patience, they stand where others fall back.",
     "Card": "Frontline [guardian][bruiser]. Absorbs pressure and [taunts].",
     "Portrait": "Templar04",
+    "Thumbnail": {
+      "Zoom": 2.3787,
+      "X": 0.4977,
+      "Y": 0.2102
+    },
     "Footprint": {
       "W": 1,
       "H": 1
@@ -16799,6 +17524,11 @@
     "Lore": "Built on vows and iron patience, they stand where others fall back.",
     "Card": "Frontline [guardian][bruiser]. Absorbs pressure and [taunts].",
     "Portrait": "Templar05",
+    "Thumbnail": {
+      "Zoom": 2.3788,
+      "X": 0.4977,
+      "Y": 0.2102
+    },
     "Footprint": {
       "W": 1,
       "H": 1
@@ -16906,6 +17636,11 @@
     "Lore": "Years of quiet training forged a will that moves faster than thought.",
     "Card": "Mobile [striker][flanker]. Leans on [crit] and [backstab] windows.",
     "Portrait": "Thief",
+    "Thumbnail": {
+      "Zoom": 1.6466,
+      "X": 0.4715,
+      "Y": 0.1936
+    },
     "Footprint": {
       "W": 1,
       "H": 1
@@ -17037,6 +17772,11 @@
     "Lore": "Walks many roads, never lost for lack of a single path.",
     "Card": "Flexible [fighter]. Converts [openings] into [combo finishes].",
     "Portrait": "Tinkerer",
+    "Thumbnail": {
+      "Zoom": 2.3787,
+      "X": 0.4977,
+      "Y": 0.2102
+    },
     "Footprint": {
       "W": 1,
       "H": 1
@@ -17166,6 +17906,11 @@
     "Lore": "Born to the deep places, it runs by instinct and strikes without doubt.",
     "Card": "Ferocious [pouncer][mauler]. Disrupts with [roar] and [knockdown].",
     "Portrait": "Toad00",
+    "Thumbnail": {
+      "Zoom": 0.9615,
+      "X": 0.5,
+      "Y": 0.5
+    },
     "Footprint": {
       "W": 1,
       "H": 1
@@ -17273,6 +18018,11 @@
     "Lore": "Born to the deep places, it runs by instinct and strikes without doubt.",
     "Card": "Ferocious [pouncer][mauler]. Disrupts with [roar] and [knockdown].",
     "Portrait": "TreeGolem00",
+    "Thumbnail": {
+      "Zoom": 0.963,
+      "X": 0.5005,
+      "Y": 0.4997
+    },
     "Footprint": {
       "W": 1,
       "H": 1
@@ -17385,6 +18135,11 @@
     "Lore": "Born to the deep places, it runs by instinct and strikes without doubt.",
     "Card": "Ferocious [pouncer][mauler]. Disrupts with [roar] and [knockdown].",
     "Portrait": "TreeGolem01",
+    "Thumbnail": {
+      "Zoom": 0.9614,
+      "X": 0.4998,
+      "Y": 0.4998
+    },
     "Footprint": {
       "W": 1,
       "H": 1
@@ -17497,6 +18252,11 @@
     "Lore": "Born to the deep places, it runs by instinct and strikes without doubt.",
     "Card": "Ferocious [pouncer][mauler]. Disrupts with [roar] and [knockdown].",
     "Portrait": "TreeGolem02",
+    "Thumbnail": {
+      "Zoom": 0.9614,
+      "X": 0.4998,
+      "Y": 0.4998
+    },
     "Footprint": {
       "W": 1,
       "H": 1
@@ -17609,6 +18369,11 @@
     "Lore": "Born to the deep places, it runs by instinct and strikes without doubt.",
     "Card": "Ferocious [pouncer][mauler]. Disrupts with [roar] and [knockdown].",
     "Portrait": "TreeGolem03",
+    "Thumbnail": {
+      "Zoom": 0.9614,
+      "X": 0.4998,
+      "Y": 0.4998
+    },
     "Footprint": {
       "W": 1,
       "H": 1
@@ -17721,6 +18486,11 @@
     "Lore": "Born to the deep places, it runs by instinct and strikes without doubt.",
     "Card": "Ferocious [pouncer][mauler]. Disrupts with [roar] and [knockdown].",
     "Portrait": "TreeGolem04",
+    "Thumbnail": {
+      "Zoom": 0.9614,
+      "X": 0.4998,
+      "Y": 0.4998
+    },
     "Footprint": {
       "W": 1,
       "H": 1
@@ -17833,6 +18603,11 @@
     "Lore": "Born to the deep places, it runs by instinct and strikes without doubt.",
     "Card": "Ferocious [pouncer][mauler]. Disrupts with [roar] and [knockdown].",
     "Portrait": "TreeGolem06",
+    "Thumbnail": {
+      "Zoom": 0.9525,
+      "X": 0.4997,
+      "Y": 0.5005
+    },
     "Footprint": {
       "W": 1,
       "H": 1
@@ -17944,6 +18719,11 @@
     "Lore": "Life ended. Purpose remained. The rest is hunger and memory.",
     "Card": "Grim [attrition][drain]. Pressures with [fear] and [rot].",
     "Portrait": "Undead00",
+    "Thumbnail": {
+      "Zoom": 0.9611,
+      "X": 0.4999,
+      "Y": 0.5007
+    },
     "Footprint": {
       "W": 1,
       "H": 1
@@ -18050,6 +18830,11 @@
     "Lore": "Life ended. Purpose remained. The rest is hunger and memory.",
     "Card": "Grim [attrition][drain]. Pressures with [fear] and [rot].",
     "Portrait": "Undead01",
+    "Thumbnail": {
+      "Zoom": 0.9614,
+      "X": 0.4998,
+      "Y": 0.4998
+    },
     "Footprint": {
       "W": 1,
       "H": 1
@@ -18156,6 +18941,11 @@
     "Lore": "Life ended. Purpose remained. The rest is hunger and memory.",
     "Card": "Grim [attrition][drain]. Pressures with [fear] and [rot].",
     "Portrait": "Undead02",
+    "Thumbnail": {
+      "Zoom": 0.9614,
+      "X": 0.4998,
+      "Y": 0.4998
+    },
     "Footprint": {
       "W": 1,
       "H": 1
@@ -18262,6 +19052,11 @@
     "Lore": "Life ended. Purpose remained. The rest is hunger and memory.",
     "Card": "Grim [attrition][drain]. Pressures with [fear] and [rot].",
     "Portrait": "Undead04",
+    "Thumbnail": {
+      "Zoom": 0.9616,
+      "X": 0.4997,
+      "Y": 0.5005
+    },
     "Footprint": {
       "W": 1,
       "H": 1
@@ -18370,6 +19165,11 @@
     "Lore": "Life ended. Purpose remained. The rest is hunger and memory.",
     "Card": "Grim [attrition][drain]. Pressures with [fear] and [rot].",
     "Portrait": "Vampire",
+    "Thumbnail": {
+      "Zoom": 1.1391,
+      "X": 0.4455,
+      "Y": 0.1974
+    },
     "Footprint": {
       "W": 1,
       "H": 1
@@ -18501,6 +19301,11 @@
     "Lore": "Born to the deep places, it runs by instinct and strikes without doubt.",
     "Card": "Ferocious [pouncer][mauler]. Disrupts with [roar] and [knockdown].",
     "Portrait": "Vulture",
+    "Thumbnail": {
+      "Zoom": 0.9614,
+      "X": 0.4998,
+      "Y": 0.4998
+    },
     "Footprint": {
       "W": 1,
       "H": 1
@@ -18604,6 +19409,11 @@
     "Lore": "Built on vows and iron patience, they stand where others fall back.",
     "Card": "Frontline [guardian][bruiser]. Absorbs pressure and [taunts].",
     "Portrait": "WarChief",
+    "Thumbnail": {
+      "Zoom": 2.3088,
+      "X": 0.401,
+      "Y": 0.1872
+    },
     "Footprint": {
       "W": 1,
       "H": 1
@@ -18737,6 +19547,11 @@
     "Lore": "Born to the deep places, it runs by instinct and strikes without doubt.",
     "Card": "Ferocious [pouncer][mauler]. Disrupts with [roar] and [knockdown].",
     "Portrait": "Werewolf00",
+    "Thumbnail": {
+      "Zoom": 2.3787,
+      "X": 0.4977,
+      "Y": 0.2102
+    },
     "Crop": {
       "X": 15,
       "Y": 15
@@ -18849,6 +19664,11 @@
     "Lore": "Years of quiet training forged a will that moves faster than thought.",
     "Card": "Mobile [striker][flanker]. Leans on [crit] and [backstab] windows.",
     "Portrait": "WhiteNinja",
+    "Thumbnail": {
+      "Zoom": 2.3787,
+      "X": 0.4977,
+      "Y": 0.2102
+    },
     "Footprint": {
       "W": 1,
       "H": 1
@@ -18982,6 +19802,11 @@
     "Lore": "Disciplines of ink and flame taught that power begins in focus.",
     "Card": "Arcane [controller][debuffer]. Shapes fights with [aoe][curse].",
     "Portrait": "WhiteWitch",
+    "Thumbnail": {
+      "Zoom": 2.3787,
+      "X": 0.4633,
+      "Y": 0.2102
+    },
     "Footprint": {
       "W": 1,
       "H": 1
@@ -19112,6 +19937,11 @@
     "Lore": "Walks many roads, never lost for lack of a single path.",
     "Card": "Flexible [fighter]. Converts [openings] into [combo finishes].",
     "Portrait": "WildChild",
+    "Thumbnail": {
+      "Zoom": 1.6016,
+      "X": 0.4497,
+      "Y": 0.1843
+    },
     "Footprint": {
       "W": 1,
       "H": 1
@@ -19242,6 +20072,11 @@
     "Lore": "Born to the deep places, it runs by instinct and strikes without doubt.",
     "Card": "Ferocious [pouncer][mauler]. Disrupts with [roar] and [knockdown].",
     "Portrait": "Wolf00",
+    "Thumbnail": {
+      "Zoom": 0.7956,
+      "X": 0.4997,
+      "Y": 0.4998
+    },
     "Crop": {
       "X": 17,
       "Y": 16
@@ -19352,6 +20187,11 @@
     "Lore": "Born to the deep places, it runs by instinct and strikes without doubt.",
     "Card": "Ferocious [pouncer][mauler]. Disrupts with [roar] and [knockdown].",
     "Portrait": "Wolf01",
+    "Thumbnail": {
+      "Zoom": 0.884,
+      "X": 0.4993,
+      "Y": 0.4993
+    },
     "Crop": {
       "X": 82,
       "Y": 27
@@ -19462,6 +20302,11 @@
     "Lore": "Born to the deep places, it runs by instinct and strikes without doubt.",
     "Card": "Ferocious [pouncer][mauler]. Disrupts with [roar] and [knockdown].",
     "Portrait": "Wolf02",
+    "Thumbnail": {
+      "Zoom": 0.8679,
+      "X": 0.4998,
+      "Y": 0.4991
+    },
     "Crop": {
       "X": 85,
       "Y": 19
@@ -19572,6 +20417,11 @@
     "Lore": "Born to the deep places, it runs by instinct and strikes without doubt.",
     "Card": "Ferocious [pouncer][mauler]. Disrupts with [roar] and [knockdown].",
     "Portrait": "Wolf03",
+    "Thumbnail": {
+      "Zoom": 0.94,
+      "X": 0.4999,
+      "Y": 0.5007
+    },
     "Crop": {
       "X": 78,
       "Y": 33
@@ -19682,6 +20532,11 @@
     "Lore": "Years of quiet training forged a will that moves faster than thought.",
     "Card": "Mobile [striker][flanker]. Leans on [crit] and [backstab] windows.",
     "Portrait": "YellowNinja",
+    "Thumbnail": {
+      "Zoom": 1.3203,
+      "X": 0.6442,
+      "Y": 0.2001
+    },
     "Footprint": {
       "W": 1,
       "H": 1
@@ -19813,6 +20668,11 @@
     "Lore": "Born to the deep places, it runs by instinct and strikes without doubt.",
     "Card": "Ferocious [pouncer][mauler]. Disrupts with [roar] and [knockdown].",
     "Portrait": "Yeti",
+    "Thumbnail": {
+      "Zoom": 2.4082,
+      "X": 0.542,
+      "Y": 0.208
+    },
     "Footprint": {
       "W": 1,
       "H": 1
@@ -19920,6 +20780,11 @@
     "Lore": "A cracked grave marker. Break it before the dead climb back out.",
     "Card": "A cracked grave marker. Break it before the dead climb back out.",
     "Portrait": "gravestone",
+    "Thumbnail": {
+      "Zoom": 0.7527,
+      "X": 0.5064,
+      "Y": 0.6079
+    },
     "Footprint": {
       "W": 1,
       "H": 1
@@ -20038,6 +20903,11 @@
     "Lore": "A heap of rattling bones that wants to stand up again. Scatter it.",
     "Card": "A heap of rattling bones that wants to stand up again. Scatter it.",
     "Portrait": "bonepile",
+    "Thumbnail": {
+      "Zoom": 1.053,
+      "X": 0.5024,
+      "Y": 0.7335
+    },
     "Footprint": {
       "W": 1,
       "H": 1
@@ -20156,6 +21026,11 @@
     "Lore": "A fallen body in the way. Clear it with a pincer or wait for it to rot.",
     "Card": "A fallen body in the way. Clear it with a pincer or wait for it to rot.",
     "Portrait": "corpse",
+    "Thumbnail": {
+      "Zoom": 1.053,
+      "X": 0.5024,
+      "Y": 0.7335
+    },
     "Footprint": {
       "W": 1,
       "H": 1
@@ -20274,6 +21149,11 @@
     "Lore": "A leathery egg, still warm. Best to break it before it hatches.",
     "Card": "A leathery egg, still warm. Best to break it before it hatches.",
     "Portrait": "naga00",
+    "Thumbnail": {
+      "Zoom": 0.9616,
+      "X": 0.4996,
+      "Y": 0.4988
+    },
     "Footprint": {
       "W": 1,
       "H": 1
@@ -20338,6 +21218,11 @@
     "Lore": "A swamp hag who traded curses for coin, picking off the toughest target in a fight from well outside its reach.",
     "Card": "Ranged precision. Converts [patience] into a [piercing shot] nothing else in the party can match.",
     "Portrait": "hexsniper",
+    "Thumbnail": {
+      "Zoom": 2.4284,
+      "X": 0.5043,
+      "Y": 0.1996
+    },
     "Footprint": {
       "W": 1,
       "H": 1
@@ -20469,6 +21354,11 @@
     "Lore": "A swamp hag who wardens the fens from afar, snaring anything that strays too near with a barbed little curse.",
     "Card": "Ranged control. Converts [distance] into [crowd control] that keeps the front line clean.",
     "Portrait": "hexwarden",
+    "Thumbnail": {
+      "Zoom": 2.3924,
+      "X": 0.4512,
+      "Y": 0.1827
+    },
     "Footprint": {
       "W": 1,
       "H": 1
@@ -20598,6 +21488,11 @@
     "Lore": "A swamp hag who never stays where she fired from, drifting through the reeds a step ahead of whatever is chasing her.",
     "Card": "Ranged skirmish. Converts [footwork] into [shots] that keep a whole lane at arm's length.",
     "Portrait": "hexstalker",
+    "Thumbnail": {
+      "Zoom": 2.3905,
+      "X": 0.5529,
+      "Y": 0.2092
+    },
     "Footprint": {
       "W": 1,
       "H": 1
