@@ -501,6 +501,127 @@ namespace GridGame.Tests
             Assert.Throws<TileConflictException>(() => BattleEngine.Apply(s, new ShieldCommand()));
         }
 
+        // ── GG-T227: nothing appears on a tile holding a pickup (owner 2026-11-03: "make sure nothing spawns on a tile
+        //    that's already occupied") — every spawn source aimed at a pickup ──
+
+        private static void AssertNobodyOnAPickup(BattleState s)
+        {
+            foreach (var p in s.Pickups)
+                Assert.That(s.UnitAt(p.At), Is.Null, $"{s.UnitAt(p.At)} stands on pickup {p.Id} at {p.At}");
+        }
+
+        /// <summary>Every enemy falls by hand, so the next command clears the wave and spawns the next one.</summary>
+        private static void ClearWave(BattleState s)
+        {
+            foreach (var e in s.Units.Where(u => u.Alive && u.Team == Team.Enemy).ToList())
+            {
+                e.Hp = 0; e.OnBoard = false;
+                s.Timeline.RemoveAll(t => t.OwnerId == e.Id);
+            }
+        }
+
+        [Test]
+        public void A_new_wave_never_spawns_on_a_pickup_left_from_the_last()
+        {
+            var db = Mini();
+            var (s, _) = Battle(db, StageWaves(new[] { ("tank", 0, 0) }, new[] { ("tank", 3, 3), ("boss", 1, 1) }), ("knight", 3, 6), ("cleric", 5, 7));
+            var onTank = Drop(s, 3, 3);
+            var underBoss = Drop(s, 2, 2); // inside the 2×2's authored footprint (1,1)-(2,2)
+            ClearWave(s);
+            var ev = BattleEngine.Apply(s, new ShieldCommand());
+            var started = ev.OfType<WaveStartedEvent>().Single(w => w.Wave == 1);
+            Assert.That(started.Spawned.Count, Is.EqualTo(2), "both still spawn, each on a free footprint");
+            AssertBoardClean(s);
+            AssertNobodyOnAPickup(s);
+            Assert.That(s.Pickups, Does.Contain(onTank).And.Contain(underBoss), "the pickups stay where they lie");
+        }
+
+        [Test]
+        public void A_reinforcement_never_arrives_on_a_pickup()
+        {
+            var db = Mini();
+            var st = Stage(("tank", 0, 0));
+            st.Waves[0].Enemies.Add(new SpawnDef { Class = "tank", Level = 1, X = 3, Y = 3, DelayTicks = 5 });
+            var (s, _) = Battle(db, st, ("knight", 3, 6), ("cleric", 5, 7));
+            Drop(s, 3, 3);
+            List<BattleEvent> ev = null;
+            for (int i = 0; i < 10 && !s.IsOver; i++) { ev = BattleEngine.Apply(s, new ShieldCommand()); if (ev.OfType<ReinforcementsArrivedEvent>().Any()) break; }
+            var arrived = ev.OfType<ReinforcementsArrivedEvent>().Single();
+            Assert.That(arrived.SpawnedAt.Single().At, Is.Not.EqualTo(new Coord(3, 3)));
+            AssertBoardClean(s);
+            AssertNobodyOnAPickup(s);
+        }
+
+        [Test]
+        public void An_egg_is_never_laid_on_a_pickup()
+        {
+            var db = Mini();
+            db.Classes["naga"] = new ClassDef { Id = "naga", Name = "Naga", Team = Team.Enemy, Tags = { "Aquatic" }, BaseStats = new Stats { Vitality = 10, Speed = 10 }, MoveRange = 0, LaysEgg = "nagaegg", EggInterval = 1 };
+            db.Classes["nagaegg"] = new ClassDef { Id = "nagaegg", Name = "Naga Egg", Team = Team.Enemy, Tags = { "Egg" }, BaseStats = new Stats { Vitality = 2, Speed = 1 }, MoveRange = 0 };
+            // Three sides taken by units; the fourth, (3,2), holds a pickup: no egg this turn.
+            var (s, _) = Battle(db, Stage(("naga", 3, 3), ("tank", 2, 3), ("tank", 4, 3)), ("knight", 3, 4), ("cleric", 5, 7));
+            Drop(s, 3, 2);
+            var naga = Enemy(s, "naga");
+            s.TurnEntryOf(naga.Id).Ip = 999;
+            var ev = BattleEngine.Apply(s, new ShieldCommand());
+            Assert.That(ev.OfType<EggLaidEvent>().Any(), Is.False);
+            AssertBoardClean(s);
+            AssertNobodyOnAPickup(s);
+        }
+
+        [Test]
+        public void Guests_recruitables_and_snake_segments_never_appear_on_a_pickup()
+        {
+            var db = Mini();
+            db.Classes["ranger"] = new ClassDef { Id = "ranger", Name = "Ranger", Team = Team.Hero, Tags = { "Humanoid" }, BaseStats = new Stats { Strength = 10, Vitality = 10, Speed = 10, Agility = 10 } };
+            db.Classes["bard"] = new ClassDef { Id = "bard", Name = "Bard", Team = Team.Hero, Tags = { "Humanoid" }, BaseStats = new Stats { Strength = 10, Vitality = 10, Speed = 10, Agility = 10 } };
+            db.Classes["naga"] = new ClassDef { Id = "naga", Name = "Naga", Team = Team.Enemy, Tags = { "Boss" }, BaseStats = new Stats { Strength = 5, Vitality = 20, Speed = 12, Agility = 5 }, SnakeSegments = 3, MoveRange = 0 };
+            var st = StageWaves(new[] { ("tank", 0, 0) }, new[] { ("naga", 2, 2) });
+            st.Waves[1].Guests.Add(new SpawnDef { Class = "ranger", Level = 1, X = 4, Y = 5 });
+            st.Waves[1].Recruitables.Add(new RecruitableDef { Class = "bard", Level = 1, X = 1, Y = 5 });
+            var (s, _) = Battle(db, st, ("knight", 3, 6), ("cleric", 5, 7));
+            Drop(s, 4, 5); Drop(s, 1, 5);
+            Drop(s, 2, 1); // the first tile a snake segment asks for (Up of the head)
+            ClearWave(s);
+            var ev = BattleEngine.Apply(s, new ShieldCommand());
+            Assert.That(ev.OfType<GuestJoinedEvent>().Single().At, Is.Not.EqualTo(new Coord(4, 5)));
+            Assert.That(ev.OfType<RecruitableAppearedEvent>().Single().At, Is.Not.EqualTo(new Coord(1, 5)));
+            Assert.That(s.Units.Count(u => u.Alive && u.Def.Id == "naga"), Is.EqualTo(4), "head and three segments, around the pickup");
+            AssertBoardClean(s);
+            AssertNobodyOnAPickup(s);
+        }
+
+        [Test]
+        public void A_blinker_never_surfaces_on_a_pickup()
+        {
+            var db = Mini();
+            db.Classes["imp"] = new ClassDef { Id = "imp", Name = "Imp", Team = Team.Enemy, Tags = { "Beast" }, BaseStats = new Stats { Strength = 5, Vitality = 20, Speed = 10, Agility = 5 }, MoveRange = 1, Brain = Brain.Blinker };
+            // The knight is boxed in on three sides; the one open side holds a pickup.
+            var (s, _) = Battle(db, Stage(("imp", 0, 0), ("tank", 2, 4), ("tank", 4, 4)), ("knight", 3, 4), ("cleric", 3, 5), ("mage", 5, 7));
+            Drop(s, 3, 3);
+            var imp = Enemy(s, "imp");
+            imp.TurnsTaken = 1; // its next turn is a blink turn
+            s.TurnEntryOf(imp.Id).Ip = 999;
+            var ev = BattleEngine.Apply(s, new ShieldCommand());
+            Assert.That(ev.OfType<TeleportedEvent>().Any(t => t.UnitId == imp.Id), Is.False, "nowhere free to surface");
+            AssertBoardClean(s);
+            AssertNobodyOnAPickup(s);
+        }
+
+        [Test]
+        public void A_revived_hero_never_returns_onto_a_pickup()
+        {
+            var (s, knight, cleric) = ReviveSetup(Stage(("tank", 0, 0)), (2, 3), (3, 3));
+            foreach (var d in Coord.Cardinals) Drop(s, knight.Pos.X + d.X, knight.Pos.Y + d.Y); // every nearest tile holds a pickup
+            Assert.That(s.FreeForSpawn(new Coord(2, 2)), Is.False, "a pickup makes a tile unfit for anything to appear on");
+            BattleEngine.Apply(s, new UseSlotCommand { HeroId = knight.Id, Slot = 0, Target = knight.Pos });
+            Assert.That(cleric.Alive, Is.True);
+            Assert.That(cleric.Pos.Manhattan(knight.Pos), Is.EqualTo(2), "the nearest pickup-free tile");
+            Assert.That(s.Pickups.Count, Is.EqualTo(4), "nothing was collected by appearing on it");
+            AssertBoardClean(s);
+            AssertNobodyOnAPickup(s);
+        }
+
         /// <summary>
         /// A long strict soak over the real stages that counts what it exercised: enemies drop pickups, the amplifier
         /// spawns and gets shoved, and after every command no tile ever holds two items (the strict engine also throws

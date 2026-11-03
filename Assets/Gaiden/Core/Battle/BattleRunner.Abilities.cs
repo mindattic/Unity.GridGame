@@ -324,7 +324,7 @@ namespace GridGame.Core.Battle
                 var dir = AxisToward(t.Pos, caster.Pos);
                 if (dir.X == 0 && dir.Y == 0) return;
                 var next = t.Pos + dir;
-                if (!S.FreeForSpawn(next)) return;
+                if (!S.FreeToEnter(next)) return;
                 var from = t.Pos;
                 if (!Relocate(t, next)) return;
                 Emit(new DisplacedEvent { UnitId = t.Id, From = from, To = next, ByUnitId = caster.Id });
@@ -362,7 +362,7 @@ namespace GridGame.Core.Battle
             for (int i = 0; i < tiles && u.Alive && !S.IsOver; i++)
             {
                 var next = u.Pos + away;
-                if (!S.FreeForSpawn(next) || S.TrapAt(next) != null) return;
+                if (!S.FreeToEnter(next) || S.TrapAt(next) != null) return;
                 var from = u.Pos;
                 if (!Relocate(u, next)) return;
                 Emit(new DisplacedEvent { UnitId = u.Id, From = from, To = next, ByUnitId = u.Id });

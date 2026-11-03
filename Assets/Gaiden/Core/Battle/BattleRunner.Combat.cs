@@ -472,7 +472,7 @@ namespace GridGame.Core.Battle
                 {
                     var beyond = next + dir;
                     // A pickup beyond blocks the amplifier like a wall (two items never share a tile, §1.1.3, GG-T129).
-                    if (!S.FreeForSpawn(beyond) || PickupBlocksMovable(beyond) || !MoveMovable(mv, beyond, t)) { Damage(t, BattleConfig.KnockbackCrashDamage, caster, HitKind.Normal, DamageType.Physical, "Crash!", canPush: false); return; }
+                    if (!S.FreeToEnter(beyond) || PickupBlocksMovable(beyond) || !MoveMovable(mv, beyond, t)) { Damage(t, BattleConfig.KnockbackCrashDamage, caster, HitKind.Normal, DamageType.Physical, "Crash!", canPush: false); return; }
                 }
                 var from = t.Pos;
                 if (!Relocate(t, next)) return;

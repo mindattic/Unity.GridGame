@@ -204,8 +204,14 @@ namespace GridGame.Core.Battle
             }
         }
 
-        /// <summary>Free for something new to appear (spawn, reinforcement, trap, teleport landing): walkable, no unit, no movable tile.</summary>
-        public bool FreeForSpawn(Coord c) => Walkable(c) && UnitAt(c) == null && MovableAt(c) == null;
+        /// <summary>Free for something new to appear (spawn, wave, reinforcement, egg, guest, recruitable, snake segment,
+        /// blink/burrow surfacing, revive, trap, trail): walkable, no unit, and no board item — no movable tile and, since
+        /// GG-T227, no pickup either (owner: "make sure nothing spawns on a tile that's already occupied").</summary>
+        public bool FreeForSpawn(Coord c) => Walkable(c) && UnitAt(c) == null && ItemFree(c);
+
+        /// <summary>Free for a unit already on the board to be pushed/pulled/stepped onto (Pull, Step back, knockback beyond):
+        /// walkable, no unit, no movable. A pickup doesn't stop it — a hero collects it on entry (§13.3.1).</summary>
+        public bool FreeToEnter(Coord c) => Walkable(c) && UnitAt(c) == null && MovableAt(c) == null;
 
         /// <summary>No board item on the tile: no pickup and no movable tile (§1.1.3, GG-T129 — at most one item per tile, ever).</summary>
         public bool ItemFree(Coord c) => PickupAt(c) == null && MovableAt(c) == null;
