@@ -140,10 +140,10 @@ def main():
             h._tap_until(lambda: h.call("click", name="dlg-skip"), lambda: until(lambda: "choice-0" in h.call("names", prefix="choice-"), 2.0), tries=3, wait=0.2)
             choices = h.call("names", prefix="choice-")
             check("dialogue offers branching choices", len(choices) >= 2, str(choices))
-            lines = sorted(n for n in h.call("names", prefix="dlg-line-"))
-            if len(lines) >= 2:
-                a, b = h.call("element", name=lines[-2]), h.call("element", name=lines[-1])
-                check("conversation boxes overlap like a stack", b["y"] < a["y"] + a["h"], f"{a} {b}")
+            # GG-T225: one shared text box whose line is replaced, never a stacked log; name plates on both sides.
+            dn = h.call("names", prefix="dlg-")
+            check("conversation is one shared text box", "dlg-box" in dn and not any(n.startswith("dlg-line-") for n in dn), str(dn))
+            check("both speakers have name plates", "dlg-plate-left" in dn and "dlg-plate-right" in dn, str(dn))
             h.shot("dialogue")
             check("dialogue plays through to the battle", h.finish_dialogue())
         check("battle screen", until(lambda: h.call("state")["screen"] == "battle", 6.0))
