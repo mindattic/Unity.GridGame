@@ -208,6 +208,11 @@ def main():
     record = np.concatenate([horn(392, 0.13), horn(392, 0.13), horn(523.3, 0.16), horn(659.3, 0.85, 1.0)])
     sparkle = mix(*[np.concatenate([np.zeros(int(SR * (0.42 + 0.06 * k))), tone_env(f, 0.4, 0.001, 0.25)]) for k, f in enumerate((2093, 2637, 3136, 4186))])
     write("crucible_best", mix(record, 0.35 * sparkle))
+    # Side quests (§22.11, GG-T237): taking one up (a quill-scratch chime) and handing one in (a warm little fanfare).
+    write("quest_accept", np.concatenate([tone_env(659.3, 0.12, 0.004, 0.2), tone_env(880.0, 0.3, 0.004, 0.5)]) * 0.7)
+    fan = np.concatenate([horn(523.3, 0.11, 0.4), horn(659.3, 0.11, 0.4), horn(784.0, 0.5, 0.9)])
+    bells = mix(*[np.concatenate([np.zeros(int(SR * (0.22 + 0.05 * k))), tone_env(f, 0.35, 0.001, 0.25)]) for k, f in enumerate((1568, 2093, 2637))])
+    write("quest_complete", mix(fan, 0.3 * bells))
     print("wrote", len([f for f in os.listdir(OUT) if f.endswith('.ogg')]), "files to", OUT)
 
 

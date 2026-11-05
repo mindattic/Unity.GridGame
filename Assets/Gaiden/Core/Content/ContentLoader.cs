@@ -56,6 +56,9 @@ namespace GridGame.Core.Content
             var dialogues = ReadList<DialogueDef>(readText, "dialogues");
             AddAll(db.Dialogues, dialogues, x => x.Id);
             db.DialogueOrder.AddRange(dialogues);
+            var quests = ReadList<QuestDef>(readText, "quests");
+            AddAll(db.Quests, quests, x => x.Id);
+            db.QuestOrder.AddRange(quests);
             var sets = ReadList<ArmorSetDef>(readText, "armorsets");
             AddAll(db.ArmorSets, sets, x => x.Id);
             db.ArmorSetOrder.AddRange(sets);
@@ -280,6 +283,7 @@ namespace GridGame.Core.Content
             MercenaryContent.Validate(db, p);
             return p;
         }
+            QuestCatalog.Validate(db, p);
 
         /// <summary>Armor sets (GG-T182): five real armor pieces, one per armor slot, all the set's weight, no piece in
         /// two sets, and bonuses at distinct piece counts between 2 and 5.</summary>
@@ -415,6 +419,10 @@ namespace GridGame.Core.Content
                         if (e.Id != null && !IsHero(e.Id)) p.Add($"{where}: JoinHero needs a hero class, has '{e.Id}'");
                         if (e.Role != null && !HeroRoles.Contains(e.Role)) p.Add($"{where}: JoinHero has unknown Role '{e.Role}'");
                         break;
+                    case DialogueConditionType.QuestAvailable:
+                    case DialogueConditionType.QuestActive:
+                    case DialogueConditionType.QuestDone:
+                        if (db.TryQuest(c.Id) == null) p.Add($"{where}: unknown quest '{c.Id}'"); break;
                 }
             }
             foreach (var c in d.Conditions) Cond(c, w);
@@ -447,6 +455,8 @@ namespace GridGame.Core.Content
                 string nw = $"{w} node {n.Id}";
                 if (n.Speaker == null || !speakers.Contains(n.Speaker)) p.Add($"{nw}: unknown speaker '{n.Speaker}'");
                 if (string.IsNullOrWhiteSpace(n.Text)) p.Add($"{nw}: empty text");
+                    case DialogueEffectType.StartQuest:
+                        if (db.TryQuest(e.Id) == null) p.Add($"{where}: unknown quest '{e.Id}'"); break;
                 if (n.Next != null && !nodes.ContainsKey(n.Next)) p.Add($"{nw}: unknown next node '{n.Next}'");
                 if (n.Next != null && n.Choices.Count > 0) p.Add($"{nw}: has both Next and Choices");
                 foreach (var e in n.Effects) Effect(e, nw);

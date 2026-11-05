@@ -384,3 +384,7 @@
 .theme-dark .card { background-color: rgba(255, 255, 255, 0.03); border-radius: 8px; }
 .theme-dark .card--selected { background-color: rgba(107, 163, 232, 0.14); }
 .theme-dark .thumb { border-width: 2px; border-radius: 8px; border-color: rgb(42, 47, 58); background-color: rgb(26, 30, 37); }
+
+/* ── Quest journal hand-in card (GG-T237): slides in rather than popping ── */
+.quest-turnin { transition-property: opacity, translate; transition-duration: 0.35s; transition-timing-function: ease-out-back; }
+.quest-turnin.is-hidden { opacity: 0; translate: 0 -40px; }

@@ -143,6 +143,9 @@ namespace GridGame.Meta
                 case DialogueConditionType.RosterHas: return s.Hero(x.Id) != null;
                 case DialogueConditionType.RosterLacks: return s.Hero(x.Id) == null;
                 case DialogueConditionType.NpcJoined: return NpcJoined(s, x.Id);
+                case DialogueConditionType.QuestAvailable: return Quests.Available(c, s, x.Id);
+                case DialogueConditionType.QuestActive: return Quests.Active(s, x.Id);
+                case DialogueConditionType.QuestDone: return Quests.Done(s, x.Id);
                 default: return false;
             }
         }
@@ -185,6 +188,11 @@ namespace GridGame.Meta
                     return s.Flags.Add(ContentLoader.NpcFlagPrefix + e.Id) ? $"The {Npc(e.Id)} joins the caravan!" : null;
                 case DialogueEffectType.JoinHero:
                     return JoinStoryHero(c, s, Summon.StoryPick(c, s, e.Id, e.Role));
+                case DialogueEffectType.StartQuest:
+                {
+                    var r = Quests.Start(c, s, e.Id);
+                    return r.Ok ? r.Message : null;
+                }
                 default: return null;
             }
         }

@@ -62,6 +62,7 @@ namespace GridGame.App
                 if (report.UnlockedStage != null) Ui.MenuRow("New stage unlocked", report.UnlockedStage, null, list).Q<Label>("value").AddToClassList("gold");
                 if (report.NewSlots > 0) Ui.MenuRow("Ability slot unlocked!", $"+{report.NewSlots}", null, list).Q<Label>("label").AddToClassList("good");
                 if (report.BountyProgress != null) Ui.MenuRow("Bounty", report.BountyProgress, null, list);
+                foreach (var note in report.QuestProgress) Ui.MenuRow("Quest", note, null, list);
                 if (report.AutoSold > 0) Ui.MenuRow("Bag full — sold extras", $"{report.AutoSold} items", null, list);
                 foreach (var g in report.GuestsJoined)
                     Ui.MenuRow($"{c.Class(g).Name} joins the caravan!", "New hero", null, list).Q<Label>("label").AddToClassList("good");

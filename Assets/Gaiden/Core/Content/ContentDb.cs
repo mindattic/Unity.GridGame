@@ -44,6 +44,11 @@ namespace GridGame.Core.Content
         public readonly Dictionary<string, EncounterGroupDef> Encounters = new Dictionary<string, EncounterGroupDef>(StringComparer.OrdinalIgnoreCase);
         public EncounterGroupDef TryEncounter(string id) => id != null && Encounters.TryGetValue(id, out var g) ? g : null;
 
+        /// <summary>quests.json (§22.11, GG-T237), in file order (journal order), and by id.</summary>
+        public readonly List<QuestDef> QuestOrder = new List<QuestDef>();
+        public readonly Dictionary<string, QuestDef> Quests = new Dictionary<string, QuestDef>(StringComparer.OrdinalIgnoreCase);
+        public QuestDef TryQuest(string id) => id != null && Quests.TryGetValue(id, out var q) ? q : null;
+
         public ArmorSetDef TryArmorSetOf(string itemId) => itemId != null && SetByItem.TryGetValue(itemId, out var a) ? a : null;
 
         public ClassDef Class(string id) => Get(Classes, id, "class");

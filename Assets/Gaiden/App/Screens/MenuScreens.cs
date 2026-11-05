@@ -534,6 +534,10 @@ namespace GridGame.App
             Station("Enchantress", CampUnlocks.NpcOpen(s, CampNpcs.Enchantress), CampUnlocks.JoinHint(c, CampNpcs.Enchantress), () => new EnchantressScreen());
             Station("Bounties", CampUnlocks.BountiesOpen(s), CampUnlocks.MilestoneHint(c, CampUnlocks.BountiesAfter), () => new BountyScreen(),
                 Bounties.Active(c, s) != null ? $"{s.Bounty.Progress}/{Bounties.Active(c, s).Kills}" : "");
+            // Optional side quests (§22.11, GG-T237): the journal, with a "!" when one is ready to hand in.
+            int questsReady = Quests.ReadyCount(c, s);
+            if (c.QuestOrder.Any(q => Quests.State(c, s, q) != QuestState.Locked))
+                Item("Quests", () => new QuestScreen(), questsReady > 0 ? $"! {questsReady} to hand in" : $"{s.Quests.Active.Count} under way");
             Station("Summon Circle", CampUnlocks.SummonOpen(s), CampUnlocks.MilestoneHint(c, CampUnlocks.SummonAfter), () => new SummonScreen());
             Station("Mercenaries", Mercenaries.Open(s), CampUnlocks.MilestoneHint(c, CampUnlocks.BountiesAfter), () => new MercenaryScreen(),
                 s.Mercenaries.Contracts.Count > 0 ? $"{s.Mercenaries.Contracts.Count} hired" : "");

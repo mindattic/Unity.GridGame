@@ -79,6 +79,8 @@ namespace GridGame.Meta
         /// <summary>The expedition under way (null = at the caravan between expeditions) — §22.5.</summary>
         public ExpeditionSave Expedition;
         public BountySave Bounty = new BountySave();
+        /// <summary>Optional side quests (§22.11, GG-T237): under way (with progress) and handed in.</summary>
+        public QuestSave Quests = new QuestSave();
         /// <summary>Crucible record (§22.10): best waves survived and runs fought on this save.</summary>
         public CrucibleSave Crucible = new CrucibleSave();
         /// <summary>Mercenary contracts and the hiring board (GG-T233, <see cref="Mercenaries"/>).</summary>
@@ -187,6 +189,13 @@ namespace GridGame.Meta
         public HashSet<string> Claimed = new HashSet<string>();
     }
 
+    public sealed class QuestSave
+    {
+        /// <summary>Quest id → progress (Defeat kills so far; ClearStage 1 once met).</summary>
+        public Dictionary<string, int> Active = new Dictionary<string, int>();
+        public HashSet<string> Done = new HashSet<string>();
+    }
+
     /// <summary>The save's Crucible record (§22.10). <see cref="Runs"/> also seeds the next run, so a save replays
     /// the same gauntlet until it fights it.</summary>
     public sealed class CrucibleSave
@@ -269,6 +278,9 @@ namespace GridGame.Meta
                 s.Version = 2;
             }
             s.Bounty ??= new BountySave();
+            s.Quests ??= new QuestSave();
+            s.Quests.Active ??= new Dictionary<string, int>();
+            s.Quests.Done ??= new HashSet<string>();
             s.Crucible ??= new CrucibleSave();
             s.Mercenaries ??= new MercenarySave();
             s.Worn ??= new Dictionary<string, List<WornGear>>();

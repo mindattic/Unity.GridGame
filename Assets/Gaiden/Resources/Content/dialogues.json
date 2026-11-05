@@ -1782,5 +1782,198 @@
       { "Id": "right", "Speaker": "hero", "Text": "From foes, not from you lot. ...I'll drift a little closer to the fire tonight." },
       { "Id": "wrong", "Speaker": "hero", "Text": "Never anywhere. That's safest." }
     ]
+  },
+  {
+    "Id": "quest_offer_wells_wolves",
+    "Title": "Something on the innkeeper's mind",
+    "Trigger": { "Kind": "Talk", "Id": "npc:innkeeper" },
+    "Conditions": [ { "Type": "QuestAvailable", "Id": "q_wells_wolves" } ],
+    "Speakers": [ { "Id": "innkeeper", "Name": "Innkeeper", "Portrait": "pandagirl" } ],
+    "Nodes": [
+      {
+        "Id": "ask", "Speaker": "innkeeper", "Text": "Water carriers came back with half their barrels and all their nerves gone. Wolves have learned the path to the last sweet well. Five fewer wolves and they'd find somewhere else to learn things.",
+        "Choices": [
+          { "Label": "We'll thin the pack.", "Next": "yes", "Effects": [ { "Type": "StartQuest", "Id": "q_wells_wolves" } ] },
+          { "Label": "Not now.", "Next": "no" }
+        ]
+      },
+      { "Id": "yes", "Speaker": "innkeeper", "Text": "Bless you. I'll keep something warm on the shelf for when you're back." },
+      { "Id": "no", "Speaker": "innkeeper", "Text": "Fair. It'll keep -- the wolves certainly will. It's in your journal if you change your mind." }
+    ]
+  },
+  {
+    "Id": "quest_offer_frog_glands",
+    "Title": "The merchant's theory",
+    "Trigger": { "Kind": "Talk", "Id": "npc:merchant" },
+    "Conditions": [ { "Type": "QuestAvailable", "Id": "q_frog_glands" } ],
+    "Speakers": [ { "Id": "merchant", "Name": "Wandering Merchant", "Portrait": "courier" } ],
+    "Nodes": [
+      {
+        "Id": "ask", "Speaker": "merchant", "Text": "Here's a theory nobody's paying me for yet: the frogs carry the well-taint before the water does. Three glands and I'll know. Then somebody pays me for it.",
+        "Choices": [
+          { "Label": "We'll bring you three.", "Next": "yes", "Effects": [ { "Type": "StartQuest", "Id": "q_frog_glands" } ] },
+          { "Label": "Not now.", "Next": "no" }
+        ]
+      },
+      { "Id": "yes", "Speaker": "merchant", "Text": "Fresh ones, if you can. Well -- as fresh as anything off a frog gets." },
+      { "Id": "no", "Speaker": "merchant", "Text": "The offer stands. Theories don't spoil. Glands do, but that's a later problem." }
+    ]
+  },
+  {
+    "Id": "quest_offer_travel_light",
+    "Title": "Travel light",
+    "Trigger": { "Kind": "Talk", "Id": "party" },
+    "Conditions": [ { "Type": "QuestAvailable", "Id": "q_travel_light" } ],
+    "Speakers": [ { "Id": "with", "Class": "$with" } ],
+    "Nodes": [
+      {
+        "Id": "ask", "Speaker": "with", "Text": "Something I keep thinking about: the blight only catches what holds still. A small crew moves faster. I'd like to prove it -- the next valley, three of us, no more.",
+        "Choices": [
+          { "Label": "Let's prove it.", "Next": "yes", "Effects": [ { "Type": "StartQuest", "Id": "q_travel_light" } ] },
+          { "Label": "Not now.", "Next": "no" }
+        ]
+      },
+      { "Id": "yes", "Speaker": "with", "Text": "Green Valley III, three in the fight. Pick them well -- the rest can cheer from the wagons." },
+      { "Id": "no", "Speaker": "with", "Text": "Fine by me. I'll put it in the journal and keep thinking out loud." }
+    ]
+  },
+  {
+    "Id": "quest_offer_grown_not_forged",
+    "Title": "A cog on the bench",
+    "Trigger": { "Kind": "Talk", "Id": "npc:blacksmith" },
+    "Conditions": [ { "Type": "QuestAvailable", "Id": "q_grown_not_forged" } ],
+    "Speakers": [ { "Id": "smith", "Name": "Blacksmith", "Portrait": "tinkerer" } ],
+    "Nodes": [
+      {
+        "Id": "ask", "Speaker": "smith", "Text": "The gremlins out here carry cogs with teeth no file ever cut. I've worked metal my whole life and I can't say how they were made. Bring me four and I'll find out.",
+        "Choices": [
+          { "Label": "Four cogs, coming up.", "Next": "yes", "Effects": [ { "Type": "StartQuest", "Id": "q_grown_not_forged" } ] },
+          { "Label": "Not now.", "Next": "no" }
+        ]
+      },
+      { "Id": "yes", "Speaker": "smith", "Text": "Good. Don't clean them. I want to see the grain." },
+      { "Id": "no", "Speaker": "smith", "Text": "Suit yourself. It'll gnaw at me, but I've had worse company." }
+    ]
+  },
+  {
+    "Id": "quest_after_grown_not_forged",
+    "Title": "What the cogs mean",
+    "Trigger": { "Kind": "Talk", "Id": "npc:blacksmith" },
+    "Conditions": [ { "Type": "FlagSet", "Id": "quest:smith_cogs" } ],
+    "Once": true,
+    "Speakers": [ { "Id": "smith", "Name": "Blacksmith", "Portrait": "tinkerer" }, { "Id": "lead", "Class": "$lead" } ],
+    "Nodes": [
+      { "Id": "a", "Speaker": "smith", "Text": "Couldn't sleep. Those cogs -- the blight isn't copying us. It's doing what a forge does, the slow way, with whatever stands still long enough.", "Next": "b" },
+      { "Id": "b", "Speaker": "lead", "Text": "Then the longer something stays put, the more it gets... made into something.", "Next": "c" },
+      { "Id": "c", "Speaker": "smith", "Text": "Right. Which means a working forge on a walking town is the one thing it can't out-make. Keep her walking. I'll keep the fire going." }
+    ]
+  },
+  {
+    "Id": "quest_offer_antivenom",
+    "Title": "Venom that won't sit still",
+    "Trigger": { "Kind": "Talk", "Id": "npc:alchemist" },
+    "Conditions": [ { "Type": "QuestAvailable", "Id": "q_antivenom" } ],
+    "Speakers": [ { "Id": "alchemist", "Name": "Alchemist", "Portrait": "alchemist" } ],
+    "Nodes": [
+      {
+        "Id": "ask", "Speaker": "alchemist", "Text": "Every cure I brew for scorpion venom stops working a week later. The venom is changing. Put down four of them and I can study this week's batch before it becomes next week's.",
+        "Choices": [
+          { "Label": "Four scorpions it is.", "Next": "yes", "Effects": [ { "Type": "StartQuest", "Id": "q_antivenom" } ] },
+          { "Label": "Not now.", "Next": "no" }
+        ]
+      },
+      { "Id": "yes", "Speaker": "alchemist", "Text": "Mind the tails. I'd rather study venom than drain it out of you." },
+      { "Id": "no", "Speaker": "alchemist", "Text": "Then I'll keep guessing. Badly, probably. It's in the journal." }
+    ]
+  },
+  {
+    "Id": "quest_offer_hags_hand",
+    "Title": "How the hags hold",
+    "Trigger": { "Kind": "Talk", "Id": "npc:alchemist" },
+    "Conditions": [ { "Type": "QuestAvailable", "Id": "q_hags_hand" }, { "Type": "QuestDone", "Id": "q_antivenom" } ],
+    "Speakers": [ { "Id": "alchemist", "Name": "Alchemist", "Portrait": "alchemist" } ],
+    "Nodes": [
+      {
+        "Id": "ask", "Speaker": "alchemist", "Text": "Magic frays near the bad ground -- except the hags'. They bind their workings into their own claws, and it holds. Three claws and I might learn how.",
+        "Choices": [
+          { "Label": "We'll bring three claws.", "Next": "yes", "Effects": [ { "Type": "StartQuest", "Id": "q_hags_hand" } ] },
+          { "Label": "Not now.", "Next": "no" }
+        ]
+      },
+      { "Id": "yes", "Speaker": "alchemist", "Text": "Gloves. Please. I'm serious about the gloves." },
+      { "Id": "no", "Speaker": "alchemist", "Text": "The fens aren't going anywhere. Unfortunately." }
+    ]
+  },
+  {
+    "Id": "quest_offer_hold_the_ward",
+    "Title": "The Enchantress's test",
+    "Trigger": { "Kind": "Talk", "Id": "npc:enchantress" },
+    "Conditions": [ { "Type": "QuestAvailable", "Id": "q_hold_the_ward" } ],
+    "Speakers": [ { "Id": "enchantress", "Name": "Enchantress", "Portrait": "whitewitch" } ],
+    "Nodes": [
+      {
+        "Id": "ask", "Speaker": "enchantress", "Text": "A ward is only as strong as its weakest stone. I'd like to see whether yours hold. Clear the last of the fens and let no one fall.",
+        "Choices": [
+          { "Label": "Nobody falls.", "Next": "yes", "Effects": [ { "Type": "StartQuest", "Id": "q_hold_the_ward" } ] },
+          { "Label": "Not now.", "Next": "no" }
+        ]
+      },
+      { "Id": "yes", "Speaker": "enchantress", "Text": "Then mind each other. That is the whole of the working." },
+      { "Id": "no", "Speaker": "enchantress", "Text": "Patience is a ward too. The test will wait." }
+    ]
+  },
+  {
+    "Id": "quest_offer_long_cold",
+    "Title": "Cold bunks",
+    "Trigger": { "Kind": "Talk", "Id": "npc:innkeeper" },
+    "Conditions": [ { "Type": "QuestAvailable", "Id": "q_long_cold" } ],
+    "Speakers": [ { "Id": "innkeeper", "Name": "Innkeeper", "Portrait": "pandagirl" } ],
+    "Nodes": [
+      {
+        "Id": "ask", "Speaker": "innkeeper", "Text": "Frostmaw's cold gets right into the bunks. Three yeti furs and I could line them before somebody wakes up blue.",
+        "Choices": [
+          { "Label": "Three furs, then.", "Next": "yes", "Effects": [ { "Type": "StartQuest", "Id": "q_long_cold" } ] },
+          { "Label": "Not now.", "Next": "no" }
+        ]
+      },
+      { "Id": "yes", "Speaker": "innkeeper", "Text": "The big shaggy ones. Not the ones with the clubs. Well -- those too, if they insist." },
+      { "Id": "no", "Speaker": "innkeeper", "Text": "Extra blankets it is. For now." }
+    ]
+  },
+  {
+    "Id": "quest_offer_cold_iron",
+    "Title": "Cores that never warm",
+    "Trigger": { "Kind": "Talk", "Id": "npc:blacksmith" },
+    "Conditions": [ { "Type": "QuestAvailable", "Id": "q_cold_iron" } ],
+    "Speakers": [ { "Id": "smith", "Name": "Blacksmith", "Portrait": "tinkerer" } ],
+    "Nodes": [
+      {
+        "Id": "ask", "Speaker": "smith", "Text": "Those ice maulers carry cores that stay cold in my hottest coals. Break three of them. I want to know what's been growing down here all this time.",
+        "Choices": [
+          { "Label": "Three maulers.", "Next": "yes", "Effects": [ { "Type": "StartQuest", "Id": "q_cold_iron" } ] },
+          { "Label": "Not now.", "Next": "no" }
+        ]
+      },
+      { "Id": "yes", "Speaker": "smith", "Text": "Hit them where the frost is thinnest. And come back in one piece -- I'm not reforging you." },
+      { "Id": "no", "Speaker": "smith", "Text": "They'll still be cold tomorrow. That's rather the point." }
+    ]
+  },
+  {
+    "Id": "quest_offer_city_that_stopped",
+    "Title": "The city that stopped",
+    "Trigger": { "Kind": "Talk", "Id": "party" },
+    "Conditions": [ { "Type": "QuestAvailable", "Id": "q_city_that_stopped" } ],
+    "Speakers": [ { "Id": "with", "Class": "$with" } ],
+    "Nodes": [
+      {
+        "Id": "ask", "Speaker": "with", "Text": "The ghosts in Veshker -- they're people who stood still and never got to stop. I'd like to lay some of them to rest. Five, at least. It feels like owing someone.",
+        "Choices": [
+          { "Label": "Let's walk them on.", "Next": "yes", "Effects": [ { "Type": "StartQuest", "Id": "q_city_that_stopped" } ] },
+          { "Label": "Not now.", "Next": "no" }
+        ]
+      },
+      { "Id": "yes", "Speaker": "with", "Text": "Thank you. I'll keep count." },
+      { "Id": "no", "Speaker": "with", "Text": "Later, then. They've waited this long." }
+    ]
   }
 ]

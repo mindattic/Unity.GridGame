@@ -45,6 +45,7 @@ namespace GridGame.App.Automation
                 case "summon": screen = new SummonScreen(); break;
                 case "mercenaries": screen = new MercenaryScreen(); break;
                 case "bounties": screen = new BountyScreen(); break;
+                case "quests": screen = new QuestScreen(); break;
                 case "crucible": screen = new CrucibleScreen(); break;
                 case "bestiary": screen = new BestiaryScreen(); break;
                 case "settings": screen = new SettingsScreen(); break;

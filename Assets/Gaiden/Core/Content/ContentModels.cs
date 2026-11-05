@@ -801,7 +801,9 @@ namespace GridGame.Core.Content
         public int Percent;
     }
 
-    public enum DialogueConditionType { FlagSet, FlagNotSet, HasItem, GoldAtLeast, PartyHas, RosterHas, RosterLacks, NpcJoined }
+    /// <summary>QuestAvailable / QuestActive / QuestDone (GG-T237, §22.11): <see cref="DialogueCondition.Id"/> is a quests.json id.
+    /// Available = its unlock stage is cleared and it's neither under way nor handed in.</summary>
+    public enum DialogueConditionType { FlagSet, FlagNotSet, HasItem, GoldAtLeast, PartyHas, RosterHas, RosterLacks, NpcJoined, QuestAvailable, QuestActive, QuestDone }
 
     public sealed class DialogueCondition
     {
@@ -818,8 +820,9 @@ namespace GridGame.Core.Content
     /// (or of a role the roster lacks) the player doesn't have yet.
     /// GrantSkillPoint (GG-T133) gives a hero — <see cref="DialogueEffect.Id"/> as a class id, or "$with"/null for the
     /// Talk partner — <see cref="DialogueEffect.Amount"/> skill points (default 1), once per dialogue per hero: the
-    /// save flag <c>sp:&lt;dialogue&gt;:&lt;hero&gt;</c> guards it, so a replayed Talk can't farm it.</summary>
-    public enum DialogueEffectType { SetFlag, ClearFlag, GrantGold, GrantItem, RecruitHero, JoinNpc, JoinHero, GrantSkillPoint }
+    /// save flag <c>sp:&lt;dialogue&gt;:&lt;hero&gt;</c> guards it, so a replayed Talk can't farm it.
+    /// StartQuest (GG-T237) puts the quests.json quest <see cref="DialogueEffect.Id"/> into the journal (no-op if it's under way or done).</summary>
+    public enum DialogueEffectType { SetFlag, ClearFlag, GrantGold, GrantItem, RecruitHero, JoinNpc, JoinHero, GrantSkillPoint, StartQuest }
 
     public sealed class DialogueEffect
     {
