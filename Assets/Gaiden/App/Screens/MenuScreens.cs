@@ -408,8 +408,8 @@ namespace GridGame.App
             q.style.marginBottom = 24;
             var row = Ui.El("row", w);
             row.style.justifyContent = Justify.FlexEnd;
-            Ui.Button("Cancel", () => { veil.RemoveFromHierarchy(); onNo?.Invoke(); }, null, row);
-            Ui.Button(yes, () => { veil.RemoveFromHierarchy(); onYes?.Invoke(); }, "btn--primary", row);
+            Ui.Button("Cancel", () => { veil.RemoveFromHierarchy(); onNo?.Invoke(); }, null, row).name = "confirm-no";
+            Ui.Button(yes, () => { veil.RemoveFromHierarchy(); onYes?.Invoke(); }, "btn--primary", row).name = "confirm-yes";
         }
 
         /// <summary>A confirm veil answers a question about the screen it was raised on — if that screen
