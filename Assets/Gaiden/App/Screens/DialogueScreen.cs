@@ -69,6 +69,14 @@ namespace GridGame.App
             nextFactory = next;
         }
 
+        /// <summary>A conversation with <paramref name="with"/> as "$with" that then goes to whatever <paramref name="next"/> builds.</summary>
+        public static DialogueScreen WithThen(DialogueDef def, string with, Func<GameScreen> next) => new DialogueScreen(next, def, with);
+
+        private DialogueScreen(Func<GameScreen> next, DialogueDef def, string with) : this(def, with, (GameScreen)null)
+        {
+            nextFactory = next;
+        }
+
         public override string Id => "dialogue";
         /// <summary>Keeps whatever was playing (the crawl's theme before a beat, camp music for a chat).</summary>
         public override string Music => null;

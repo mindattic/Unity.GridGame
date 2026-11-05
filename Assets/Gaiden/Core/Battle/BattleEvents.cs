@@ -422,7 +422,9 @@ namespace GridGame.Core.Battle
     public sealed class GuestJoinedEvent : BattleEvent
     {
         public int UnitId; public Coord At;
-        public override string ToString() => $"Guest {UnitId} joins at {At}";
+        /// <summary>A rescued captive (GG-T236) rather than an authored guest.</summary>
+        public bool Captive;
+        public override string ToString() => Captive ? $"Captive {UnitId} freed at {At}" : $"Guest {UnitId} joins at {At}";
     }
 
     /// <summary>An egg is laid mid-battle (§14.8): solid, never acts except to hatch when its turn arrives.</summary>

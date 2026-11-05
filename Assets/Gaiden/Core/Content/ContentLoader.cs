@@ -385,6 +385,10 @@ namespace GridGame.Core.Content
                 case DialogueTriggerKind.StageStart:
                     if (trigger.Id == null || !db.Stages.ContainsKey(trigger.Id)) p.Add($"{w}: unknown StageStart stage '{trigger.Id}'");
                     break;
+                case DialogueTriggerKind.Rescue:
+                    // GG-T236: "$with" is the freed captive; Id narrows it to one class, null is the generic scene.
+                    if (trigger.Id != null && !IsHero(trigger.Id)) p.Add($"{w}: Rescue needs a hero class or no Id, has '{trigger.Id}'");
+                    break;
             }
             if (d.Crawl != null)
             {
@@ -392,7 +396,8 @@ namespace GridGame.Core.Content
                 if (string.IsNullOrWhiteSpace(d.Crawl)) p.Add($"{w}: empty Crawl");
                 if (string.IsNullOrWhiteSpace(d.Title)) p.Add($"{w}: a Crawl needs a Title to head it");
             }
-            bool talkWithHero = (trigger.Kind == DialogueTriggerKind.Talk || trigger.Kind == DialogueTriggerKind.Recruit) && trigger.Id != null && !trigger.Id.StartsWith(NpcFlagPrefix);
+            bool talkWithHero = (trigger.Kind == DialogueTriggerKind.Talk || trigger.Kind == DialogueTriggerKind.Recruit) && trigger.Id != null && !trigger.Id.StartsWith(NpcFlagPrefix)
+                || trigger.Kind == DialogueTriggerKind.Rescue;
             bool joinsHero = false;
             foreach (var e in d.AllEffects()) joinsHero |= e?.Type == DialogueEffectType.JoinHero;
 

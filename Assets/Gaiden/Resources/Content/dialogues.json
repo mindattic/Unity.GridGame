@@ -27,6 +27,28 @@
     ]
   },
   {
+    "Id": "rescue_freed",
+    "Title": "A captive freed",
+    "Trigger": { "Kind": "Rescue" },
+    "Speakers": [
+      { "Id": "freed", "Class": "$with" },
+      { "Id": "lead", "Class": "$lead" }
+    ],
+    "Nodes": [
+      { "Id": "thanks", "Speaker": "freed", "Text": "They had me chained where the ground had already started to sour. Another day and I'd have been grown into the stones. You came through all of that -- for a stranger?", "Next": "lead" },
+      { "Id": "lead", "Speaker": "lead", "Text": "Nobody gets left standing still out here. The Longmother keeps walking, and so do we.", "Next": "ask" },
+      {
+        "Id": "ask", "Speaker": "freed", "Text": "Then I owe you my legs, at the very least. Where does this caravan need them?",
+        "Choices": [
+          { "Label": "Walk with us. There's a place in the line for you.", "Next": "join" },
+          { "Label": "Rest first. The road will still be here.", "Next": "rest" }
+        ]
+      },
+      { "Id": "rest", "Speaker": "freed", "Text": "Rest is for ground that isn't waking. I'll sleep in the wagon -- and fight beside you when it stops.", "Next": "join" },
+      { "Id": "join", "Speaker": "freed", "Text": "Count me in. Whatever held me will learn what it let go of." }
+    ]
+  },
+  {
     "Id": "greenvalley_road_merchant",
     "Title": "A merchant on the road",
     "Trigger": { "Kind": "ThemeStart", "Id": "greenvalley" },

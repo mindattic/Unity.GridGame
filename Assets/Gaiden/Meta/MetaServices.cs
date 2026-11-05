@@ -294,6 +294,10 @@ namespace GridGame.Meta
         public List<string> GuestsFell = new List<string>();
         /// <summary>Guests lost for good — only ever filled with <see cref="Permadeath"/> on (never in the normal game).</summary>
         public List<string> GuestsLost = new List<string>();
+        /// <summary>The captive this battle held (GG-T236), freed or not; null = none.</summary>
+        public string Captive;
+        /// <summary>True when <see cref="Captive"/> was freed and joined (its rescue scene plays on leaving the results).</summary>
+        public bool Rescued;
         // Crucible (§22.10)
         public bool Crucible;
         /// <summary>Waves fully cleared before the party fell or left.</summary>
@@ -627,7 +631,9 @@ namespace GridGame.Meta
                 s.Roster.Add(h);
                 if (s.Party.Count < Progression.MaxPartySize) s.Party.Add(h.ClassId);
                 rep.GuestsJoined.Add(g.Def.Id);
+                if (g.Def.Id == battle.Captive) rep.Rescued = true;
             }
+            rep.Captive = battle.Captive;
             Expeditions.AfterBattle(c, s, rep, battle);
             rep.NewSlots = Progression.UnlockedSlots(s) - slotsBefore;
             s.LastStage = battle.Stage.Id;

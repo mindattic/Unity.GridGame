@@ -156,6 +156,7 @@ namespace GridGame.App
                 // A Crucible run is seeded by the save (§22.10) so the same save replays the same gauntlet.
                 int seed = InCrucible && App.Save != null ? Crucible.SeedFor(App.Save) : Environment.TickCount;
                 var setup = setupOverride ?? BattleFactory.Build(App.Content, App.Save, stageId, seed);
+                if (setupOverride == null) Rescues.Apply(App.Content, App.Save, setup); // GG-T236: maybe a captive to free
                 State = BattleEngine.Create(App.Content, setup, initial);
                 recorder = new BattleRecorder(State, setup, "player", initial);
                 var diff = App.Settings.Difficulty;

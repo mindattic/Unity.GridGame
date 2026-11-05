@@ -64,6 +64,8 @@ namespace GridGame.Core.Battle
         public bool Permadeath;
         /// <summary>Gold the caravan has banked going in — a recruitable's PayGold is paid from it (§25.11.1, GG-T132).</summary>
         public int Purse;
+        /// <summary>A rolled captive to free as a guest (§25.11.2, GG-T236); null = none.</summary>
+        public CaptiveSpec Captive;
     }
 
     /// <summary>Totals the meta layer commits after the battle (XP, coins, drops, kills, bestiary).</summary>
@@ -167,6 +169,8 @@ namespace GridGame.Core.Battle
         public int NewGamePlus;
         /// <summary>Banked gold going in (<see cref="BattleSetup.Purse"/>); what's left is Purse − Results.CoinsSpent.</summary>
         public int Purse;
+        /// <summary>The class of the captive freed as a guest this battle (GG-T236), or null.</summary>
+        public string Captive;
         public Rng Rng;
         public List<Unit> Units = new List<Unit>();
         public List<TimelineEntry> Timeline = new List<TimelineEntry>();

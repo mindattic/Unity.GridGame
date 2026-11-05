@@ -2480,6 +2480,17 @@ Fire Emblem's talk on the real grid: some heroes aren't handed over — they hav
 - Content: Ronin (Green Valley III, wave 1 — heal me, fight beside me), Sellsword (Sandsea Reaches III, wave 1 — 150 G).
 - Open (§6.1 of the draft): permanence — today a talked-round recruit joins the roster exactly like a guest.
 
+#### 25.11.2 Random rescues (added 2026-11-05, owner: "the random character recruitment for saving them", GG-T236)
+
+A battle the player launches may hold a **captive**: a random hero the player doesn't own, freed as a guest ally (§25.11 from there on).
+
+- **The roll** (`Meta/Rescues.cs`): `Rescues.Chance` = **25%** per campaign battle, at most one captive, decided when `BattleScreen` builds the battle (`Rescues.Apply` → `BattleSetup.Captive`). Seeded from the save's creation time, the stage id and the battle seed (`Rescues.SeedFor`), so a battle replays the same roll. **Never** on a Test Mode save, a test stage, the Crucible, or a stage that already has an authored guest or recruitable; and never in the bots' balance runs or dotnet soaks, which build battles without `Rescues.Apply`.
+- **Who** (`Rescues.Pool`): an unowned, not-lost hero class that has no other way in — not in the Summon Circle's pool, not an authored guest or recruitable, not named by a dialogue's `JoinHero`/`RecruitHero`, not a mercenary (`mercenaries.json`, GG-T233). Id order, so a seed always names the same hero.
+- **On the board:** the captive steps on in wave 1 or 2 (seeded) at the stage's recommended level on a free tile (`RandomFreeTile` — the same footprint/pickup-aware rule as every spawn, GG-T227), as a player-controlled guest (`Unit.IsGuest`), with `GuestJoinedEvent.Captive` set: the pop-in, a lower-pitched pickup cue and the billboard "A captive X! Keep them alive to free them."
+- **Freed:** standing at a victory → joins exactly like a guest (roster, party if room, at its battle level); results read "X is freed and joins the caravan!" (`BattleReport.Captive`/`Rescued`), and **Continue** plays the rescue conversation on the way to Camp — a `dialogues.json` dialogue with `Trigger.Kind = Rescue` (`Id` = a hero class for a scene written for them, or none for the generic `rescue_freed`), `"$with"` the freed hero (`Rescues.Scene`). Skipped when that Continue leads into the campaign ending, and in Test Mode.
+- **Down at the end:** nothing is lost and nothing is recorded — "X fell in battle — May be found again"; they stay in the pool for a later roll. No `SaveData` field is needed: owning the hero is what takes them out of the pool.
+- *(Tests: `RescueTests` — deterministic roll near 25%, pool exclusions, no roll in Test Mode/the Crucible/a guest stage, a standing captive is freed and joins, a downed one isn't lost, Rescue trigger validation.)*
+
 ### 25.12 Caravan upgrades (added 2026-10-10, owner direction: "upgrades … a sense of progression")
 
 The caravan is the party's moving base — its wagons are the Longmother's own shed plates, re-decked, and the shops between battles (US-348 framing; real story text, GG-T120, §27.1). `caravan.json` defines upgrades bought with gold at **Camp → Caravan** (`CaravanUpgrades.Buy`, levels in `SaveData.Caravan`):

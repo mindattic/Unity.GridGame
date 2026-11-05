@@ -777,8 +777,8 @@ namespace GridGame.App
             var v = board.Units.TryGetValue(u.Id, out var ex) ? ex : board.Add(u);
             board.Place(v, e.At);
             v.SetHp(u.Hp, u.MaxHp);
-            App.Audio.Sfx("pickup", 0.9f);
-            Billboard($"{u.Name} joins the fight! Keep them alive to recruit them.", null, new Color(0.6f, 1f, 0.75f));
+            App.Audio.Sfx("pickup", e.Captive ? 0.75f : 0.9f);
+            Billboard(e.Captive ? $"A captive {u.Name}! Keep them alive to free them." : $"{u.Name} joins the fight! Keep them alive to recruit them.", null, new Color(0.6f, 1f, 0.75f));
             v.Root.style.scale = new Scale(Vector2.zero);
             yield return Tween.Run(0.25f, k => v.Root.style.scale = new Scale(Vector2.one * (k < 0.7f ? k / 0.7f * 1.15f : 1.15f - 0.15f * (k - 0.7f) / 0.3f)));
             v.Root.style.scale = new Scale(Vector2.one);

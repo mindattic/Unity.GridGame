@@ -65,7 +65,7 @@ namespace GridGame.App
                 foreach (var note in report.QuestProgress) Ui.MenuRow("Quest", note, null, list);
                 if (report.AutoSold > 0) Ui.MenuRow("Bag full — sold extras", $"{report.AutoSold} items", null, list);
                 foreach (var g in report.GuestsJoined)
-                    Ui.MenuRow($"{c.Class(g).Name} joins the caravan!", "New hero", null, list).Q<Label>("label").AddToClassList("good");
+                    Ui.MenuRow(report.Rescued && g == report.Captive ? $"{c.Class(g).Name} is freed and joins the caravan!" : $"{c.Class(g).Name} joins the caravan!", "New hero", null, list).Q<Label>("label").AddToClassList("good");
                 if (report.CampaignComplete) Ui.MenuRow("Campaign complete!", "New Game+ unlocked at camp", null, list).Q<Label>("label").AddToClassList("gold");
                 if (report.ExpeditionComplete)
                 {
@@ -97,7 +97,7 @@ namespace GridGame.App
 
             // A guest down at the end isn't lost (GG-T114) — they'll be met on this stage again.
             foreach (var g in report.GuestsFell)
-                Ui.MenuRow($"{c.Class(g).Name} fell in battle", "Will return", null, list).Q<Label>("label").AddToClassList("dim");
+                Ui.MenuRow($"{c.Class(g).Name} fell in battle", g == report.Captive ? "May be found again" : "Will return", null, list).Q<Label>("label").AddToClassList("dim");
             foreach (var g in report.GuestsLost) // permadeath only (a future Ironman mode) — never in the normal game
                 Ui.MenuRow($"{c.Class(g).Name} fell in battle", "Gone for good", null, list).Q<Label>("label").AddToClassList("bad");
             var row = Ui.El("row", col);
@@ -109,7 +109,13 @@ namespace GridGame.App
                 string retryId = report.ExpeditionFailed && theme != null ? theme.Stages[0] : stageId;
                 if (c.TryStage(retryId) != null) Ui.Button("Retry", () => StageLauncher.Launch(retryId, true), null, row); // a pruned generated stage can't be retried
             }
-            var cont = Ui.Button("Continue", () => StoryBeats.AfterResults(report.Victory, stageId), "btn--primary", row);
+            // A freed captive (GG-T236) says their piece on the way back to camp, not on the way into the ending.
+            var rescue = report.Rescued && !TestMode.Active && !Story.EndingDue(c, App.Save, report.Victory, stageId) ? Rescues.Scene(c, report.Captive) : null;
+            var cont = Ui.Button("Continue", () =>
+            {
+                if (rescue != null) App.Router.ResetTo(DialogueScreen.WithThen(rescue, report.Captive, StoryBeats.Camp));
+                else StoryBeats.AfterResults(report.Victory, stageId);
+            }, "btn--primary", row);
             cont.name = "continue";
             bool ending = Story.EndingDue(c, App.Save, report.Victory, stageId);
             if (ending) Ui.Text("The road ahead is quiet, for now. Continue to see how the story closes.", "small gold", list).style.whiteSpace = WhiteSpace.Normal;

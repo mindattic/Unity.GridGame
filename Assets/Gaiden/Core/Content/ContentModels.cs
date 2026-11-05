@@ -796,8 +796,11 @@ namespace GridGame.Core.Content
     /// battle speaks it when a hero talks to the neutral (<see cref="DialogueTrigger.Id"/> = the recruitable's class).
     /// LevelReached (GG-T231) fires once any roster hero is at <see cref="DialogueTrigger.Level"/> or above — on the way back
     /// to Camp after the battle that did it, or at the next launch. StageStart (GG-T231) fires on launching the stage
-    /// <see cref="DialogueTrigger.Id"/> (a boss's introduction).</summary>
-    public enum DialogueTriggerKind { ThemeStart, StageCleared, Talk, GearWorn, CanBrew, FirstArmor, Recruit, LevelReached, StageStart }
+    /// <see cref="DialogueTrigger.Id"/> (a boss's introduction).
+    /// Rescue (GG-T236) plays on leaving the results of a battle that freed a captive; "$with" is the rescued hero, and
+    /// <see cref="DialogueTrigger.Id"/> is that hero's class (a class-specific scene) or null (the generic one).</summary>
+    public enum DialogueTriggerKind { ThemeStart, StageCleared, Talk, GearWorn, CanBrew, FirstArmor, Recruit, LevelReached, StageStart,
+        Rescue }
 
     public sealed class DialogueTrigger
     {
