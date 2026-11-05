@@ -154,6 +154,8 @@ namespace GridGame.App
 
         /// <summary>Builds a side's whole-portrait frame (contain-fit, bottom-aligned, never a thumbnail framing) and
         /// its name plate, which sits on the text box's top edge with two soft glow layers behind it.</summary>
+        private const float FigureHeight = 1200f;
+
         private static void BuildSide(Side s, VisualElement stage, VisualElement box)
         {
             string tag = s.Index == 0 ? "left" : "right";
@@ -161,7 +163,7 @@ namespace GridGame.App
             p.name = "dlg-portrait-" + tag;
             p.pickingMode = PickingMode.Ignore;
             p.style.position = Position.Absolute;
-            p.style.top = 0; p.style.bottom = 0; p.style.width = 760;
+            p.style.bottom = 0; p.style.height = FigureHeight; p.style.width = FigureHeight;
             if (s.Index == 0) p.style.left = -70; else p.style.right = -70;
             p.style.backgroundSize = new BackgroundSize(BackgroundSizeType.Contain);
             p.style.backgroundPositionY = new BackgroundPosition(BackgroundPositionKeyword.Bottom);
@@ -268,7 +270,10 @@ namespace GridGame.App
             s.Portrait = HasPortrait(portrait) ? portrait : null;
             s.Name = name;
             if (s.Art == null) return;
-            s.Art.style.backgroundImage = new StyleBackground(s.Portrait != null ? Art.Portrait(s.Portrait) : null);
+            var tex = s.Portrait != null ? Art.Portrait(s.Portrait) : null;
+            s.Art.style.backgroundImage = new StyleBackground(tex);
+            // Same on-screen height for every speaker; canvases vary from 336x640 to 640x640, so width follows the art.
+            if (tex != null) s.Art.style.width = FigureHeight * tex.width / (float)tex.height;
             s.NameLabel.text = name ?? "";
             s.Plate.style.display = string.IsNullOrEmpty(name) ? DisplayStyle.None : DisplayStyle.Flex;
         }
