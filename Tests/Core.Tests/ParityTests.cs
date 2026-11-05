@@ -357,8 +357,12 @@ namespace GridGame.Tests
             m.Bar[0] = new AbilitySlot { AbilityId = "fireball" };
             var tank = Enemy(s, "tank");
             s.Bank.Add(4);
+            // An action runs the clock until the next enemy turn (GG-T188); the Speed-1 tank would take ~350
+            // ticks to arrive and Burning would expire inside the first cast, so its turn is put on the next tick.
+            s.TurnEntryOf(tank.Id).Ip = 999;
             BattleEngine.Apply(s, new UseSlotCommand { HeroId = m.Id, Slot = 0, Target = tank.Pos });
             var first = tank.Buffs.First(b => b.Def.Id == "burning").Remaining;
+            s.TurnEntryOf(tank.Id).Ip = 999;
             BattleEngine.Apply(s, new UseSlotCommand { HeroId = m.Id, Slot = 0, Target = tank.Pos });
             Assert.That(tank.Buffs.Where(b => b.Def.Id == "burning"), Has.Exactly(1).Items);
             Assert.That(tank.Buffs.First(b => b.Def.Id == "burning").Remaining >= first, Is.True);
