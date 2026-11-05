@@ -9,6 +9,7 @@ Authors: carl-olsen, darkzaitzev, delapouite, faithtoken, lorc, sbed, skoll, zer
 - darkzaitzev/robber-hand
 - darkzaitzev/smoke-bomb
 - delapouite/animal-hide
+- delapouite/backward-time
 - delapouite/biceps
 - delapouite/bo
 - delapouite/bow-arrow
@@ -116,6 +117,7 @@ Authors: carl-olsen, darkzaitzev, delapouite, faithtoken, lorc, sbed, skoll, zer
 - lorc/robe
 - lorc/round-bottom-flask
 - lorc/rune-stone
+- lorc/sands-of-time
 - lorc/screaming
 - lorc/scroll-unfurled
 - lorc/scythe

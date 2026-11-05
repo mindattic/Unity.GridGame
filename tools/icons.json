@@ -336,6 +336,14 @@
    "lorc/teleport",
    "arcane"
   ],
+  "charge_temporal_drag": [
+   "lorc/sands-of-time",
+   "arcane"
+  ],
+  "chrono_rewind": [
+   "delapouite/backward-time",
+   "eclipse"
+  ],
   "charge_fireball": [
    "lorc/fireball",
    "fire"
