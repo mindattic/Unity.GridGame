@@ -602,6 +602,27 @@ and make sure powerups and spawns get moved the same way actors get moved."
   item-free tile, else it fades — `PickupMovedEvent`, animated as a slide with a cue. A unit on a pickup is a
   `FindTileConflict` conflict. Enemy AI never targeted pickups, so it is unchanged.
 
+## 2026-11-05 — The mana economy, tempered (owner direction, GG-T247)
+
+Owner: "gaining mana is too generous since I see the whole bar filled almost in every battle … the conditions under which you can gain mana, and the cost of certain abilities need to be tempered." §3.1.7/§3.1.9 amended.
+
+- **Fullness damping (new rule):** earned charge × `1 − 0.7 × bank fullness`. Explicit grants (items, pickups, Steal, gear, time bank, carried) are untouched. *Why:* it targets a bar that tops out without making the first spell of a wave harder to reach.
+- **`PincerChargePerHp` 120 → 105, `CritCharge` 12 → 10, Mana supporters × 0.5** (`SupportManaFactor`; they were the second-biggest source). Interrupt, amplifier and Guard are unchanged, as they reward skill. The cap stays 12, since a lower cap would show a full bar *more* often.
+- **Costs:** Mass Heal 1 → 2, Cleansing Vigil 1 → 2, Flowing Current 1 → 2 (party-wide or AoE heals for one orb), Red Mage Fury 2 → 3 (an AoE cross for two). Single-target heals and utility stay at 1.
+- **Mana Siphon** (`deathguard_mana_siphon`), named by GG-T246's report as a mana generator, makes no mana. It is a free 8-damage Skill with a guaranteed Silence. It was the most-cast Skill, so its cooldown goes 3 → 4.
+- **Measured** with `ManaEconomyReport` (GG-T246's bot, every campaign stage once per seed, 6 seeds, 150 battles per bot):
+
+| | Before | After |
+|---|---|---|
+| Greedy: full bank, per-battle average of turns | 6.6% | 4.0% |
+| Greedy: minted orbs faded at the cap | 24.0% | 10.3% |
+| Greedy: battles that filled the bar | 16.7% | 8.7% |
+| Greedy: wins | 40 | 45 |
+| Casual: wins | 7 | 8 |
+| Casual: turns holding 2+ orbs (pooled) | 26.0% | 21.2% |
+
+  The casual bot spends the moment it can, so it rarely holds 2 orbs, before or after. Its 30% affordability target was never met, and this change lowers it by about 5 points.
+
 ## 2026-11-05 — Rested and the paywall hooks (owner direction, GG-T232)
 
 - **Was:** stage launches were free; the Summon Circle cost 250 + 250 × recruits so far and the recruit arrived at once.

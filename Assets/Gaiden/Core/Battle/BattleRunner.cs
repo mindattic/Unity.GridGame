@@ -442,9 +442,11 @@ namespace GridGame.Core.Battle
         // Mana
         // ─────────────────────────────────────────────────────────────────────────────
 
-        /// <summary>Fill the mana meter; every full ManaChargePerOrb becomes an orb (§3.1.9).</summary>
+        /// <summary>Fill the mana meter; every full ManaChargePerOrb becomes an orb (§3.1.9). Every caller is an earned
+        /// source, so the fullness damping applies here; explicit grants (items, pickups, steal, gear) call MintOrb.</summary>
         private void AddCharge(int amount, int sourceId, string reason, int participants = 0, int chain = 0)
         {
+            amount = BattleEngine.DampedCharge(S, amount);
             if (amount <= 0) return;
             S.ManaCharge += amount;
             int orbs = 0;

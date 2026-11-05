@@ -265,10 +265,13 @@ namespace GridGame.Tests
         public void An_overflowing_orb_has_no_slot()
         {
             var db = Mini();
+            // Two whole orbs at once, one slot left. An explicit grant, so fullness damping (§3.1.9, GG-T247) can't shrink it.
+            db.Abilities["test_two_orbs"] = new AbilityDef { Id = "test_two_orbs", Name = "Two Orbs", Kind = AbilityKind.Skill, Shape = TargetShape.Self, Mode = TargetMode.Auto, Filter = TargetFilter.AllyOnly, GrantsOrbs = 2 };
             var (s, _) = Battle(db, Stage(("goblin", 2, 3)), ("knight", 1, 3), ("cleric", 3, 4));
-            s.Bank.Add(s.Bank.Capacity - 1 - s.Bank.Count); // one slot left
-            s.ManaCharge = BattleConfig.ManaChargePerOrb - 1;
-            var ev = BattleEngine.Apply(s, new MoveCommand { HeroId = Hero(s, "cleric").Id, Path = P((3, 3)) });
+            s.Bank.Add(s.Bank.Capacity - 1 - s.Bank.Count);
+            var k = Hero(s, "knight");
+            k.Bar[0] = new AbilitySlot { AbilityId = "test_two_orbs" };
+            var ev = BattleEngine.Apply(s, new UseSlotCommand { HeroId = k.Id, Slot = 0, Target = k.Pos });
             var minted = ev.OfType<OrbMintedEvent>().ToList();
             Assert.That(minted.First().Landed && minted.First().Slot == s.Bank.Capacity - 1, Is.True);
             Assert.That(minted.Skip(1).All(o => !o.Landed && o.Slot == -1), Is.True);

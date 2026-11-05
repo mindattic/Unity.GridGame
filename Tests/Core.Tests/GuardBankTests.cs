@@ -66,7 +66,7 @@ namespace GridGame.Tests
             s.Bank.Add(s.Bank.Capacity);
             Assert.That(s.Bank.Count, Is.EqualTo(ManaBank.DefaultCapacity));
             s.ManaCharge = BattleConfig.ManaChargePerOrb - 1;
-            int amount = BattleEngine.GuardCharge(s);
+            int amount = BattleEngine.DampedCharge(s, BattleEngine.GuardCharge(s)); // a full bank damps it (§3.1.9, GG-T247)
             var ev = BattleEngine.Apply(s, new ShieldCommand());
             var minted = ev.OfType<OrbMintedEvent>().Where(o => o.Reason == "guard").ToList();
             Assert.That(minted.Count, Is.EqualTo(1));

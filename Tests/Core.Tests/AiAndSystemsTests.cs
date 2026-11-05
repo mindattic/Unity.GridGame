@@ -382,7 +382,7 @@ namespace GridGame.Tests
                 if (amp)
                 {
                     Assert.That(ev.OfType<AmplifierUsedEvent>(), Has.Exactly(1).Items);
-                    Assert.That(ev.Any(e => e is ManaChargedEvent o && o.Reason == "amplifier" && o.Amount == BattleConfig.AmplifierCharge), Is.True);
+                    Assert.That(ev.Any(e => e is ManaChargedEvent o && o.Reason == "amplifier" && ManaEconomyTests.IsDampedFrom(o.Amount, BattleConfig.AmplifierCharge)), Is.True);
                     Assert.That(s.Amplifier == null || ev.OfType<AmplifierSpawnedEvent>().Any(), Is.True);
                 }
                 return ev.OfType<DamagedEvent>().Where(d => d.SourceId == knight.Id).Sum(d => d.Amount);

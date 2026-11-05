@@ -719,10 +719,12 @@ The view flies each orb from its source to its slot in a 0.22 s arc (overflowing
 
 | Event | Mana |
 |---|---|
-| 2-hero pincer that takes half a foe's HP | 60 charge (×1) |
-| The same damage with 2 supporters joining | 30 charge (÷2) |
-| Third link of a chain, same damage | 90 charge (×1.5) |
-| Critical hit (physical or spell) | +12 charge |
+| 2-hero pincer that takes half a foe's HP | 52 charge (×1) |
+| The same damage with 2 supporters joining | 26 charge (÷2) |
+| Third link of a chain, same damage | 79 charge (×1.5) |
+| Critical hit (physical or spell) | +10 charge |
+| A Mana supporter (Red Mage, Ritualist, …) joining a pincer | its charge × 0.5 (Red Mage 30 → 15) |
+| Any of the above with the bank at 6/12 · at 12/12 | × 0.65 · × 0.30 (fullness damping, [§3.1.9](#319-mana-charge)) |
 | Steal/Mug, 3 adjacent enemies, 2 rolls succeed | 2 orbs |
 | Cancel an enemy charge | +25 charge |
 | Battle start, one Mage Robes equipped | 2 |
@@ -740,12 +742,14 @@ The view flies each orb from its source to its slot in a 0.22 s arc (overflowing
 
 Added 2026-10-11 (owner direction). `BattleState.ManaCharge` (0–99) is the forming bubble; the HUD draws it filling the next empty orb from the centre. `AddCharge` emits `ManaChargedEvent` and every full `ManaChargePerOrb` = **100** becomes an orb.
 
-- **Pincer:** `charge = PincerChargePerHp (120) × share × (1 + 0.25 × chainIndex) ÷ (1 + 0.5 × (participants − 2))`, minimum 2 when it lands. `share` = Σ over the trapped foes of `min(1, HP removed by this pincer ÷ MaxHP)`; `participants` = the two attackers + every supporter. So a lean two-hero pincer earns at full rate, a four-hero dog-pile at half, and chaining is the way to farm.
-- **Critical** +12, **interrupt** +25, **amplifier** +30. Kills alone earn nothing.
+- **Pincer:** `charge = PincerChargePerHp (105) × share × (1 + 0.25 × chainIndex) ÷ (1 + 0.5 × (participants − 2))`, minimum 2 when it lands. `share` = Σ over the trapped foes of `min(1, HP removed by this pincer ÷ MaxHP)`; `participants` = the two attackers + every supporter. So a lean two-hero pincer earns at full rate, a four-hero dog-pile at half, and chaining is the way to farm.
+- **Critical** +10, **interrupt** +25, **amplifier** +30. Kills alone earn nothing.
+- **Mana supporters** (`SupportEffect.Mana`: Black Witch, Harbinger, Machinist, Red Mage, Ritualist, Tinkerer) charge their `Magnitude × SupportManaFactor` (0.5).
+- **Fullness damping** (*Amended 2026-11-05, GG-T247*): every earned charge above (pincer, crit, interrupt, amplifier, support, Guard, Mana Siphon armor) is multiplied by `1 − ChargeFullnessDamping (0.7) × Bank.Count ÷ Bank.Capacity` before it lands (`BattleEngine.DampedCharge`; a positive charge never rounds below 1). An empty bank fills at the full rate and a full one at 30%, so mana stays easy to start and hard to max out. Explicit grants are whole orbs and skip it: items, pickups, Steal/Mug, battle-start gear, the time bank and carried orbs.
 - **Guard** (GG-T189): the unused turn time at 10 charge per second, max 40 ([§2.5](#25-auto-skip--shield)). This is the "fractional orb": the bubble is progress toward the next orb, and a rollover with the bank at 12 fades ([§3.1.4](#314-bank-full-rules-overflow)) while the remainder stays in the bubble.
 - The billboard shows the arithmetic ("Mana +34 · 3 heroes ÷1.5 · chain ×1.25").
 
-*(Tests: `More_heroes_in_a_pincer_earn_less_mana_per_hp_taken`, `Charge_rolls_over_into_orbs_and_keeps_the_remainder`, `A_killing_pincer_earns_mana_by_hp_taken_not_per_hero`, `Supporters_join_but_dilute_the_mana_charge`.)*
+*(Tests: `More_heroes_in_a_pincer_earn_less_mana_per_hp_taken`, `Charge_rolls_over_into_orbs_and_keeps_the_remainder`, `A_killing_pincer_earns_mana_by_hp_taken_not_per_hero`, `Supporters_join_but_dilute_the_mana_charge`, `ManaEconomyTests`. Instrument: `ManaEconomyReport` — `[Explicit]`, run with `--filter ManaEconomyReport`, `GAIDEN_MANA_SEEDS=N` — bots play every campaign stage and report how full the bank runs.)*
 
 ### 3.2 HP and stats
 
@@ -1038,7 +1042,7 @@ All entries in `abilities.json`. Every spell has base cast time **1.5 s** (scale
 | Spell | Cost | Shape / Mode / Filter | Motion | Effect | Role |
 |---|---|---|---|---|---|
 | **Heal** | 1 | SingleActor / PickActor / AllyOnly | None | +25 HP | spot heal |
-| **Mass Heal** | 1 | AllAllies / Auto / AllyOnly | None | +12 HP each | emergency top-up |
+| **Mass Heal** | 2 | AllAllies / Auto / AllyOnly | None | +12 HP each | emergency top-up (cost 1 → 2, GG-T247: a party-wide heal for one orb) |
 | **Antidote** | 1 | SingleActor / PickActor / AllyOnly | None | removes all debuffs | cleanse |
 | **Scan** | 1 | SingleActor / PickActor / EnemyOnly | Straight | reveals HP + stats; bestiary Scanned | recon |
 | **Fireball** | 2 | SingleActor / PickActor / EnemyOnly | Twist | 18 Fire + Burning | burst + DOT |

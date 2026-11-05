@@ -260,7 +260,7 @@ namespace GridGame.Tests
                 var s = BattleEngine.Create(db, setup, new List<BattleEvent>());
                 var ev = BattleEngine.Apply(s, new MoveCommand { HeroId = Hero(s, "cleric").Id, Path = P((3, 3)) });
                 int crits = ev.OfType<DamagedEvent>().Count(d => d.Hit == HitKind.Critical && d.SourceId == Hero(s, "knight").Id);
-                int wild = ev.OfType<ManaChargedEvent>().Count(o => o.Reason == "critical" && o.Amount == BattleConfig.CritCharge);
+                int wild = ev.OfType<ManaChargedEvent>().Count(o => o.Reason == "critical" && ManaEconomyTests.IsDampedFrom(o.Amount, BattleConfig.CritCharge));
                 if (crits > 0) { Assert.That(wild, Is.EqualTo(crits)); saw = true; }
             }
             Assert.That(saw, Is.True);
@@ -293,7 +293,7 @@ namespace GridGame.Tests
             var ev = BattleEngine.Apply(s, new MoveCommand { HeroId = Hero(s, "cleric").Id, Path = P((3, 0)) });
             Assert.That(ev.Any(e => e is CastStaggeredEvent st && st.DelayTicks > 0), Is.True);
             Assert.That(ev.Any(e => e is CastCancelledEvent c && c.Reason == "interrupted"), Is.True);
-            Assert.That(ev.Any(e => e is ManaChargedEvent o && o.Reason == "interrupt" && o.Amount == BattleConfig.InterruptCharge), Is.True);
+            Assert.That(ev.Any(e => e is ManaChargedEvent o && o.Reason == "interrupt" && ManaEconomyTests.IsDampedFrom(o.Amount, BattleConfig.InterruptCharge)), Is.True);
         }
 
         [Test] // US-091

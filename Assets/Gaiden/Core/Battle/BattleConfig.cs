@@ -127,15 +127,20 @@ namespace GridGame.Core.Battle
         //    participants in the attack increases the multiplier needed to earn a mana bubble") ─────────────────────
         /// <summary>Charge that makes one orb ("mana bubble").</summary>
         public const int ManaChargePerOrb = 100;
-        /// <summary>Charge for a pincer that takes away a whole enemy's worth of HP (scaled by the share removed).</summary>
-        public const float PincerChargePerHp = 120f;
+        /// <summary>Charge for a pincer that takes away a whole enemy's worth of HP (scaled by the share removed).
+        /// GG-T247: 120 → 105 (the bar sat full on 17% of a skilled player's turns and ~half of all mana faded at the cap).</summary>
+        public const float PincerChargePerHp = 105f;
+        /// <summary>GG-T247: earned charge × (1 − this × bank fullness): an empty bank fills at full rate, a full one at 30%.</summary>
+        public const float ChargeFullnessDamping = 0.7f;
+        /// <summary>GG-T247: scales the Mana pincer-support action (Red Mage, Ritualist, …) — the second-biggest source.</summary>
+        public const float SupportManaFactor = 0.5f;
         /// <summary>Each participant beyond the two attackers raises the divisor by this much (2 heroes ×1, 4 heroes ×2).</summary>
         public const float ChargeParticipantPenalty = 0.5f;
         /// <summary>Each link deeper in a chain earns this much more (chain ×2 → ×1.25, ×3 → ×1.5).</summary>
         public const float ChargeChainBonus = 0.25f;
         /// <summary>Any pincer that lands at least this much (chip damage on a giant still counts for something).</summary>
         public const int MinPincerCharge = 2;
-        public const int CritCharge = 12;
+        public const int CritCharge = 10;
         public const int InterruptCharge = 25;
         public const int AmplifierCharge = 30;
 

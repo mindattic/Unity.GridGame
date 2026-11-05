@@ -221,6 +221,17 @@ namespace GridGame.Core.Battle
             return GuardChargeFor(w - System.Math.Max(0f, heldSeconds));
         }
 
+        /// <summary>Fullness damping (§3.1.9, GG-T247): earned mana charge is scaled down as the shared bank fills.</summary>
+        public static float ChargeDamping(BattleState s)
+        {
+            if (s.Bank.Capacity <= 0) return 1f;
+            return 1f - BattleConfig.ChargeFullnessDamping * System.Math.Min(1f, s.Bank.Count / (float)s.Bank.Capacity);
+        }
+
+        /// <summary>An earned charge after fullness damping; a positive amount never rounds to nothing.</summary>
+        public static int DampedCharge(BattleState s, int amount) =>
+            amount <= 0 ? 0 : System.Math.Max(1, (int)System.Math.Round(amount * ChargeDamping(s)));
+
         /// <summary>The conversion maths alone: <paramref name="secondsLeft"/> of unused turn → mana charge (0..GuardMaxCharge).</summary>
         public static int GuardChargeFor(float secondsLeft)
         {
