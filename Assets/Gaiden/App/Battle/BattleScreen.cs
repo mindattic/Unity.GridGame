@@ -376,6 +376,7 @@ namespace GridGame.App
             foreach (var u in State.Units)
             {
                 if (!board.Units.TryGetValue(u.Id, out var v))
+            SyncTempo();
                 {
                     if (!u.Alive) continue;
                     v = board.Add(u);

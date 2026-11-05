@@ -316,7 +316,13 @@ namespace GridGame.Core.Bot
                     if (a.BaseHeal > 0) score += Math.Min(t.MaxHp - t.Hp, a.BaseHeal) * (t.HpFraction < 0.5f ? 0.9f : 0.2f);
                     if (a.RemovesDebuffs) foreach (var b in t.Buffs) if (b.Def.Kind == BuffKind.Debuff) score += 4f;
                     if (a.RemovesBuff != null && t.HasBuff(a.RemovesBuff)) score += 5f;
-                    if (a.HastenU > 0f && close && t.Alive) score += 20f * a.HastenU; // 0.3 of the bar ≈ a third of a turn sooner
+                    if (a.HastenU > 0f && t.Alive && t.IsHero && s.LivingList(Team.Enemy).Count > 0
+                        && BattleEngine.EnemyTempoMultiplier(s) > BattleConfig.TempoMinMultiplier + 0.01f)
+                    {
+                        // Party tempo (GG-T268): each point slows every enemy icon; worth most while foes are near.
+                        int pts = Math.Max(1, (int)Math.Round(a.HastenU / BattleConfig.HastenUPerTempo));
+                        score += pts * (close ? 5f : 2.5f);
+                    }
                     var gift = s.Content.TryBuff(a.ApplyBuff);
                     if (gift != null && gift.Kind == BuffKind.Buff && !t.HasBuff(gift.Id) && s.LivingList(Team.Enemy).Count > 0)
                     {

@@ -35,6 +35,17 @@ namespace GridGame.Core.Battle
         /// </summary>
         public const int ActionTicks = 20;
 
+        // ── Party tempo (GG-T268, §2.11): hero haste slows enemy icons, Slow on heroes speeds them ─────────
+        /// <summary>Each net tempo point scales every enemy turn icon's rate by this factor (+1 → ×0.8, −1 → ×1.25).</summary>
+        public static float TempoStep = 1.25f;
+        /// <summary>Clamp on the enemy icon multiplier so neither side ever freezes or runs away.</summary>
+        public static float TempoMinMultiplier = 0.5f;
+        public static float TempoMaxMultiplier = 2f;
+        /// <summary>A hero haste ability of HastenU gives max(1, round(HastenU / this)) tempo points.</summary>
+        public static float HastenUPerTempo = 0.15f;
+        /// <summary>Party turns a tempo effect lasts when its source names none.</summary>
+        public static int DefaultTempoTurns = 2;
+
         // ── Held turn (GG-T188, §2.0): picking up a hero runs the timeline in real time ──────────────────
         /// <summary>Shortest real-time window a held turn gets, however close the next enemy icon is to ACT: the
         /// timeline then plays back slower than 1 tick per 0.1 s so a 1-tick turn is still a readable, playable drag.</summary>

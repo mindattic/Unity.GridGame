@@ -227,6 +227,13 @@ namespace GridGame.Core.Battle
         public override string ToString() => $"Hastened {UnitId} {FromU:F2}->{ToU:F2}";
     }
 
+    /// <summary>The party's net tempo changed (GG-T268): +N slows every enemy icon, −N speeds them.</summary>
+    public sealed class TempoChangedEvent : BattleEvent
+    {
+        public int Net; public float Multiplier; public string Source;
+        public override string ToString() => $"Tempo {Net:+0;-0;0} (enemy x{Multiplier:F2}) {Source}";
+    }
+
     public sealed class TurnStartedEvent : BattleEvent
     {
         public int UnitId;

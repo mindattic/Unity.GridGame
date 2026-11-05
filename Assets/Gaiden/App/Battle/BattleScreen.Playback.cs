@@ -162,6 +162,7 @@ namespace GridGame.App
                 case TimelineAdvancedEvent ta: FlushTallies(); return TimelineAnim(ta);
                 case PushedBackEvent pb: return PushAnim(pb);
                 case HastenedEvent hs: return HastenAnim(hs);
+                case TempoChangedEvent tc: return TempoAnim(tc);
                 case TurnStartedEvent ts: FlushTallies(); return TurnAnim(ts);
                 case TurnSkippedEvent sk: return FloatText(sk.UnitId, sk.Reason == "asleep" ? "Zzz…" : "…", new Color(0.7f, 0.8f, 1f), 0.35f);
 

@@ -171,7 +171,7 @@ namespace GridGame.Core.Battle
                 Emit(new TeleportedEvent { UnitId = caster.Id, From = from, To = anchor });
                 ShovePickupsUnder(caster, from); // a non-hero lands and shoves the pickup aside (GG-T228)
                 TriggerTrap(caster);
-                if (a.HastenU > 0f && caster.Alive) Hasten(caster, a.HastenU); // Fade Step: arrive already ahead (GG-T183)
+                if (a.HastenU > 0f && caster.Alive) Hasten(caster, a.HastenU, a.Id, a.TempoTurns); // Fade Step: arrive already ahead (GG-T183)
                 if (caster.Alive && caster.IsHero) ResolvePincers(Team.Hero, caster);
                 return;
             }
@@ -273,7 +273,7 @@ namespace GridGame.Core.Battle
                         Heal(mended, a.Kind == AbilityKind.Item ? a.BaseHeal : Math.Max(1, (int)Math.Round(a.BaseHeal * Formulas.HealPower(caster))), caster);
                 }
 
-                if (a.HastenU > 0f && t.Alive) Hasten(t, a.HastenU);
+                if (a.HastenU > 0f && t.Alive) Hasten(t, a.HastenU, a.Id, a.TempoTurns);
                 if (a.DelayU > 0f && t.Alive) Delay(t, a.DelayU);
 
                 var buff = C.TryBuff(a.ApplyBuff);
@@ -443,9 +443,13 @@ namespace GridGame.Core.Battle
             Emit(new RevivedEvent { UnitId = fallen.Id, At = fallen.Pos, Hp = fallen.Hp });
         }
 
-        /// <summary>Hasten/Quicken (§2.7.1): slide a turn icon forward, or rush a cast.</summary>
-        private void Hasten(Unit t, float amountU)
+        /// <summary>Hasten/Quicken (§2.7.1): slide a turn icon forward, or rush a cast. A hasted hero also raises the
+        /// party's tempo (§2.11, GG-T268), which slows every enemy icon: heroes have no turn icons under the held turn.</summary>
+        private void Hasten(Unit t, float amountU, string source = null, int turns = 0)
         {
+            if (t.IsHero)
+                AddTempo(source ?? "haste", Math.Max(1, (int)Math.Round(amountU / BattleConfig.HastenUPerTempo)),
+                    turns > 0 ? turns : BattleConfig.DefaultTempoTurns);
             var turn = S.TurnEntryOf(t.Id);
             if (turn != null)
             {

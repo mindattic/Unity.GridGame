@@ -310,6 +310,8 @@ namespace GridGame.Core.Content
         public bool RemovesDebuffs;
         public bool StealsMana;
         public float HastenU;
+        /// <summary>Party turns a hero haste from this ability keeps the party's tempo up (GG-T268); 0 = BattleConfig.DefaultTempoTurns.</summary>
+        public int TempoTurns;
         public bool IsTeleport;
         /// <summary>Tiles the target is shoved straight away from the caster (shield bash) — §6.3.</summary>
         public int Knockback;
@@ -367,6 +369,8 @@ namespace GridGame.Core.Content
         public bool BreaksOnMove;
         public float IncomingDamageMultiplier = 1f;
         public float TimelineSpeedMultiplier = 1f;
+        /// <summary>Signed party tempo this buff adds while it sits on a hero (GG-T268): Slow on heroes is negative, so enemy icons speed up.</summary>
+        public int Tempo;
         public float AccuracyMultiplier = 1f;
         public bool BlocksSpells;
         /// <summary>Taunt (§14.1.1): while any hero carries this, enemies may only pick taunting heroes.</summary>

@@ -236,6 +236,13 @@ namespace GridGame.Core.Battle
         /// <summary>Seconds of drag timer left at the last hero drop (time-banked orbs, §3.1.8).</summary>
         public float PendingTimeBankSeconds;
         public BattleResults Results = new BattleResults();
+        /// <summary>Signed party tempo effects (GG-T268, §2.11): hero haste adds, Slow on heroes subtracts; they stack.</summary>
+        public List<TempoEffect> Tempo = new List<TempoEffect>();
+
+        public int NetTempo
+        {
+            get { int t = 0; foreach (var e in Tempo) t += e.Amount; return t; }
+        }
 
         public bool IsOver => Phase != BattlePhase.PlayerInput;
 
@@ -323,7 +330,20 @@ namespace GridGame.Core.Battle
             foreach (var p in PendingSpawns) s.PendingSpawns.Add(p.Clone());
             s.Bank = Bank.Clone();
             s.Results = Results.Clone();
+            s.Tempo = new List<TempoEffect>(Tempo.Count);
+            foreach (var t in Tempo) s.Tempo.Add(t.Clone());
             return s;
         }
+    }
+
+    /// <summary>One stacking party tempo effect: +N slows every enemy turn icon, −N speeds them (GG-T268).</summary>
+    public sealed class TempoEffect
+    {
+        public string Source;
+        public int Amount;
+        public int TurnsLeft;
+        /// <summary>Skips the turn boundary of the command that applied it, so "N turns" means N turns after this one.</summary>
+        public bool Fresh = true;
+        public TempoEffect Clone() => (TempoEffect)MemberwiseClone();
     }
 }

@@ -715,3 +715,13 @@ Owner: "gaining mana is too generous since I see the whole bar filled almost in 
   - **Tried:** `PincerChargePerHp` 105 → 200 to buy a spell-per-wave earn rate.
   - **Result:** that raised the casual bot only to 0.08 orbs/action (the fullness damping caps it), and flooded the Green Valley stages, where that bot doesn't spend (full on 36–55% of turns). G fell 74.0 → 73.5.
   - **Outcome:** the charge stays at 105, and POL-G3 (no flood) remains the gate.
+
+## 2026-11-05 — Hero haste is party tempo, and it stacks (GG-T268)
+
+- **Was:** since the held turn (GG-T188) heroes have no turn icons, so haste on a hero only rushed a cast in flight. Quicken, Shortcut, Relay, Blitz, Follow-through and Fade Step did nothing but the `empowered` stopgap (GG-T263).
+- **Now (owner):** hero haste "slows enemy motion down the timeline". See BIBLE §2.11.
+  - Each hero haste adds signed **party tempo** points for some turns. The points **stack**.
+  - Net tempo scales every enemy turn icon by 1.25^(−net), clamped ×0.5–×2.
+  - A buff with `Tempo` on a hero subtracts: `slowed` is −1, ready for the Chronomancer (GG-T275). No enemy slows heroes yet.
+  - One cast is one effect.
+  - Shown as "Tempo ±N" on the timeline, with a track tint and a cue.

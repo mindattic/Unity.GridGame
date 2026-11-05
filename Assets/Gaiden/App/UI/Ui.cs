@@ -399,6 +399,8 @@ namespace GridGame.App
 
         /// <summary>An enemy's kit in a few words (§14.4) — shown on its card and in the bestiary.</summary>
         public static string KitTraits(ContentDb c, ClassDef d)
+            if (d.Tempo < 0) parts.Add($"on a hero: party Tempo {d.Tempo} (foes act sooner)");
+            if (d.Tempo > 0) parts.Add($"on a hero: party Tempo +{d.Tempo}");
         {
             var t = new List<string>();
             if (d.MoveRange > 1) t.Add($"moves {d.MoveRange} tiles");

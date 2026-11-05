@@ -38,7 +38,7 @@ namespace GridGame.Core.Battle
 
         private int RateFor(Unit owner, TimelineEntry e)
         {
-            float mult = owner.TimelineSpeedMultiplier;
+            float mult = BattleEngine.TimelineScale(S, owner);
             float rate = e.Ip >= BattleConfig.ZoneStart
                 ? ZoneRatePerTick
                 : owner.Effective.Speed * BattleConfig.OpenRatePerSpeed;

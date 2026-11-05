@@ -396,6 +396,7 @@ namespace GridGame.Core.Battle
             // Timeline-halting debuffs on enemies (Frozen) count down on the shared turn cycle,
             // since a halted icon never reaches its own turn boundary.
             foreach (var e in S.LivingList(Team.Enemy)) TickTurnBuffs(e, true);
+            TickTempo();
             Emit(new PlayerControlEvent());
         }
 
@@ -606,7 +607,7 @@ namespace GridGame.Core.Battle
                 if (def == null) continue;
                 if (def.HealFraction > 0f) Heal(hero, Math.Max(1, (int)Math.Round(hero.MaxHp * def.HealFraction)), hero);
                 for (int i = 0; i < def.Orbs; i++) MintOrb(hero.Id, "pickup");
-                if (def.HastenU > 0f) Hasten(hero, def.HastenU);
+                if (def.HastenU > 0f) Hasten(hero, def.HastenU, "pickup:" + def.Id);
                 var buff = C.TryBuff(def.ApplyBuff);
                 if (buff != null) ApplyBuff(hero, buff, buff.Duration);
             }
@@ -715,6 +716,36 @@ namespace GridGame.Core.Battle
             }
             u.Buffs.Add(new BuffInstance { Def = def, Remaining = duration, Fresh = true });
             Emit(new BuffAppliedEvent { UnitId = u.Id, BuffId = def.Id, Duration = duration });
+            if (u.IsHero && def.Tempo != 0)
+                AddTempo("buff:" + def.Id, def.Tempo, def.Unit == DurationUnit.Turns ? duration : BattleConfig.DefaultTempoTurns);
+        }
+
+        // ── Party tempo (GG-T268, §2.11) ─────────────────────────────────────────────────────────────────
+
+        /// <summary>Sources already counted this command: one multi-target cast is one tempo effect, not one per target.</summary>
+        private readonly HashSet<string> tempoThisCommand = new HashSet<string>();
+
+        private void AddTempo(string source, int amount, int turns)
+        {
+            if (amount == 0 || !tempoThisCommand.Add(source)) return;
+            S.Tempo.Add(new TempoEffect { Source = source, Amount = amount, TurnsLeft = Math.Max(1, turns) });
+            EmitTempo(source);
+        }
+
+        private void EmitTempo(string source) =>
+            Emit(new TempoChangedEvent { Net = S.NetTempo, Multiplier = BattleEngine.EnemyTempoMultiplier(S), Source = source });
+
+        /// <summary>Counts every tempo effect down at the party's turn boundary; expired ones fall away together.</summary>
+        private void TickTempo()
+        {
+            bool changed = false;
+            for (int i = S.Tempo.Count - 1; i >= 0; i--)
+            {
+                var t = S.Tempo[i];
+                if (t.Fresh) { t.Fresh = false; continue; }
+                if (--t.TurnsLeft <= 0) { S.Tempo.RemoveAt(i); changed = true; }
+            }
+            if (changed) EmitTempo("expired");
         }
 
         private void RemoveBuffsWhere(Unit u, Predicate<BuffInstance> pred, string reason)

@@ -237,7 +237,12 @@ namespace GridGame.App
             if (a.Pull > 0) facts.Add($"Pulls {a.Pull} tiles toward the caster");
             if (a.SwapsPlaces) facts.Add("Swaps places with the target");
             if (a.StepBack > 0) facts.Add($"Caster steps back {a.StepBack}");
-            if (a.HastenU > 0) facts.Add("Hastens on the timeline");
+            if (a.HastenU > 0)
+            {
+                int pts = Math.Max(1, (int)Math.Round(a.HastenU / BattleConfig.HastenUPerTempo));
+                int turns = a.TempoTurns > 0 ? a.TempoTurns : BattleConfig.DefaultTempoTurns;
+                facts.Add($"On an ally: Tempo +{pts} for {turns} turns (every foe's icon slows; stacks). On a foe: hastens its icon");
+            }
             if (a.DelayU > 0) facts.Add("Pushes back on the timeline");
             if (a.RemovesDebuffs) facts.Add("Cleanses debuffs");
             if (a.GrantsOrbs > 0) facts.Add($"Grants {a.GrantsOrbs} orbs");

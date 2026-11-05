@@ -166,6 +166,7 @@
     "BreaksOnMove": false,
     "IncomingDamageMultiplier": 1.0,
     "TimelineSpeedMultiplier": 0.5,
+    "Tempo": -1,
     "AccuracyMultiplier": 1.0,
     "BlocksSpells": false,
     "OnExpireApply": null,

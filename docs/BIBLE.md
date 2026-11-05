@@ -655,6 +655,7 @@ Net: one deep-Zone hit buys 275 IP (~1.2 actions at Speed 10, since it now re-cr
 `BattleRunner.Hasten(target, u)` (Quicken `HastenU` 0.30; the boss `enrage` skill 0.35):
 - On a unit with a **turn icon**: clears its stun and adds `round(u × 1000)` IP, clamped to 1000 (so it may fire on the next tick and can overtake icons ahead of it).
 - **Amended 2026-10-09:** on a unit with **no turn icon but a cast in flight** (i.e. a casting hero): subtracts `round(u × 1000 / 16)` ticks from the cast (Quicken rushes an ally's spell by ~19 ticks). *(Test: `Quicken_hastens_an_enemy_icon`.)*
+- **Amended 2026-11-05 (GG-T268):** on a **hero**, haste also raises the **party tempo** ([§2.11](#211-party-tempo-gg-t268)). Since the held turn (§2.0) heroes have no turn icons, so this is what hero haste does.
 
 ### 2.8 Spawn rules
 
@@ -669,6 +670,21 @@ Net: one deep-Zone hit buys 275 IP (~1.2 actions at Speed 10, since it now re-cr
 ### 2.9 Drag timer (optional)
 
 **Amended 2026-10-09 (owner decision):** Settings → "Drag timer (4 s)" (`SettingsSave.DragTimer`, off by default) restores Terra Battle's hand pressure: once a drag starts, `DragTimerSeconds` = 4 s counts down on screen (real time, unscaled by battle speed) and the drag auto-drops at 0. The seconds left at the drop travel in `MoveCommand.TimeLeftSeconds` and feed time-banked orbs ([§3.1.8](#318-time-banked-orbs)). The timer never affects the game clock. **Amended 2026-10-21 (GG-T188):** the held turn ([§2.0](#20-the-held-turn)) now gives every drag a real-time limit of its own; the optional 4 s drag timer is kept as a stricter cap and still feeds the time bank (Guard's banking of unused turn time is GG-T189).
+
+### 2.11 Party tempo (GG-T268)
+
+Owner 2026-11-05: hero haste "slows enemy motion down the timeline, thus you are moving hastily". Several hastes **stack**, and Slow on the party pushes the other way.
+
+- **One signed number.** `BattleState.Tempo` is a list of `TempoEffect`s (source, signed amount, turns left). Their sum is the **net tempo** (`NetTempo`).
+- **What it does.** Every turn icon not on the hero team advances at its normal rate × `TempoStep^(−net)` (`TempoStep` 1.25), clamped to **×0.5–×2** (`TempoMin/MaxMultiplier`), so neither side ever freezes or runs away. Net +1 is ×0.8, +2 ×0.64, −1 ×1.25. `BattleEngine.TimelineScale` applies it everywhere an icon's rate is read: the clock, `TicksUntilTurn`, the countdown badges (§2.10), the held-turn window (§2.0) and the icon glide.
+- **Sources.**
+  - A haste (`HastenU`) landing on a hero (an ability, Fade Step's landing, a pickup) adds `max(1, round(HastenU / 0.15))` points for `AbilityDef.TempoTurns` (default `DefaultTempoTurns`, 2). Quicken 0.30 is +2; Relay, Follow-through and Fade Step are +1.
+  - A buff with `BuffDef.Tempo ≠ 0` applied **to a hero** adds that many points for its duration. `slowed` carries −1, so a Slow cast on the party (no enemy does this yet; the Chronomancer, GG-T275, will) cancels haste and then speeds the foes up.
+  - Haste on an enemy still slides its own icon (§2.7.1) and doesn't touch tempo.
+- **Per cast.** One cast is one effect, however many allies an area haste touches.
+- **Timing.** Effects count down at the party's turn boundary (`ReturnControl`), and skip the boundary of the command that applied them, so "2 turns" means the next two turns.
+- **Seen and heard.** `TempoChangedEvent` updates a "Tempo +2" / "Tempo −1" readout above the timeline's left end. The track tints cool (Haste) while foes are slowed and red while the party is, with a rising or falling cue and a feed line giving the multiplier. The InspectCard of a haste ability states the tempo it grants.
+- *(Tests: `TempoTests`.)*
 
 ### 2.10 Countdown badge
 
@@ -1168,7 +1184,7 @@ POLISH G4/G5 ("every ability earns its slot", "no dead or dominant abilities") r
 | `warm` | Debuff | 3 Ticks | Sleep ×1.5 duration | — |
 | `sleep` ("Asleep") | Debuff | 3 Turns | immobile, breaks on damage / move | — |
 | `poisoned` | Debuff | 6 Ticks | 3 dmg/tick | — |
-| `slowed` | Debuff | 2 Turns | timeline rate ×0.5 | — |
+| `slowed` | Debuff | 2 Turns | timeline rate ×0.5; on a hero, party Tempo −1 ([§2.11](#211-party-tempo-gg-t268)) | — |
 | `silenced` | Debuff | 2 Turns | blocks spell slots | — |
 | `blinded` | Debuff | 2 Turns | hit chance ×0.5 | — |
 

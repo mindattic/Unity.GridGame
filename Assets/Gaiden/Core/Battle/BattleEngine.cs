@@ -123,7 +123,7 @@ namespace GridGame.Core.Battle
             if (u == null || e == null || !u.Alive) return -1;
             if (u.IsTimelineHalted) return -1;
             int ip = e.Ip, ticks = e.StunTicks;
-            float mult = u.TimelineSpeedMultiplier;
+            float mult = TimelineScale(s, u);
             int zoneRate = System.Math.Max(1, (BattleConfig.BarLength - BattleConfig.ZoneStart) / BattleConfig.ZoneCrossingTicks);
             for (int guard = 0; guard < 10000 && ip < BattleConfig.BarLength; guard++)
             {
@@ -143,8 +143,21 @@ namespace GridGame.Core.Battle
             if (e.StunTicks > 0) return 0f;
             int zoneRate = System.Math.Max(1, (BattleConfig.BarLength - BattleConfig.ZoneStart) / BattleConfig.ZoneCrossingTicks);
             float rate = e.Ip >= BattleConfig.ZoneStart ? zoneRate : u.Effective.Speed * BattleConfig.OpenRatePerSpeed;
-            return System.Math.Max(1, (int)System.Math.Round(rate * u.TimelineSpeedMultiplier)) / (float)BattleConfig.BarLength;
+            return System.Math.Max(1, (int)System.Math.Round(rate * TimelineScale(s, u))) / (float)BattleConfig.BarLength;
         }
+
+        /// <summary>Enemy turn-icon rate factor from the party's net tempo (GG-T268, §2.11): TempoStep^−net, clamped.</summary>
+        public static float EnemyTempoMultiplier(BattleState s)
+        {
+            int net = s.NetTempo;
+            if (net == 0) return 1f;
+            float m = (float)System.Math.Pow(BattleConfig.TempoStep, -net);
+            return System.Math.Max(BattleConfig.TempoMinMultiplier, System.Math.Min(BattleConfig.TempoMaxMultiplier, m));
+        }
+
+        /// <summary>A unit's turn-icon rate factor: its own buffs, times the party tempo for anyone not on the hero team.</summary>
+        public static float TimelineScale(BattleState s, Unit u) =>
+            u.TimelineSpeedMultiplier * (u.IsHero ? 1f : EnemyTempoMultiplier(s));
 
         /// <summary>
         /// Player turns until this enemy acts (Terra Battle-style countdown badge). 0 = it acts at the end of your next
@@ -165,18 +178,18 @@ namespace GridGame.Core.Battle
                 for (int tick = 1; tick < t; tick++)
                 {
                     if (stun > 0) { stun--; continue; }
-                    ip += IpPerTick(o, ip);
+                    ip += IpPerTick(s, o, ip);
                     if (ip >= BattleConfig.BarLength) { earlier.Add(tick); ip = 0; }
                 }
             }
             return earlier.Count;
         }
 
-        private static int IpPerTick(Unit u, int ip)
+        private static int IpPerTick(BattleState s, Unit u, int ip)
         {
             int zoneRate = System.Math.Max(1, (BattleConfig.BarLength - BattleConfig.ZoneStart) / BattleConfig.ZoneCrossingTicks);
             float rate = ip >= BattleConfig.ZoneStart ? zoneRate : u.Effective.Speed * BattleConfig.OpenRatePerSpeed;
-            return System.Math.Max(1, (int)System.Math.Round(rate * u.TimelineSpeedMultiplier));
+            return System.Math.Max(1, (int)System.Math.Round(rate * TimelineScale(s, u)));
         }
 
         // ── The held turn (GG-T188, §2.0) ─────────────────────────────────────────────────────────────
@@ -278,7 +291,7 @@ namespace GridGame.Core.Battle
                 for (int i = 0; i < ticks && !halted && ip < BattleConfig.BarLength; i++)
                 {
                     if (stun > 0) { stun--; continue; }
-                    ip = System.Math.Min(BattleConfig.BarLength, ip + IpPerTick(o, ip));
+                    ip = System.Math.Min(BattleConfig.BarLength, ip + IpPerTick(s, o, ip));
                 }
                 at[e.Id] = ip / (float)BattleConfig.BarLength;
             }
