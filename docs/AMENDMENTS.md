@@ -640,3 +640,18 @@ Owner: "gaining mana is too generous since I see the whole bar filled almost in 
   for a negotiated amount of battles at a price; whether you use them or not; they will reoffer their services when they are about to leave
   and you can choose to renegotiate or part ways." Scoped as its own contract system: the dialogue vocabulary still has no effect that
   removes a hero, and no story recruit, guest or summon is ever a merc. Ordinary gold, not a paywall hook. See BIBLE §25.10.1.
+
+## 2026-11-05 — Remains count down, and the campaign curve is retuned (GG-T261)
+
+- **Was:** remains (gravestone, bone pile, §14.5) spawned at their owner's level with the full stat formula and raised it on their
+  **first** turn; every body segment of a snake left its own marker.
+- **Now:** remains have 25 % of the slain owner's MaxHP (`BattleConfig.RemainsHpFraction`), rise on their **third** turn
+  (`RemainsTurnsToRise`; the first two announce "stirs… N"), and a snake leaves one marker, not one per segment. *Why:* since GG-T188 each
+  action runs the clock to the next enemy turn (§2.0), so a marker left by the last foe standing rose inside the very action that made it
+  (battle records: median 0 player actions between `RemainsLeft` and `RoseAgain`, 27 rises in one Green Valley III wave) and the party never
+  had a turn to break it; at the owner's level a gravestone also had ~110 HP. The casual bot won 0 % on Green Valley III and every Frostmaw
+  Caverns and Veshker Ruins stage. The rule is unchanged in spirit: destroy the remains or the undead comes back.
+- **Content:** a dozen wave edits smooth the curve (BIBLE §22.3 lists them); the GG-T234 rule-breaking bosses are untouched.
+  Casual-bot wins, before (6 per stage) → after (8 per stage, rotating parties): Green Valley I–III 67/100/0 → 75/88/100 %, Sandsea Reaches
+  I–III 67/83/83 → 50/88/75 %, Mireholt Fens I–III 33/0/17 → 88/38/62 %, Frostmaw Caverns I–III 0/0/0 → 62/100/88 %, Veshker Ruins I–III
+  0/0/0 → 75/62/25 % (Veshker Ruins III's second wave was trimmed after this run). Polish POL-G1 17.4 → 31.0, POL-G2 71.4 → 78.6.

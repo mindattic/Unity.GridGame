@@ -628,7 +628,7 @@ namespace GridGame.Core.Battle
         private void LeaveRemains(Unit u, Coord at)
         {
             var def = C.TryClass(u.Def.Remains);
-            if (def == null || u.IsMultiTile) return;
+            if (def == null || u.IsMultiTile || u.IsSnakeSegment) return; // one marker per creature, not per body segment
             var r = SpawnEnemy(def, u.Level, at.X, at.Y);
             if (r == null || r.Pos != at) { if (r != null) { r.OnBoard = false; r.Hp = 0; S.Timeline.RemoveAll(e => e.OwnerId == r.Id); } return; }
             if (r.IsCorpse)
@@ -641,8 +641,10 @@ namespace GridGame.Core.Battle
                 Emit(new RemainsLeftEvent { RemainsId = r.Id, FromUnitId = u.Id, At = at });
                 return;
             }
+            r.MaxHp = r.Hp = Math.Max(1, (int)Math.Ceiling(u.MaxHp * BattleConfig.RemainsHpFraction));
             r.RisesAs = u.Def.Id;
             r.RisesLevel = u.Level;
+            r.RisesInTurns = BattleConfig.RemainsTurnsToRise - 1;
             Emit(new RemainsLeftEvent { RemainsId = r.Id, FromUnitId = u.Id, At = at });
             Announce($"{u.Name} leaves {def.Name.ToLowerInvariant()} — destroy it!", r.Id);
         }

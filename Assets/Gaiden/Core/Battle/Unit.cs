@@ -127,6 +127,8 @@ namespace GridGame.Core.Battle
         /// <summary>For remains: the class and level that rise when its turn arrives.</summary>
         public string RisesAs;
         public int RisesLevel;
+        /// <summary>Remains: turns still to pass before the owner rises (§14.5, GG-T261); 0 = rise on the next turn.</summary>
+        public int RisesInTurns;
         /// <summary>A guest ally (§25.11), hero-team and player-controlled for this battle only.</summary>
         public bool IsGuest;
         /// <summary>A neutral recruitable's terms (§25.11.1, GG-T132); kept after it joins. Null for everyone else.</summary>

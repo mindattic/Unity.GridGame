@@ -291,6 +291,12 @@
             "Level": 1,
             "X": -1,
             "Y": -1
+          },
+          {
+            "Class": "wolf00",
+            "Level": 1,
+            "X": -1,
+            "Y": -1
           }
         ]
       },
@@ -310,6 +316,12 @@
           },
           {
             "Class": "ganger05",
+            "Level": 1,
+            "X": -1,
+            "Y": -1
+          },
+          {
+            "Class": "ganger06",
             "Level": 1,
             "X": -1,
             "Y": -1
@@ -462,12 +474,6 @@
             "Y": -1
           },
           {
-            "Class": "mechaarmor01",
-            "Level": 1,
-            "X": -1,
-            "Y": -1
-          },
-          {
             "Class": "soldier00",
             "Level": 1,
             "X": -1,
@@ -495,6 +501,12 @@
           },
           {
             "Class": "soldier00",
+            "Level": 1,
+            "X": -1,
+            "Y": -1
+          },
+          {
+            "Class": "scorpion",
             "Level": 1,
             "X": -1,
             "Y": -1
@@ -557,6 +569,12 @@
           },
           {
             "Class": "techgremlin02",
+            "Level": 1,
+            "X": -1,
+            "Y": -1
+          },
+          {
+            "Class": "soldier00",
             "Level": 1,
             "X": -1,
             "Y": -1
@@ -642,6 +660,12 @@
             "Level": 1,
             "X": -1,
             "Y": -1
+          },
+          {
+            "Class": "techgremlin00",
+            "Level": 1,
+            "X": -1,
+            "Y": -1
           }
         ]
       },
@@ -677,6 +701,12 @@
           },
           {
             "Class": "techgremlin00",
+            "Level": 1,
+            "X": -1,
+            "Y": -1
+          },
+          {
+            "Class": "vulture",
             "Level": 1,
             "X": -1,
             "Y": -1
@@ -795,19 +825,13 @@
       {
         "Enemies": [
           {
-            "Class": "hag00",
+            "Class": "marshshambler03",
             "Level": 1,
             "X": -1,
             "Y": -1
           },
           {
             "Class": "lurker02",
-            "Level": 1,
-            "X": -1,
-            "Y": -1
-          },
-          {
-            "Class": "marshshambler03",
             "Level": 1,
             "X": -1,
             "Y": -1
@@ -852,12 +876,6 @@
         "Enemies": [
           {
             "Class": "hag00",
-            "Level": 1,
-            "X": -1,
-            "Y": -1
-          },
-          {
-            "Class": "hag01",
             "Level": 1,
             "X": -1,
             "Y": -1
@@ -1104,7 +1122,7 @@
             "Y": -1
           },
           {
-            "Class": "ceramicknight01",
+            "Class": "goblinthug00",
             "Level": 1,
             "X": -1,
             "Y": -1
@@ -1120,7 +1138,7 @@
             "Y": -1
           },
           {
-            "Class": "mountaintroll",
+            "Class": "goblinthug00",
             "Level": 1,
             "X": -1,
             "Y": -1
@@ -1228,6 +1246,12 @@
             "Level": 1,
             "X": -1,
             "Y": -1
+          },
+          {
+            "Class": "goblinthug00",
+            "Level": 1,
+            "X": -1,
+            "Y": -1
           }
         ]
       },
@@ -1324,7 +1348,7 @@
             "Y": -1
           },
           {
-            "Class": "ceramicknight06",
+            "Class": "goblinthug00",
             "Level": 1,
             "X": -1,
             "Y": -1
@@ -1379,12 +1403,6 @@
         "Enemies": [
           {
             "Class": "yeti",
-            "Level": 1,
-            "X": -1,
-            "Y": -1
-          },
-          {
-            "Class": "icemauler",
             "Level": 1,
             "X": -1,
             "Y": -1
@@ -1557,12 +1575,6 @@
             "Level": 1,
             "X": -1,
             "Y": -1
-          },
-          {
-            "Class": "bat00",
-            "Level": 1,
-            "X": -1,
-            "Y": -1
           }
         ]
       },
@@ -1661,24 +1673,12 @@
     ],
     "Waves": [
       {
-        "Group": "undead-rearguard-3"
+        "Group": "undead-flank-2"
       },
       {
         "Enemies": [
           {
             "Class": "bat00",
-            "Level": 1,
-            "X": -1,
-            "Y": -1
-          },
-          {
-            "Class": "bat01",
-            "Level": 1,
-            "X": -1,
-            "Y": -1
-          },
-          {
-            "Class": "phantom",
             "Level": 1,
             "X": -1,
             "Y": -1
@@ -1709,12 +1709,6 @@
       },
       {
         "Enemies": [
-          {
-            "Class": "undead02",
-            "Level": 1,
-            "X": -1,
-            "Y": -1
-          },
           {
             "Class": "undead04",
             "Level": 1,

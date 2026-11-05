@@ -13,7 +13,12 @@ namespace GridGame.Core.Battle
             MintTimeBank();
             Emit(new TurnStartedEvent { UnitId = enemy.Id });
 
-            if (enemy.IsRemains) { RiseAgain(enemy); return; }
+            if (enemy.IsRemains)
+            {
+                if (enemy.RisesInTurns > 0) { enemy.RisesInTurns--; Announce($"{enemy.Name} stirs… {enemy.RisesInTurns + 1}", enemy.Id); return; }
+                RiseAgain(enemy);
+                return;
+            }
             if (enemy.IsEgg) { Hatch(enemy); return; }
             enemy.TurnsTaken++;
 

@@ -164,6 +164,12 @@ namespace GridGame.Core.Battle
         public const float PlatePerLevel = 0.15f;
         /// <summary>Player actions a corpse lies on the board before it rots away.</summary>
         public const int CorpseDecayActions = 6;
+        /// <summary>Gravestone/bone-pile HP as a share of the slain owner's MaxHP (§14.5, GG-T261): a marker to break,
+        /// not a second body; at the owner's own level they out-lasted the party in every Veshker Ruins wave.</summary>
+        public const float RemainsHpFraction = 0.25f;
+        /// <summary>Remains rise on this many of their own turns, not the first (GG-T261): every action runs the clock to
+        /// the next enemy turn (§2.0), so a marker left by the last foe standing used to rise inside the killing action.</summary>
+        public const int RemainsTurnsToRise = 3;
 
         // ── Role identity (§13.1.5) ─────────────────────────────────────────────────
         public const float CasterPowerPerPoint = 0.035f;
