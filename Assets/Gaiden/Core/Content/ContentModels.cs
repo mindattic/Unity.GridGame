@@ -343,6 +343,8 @@ namespace GridGame.Core.Content
         public string ProjectileVfx;
         public string ImpactVfx;
         public string LingerVfx;
+        /// <summary>Optional VFX tier (GG-T253): Minor, Major or Ultimate; empty derives it from cost and cooldown (VfxStyleSheet.TierOf).</summary>
+        public string Intensity;
         public string Sfx;
         /// <summary>Class-agnostic Skill: learnable by any hero regardless of class, like every Spell already is
         /// (<see cref="GridGame.Meta.MetaServices.Abilities.Learnable"/>). Ignored on Spell/Passive, which already

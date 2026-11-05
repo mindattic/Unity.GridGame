@@ -149,7 +149,7 @@ namespace GridGame.App
                 reveals.Add(App.StartCoroutine(Tween.Pop(row, 1.15f, 0.15f)));
                 yield return Tween.Wait(Timing.Instant);
             }
-            yield return Tween.Wait(1.1f); // the fanfare hold
+            yield return Tween.Wait(Timing.Cinematic); // the fanfare hold
             running = null;
             Advance();
         }

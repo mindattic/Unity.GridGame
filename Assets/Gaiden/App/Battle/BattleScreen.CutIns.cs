@@ -30,7 +30,7 @@ namespace GridGame.App
                 bandTex = new Texture2D(128, 8, TextureFormat.RGBA32, false) { wrapMode = TextureWrapMode.Clamp, name = "cutin-band" };
                 for (int x = 0; x < 128; x++)
                 {
-                    float u = x / 127f, a = Mathf.SmoothStep(0f, 1f, Mathf.Min(u, 1f - u) * 3.2f);
+                    float u = x / 127f, a = Ease.InOut(Mathf.Clamp01(Mathf.Min(u, 1f - u) * 3.2f));
                     for (int y = 0; y < 8; y++) bandTex.SetPixel(x, y, new Color(1f, 1f, 1f, a));
                 }
                 bandTex.Apply();

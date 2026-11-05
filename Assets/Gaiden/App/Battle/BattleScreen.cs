@@ -1531,7 +1531,7 @@ namespace GridGame.App
                 yield break;
             }
             float travel = content - BannerViewportHeight;
-            yield return Tween.Wait(1.1f); // let the reader start before it moves
+            yield return Tween.Wait(Timing.Cinematic); // let the reader start before it moves
             yield return Tween.Run(Mathf.Clamp(travel / 40f, 0.8f, 4f), k => banner.style.top = -travel * k);
             yield return Tween.Wait(Timing.Dramatic); // hold on the tail before the next message replaces it
             bannerScrollRoutine = null;

@@ -1,5 +1,6 @@
 using System.Collections;
 using System.Collections.Generic;
+using GridGame.Core.Content;
 using UnityEngine;
 using UnityEngine.UIElements;
 
@@ -52,74 +53,31 @@ namespace GridGame.App
             ["ShadowSigil"] = VfxFamily.Drift, ["SparkRig"] = VfxFamily.Drift, ["Bubble"] = VfxFamily.Drift,
         };
 
-        /// <summary>The ability-named flourish that plays alongside (before) the DamageType/buff-specific
-        /// burst, at the moment a spell's mote arrives. No-op for abilities with no named ImpactVfx or an
-        /// unrecognised one — those still get the plain ring from ImpactSplash, same as before this pass.</summary>
-        private void NamedImpactFlourish(string vfxName, Vector2 at, Color c)
+        /// <summary>The ability-named flourish that plays alongside (before) the element/status burst at the moment a
+        /// spell's mote arrives. Since GG-T253 a family is only a MOTION played in the ability's own element style
+        /// (vfxstyle.json), so Fireball's explosion and Frost's explosion share a gesture but never a look, and every
+        /// flourish of one element reads as that element. No-op for abilities with no or an unrecognised ImpactVfx.</summary>
+        private void NamedImpactFlourish(string vfxName, Vector2 at, VfxStyleDef st)
         {
-            if (vfxName == null || !VfxFamilyOf.TryGetValue(vfxName, out var fam) || ReduceMotion) return;
+            if (vfxName == null || st == null || !VfxFamilyOf.TryGetValue(vfxName, out var fam) || ReduceMotion) return;
+            var c = GlowOf(st);
             switch (fam)
             {
-                case VfxFamily.Explosion:
-                    for (int i = 0; i < 7; i++)
-                    {
-                        var p = Particle(Random.Range(20f, 34f), Color.Lerp(c, Color.white, Random.value * 0.4f));
-                        float ang = i * 6.283f / 7f + Random.Range(-0.2f, 0.2f);
-                        App.StartCoroutine(Tween.Run(Timing.Standard, k =>
-                        {
-                            var pos = at + new Vector2(Mathf.Cos(ang), Mathf.Sin(ang)) * 90f * Tween.EaseOut(k);
-                            p.style.left = pos.x - 17; p.style.top = pos.y - 17; p.style.opacity = 1f - k;
-                            p.style.scale = new Scale(Vector2.one * (1f + 0.5f * k));
-                            if (k >= 1f) p.RemoveFromHierarchy();
-                        }));
-                    }
-                    break;
+                case VfxFamily.Explosion: Emit(st, at, 0.6f, "burst", quiet: true); break;
+                case VfxFamily.Cloud: Emit(st, at, 0.6f, "billow", 1.6f, quiet: true); break;
+                case VfxFamily.Sparkle: Emit(st, at, 0.8f, "burst", 0.5f, quiet: true); break;
+                case VfxFamily.Beam: Emit(st, at, 0.5f, "fall", quiet: true); break;
+                case VfxFamily.Aura: Emit(st, at, 0.6f, "pulse"); break;
+                case VfxFamily.Drift: Emit(st, at, 0.5f, "rise", 0.7f, quiet: true); break;
                 case VfxFamily.Slash:
                     App.StartCoroutine(Tween.Run(Timing.Quick, k =>
                     {
                         board.Lines.ClearLines();
-                        float a0 = -0.7f, a1 = 0.7f, a = Mathf.Lerp(a0, a1, k);
+                        float a = Mathf.Lerp(-0.7f, 0.7f, Ease.Snap(k));
                         var dir = new Vector2(Mathf.Cos(a), Mathf.Sin(a));
-                        board.Lines.Add(at - dir * 60f, at + dir * 60f, new Color(1f, 1f, 1f, 1f - k * 0.5f), 10f * (1f - k * 0.5f));
+                        board.Lines.Add(at - dir * 60f, at + dir * 60f, c.WithA(1f - k * 0.5f), 10f * (1f - k * 0.5f));
                     }));
-                    App.StartCoroutine(ClearLinesAfter(0.16f));
-                    break;
-                case VfxFamily.Cloud:
-                    for (int i = 0; i < 6; i++)
-                    {
-                        var p = Particle(Random.Range(26f, 44f), new Color(c.r, c.g, c.b, 0.55f));
-                        var off = new Vector2(Random.Range(-45f, 45f), Random.Range(-30f, 30f));
-                        App.StartCoroutine(Tween.Run(Timing.Dramatic, k =>
-                        {
-                            p.style.left = at.x + off.x * (0.6f + 0.6f * k) - 22; p.style.top = at.y + off.y * (0.6f + 0.6f * k) - 22;
-                            p.style.opacity = Mathf.Sin(k * Mathf.PI) * 0.6f; if (k >= 1f) p.RemoveFromHierarchy();
-                        }));
-                    }
-                    break;
-                case VfxFamily.Sparkle:
-                    for (int i = 0; i < 8; i++)
-                    {
-                        var p = Particle(Random.Range(8f, 14f), Color.Lerp(c, Color.white, 0.5f));
-                        float ang = Random.Range(0f, 6.283f);
-                        App.StartCoroutine(Tween.Run(Timing.Emphasis, k =>
-                        {
-                            var pos = at + new Vector2(Mathf.Cos(ang), Mathf.Sin(ang)) * 50f * k - Vector2.up * 20f * k;
-                            p.style.left = pos.x - 6; p.style.top = pos.y - 6; p.style.opacity = 1f - k; if (k >= 1f) p.RemoveFromHierarchy();
-                        }));
-                    }
-                    break;
-                case VfxFamily.Beam:
-                    App.StartCoroutine(Tween.Run(Timing.Standard, k =>
-                    {
-                        board.Lines.ClearLines();
-                        for (int i = -1; i <= 1; i++)
-                            board.Lines.Add(at + new Vector2(i * 20f, -140f * (1f - k)), at + new Vector2(i * 20f, 20f), new Color(c.r, c.g, c.b, 0.8f * (1f - k)), 6f);
-                    }));
-                    App.StartCoroutine(ClearLinesAfter(0.32f));
-                    break;
-                case VfxFamily.Aura:
-                    App.StartCoroutine(Tween.Run(Timing.Emphasis, k => { board.Lines.Rings.Clear(); board.Lines.Ring(at, 24f + 70f * Tween.EaseOut(k), new Color(c.r, c.g, c.b, 1f - k), 7f); }));
-                    App.StartCoroutine(ClearRingsAfter(0.42f));
+                    App.StartCoroutine(ClearLinesAfter(Timing.Quick + Timing.Instant * 0.2f));
                     break;
                 case VfxFamily.Strike:
                 {
@@ -127,23 +85,11 @@ namespace GridGame.App
                     App.StartCoroutine(Tween.Run(Timing.Quick, k =>
                     {
                         board.Lines.ClearLines();
-                        board.Lines.Add(Vector2.Lerp(top, at, k * k), at, new Color(c.r, c.g, c.b, 0.9f), 5f);
+                        board.Lines.Add(Vector2.Lerp(top, at, k * k), at, c.WithA(0.9f), 5f);
                     }));
-                    App.StartCoroutine(ClearLinesAfter(0.14f));
+                    App.StartCoroutine(ClearLinesAfter(Timing.Quick));
                     break;
                 }
-                case VfxFamily.Drift:
-                    for (int i = 0; i < 5; i++)
-                    {
-                        var p = Particle(Random.Range(12f, 20f), new Color(c.r, c.g, c.b, 0.7f));
-                        float x0 = Random.Range(-30f, 30f);
-                        App.StartCoroutine(Tween.Run(Timing.Emphasis, k =>
-                        {
-                            p.style.left = at.x + x0 * (1f - k) - 10; p.style.top = at.y - 30f * k - 10;
-                            p.style.opacity = 1f - k; if (k >= 1f) p.RemoveFromHierarchy();
-                        }));
-                    }
-                    break;
             }
         }
 

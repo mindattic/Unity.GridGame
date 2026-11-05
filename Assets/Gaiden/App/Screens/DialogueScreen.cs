@@ -431,7 +431,7 @@ namespace GridGame.App
         {
             while (!done)
             {
-                yield return Tween.Wait(1.4f);
+                yield return Tween.Wait(Timing.Cinematic + Timing.Quick);
                 if (done) yield break;
                 if (Typing) TapLine();
                 else if (run.AwaitingChoice) Choose(run.Choices.Count - 1); // the last choice is the way out by convention

@@ -114,6 +114,7 @@ def lint():
             "literals": sum(lit[rule].values()), "tokens": sum(tok[rule].values()),
             "worst": lit[rule].most_common(5),
         }
+    out.update(vfx_rules())
     bad = sorted(c for c in cues if not CUE_OK.match(c))
     out["POL-F1"] = {
         "kind": "cue", "checked": len(cues), "failed": len(bad),
@@ -121,6 +122,60 @@ def lint():
         "worst": [(c, 1) for c in bad[:12]],
     }
     return out
+
+
+CONTENT = os.path.join(ROOT, "Assets", "Gaiden", "Resources", "Content")
+VFX_FILES = [os.path.join(APP, "Battle", f) for f in
+             ("BattleScreen.Fx.cs", "BattleScreen.Playback.cs", "BattleScreen.VfxLibrary.cs", "BattleScreen.VfxStyle.cs")]
+
+
+def vfx_rules():
+    """POL-E4: every element and status has a vfxstyle.json look, and the battle VFX code has no per-element or
+    per-status switch of its own (GG-T253). POL-E5: three tiers that scale count, shake and hit-stop upward, read by the
+    hit playback."""
+    models = open(os.path.join(ROOT, "Assets", "Gaiden", "Core", "Content", "ContentModels.cs"), encoding="utf-8").read()
+    elements = re.search(r"enum DamageType\s*\{([^}]*)\}", models).group(1).replace(" ", "").split(",")
+    buffs = [b["Id"] for b in json.load(open(os.path.join(CONTENT, "buffs.json"), encoding="utf-8"))]
+    path = os.path.join(CONTENT, "vfxstyle.json")
+    sheet = json.load(open(path, encoding="utf-8")) if os.path.exists(path) else {}
+    have_el = {e.get("Id") for e in sheet.get("Elements", [])}
+    have_st = {s.get("Id") for s in sheet.get("Statuses", [])}
+    worst, failed = [], 0
+    for e in elements:
+        if e not in have_el:
+            failed += 1; worst.append((f"element {e} has no style", 1))
+    for b in buffs:
+        if b not in have_st:
+            failed += 1; worst.append((f"status {b} has no style", 1))
+    switch = re.compile(r"case\s+DamageType\.\w+\s*:|case\s+\"(?:" + "|".join(map(re.escape, buffs)) + r")\"\s*:")
+    for p in VFX_FILES:
+        if not os.path.exists(p):
+            continue
+        n = len(switch.findall(strip_comments(open(p, encoding="utf-8").read())))
+        if n:
+            failed += 1; worst.append((os.path.relpath(p, ROOT).replace("\\", "/"), n))
+    checked4 = len(elements) + len(buffs) + sum(os.path.exists(p) for p in VFX_FILES)
+
+    tiers = {t.get("Tier"): t for t in sheet.get("Tiers", [])}
+    order = [tiers.get(n) for n in ("Minor", "Major", "Ultimate")]
+    t_fail, t_worst = 0, []
+    for i, (name, t) in enumerate(zip(("Minor", "Major", "Ultimate"), order)):
+        prev = order[i - 1] if i else None
+        ok = t is not None and (prev is None or (t.get("Count", 1) > prev.get("Count", 1)
+                                                  and t.get("Shake", 0) > prev.get("Shake", 0)
+                                                  and t.get("HitStop", 0) > prev.get("HitStop", 0)))
+        if not ok:
+            t_fail += 1; t_worst.append((f"tier {name} missing or not above the one below", 1))
+    play = "".join(open(p, encoding="utf-8").read() for p in VFX_FILES if os.path.exists(p))
+    wired = "TierOf(" in play and "HitStop" in play
+    if not wired:
+        t_fail += 1; t_worst.append(("hit playback does not read the tier", 1))
+    return {
+        "POL-E4": {"kind": "coverage", "checked": checked4, "failed": failed,
+                   "score": round(100.0 * (checked4 - failed) / checked4, 1) if checked4 else None, "worst": worst[:5]},
+        "POL-E5": {"kind": "coverage", "checked": 4, "failed": t_fail,
+                   "score": round(100.0 * (4 - t_fail) / 4, 1), "worst": t_worst},
+    }
 
 
 def main():

@@ -40,9 +40,12 @@ namespace GridGame.App
         public static readonly Color Buff = new Color(1f, 0.72f, 0.28f);
         public static readonly Color Cleanse = new Color(0.9f, 1f, 1f);
 
-        /// <summary>The element table: each DamageType owns one hue no status or UI message reuses (POL-B4).</summary>
+        /// <summary>The element table: each DamageType owns one hue no status or UI message reuses (POL-B4). The hue lives
+        /// in vfxstyle.json (GG-T253, POL-E4); these literals are only the fallback before content loads.</summary>
         public static Color Element(DamageType t)
         {
+            var st = GameApp.I?.Content?.Vfx?.Element(t);
+            if (st?.Core != null) return Hex(st.Core, Color.white);
             switch (t)
             {
                 case DamageType.Fire: return new Color(1f, 0.45f, 0.15f);
@@ -71,6 +74,10 @@ namespace GridGame.App
         }
 
         public static Color WithA(this Color c, float a) => new Color(c.r, c.g, c.b, a);
+
+        /// <summary>A #RRGGBB content color (vfxstyle.json), or <paramref name="fallback"/> when absent or malformed.</summary>
+        public static Color Hex(string hex, Color fallback) =>
+            hex != null && ColorUtility.TryParseHtmlString(hex, out var c) ? c : fallback;
     }
 
     /// <summary>Type scale ≈1.25 (POL-A1). Body ≥ 40, captions ≥ 30 (POL-A2).</summary>
@@ -98,5 +105,7 @@ namespace GridGame.App
         public static readonly Func<float, float> InOut = Tween.EaseInOut;
         public static readonly Func<float, float> Back = Tween.Back;
         public static readonly Func<float, float> Snap = t => 1f - Mathf.Pow(1f - t, 4f);
+        /// <summary>0 → 1 → 0 over the run: a hop, a flash's rise and fall, a projectile's lift.</summary>
+        public static readonly Func<float, float> Arc = t => Mathf.Sin(t * Mathf.PI);
     }
 }

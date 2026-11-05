@@ -49,6 +49,7 @@ namespace GridGame.Core.Content
             db.ArmorEnchantOrder.AddRange(armorEnchants);
             db.Campaign = ReadOne<CampaignDef>(readText, "campaign") ?? new CampaignDef();
             db.Summon = ReadOne<SummonDef>(readText, "summon") ?? new SummonDef();
+            db.Vfx = ReadOne<VfxStyleSheet>(readText, "vfxstyle") ?? new VfxStyleSheet();
             db.Mercenaries.AddRange(ReadList<MercenaryDef>(readText, "mercenaries"));
             AddAll(db.Caravan, ReadList<CaravanUpgradeDef>(readText, "caravan"), x => x.Id);
             AddAll(db.Pickups, ReadList<PickupDef>(readText, "pickups"), x => x.Id);
@@ -285,6 +286,7 @@ namespace GridGame.Core.Content
             EncounterCatalog.Validate(db, p);
             MercenaryContent.Validate(db, p);
             QuestCatalog.Validate(db, p);
+            VfxStyleSheet.Validate(db, p);
             return p;
         }
 

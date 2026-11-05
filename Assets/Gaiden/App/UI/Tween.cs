@@ -91,7 +91,7 @@ namespace GridGame.App
         {
             return Run(seconds, k =>
             {
-                float s = 1f + (peak - 1f) * Mathf.Sin(k * Mathf.PI);
+                float s = 1f + (peak - 1f) * Ease.Arc(k);
                 e.style.scale = new Scale(new Vector2(s, s));
             });
         }

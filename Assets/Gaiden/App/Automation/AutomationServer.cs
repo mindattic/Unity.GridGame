@@ -531,6 +531,10 @@ namespace GridGame.App.Automation
                 case "devcast":
                     if (app.Router.Current is BattleScreen dcs) { int caster = dcs.DevQueueCast((int)F(q["target"]), q["ability"], (int)F(q["ticks"], 30)); return new { ok = caster >= 0, caster }; }
                     return new { error = "not in battle" };
+                case "devvfx":
+                    // GG-T253: play one ability's whole look (cast, flight, impact at its tier, the status) without touching state.
+                    if (app.Router.Current is BattleScreen dvx) return new { ok = dvx.DevVfx(q["ability"]) };
+                    return new { error = "not in battle" };
                 case "devamp":
                     if (app.Router.Current is BattleScreen dab) { var ampAt = new Coord((int)F(q["x"]), (int)F(q["y"])); if (!dab.State.FreeForSpawn(ampAt) || !dab.State.ItemFree(ampAt)) return new { error = "tile not free" }; dab.State.Amplifier = ampAt; dab.SyncAll(); dab.Feed(BattleScreen.AmpSpawnedFeed, BattleScreen.AmpFeedColor); return new { ok = true }; }
                     return new { error = "not in battle" };

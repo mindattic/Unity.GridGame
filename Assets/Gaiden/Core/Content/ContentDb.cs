@@ -24,6 +24,8 @@ namespace GridGame.Core.Content
         public readonly List<StageDef> StageOrder = new List<StageDef>();
         public CampaignDef Campaign = new CampaignDef();
         public SummonDef Summon = new SummonDef();
+        /// <summary>vfxstyle.json (GG-T253): the element/status look table.</summary>
+        public VfxStyleSheet Vfx = new VfxStyleSheet();
         /// <summary>mercenaries.json (GG-T233), in file order.</summary>
         public readonly List<MercenaryDef> Mercenaries = new List<MercenaryDef>();
         public MercenaryDef TryMercenary(string classId) => Mercenaries.Find(m => string.Equals(m.Class, classId, StringComparison.OrdinalIgnoreCase));

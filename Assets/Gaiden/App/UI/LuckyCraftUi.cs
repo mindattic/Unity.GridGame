@@ -76,7 +76,7 @@ namespace GridGame.App
         {
             var app = GameApp.I;
             app.Audio.Sfx("element.arcane");
-            yield return Tween.Run(1.0f, t =>
+            yield return Tween.Run(Timing.Cinematic, t =>
             {
                 gem.style.rotate = new Rotate(new Angle(t * 720f));
                 float k = 0.6f + 0.6f * t;
@@ -86,7 +86,7 @@ namespace GridGame.App
             app.Audio.Sfx(masterwork ? "battle.powerup" : "battle.clang");
             text.text = res.Message;
             yield return Tween.All(app, Tween.Fade(text, 0f, 1f, 0.3f), Tween.Pop(gem, masterwork ? 1.4f : 1.1f, Timing.Emphasis));
-            yield return Tween.Wait(1.2f);
+            yield return Tween.Wait(Timing.Cinematic);
             yield return Tween.Fade(veil, 1f, 0f, 0.25f);
             veil.RemoveFromHierarchy();
             refresh();

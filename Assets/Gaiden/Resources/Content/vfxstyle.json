@@ -1,0 +1,34 @@
+{
+  "Elements": [
+    { "Id": "Physical", "Core": "#D9E0F2", "Glow": "#FFF2D9", "Accent": "#FFFFFF", "Shape": "spark", "Motion": "burst", "Cue": "battle.hit", "Count": 7, "Size": 16, "Reach": 110, "Time": "Standard", "Prefab": null },
+    { "Id": "Fire", "Core": "#FF7326", "Glow": "#FFD95A", "Accent": "#FF400D", "Shape": "ember", "Motion": "rise", "Cue": "element.fire", "Count": 12, "Size": 26, "Reach": 150, "Time": "Emphasis", "Prefab": null },
+    { "Id": "Ice", "Core": "#80D9FF", "Glow": "#CCF2FF", "Accent": "#FFFFFF", "Shape": "shard", "Motion": "burst", "Cue": "element.ice", "Count": 8, "Size": 18, "Reach": 130, "Time": "Standard", "Ring": true, "Prefab": null },
+    { "Id": "Lightning", "Core": "#FFF259", "Glow": "#FFFFBF", "Accent": "#FFFFFF", "Shape": "spark", "Motion": "bolt", "Cue": "element.lightning", "Count": 8, "Size": 16, "Reach": 120, "Time": "Instant", "Prefab": null },
+    { "Id": "Poison", "Core": "#99FF4D", "Glow": "#8CFF59", "Accent": "#D9FF99", "Shape": "bubble", "Motion": "rise", "Cue": "element.poison", "Count": 9, "Size": 20, "Reach": 110, "Time": "Dramatic", "Prefab": null },
+    { "Id": "Holy", "Core": "#FFF7C7", "Glow": "#FFFFCC", "Accent": "#FFFFFF", "Shape": "ray", "Motion": "rays", "Cue": "element.arcane", "Count": 8, "Size": 14, "Reach": 120, "Time": "Emphasis", "Ring": true, "Prefab": null },
+    { "Id": "Dark", "Core": "#9E4DF2", "Glow": "#6A2BB3", "Accent": "#D9B3FF", "Shape": "mote", "Motion": "implode", "Cue": "element.arcane", "Count": 12, "Size": 22, "Reach": 160, "Time": "Emphasis", "Prefab": null },
+    { "Id": "Arcane", "Core": "#FF73D9", "Glow": "#FFB3EE", "Accent": "#FFFFFF", "Shape": "rune", "Motion": "pulse", "Cue": "element.arcane", "Count": 6, "Size": 16, "Reach": 120, "Time": "Emphasis", "Ring": true, "Prefab": null },
+    { "Id": "Heal", "Core": "#73F294", "Glow": "#B3FFC4", "Accent": "#FFFFFF", "Shape": "mote", "Motion": "rise", "Cue": "battle.heal", "Count": 7, "Size": 21, "Reach": 105, "Time": "Dramatic", "Prefab": null },
+    { "Id": "Water", "Core": "#338CE6", "Glow": "#8CC4FF", "Accent": "#FFFFFF", "Shape": "droplet", "Motion": "fall", "Cue": "element.water", "Count": 10, "Size": 14, "Reach": 160, "Time": "Standard", "Prefab": null }
+  ],
+  "Statuses": [
+    { "Id": "burning", "Element": "Fire", "Count": 12, "LingerEvery": 1 },
+    { "Id": "warm", "Element": "Fire", "Count": 5, "Size": 16, "LingerEvery": 3 },
+    { "Id": "frozen", "Element": "Ice", "Motion": "implode", "Count": 10, "Reach": 170, "Tint": "#A6D9FF", "TintHolds": true, "LingerEvery": 1 },
+    { "Id": "wet", "Element": "Water", "LingerEvery": 1 },
+    { "Id": "poisoned", "Element": "Poison", "Cue": "status.bubble", "Count": 14, "Tint": "#B3FF99", "LingerEvery": 1 },
+    { "Id": "regen", "Element": "Heal", "LingerEvery": 2 },
+    { "Id": "sleep", "Core": "#BFCCFF", "Glow": "#E6EBFF", "Shape": "glyph", "Glyph": "z", "Motion": "drift", "Cue": "status.debuff", "Count": 3, "Size": 46, "Reach": 90, "Time": "Dramatic", "LingerEvery": 3 },
+    { "Id": "slowed", "Core": "#BF8CFF", "Glow": "#E0CCFF", "Shape": "mote", "Motion": "spiral", "Cue": "status.debuff", "Count": 10, "Size": 16, "Reach": 130, "Time": "Emphasis" },
+    { "Id": "silenced", "Core": "#D98CFF", "Glow": "#F0D9FF", "Shape": "rune", "Motion": "contract", "Cue": "status.debuff", "Count": 6, "Size": 14, "Reach": 150, "Time": "Standard", "Ring": true },
+    { "Id": "blinded", "Core": "#262033", "Glow": "#595973", "Shape": "smoke", "Motion": "billow", "Cue": "status.debuff", "Count": 8, "Size": 50, "Reach": 60, "Time": "Emphasis" },
+    { "Id": "protection", "Core": "#66CC73", "Glow": "#B3FFC4", "Shape": "rune", "Motion": "pulse", "Cue": "battle.cast", "Count": 6, "Size": 14, "Reach": 110, "Time": "Standard", "Ring": true }, { "Id": "ward", "Core": "#4FA3E0", "Glow": "#B3DCFF", "Shape": "rune", "Motion": "pulse", "Cue": "battle.cast", "Count": 6, "Size": 14, "Reach": 110, "Time": "Standard", "Ring": true },
+    { "Id": "taunting", "Core": "#FF5A3C", "Glow": "#FF9973", "Shape": "mote", "Motion": "pulse", "Cue": "battle.taunt", "Count": 6, "Size": 14, "Reach": 300, "Time": "Emphasis", "LingerEvery": 1 },
+    { "Id": "empowered", "Core": "#FFB847", "Glow": "#FFE6B3", "Shape": "ember", "Motion": "rise", "Cue": "battle.cast", "Count": 12, "Size": 19, "Reach": 170, "Time": "Emphasis", "Swell": true, "LingerEvery": 1 }
+  ],
+  "Tiers": [
+    { "Tier": "Minor", "Count": 0.75, "Size": 0.9, "Shake": 0, "HitStop": 0, "Prefab": null },
+    { "Tier": "Major", "Count": 1.0, "Size": 1.0, "Shake": 9, "HitStop": 0.04, "Prefab": null },
+    { "Tier": "Ultimate", "Count": 1.6, "Size": 1.3, "Shake": 18, "HitStop": 0.09, "Prefab": null }
+  ]
+}

@@ -103,6 +103,71 @@ def shot(name):
     return call("screenshot", name=name)["file"]
 
 
+def vfxsheet(run="vfxsheet", limit=0, extra=(), frames=48, every=4):
+    """GG-T253 contact sheets (POL-E4..E6): plays every spell/skill/item's look (devvfx: cast, flight, impact at its
+    tier, the status it inflicts) from the first hero onto the first foe of one battle, records a fixed-step frame strip
+    of each, and composes artifacts/<run>/strips/<ability>.png plus one grid per element in artifacts/<run>/ (a row per
+    ability), so 'same element = same family look, different elements = distinguishable' can be judged at a glance."""
+    from PIL import Image
+    content = os.path.join(ROOT, "Assets", "Gaiden", "Resources", "Content")
+    abilities = [a for a in json.load(open(os.path.join(content, "abilities.json"), encoding="utf-8"))
+                 if a.get("Kind") != "Passive"]
+    if limit:
+        abilities = abilities[:limit]
+    launch(run, extra=extra, fresh=True)
+    call("setting", key="cutins", value="0")  # the caster splash would hide the first frames of every strip
+    call("battle", stage="greenvalley-02")
+    _wait_screen("battle", 10)
+    time.sleep(2.5)
+    # Crop each frame to the caster-to-target span (devvfx plays first hero -> first foe), padded 1.5 tiles.
+    units = call("state")["battle"]["units"]
+    hero = next(u for u in units if u["team"] == "Hero")
+    foe = next(u for u in units if u["team"] != "Hero")
+    xs = [hero["x"], foe["x"] + foe["W"]] + [hero["x"] + hero["W"], foe["x"]]
+    ys = [hero["y"], foe["y"] + foe["H"]] + [hero["y"] + hero["H"], foe["y"]]
+    span = (BOARD_LEFT + TILE * (min(xs) - 1.5), BOARD_TOP + TILE * (min(ys) - 2.5),
+            BOARD_LEFT + TILE * (max(xs) + 1.5), BOARD_TOP + TILE * (max(ys) + 1.0))
+    art = os.path.join(ROOT, "artifacts", run)
+    os.makedirs(os.path.join(art, "strips"), exist_ok=True)
+    rows = {}
+    for a in abilities:
+        r = call("devvfx", ability=a["Id"])
+        if not r.get("ok"):
+            print("skip", a["Id"], r)
+            continue
+        rec = call("record", name="vfx_" + a["Id"].replace(":", "_"), frames=frames, every=every, step=1 / 30, timeout=120)
+        time.sleep(0.4)
+        shots = sorted(f for f in os.listdir(rec["dir"]) if f.endswith(".png"))
+        imgs = [Image.open(os.path.join(rec["dir"], f)).convert("RGB") for f in shots]
+        if not imgs:
+            continue
+        w, h = imgs[0].size
+        sx, sy = w / 1170, h / 2532
+        box = (max(0, int(span[0] * sx)), max(0, int(span[1] * sy)), min(w, int(span[2] * sx)), min(h, int(span[3] * sy)))
+        cw = 220
+        ch = int(cw * (box[3] - box[1]) / max(1, box[2] - box[0]))
+        cells = [im.crop(box).resize((cw, ch)) for im in imgs]
+        strip = Image.new("RGB", (sum(c.width for c in cells), cells[0].height), (8, 10, 24))
+        x = 0
+        for c in cells:
+            strip.paste(c, (x, 0)); x += c.width
+        strip.save(os.path.join(art, "strips", a["Id"].replace(":", "_") + ".png"))
+        el = "Heal" if a.get("BaseHeal", 0) > 0 else a.get("DamageType", "Arcane")
+        rows.setdefault(el, []).append(strip)
+        for f in shots:
+            os.remove(os.path.join(rec["dir"], f))
+    for el, strips in rows.items():
+        strips = strips[:10]
+        grid = Image.new("RGB", (max(s.width for s in strips), sum(s.height + 6 for s in strips)), (0, 0, 0))
+        y = 0
+        for s in strips:
+            grid.paste(s, (0, y)); y += s.height + 6
+        grid.save(os.path.join(art, f"{el}.png"))
+        print(el, len(rows[el]), "abilities ->", os.path.join(art, f"{el}.png"))
+    call("quit", timeout=3)
+    return rows
+
+
 def drag_tiles(*tiles, step=0.12):
     pts = ";".join(f"{x},{y}" for x, y in (tile(*t) for t in tiles))
     return call("drag", path=pts, step=step)
@@ -2144,6 +2209,9 @@ if __name__ == "__main__":
         sys.exit(0 if orb_fanout() else 1)
     elif cmd == "pause":
         sys.exit(0 if pause_check() else 1)
+    elif cmd == "vfxsheet":
+        vfxsheet(sys.argv[2] if len(sys.argv) > 2 else "vfxsheet", int(sys.argv[3]) if len(sys.argv) > 3 else 0,
+                 extra=tuple(sys.argv[4:]))
     elif cmd == "crucible":
         crucible(sys.argv[3] if len(sys.argv) > 3 else "crucible", leave_after=int(sys.argv[2]) if len(sys.argv) > 2 else 3)
     elif cmd == "bestiary":
