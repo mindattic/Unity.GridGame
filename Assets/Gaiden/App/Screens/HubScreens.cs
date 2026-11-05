@@ -917,6 +917,7 @@ namespace GridGame.App
             }, "btn--primary", w);
             btn.name = "craft";
             Ui.SetEnabled(btn, !locked && Crafting.HasInputs(s, r) && s.Gold >= r.Gold);
+            LuckyCraftUi.Section(w, c, s, r, !locked && Crafting.HasInputs(s, r) && s.Gold >= r.Gold, page.Refresh);
 
             if (r.PotencyResult != null)
             {

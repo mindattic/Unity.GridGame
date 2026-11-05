@@ -67,7 +67,13 @@ namespace GridGame.Meta
             {
                 case PaywallKind.Summon: return Summon.Arrive(c, s, job.Arg);
                 case PaywallKind.RestedRefill: RestedPool.Fill(s, now); return Result.Success("The party is rested.");
-                default: return Result.Success(); // LuckyDiamond: GG-T235 lands its effect here
+                case PaywallKind.LuckyDiamond:
+                    var diamond = c.TryItem(Crafting.DiamondId);
+                    if (diamond == null) return Result.Fail("No such item");
+                    if (s.Count(diamond.Id) >= diamond.MaxStack) { s.Gold += job.Paid; return Result.Fail("Can't carry more — refunded"); }
+                    s.AddItem(diamond.Id, 1);
+                    return Result.Success($"A {diamond.Name} for the forge.");
+                default: return Result.Success();
             }
         }
 

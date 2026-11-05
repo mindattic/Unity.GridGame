@@ -955,6 +955,15 @@ namespace GridGame.Meta
         public const float MasterworkStatBonusMin = 0.10f;
         public const float MasterworkStatBonusMax = 0.20f;
 
+        // ── Lucky craft (§24.6.5, GG-T235): a Diamond spent on a Forge craft ─────────────────────
+        public const string DiamondId = "mat_diamond";
+        /// <summary>A lucky craft adds this to the Masterwork chance…</summary>
+        public const float LuckyChanceBonus = 0.40f;
+        /// <summary>…and lifts the cap to this…</summary>
+        public const float LuckyMaxChance = 0.75f;
+        /// <summary>…and a lucky Masterwork's stat bonus never rolls below this.</summary>
+        public const float LuckyStatBonusMin = 0.15f;
+
         private static int masterworkSeed = Environment.TickCount;
 
         public static StationKind StationFor(CraftStation station) => station == CraftStation.Forge ? StationKind.Blacksmith : StationKind.Alchemist;
@@ -987,12 +996,17 @@ namespace GridGame.Meta
         }
 
         /// <summary>Chance this save's next Forge/Upgrade craft rolls a Masterwork result (party Luck + Blacksmith level).</summary>
-        public static float MasterworkChance(ContentDb c, SaveData s)
+        public static float MasterworkChance(ContentDb c, SaveData s, bool lucky = false)
         {
             int stationLevel = StationProgress.Level(s, StationKind.Blacksmith);
             float chance = MasterworkBaseChance + PartyLuck(c, s) * MasterworkChancePerLuck + (stationLevel - 1) * MasterworkChancePerStationLevel;
+            if (lucky) return Math.Max(0f, Math.Min(LuckyMaxChance, chance + LuckyChanceBonus));
             return Math.Max(0f, Math.Min(MasterworkMaxChance, chance));
         }
+
+        /// <summary>A lucky craft is on offer: a Forge recipe whose result can roll Masterwork, with a Diamond in the bag.</summary>
+        public static bool CanLucky(ContentDb c, SaveData s, RecipeDef r) =>
+            r != null && r.Station == CraftStation.Forge && r.ResultCount == 1 && c.TryItem(r.Result) is ItemDef it && MasterworkEligible(it) && s.Count(DiamondId) > 0;
 
         private static bool MasterworkEligible(ItemDef item) =>
             item.Type == ItemType.Equipment && item.Durability > 0 && (item.Slot == EquipmentSlot.Weapon || Array.IndexOf(BattleEngine.ArmorSlots, item.Slot) >= 0);
@@ -1001,11 +1015,12 @@ namespace GridGame.Meta
         /// higher-rarity inputs — e.g. a Pure Slime Gel in place of a plain one brews a Greater Healing Potion.</summary>
         public static bool HasPotencyInputs(SaveData s, RecipeDef r) => r.PotencyResult != null && HasInputs(s, r, r.PotencyInputs);
 
-        public static Result Craft(ContentDb c, SaveData s, RecipeDef r, bool potency = false, Rng rng = null)
+        public static Result Craft(ContentDb c, SaveData s, RecipeDef r, bool potency = false, Rng rng = null, bool lucky = false)
         {
             if (!IsUnlocked(s, r)) return Result.Fail($"Requires {StationProgress.TierName(r.Tier)}");
             if (!Forging.ArmorOpen(c, s, r)) return Result.Fail(Forging.ArmorLockedHint);
             if (potency && r.PotencyResult == null) return Result.Fail("No greater version");
+            if (lucky && (potency || !CanLucky(c, s, r))) return Result.Fail("No Diamond for a lucky craft");
             var inputs = potency ? r.PotencyInputs : r.Inputs;
             var resultId = potency ? r.PotencyResult : r.Result;
             var resultCount = potency ? r.PotencyResultCount : r.ResultCount;
@@ -1018,19 +1033,21 @@ namespace GridGame.Meta
             if (r.BaseItem != null) s.AddItem(r.BaseItem, -1);
             s.AddItem(result.Id, resultCount);
             StationProgress.Gain(s, StationFor(r.Station), CraftXp);
+            if (lucky) s.AddItem(DiamondId, -1);
             bool masterwork = false;
             if (!potency && r.Station == CraftStation.Forge && resultCount == 1 && MasterworkEligible(result))
             {
                 rng ??= new Rng(masterworkSeed++);
-                if (rng.Chance(MasterworkChance(c, s)))
+                if (rng.Chance(MasterworkChance(c, s, lucky)))
                 {
                     masterwork = true;
-                    float mastery = rng.Range(1f + MasterworkStatBonusMin, 1f + MasterworkStatBonusMax);
+                    float mastery = rng.Range(1f + (lucky ? LuckyStatBonusMin : MasterworkStatBonusMin), 1f + MasterworkStatBonusMax);
                     int durability = (int)Math.Round(result.Durability * BattleConfig.MasterworkDurabilityMultiplier);
                     if (!s.Worn.TryGetValue(result.Id, out var list)) s.Worn[result.Id] = list = new List<WornGear>();
                     list.Add(new WornGear { Durability = durability, Repairs = 0, Mastery = mastery });
                 }
             }
+            if (lucky && !masterwork) return Result.Success($"Made {result.Name} — the Diamond's luck didn't hold");
             return Result.Success(masterwork ? $"★ Masterwork {result.Name}!" : $"Made {result.Name}");
         }
 
@@ -1323,13 +1340,13 @@ namespace GridGame.Meta
 
         /// <summary>The guided first forge: makes the starter weapon and equips it on the hero it suits (when one gains
         /// from it), then marks the first forge done. Anything else is an ordinary <see cref="Crafting.Craft"/>.</summary>
-        public static Result Forge(ContentDb c, SaveData s, RecipeDef r)
+        public static Result Forge(ContentDb c, SaveData s, RecipeDef r, bool lucky = false)
         {
-            if (IsGuidedArmor(c, s, r)) return ForgeFirstArmor(c, s, r);
-            if (!IsGuided(s, r)) return Crafting.Craft(c, s, r);
+            if (IsGuidedArmor(c, s, r)) return ForgeFirstArmor(c, s, r, lucky);
+            if (!IsGuided(s, r)) return Crafting.Craft(c, s, r, lucky: lucky);
             var weapon = c.TryItem(r.Result);
             var hero = SuitedHero(c, s, weapon);
-            var made = Crafting.Craft(c, s, r);
+            var made = Crafting.Craft(c, s, r, lucky: lucky);
             if (!made.Ok) return made;
             s.Flags.Add(FirstForgeFlag);
             if (hero == null) return made;
@@ -1398,11 +1415,11 @@ namespace GridGame.Meta
 
         /// <summary>The guided first armor: makes the set piece and equips it on the hero it suits (when one gains from
         /// it), then marks the first armor done.</summary>
-        private static Result ForgeFirstArmor(ContentDb c, SaveData s, RecipeDef r)
+        private static Result ForgeFirstArmor(ContentDb c, SaveData s, RecipeDef r, bool lucky)
         {
             var piece = c.TryItem(r.Result);
             var hero = SuitedWearer(c, s, piece);
-            var made = Crafting.Craft(c, s, r);
+            var made = Crafting.Craft(c, s, r, lucky: lucky);
             if (!made.Ok) return made;
             s.Flags.Add(FirstArmorFlag);
             if (hero == null) return made;

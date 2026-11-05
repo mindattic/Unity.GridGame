@@ -1254,6 +1254,10 @@
    "lorc/powder",
    "arcane"
   ],
+  "mat_diamond": [
+   "lorc/cut-diamond",
+   "ice"
+  ],
   "mat_undead_bone": [
    "lorc/crossed-bones",
    "bone"

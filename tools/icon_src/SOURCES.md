@@ -82,6 +82,7 @@ Authors: carl-olsen, darkzaitzev, delapouite, faithtoken, lorc, sbed, skoll, zer
 - lorc/crystal-cluster
 - lorc/crystal-growth
 - lorc/crystal-wand
+- lorc/cut-diamond
 - lorc/drop
 - lorc/droplets
 - lorc/fairy-wand

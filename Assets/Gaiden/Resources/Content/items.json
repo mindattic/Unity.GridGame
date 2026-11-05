@@ -2093,6 +2093,36 @@
     "Icon": null
   },
   {
+    "Id": "mat_diamond",
+    "Name": "Diamond",
+    "Description": "A flawless cut stone. Set in the forge's crucible, it coaxes a Masterwork out of the metal far more often.",
+    "Type": "CraftingMaterial",
+    "Rarity": "Epic",
+    "Slot": "None",
+    "WeaponType": null,
+    "BaseCost": 1,
+    "SellValue": 0,
+    "MaxStack": 99,
+    "Durability": 0,
+    "BaseHealing": 0,
+    "BaseDamage": 0,
+    "Stats": {
+      "Strength": 0,
+      "Vitality": 0,
+      "Agility": 0,
+      "Speed": 0,
+      "Stamina": 0,
+      "Intelligence": 0,
+      "Wisdom": 0,
+      "Luck": 0
+    },
+    "BattleStartManaOrbs": 0,
+    "OnUseAbility": null,
+    "Resistances": {},
+    "SoldByVendor": false,
+    "Icon": null
+  },
+  {
     "Id": "mat_undead_bone",
     "Name": "Undead Bone",
     "Description": "A bone pulsing with residual dark energy.",
