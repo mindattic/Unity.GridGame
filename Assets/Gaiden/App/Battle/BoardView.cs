@@ -700,7 +700,7 @@ namespace GridGame.App
             l.style.width = 300;
             l.style.unityTextAlign = TextAnchor.MiddleCenter;
             l.style.fontSize = size;
-            l.style.unityFontStyleAndWeight = FontStyle.Bold;
+            Fonts.UseHeavy(l);
             l.style.color = color;
             FxLayer.Add(l);
             return l;

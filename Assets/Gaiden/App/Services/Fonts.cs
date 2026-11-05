@@ -33,10 +33,12 @@ namespace GridGame.App
         };
 
         private static string currentBodyPath = Presets[0].Path;
-        private static FontAsset body, display, noto, symbols, outfit;
+        private static FontAsset body, display, heavy, noto, symbols, outfit;
 
         public static FontAsset Body => body ??= Make(currentBodyPath, true);
         public static FontAsset Display => display ??= Make("Fonts/Cinzel", true);
+        /// <summary>A real Outfit Bold cut (GG-T245): SDF faux-bold on a Regular file dilates and rounds every glyph, which read as "bubbly".</summary>
+        public static FontAsset Heavy => heavy ??= Make("Fonts/OutfitBold", true);
 
         private static FontAsset Fallback(ref FontAsset slot, string path)
         {
@@ -73,6 +75,12 @@ namespace GridGame.App
 
         public static void UseBody(VisualElement e) { if (Body != null) e.style.unityFontDefinition = FontDefinition.FromSDFFont(Body); }
         public static void UseDisplay(VisualElement e) { if (Display != null) e.style.unityFontDefinition = FontDefinition.FromSDFFont(Display); }
+        public static void UseHeavy(VisualElement e)
+        {
+            if (Heavy == null) return;
+            e.style.unityFontDefinition = FontDefinition.FromSDFFont(Heavy);
+            e.style.unityFontStyleAndWeight = FontStyle.Normal;
+        }
 
         /// <summary>
         /// Switches the body font and re-applies it to the UI root in place. unityFontDefinition is an

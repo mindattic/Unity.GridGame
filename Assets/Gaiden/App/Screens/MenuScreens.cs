@@ -89,9 +89,9 @@ namespace GridGame.App
 
             var col = Ui.El("fill col center", root);
             var title = Ui.Text("GRIDGAME", "title shadow", col);
-            Fonts.UseDisplay(title);
+            Fonts.UseHeavy(title);
             var sub = Ui.Text("GAIDEN", "title shadow", col);
-            Fonts.UseDisplay(sub);
+            Fonts.UseHeavy(sub);
             sub.style.fontSize = 150;
             sub.style.color = new Color(1f, 0.82f, 0.36f);
             var tag = Ui.Text("Slide. Flank. Strike.", "h2 shadow dim", col);
