@@ -90,9 +90,9 @@ Status values: ❌ fails, 🟡 partly passes or partly measured, ✅ passes, ⬜
 
 | ID | Rule | Why | Source | Measured by | Status |
 |---|---|---|---|---|---|
-| POL-F1 | Cue names follow the taxonomy **`ui.* / battle.* / element.* / status.* / story.*`** (old names aliased) | Findable, mixable, consistent | Game-audio practice | assets | 🟡 `ui.*` only; 33 flat battle cues |
-| POL-F2 | SFX loudness **−16 LUFS ± 2**, true peak ≤ **−1 dBTP** | Even mix, no clipping | EBU R128 / ITU-R BS.1770; mobile loudness norms | loud | ⬜ |
-| POL-F3 | Music sits at **−18 LUFS ± 2** and **ducks ≥ 6 dB** under cut-ins and dialogue | Speech and big moments stay clear | Broadcast/game mixing practice | loud + R6 | ❌ no ducking |
+| POL-F1 | Cue names follow the taxonomy **`ui.* / battle.* / element.* / status.* / story.*`** (old names aliased) | Findable, mixable, consistent | Game-audio practice | assets | ✅ every cue on the taxonomy, old names aliased (GG-T254) |
+| POL-F2 | SFX loudness **−16 LUFS ± 2**, true peak ≤ **−1 dBTP** | Even mix, no clipping | EBU R128 / ITU-R BS.1770; mobile loudness norms | loud | ✅ 57/57 SFX −16.5 … −14.7 LUFS, ≤ −1.5 dBTP (GG-T254) |
+| POL-F3 | Music sits at **−18 LUFS ± 2** and **ducks ≥ 6 dB** under cut-ins and dialogue | Speech and big moments stay clear | Broadcast/game mixing practice | loud + R6 | ✅ 5/5 tracks −18.5 … −18.0 LUFS; −8 dB duck under cut-ins, fanfares, dialogue (GG-T254) |
 | POL-F4 | Cues fired often (move, hit) have **≥ 3 variants**, and repeats are throttled | Avoids machine-gun repetition | Game-audio practice | assets | ✅ move ×6, hit ×7, 40 ms throttle |
 
 ### G. Balance and pacing

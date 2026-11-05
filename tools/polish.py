@@ -194,6 +194,32 @@ def art(tally):
             tally.one(rule, ok, {"screen": "art", "subject": subject, "detail": detail})
 
 
+def audio(tally):
+    """POL-F2 SFX loudness and POL-F3 music loudness from tools/loudness.py; POL-F3 ducking hooks and POL-F4 variant
+    pools and the repeat throttle read from the code (POL-F1 comes from the lint)."""
+    sys.path.insert(0, TOOLS)
+    import loudness
+    rep = loudness.report()
+    for kind, rule in (("sfx", "POL-F2"), ("music", "POL-F3")):
+        for f in rep[kind]["files"]:
+            tally.one(rule, f["ok"], {"screen": "audio", "subject": f["file"],
+                                      "detail": f"{f['lufs']} LUFS, {f['dbtp']} dBTP (target {rep[kind]['target']})"})
+    app = os.path.join(ROOT, "Assets", "Gaiden", "App")
+
+    def src(rel):
+        p = os.path.join(app, rel)
+        return open(p, encoding="utf-8").read() if os.path.exists(p) else ""
+    for rel, what in (("Battle/BattleScreen.CutIns.cs", "cut-ins"), ("Screens/LevelUpScreen.cs", "level-up fanfare"),
+                      ("Screens/DialogueScreen.cs", "dialogue")):
+        tally.one("POL-F3", "Audio.DuckFor(" in src(rel), {"screen": "audio", "subject": what, "detail": "music not ducked"})
+    sfx = os.listdir(loudness.SFX_DIR)
+    for pool in ("battle_move_", "battle_hit_"):
+        n = sum(1 for f in sfx if f.startswith(pool) and f.endswith(".ogg"))
+        tally.one("POL-F4", n >= 3, {"screen": "audio", "subject": pool.rstrip("_"), "detail": f"{n} variants"})
+    tally.one("POL-F4", "lastPlayed" in src("Services/Audio.cs"), {"screen": "audio", "subject": "throttle",
+                                                                    "detail": "no repeat throttle"})
+
+
 def gates():
     out = {}
     for name, cmd in (("glyphs", ["python", os.path.join(TOOLS, "check_glyphs.py")]),
@@ -341,6 +367,7 @@ def main():
             ui = uicheck()
     lint(tally)
     art(tally)
+    audio(tally)
     g = gates()
     if ui is not None:
         g["uicheck"] = ui

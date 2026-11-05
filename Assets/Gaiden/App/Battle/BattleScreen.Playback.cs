@@ -127,11 +127,11 @@ namespace GridGame.App
                     return Tween.Wait(Timing.Quick);
                 case ActionBeganEvent a when a.Label == "Shield":
                     ShowBanner("Shields up!");
-                    App.Audio.Sfx("cast");
+                    App.Audio.Sfx("battle.cast");
                     return Tween.Wait(Timing.Standard);
 
-                case SteppedEvent s: return StepAnim(s.UnitId, s.To, 0.16f, "move");
-                case DisplacedEvent d: return StepAnim(d.UnitId, d.To, 0.14f, "slide");
+                case SteppedEvent s: return StepAnim(s.UnitId, s.To, 0.16f, "battle.move");
+                case DisplacedEvent d: return StepAnim(d.UnitId, d.To, 0.14f, "battle.slide");
                 case TeleportedEvent t: return TeleportAnim(t);
 
                 case PincerFormedEvent p: FlushTallies(); return PincerAnim(p);
@@ -154,7 +154,7 @@ namespace GridGame.App
                 case AmplifierUsedEvent au: return AmpUsedAnim(au);
                 case ManaChargedEvent mc: return ChargeAnim(mc);
                 case OrbMintedEvent o: if (o.Reason == "pincer") FlushTallies(); return OrbAnim(o);
-                case OrbsSpentEvent os: SyncOrbs(os.CountAfter); App.Audio.Sfx("cast", 0.6f); return Tween.Wait(Timing.Quick);
+                case OrbsSpentEvent os: SyncOrbs(os.CountAfter); App.Audio.Sfx("battle.cast", 0.6f); return Tween.Wait(Timing.Quick);
 
                 case TimelineAdvancedEvent ta: FlushTallies(); return TimelineAnim(ta);
                 case PushedBackEvent pb: return PushAnim(pb);
@@ -181,12 +181,12 @@ namespace GridGame.App
                 case BuffTickedEvent bt: RefreshUnit(bt.UnitId); return null;
                 case AnnounceEvent an: ShowBanner(an.Text); return Tween.Wait(Timing.Standard);
                 case ScannedEvent sc: return ScanAnim(sc);
-                case TrapPlacedEvent tp: board.SyncTraps(State); App.Audio.Sfx("trap"); return FloatText(tp.ById, "Snare!", Palette.Boss, 0.3f);
-                case TrapTriggeredEvent tt: board.SyncTraps(State); App.Audio.Sfx("trap"); return FloatText(tt.UnitId, "Trap!", Palette.Boss, 0.25f);
+                case TrapPlacedEvent tp: board.SyncTraps(State); App.Audio.Sfx("battle.trap"); return FloatText(tp.ById, "Snare!", Palette.Boss, 0.3f);
+                case TrapTriggeredEvent tt: board.SyncTraps(State); App.Audio.Sfx("battle.trap"); return FloatText(tt.UnitId, "Trap!", Palette.Boss, 0.25f);
                 case WeaponWornEvent _: return null;
-                case WeaponShatteredEvent ws: App.Audio.Sfx("shatter"); return FloatText(ws.UnitId, "SHATTER!", Palette.Buff, 0.5f, 80);
-                case ArmorBrokenEvent ab: App.Audio.Sfx("shatter", 0.7f); return FloatText(ab.UnitId, "Armor broken!", new Color(1f, 0.6f, 0.4f), 0.4f, 64);
-                case WeaponSwappedEvent sw: App.Audio.Sfx("dash"); SyncBar(); return FloatText(sw.UnitId, "⭾ " + (App.Content.TryItem(sw.ToWeapon)?.Name ?? "Swap"), Palette.Info, 0.3f, 54);
+                case WeaponShatteredEvent ws: App.Audio.Sfx("battle.shatter"); return FloatText(ws.UnitId, "SHATTER!", Palette.Buff, 0.5f, 80);
+                case ArmorBrokenEvent ab: App.Audio.Sfx("battle.shatter", 0.7f); return FloatText(ab.UnitId, "Armor broken!", new Color(1f, 0.6f, 0.4f), 0.4f, 64);
+                case WeaponSwappedEvent sw: App.Audio.Sfx("battle.dash"); SyncBar(); return FloatText(sw.UnitId, "⭾ " + (App.Content.TryItem(sw.ToWeapon)?.Name ?? "Swap"), Palette.Info, 0.3f, 54);
                 case BossPhaseEvent bp: return BossAnim(bp);
                 case RuleBrokenEvent rb: return RuleBreakAnim(rb);
                 case WaveStartedEvent wv: TutorialWaveStarted(); return WaveAnim(wv);
@@ -194,7 +194,7 @@ namespace GridGame.App
                 case EggLaidEvent el: return EggLaidAnim(el);
                 case EggHatchedEvent eh: return HatchAnim(eh);
                 case WaveClearedEvent wc: FlushTallies(); ShowBanner("Wave cleared!"); return Tween.Wait(Timing.Emphasis);
-                case BattleEndedEvent be: lastEnded = be; ShowBanner(be.Victory ? "VICTORY!" : be.Escaped ? "ESCAPED" : "DEFEAT"); App.Audio.Sfx(be.Victory ? "victory" : be.Escaped ? "dash" : "defeat"); return Tween.Wait(1.0f);
+                case BattleEndedEvent be: lastEnded = be; ShowBanner(be.Victory ? "VICTORY!" : be.Escaped ? "ESCAPED" : "DEFEAT"); App.Audio.Sfx(be.Victory ? "battle.victory" : be.Escaped ? "battle.dash" : "battle.defeat"); return Tween.Wait(1.0f);
                 case RevivedEvent rv: return ReviveAnim(rv);
                 case PlayerControlEvent _: FlushTallies(); ShowBanner(""); SyncAll(); return null;
                 case TileConflictEvent tc:
@@ -292,7 +292,7 @@ namespace GridGame.App
             if (!board.Units.TryGetValue(unitId, out var v)) yield break;
             var from = BoardView.PosOf(v.Tile);
             // GG-T219: a walking unit streaks; a displaced one is shown by its shove instead.
-            bool trail = sfx == "move" && v.Tile != to;
+            bool trail = sfx == "battle.move" && v.Tile != to;
             if (trail) board.Trail.Follow(v.Root, State.UnitById(unitId)?.IsHero == true ? HeroTrail : EnemyTrail);
             v.Tile = to;
             App.Audio.Sfx(sfx, 0.6f);
@@ -303,7 +303,7 @@ namespace GridGame.App
         private IEnumerator TeleportAnim(TeleportedEvent t)
         {
             if (!board.Units.TryGetValue(t.UnitId, out var v)) yield break;
-            App.Audio.Sfx("magic");
+            App.Audio.Sfx("element.arcane");
             yield return Tween.Fade(v.Root, 1, 0, Timing.Quick);
             board.Place(v, t.To);
             yield return Tween.Fade(v.Root, 0, 1, Timing.Quick);
@@ -347,7 +347,7 @@ namespace GridGame.App
                 var partner = hit.Count > 0 ? hit[0] : FootprintTiles(s).Any(t => t.IsCardinalNeighbor(aAt.At)) ? aAt : bAt;
                 links.Add(BoardView.EdgeLink(s.At, partner.At));
             }
-            App.Audio.Sfx("pincer", 1f, 1f + 0.08f * (chainCount - 1));
+            App.Audio.Sfx("battle.pincer", 1f, 1f + 0.08f * (chainCount - 1));
             // The outline draws itself fully around the trapped line before anything else happens — a beat of
             // realization — so the pincer reads as "caught" before the cut-in slams in (owner request).
             yield return Tween.Run(ReduceMotion ? 0.05f : 0.24f, k =>
@@ -502,8 +502,8 @@ namespace GridGame.App
                 layer.Insert(1, band); // above the dim, below the portraits
                 bands.Add(band);
             }
-            App.Audio.Sfx("dash", 0.7f, 0.9f);
-            if (delay2 > 0f) App.StartCoroutine(DelayedSfx("dash", delay2, 1.05f));
+            App.Audio.Sfx("battle.dash", 0.7f, 0.9f);
+            if (delay2 > 0f) App.StartCoroutine(DelayedSfx("battle.dash", delay2, 1.05f));
             var cam = boardHost;
             cam.style.transformOrigin = new TransformOrigin(mid.x - origin.x, mid.y - origin.y);
             float total = CutInSeconds + delay2;
@@ -592,7 +592,7 @@ namespace GridGame.App
             if (sa.Effect == SupportEffect.Strike) yield break; // the support strikes animate themselves
             var color = SupportColor(sa.Effect);
             Feed($"✦ {sup.Name}: {label}", color);
-            App.Audio.Sfx(sa.Effect == SupportEffect.Heal ? "heal" : sa.Effect == SupportEffect.Mana ? "orb" : "cast", 0.7f, 1.2f);
+            App.Audio.Sfx(sa.Effect == SupportEffect.Heal ? "battle.heal" : sa.Effect == SupportEffect.Mana ? "battle.orb" : "battle.cast", 0.7f, 1.2f);
             App.StartCoroutine(Tween.Pop(sv.Root, 1.12f, 0.18f));
             var at = BoardView.CenterOf(sv.Tile, sv.W, sv.H);
             App.StartCoroutine(FloatAway(board.Float(label + "!", at, color, 60), 0.6f));
@@ -621,7 +621,7 @@ namespace GridGame.App
             {
                 // A hexed bolt flies down the lane.
                 var from = ViewCenter(a); var to = ViewCenter(t);
-                App.Audio.Sfx("magic", 0.7f);
+                App.Audio.Sfx("element.arcane", 0.7f);
                 yield return Tween.Run(Timing.Standard, k => { board.Lines.ClearLines(); board.Lines.Dot(ProjectilePoint(ProjectileMotion.Twist, from, to, k), 22f, new Color(0.7f, 0.35f, 1f)); });
                 board.Lines.ClearLines();
                 yield break;
@@ -639,13 +639,13 @@ namespace GridGame.App
             var at = BoardView.CenterOf(v.Tile, v.W, v.H);
             if (d.Hit == HitKind.Miss)
             {
-                App.Audio.Sfx("miss");
+                App.Audio.Sfx("battle.miss");
                 App.StartCoroutine(FloatAway(board.Float("MISS", at, Palette.Info, 56), 0.6f));
                 yield return Tween.Wait(Timing.Quick);
                 yield break;
             }
             bool crit = d.Hit == HitKind.Critical;
-            App.Audio.Sfx(d.SourceId < 0 ? "debuff" : crit ? "crit" : SfxFor(d.Type));
+            App.Audio.Sfx(d.SourceId < 0 ? "status.debuff" : crit ? "battle.crit" : SfxFor(d.Type));
             var src = State.UnitById(d.SourceId);
             Feed($"{(d.SourceId < 0 ? "☠" : "†")} {(src != null ? src.Name + " → " : "")}{t.Name}: {d.Amount}{(crit ? " CRIT" : "")}{(d.Note != null ? " (" + d.Note + ")" : "")}", t.IsHero ? new Color(1f, 0.65f, 0.6f) : Palette.White.WithA(0.9f));
             if (d.Amount > 0 && !ReduceMotion)
@@ -672,12 +672,12 @@ namespace GridGame.App
         {
             switch (t)
             {
-                case DamageType.Fire: return "fire";
-                case DamageType.Ice: return "ice";
-                case DamageType.Lightning: return "lightning";
-                case DamageType.Poison: return "poison";
-                case DamageType.Physical: return "hit";
-                default: return "magic";
+                case DamageType.Fire: return "element.fire";
+                case DamageType.Ice: return "element.ice";
+                case DamageType.Lightning: return "element.lightning";
+                case DamageType.Poison: return "element.poison";
+                case DamageType.Physical: return "battle.hit";
+                default: return "element.arcane";
             }
         }
 
@@ -686,7 +686,7 @@ namespace GridGame.App
             var t = State.UnitById(h.TargetId);
             if (t == null || !board.Units.TryGetValue(t.Id, out var v)) yield break;
             Feed($"✚ {t.Name} +{h.Amount} HP", Palette.Good);
-            App.Audio.Sfx("heal");
+            App.Audio.Sfx("battle.heal");
             if (!ReduceMotion) App.StartCoroutine(HealBurst(BoardView.CenterOf(v.Tile, v.W, v.H)));
             v.SetHp(h.HpAfter, t.MaxHp);
             v.SetGlow(new Color(0.4f, 1f, 0.5f), 0.8f);
@@ -700,7 +700,7 @@ namespace GridGame.App
             if (!board.Units.TryGetValue(d.UnitId, out var v)) yield break;
             var du = State.UnitById(d.UnitId);
             if (du != null) Feed($"★ {du.Name} is defeated", du.IsHero ? new Color(1f, 0.45f, 0.4f) : Palette.Gold);
-            App.Audio.Sfx("death");
+            App.Audio.Sfx("battle.death");
             // GridGame2026's death-portrait dissolve (GG-T96): the token goes at once and the unit's whole,
             // uncropped artwork takes its place over the board, shuddering, shrinking and fading on its own —
             // playback carries straight on (loot burst, the next kill in the chain) while it plays out.
@@ -777,7 +777,7 @@ namespace GridGame.App
             var v = board.Units.TryGetValue(u.Id, out var ex) ? ex : board.Add(u);
             board.Place(v, e.At);
             v.SetHp(u.Hp, u.MaxHp);
-            App.Audio.Sfx("pickup", e.Captive ? 0.75f : 0.9f);
+            App.Audio.Sfx("battle.pickup", e.Captive ? 0.75f : 0.9f);
             Billboard(e.Captive ? $"A captive {u.Name}! Keep them alive to free them." : $"{u.Name} joins the fight! Keep them alive to recruit them.", null, new Color(0.6f, 1f, 0.75f));
             v.Root.style.scale = new Scale(Vector2.zero);
             yield return Tween.Run(Timing.Standard, k => v.Root.style.scale = new Scale(Vector2.one * (k < 0.7f ? k / 0.7f * 1.15f : 1.15f - 0.15f * (k - 0.7f) / 0.3f)));
@@ -793,7 +793,7 @@ namespace GridGame.App
             board.Place(v, at);
             v.SetHp(r.Hp, r.MaxHp);
             SyncTimeline(null);
-            if (!quiet) App.Audio.Sfx("shatter", 0.5f, 0.6f);
+            if (!quiet) App.Audio.Sfx("battle.shatter", 0.5f, 0.6f);
             v.Root.style.translate = new Translate(0, -120);
             yield return Tween.Run(Timing.Quick, k => v.Root.style.translate = new Translate(0, -120f * (1f - k * k)));
             App.StartCoroutine(Tween.Shake(v.Root, 10f * Fx, Timing.Quick));
@@ -814,7 +814,7 @@ namespace GridGame.App
             board.Place(v, e.At);
             v.SetHp(u.Hp, u.MaxHp);
             SyncTimeline(null);
-            App.Audio.Sfx("debuff", 0.9f, 0.8f);
+            App.Audio.Sfx("status.debuff", 0.9f, 0.8f);
             Billboard($"{u.Name} rises again!", null, new Color(0.75f, 1f, 0.75f));
             v.Root.style.translate = new Translate(0, 60);
             yield return Tween.Run(Timing.Standard, k => { v.Root.style.translate = new Translate(0, 60f * (1f - k)); v.Root.style.opacity = k; });
@@ -829,7 +829,7 @@ namespace GridGame.App
             board.Place(v, e.At);
             v.SetHp(r.Hp, r.MaxHp);
             SyncTimeline(null);
-            App.Audio.Sfx("pickup", 0.6f, 0.8f);
+            App.Audio.Sfx("battle.pickup", 0.6f, 0.8f);
             v.Root.style.translate = new Translate(0, -60);
             yield return Tween.Run(Timing.Quick, k => v.Root.style.translate = new Translate(0, -60f * (1f - k * k)));
             Billboard($"{State.UnitById(e.FromUnitId)?.Name} lays an egg!", null, new Color(0.85f, 1f, 0.75f));
@@ -849,7 +849,7 @@ namespace GridGame.App
             board.Place(v, e.At);
             v.SetHp(u.Hp, u.MaxHp);
             SyncTimeline(null);
-            App.Audio.Sfx("crit", 0.8f, 1.1f);
+            App.Audio.Sfx("battle.crit", 0.8f, 1.1f);
             Billboard($"{u.Name} hatches!", null, Palette.GoldLight);
             v.Root.style.scale = new Scale(Vector2.zero);
             yield return Tween.Run(Timing.Standard, k => v.Root.style.scale = new Scale(Vector2.one * Mathf.Clamp01(k * 1.3f)));
@@ -880,26 +880,26 @@ namespace GridGame.App
         {
             if (def.Brain == Brain.Burrower)
             {
-                App.Audio.Sfx("trap", 0.8f, 0.7f);
+                App.Audio.Sfx("battle.trap", 0.8f, 0.7f);
                 v.Root.style.opacity = 0;
                 yield return Tween.Run(Timing.Standard, k => { v.Root.style.opacity = k; v.Root.style.scale = new Scale(Vector2.one * (0.7f + 0.3f * k)); });
                 App.StartCoroutine(Tween.Shake(v.Root, 8f * Fx, Timing.Quick));
             }
             else if (def.HasTag("Flying"))
             {
-                App.Audio.Sfx("dash", 0.7f, 0.8f);
+                App.Audio.Sfx("battle.dash", 0.7f, 0.8f);
                 v.Root.style.opacity = 0;
                 yield return Tween.Run(Timing.Standard, k => { v.Root.style.opacity = k; v.Root.style.translate = new Translate(0, -160f * (1f - k)); }, Tween.EaseOut);
             }
             else if (def.HasTag("Undead"))
             {
-                App.Audio.Sfx("debuff", 0.7f, 0.7f);
+                App.Audio.Sfx("status.debuff", 0.7f, 0.7f);
                 v.Root.style.opacity = 0;
                 yield return Tween.Run(Timing.Emphasis, k => v.Root.style.opacity = k);
             }
             else
             {
-                App.Audio.Sfx("shatter", 0.5f, 0.7f);
+                App.Audio.Sfx("battle.shatter", 0.5f, 0.7f);
                 v.Root.style.opacity = 0;
                 yield return Tween.Run(Timing.Standard, k => { v.Root.style.opacity = k; v.Root.style.translate = new Translate(0, -80f * (1f - k)); }, Tween.EaseOut);
             }
@@ -945,7 +945,7 @@ namespace GridGame.App
             void Finish() { if (done) return; done = true; }
             veil.RegisterCallback<ClickEvent>(_ => Finish());
 
-            App.Audio.Sfx("shatter", 0.5f);
+            App.Audio.Sfx("battle.shatter", 0.5f);
             yield return Tween.Run(Timing.Standard, k =>
             {
                 row.style.opacity = Mathf.Clamp01(k * 2.2f);
@@ -968,7 +968,7 @@ namespace GridGame.App
         private IEnumerator AmpSpawnAnim(AmplifierSpawnedEvent e)
         {
             board.SyncAmplifier(e.At);
-            App.Audio.Sfx("orb", 0.8f, 0.7f);
+            App.Audio.Sfx("battle.orb", 0.8f, 0.7f);
             Feed(AmpSpawnedFeed, AmpFeedColor);
             yield return Tween.Pop(board.Amp, 1.6f, 0.3f);
         }
@@ -976,7 +976,7 @@ namespace GridGame.App
         private IEnumerator AmpMoveAnim(AmplifierMovedEvent e)
         {
             var from = BoardView.CenterOf(e.From); var to = BoardView.CenterOf(e.To);
-            App.Audio.Sfx("slide", 0.6f, 1.3f);
+            App.Audio.Sfx("battle.slide", 0.6f, 1.3f);
             yield return Tween.Run(Timing.Standard, k => board.PlaceAmp(Vector2.Lerp(from, to, Tween.EaseOut(k))));
             board.SyncAmplifier(e.To);
             var by = State.UnitById(e.ByUnitId);
@@ -989,7 +989,7 @@ namespace GridGame.App
             if (!board.PickupViews.TryGetValue(e.PickupEntryId, out var v)) yield break;
             var from = BoardView.PickupPos(e.From); var to = BoardView.PickupPos(e.To);
             v.userData = e.To;
-            App.Audio.Sfx("slide", 0.6f, 1.5f);
+            App.Audio.Sfx("battle.slide", 0.6f, 1.5f);
             yield return Tween.Run(Timing.Standard, k => { var p = Vector2.Lerp(from, to, Tween.EaseOut(k)); v.style.left = p.x; v.style.top = p.y; });
             BoardView.PlacePickup(v, e.To);
         }
@@ -997,7 +997,7 @@ namespace GridGame.App
         private IEnumerator AmpUsedAnim(AmplifierUsedEvent e)
         {
             var at = BoardView.CenterOf(e.At);
-            App.Audio.Sfx("crit", 0.9f);
+            App.Audio.Sfx("battle.crit", 0.9f);
             Billboard("Power Amplifier ×1.75", null, Palette.Gold);
             ampTally = true;
             yield return Tween.Run(Timing.Standard, k => { board.Lines.Rings.Clear(); board.Lines.Ring(at, 40f + 160f * k, new Color(1f, 0.8f, 0.3f, 1f - k), 12f); });
@@ -1055,7 +1055,7 @@ namespace GridGame.App
             tl.El.RemoveFromHierarchy();
             var total = board.Float(tl.Crit ? tl.Total + "!" : tl.Total.ToString(), tl.At, tl.Crit ? new Color(1f, 0.85f, 0.2f) : new Color(1f, 0.95f, 0.8f), 120);
             total.name = "tally-total";
-            App.Audio.Sfx("crit", 0.7f, 0.9f);
+            App.Audio.Sfx("battle.crit", 0.7f, 0.9f);
             App.StartCoroutine(Tween.Shake(shake, 10f * Fx, Timing.Quick));
             yield return Tween.Run(Timing.Quick, k => total.style.scale = new Scale(Vector2.one * (1.7f - 0.7f * Tween.EaseOut(k))));
             yield return FloatAway(total, 0.9f);
@@ -1219,7 +1219,7 @@ namespace GridGame.App
 
         private IEnumerator OrbAnim(OrbMintedEvent o)
         {
-            App.Audio.Sfx("orb", 0.7f, 1f + Random.Range(-0.05f, 0.1f));
+            App.Audio.Sfx("battle.orb", 0.7f, 1f + Random.Range(-0.05f, 0.1f));
             var src = State.UnitById(o.SourceUnitId);
             // GG-T112: the slot it landed in when it was minted, not the bank's final count — State is already the
             // end of the action, so several orbs minted together used to all fly to the last slot.
@@ -1278,7 +1278,7 @@ namespace GridGame.App
         private IEnumerator PushAnim(PushedBackEvent pb)
         {
             var entry = State.TurnEntryOf(pb.UnitId);
-            App.Audio.Sfx("slide", 0.8f, 0.8f);
+            App.Audio.Sfx("battle.slide", 0.8f, 0.8f);
             if (entry != null && timelineIconViews.ContainsKey(entry.Id))
                 App.StartCoroutine(GlideOne(entry.Id, pb.FromU, pb.ToU, 0.3f));
             yield return FloatText(pb.UnitId, "Pushback!", Palette.Info, 0.12f, 46);
@@ -1295,7 +1295,7 @@ namespace GridGame.App
         {
             var u = State.UnitById(ts.UnitId);
             if (u != null) Feed($"▶ {u.Name}'s turn", new Color(1f, 0.6f, 0.5f));
-            App.Audio.Sfx("turn", 0.7f);
+            App.Audio.Sfx("battle.turn", 0.7f);
             var entry = State.TurnEntryOf(ts.UnitId);
             if (entry != null && timelineIconViews.TryGetValue(entry.Id, out var icon))
             {
@@ -1317,7 +1317,7 @@ namespace GridGame.App
         private IEnumerator CastQueuedAnim(CastQueuedEvent cq)
         {
             SyncTimeline(null);
-            App.Audio.Sfx("cast");
+            App.Audio.Sfx("battle.cast");
             var caster = State.UnitById(cq.CasterId);
             if (cq.LineTiles != null) foreach (var t in cq.LineTiles) board.Mark(t, new Color(1f, 0.2f, 0.15f), 0.4f);
             string what = App.Content.TryAbility(cq.AbilityId)?.Name ?? "spell";
@@ -1332,7 +1332,7 @@ namespace GridGame.App
             DodgeBillboard(new[] { cq.TargetTile }.Concat(tu != null ? ViewTiles(tu) : Enumerable.Empty<Coord>()).Concat(cq.LineTiles ?? new List<Coord>()));
             var castColor = CastColor(App.Content.TryAbility(cq.AbilityId), cq.AbilityId);
             if (caster != null) yield return Gather(caster, castColor);
-            if (caster != null) { StartChannel(caster.Id, castColor); App.Audio.Sfx("channel", 0.7f); }
+            if (caster != null) { StartChannel(caster.Id, castColor); App.Audio.Sfx("battle.channel", 0.7f); }
             SyncTimeline(null);
             yield return FloatText(cq.CasterId, cq.IsCharge ? "Charging…" : "Casting…", new Color(0.6f, 0.85f, 1f), 0.3f, 50);
         }
@@ -1342,7 +1342,7 @@ namespace GridGame.App
             var flash = Ui.El("fill", App.Overlay);
             flash.style.backgroundColor = Color.white;
             flash.pickingMode = PickingMode.Ignore;
-            App.Audio.Sfx("heal");
+            App.Audio.Sfx("battle.heal");
             yield return Tween.Fade(flash, 0.9f * Mathf.Max(0.3f, Fx), 0f, 0.35f);
             flash.RemoveFromHierarchy();
             yield return FloatText(c.CasterId, "CLUTCH!", Palette.GoldLight, 0.3f, 90);
@@ -1382,7 +1382,7 @@ namespace GridGame.App
             else if (caster != null && a != null && a.Motion != ProjectileMotion.None && targets.Count > 0)
             {
                 Vector2 from = ViewCenter(caster);
-                App.Audio.Sfx("cast", 0.7f);
+                App.Audio.Sfx("battle.cast", 0.7f);
                 yield return Tween.Run(a.Motion == ProjectileMotion.Strike ? 0.18f : 0.26f, k =>
                 {
                     board.Lines.ClearLines();
@@ -1417,7 +1417,7 @@ namespace GridGame.App
             // 1. Drawing energy (a timed cast already drew it when it was queued).
             if (a.CastTime <= 0f) yield return Gather(caster, c);
             // 2. Cast burst.
-            App.Audio.Sfx("cast", 0.9f, 1.2f);
+            App.Audio.Sfx("battle.cast", 0.9f, 1.2f);
             yield return Tween.Run(Timing.Quick, k => { board.Lines.Rings.Clear(); board.Lines.Ring(from, 40f + 90f * k, new Color(c.r, c.g, c.b, 1f - k), 10f); });
             board.Lines.Rings.Clear(); board.Lines.MarkDirtyRepaint();
             if (cv != null) cv.SetGlow(Color.white, 0f);
@@ -1452,7 +1452,7 @@ namespace GridGame.App
                 }
             });
             foreach (var (glow, core) in heads.Values) { glow.RemoveFromHierarchy(); core.RemoveFromHierarchy(); }
-            App.Audio.Sfx("whoosh", 0.5f, 1.3f);
+            App.Audio.Sfx("battle.whoosh", 0.5f, 1.3f);
             // Scan and pure cleanse/hasten utility spells read as their own bespoke burst rather than the
             // generic ring (bible §6.2 future-pass VFX wiring) — plain damage/heal/debuff spells keep it.
             bool isCleanse = a.BaseDamage <= 0 && a.BaseHeal <= 0 && (a.RemovesDebuffs || a.RemovesBuff != null);
@@ -1469,7 +1469,7 @@ namespace GridGame.App
                     NamedImpactFlourish(a.ImpactVfx, at, c);
                 }
             }
-            if (a.BaseDamage <= 0 && !a.IsScan) App.Audio.Sfx("splash", 0.6f, 1.2f);
+            if (a.BaseDamage <= 0 && !a.IsScan) App.Audio.Sfx("element.water", 0.6f, 1.2f);
             foreach (var kv in ends) strikeFrom[kv.Key] = kv.Value;
             if (a.BaseHeal > 0 || (a.Filter == TargetFilter.AllyOnly && !isCleanse && !isHastenOnly && !a.IsScan))
                 foreach (var t in targets) App.StartCoroutine(HealBurst(ViewCenter(t)));
@@ -1515,7 +1515,7 @@ namespace GridGame.App
         /// <summary>Scan: vertical light rays sweep down over the target as its stats are read (bible §6.2 GodRays/ScanRays).</summary>
         private IEnumerator ScanBurst(Vector2 at)
         {
-            App.Audio.Sfx("cast", 0.6f, 1.5f);
+            App.Audio.Sfx("battle.cast", 0.6f, 1.5f);
             var gold = Palette.GoldLight;
             for (int i = 0; i < 6; i++)
             {
@@ -1535,7 +1535,7 @@ namespace GridGame.App
         /// <summary>Cleanse / dispel: every debuff burns off as breaking gold motes (bible §6.2 AntidoteSparkle).</summary>
         private IEnumerator CleanseBurst(Vector2 at)
         {
-            App.Audio.Sfx("heal", 0.7f, 1.3f);
+            App.Audio.Sfx("battle.heal", 0.7f, 1.3f);
             var gold = new Color(1f, 0.88f, 0.5f);
             for (int i = 0; i < 10; i++)
             {
@@ -1553,7 +1553,7 @@ namespace GridGame.App
         /// <summary>Hasten-only spells (Quicken): a gold updraft nudges the target's timeline icon forward.</summary>
         private IEnumerator HastenBurst(Vector2 at)
         {
-            App.Audio.Sfx("cast", 0.6f, 1.6f);
+            App.Audio.Sfx("battle.cast", 0.6f, 1.6f);
             var gold = Palette.Gold;
             for (int i = 0; i < 8; i++)
             {
@@ -1582,7 +1582,7 @@ namespace GridGame.App
 
         private IEnumerator BossAnim(BossPhaseEvent bp)
         {
-            App.Audio.Sfx("explosion");
+            App.Audio.Sfx("battle.explosion");
             App.StartCoroutine(Tween.Shake(shake, 20f * Fx, Timing.Emphasis));
             yield return FloatText(bp.UnitId, string.IsNullOrEmpty(bp.Text) ? "ENRAGED!" : bp.Text, new Color(1f, 0.3f, 0.6f), 0.6f, 80);
         }
@@ -1605,7 +1605,7 @@ namespace GridGame.App
             {
                 // The Crucible's waves never run out (§22.10): no "N/total", and a rising sting marks each one.
                 ShowBanner(wv.Wave == 0 ? "The Crucible: wave 1" : $"Crucible wave {wv.Wave + 1} · Lv {Crucible.WaveLevel(State.Stage.LevelOverride ?? 1, wv.Wave)}");
-                App.Audio.Sfx("crucible_wave", 1f, 1f + Mathf.Min(0.5f, wv.Wave * 0.04f));
+                App.Audio.Sfx("battle.crucible_wave", 1f, 1f + Mathf.Min(0.5f, wv.Wave * 0.04f));
                 var f = board.Float($"WAVE {wv.Wave + 1}", new Vector2(BoardView.Tile * 3, BoardView.Tile * 4), new Color(1f, 0.55f, 0.3f), 120);
                 App.StartCoroutine(FloatAway(f, 1.0f));
                 yield return Tween.Wait(Timing.Dramatic);
@@ -1627,7 +1627,7 @@ namespace GridGame.App
             if (v.Dead) { board.UnitLayer.Add(v.Root); v.Dead = false; }
             board.Place(v, rv.At);
             v.SetHp(rv.Hp, u.MaxHp);
-            App.Audio.Sfx("heal");
+            App.Audio.Sfx("battle.heal");
             yield return Tween.Run(Timing.Emphasis, k => { v.Root.style.opacity = k; v.Root.style.scale = new Scale(Vector2.one * (0.6f + 0.4f * k)); });
             yield return FloatText(u.Id, "Revived!", Palette.GoldLight, 0.2f, 70);
         }
@@ -1739,7 +1739,7 @@ namespace GridGame.App
         private IEnumerator Gather(Unit caster, Color c)
         {
             Vector2 from = ViewCenter(caster);
-            App.Audio.Sfx("cast", 0.5f);
+            App.Audio.Sfx("battle.cast", 0.5f);
             board.Units.TryGetValue(caster.Id, out var cv);
             cv?.SetGlow(c, 0.8f);
             int motes = ReduceMotion ? 4 : 12;

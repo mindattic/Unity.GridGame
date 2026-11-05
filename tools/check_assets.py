@@ -7,7 +7,8 @@ ROOT = os.path.dirname(os.path.dirname(os.path.abspath(__file__)))
 RESD = os.path.join(ROOT, "Assets", "Gaiden", "Resources")
 SFX = os.path.join(RESD, "Audio", "Sfx")
 MUSIC = os.path.join(RESD, "Audio", "Music")
-SPECIAL = {"ui.click": "ui_click", "ui.back": "ui_click", "ui.select": "ui_select", "ui.buy": "ui_coin", "ui.error": "ui_error", "ui.press": "ui_press", "ui.confirm": "ui_confirm", "ui.cancel": "ui_cancel", "move": "move_0", "hit": "hit_0"}
+# Cue key -> file, as App/Services/Audio.Cue resolves it (GG-T254): dots become underscores, except these.
+SPECIAL = {"ui.back": "ui_click", "battle.move": "battle_move_0", "battle.hit": "battle_hit_0"}
 
 # docs/POLISH.md section H thresholds.
 PERSON_CANVAS = 640          # POL-H1: a full-height person's canvas; shorter canvases are smaller creatures
@@ -88,8 +89,9 @@ def main():
     # (NB: a bare "A and B or []" here would silently evaluate to [] whenever A itself found nothing,
     # even though B is the pattern that actually matters — never leave that construct for the next edit.)
     cues |= set(c for pair in re.findall(r'Sfx\([^;]*?"([a-z.]+)"\s*:\s*"([a-z.]+)"', code) for c in pair)
-    for m in re.findall(r'case DamageType\.\w+: return "([a-z]+)";', code): cues.add(m)
-    missing = [c for c in sorted(cues) if not os.path.exists(os.path.join(SFX, SPECIAL.get(c, c) + ".ogg"))]
+    for m in re.findall(r'case DamageType\.\w+: return "([a-z._]+)";', code): cues.add(m)
+    cues |= set(re.findall(r'StepAnim\([^;]*?"([a-z._]+)"\)', code))
+    missing = [c for c in sorted(cues) if not os.path.exists(os.path.join(SFX, SPECIAL.get(c, c.replace(".", "_")) + ".ogg"))]
     tracks = set(re.findall(r'Music => "([A-Za-z]+)"', code)) | set(t for p in re.findall(r'Music => [^;]*?"([A-Z][A-Za-z]+)"\s*:\s*"([A-Z][A-Za-z]+)"', code) for t in p)
     missing += [f"music:{t}" for t in sorted(tracks) if not os.path.exists(os.path.join(MUSIC, t + ".mp3"))]
 

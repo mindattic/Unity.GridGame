@@ -76,7 +76,7 @@ namespace GridGame.App
         {
             var r = Quests.Start(C, S, q.Id);
             App.Toast(r.Message);
-            App.Audio.Sfx(r.Ok ? "quest_accept" : "ui.error");
+            App.Audio.Sfx(r.Ok ? "story.quest_accept" : "ui.error");
             if (r.Ok) App.Persist();
             Refresh();
         }
@@ -85,7 +85,7 @@ namespace GridGame.App
         {
             var r = Quests.TurnIn(C, S, q.Id);
             App.Toast(r.Message, 2.6f);
-            App.Audio.Sfx(r.Ok ? "quest_complete" : "ui.error");
+            App.Audio.Sfx(r.Ok ? "story.quest_complete" : "ui.error");
             if (!r.Ok) { Refresh(); return; }
             App.Persist();
             handedIn = q.Id;

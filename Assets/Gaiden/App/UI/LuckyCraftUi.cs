@@ -75,7 +75,7 @@ namespace GridGame.App
         private static IEnumerator Play(VisualElement gem, Label text, VisualElement veil, Result res, Action refresh)
         {
             var app = GameApp.I;
-            app.Audio.Sfx("magic");
+            app.Audio.Sfx("element.arcane");
             yield return Tween.Run(1.0f, t =>
             {
                 gem.style.rotate = new Rotate(new Angle(t * 720f));
@@ -83,7 +83,7 @@ namespace GridGame.App
                 gem.style.scale = new Scale(new Vector3(k, k, 1f));
             }, Tween.EaseInOut);
             bool masterwork = res.Message != null && res.Message.StartsWith("★");
-            app.Audio.Sfx(masterwork ? "powerup" : "clang");
+            app.Audio.Sfx(masterwork ? "battle.powerup" : "battle.clang");
             text.text = res.Message;
             yield return Tween.All(app, Tween.Fade(text, 0f, 1f, 0.3f), Tween.Pop(gem, masterwork ? 1.4f : 1.1f, Timing.Emphasis));
             yield return Tween.Wait(1.2f);

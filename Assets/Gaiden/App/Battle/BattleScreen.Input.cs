@@ -173,7 +173,7 @@ namespace GridGame.App
             v.Root.style.scale = new Scale(new Vector2(1.12f, 1.12f));
             v.SetGlow(Palette.GoldLight, 0.9f);
             board.Trail.Follow(v.Root, HeroTrail);
-            App.Audio.Sfx("pickup");
+            App.Audio.Sfx("battle.pickup");
             ShowBanner("");
             BeginHold();
         }
@@ -302,7 +302,7 @@ namespace GridGame.App
                         dragPath.Add(diag);
                         dragTile = diag;
                         preview = diagPv;
-                        App.Audio.Sfx("dash", 0.7f);
+                        App.Audio.Sfx("battle.dash", 0.7f);
                         ApplyPreview(diagPv, dragHeroId);
                         continue;
                     }
@@ -330,7 +330,7 @@ namespace GridGame.App
                 dragPath.Add(step);
                 dragTile = step;
                 preview = pv;
-                App.Audio.Sfx("move", 0.5f);
+                App.Audio.Sfx("battle.move", 0.5f);
                 ApplyPreview(pv, dragHeroId);
             }
         }
@@ -346,7 +346,7 @@ namespace GridGame.App
                 if (!board.Units.TryGetValue(kv.Key, out var v)) continue;
                 if (v.Tile != kv.Value)
                 {
-                    App.Audio.Sfx("slide", 0.6f);
+                    App.Audio.Sfx("battle.slide", 0.6f);
                     var from = BoardView.PosOf(v.Tile);
                     v.Tile = kv.Value;
                     App.StartCoroutine(Tween.Move(v.Root, from, BoardView.PosOf(kv.Value), Timing.Instant));

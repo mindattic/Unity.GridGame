@@ -118,6 +118,7 @@ namespace GridGame.App
             var def = App.Content.Class(classId);
             var hero = App.Save.Hero(classId);
 
+            App.Audio.DuckFor(Timing.Cinematic * 3f); // POL-F3: the fanfare plays over a ducked track
             yield return SlamIn(portraitRow);
             yield return Tween.Wait(Timing.Standard);
 
@@ -125,7 +126,7 @@ namespace GridGame.App
             // (bar fills, "Lv N" pops, resets) before a true partial fill for the level landed on.
             for (int lvl = from; lvl < to; lvl++)
             {
-                App.Audio.Sfx("crit", 0.6f, 0.8f + 0.1f * (lvl - from));
+                App.Audio.Sfx("battle.crit", 0.6f, 0.8f + 0.1f * (lvl - from));
                 yield return Tween.Run(Timing.Standard, k => Ui.SetGauge(xpGauge, k));
                 levelLabel.text = $"Lv {lvl + 1}";
                 reveals.Add(App.StartCoroutine(Tween.Pop(levelLabel, 1.3f, 0.2f)));
@@ -134,7 +135,7 @@ namespace GridGame.App
             }
             int intoFinal = hero != null ? hero.TotalXp - Formulas.TotalXpForLevel(to) : 0;
             float finalFrac = Mathf.Clamp01(intoFinal / (float)Formulas.XpToNext(to));
-            App.Audio.Sfx("orb", 0.5f);
+            App.Audio.Sfx("battle.orb", 0.5f);
             yield return Tween.Run(Timing.Emphasis, k => Ui.SetGauge(xpGauge, Mathf.Lerp(0f, finalFrac, k)));
             yield return Tween.Wait(Timing.Standard);
 
@@ -171,7 +172,7 @@ namespace GridGame.App
         {
             target.style.scale = new Scale(Vector2.one * 1.5f);
             target.style.rotate = new Rotate(-6f);
-            App.Audio.Sfx("shatter", 0.55f);
+            App.Audio.Sfx("battle.shatter", 0.55f);
             yield return Tween.Run(Timing.Standard, k =>
             {
                 float s = Mathf.LerpUnclamped(1.5f, 1f, Tween.Back(k));

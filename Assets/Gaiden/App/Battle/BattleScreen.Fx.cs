@@ -139,7 +139,7 @@ namespace GridGame.App
                     if (k >= 1f) f.RemoveFromHierarchy();
                 }));
             }
-            App.Audio.Sfx("splash", 0.8f);
+            App.Audio.Sfx("element.water", 0.8f);
             yield return Tween.Wait(0.12f + maxD * 0.06f);
         }
 
@@ -153,7 +153,7 @@ namespace GridGame.App
             var at = BoardView.CenterOf(v.Tile, v.W, v.H);
             var color = Art.HexColor(def.Color, def.Kind == BuffKind.Buff ? Palette.Mana : new Color(0.8f, 0.4f, 0.9f));
             if (!ReduceMotion) yield return StatusBurst(def.Id, at, color, v);
-            else App.Audio.Sfx(def.Kind == BuffKind.Buff ? "cast" : "debuff", 0.6f);
+            else App.Audio.Sfx(def.Kind == BuffKind.Buff ? "battle.cast" : "status.debuff", 0.6f);
             RefreshUnit(u.Id);
             App.StartCoroutine(Tween.Pop(v.Buffs, 1.6f, 0.28f));
             var aura = AuraFor(u);
@@ -169,19 +169,19 @@ namespace GridGame.App
             switch (id)
             {
                 case "poisoned":
-                    App.Audio.Sfx("bubble");
+                    App.Audio.Sfx("status.bubble");
                     for (int i = 0; i < 14; i++) Bubble(at + new Vector2(Random.Range(-70f, 70f), Random.Range(10f, 60f)), new Color(0.5f, 1f, 0.3f), Random.Range(0f, 0.25f), 1.2f);
                     v.Art.style.unityBackgroundImageTintColor = new Color(0.7f, 1f, 0.6f);
                     yield return Tween.Wait(Timing.Emphasis);
                     v.Art.style.unityBackgroundImageTintColor = Color.white;
                     break;
                 case "burning":
-                    App.Audio.Sfx("fire", 0.8f);
+                    App.Audio.Sfx("element.fire", 0.8f);
                     yield return ElementBurst(at, DamageType.Fire, false);
                     yield return Tween.Wait(Timing.Standard);
                     break;
                 case "frozen":
-                    App.Audio.Sfx("ice");
+                    App.Audio.Sfx("element.ice");
                     for (int i = 0; i < 10; i++)
                     {
                         var p = Particle(18f, Palette.Cleanse);
@@ -198,17 +198,17 @@ namespace GridGame.App
                     yield return Tween.Wait(Timing.Quick);
                     break;
                 case "wet":
-                    App.Audio.Sfx("splash", 0.6f, 1.3f);
+                    App.Audio.Sfx("element.water", 0.6f, 1.3f);
                     for (int i = 0; i < 10; i++) Drip(at + new Vector2(Random.Range(-60f, 60f), -BoardView.Tile * 0.55f), Palette.Hero, Random.Range(0f, 0.2f));
                     yield return Tween.Wait(Timing.Standard);
                     break;
                 case "sleep":
-                    App.Audio.Sfx("debuff", 0.5f, 0.7f);
+                    App.Audio.Sfx("status.debuff", 0.5f, 0.7f);
                     for (int i = 0; i < 3; i++) App.StartCoroutine(FloatZ(at, i * 0.12f, 1f));
                     yield return Tween.Wait(Timing.Emphasis);
                     break;
                 case "slowed":
-                    App.Audio.Sfx("debuff", 0.6f, 0.6f);
+                    App.Audio.Sfx("status.debuff", 0.6f, 0.6f);
                     for (int i = 0; i < 10; i++)
                     {
                         var p = Particle(16f, new Color(0.75f, 0.55f, 1f));
@@ -223,12 +223,12 @@ namespace GridGame.App
                     yield return Tween.Wait(Timing.Emphasis);
                     break;
                 case "silenced":
-                    App.Audio.Sfx("debuff", 0.7f, 1.2f);
+                    App.Audio.Sfx("status.debuff", 0.7f, 1.2f);
                     yield return Tween.Run(Timing.Standard, k => { board.Lines.Rings.Clear(); board.Lines.Ring(at, 150f * (1f - k) + 30f, new Color(0.8f, 0.8f, 0.9f, k), 8f); });
                     board.Lines.Rings.Clear(); board.Lines.MarkDirtyRepaint();
                     break;
                 case "blinded":
-                    App.Audio.Sfx("debuff", 0.7f, 0.9f);
+                    App.Audio.Sfx("status.debuff", 0.7f, 0.9f);
                     for (int i = 0; i < 8; i++)
                     {
                         var p = Particle(Random.Range(40f, 60f), new Color(0.15f, 0.12f, 0.2f, 0.9f));
@@ -257,17 +257,17 @@ namespace GridGame.App
                     yield return Tween.Run(Timing.Standard, k => v.Root.style.scale = new Scale(Vector2.one * (1f + 0.12f * Mathf.Sin(k * Mathf.PI))));
                     break;
                 case "protection":
-                    App.Audio.Sfx("cast", 0.6f, 1.4f);
+                    App.Audio.Sfx("battle.cast", 0.6f, 1.4f);
                     yield return Tween.Run(Timing.Standard, k => { board.Lines.Rings.Clear(); board.Lines.Ring(at, 60f + 50f * Tween.EaseOut(k), new Color(0.6f, 1f, 0.7f, 1f - k * 0.6f), 10f); });
                     board.Lines.Rings.Clear(); board.Lines.MarkDirtyRepaint();
                     break;
                 case "regen":
-                    App.Audio.Sfx("heal", 0.5f, 1.2f);
+                    App.Audio.Sfx("battle.heal", 0.5f, 1.2f);
                     yield return HealBurst(at);
                     yield return Tween.Wait(Timing.Standard);
                     break;
                 default:
-                    App.Audio.Sfx("debuff", 0.6f);
+                    App.Audio.Sfx("status.debuff", 0.6f);
                     ImpactSplash(at, c, 0.7f);
                     yield return Tween.Wait(Timing.Standard);
                     break;
@@ -277,7 +277,7 @@ namespace GridGame.App
         /// <summary>Taunt: two red shockwaves roll off the tank, and every enemy's eyes snap to it (threat lines).</summary>
         private IEnumerator TauntWave(Vector2 at, UnitView v)
         {
-            App.Audio.Sfx("taunt");
+            App.Audio.Sfx("battle.taunt");
             App.StartCoroutine(Tween.Shake(shake, 8f * Fx, Timing.Standard));
             var red = new Color(1f, 0.3f, 0.2f);
             var foes = State.Units.Where(u => u.Alive && !u.IsHero && board.Units.ContainsKey(u.Id)).ToList();
@@ -432,12 +432,12 @@ namespace GridGame.App
             void Put(Vector2 p) { bottle.style.left = p.x - 70; bottle.style.top = p.y - 70; }
             // 1. The user produces it: the bottle rises out of the frame.
             Vector2 above = from + new Vector2(0, -BoardView.Tile * 0.62f);
-            App.Audio.Sfx("pickup", 0.6f);
+            App.Audio.Sfx("battle.pickup", 0.6f);
             yield return Tween.Run(Timing.Standard, k => { Put(Vector2.Lerp(from, above, Tween.EaseOut(k))); bottle.style.scale = new Scale(Vector2.one * (0.4f + 0.6f * k)); });
             if (!thrown)
             {
                 // 2a. Drink: uncork, tip, and the liquid pours into the user.
-                App.Audio.Sfx("glug");
+                App.Audio.Sfx("battle.glug");
                 yield return Tween.Run(Timing.Emphasis, k =>
                 {
                     bottle.style.rotate = new Rotate(-120f * Tween.EaseInOut(Mathf.Min(1f, k * 1.6f)));
@@ -459,7 +459,7 @@ namespace GridGame.App
             // 2b. Throw: a spinning arc to the target, then the glass shatters into a splash.
             var target = targets.FirstOrDefault(t => t != user) ?? targets[0];
             Vector2 to = ViewCenter(target);
-            App.Audio.Sfx("whoosh");
+            App.Audio.Sfx("battle.whoosh");
             float travel = Mathf.Clamp(Vector2.Distance(above, to) / 1500f, 0.28f, 0.5f);
             yield return Tween.Run(travel, k =>
             {
@@ -468,7 +468,7 @@ namespace GridGame.App
                 bottle.style.rotate = new Rotate(540f * k);
             });
             bottle.RemoveFromHierarchy();
-            App.Audio.Sfx("glass");
+            App.Audio.Sfx("battle.glass");
             foreach (var t in targets) ImpactSplash(ViewCenter(t), liquid, 1.1f);
             if (!ReduceMotion) Sparks(to, 10, Palette.Text);
             yield return Tween.Wait(Timing.Quick);
@@ -484,7 +484,7 @@ namespace GridGame.App
             var b = ViewCenter(target);
             var dir = (b - a).normalized;
             float lunge = 46f * Fx + 8f;
-            App.Audio.Sfx("dash", 0.8f);
+            App.Audio.Sfx("battle.dash", 0.8f);
             yield return Tween.Run(Timing.Instant, k => cv.Root.style.translate = new Translate(dir.x * lunge * k, dir.y * lunge * k));
             var n = new Vector2(-dir.y, dir.x);
             yield return Tween.Run(Timing.Quick, k =>
@@ -514,7 +514,7 @@ namespace GridGame.App
             yield return Tween.Run(Timing.Standard, k => cv.Root.style.scale = new Scale(Vector2.one * (1f + 0.16f * Mathf.Sin(k * Mathf.PI * 0.5f))));
             if (buff != null && buff.OutgoingDamageMultiplier > 1f)
             {
-                App.Audio.Sfx("warcry");
+                App.Audio.Sfx("battle.warcry");
                 yield return Tween.Run(Timing.Emphasis, k => { board.Lines.Rings.Clear(); board.Lines.Ring(at, 60f + 520f * k, new Color(c.r, c.g, c.b, 1f - k), 12f); });
                 board.Lines.Rings.Clear(); board.Lines.MarkDirtyRepaint();
             }
@@ -535,7 +535,7 @@ namespace GridGame.App
             var u = State.UnitById(e.UnitId);
             if (u == null || !board.Units.TryGetValue(u.Id, out var v)) yield break;
             var at = PlateEdge(v, u.Facing);
-            App.Audio.Sfx("clang", 0.9f, Random.Range(0.92f, 1.08f));
+            App.Audio.Sfx("battle.clang", 0.9f, Random.Range(0.92f, 1.08f));
             if (!ReduceMotion) Sparks(at, 10, new Color(1f, 0.95f, 0.75f));
             v.SetPlate(u.Facing, e.Left > 0 ? e.Left : 1, e.Max);
             v.Plate.style.backgroundColor = Color.white;
@@ -551,7 +551,7 @@ namespace GridGame.App
             var u = State.UnitById(e.UnitId);
             if (u == null || !board.Units.TryGetValue(u.Id, out var v)) yield break;
             var at = PlateEdge(v, u.Facing);
-            App.Audio.Sfx("shatter", 1f, 0.8f);
+            App.Audio.Sfx("battle.shatter", 1f, 0.8f);
             v.SetPlate(u.Facing, 0, 1);
             if (!ReduceMotion)
                 for (int i = 0; i < 9; i++)
@@ -584,7 +584,7 @@ namespace GridGame.App
             var p = new Pickup { Id = e.PickupEntryId, PickupId = e.PickupId, At = e.At, ActionsLeft = live?.ActionsLeft ?? BattleConfig.PickupLifetimeActions };
             App.Content.Pickups.TryGetValue(e.PickupId, out var def);
             var v = board.PickupViews.TryGetValue(p.Id, out var ex) ? ex : board.AddPickup(p, def);
-            App.Audio.Sfx("powerup", 0.7f, 0.8f);
+            App.Audio.Sfx("battle.powerup", 0.7f, 0.8f);
             Billboard($"{def?.Name ?? "Pickup"} dropped! Walk a hero over it", Art.UiIcon(def?.Icon), Art.HexColor(def?.Color, Color.white));
             yield return Tween.Run(Timing.Emphasis, k =>
             {
@@ -600,7 +600,7 @@ namespace GridGame.App
             App.Content.Pickups.TryGetValue(e.PickupId, out var def);
             var c = Art.HexColor(def?.Color, Color.white);
             var hero = State.UnitById(e.UnitId);
-            App.Audio.Sfx("powerup");
+            App.Audio.Sfx("battle.powerup");
             if (board.PickupViews.TryGetValue(e.PickupEntryId, out var v))
             {
                 var start = new Vector2(v.resolvedStyle.left, v.resolvedStyle.top);
@@ -621,7 +621,7 @@ namespace GridGame.App
         private IEnumerator PickupExpiredAnim(PickupExpiredEvent e)
         {
             if (!board.PickupViews.TryGetValue(e.PickupEntryId, out var v)) yield break;
-            App.Audio.Sfx("miss", 0.5f, 1.4f);
+            App.Audio.Sfx("battle.miss", 0.5f, 1.4f);
             yield return Tween.Run(Timing.Standard, k => { v.style.opacity = 1f - k; v.style.scale = new Scale(Vector2.one * (1f - 0.6f * k)); });
             v.RemoveFromHierarchy();
             board.PickupViews.Remove(e.PickupEntryId);

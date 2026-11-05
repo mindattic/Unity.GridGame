@@ -166,6 +166,7 @@ namespace GridGame.App
         /// <summary>Twist-zoom in (oversized, tilted, flashing white) → snap with a shake → hold → whip out.</summary>
         private IEnumerator TwistCard(VisualElement card, VisualElement portrait, Vector2 at, float hold, float spin, Vector2 exitDir)
         {
+            App.Audio.DuckFor(Timing.Quick + hold + Timing.Dramatic); // POL-F3: the music steps back for the card
             float w = card.style.width.value.value, h = card.style.height.value.value;
             void Put(Vector2 p) { card.style.left = p.x - w / 2f; card.style.top = p.y - h / 2f; }
             Put(at);
@@ -214,7 +215,7 @@ namespace GridGame.App
             var card = ActionCard(caster, 560f, caster.Team, spellName, Palette.GoldLight, out var portrait);
             var at = new Vector2(fromLeft ? 300f : GameApp.StageWidth - 300f, BoardTop + 520f);
             var focus = new Vector2(BoardLeft, BoardTop) + ViewCenter(caster);
-            App.Audio.Sfx("dash", 0.8f, 0.85f);
+            App.Audio.Sfx("battle.dash", 0.8f, 0.85f);
             var veil = CutInVeil(0.38f);
             card.BringToFront();
             App.StartCoroutine(CameraPunch(focus, 1.07f, fromLeft ? -2.2f : 2.2f, 0.6f));
@@ -241,7 +242,7 @@ namespace GridGame.App
         private IEnumerator PopUpCards(Unit[] attackers, Team team)
         {
             CutInsShown++;
-            App.Audio.Sfx("dash", 0.8f, 1.15f);
+            App.Audio.Sfx("battle.dash", 0.8f, 1.15f);
             var mid = attackers.Select(ViewCenter).Aggregate(Vector2.zero, (x, y) => x + y) / attackers.Length + new Vector2(BoardLeft, BoardTop);
             App.StartCoroutine(CameraPunch(mid, 1.05f, Random.value < 0.5f ? -1.8f : 1.8f, 0.5f));
             var runs = new List<IEnumerator>();
@@ -268,7 +269,7 @@ namespace GridGame.App
             var card = ActionCard(sup, 300f, team, tag, new Color(0.6f, 0.92f, 1f), out var portrait);
             bool left = index % 2 == 0;
             var at = new Vector2(left ? 170f : GameApp.StageWidth - 170f, BoardTop + 330f + 300f * (index / 2));
-            App.Audio.Sfx("pickup", 0.6f, 1.3f + 0.1f * index);
+            App.Audio.Sfx("battle.pickup", 0.6f, 1.3f + 0.1f * index);
             App.StartCoroutine(TwistCard(card, portrait, at, 0.3f, left ? -18f : 18f, new Vector2(0f, 1f)));
         }
 
@@ -288,7 +289,7 @@ namespace GridGame.App
             }
             else if (mc.Reason == "guard") // GG-T189: the unused turn time Guard gave up, banked into the bubble
                 Billboard($"Guard · Mana +{mc.Amount} · {mc.Amount / BattleConfig.GuardChargePerSecond:0.#}s banked", null, new Color(0.55f, 0.85f, 1f));
-            App.Audio.Sfx("orb", 0.35f, 0.7f + 0.5f * (to / (float)BattleConfig.ManaChargePerOrb));
+            App.Audio.Sfx("battle.orb", 0.35f, 0.7f + 0.5f * (to / (float)BattleConfig.ManaChargePerOrb));
             yield return Tween.Run(Timing.Standard, k =>
             {
                 float v = rolled ? Mathf.Lerp(from, BattleConfig.ManaChargePerOrb, k) : Mathf.Lerp(from, to, k);

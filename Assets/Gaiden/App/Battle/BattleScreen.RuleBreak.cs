@@ -16,18 +16,18 @@ namespace GridGame.App
             ShowBanner(rb.Text);
             if (rb.Arrived)
             {
-                App.Audio.Sfx("warcry");
+                App.Audio.Sfx("battle.warcry");
                 App.StartCoroutine(Tween.Shake(shake, 24f * Fx, Timing.Emphasis));
                 yield return FloatText(rb.UnitId, "RULE BREAKER", RuleBreakColor, 1.1f, 84);
                 yield break;
             }
             switch (rb.Rule)
             {
-                case RuleBreak.TwinTurn: App.Audio.Sfx("dash"); break;
-                case RuleBreak.AxisWard: App.Audio.Sfx(rb.Text.Contains("shatters") ? "shatter" : "clang"); break;
-                case RuleBreak.MireSwap: App.Audio.Sfx("whoosh"); break;
-                case RuleBreak.GravityStamp: App.Audio.Sfx("explosion"); App.StartCoroutine(Tween.Shake(shake, 30f * Fx, Timing.Emphasis)); break;
-                case RuleBreak.Undying: App.Audio.Sfx("powerup"); RefreshUnit(rb.UnitId); break;
+                case RuleBreak.TwinTurn: App.Audio.Sfx("battle.dash"); break;
+                case RuleBreak.AxisWard: App.Audio.Sfx(rb.Text.Contains("shatters") ? "battle.shatter" : "battle.clang"); break;
+                case RuleBreak.MireSwap: App.Audio.Sfx("battle.whoosh"); break;
+                case RuleBreak.GravityStamp: App.Audio.Sfx("battle.explosion"); App.StartCoroutine(Tween.Shake(shake, 30f * Fx, Timing.Emphasis)); break;
+                case RuleBreak.Undying: App.Audio.Sfx("battle.powerup"); RefreshUnit(rb.UnitId); break;
             }
             yield return FloatText(rb.UnitId, RuleBreaks.Label(rb.Rule), RuleBreakColor, 0.6f, 72);
         }

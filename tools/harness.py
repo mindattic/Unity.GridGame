@@ -1664,7 +1664,7 @@ def crucible(run="crucible", leave_after=3, speed=4, timeout=600):
         "best_recorded": after["crucible"]["Best"],
         "campaign_untouched": after["HighestClearedStage"] == before["HighestClearedStage"] and after["expedition"] is None,
         "camp_row_after": [t for t in texts() if t == "Crucible" or t.startswith("Best:")],
-        "crucible_cues": sorted({c for c in call("cues") if c.startswith("crucible")}),
+        "crucible_cues": sorted({c for c in call("cues") if c.rsplit(".", 1)[-1].startswith("crucible")}),
     }
     # GG-T121: taps no longer depend on window focus, so 0 in "taps" is a real game-side problem.
     logs = call("logs")

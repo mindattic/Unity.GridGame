@@ -15,6 +15,9 @@ import wave
 import numpy as np
 from scipy.signal import butter, lfilter
 
+sys.path.insert(0, os.path.dirname(os.path.abspath(__file__)))
+import loudness  # noqa: E402
+
 SR = 44100
 ROOT = os.path.dirname(os.path.dirname(os.path.abspath(__file__)))
 OUT = os.path.join(ROOT, "Assets", "Gaiden", "Resources", "Audio", "Sfx")
@@ -78,19 +81,56 @@ def norm(x, peak=0.85):
     return x / m * peak
 
 
+def file_for(name):
+    """Synth name -> taxonomy file (POL-F1, GG-T254): battle.dash plays battle_dash.ogg (App/Services/Audio.cs)."""
+    if name in FILES:
+        return FILES[name]
+    if name.startswith(("move_", "hit_")):
+        return "battle_" + name
+    return name
+
+
+FILES = {
+    "ui_coin": "ui_buy", "slide": "battle_slide", "pickup": "battle_pickup", "pincer": "battle_pincer",
+    "crit": "battle_crit", "miss": "battle_miss", "death": "battle_death", "turn": "battle_turn", "orb": "battle_orb",
+    "heal": "battle_heal", "cast": "battle_cast", "fire": "element_fire", "ice": "element_ice",
+    "lightning": "element_lightning", "poison": "element_poison", "magic": "element_arcane",
+    "explosion": "battle_explosion", "shatter": "battle_shatter", "debuff": "status_debuff", "trap": "battle_trap",
+    "dash": "battle_dash", "victory": "battle_victory", "defeat": "battle_defeat", "whoosh": "battle_whoosh",
+    "splash": "element_water", "channel": "battle_channel", "glug": "battle_glug", "glass": "battle_glass",
+    "taunt": "battle_taunt", "warcry": "battle_warcry", "powerup": "battle_powerup", "bubble": "status_bubble",
+    "clang": "battle_clang", "crucible_enter": "battle_crucible_enter", "crucible_wave": "battle_crucible_wave",
+    "crucible_best": "battle_crucible_best", "quest_accept": "story_quest_accept", "quest_complete": "story_quest_complete",
+}
+
+
 def write(name, x, peak=0.85):
-    if ONLY and name not in ONLY:
+    out = file_for(name)
+    if ONLY and name not in ONLY and out not in ONLY:
         return
-    x = norm(x, peak)
-    fade = min(len(x), int(SR * 0.004))
-    x[-fade:] *= np.linspace(1, 0, fade)
-    pcm = (x * 32767).astype(np.int16)
-    with tempfile.TemporaryDirectory() as d:
-        wav = os.path.join(d, "x.wav")
-        with wave.open(wav, "wb") as w:
-            w.setnchannels(1); w.setsampwidth(2); w.setframerate(SR); w.writeframes(pcm.tobytes())
-        subprocess.run(["ffmpeg", "-y", "-loglevel", "error", "-i", wav, "-c:a", "libvorbis", "-q:a", "5",
-                        os.path.join(OUT, name + ".ogg")], check=True)
+    name = out
+    # Every cue lands at the same perceived loudness, under the true-peak ceiling (POL-F2, tools/loudness.py).
+    target, ceiling = loudness.SFX_TARGET, loudness.SFX_PEAK_CEILING
+    path = os.path.join(OUT, name + ".ogg")
+    for _ in range(3):
+        y = loudness.normalize(norm(x, peak), SR, target=target, ceiling=ceiling)
+        fade = min(len(y), int(SR * 0.004))
+        y[-fade:] *= np.linspace(1, 0, fade)
+        pcm = (np.clip(y, -1, 1) * 32767).astype(np.int16)
+        with tempfile.TemporaryDirectory() as d:
+            wav = os.path.join(d, "x.wav")
+            with wave.open(wav, "wb") as w:
+                w.setnchannels(1); w.setsampwidth(2); w.setframerate(SR); w.writeframes(pcm.tobytes())
+            subprocess.run(["ffmpeg", "-y", "-loglevel", "error", "-i", wav, "-c:a", "libvorbis", "-q:a", "5", path],
+                           check=True)
+        # The encoder trims the top octave, so bright cues come out quieter: aim once more by what was lost.
+        enc, rate = loudness.decode(path)
+        lost = loudness.SFX_TARGET - loudness.loudness(enc, rate)
+        over = loudness.true_peak(enc) - loudness.SFX_PEAK_CEILING
+        if abs(lost) < 0.5 and over <= 0:
+            break
+        target += lost
+        ceiling -= max(0.0, over) + 0.2
 
 
 def tone_env(f, sec, a=0.003, d=0.15, wave_fn=sine):

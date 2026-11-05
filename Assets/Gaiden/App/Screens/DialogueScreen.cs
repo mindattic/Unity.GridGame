@@ -218,6 +218,7 @@ namespace GridGame.App
         {
             foreach (var s in sides) Animate(s, dt);
             if (typing == null || typed >= typingText.Length) return;
+            App.Audio.DuckFor(Timing.Dramatic); // POL-F3: music sits under the line while it types
             int before = (int)typed;
             typed = Mathf.Min(typingText.Length, typed + dt * CharsPerSecond);
             if ((int)typed != before) typing.text = typingText.Substring(0, (int)typed);

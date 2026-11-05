@@ -37,7 +37,29 @@ namespace GridGame.App
         {
             musicVolume = s.MuteMusic ? 0f : s.MusicVolume;
             sfxVolume = s.MuteSfx ? 0f : s.SfxVolume;
-            music.volume = musicVolume;
+            music.volume = musicVolume * duck;
+        }
+
+        // ── Ducking (POL-F3): music dips under cut-ins, fanfares and dialogue, then comes back ──
+        public const float DuckDb = -8f;
+        private float duck = 1f, duckUntil;
+
+        /// <summary>Holds the music ducked for at least <paramref name="seconds"/> from now. Time-boxed rather than
+        /// push/pop so a stopped coroutine can never leave the music stuck quiet.</summary>
+        public void DuckFor(float seconds) => duckUntil = Mathf.Max(duckUntil, Time.unscaledTime + seconds);
+
+        public bool Ducked => Time.unscaledTime < duckUntil;
+
+        private void Update()
+        {
+            float target = Ducked ? Mathf.Pow(10f, DuckDb / 20f) : 1f;
+            if (Mathf.Approximately(duck, target)) return;
+            // Into the duck over Timing.Standard, back out over Timing.Dramatic (eased in dB, so it sounds even).
+            float span = Ducked ? Timing.Standard : Timing.Dramatic;
+            float db = 20f * Mathf.Log10(Mathf.Max(duck, 1e-4f)), goal = 20f * Mathf.Log10(target);
+            db = Mathf.MoveTowards(db, goal, Mathf.Abs(DuckDb) * Time.unscaledDeltaTime / span);
+            duck = Mathf.Pow(10f, db / 20f);
+            if (music != null) music.volume = musicVolume * duck;
         }
 
         private AudioClip Clip(string path)
@@ -56,7 +78,7 @@ namespace GridGame.App
             music.Stop();
             if (c == null) return;
             music.clip = c;
-            music.volume = musicVolume;
+            music.volume = musicVolume * duck;
             music.Play();
         }
 
@@ -64,6 +86,7 @@ namespace GridGame.App
         public void Sfx(string key, float volume = 1f, float pitch = 1f)
         {
             if (string.IsNullOrEmpty(key)) return;
+            key = Canonical(key);
             CueLog.Add(key);
             if (CueLog.Count > 300) CueLog.RemoveAt(0);
             if (sfxVolume <= 0f) return;
@@ -110,21 +133,36 @@ namespace GridGame.App
         /// <summary>Number of AudioSources this service owns (music + the fixed SFX pool), for leak checks.</summary>
         public int SourceCount => sfx.Count + (music != null ? 1 : 0);
 
-        /// <summary>Semantic cue → file. Keep game code speaking in cues, not filenames.</summary>
+        /// <summary>Pre-taxonomy cue names (POL-F1, GG-T254) → their taxonomy key, so an old name still plays.</summary>
+        private static readonly Dictionary<string, string> Aliases = new Dictionary<string, string>
+        {
+            ["move"] = "battle.move", ["hit"] = "battle.hit", ["crit"] = "battle.crit", ["miss"] = "battle.miss",
+            ["dash"] = "battle.dash", ["slide"] = "battle.slide", ["pincer"] = "battle.pincer", ["turn"] = "battle.turn",
+            ["taunt"] = "battle.taunt", ["warcry"] = "battle.warcry", ["death"] = "battle.death", ["pickup"] = "battle.pickup",
+            ["orb"] = "battle.orb", ["trap"] = "battle.trap", ["shatter"] = "battle.shatter", ["clang"] = "battle.clang",
+            ["whoosh"] = "battle.whoosh", ["explosion"] = "battle.explosion", ["cast"] = "battle.cast",
+            ["channel"] = "battle.channel", ["heal"] = "battle.heal", ["powerup"] = "battle.powerup", ["glug"] = "battle.glug",
+            ["glass"] = "battle.glass", ["victory"] = "battle.victory", ["defeat"] = "battle.defeat",
+            ["crucible_enter"] = "battle.crucible_enter", ["crucible_wave"] = "battle.crucible_wave",
+            ["crucible_best"] = "battle.crucible_best",
+            ["fire"] = "element.fire", ["ice"] = "element.ice", ["lightning"] = "element.lightning",
+            ["poison"] = "element.poison", ["magic"] = "element.arcane", ["splash"] = "element.water",
+            ["debuff"] = "status.debuff", ["bubble"] = "status.bubble",
+            ["quest_accept"] = "story.quest_accept", ["quest_complete"] = "story.quest_complete",
+        };
+
+        public static string Canonical(string key) => Aliases.TryGetValue(key, out var k) ? k : key;
+
+        /// <summary>Taxonomy key → file: dots become underscores (battle.dash → battle_dash), except the variant
+        /// pools and the cues that share a file. Keep game code speaking in cues, not filenames.</summary>
         private static string Cue(string key)
         {
             switch (key)
             {
-                case "ui.click": case "ui.back": return "ui_click";
-                case "ui.select": return "ui_select";
-                case "ui.buy": return "ui_coin";
-                case "ui.error": return "ui_error";
-                case "ui.press": return "ui_press";
-                case "ui.confirm": return "ui_confirm";
-                case "ui.cancel": return "ui_cancel";
-                case "move": return "move_" + Random.Range(0, 6);
-                case "hit": return "hit_" + Random.Range(0, 7);
-                default: return key; // every other cue has a same-named file (tools/make_sfx.py)
+                case "ui.back": return "ui_click";
+                case "battle.move": return "battle_move_" + Random.Range(0, 6);
+                case "battle.hit": return "battle_hit_" + Random.Range(0, 7);
+                default: return key.Replace('.', '_'); // every other cue has a same-named file (tools/make_sfx.py)
             }
         }
     }

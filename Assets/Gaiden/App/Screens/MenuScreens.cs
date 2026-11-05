@@ -300,7 +300,7 @@ namespace GridGame.App
         {
             target.style.scale = new Scale(Vector2.one * 1.5f);
             target.style.rotate = new Rotate(-6f);
-            App.Audio.Sfx("shatter", 0.55f);
+            App.Audio.Sfx("battle.shatter", 0.55f);
             yield return Tween.Run(Timing.Standard, k =>
             {
                 float s = Mathf.LerpUnclamped(1.5f, 1f, Tween.Back(k));
@@ -591,7 +591,7 @@ namespace GridGame.App
         {
             var r = Inn.Rest(App.Content, App.Save);
             App.Toast(r.Message);
-            App.Audio.Sfx(r.Ok ? "heal" : "ui.error");
+            App.Audio.Sfx(r.Ok ? "battle.heal" : "ui.error");
             if (r.Ok) { App.Persist(); Refresh(); }
         }
 
@@ -727,7 +727,7 @@ namespace GridGame.App
             if (!RestedGate.Check(() => Launch(replaceCurrent))) return;
             RestedGate.Spend();
             var stage = Crucible.Prepare(app.Content, app.Save);
-            app.Audio.Sfx("crucible_enter");
+            app.Audio.Sfx("battle.crucible_enter");
             GameScreen next = new BattleScreen(stage.Id);
             if (replaceCurrent) app.Router.Replace(next); else app.Router.Push(next);
         }

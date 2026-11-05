@@ -37,7 +37,7 @@ namespace GridGame.App
             board.Place(v, e.At);
             v.SetHp(u.Hp, u.MaxHp);
             v.SetTeamLook(u);
-            App.Audio.Sfx("pickup", 0.7f, 0.85f);
+            App.Audio.Sfx("battle.pickup", 0.7f, 0.85f);
             Billboard($"{u.Name} stands apart. Talk to them! Wants: {string.Join(", ", e.Wants)}", null, RecruitAmber);
             v.Root.style.opacity = 0f;
             yield return Tween.Run(Timing.Standard, k => { v.Root.style.opacity = k; v.Root.style.translate = new Translate(0, -60f * (1f - k)); }, Tween.EaseOut);
@@ -61,7 +61,7 @@ namespace GridGame.App
             var u = State.UnitById(e.UnitId);
             if (u == null || !board.Units.TryGetValue(u.Id, out var v)) yield break;
             v.SetTeamLook(u);
-            App.Audio.Sfx("victory", 0.6f);
+            App.Audio.Sfx("battle.victory", 0.6f);
             if (e.GoldPaid > 0) App.StartCoroutine(FloatText(e.UnitId, $"-{e.GoldPaid} G", Palette.Gold, 0.6f, 52));
             Billboard($"{u.Name} joins the fight! Keep them standing to recruit them.", null, new Color(0.6f, 1f, 0.75f));
             yield return Tween.Run(Timing.Standard, k => v.Root.style.scale = new Scale(Vector2.one * (k < 0.7f ? 1f + k / 0.7f * 0.15f : 1.15f - 0.15f * (k - 0.7f) / 0.3f)));

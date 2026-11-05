@@ -8,6 +8,7 @@ MUSIC
 "Teller of the Tales", "Minstrel Guild", "Crusade", "Heroic Age", "Heartbreaking"
 Kevin MacLeod (incompetech.com)
 Licensed under Creative Commons: By Attribution 4.0 — http://creativecommons.org/licenses/by/4.0/
+Changes: loudness-normalized to -18 LUFS for in-game playback.
 
 SOUND EFFECTS
 Original sounds synthesized for this game by MindAttic (tools/make_sfx.py).

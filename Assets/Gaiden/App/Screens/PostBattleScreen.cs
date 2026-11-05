@@ -186,7 +186,7 @@ namespace GridGame.App
         private IEnumerator NewBest(VisualElement label)
         {
             yield return Tween.Wait(Timing.Emphasis);
-            App.Audio.Sfx("crucible_best");
+            App.Audio.Sfx("battle.crucible_best");
             label.style.opacity = 1f;
             yield return Tween.Pop(label, 1.25f, 0.3f);
         }
