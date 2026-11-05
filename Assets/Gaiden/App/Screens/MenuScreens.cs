@@ -576,12 +576,6 @@ namespace GridGame.App
             if (s.NewGamePlus > 0) Ui.Text($"New Game+ {s.NewGamePlus}", "h2 gold", goldW).style.marginTop = 16;
             Ui.Text("Cleared", "small dim", goldW).style.marginTop = 16;
             Ui.Text($"{s.ClearedStages.Count(id => c.Stages.ContainsKey(id) && !c.Stage(id).IsTest)}/{c.CampaignStages().Count}", "h2 num", goldW);
-        }
-
-        private void Rest()
-        {
-            var r = Inn.Rest(App.Content, App.Save);
-            App.Toast(r.Message);
             // GG-T75 (§25.12.1): once the Caravan station is open, a rotating one-line crew bark — flavor, not dialogue.
             if (CampUnlocks.CaravanOpen(s))
             {
@@ -591,6 +585,12 @@ namespace GridGame.App
                 CaravanScreen.BarkLine(c, s, gossip);
             }
             MercenaryCamp.OnCamp(this);
+        }
+
+        private void Rest()
+        {
+            var r = Inn.Rest(App.Content, App.Save);
+            App.Toast(r.Message);
             App.Audio.Sfx(r.Ok ? "heal" : "ui.error");
             if (r.Ok) { App.Persist(); Refresh(); }
         }
