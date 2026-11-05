@@ -17,7 +17,7 @@ namespace GridGame.App
             if (rb.Arrived)
             {
                 App.Audio.Sfx("warcry");
-                App.StartCoroutine(Tween.Shake(shake, 24f * Fx, 0.5f));
+                App.StartCoroutine(Tween.Shake(shake, 24f * Fx, Timing.Emphasis));
                 yield return FloatText(rb.UnitId, "RULE BREAKER", RuleBreakColor, 1.1f, 84);
                 yield break;
             }
@@ -26,7 +26,7 @@ namespace GridGame.App
                 case RuleBreak.TwinTurn: App.Audio.Sfx("dash"); break;
                 case RuleBreak.AxisWard: App.Audio.Sfx(rb.Text.Contains("shatters") ? "shatter" : "clang"); break;
                 case RuleBreak.MireSwap: App.Audio.Sfx("whoosh"); break;
-                case RuleBreak.GravityStamp: App.Audio.Sfx("explosion"); App.StartCoroutine(Tween.Shake(shake, 30f * Fx, 0.45f)); break;
+                case RuleBreak.GravityStamp: App.Audio.Sfx("explosion"); App.StartCoroutine(Tween.Shake(shake, 30f * Fx, Timing.Emphasis)); break;
                 case RuleBreak.Undying: App.Audio.Sfx("powerup"); RefreshUnit(rb.UnitId); break;
             }
             yield return FloatText(rb.UnitId, RuleBreaks.Label(rb.Rule), RuleBreakColor, 0.6f, 72);

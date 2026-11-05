@@ -1,14 +1,77 @@
 /* GridGame Gaiden — UI theme. Final Fantasy-style menus: blue gradient windows, white rounded frames,
    pointing-hand cursor rows, gold numbers. Every screen is built in C# from these classes. */
 
+/* -- Design tokens (GG-T250, docs/POLISH.md): the one source for color, type and spacing; App/UI/Tokens.cs
+   mirrors the same values for code. Use var(--...) in rules, never a fresh literal. -- */
+:root {
+    --color-text: rgb(240, 242, 255);
+    --color-dim: rgb(150, 160, 205);
+    --color-white: rgb(255, 255, 255);
+    --color-ink: rgb(15, 18, 43);
+    --color-frame: rgb(236, 238, 255);
+    --color-gold: rgb(255, 217, 89);
+    --color-good: rgb(115, 242, 148);
+    --color-bad: rgb(255, 97, 87);
+    --color-warn: rgb(255, 196, 92);
+    --color-info: rgb(219, 224, 255);
+    --color-mana: rgb(107, 199, 255);
+    --color-hero: rgb(120, 171, 255);
+    --color-enemy: rgb(235, 69, 74);
+    --color-boss: rgb(219, 102, 255);
+    --color-guest: rgb(110, 240, 160);
+    --color-neutral: rgb(255, 204, 94);
+    --color-haste: rgb(89, 255, 224);
+    --color-el-physical: rgb(217, 224, 242);
+    --color-el-fire: rgb(255, 115, 38);
+    --color-el-ice: rgb(128, 217, 255);
+    --color-el-lightning: rgb(255, 242, 89);
+    --color-el-poison: rgb(153, 255, 77);
+    --color-el-holy: rgb(255, 247, 199);
+    --color-el-dark: rgb(158, 77, 242);
+    --color-el-arcane: rgb(255, 115, 217);
+    --color-rarity-junk: rgb(140, 140, 140);
+    --color-rarity-common: rgb(236, 236, 240);
+    --color-rarity-uncommon: rgb(110, 230, 120);
+    --color-rarity-rare: rgb(100, 170, 255);
+    --color-rarity-epic: rgb(200, 120, 255);
+    --color-rarity-legendary: rgb(255, 200, 70);
+    --color-gauge-full: rgb(110, 230, 120);
+    --color-gauge-mid: rgb(240, 200, 70);
+    --color-gauge-low: rgb(240, 80, 70);
+    --type-badge: 24px;
+    --type-caption: 30px;
+    --type-small: 36px;
+    --type-body: 40px;
+    --type-h3: 48px;
+    --type-h2: 60px;
+    --type-h1: 76px;
+    --type-display: 96px;
+    --type-title: 120px;
+    --space-8: 8px;
+    --space-16: 16px;
+    --space-24: 24px;
+    --space-32: 32px;
+    --space-48: 48px;
+    --space-64: 64px;
+    --space-96: 96px;
+}
+
+/* Semantic type classes (POL-A1); weight comes from the Heavy font role, applied in Ui.AddClasses. */
+.t-caption { font-size: var(--type-caption); }
+.t-body { font-size: var(--type-body); }
+.t-h3 { font-size: var(--type-h3); }
+.t-h2 { font-size: var(--type-h2); }
+.t-h1 { font-size: var(--type-h1); }
+.t-display { font-size: var(--type-display); }
+
 .stage {
     position: absolute;
     width: 1170px;
     height: 2532px;
     overflow: hidden;
     background-color: rgb(8, 10, 22);
-    color: rgb(240, 242, 255);
-    font-size: 40px;
+    color: var(--color-text);
+    font-size: var(--type-body);
 }
 
 .letterbox { background-color: rgb(4, 5, 12); }
@@ -17,7 +80,7 @@
 .stage-frame {
     position: absolute;
     border-width: 5px;
-    border-color: rgb(236, 238, 255);
+    border-color: var(--color-frame);
     border-radius: 22px;
     background-color: rgb(0, 0, 0);
 }
@@ -32,7 +95,7 @@
 /* ── Windows ─────────────────────────────────────────────────────────────── */
 .window {
     border-width: 5px;
-    border-color: rgb(236, 238, 255);
+    border-color: var(--color-frame);
     border-radius: 18px;
     padding: 22px 28px;
     margin: 10px;
@@ -44,24 +107,23 @@
 .window--scroller { flex-shrink: 1; flex-basis: 0; min-height: 160px; }
 .window--plain { background-color: rgba(10, 16, 52, 0.94); }
 .window-title {
-    font-size: 44px;
-    color: rgb(255, 255, 255);
-    -unity-font-style: bold;
-    margin-bottom: 12px;
+    font-size: var(--type-h3);
+    color: var(--color-white);
+    margin-bottom: var(--space-16);
 }
-.window-sub { font-size: 34px; color: rgb(170, 184, 255); }
+.window-sub { font-size: var(--type-small); color: rgb(170, 184, 255); }
 
 /* ── Text ────────────────────────────────────────────────────────────────── */
-.title { font-size: 120px; color: rgb(255, 244, 214); -unity-text-align: middle-center; -unity-font-style: bold; }
-.h1 { font-size: 64px; color: rgb(255, 255, 255); -unity-font-style: bold; }
-.h2 { font-size: 48px; color: rgb(255, 255, 255); -unity-font-style: bold; }
-.small { font-size: 32px; }
-.tiny { font-size: 26px; }
-.dim { color: rgb(150, 160, 205); }
-.gold { color: rgb(255, 214, 92); }
-.good { color: rgb(120, 236, 150); }
-.bad { color: rgb(255, 110, 110); }
-.warn { color: rgb(255, 196, 92); }
+.title { font-size: var(--type-title); color: rgb(255, 244, 214); -unity-text-align: middle-center; }
+.h1 { font-size: var(--type-h2); color: var(--color-white); }
+.h2 { font-size: var(--type-h3); color: var(--color-white); }
+.small { font-size: var(--type-caption); }
+.tiny { font-size: var(--type-badge); }
+.dim { color: var(--color-dim); }
+.gold { color: var(--color-gold); }
+.good { color: var(--color-good); }
+.bad { color: var(--color-bad); }
+.warn { color: var(--color-warn); }
 .shadow { text-shadow: 3px 3px 0 rgba(0, 0, 0, 0.75); }
 .num { -unity-text-align: middle-right; }
 
@@ -79,26 +141,25 @@
 .menu-row--disabled { opacity: 0.42; }
 .menu-cursor { width: 56px; height: 56px; margin-right: 8px; opacity: 0; background-size: contain; flex-shrink: 0; }
 .menu-row--selected > .menu-cursor { opacity: 1; }
-.menu-label { flex-grow: 1; font-size: 42px; flex-shrink: 0; }
+.menu-label { flex-grow: 1; font-size: var(--type-body); flex-shrink: 0; }
 /* A long value (a locked station's "Opens after …" hint) wraps rather than clipping or squeezing the label. */
-.menu-value { font-size: 40px; -unity-text-align: middle-right; margin-left: 16px; flex-shrink: 1; white-space: normal; }
-.menu-icon { width: 64px; height: 64px; margin-right: 18px; background-size: contain; }
+.menu-value { font-size: var(--type-body); -unity-text-align: middle-right; margin-left: var(--space-16); flex-shrink: 1; white-space: normal; }
+.menu-icon { width: 64px; height: 64px; margin-right: var(--space-16); background-size: contain; }
 
 /* ── Buttons ─────────────────────────────────────────────────────────────── */
 /* Every button stands on a darker lip (the thick bottom border). Pressing sinks it onto the lip. */
 .btn {
     min-height: 104px;
     padding: 0 40px;
-    margin: 8px;
+    margin: var(--space-8);
     border-width: 4px;
     border-bottom-width: 12px;
     border-radius: 16px;
-    border-color: rgb(236, 238, 255);
+    border-color: var(--color-frame);
     border-bottom-color: rgb(120, 132, 196);
     background-color: rgb(34, 58, 150);
-    color: rgb(255, 255, 255);
-    font-size: 42px;
-    -unity-font-style: bold;
+    color: var(--color-white);
+    font-size: var(--type-body);
     -unity-text-align: middle-center;
 }
 .btn:hover { background-color: rgb(52, 84, 196); }
@@ -108,7 +169,6 @@
 .btn--danger:hover { background-color: rgb(178, 40, 52); }
 
 .role-badge {
-    -unity-font-style: bold;
     border-width: 3px;
     border-radius: 10px;
     padding: 0 10px;
@@ -136,7 +196,7 @@
 .slot--targeting { scale: 1.06 1.06; }
 .slot.is-pressed { scale: 0.92 0.92; translate: 0 10px; }
 .btn--disabled { opacity: 0.4; }
-.btn--small { min-height: 80px; font-size: 34px; padding: 0 24px; border-bottom-width: 9px; }
+.btn--small { min-height: 80px; font-size: var(--type-small); padding: 0 24px; border-bottom-width: 9px; }
 .btn--small.is-pressed { border-bottom-width: 3px; translate: 0 6px; }
 .btn--icon { width: 104px; padding: 0; }
 
@@ -148,10 +208,10 @@
     padding: 0 20px;
     background-color: rgba(4, 8, 30, 0.85);
     border-bottom-width: 4px;
-    border-color: rgb(236, 238, 255);
+    border-color: var(--color-frame);
 }
-.header-title { flex-grow: 1; font-size: 56px; -unity-font-style: bold; -unity-text-align: middle-left; margin-left: 12px; }
-.header-gold { font-size: 46px; color: rgb(255, 214, 92); -unity-text-align: middle-right; margin-right: 12px; }
+.header-title { flex-grow: 1; font-size: var(--type-h2); -unity-text-align: middle-left; margin-left: var(--space-16); }
+.header-gold { font-size: var(--type-h3); color: var(--color-gold); -unity-text-align: middle-right; margin-right: var(--space-16); }
 
 /* ── Tabs ────────────────────────────────────────────────────────────────── */
 .tabs { flex-direction: row; margin: 10px 10px 0 10px; flex-shrink: 0; }
@@ -160,21 +220,21 @@
     height: 96px;
     margin: 0 4px;
     border-width: 4px 4px 0 4px;
-    border-color: rgb(236, 238, 255);
+    border-color: var(--color-frame);
     border-top-left-radius: 16px;
     border-top-right-radius: 16px;
     background-color: rgb(18, 28, 84);
-    font-size: 38px;
+    font-size: var(--type-small);
     -unity-text-align: middle-center;
     color: rgb(170, 184, 255);
 }
-.tab--active { background-color: rgb(40, 66, 170); color: rgb(255, 255, 255); -unity-font-style: bold; }
+.tab--active { background-color: rgb(40, 66, 170); color: var(--color-white); }
 
 /* ── Gauges ──────────────────────────────────────────────────────────────── */
 .gauge { height: 20px; border-radius: 10px; background-color: rgba(0, 0, 0, 0.6); border-width: 2px; border-color: rgba(255, 255, 255, 0.5); overflow: hidden; }
-.gauge-fill { height: 100%; border-radius: 8px; background-color: rgb(110, 230, 120); }
-.gauge-fill--mid { background-color: rgb(240, 200, 70); }
-.gauge-fill--low { background-color: rgb(240, 80, 70); }
+.gauge-fill { height: 100%; border-radius: 8px; background-color: var(--color-gauge-full); }
+.gauge-fill--mid { background-color: var(--color-gauge-mid); }
+.gauge-fill--low { background-color: var(--color-gauge-low); }
 
 /* ── Toast / dialog ──────────────────────────────────────────────────────── */
 .toast {
@@ -183,9 +243,9 @@
     padding: 26px 34px;
     border-radius: 18px;
     border-width: 4px;
-    border-color: rgb(236, 238, 255);
+    border-color: var(--color-frame);
     background-color: rgba(12, 18, 60, 0.96);
-    font-size: 40px;
+    font-size: var(--type-body);
     -unity-text-align: middle-center;
     transition-property: opacity, translate;
     transition-duration: 0.18s;
@@ -215,7 +275,7 @@
     width: 150px; height: 150px;
     border-radius: 16px;
     border-width: 4px;
-    border-color: rgb(236, 238, 255);
+    border-color: var(--color-frame);
     background-color: rgb(30, 36, 70);
     background-size: cover;
     margin-right: 22px;
@@ -225,27 +285,27 @@
 .unit-frame {
     border-radius: 16px;
     border-width: 4px;
-    border-color: rgb(236, 238, 255);
+    border-color: var(--color-frame);
     overflow: hidden;
 }
 .unit-keyline { position: absolute; left: 0; top: 0; right: 0; bottom: 0; border-width: 4px; border-radius: 12px; }
-.unit-keyline--hero { border-color: rgba(120, 170, 255, 0.95); }
-.unit-keyline--foe { border-color: rgba(235, 70, 75, 0.95); }
-.unit-keyline--boss { border-color: rgb(219, 102, 255); }
-.unit-keyline--guest { border-color: rgb(110, 240, 160); }
-.unit-keyline--neutral { border-color: rgb(255, 205, 95); }
+.unit-keyline--hero { border-color: var(--color-hero); }
+.unit-keyline--foe { border-color: var(--color-enemy); }
+.unit-keyline--boss { border-color: var(--color-boss); }
+.unit-keyline--guest { border-color: var(--color-guest); }
+.unit-keyline--neutral { border-color: var(--color-neutral); }
 
 /* ── Orb pips (generic mana) ──────────────────────────────────────────── */
-.pip { width: 34px; height: 34px; border-radius: 17px; margin: 0 3px; border-width: 2px; border-color: rgba(255,255,255,0.8); font-size: 20px; -unity-text-align: middle-center; -unity-font-style: bold; color: rgb(20,20,20); }
-.pip--mana { background-color: rgb(107, 199, 255); }
+.pip { width: 34px; height: 34px; border-radius: 17px; margin: 0 3px; border-width: 2px; border-color: rgba(255,255,255,0.8); font-size: var(--type-badge); -unity-text-align: middle-center; color: var(--color-ink); }
+.pip--mana { background-color: var(--color-mana); }
 
 /* ── Rarity colors ───────────────────────────────────────────────────────── */
-.rarity-Junk { color: rgb(140, 140, 140); }
-.rarity-Common { color: rgb(236, 236, 240); }
-.rarity-Uncommon { color: rgb(110, 230, 120); }
-.rarity-Rare { color: rgb(100, 170, 255); }
-.rarity-Epic { color: rgb(200, 120, 255); }
-.rarity-Legendary { color: rgb(255, 200, 70); }
+.rarity-Junk { color: var(--color-rarity-junk); }
+.rarity-Common { color: var(--color-rarity-common); }
+.rarity-Uncommon { color: var(--color-rarity-uncommon); }
+.rarity-Rare { color: var(--color-rarity-rare); }
+.rarity-Epic { color: var(--color-rarity-epic); }
+.rarity-Legendary { color: var(--color-rarity-legendary); }
 
 /* ══ Menu themes (GG-T185) ══════════════════════════════════════════════════
    Ui.ApplyMenuTheme puts the active theme's class (Art.MenuTheme.UssClass) on the UI root, so each theme is one

@@ -89,7 +89,7 @@ namespace GridGame.App
             haggling = true;
             App.Audio.Sfx("ui.press");
             var think = Ui.Text("...", "h2 gold", card);
-            yield return Tween.Run(0.7f, k => { think.style.opacity = 0.35f + 0.65f * Mathf.Abs(Mathf.Sin(k * Mathf.PI * 3f)); });
+            yield return Tween.Run(Timing.Dramatic, k => { think.style.opacity = 0.35f + 0.65f * Mathf.Abs(Mathf.Sin(k * Mathf.PI * 3f)); });
             var o = Mercenaries.Haggle(C, S, m.Class, out var message);
             haggling = false;
             App.Audio.Sfx(o == HaggleOutcome.Dropped ? "ui.buy" : o == HaggleOutcome.Held ? "ui.select" : "ui.error");
@@ -206,10 +206,10 @@ namespace GridGame.App
         private IEnumerator Enter(VisualElement portrait, Label line, string speech, VisualElement choices)
         {
             App.Audio.Sfx("ui.select");
-            yield return Tween.Run(0.35f, k => { portrait.style.opacity = k; portrait.style.translate = new Translate(-120f * (1f - k), 0); }, Tween.EaseOut);
+            yield return Tween.Run(Timing.Emphasis, k => { portrait.style.opacity = k; portrait.style.translate = new Translate(-120f * (1f - k), 0); }, Tween.EaseOut);
             yield return Tween.Run(Mathf.Clamp(speech.Length / 60f, 0.4f, 1.6f), k => line.text = speech.Substring(0, Mathf.RoundToInt(speech.Length * k)));
             App.Audio.Sfx("ui.click");
-            yield return Tween.Run(0.25f, k => choices.style.opacity = k);
+            yield return Tween.Run(Timing.Standard, k => choices.style.opacity = k);
         }
 
         private void Answer(Result r)

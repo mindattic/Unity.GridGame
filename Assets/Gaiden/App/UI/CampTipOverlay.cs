@@ -66,7 +66,7 @@ namespace GridGame.App
                 ring.style.left = rect.xMin - 8; ring.style.top = rect.yMin - 8;
                 ring.style.width = rect.width + 16; ring.style.height = rect.height + 16;
                 ring.style.borderTopWidth = ring.style.borderBottomWidth = ring.style.borderLeftWidth = ring.style.borderRightWidth = 6;
-                ring.style.borderTopColor = ring.style.borderBottomColor = ring.style.borderLeftColor = ring.style.borderRightColor = new Color(1f, 0.82f, 0.3f);
+                ring.style.borderTopColor = ring.style.borderBottomColor = ring.style.borderLeftColor = ring.style.borderRightColor = Palette.Gold;
                 ring.style.borderTopLeftRadius = ring.style.borderTopRightRadius = ring.style.borderBottomLeftRadius = ring.style.borderBottomRightRadius = 16;
 
                 var hand = Ui.El("", veil);

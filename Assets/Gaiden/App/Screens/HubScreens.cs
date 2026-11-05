@@ -504,9 +504,9 @@ namespace GridGame.App
                 cell.style.width = 196; cell.style.height = 170; cell.style.marginRight = 6;
                 cell.style.borderTopLeftRadius = cell.style.borderTopRightRadius = cell.style.borderBottomLeftRadius = cell.style.borderBottomRightRadius = 14;
                 cell.style.borderTopWidth = cell.style.borderBottomWidth = cell.style.borderLeftWidth = cell.style.borderRightWidth = i == slot ? 6 : 3;
-                var bc = i == slot ? new Color(1f, 0.85f, 0.4f) : new Color(0.9f, 0.92f, 1f, 0.7f);
+                var bc = i == slot ? Palette.Gold : Palette.Text.WithA(0.7f);
                 cell.style.borderTopColor = cell.style.borderBottomColor = cell.style.borderLeftColor = cell.style.borderRightColor = bc;
-                cell.style.backgroundColor = new Color(0.05f, 0.08f, 0.25f, 0.9f);
+                cell.style.backgroundColor = Palette.Ink.WithA(0.9f);
                 if (i >= unlocked) { Ui.Text("Locked", "small dim", cell); cell.style.opacity = 0.5f; continue; }
                 var entry = h.Bar[i];
                 var label = EntryName(entry);

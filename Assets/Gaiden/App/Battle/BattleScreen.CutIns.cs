@@ -63,7 +63,7 @@ namespace GridGame.App
             }
             Stripe(h * 0.22f, h * 0.56f, new Color(c.r * 0.5f, c.g * 0.5f, c.b * 0.6f, 0.75f), 0.9f); // dark under-band
             Stripe(h * 0.3f, h * 0.4f, new Color(c.r, c.g, c.b, 0.92f), 0.7f);                         // the band
-            Stripe(h * 0.48f, h * 0.035f, new Color(1f, 1f, 1f, 0.95f), 0.6f);                         // bright core
+            Stripe(h * 0.48f, h * 0.035f, Palette.White.WithA(0.95f), 0.6f);                         // bright core
             for (int i = 0; i < 7; i++)
             {
                 var streak = Stripe(h * Random.Range(0.28f, 0.7f), Random.Range(3f, 8f), new Color(1f, 1f, 1f, Random.Range(0.4f, 0.85f)), 0f);
@@ -80,7 +80,7 @@ namespace GridGame.App
             window.style.overflow = Overflow.Hidden;
             window.style.rotate = new Rotate(tilt);
             window.style.borderTopWidth = window.style.borderBottomWidth = window.style.borderLeftWidth = window.style.borderRightWidth = 6;
-            window.style.borderTopColor = window.style.borderBottomColor = window.style.borderLeftColor = window.style.borderRightColor = new Color(1f, 1f, 1f, 0.95f);
+            window.style.borderTopColor = window.style.borderBottomColor = window.style.borderLeftColor = window.style.borderRightColor = Palette.White.WithA(0.95f);
             window.style.borderTopLeftRadius = window.style.borderTopRightRadius = window.style.borderBottomLeftRadius = window.style.borderBottomRightRadius = 18;
             window.style.backgroundColor = new Color(c.r * 0.25f, c.g * 0.25f, c.b * 0.35f, 0.85f);
             portrait = new VisualElement { pickingMode = PickingMode.Ignore };
@@ -102,7 +102,7 @@ namespace GridGame.App
                 t.style.left = -w * 0.1f; t.style.right = -w * 0.1f; t.style.bottom = -h * 0.02f;
                 t.style.unityTextAlign = TextAnchor.MiddleCenter;
                 t.style.fontSize = Mathf.Clamp(h * 0.13f, 34f, 76f);
-                t.style.unityFontStyleAndWeight = FontStyle.Bold;
+                Fonts.UseHeavy(t);
                 t.style.color = tagColor;
                 t.style.unityTextOutlineWidth = 3f;
                 t.style.unityTextOutlineColor = new Color(0.03f, 0.03f, 0.1f, 1f);
@@ -145,7 +145,7 @@ namespace GridGame.App
             }
             var veil = Sheet(cutInLayer, 0f, 400f);
             veil.userData = Sheet(shake, BoardTop + BoardView.Tile * BattleConfig.Rows, 0f);
-            App.StartCoroutine(Tween.Run(0.1f, k => SetVeil(veil, alpha * k)));
+            App.StartCoroutine(Tween.Run(Timing.Instant, k => SetVeil(veil, alpha * k)));
             return veil;
         }
 
@@ -158,7 +158,7 @@ namespace GridGame.App
         private IEnumerator LiftVeil(VisualElement veil)
         {
             float a0 = veil.resolvedStyle.opacity;
-            yield return Tween.Run(0.15f, k => SetVeil(veil, a0 * (1f - k)));
+            yield return Tween.Run(Timing.Quick, k => SetVeil(veil, a0 * (1f - k)));
             veil.RemoveFromHierarchy();
             (veil.userData as VisualElement)?.RemoveFromHierarchy();
         }
@@ -169,7 +169,7 @@ namespace GridGame.App
             float w = card.style.width.value.value, h = card.style.height.value.value;
             void Put(Vector2 p) { card.style.left = p.x - w / 2f; card.style.top = p.y - h / 2f; }
             Put(at);
-            yield return Tween.Run(0.14f, k =>
+            yield return Tween.Run(Timing.Quick, k =>
             {
                 float e = Tween.Back(k);
                 card.style.scale = new Scale(Vector2.one * Mathf.LerpUnclamped(1.9f, 1f, e));
@@ -177,10 +177,10 @@ namespace GridGame.App
                 card.style.opacity = Mathf.Min(1f, k * 3f);
                 portrait.style.unityBackgroundImageTintColor = Color.Lerp(new Color(3f, 3f, 3f), Color.white, k);
             });
-            App.StartCoroutine(Tween.Shake(card, 16f * Fx, 0.16f));
+            App.StartCoroutine(Tween.Shake(card, 16f * Fx, Timing.Quick));
             float t = 0f;
             yield return Tween.Run(hold, k => { t = k; card.style.scale = new Scale(Vector2.one * (1f + 0.04f * k)); });
-            yield return Tween.Run(0.12f, k =>
+            yield return Tween.Run(Timing.Quick, k =>
             {
                 Put(at + exitDir * 900f * k * k);
                 card.style.rotate = new Rotate(-spin * 0.4f * k);
@@ -211,7 +211,7 @@ namespace GridGame.App
         {
             CutInsShown++;
             bool fromLeft = caster.IsHero;
-            var card = ActionCard(caster, 560f, caster.Team, spellName, new Color(1f, 0.92f, 0.55f), out var portrait);
+            var card = ActionCard(caster, 560f, caster.Team, spellName, Palette.GoldLight, out var portrait);
             var at = new Vector2(fromLeft ? 300f : GameApp.StageWidth - 300f, BoardTop + 520f);
             var focus = new Vector2(BoardLeft, BoardTop) + ViewCenter(caster);
             App.Audio.Sfx("dash", 0.8f, 0.85f);
@@ -234,7 +234,7 @@ namespace GridGame.App
         {
             yield return CasterSlide(heroes[0], "Fireball");
             supportersShown.Clear();
-            foreach (var h in heroes.Skip(1)) { SupporterPop(h, Team.Hero); yield return Tween.Wait(0.12f); }
+            foreach (var h in heroes.Skip(1)) { SupporterPop(h, Team.Hero); yield return Tween.Wait(Timing.Quick); }
         }
 
         /// <summary>Chained links: both attackers twist-pop beside their tiles with the chain count.</summary>
@@ -249,7 +249,7 @@ namespace GridGame.App
             {
                 var u = attackers[i];
                 var c = ViewCenter(u) + new Vector2(BoardLeft, BoardTop);
-                var card = ActionCard(u, 400f, team, chainCount > 1 ? $"CHAIN ×{chainCount}" : null, new Color(1f, 0.85f, 0.35f), out var portrait);
+                var card = ActionCard(u, 400f, team, chainCount > 1 ? $"CHAIN ×{chainCount}" : null, Palette.Gold, out var portrait);
                 var at = new Vector2(Mathf.Clamp(c.x, 150f, GameApp.StageWidth - 150f), Mathf.Max(BoardTop + 230f, c.y - 260f));
                 float spin = (i == 0 ? -1f : 1f) * 20f;
                 runs.Add(TwistCard(card, portrait, at, 0.2f, spin, new Vector2(i == 0 ? -1f : 1f, 0.3f)));
@@ -289,7 +289,7 @@ namespace GridGame.App
             else if (mc.Reason == "guard") // GG-T189: the unused turn time Guard gave up, banked into the bubble
                 Billboard($"Guard · Mana +{mc.Amount} · {mc.Amount / BattleConfig.GuardChargePerSecond:0.#}s banked", null, new Color(0.55f, 0.85f, 1f));
             App.Audio.Sfx("orb", 0.35f, 0.7f + 0.5f * (to / (float)BattleConfig.ManaChargePerOrb));
-            yield return Tween.Run(0.22f, k =>
+            yield return Tween.Run(Timing.Standard, k =>
             {
                 float v = rolled ? Mathf.Lerp(from, BattleConfig.ManaChargePerOrb, k) : Mathf.Lerp(from, to, k);
                 SetChargeBubble(v / BattleConfig.ManaChargePerOrb);

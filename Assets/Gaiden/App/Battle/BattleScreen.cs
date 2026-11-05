@@ -292,7 +292,7 @@ namespace GridGame.App
             timelineBar.name = "timeline-track";
             timelineBar.style.position = Position.Absolute;
             timelineBar.style.left = 0; timelineBar.style.right = 0; timelineBar.style.top = TrackY - 3; timelineBar.style.height = 6;
-            timelineBar.style.backgroundColor = new Color(0.9f, 0.92f, 1f, 0.85f);
+            timelineBar.style.backgroundColor = Palette.Text.WithA(0.85f);
             timelineBar.style.borderTopLeftRadius = timelineBar.style.borderTopRightRadius = timelineBar.style.borderBottomLeftRadius = timelineBar.style.borderBottomRightRadius = 3;
             zone = Ui.El("", frame);
             zone.style.position = Position.Absolute;
@@ -364,8 +364,8 @@ namespace GridGame.App
                 o.style.width = o.style.height = size;
                 o.style.backgroundImage = new StyleBackground(Art.Orb);
                 o.style.unityTextAlign = TextAnchor.MiddleCenter;
-                o.style.fontSize = 30; o.style.unityFontStyleAndWeight = FontStyle.Bold;
-                o.style.color = new Color(0.08f, 0.08f, 0.12f);
+                o.style.fontSize = 30; Fonts.UseHeavy(o);
+                o.style.color = Palette.Ink;
                 orbViews.Add(o);
             }
         }
@@ -442,10 +442,10 @@ namespace GridGame.App
                     case "burning": return new Color(1f, 0.45f, 0.1f, 1f);
                     case "frozen": return new Color(0.6f, 0.9f, 1f, 1f);
                     case "poisoned": return new Color(0.5f, 1f, 0.3f, 1f);
-                    case "regen": return new Color(0.4f, 1f, 0.6f, 1f);
+                    case "regen": return Palette.Good;
                     case "sleep": return new Color(0.7f, 0.7f, 1f, 1f);
                     case "taunting": return new Color(1f, 0.3f, 0.2f, 1f);
-                    case "empowered": return new Color(1f, 0.7f, 0.2f, 1f);
+                    case "empowered": return Palette.Buff;
                 }
             return new Color(0, 0, 0, 0);
         }
@@ -490,7 +490,7 @@ namespace GridGame.App
                 icon.style.top = TrackY - TurnIcon / 2f; // centred on the line
                 SetBorder(icon, TurnIcon / 2f - 2f, 4, TurnRing(owner));
                 // Opaque disc so the track never shows through; overflow:hidden masks the art to the circle.
-                icon.style.backgroundColor = new Color(0.06f, 0.07f, 0.17f, 1f);
+                icon.style.backgroundColor = Palette.Ink;
                 icon.style.overflow = Overflow.Hidden;
                 // Heroes and enemies alike: the unit's portrait through its Thumbnail window (§12.1.1, GG-T221).
                 var sprite = new VisualElement { name = "tl-art", pickingMode = PickingMode.Ignore };
@@ -515,10 +515,10 @@ namespace GridGame.App
             return icon;
         }
 
-        private static readonly Color NextRing = new Color(1f, 0.85f, 0.3f);
+        private static readonly Color NextRing = Palette.Gold;
 
         private static Color TurnRing(Unit owner) =>
-            owner != null && (owner.Def.HasTag("Boss") || owner.IsMultiTile) ? new Color(0.86f, 0.4f, 1f) : new Color(0.92f, 0.3f, 0.3f);
+            owner != null && (owner.Def.HasTag("Boss") || owner.IsMultiTile) ? Palette.Boss : Palette.Enemy;
 
         /// <summary>The enemy turn closest to ACT gets a gold ring and a slight lift: "this one hits next".</summary>
         private void MarkNextAttacker()
@@ -604,7 +604,7 @@ namespace GridGame.App
             foreach (var b in u.Buffs)
                 if (b.Def.HaltsTimeline || b.Def.Immobile)
                     return (b.Def.Id, string.IsNullOrEmpty(b.Def.Letter) ? b.Def.Name.Substring(0, 1) : b.Def.Letter, Art.HexColor(b.Def.Color, new Color(0.6f, 0.85f, 1f)), b.Def.Name);
-            if (turn != null && turn.StunTicks > 0) return ("stunned", "!", new Color(1f, 0.85f, 0.3f), "Stunned");
+            if (turn != null && turn.StunTicks > 0) return ("stunned", "!", Palette.Gold, "Stunned");
             return null;
         }
 
@@ -722,7 +722,7 @@ namespace GridGame.App
                 cost.Clear();
                 icon.style.backgroundImage = StyleKeyword.None;
                 var status = hero == null ? SlotStatus.CannotAct : BattleEngine.GetSlotStatus(State, hero.Id, i);
-                var border = new Color(0.9f, 0.92f, 1f, 0.75f);
+                var border = Palette.Text.WithA(0.75f);
                 float alpha = 1f;
                 if (hero == null || i >= hero.UnlockedSlots)
                 {
@@ -763,7 +763,7 @@ namespace GridGame.App
                         }
                         else
                         {
-                            border = new Color(0.45f, 0.75f, 1f);
+                            border = Palette.Mana;
                             Ui.CostPips(a.Cost, cost, 30);
                         }
                     }
@@ -771,7 +771,7 @@ namespace GridGame.App
                     if (status != SlotStatus.Ready) alpha = 0.45f;
                 }
                 bool targeting = i == TargetingSlot;
-                if (targeting) border = new Color(1f, 0.85f, 0.3f);
+                if (targeting) border = Palette.Gold;
                 v.EnableInClassList("slot--targeting", targeting);
                 v.style.scale = StyleKeyword.Null; // scale belongs to the stylesheet (press / targeting states)
                 v.style.borderTopColor = v.style.borderBottomColor = v.style.borderLeftColor = v.style.borderRightColor = border;
@@ -813,17 +813,17 @@ namespace GridGame.App
                 var mind = Ui.Text($"{EnemyPlanner.DescribeBrain(u.Def.Brain)} · {EnemyPlanner.Describe(EnemyPlanner.TargetingOf(u)).ToLowerInvariant()}", "tiny dim", col);
                 mind.name = "enemy-brain";
                 mind.style.whiteSpace = WhiteSpace.Normal;
-                if (u.HasPlate) { var pl = Ui.Text($"Armor plate {u.PlateHp}/{u.PlateMax} on its {SideName(u.Facing)} — strike from the sides, break it head-on, or use spells", "tiny", col); pl.style.whiteSpace = WhiteSpace.Normal; pl.style.color = new Color(0.8f, 0.85f, 0.95f); }
+                if (u.HasPlate) { var pl = Ui.Text($"Armor plate {u.PlateHp}/{u.PlateMax} on its {SideName(u.Facing)} — strike from the sides, break it head-on, or use spells", "tiny", col); pl.style.whiteSpace = WhiteSpace.Normal; pl.style.color = Palette.Info; }
                 if (u.IsCorpse) { var co = Ui.Text($"The body of a {App.Content.TryClass(u.CorpseOf)?.Name ?? "foe"} — blocks the tile, rots in {u.DecayIn} actions", "tiny dim", col); co.style.whiteSpace = WhiteSpace.Normal; }
                 var kit = Ui.KitTraits(App.Content, u.Def);
                 if (kit.Length > 0) { var kt = Ui.Text(kit, "tiny gold", col); kt.name = "enemy-kit"; kt.style.whiteSpace = WhiteSpace.Normal; }
             }
             // What the flashing status slot on the tile means, one line per effect.
             var statusTurn = State.TurnEntryOf(u.Id);
-            if (statusTurn != null && statusTurn.StunTicks > 0) StatusRow(col, "stunned", "!", new Color(1f, 0.85f, 0.3f), "Stunned", "knocked back on the timeline — its turn icon is held");
+            if (statusTurn != null && statusTurn.StunTicks > 0) StatusRow(col, "stunned", "!", Palette.Gold, "Stunned", "knocked back on the timeline — its turn icon is held");
             foreach (var b in u.Buffs)
                 StatusRow(col, b.Def.Id, string.IsNullOrEmpty(b.Def.Letter) ? b.Def.Name.Substring(0, 1) : b.Def.Letter,
-                    Art.HexColor(b.Def.Color, b.Def.Kind == BuffKind.Buff ? new Color(0.4f, 0.8f, 1f) : new Color(0.8f, 0.4f, 0.9f)),
+                    Art.HexColor(b.Def.Color, b.Def.Kind == BuffKind.Buff ? Palette.Mana : new Color(0.8f, 0.4f, 0.9f)),
                     b.Def.Name, $"{Ui.BuffEffect(b.Def)} ({b.Remaining} {(b.Def.Unit == GridGame.Core.Content.DurationUnit.Turns ? "turns" : "s")} left)");
         }
 
@@ -1030,7 +1030,7 @@ namespace GridGame.App
             if (targets.Count == 0) { ShowBanner("No valid target"); App.Audio.Sfx("ui.error"); return; }
             TargetingSlot = slot;
             board.ClearMarks();
-            foreach (var t in targets) board.Mark(t, new Color(1f, 0.82f, 0.3f), 0.35f);
+            foreach (var t in targets) board.Mark(t, Palette.Gold, 0.35f);
             ShowBanner($"{a.Name}: choose a target");
             SyncBar();
             SyncPanel();
@@ -1122,11 +1122,11 @@ namespace GridGame.App
             ClearTargetGlows();
             if (a == null) return;
             if (a.Mode != TargetMode.Auto)
-                foreach (var vt in BattleEngine.ValidTargets(State, hero.Id, TargetingSlot)) board.Mark(vt, new Color(1f, 0.82f, 0.3f), 0.25f);
+                foreach (var vt in BattleEngine.ValidTargets(State, hero.Id, TargetingSlot)) board.Mark(vt, Palette.Gold, 0.25f);
             if (!PendingTarget.HasValue) return;
             var at = PendingTarget.Value;
             bool harmful = a.BaseDamage > 0 || a.Filter == TargetFilter.EnemyOnly;
-            var color = a.IsTeleport ? new Color(0.5f, 0.8f, 1f) : harmful ? new Color(1f, 0.3f, 0.25f) : new Color(0.4f, 0.9f, 0.5f);
+            var color = a.IsTeleport ? Palette.Mana : harmful ? new Color(1f, 0.3f, 0.25f) : new Color(0.4f, 0.9f, 0.5f);
             var hits = TargetResolver.Collect(State, a, hero, at);
             if (a.Mode == TargetMode.Auto || a.Shape == TargetShape.Self || a.Shape == TargetShape.AllAllies || a.Shape == TargetShape.AllEnemies)
                 foreach (var u in hits) foreach (var t in u.Tiles()) board.Mark(t, color, 0.42f);
@@ -1450,11 +1450,11 @@ namespace GridGame.App
             var hero = State.UnitById(cmd.HeroId);
             var dest = cmd.Path[cmd.Path.Count - 1];
             board.ClearMarks();
-            board.Mark(dest, new Color(1f, 0.9f, 0.35f), 0.5f);
-            if (board.Units.TryGetValue(hero.Id, out var hv)) { hv.SetGlow(new Color(1f, 0.9f, 0.35f), 0.95f); App.StartCoroutine(Tween.Pop(hv.Root, 1.12f, 0.35f)); }
+            board.Mark(dest, Palette.Gold, 0.5f);
+            if (board.Units.TryGetValue(hero.Id, out var hv)) { hv.SetGlow(Palette.Gold, 0.95f); App.StartCoroutine(Tween.Pop(hv.Root, 1.12f, 0.35f)); }
             board.Lines.ClearLines();
             var from = BoardView.CenterOf(hero.Pos);
-            foreach (var step in cmd.Path) { var to = BoardView.CenterOf(step); board.Lines.Add(from, to, new Color(1f, 0.9f, 0.35f, 0.55f), 10f); from = to; }
+            foreach (var step in cmd.Path) { var to = BoardView.CenterOf(step); board.Lines.Add(from, to, Palette.Gold.WithA(0.55f), 10f); from = to; }
             ShowBanner($"Hint: drag {hero.Name} to the glowing tile");
         }
 
@@ -1533,7 +1533,7 @@ namespace GridGame.App
             float travel = content - BannerViewportHeight;
             yield return Tween.Wait(1.1f); // let the reader start before it moves
             yield return Tween.Run(Mathf.Clamp(travel / 40f, 0.8f, 4f), k => banner.style.top = -travel * k);
-            yield return Tween.Wait(0.8f); // hold on the tail before the next message replaces it
+            yield return Tween.Wait(Timing.Dramatic); // hold on the tail before the next message replaces it
             bannerScrollRoutine = null;
         }
     }

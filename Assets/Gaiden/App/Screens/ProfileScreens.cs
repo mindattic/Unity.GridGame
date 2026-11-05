@@ -100,11 +100,11 @@ namespace GridGame.App
             var input = field.Q(className: "unity-text-field__input") ?? field.Q(className: "unity-base-text-field__input");
             if (input != null)
             {
-                input.style.backgroundColor = new Color(0.05f, 0.06f, 0.12f, 0.9f);
+                input.style.backgroundColor = Palette.Ink.WithA(0.9f);
                 input.style.color = Color.white;
                 input.style.paddingLeft = input.style.paddingRight = 18;
                 input.style.borderTopWidth = input.style.borderBottomWidth = input.style.borderLeftWidth = input.style.borderRightWidth = 3;
-                input.style.borderTopColor = input.style.borderBottomColor = input.style.borderLeftColor = input.style.borderRightColor = new Color(1f, 0.82f, 0.36f, 0.8f);
+                input.style.borderTopColor = input.style.borderBottomColor = input.style.borderLeftColor = input.style.borderRightColor = Palette.Neutral.WithA(0.8f);
             }
             field.RegisterValueChangedCallback(_ => Validate());
             field.RegisterCallback<KeyDownEvent>(e => { if (e.keyCode == KeyCode.Return || e.keyCode == KeyCode.KeypadEnter) Submit(); });

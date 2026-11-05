@@ -11,7 +11,7 @@ namespace GridGame.App
     /// speaks its join line and turns guest-green — standing at a victory, it joins the caravan.</summary>
     public sealed partial class BattleScreen
     {
-        private static readonly Color RecruitAmber = new Color(1f, 0.82f, 0.4f);
+        private static readonly Color RecruitAmber = Palette.Neutral;
 
         /// <summary>A tap on a neutral: talk with the selected hero if it stands beside it, else any hero that does.</summary>
         private void TapRecruitable(Unit neutral)
@@ -40,7 +40,7 @@ namespace GridGame.App
             App.Audio.Sfx("pickup", 0.7f, 0.85f);
             Billboard($"{u.Name} stands apart. Talk to them! Wants: {string.Join(", ", e.Wants)}", null, RecruitAmber);
             v.Root.style.opacity = 0f;
-            yield return Tween.Run(0.3f, k => { v.Root.style.opacity = k; v.Root.style.translate = new Translate(0, -60f * (1f - k)); }, Tween.EaseOut);
+            yield return Tween.Run(Timing.Standard, k => { v.Root.style.opacity = k; v.Root.style.translate = new Translate(0, -60f * (1f - k)); }, Tween.EaseOut);
             v.Root.style.opacity = 1f;
         }
 
@@ -62,9 +62,9 @@ namespace GridGame.App
             if (u == null || !board.Units.TryGetValue(u.Id, out var v)) yield break;
             v.SetTeamLook(u);
             App.Audio.Sfx("victory", 0.6f);
-            if (e.GoldPaid > 0) App.StartCoroutine(FloatText(e.UnitId, $"-{e.GoldPaid} G", new Color(1f, 0.85f, 0.35f), 0.6f, 52));
+            if (e.GoldPaid > 0) App.StartCoroutine(FloatText(e.UnitId, $"-{e.GoldPaid} G", Palette.Gold, 0.6f, 52));
             Billboard($"{u.Name} joins the fight! Keep them standing to recruit them.", null, new Color(0.6f, 1f, 0.75f));
-            yield return Tween.Run(0.25f, k => v.Root.style.scale = new Scale(Vector2.one * (k < 0.7f ? 1f + k / 0.7f * 0.15f : 1.15f - 0.15f * (k - 0.7f) / 0.3f)));
+            yield return Tween.Run(Timing.Standard, k => v.Root.style.scale = new Scale(Vector2.one * (k < 0.7f ? 1f + k / 0.7f * 0.15f : 1.15f - 0.15f * (k - 0.7f) / 0.3f)));
             v.Root.style.scale = new Scale(Vector2.one);
         }
     }

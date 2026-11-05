@@ -26,8 +26,8 @@ namespace GridGame.App
         public override string Id => "talents";
         protected override string Title => "Talents";
 
-        private static readonly Color PurchasedColor = new Color(1f, 0.84f, 0.36f);
-        private static readonly Color InnateColor = new Color(0.47f, 0.92f, 0.59f);
+        private static readonly Color PurchasedColor = Palette.Gold;
+        private static readonly Color InnateColor = Palette.Good;
         private static readonly Color AvailableColor = new Color(0.55f, 0.75f, 1f);
         private static readonly Color LockedColor = new Color(0.45f, 0.48f, 0.62f, 0.8f);
 
@@ -165,8 +165,8 @@ namespace GridGame.App
             card.style.borderTopWidth = card.style.borderBottomWidth = card.style.borderLeftWidth = card.style.borderRightWidth = bw;
             var bc = sel ? Color.white : StateColor(state);
             card.style.borderTopColor = card.style.borderBottomColor = card.style.borderLeftColor = card.style.borderRightColor = bc;
-            card.style.backgroundColor = state == TalentState.Locked ? new Color(0.04f, 0.05f, 0.14f, 0.96f)
-                : state == TalentState.Available ? new Color(0.07f, 0.12f, 0.34f, 0.97f) : new Color(0.1f, 0.1f, 0.22f, 0.97f);
+            card.style.backgroundColor = state == TalentState.Locked ? Palette.Ink.WithA(0.96f)
+                : state == TalentState.Available ? new Color(0.07f, 0.12f, 0.34f, 0.97f) : Palette.Ink.WithA(0.97f);
             var icon = Art.AbilityIcon(a);
             if (icon != null)
             {

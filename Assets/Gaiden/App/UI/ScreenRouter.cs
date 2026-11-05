@@ -20,6 +20,7 @@ namespace GridGame.App
             Root.AddToClassList("fill");
             Root.name = "screen-" + Id;
             Build(Root);
+            Ui.ApplyHeavy(Root);
             return Root;
         }
 
@@ -36,6 +37,7 @@ namespace GridGame.App
             if (Root == null) return;
             Root.Clear();
             Build(Root);
+            Ui.ApplyHeavy(Root);
         }
 
         protected static GameApp App => GameApp.I;

@@ -58,7 +58,7 @@ namespace GridGame.App
 
             var head = Ui.Text("LEVEL UP!", "title shadow", col);
             Fonts.UseDisplay(head);
-            head.style.color = new Color(1f, 0.85f, 0.4f);
+            head.style.color = Palette.Gold;
             head.style.marginBottom = 30;
 
             portraitRow = Ui.El("row", col);
@@ -68,7 +68,7 @@ namespace GridGame.App
             frame.style.borderTopWidth = frame.style.borderBottomWidth = frame.style.borderLeftWidth = frame.style.borderRightWidth = 4;
             var roleColor = Ui.RoleColor(def.Role);
             frame.style.borderTopColor = frame.style.borderBottomColor = frame.style.borderLeftColor = frame.style.borderRightColor = roleColor;
-            frame.style.backgroundColor = new Color(0.1f, 0.1f, 0.15f, 0.6f);
+            frame.style.backgroundColor = Palette.Ink.WithA(0.6f);
             frame.style.backgroundImage = new StyleBackground(Art.Portrait(classId));
             frame.style.backgroundSize = new BackgroundSize(BackgroundSizeType.Contain);
 
@@ -119,24 +119,24 @@ namespace GridGame.App
             var hero = App.Save.Hero(classId);
 
             yield return SlamIn(portraitRow);
-            yield return Tween.Wait(0.25f);
+            yield return Tween.Wait(Timing.Standard);
 
             // A battle can carry a hero past more than one level; tick fully through each one crossed
             // (bar fills, "Lv N" pops, resets) before a true partial fill for the level landed on.
             for (int lvl = from; lvl < to; lvl++)
             {
                 App.Audio.Sfx("crit", 0.6f, 0.8f + 0.1f * (lvl - from));
-                yield return Tween.Run(0.25f, k => Ui.SetGauge(xpGauge, k));
+                yield return Tween.Run(Timing.Standard, k => Ui.SetGauge(xpGauge, k));
                 levelLabel.text = $"Lv {lvl + 1}";
                 reveals.Add(App.StartCoroutine(Tween.Pop(levelLabel, 1.3f, 0.2f)));
-                yield return Tween.Wait(0.15f);
+                yield return Tween.Wait(Timing.Quick);
                 Ui.SetGauge(xpGauge, 0f);
             }
             int intoFinal = hero != null ? hero.TotalXp - Formulas.TotalXpForLevel(to) : 0;
             float finalFrac = Mathf.Clamp01(intoFinal / (float)Formulas.XpToNext(to));
             App.Audio.Sfx("orb", 0.5f);
-            yield return Tween.Run(0.35f, k => Ui.SetGauge(xpGauge, Mathf.Lerp(0f, finalFrac, k)));
-            yield return Tween.Wait(0.2f);
+            yield return Tween.Run(Timing.Emphasis, k => Ui.SetGauge(xpGauge, Mathf.Lerp(0f, finalFrac, k)));
+            yield return Tween.Wait(Timing.Standard);
 
             var before = Formulas.StatsAtLevel(def, from);
             var after = Formulas.StatsAtLevel(def, to);
@@ -146,7 +146,7 @@ namespace GridGame.App
                 Ui.Text(label, "small dim", row).style.width = 60;
                 Ui.Text($"{b:0} → {a:0}  (+{a - b:0})", "small good", row);
                 reveals.Add(App.StartCoroutine(Tween.Pop(row, 1.15f, 0.15f)));
-                yield return Tween.Wait(0.08f);
+                yield return Tween.Wait(Timing.Instant);
             }
             yield return Tween.Wait(1.1f); // the fanfare hold
             running = null;
@@ -172,7 +172,7 @@ namespace GridGame.App
             target.style.scale = new Scale(Vector2.one * 1.5f);
             target.style.rotate = new Rotate(-6f);
             App.Audio.Sfx("shatter", 0.55f);
-            yield return Tween.Run(0.22f, k =>
+            yield return Tween.Run(Timing.Standard, k =>
             {
                 float s = Mathf.LerpUnclamped(1.5f, 1f, Tween.Back(k));
                 target.style.scale = new Scale(Vector2.one * s);

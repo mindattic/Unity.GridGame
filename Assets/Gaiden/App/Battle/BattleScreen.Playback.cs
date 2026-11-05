@@ -124,11 +124,11 @@ namespace GridGame.App
             {
                 case ActionBeganEvent a when a.ActorId >= 0 && a.Label != "Move":
                     ShowBanner($"{State.UnitById(a.ActorId)?.Name}: {a.Label}");
-                    return Tween.Wait(0.15f);
+                    return Tween.Wait(Timing.Quick);
                 case ActionBeganEvent a when a.Label == "Shield":
                     ShowBanner("Shields up!");
                     App.Audio.Sfx("cast");
-                    return Tween.Wait(0.2f);
+                    return Tween.Wait(Timing.Standard);
 
                 case SteppedEvent s: return StepAnim(s.UnitId, s.To, 0.16f, "move");
                 case DisplacedEvent d: return StepAnim(d.UnitId, d.To, 0.14f, "slide");
@@ -154,7 +154,7 @@ namespace GridGame.App
                 case AmplifierUsedEvent au: return AmpUsedAnim(au);
                 case ManaChargedEvent mc: return ChargeAnim(mc);
                 case OrbMintedEvent o: if (o.Reason == "pincer") FlushTallies(); return OrbAnim(o);
-                case OrbsSpentEvent os: SyncOrbs(os.CountAfter); App.Audio.Sfx("cast", 0.6f); return Tween.Wait(0.12f);
+                case OrbsSpentEvent os: SyncOrbs(os.CountAfter); App.Audio.Sfx("cast", 0.6f); return Tween.Wait(Timing.Quick);
 
                 case TimelineAdvancedEvent ta: FlushTallies(); return TimelineAnim(ta);
                 case PushedBackEvent pb: return PushAnim(pb);
@@ -163,12 +163,12 @@ namespace GridGame.App
                 case TurnSkippedEvent sk: return FloatText(sk.UnitId, sk.Reason == "asleep" ? "Zzz…" : "…", new Color(0.7f, 0.8f, 1f), 0.35f);
 
                 case CastQueuedEvent cq: return CastQueuedAnim(cq);
-                case CastStaggeredEvent cs: return FloatText(cs.CasterId, cs.Resisted ? "Steady!" : "Stagger!", new Color(1f, 0.85f, 0.4f), 0.25f);
+                case CastStaggeredEvent cs: return FloatText(cs.CasterId, cs.Resisted ? "Steady!" : "Stagger!", Palette.Gold, 0.25f);
                 case CastCancelledEvent cc: castGhosts.Remove(cc.EntryId); SyncTimeline(null); board.Lines.ClearLines(); board.ClearMarks(); return FloatText(cc.CasterId, cc.Reason == "interrupted" ? "Interrupted!" : "Fizzled", new Color(1f, 0.6f, 0.3f), 0.35f);
                 case ClutchEvent cl: return ClutchAnim(cl);
                 case AbilityResolvedEvent ar: FlushTallies(); return AbilityAnim(ar);
                 case AbilityRefusedEvent rf: App.Audio.Sfx("ui.error"); ShowBanner(rf.Reason); return null;
-                case ItemUsedEvent iu: pendingItemUser = iu.UserId; pendingItemId = iu.ItemId; ShowBanner($"{App.Content.TryItem(iu.ItemId)?.Name} ({iu.ChargesLeft} left)"); return Tween.Wait(0.1f);
+                case ItemUsedEvent iu: pendingItemUser = iu.UserId; pendingItemId = iu.ItemId; ShowBanner($"{App.Content.TryItem(iu.ItemId)?.Name} ({iu.ChargesLeft} left)"); return Tween.Wait(Timing.Instant);
                 case PlateHitEvent ph: return PlateHitAnim(ph);
                 case PlateBrokenEvent pbk: return PlateBrokenAnim(pbk);
                 case FacingChangedEvent fc: { var fu = State.UnitById(fc.UnitId); if (fu != null && board.Units.TryGetValue(fu.Id, out var fv)) { fv.SetPlate(fc.Facing, fu.PlateHp, fu.PlateMax); App.StartCoroutine(Tween.Pop(fv.Plate, 1.2f, 0.18f)); } return null; }
@@ -179,21 +179,21 @@ namespace GridGame.App
                 case BuffAppliedEvent ba: return InflictAnim(ba);
                 case BuffRemovedEvent br: RefreshUnit(br.UnitId); return br.Reason == "steam" ? FloatText(br.UnitId, "Steam!", Color.white, 0.25f) : null;
                 case BuffTickedEvent bt: RefreshUnit(bt.UnitId); return null;
-                case AnnounceEvent an: ShowBanner(an.Text); return Tween.Wait(0.25f);
+                case AnnounceEvent an: ShowBanner(an.Text); return Tween.Wait(Timing.Standard);
                 case ScannedEvent sc: return ScanAnim(sc);
-                case TrapPlacedEvent tp: board.SyncTraps(State); App.Audio.Sfx("trap"); return FloatText(tp.ById, "Snare!", new Color(0.8f, 0.4f, 1f), 0.3f);
-                case TrapTriggeredEvent tt: board.SyncTraps(State); App.Audio.Sfx("trap"); return FloatText(tt.UnitId, "Trap!", new Color(0.8f, 0.4f, 1f), 0.25f);
+                case TrapPlacedEvent tp: board.SyncTraps(State); App.Audio.Sfx("trap"); return FloatText(tp.ById, "Snare!", Palette.Boss, 0.3f);
+                case TrapTriggeredEvent tt: board.SyncTraps(State); App.Audio.Sfx("trap"); return FloatText(tt.UnitId, "Trap!", Palette.Boss, 0.25f);
                 case WeaponWornEvent _: return null;
-                case WeaponShatteredEvent ws: App.Audio.Sfx("shatter"); return FloatText(ws.UnitId, "SHATTER!", new Color(1f, 0.7f, 0.3f), 0.5f, 80);
+                case WeaponShatteredEvent ws: App.Audio.Sfx("shatter"); return FloatText(ws.UnitId, "SHATTER!", Palette.Buff, 0.5f, 80);
                 case ArmorBrokenEvent ab: App.Audio.Sfx("shatter", 0.7f); return FloatText(ab.UnitId, "Armor broken!", new Color(1f, 0.6f, 0.4f), 0.4f, 64);
-                case WeaponSwappedEvent sw: App.Audio.Sfx("dash"); SyncBar(); return FloatText(sw.UnitId, "⭾ " + (App.Content.TryItem(sw.ToWeapon)?.Name ?? "Swap"), new Color(0.85f, 0.9f, 1f), 0.3f, 54);
+                case WeaponSwappedEvent sw: App.Audio.Sfx("dash"); SyncBar(); return FloatText(sw.UnitId, "⭾ " + (App.Content.TryItem(sw.ToWeapon)?.Name ?? "Swap"), Palette.Info, 0.3f, 54);
                 case BossPhaseEvent bp: return BossAnim(bp);
                 case RuleBrokenEvent rb: return RuleBreakAnim(rb);
                 case WaveStartedEvent wv: TutorialWaveStarted(); return WaveAnim(wv);
                 case ReinforcementsArrivedEvent ra: return ReinforcementsAnim(ra);
                 case EggLaidEvent el: return EggLaidAnim(el);
                 case EggHatchedEvent eh: return HatchAnim(eh);
-                case WaveClearedEvent wc: FlushTallies(); ShowBanner("Wave cleared!"); return Tween.Wait(0.4f);
+                case WaveClearedEvent wc: FlushTallies(); ShowBanner("Wave cleared!"); return Tween.Wait(Timing.Emphasis);
                 case BattleEndedEvent be: lastEnded = be; ShowBanner(be.Victory ? "VICTORY!" : be.Escaped ? "ESCAPED" : "DEFEAT"); App.Audio.Sfx(be.Victory ? "victory" : be.Escaped ? "dash" : "defeat"); return Tween.Wait(1.0f);
                 case RevivedEvent rv: return ReviveAnim(rv);
                 case PlayerControlEvent _: FlushTallies(); ShowBanner(""); SyncAll(); return null;
@@ -304,9 +304,9 @@ namespace GridGame.App
         {
             if (!board.Units.TryGetValue(t.UnitId, out var v)) yield break;
             App.Audio.Sfx("magic");
-            yield return Tween.Fade(v.Root, 1, 0, 0.15f);
+            yield return Tween.Fade(v.Root, 1, 0, Timing.Quick);
             board.Place(v, t.To);
-            yield return Tween.Fade(v.Root, 0, 1, 0.15f);
+            yield return Tween.Fade(v.Root, 0, 1, Timing.Quick);
         }
 
         private IEnumerator PincerAnim(PincerFormedEvent p)
@@ -316,7 +316,7 @@ namespace GridGame.App
             var a = State.UnitById(p.Attacker1); var b = State.UnitById(p.Attacker2);
             if (a == null || b == null) yield break;
             board.Lines.ClearLines();
-            var color = p.Team == Team.Hero ? new Color(1f, 0.85f, 0.3f, 0.95f) : new Color(1f, 0.3f, 0.3f, 0.95f);
+            var color = p.Team == Team.Hero ? Palette.Gold.WithA(0.95f) : new Color(1f, 0.3f, 0.3f, 0.95f);
             // Every coordinate below is the event's formation-time snapshot. State is already the END of the command,
             // so reading positions from it stretched the outline across the board whenever a member moved later in the
             // same command (GG-T98: "a gold box ~3×3 tiles"). Views that drifted from the snapshot are put back on it.
@@ -354,9 +354,9 @@ namespace GridGame.App
             {
                 board.Lines.ClearLines();
                 board.Lines.Outline(rect, color, 9f, k);
-                if (k >= 0.6f) foreach (var (la, lb) in links) board.Lines.Add(la, Vector2.Lerp(la, lb, (k - 0.6f) / 0.4f), new Color(0.4f, 0.8f, 1f, 0.95f), 12f);
+                if (k >= 0.6f) foreach (var (la, lb) in links) board.Lines.Add(la, Vector2.Lerp(la, lb, (k - 0.6f) / 0.4f), Palette.Mana.WithA(0.95f), 12f);
             });
-            if (!ReduceMotion) yield return Tween.Wait(0.18f);
+            if (!ReduceMotion) yield return Tween.Wait(Timing.Quick);
             tallying = true;
             string label = p.Team == Team.Hero ? (chainCount > 1 ? $"CHAIN ×{chainCount}!" : "PINCER!") : "Enemy pincer!";
             Billboard($"{a.Name} & {b.Name} — {(chainCount > 1 ? $"Chain ×{chainCount}" : "Pincer")}", null, p.Team == Team.Hero ? new Color(1f, 0.9f, 0.5f) : new Color(1f, 0.55f, 0.5f));
@@ -370,7 +370,7 @@ namespace GridGame.App
             if (board.Units.TryGetValue(b.Id, out var bv)) App.StartCoroutine(Tween.Pop(bv.Root, 1.15f, 0.2f));
             // Cut-in modes keep a multi-attacker frenzy readable: the full sweep on the first link (with the supporters
             // sliding up from the bottom), quick pop-up cards beside the attackers on every chained link.
-            if (!CutInsEnabled || ReduceMotion) yield return Tween.Wait(0.32f);
+            if (!CutInsEnabled || ReduceMotion) yield return Tween.Wait(Timing.Standard);
             else if (chainCount == 1)
             {
                 yield return PincerCutIn(a, b, p.Team, aAt.At, bAt.At);
@@ -492,7 +492,7 @@ namespace GridGame.App
                 var core = new VisualElement { pickingMode = PickingMode.Ignore };
                 core.style.position = Position.Absolute;
                 core.style.backgroundImage = new StyleBackground(BandTex);
-                core.style.unityBackgroundImageTintColor = new Color(1f, 1f, 1f, 0.95f);
+                core.style.unityBackgroundImageTintColor = Palette.White.WithA(0.95f);
                 if (rowLine) { core.style.left = 0; core.style.right = 0; core.style.top = Length.Percent(46); core.style.height = 5; }
                 else { core.style.top = 0; core.style.bottom = 0; core.style.left = Length.Percent(46); core.style.width = 5; }
                 band.Add(core);
@@ -514,7 +514,7 @@ namespace GridGame.App
             flash.style.left = flash.style.top = flash.style.right = flash.style.bottom = 0;
             flash.style.backgroundColor = Color.white;
             layer.Add(flash);
-            App.StartCoroutine(Tween.Shake(shake, 14f * Fx, 0.22f));
+            App.StartCoroutine(Tween.Shake(shake, 14f * Fx, Timing.Standard));
             yield return Tween.Run(total, k =>
             {
                 float elapsed = k * total;
@@ -560,7 +560,7 @@ namespace GridGame.App
             float s0 = cam.resolvedStyle.scale.value.x;
             var t0 = cam.resolvedStyle.translate;
             float r0 = cam.resolvedStyle.rotate.angle.value;
-            yield return Tween.Run(0.3f, k =>
+            yield return Tween.Run(Timing.Standard, k =>
             {
                 float e = Tween.EaseInOut(k);
                 float s = Mathf.Lerp(s0, 1f, e);
@@ -577,7 +577,7 @@ namespace GridGame.App
         {
             foreach (var id in new[] { rs.Attacker1, rs.Attacker2 })
                 if (board.Units.TryGetValue(id, out var v))
-                    App.StartCoroutine(Tween.Run(0.45f, k => v.Root.style.rotate = new Rotate(k >= 1f ? 0f : 360f * Tween.EaseInOut(k))));
+                    App.StartCoroutine(Tween.Run(Timing.Emphasis, k => v.Root.style.rotate = new Rotate(k >= 1f ? 0f : 360f * Tween.EaseInOut(k))));
             yield return FloatText(rs.Attacker1, "Respite", new Color(0.8f, 0.95f, 1f), 0.45f, 56);
         }
 
@@ -603,12 +603,12 @@ namespace GridGame.App
         {
             switch (e)
             {
-                case SupportEffect.Heal: return new Color(0.45f, 1f, 0.55f);
-                case SupportEffect.Buff: return new Color(1f, 0.75f, 0.3f);
-                case SupportEffect.Haste: return new Color(0.5f, 0.85f, 1f);
-                case SupportEffect.Mana: return new Color(0.6f, 0.7f, 1f);
-                case SupportEffect.Cleanse: return new Color(0.9f, 1f, 1f);
-                default: return new Color(0.6f, 0.92f, 1f);
+                case SupportEffect.Heal: return Palette.Good;
+                case SupportEffect.Buff: return Palette.Buff;
+                case SupportEffect.Haste: return Palette.Haste;
+                case SupportEffect.Mana: return Palette.Mana;
+                case SupportEffect.Cleanse: return Palette.Cleanse;
+                default: return Palette.Info;
             }
         }
 
@@ -622,14 +622,14 @@ namespace GridGame.App
                 // A hexed bolt flies down the lane.
                 var from = ViewCenter(a); var to = ViewCenter(t);
                 App.Audio.Sfx("magic", 0.7f);
-                yield return Tween.Run(0.22f, k => { board.Lines.ClearLines(); board.Lines.Dot(ProjectilePoint(ProjectileMotion.Twist, from, to, k), 22f, new Color(0.7f, 0.35f, 1f)); });
+                yield return Tween.Run(Timing.Standard, k => { board.Lines.ClearLines(); board.Lines.Dot(ProjectilePoint(ProjectileMotion.Twist, from, to, k), 22f, new Color(0.7f, 0.35f, 1f)); });
                 board.Lines.ClearLines();
                 yield break;
             }
             if (at.IsSupport) SupporterPop(a, a.Team);
             float lunge = (at.IsSupport ? 18f : 34f) * Fx + 6f;
-            yield return Tween.Run(0.07f, k => av.Root.style.translate = new Translate(dir.x * lunge * k, dir.y * lunge * k));
-            App.StartCoroutine(Tween.Run(0.12f, k => av.Root.style.translate = new Translate(dir.x * lunge * (1 - k), dir.y * lunge * (1 - k))));
+            yield return Tween.Run(Timing.Instant, k => av.Root.style.translate = new Translate(dir.x * lunge * k, dir.y * lunge * k));
+            App.StartCoroutine(Tween.Run(Timing.Quick, k => av.Root.style.translate = new Translate(dir.x * lunge * (1 - k), dir.y * lunge * (1 - k))));
         }
 
         private IEnumerator DamageAnim(DamagedEvent d)
@@ -640,17 +640,17 @@ namespace GridGame.App
             if (d.Hit == HitKind.Miss)
             {
                 App.Audio.Sfx("miss");
-                App.StartCoroutine(FloatAway(board.Float("MISS", at, new Color(0.8f, 0.85f, 1f), 56), 0.6f));
-                yield return Tween.Wait(0.12f);
+                App.StartCoroutine(FloatAway(board.Float("MISS", at, Palette.Info, 56), 0.6f));
+                yield return Tween.Wait(Timing.Quick);
                 yield break;
             }
             bool crit = d.Hit == HitKind.Critical;
             App.Audio.Sfx(d.SourceId < 0 ? "debuff" : crit ? "crit" : SfxFor(d.Type));
             var src = State.UnitById(d.SourceId);
-            Feed($"{(d.SourceId < 0 ? "☠" : "†")} {(src != null ? src.Name + " → " : "")}{t.Name}: {d.Amount}{(crit ? " CRIT" : "")}{(d.Note != null ? " (" + d.Note + ")" : "")}", t.IsHero ? new Color(1f, 0.65f, 0.6f) : new Color(1f, 1f, 1f, 0.9f));
+            Feed($"{(d.SourceId < 0 ? "☠" : "†")} {(src != null ? src.Name + " → " : "")}{t.Name}: {d.Amount}{(crit ? " CRIT" : "")}{(d.Note != null ? " (" + d.Note + ")" : "")}", t.IsHero ? new Color(1f, 0.65f, 0.6f) : Palette.White.WithA(0.9f));
             if (d.Amount > 0 && !ReduceMotion)
             {
-                if (d.Type == DamageType.Physical) Sparks(at, crit ? 12 : 7, crit ? new Color(1f, 0.85f, 0.3f) : new Color(1f, 0.95f, 0.85f));
+                if (d.Type == DamageType.Physical) Sparks(at, crit ? 12 : 7, crit ? Palette.Gold : new Color(1f, 0.95f, 0.85f));
                 else if (d.SourceId < 0 && d.Type == DamageType.Poison) { for (int i = 0; i < 6; i++) Bubble(at + new Vector2(Random.Range(-50f, 50f), 30f), new Color(0.5f, 1f, 0.3f), i * 0.03f, 0.9f); }
                 else App.StartCoroutine(ElementBurst(at, d.Type, crit));
             }
@@ -659,10 +659,10 @@ namespace GridGame.App
             if (tallying && d.SourceId >= 0 && d.Note != "Armored!") AddToTally(t, at, d.Amount, crit, d.Note);
             else App.StartCoroutine(FloatAway(board.Float(text, at, color, crit ? 100 : 72), 0.75f));
             v.SetHp(d.HpAfter, t.MaxHp);
-            v.Frame.style.unityBackgroundImageTintColor = new Color(1f, 0.4f, 0.4f);
+            v.Frame.style.unityBackgroundImageTintColor = Palette.Bad;
             v.Art.style.unityBackgroundImageTintColor = new Color(1f, 0.55f, 0.55f);
-            App.StartCoroutine(Tween.Shake(v.Root, 14f * Fx, 0.18f));
-            if (crit || d.Amount >= t.MaxHp * 0.25f) App.StartCoroutine(Tween.Shake(shake, (crit ? 16f : 9f) * Fx, 0.2f));
+            App.StartCoroutine(Tween.Shake(v.Root, 14f * Fx, Timing.Quick));
+            if (crit || d.Amount >= t.MaxHp * 0.25f) App.StartCoroutine(Tween.Shake(shake, (crit ? 16f : 9f) * Fx, Timing.Standard));
             yield return Tween.Wait(crit ? 0.16f : 0.09f); // hit-stop
             v.Art.style.unityBackgroundImageTintColor = Color.white;
             v.Frame.style.unityBackgroundImageTintColor = Color.white;
@@ -685,13 +685,13 @@ namespace GridGame.App
         {
             var t = State.UnitById(h.TargetId);
             if (t == null || !board.Units.TryGetValue(t.Id, out var v)) yield break;
-            Feed($"✚ {t.Name} +{h.Amount} HP", new Color(0.5f, 1f, 0.6f));
+            Feed($"✚ {t.Name} +{h.Amount} HP", Palette.Good);
             App.Audio.Sfx("heal");
             if (!ReduceMotion) App.StartCoroutine(HealBurst(BoardView.CenterOf(v.Tile, v.W, v.H)));
             v.SetHp(h.HpAfter, t.MaxHp);
             v.SetGlow(new Color(0.4f, 1f, 0.5f), 0.8f);
-            App.StartCoroutine(FloatAway(board.Float("+" + h.Amount, BoardView.CenterOf(v.Tile), new Color(0.45f, 1f, 0.55f), 72), 0.8f));
-            yield return Tween.Wait(0.2f);
+            App.StartCoroutine(FloatAway(board.Float("+" + h.Amount, BoardView.CenterOf(v.Tile), Palette.Good, 72), 0.8f));
+            yield return Tween.Wait(Timing.Standard);
             v.SetGlow(Color.white, 0f);
         }
 
@@ -699,7 +699,7 @@ namespace GridGame.App
         {
             if (!board.Units.TryGetValue(d.UnitId, out var v)) yield break;
             var du = State.UnitById(d.UnitId);
-            if (du != null) Feed($"★ {du.Name} is defeated", du.IsHero ? new Color(1f, 0.45f, 0.4f) : new Color(1f, 0.85f, 0.4f));
+            if (du != null) Feed($"★ {du.Name} is defeated", du.IsHero ? new Color(1f, 0.45f, 0.4f) : Palette.Gold);
             App.Audio.Sfx("death");
             // GridGame2026's death-portrait dissolve (GG-T96): the token goes at once and the unit's whole,
             // uncropped artwork takes its place over the board, shuddering, shrinking and fading on its own —
@@ -707,7 +707,7 @@ namespace GridGame.App
             if (du != null) App.StartCoroutine(DeathDissolve(du, v));
             v.Root.RemoveFromHierarchy();
             v.Dead = true;
-            yield return Tween.Wait(0.12f);
+            yield return Tween.Wait(Timing.Quick);
         }
 
         // Tuned from GridGame2026's per-frame Portrait3D dissolve at 60 fps: alpha 196/255 minus 1% a frame
@@ -757,7 +757,7 @@ namespace GridGame.App
             var at = BoardView.CenterOf(board.Units.TryGetValue(l.FromUnitId, out var v) ? v.Tile : new Coord(2, 2));
             if (l.Coins > 0)
             {
-                App.StartCoroutine(FloatAway(board.Float($"+{l.Coins} G", at + new Vector2(0, -20), new Color(1f, 0.85f, 0.35f), 52), 0.9f));
+                App.StartCoroutine(FloatAway(board.Float($"+{l.Coins} G", at + new Vector2(0, -20), Palette.Gold, 52), 0.9f));
                 App.StartCoroutine(CoinBurst(at, l.Coins));
             }
             foreach (var it in l.Items)
@@ -766,7 +766,7 @@ namespace GridGame.App
                 App.StartCoroutine(FloatAway(board.Float($"{name} ×{it.Count}", at + new Vector2(0, 40), new Color(0.7f, 1f, 0.8f), 40), 1.1f));
             }
             App.Audio.Sfx("ui.buy", 0.6f);
-            yield return Tween.Wait(0.08f);
+            yield return Tween.Wait(Timing.Instant);
         }
 
         /// <summary>A guest ally steps onto the board (§25.11).</summary>
@@ -780,7 +780,7 @@ namespace GridGame.App
             App.Audio.Sfx("pickup", e.Captive ? 0.75f : 0.9f);
             Billboard(e.Captive ? $"A captive {u.Name}! Keep them alive to free them." : $"{u.Name} joins the fight! Keep them alive to recruit them.", null, new Color(0.6f, 1f, 0.75f));
             v.Root.style.scale = new Scale(Vector2.zero);
-            yield return Tween.Run(0.25f, k => v.Root.style.scale = new Scale(Vector2.one * (k < 0.7f ? k / 0.7f * 1.15f : 1.15f - 0.15f * (k - 0.7f) / 0.3f)));
+            yield return Tween.Run(Timing.Standard, k => v.Root.style.scale = new Scale(Vector2.one * (k < 0.7f ? k / 0.7f * 1.15f : 1.15f - 0.15f * (k - 0.7f) / 0.3f)));
             v.Root.style.scale = new Scale(Vector2.one);
         }
 
@@ -795,9 +795,9 @@ namespace GridGame.App
             SyncTimeline(null);
             if (!quiet) App.Audio.Sfx("shatter", 0.5f, 0.6f);
             v.Root.style.translate = new Translate(0, -120);
-            yield return Tween.Run(0.18f, k => v.Root.style.translate = new Translate(0, -120f * (1f - k * k)));
-            App.StartCoroutine(Tween.Shake(v.Root, 10f * Fx, 0.12f));
-            Billboard($"{r.Name} — destroy it or it rises!", null, new Color(0.8f, 0.85f, 1f));
+            yield return Tween.Run(Timing.Quick, k => v.Root.style.translate = new Translate(0, -120f * (1f - k * k)));
+            App.StartCoroutine(Tween.Shake(v.Root, 10f * Fx, Timing.Quick));
+            Billboard($"{r.Name} — destroy it or it rises!", null, Palette.Info);
         }
 
         /// <summary>The remains crumble and the undead climbs back out.</summary>
@@ -805,7 +805,7 @@ namespace GridGame.App
         {
             if (board.Units.TryGetValue(e.RemainsId, out var rv))
             {
-                yield return Tween.Run(0.2f, k => { rv.Root.style.opacity = 1f - k; rv.Root.style.scale = new Scale(Vector2.one * (1f - 0.3f * k)); });
+                yield return Tween.Run(Timing.Standard, k => { rv.Root.style.opacity = 1f - k; rv.Root.style.scale = new Scale(Vector2.one * (1f - 0.3f * k)); });
                 rv.Root.RemoveFromHierarchy(); rv.Dead = true;
             }
             var u = State.UnitById(e.UnitId);
@@ -817,7 +817,7 @@ namespace GridGame.App
             App.Audio.Sfx("debuff", 0.9f, 0.8f);
             Billboard($"{u.Name} rises again!", null, new Color(0.75f, 1f, 0.75f));
             v.Root.style.translate = new Translate(0, 60);
-            yield return Tween.Run(0.3f, k => { v.Root.style.translate = new Translate(0, 60f * (1f - k)); v.Root.style.opacity = k; });
+            yield return Tween.Run(Timing.Standard, k => { v.Root.style.translate = new Translate(0, 60f * (1f - k)); v.Root.style.opacity = k; });
         }
 
         /// <summary>An egg drops onto a free tile beside its layer (§14.8).</summary>
@@ -831,7 +831,7 @@ namespace GridGame.App
             SyncTimeline(null);
             App.Audio.Sfx("pickup", 0.6f, 0.8f);
             v.Root.style.translate = new Translate(0, -60);
-            yield return Tween.Run(0.18f, k => v.Root.style.translate = new Translate(0, -60f * (1f - k * k)));
+            yield return Tween.Run(Timing.Quick, k => v.Root.style.translate = new Translate(0, -60f * (1f - k * k)));
             Billboard($"{State.UnitById(e.FromUnitId)?.Name} lays an egg!", null, new Color(0.85f, 1f, 0.75f));
         }
 
@@ -840,7 +840,7 @@ namespace GridGame.App
         {
             if (board.Units.TryGetValue(e.EggId, out var ev))
             {
-                yield return Tween.Run(0.2f, k => { ev.Root.style.opacity = 1f - k; ev.Root.style.scale = new Scale(Vector2.one * (1f - 0.3f * k)); });
+                yield return Tween.Run(Timing.Standard, k => { ev.Root.style.opacity = 1f - k; ev.Root.style.scale = new Scale(Vector2.one * (1f - 0.3f * k)); });
                 ev.Root.RemoveFromHierarchy(); ev.Dead = true;
             }
             var u = State.UnitById(e.UnitId);
@@ -850,9 +850,9 @@ namespace GridGame.App
             v.SetHp(u.Hp, u.MaxHp);
             SyncTimeline(null);
             App.Audio.Sfx("crit", 0.8f, 1.1f);
-            Billboard($"{u.Name} hatches!", null, new Color(1f, 0.85f, 0.6f));
+            Billboard($"{u.Name} hatches!", null, Palette.GoldLight);
             v.Root.style.scale = new Scale(Vector2.zero);
-            yield return Tween.Run(0.25f, k => v.Root.style.scale = new Scale(Vector2.one * Mathf.Clamp01(k * 1.3f)));
+            yield return Tween.Run(Timing.Standard, k => v.Root.style.scale = new Scale(Vector2.one * Mathf.Clamp01(k * 1.3f)));
             v.Root.style.scale = new Scale(Vector2.one);
         }
 
@@ -871,7 +871,7 @@ namespace GridGame.App
                 App.StartCoroutine(EntranceAnim(v, u.Def));
             }
             SyncTimeline(null);
-            if (ra.Spawned.Count > 0) yield return Tween.Wait(0.3f);
+            if (ra.Spawned.Count > 0) yield return Tween.Wait(Timing.Standard);
             if (!string.IsNullOrEmpty(ra.Line)) yield return SurpriseAnnounce(ra.SpeakerClassId, ra.Line);
         }
 
@@ -882,26 +882,26 @@ namespace GridGame.App
             {
                 App.Audio.Sfx("trap", 0.8f, 0.7f);
                 v.Root.style.opacity = 0;
-                yield return Tween.Run(0.3f, k => { v.Root.style.opacity = k; v.Root.style.scale = new Scale(Vector2.one * (0.7f + 0.3f * k)); });
-                App.StartCoroutine(Tween.Shake(v.Root, 8f * Fx, 0.15f));
+                yield return Tween.Run(Timing.Standard, k => { v.Root.style.opacity = k; v.Root.style.scale = new Scale(Vector2.one * (0.7f + 0.3f * k)); });
+                App.StartCoroutine(Tween.Shake(v.Root, 8f * Fx, Timing.Quick));
             }
             else if (def.HasTag("Flying"))
             {
                 App.Audio.Sfx("dash", 0.7f, 0.8f);
                 v.Root.style.opacity = 0;
-                yield return Tween.Run(0.3f, k => { v.Root.style.opacity = k; v.Root.style.translate = new Translate(0, -160f * (1f - k)); }, Tween.EaseOut);
+                yield return Tween.Run(Timing.Standard, k => { v.Root.style.opacity = k; v.Root.style.translate = new Translate(0, -160f * (1f - k)); }, Tween.EaseOut);
             }
             else if (def.HasTag("Undead"))
             {
                 App.Audio.Sfx("debuff", 0.7f, 0.7f);
                 v.Root.style.opacity = 0;
-                yield return Tween.Run(0.35f, k => v.Root.style.opacity = k);
+                yield return Tween.Run(Timing.Emphasis, k => v.Root.style.opacity = k);
             }
             else
             {
                 App.Audio.Sfx("shatter", 0.5f, 0.7f);
                 v.Root.style.opacity = 0;
-                yield return Tween.Run(0.3f, k => { v.Root.style.opacity = k; v.Root.style.translate = new Translate(0, -80f * (1f - k)); }, Tween.EaseOut);
+                yield return Tween.Run(Timing.Standard, k => { v.Root.style.opacity = k; v.Root.style.translate = new Translate(0, -80f * (1f - k)); }, Tween.EaseOut);
             }
         }
 
@@ -922,7 +922,7 @@ namespace GridGame.App
             frame.style.borderTopWidth = frame.style.borderBottomWidth = frame.style.borderLeftWidth = frame.style.borderRightWidth = 4;
             var bandColor = BandColor(Team.Enemy);
             frame.style.borderTopColor = frame.style.borderBottomColor = frame.style.borderLeftColor = frame.style.borderRightColor = bandColor;
-            frame.style.backgroundColor = new Color(0.1f, 0.1f, 0.15f, 0.6f);
+            frame.style.backgroundColor = Palette.Ink.WithA(0.6f);
             if (def != null)
             {
                 frame.style.backgroundImage = new StyleBackground(Art.Portrait(def.Id));
@@ -946,7 +946,7 @@ namespace GridGame.App
             veil.RegisterCallback<ClickEvent>(_ => Finish());
 
             App.Audio.Sfx("shatter", 0.5f);
-            yield return Tween.Run(0.22f, k =>
+            yield return Tween.Run(Timing.Standard, k =>
             {
                 row.style.opacity = Mathf.Clamp01(k * 2.2f);
                 row.style.scale = new Scale(Vector2.one * Mathf.LerpUnclamped(1.15f, 1f, Tween.Back(k)));
@@ -956,14 +956,14 @@ namespace GridGame.App
             float t = 0f;
             while (!done && t < 2.6f) { t += Tween.Dt; yield return null; }
 
-            yield return Tween.Run(0.15f, k => row.style.opacity = 1f - k);
+            yield return Tween.Run(Timing.Quick, k => row.style.opacity = 1f - k);
             veil.RemoveFromHierarchy();
         }
 
         /// <summary>The feed line for a spawned amplifier; the dev <c>devamp</c> endpoint posts it too, so
         /// uicheck's layout audit covers the real text (GG-T110).</summary>
         public const string AmpSpawnedFeed = "Power Amplifier appeared — pincer on its tile";
-        public static readonly Color AmpFeedColor = new Color(1f, 0.85f, 0.4f);
+        public static readonly Color AmpFeedColor = Palette.Gold;
 
         private IEnumerator AmpSpawnAnim(AmplifierSpawnedEvent e)
         {
@@ -977,7 +977,7 @@ namespace GridGame.App
         {
             var from = BoardView.CenterOf(e.From); var to = BoardView.CenterOf(e.To);
             App.Audio.Sfx("slide", 0.6f, 1.3f);
-            yield return Tween.Run(0.22f, k => board.PlaceAmp(Vector2.Lerp(from, to, Tween.EaseOut(k))));
+            yield return Tween.Run(Timing.Standard, k => board.PlaceAmp(Vector2.Lerp(from, to, Tween.EaseOut(k))));
             board.SyncAmplifier(e.To);
             var by = State.UnitById(e.ByUnitId);
             if (by != null) Feed($"{by.Name} shoved the amplifier", new Color(1f, 0.6f, 0.4f));
@@ -990,7 +990,7 @@ namespace GridGame.App
             var from = BoardView.PickupPos(e.From); var to = BoardView.PickupPos(e.To);
             v.userData = e.To;
             App.Audio.Sfx("slide", 0.6f, 1.5f);
-            yield return Tween.Run(0.22f, k => { var p = Vector2.Lerp(from, to, Tween.EaseOut(k)); v.style.left = p.x; v.style.top = p.y; });
+            yield return Tween.Run(Timing.Standard, k => { var p = Vector2.Lerp(from, to, Tween.EaseOut(k)); v.style.left = p.x; v.style.top = p.y; });
             BoardView.PlacePickup(v, e.To);
         }
 
@@ -998,12 +998,12 @@ namespace GridGame.App
         {
             var at = BoardView.CenterOf(e.At);
             App.Audio.Sfx("crit", 0.9f);
-            Billboard("Power Amplifier ×1.75", null, new Color(1f, 0.85f, 0.35f));
+            Billboard("Power Amplifier ×1.75", null, Palette.Gold);
             ampTally = true;
-            yield return Tween.Run(0.3f, k => { board.Lines.Rings.Clear(); board.Lines.Ring(at, 40f + 160f * k, new Color(1f, 0.8f, 0.3f, 1f - k), 12f); });
+            yield return Tween.Run(Timing.Standard, k => { board.Lines.Rings.Clear(); board.Lines.Ring(at, 40f + 160f * k, new Color(1f, 0.8f, 0.3f, 1f - k), 12f); });
             board.Lines.Rings.Clear(); board.Lines.MarkDirtyRepaint();
             board.SyncAmplifier(null);
-            yield return FloatText(e.HeroId, "AMPLIFIED!", new Color(1f, 0.85f, 0.3f), 0.2f, 70);
+            yield return FloatText(e.HeroId, "AMPLIFIED!", Palette.Gold, 0.2f, 70);
         }
 
         // ── Damage tally (owner direction 2026-10-10): hits within a pincer stack up, then explode into the total ──
@@ -1028,7 +1028,7 @@ namespace GridGame.App
             tl.Total += amount; tl.Crit |= crit;
             // Each hit lands on its own line below the last, stacking downward like a fighting-game combo list.
             tl.El.text = string.Join("\n+ ", tl.Terms).Replace("+ AMP", "×AMP");
-            tl.El.style.color = tl.Crit ? new Color(1f, 0.9f, 0.4f) : Color.white;
+            tl.El.style.color = tl.Crit ? Palette.Gold : Color.white;
             App.StartCoroutine(Tween.Pop(tl.El, 1.25f, 0.12f));
         }
 
@@ -1051,13 +1051,13 @@ namespace GridGame.App
                 yield break;
             }
             TalliesBurst++;
-            yield return Tween.Run(0.16f, k => { tl.El.style.scale = new Scale(Vector2.one * (1f - 0.5f * k)); tl.El.style.opacity = 1f - 0.6f * k; });
+            yield return Tween.Run(Timing.Quick, k => { tl.El.style.scale = new Scale(Vector2.one * (1f - 0.5f * k)); tl.El.style.opacity = 1f - 0.6f * k; });
             tl.El.RemoveFromHierarchy();
             var total = board.Float(tl.Crit ? tl.Total + "!" : tl.Total.ToString(), tl.At, tl.Crit ? new Color(1f, 0.85f, 0.2f) : new Color(1f, 0.95f, 0.8f), 120);
             total.name = "tally-total";
             App.Audio.Sfx("crit", 0.7f, 0.9f);
-            App.StartCoroutine(Tween.Shake(shake, 10f * Fx, 0.18f));
-            yield return Tween.Run(0.18f, k => total.style.scale = new Scale(Vector2.one * (1.7f - 0.7f * Tween.EaseOut(k))));
+            App.StartCoroutine(Tween.Shake(shake, 10f * Fx, Timing.Quick));
+            yield return Tween.Run(Timing.Quick, k => total.style.scale = new Scale(Vector2.one * (1.7f - 0.7f * Tween.EaseOut(k))));
             yield return FloatAway(total, 0.9f);
         }
 
@@ -1206,7 +1206,7 @@ namespace GridGame.App
             }
             // Fly to the counter, accelerating, shrinking a little.
             var start = pos;
-            yield return Tween.Run(Random.Range(0.32f, 0.45f), k =>
+            yield return Tween.Run(Timing.Emphasis, k =>
             {
                 float e = k * k;
                 var p = Vector2.Lerp(start, to, e) + Vector2.up * (-80f * Mathf.Sin(k * Mathf.PI));
@@ -1237,7 +1237,7 @@ namespace GridGame.App
             var slot = orbViews[Mathf.Clamp(index, 0, orbViews.Count - 1)];
             Vector2 to = slot.worldBound.center - App.Stage.worldBound.position;
             if (float.IsNaN(to.x)) to = new Vector2(GameApp.StageWidth / 2f, 2210);
-            yield return Tween.Run(0.22f, k =>
+            yield return Tween.Run(Timing.Standard, k =>
             {
                 var p = Vector2.Lerp(from, to, Tween.EaseInOut(k)) + Vector2.up * (-140f * Mathf.Sin(k * Mathf.PI));
                 orb.style.left = p.x - 30; orb.style.top = p.y - 30;
@@ -1281,14 +1281,14 @@ namespace GridGame.App
             App.Audio.Sfx("slide", 0.8f, 0.8f);
             if (entry != null && timelineIconViews.ContainsKey(entry.Id))
                 App.StartCoroutine(GlideOne(entry.Id, pb.FromU, pb.ToU, 0.3f));
-            yield return FloatText(pb.UnitId, "Pushback!", new Color(0.5f, 0.85f, 1f), 0.12f, 46);
+            yield return FloatText(pb.UnitId, "Pushback!", Palette.Info, 0.12f, 46);
         }
 
         private IEnumerator HastenAnim(HastenedEvent h)
         {
             if (timelineIconViews.ContainsKey(h.EntryId))
                 App.StartCoroutine(GlideOne(h.EntryId, h.FromU, h.ToU, 0.3f));
-            yield return FloatText(h.UnitId, "Haste!", new Color(1f, 0.9f, 0.4f), 0.2f, 50);
+            yield return FloatText(h.UnitId, "Haste!", Palette.Gold, 0.2f, 50);
         }
 
         private IEnumerator TurnAnim(TurnStartedEvent ts)
@@ -1307,7 +1307,7 @@ namespace GridGame.App
             }
             if (u != null && board.Units.TryGetValue(u.Id, out var v))
             {
-                v.SetGlow(new Color(1f, 0.35f, 0.3f), 0.85f);
+                v.SetGlow(Palette.Bad, 0.85f);
                 ShowBanner($"{u.Name}'s turn");
                 yield return Tween.Pop(v.Root, 1.1f, 0.2f);
                 v.SetGlow(Color.white, 0f);
@@ -1345,7 +1345,7 @@ namespace GridGame.App
             App.Audio.Sfx("heal");
             yield return Tween.Fade(flash, 0.9f * Mathf.Max(0.3f, Fx), 0f, 0.35f);
             flash.RemoveFromHierarchy();
-            yield return FloatText(c.CasterId, "CLUTCH!", new Color(1f, 1f, 0.6f), 0.3f, 90);
+            yield return FloatText(c.CasterId, "CLUTCH!", Palette.GoldLight, 0.3f, 90);
         }
 
         private IEnumerator AbilityAnim(AbilityResolvedEvent ar)
@@ -1360,7 +1360,7 @@ namespace GridGame.App
             // The caster's portrait is the cast-splash beat: it slides in and out BEFORE the projectile flies, so it never covers the flight.
             if (a != null && caster != null && a.Kind == AbilityKind.Spell && CutInsEnabled && !ReduceMotion) yield return CasterSlide(caster, a.Name);
             board.ClearMarks();
-            Color c = a == null ? Color.white : a.BaseHeal > 0 ? new Color(0.4f, 1f, 0.55f) : ColorFor(a.DamageType);
+            Color c = a == null ? Color.white : a.BaseHeal > 0 ? Palette.Good : ColorFor(a.DamageType);
             foreach (var t in ar.Tiles) board.Mark(t, c, 0.22f);
             var targets = ar.Targets.Select(State.UnitById).Where(u => u != null).ToList();
             EndGhost(ar.CasterId, ar.AbilityId);
@@ -1397,7 +1397,7 @@ namespace GridGame.App
                 board.Lines.ClearLines();
                 foreach (var t in targets) NamedImpactFlourish(a.ImpactVfx, ViewCenter(t), c);
             }
-            else yield return Tween.Wait(0.12f);
+            else yield return Tween.Wait(Timing.Quick);
             App.StartCoroutine(ClearMarksLater(0.35f));
         }
 
@@ -1418,7 +1418,7 @@ namespace GridGame.App
             if (a.CastTime <= 0f) yield return Gather(caster, c);
             // 2. Cast burst.
             App.Audio.Sfx("cast", 0.9f, 1.2f);
-            yield return Tween.Run(0.14f, k => { board.Lines.Rings.Clear(); board.Lines.Ring(from, 40f + 90f * k, new Color(c.r, c.g, c.b, 1f - k), 10f); });
+            yield return Tween.Run(Timing.Quick, k => { board.Lines.Rings.Clear(); board.Lines.Ring(from, 40f + 90f * k, new Color(c.r, c.g, c.b, 1f - k), 10f); });
             board.Lines.Rings.Clear(); board.Lines.MarkDirtyRepaint();
             if (cv != null) cv.SetGlow(Color.white, 0f);
             // 3. One mote per target curves up and over to the space above it.
@@ -1447,7 +1447,7 @@ namespace GridGame.App
                     {
                         var ember = Particle(Random.Range(18f, 36f), Color.Lerp(c, Color.white, Random.value * 0.35f));
                         var ep = p + new Vector2(Random.Range(-8f, 8f), Random.Range(-8f, 8f));
-                        App.StartCoroutine(Tween.Run(0.3f, kk => { ember.style.left = ep.x - 12; ember.style.top = ep.y - 12 + 30f * kk * (a.DamageType == DamageType.Poison ? 1f : 0.2f); ember.style.opacity = 1f - kk; ember.style.scale = new Scale(Vector2.one * (1f - 0.6f * kk)); if (kk >= 1f) ember.RemoveFromHierarchy(); }));
+                        App.StartCoroutine(Tween.Run(Timing.Standard, kk => { ember.style.left = ep.x - 12; ember.style.top = ep.y - 12 + 30f * kk * (a.DamageType == DamageType.Poison ? 1f : 0.2f); ember.style.opacity = 1f - kk; ember.style.scale = new Scale(Vector2.one * (1f - 0.6f * kk)); if (kk >= 1f) ember.RemoveFromHierarchy(); }));
                     }
                 }
             });
@@ -1502,13 +1502,13 @@ namespace GridGame.App
         private static Color CastColor(AbilityDef a, string id)
         {
             if (a == null) return Art.SpellColor(id);
-            if (a.BaseHeal > 0) return new Color(0.45f, 1f, 0.55f);
+            if (a.BaseHeal > 0) return Palette.Good;
             if (a.DamageType != DamageType.Physical && a.DamageType != DamageType.Arcane) return ColorFor(a.DamageType);
             var b = App.Content.TryBuff(a.ApplyBuff);
             if (b != null) return Art.HexColor(b.Color, Art.SpellColor(id));
             // Non-damage utility spells read gold (scan's god-rays, cleanse's breaking chains, hasten's sparkle)
             // instead of falling through to a generic arcane purple (bible §6.2 future-pass VFX wiring).
-            if (a.IsScan || a.RemovesDebuffs || a.RemovesBuff != null || a.HastenU > 0f) return new Color(1f, 0.85f, 0.4f);
+            if (a.IsScan || a.RemovesDebuffs || a.RemovesBuff != null || a.HastenU > 0f) return Palette.Gold;
             return Art.SpellColor(id);
         }
 
@@ -1516,19 +1516,19 @@ namespace GridGame.App
         private IEnumerator ScanBurst(Vector2 at)
         {
             App.Audio.Sfx("cast", 0.6f, 1.5f);
-            var gold = new Color(1f, 0.92f, 0.55f);
+            var gold = Palette.GoldLight;
             for (int i = 0; i < 6; i++)
             {
                 var p = Particle(10f, gold);
                 float x0 = at.x + (i - 2.5f) * 24f;
-                App.StartCoroutine(Tween.Run(0.4f, k =>
+                App.StartCoroutine(Tween.Run(Timing.Emphasis, k =>
                 {
                     p.style.left = x0 - 5; p.style.top = at.y - 160f + 220f * k - 5;
                     p.style.opacity = Mathf.Sin(k * Mathf.PI);
                     if (k >= 1f) p.RemoveFromHierarchy();
                 }));
             }
-            yield return Tween.Run(0.35f, k => { board.Lines.Rings.Clear(); board.Lines.Ring(at, 20f + 90f * k, new Color(gold.r, gold.g, gold.b, 1f - k), 6f); });
+            yield return Tween.Run(Timing.Emphasis, k => { board.Lines.Rings.Clear(); board.Lines.Ring(at, 20f + 90f * k, new Color(gold.r, gold.g, gold.b, 1f - k), 6f); });
             board.Lines.Rings.Clear(); board.Lines.MarkDirtyRepaint();
         }
 
@@ -1541,46 +1541,34 @@ namespace GridGame.App
             {
                 var p = Particle(Random.Range(12f, 20f), gold);
                 float ang = Random.Range(0f, 6.28f), dist = Random.Range(50f, 110f);
-                App.StartCoroutine(Tween.Run(0.45f, k =>
+                App.StartCoroutine(Tween.Run(Timing.Emphasis, k =>
                 {
                     var pos = at + new Vector2(Mathf.Cos(ang), Mathf.Sin(ang)) * dist * Tween.EaseOut(k) + Vector2.up * (-40f * k);
                     p.style.left = pos.x - 9; p.style.top = pos.y - 9; p.style.opacity = 1f - k; if (k >= 1f) p.RemoveFromHierarchy();
                 }));
             }
-            yield return Tween.Wait(0.3f);
+            yield return Tween.Wait(Timing.Standard);
         }
 
         /// <summary>Hasten-only spells (Quicken): a gold updraft nudges the target's timeline icon forward.</summary>
         private IEnumerator HastenBurst(Vector2 at)
         {
             App.Audio.Sfx("cast", 0.6f, 1.6f);
-            var gold = new Color(1f, 0.82f, 0.3f);
+            var gold = Palette.Gold;
             for (int i = 0; i < 8; i++)
             {
                 var p = Particle(Random.Range(10f, 16f), gold);
                 float x0 = Random.Range(-40f, 40f);
-                App.StartCoroutine(Tween.Run(0.4f, k =>
+                App.StartCoroutine(Tween.Run(Timing.Emphasis, k =>
                 {
                     p.style.left = at.x + x0 - 7; p.style.top = at.y - 120f * Tween.EaseOut(k) - 7;
                     p.style.opacity = 1f - k; if (k >= 1f) p.RemoveFromHierarchy();
                 }));
             }
-            yield return Tween.Wait(0.25f);
+            yield return Tween.Wait(Timing.Standard);
         }
 
-        private static Color ColorFor(DamageType t)
-        {
-            switch (t)
-            {
-                case DamageType.Fire: return new Color(1f, 0.45f, 0.15f);
-                case DamageType.Ice: return new Color(0.5f, 0.85f, 1f);
-                case DamageType.Lightning: return new Color(1f, 0.95f, 0.35f);
-                case DamageType.Poison: return new Color(0.6f, 1f, 0.3f);
-                case DamageType.Holy: return new Color(1f, 1f, 0.8f);
-                case DamageType.Dark: return new Color(0.7f, 0.35f, 1f);
-                default: return new Color(0.8f, 0.6f, 1f);
-            }
-        }
+        private static Color ColorFor(DamageType t) => Palette.Element(t);
 
         private IEnumerator ScanAnim(ScannedEvent sc)
         {
@@ -1589,13 +1577,13 @@ namespace GridGame.App
             panelUnitId = u.Id;
             SyncPanel();
             ShowBanner($"{u.Name}: HP {sc.Hp}/{sc.MaxHp}  STR {sc.Stats.Strength:0}  VIT {sc.Stats.Vitality:0}  INT {sc.Stats.Intelligence:0}");
-            yield return Tween.Wait(0.8f);
+            yield return Tween.Wait(Timing.Dramatic);
         }
 
         private IEnumerator BossAnim(BossPhaseEvent bp)
         {
             App.Audio.Sfx("explosion");
-            App.StartCoroutine(Tween.Shake(shake, 20f * Fx, 0.4f));
+            App.StartCoroutine(Tween.Shake(shake, 20f * Fx, Timing.Emphasis));
             yield return FloatText(bp.UnitId, string.IsNullOrEmpty(bp.Text) ? "ENRAGED!" : bp.Text, new Color(1f, 0.3f, 0.6f), 0.6f, 80);
         }
 
@@ -1610,7 +1598,7 @@ namespace GridGame.App
                 if (si < wv.SpawnedAt.Count) board.Place(v, wv.SpawnedAt[si].At); // it may already have walked on this command
                 v.SetHp(u.Hp, u.MaxHp);
                 v.Root.style.opacity = 0;
-                App.StartCoroutine(Tween.Run(0.3f, k => { v.Root.style.opacity = k; v.Root.style.translate = new Translate(0, -80 * (1 - k)); }, Tween.EaseOut));
+                App.StartCoroutine(Tween.Run(Timing.Standard, k => { v.Root.style.opacity = k; v.Root.style.translate = new Translate(0, -80 * (1 - k)); }, Tween.EaseOut));
             }
             SyncTimeline(null);
             if (InCrucible)
@@ -1620,14 +1608,14 @@ namespace GridGame.App
                 App.Audio.Sfx("crucible_wave", 1f, 1f + Mathf.Min(0.5f, wv.Wave * 0.04f));
                 var f = board.Float($"WAVE {wv.Wave + 1}", new Vector2(BoardView.Tile * 3, BoardView.Tile * 4), new Color(1f, 0.55f, 0.3f), 120);
                 App.StartCoroutine(FloatAway(f, 1.0f));
-                yield return Tween.Wait(0.6f);
+                yield return Tween.Wait(Timing.Dramatic);
             }
             else if (wv.Wave > 0 || wv.TotalWaves > 1)
             {
                 ShowBanner($"Wave {wv.Wave + 1}/{wv.TotalWaves}");
-                var f = board.Float($"WAVE {wv.Wave + 1}", new Vector2(BoardView.Tile * 3, BoardView.Tile * 4), new Color(1f, 0.9f, 0.6f), 120);
+                var f = board.Float($"WAVE {wv.Wave + 1}", new Vector2(BoardView.Tile * 3, BoardView.Tile * 4), Palette.GoldLight, 120);
                 App.StartCoroutine(FloatAway(f, 1.0f));
-                yield return Tween.Wait(0.6f);
+                yield return Tween.Wait(Timing.Dramatic);
             }
         }
 
@@ -1640,8 +1628,8 @@ namespace GridGame.App
             board.Place(v, rv.At);
             v.SetHp(rv.Hp, u.MaxHp);
             App.Audio.Sfx("heal");
-            yield return Tween.Run(0.35f, k => { v.Root.style.opacity = k; v.Root.style.scale = new Scale(Vector2.one * (0.6f + 0.4f * k)); });
-            yield return FloatText(u.Id, "Revived!", new Color(1f, 0.95f, 0.6f), 0.2f, 70);
+            yield return Tween.Run(Timing.Emphasis, k => { v.Root.style.opacity = k; v.Root.style.scale = new Scale(Vector2.one * (0.6f + 0.4f * k)); });
+            yield return FloatText(u.Id, "Revived!", Palette.GoldLight, 0.2f, 70);
         }
 
         private VisualElement Particle(float size, Color c)
@@ -1665,9 +1653,9 @@ namespace GridGame.App
                 case DamageType.Fire:
                     for (int i = 0; i < 12; i++)
                     {
-                        var p = Particle(Random.Range(18f, 34f) * scale, Color.Lerp(new Color(1f, 0.85f, 0.3f), new Color(1f, 0.25f, 0.05f), Random.value));
+                        var p = Particle(Random.Range(18f, 34f) * scale, Color.Lerp(Palette.Gold, new Color(1f, 0.25f, 0.05f), Random.value));
                         float x0 = Random.Range(-60f, 60f), rise = Random.Range(90f, 200f) * scale, wob = Random.Range(0f, 6.28f);
-                        App.StartCoroutine(Tween.Run(Random.Range(0.35f, 0.6f), k =>
+                        App.StartCoroutine(Tween.Run(Timing.Emphasis, k =>
                         {
                             p.style.left = at.x + x0 + Mathf.Sin(wob + k * 9f) * 14f - 15; p.style.top = at.y + 40 - rise * k - 15;
                             p.style.opacity = 1f - k; if (k >= 1f) p.RemoveFromHierarchy();
@@ -1679,13 +1667,13 @@ namespace GridGame.App
                     {
                         var p = Particle(16f * scale, new Color(0.8f, 0.95f, 1f));
                         float ang = i * Mathf.PI / 4f;
-                        App.StartCoroutine(Tween.Run(0.3f, k =>
+                        App.StartCoroutine(Tween.Run(Timing.Standard, k =>
                         {
                             var pos = at + new Vector2(Mathf.Cos(ang), Mathf.Sin(ang)) * (130f * scale * Tween.EaseOut(k));
                             p.style.left = pos.x - 8; p.style.top = pos.y - 8; p.style.opacity = 1f - k; if (k >= 1f) p.RemoveFromHierarchy();
                         }));
                     }
-                    yield return Tween.Run(0.35f, k => { board.Lines.Rings.Clear(); board.Lines.Ring(at, 30f + 110f * scale * k, new Color(0.7f, 0.9f, 1f, 1f - k), 8f); });
+                    yield return Tween.Run(Timing.Emphasis, k => { board.Lines.Rings.Clear(); board.Lines.Ring(at, 30f + 110f * scale * k, new Color(0.7f, 0.9f, 1f, 1f - k), 8f); });
                     break;
                 case DamageType.Lightning:
                 {
@@ -1696,12 +1684,12 @@ namespace GridGame.App
                     for (int flash = 0; flash < 2; flash++)
                     {
                         board.Lines.ClearLines();
-                        for (int i = 1; i < pts.Count; i++) { board.Lines.Add(pts[i - 1], pts[i], new Color(1f, 1f, 0.75f, 0.95f), 10f * scale); board.Lines.Add(pts[i - 1], pts[i], new Color(1f, 1f, 1f, 1f), 4f); }
-                        yield return Tween.Wait(0.06f);
+                        for (int i = 1; i < pts.Count; i++) { board.Lines.Add(pts[i - 1], pts[i], new Color(1f, 1f, 0.75f, 0.95f), 10f * scale); board.Lines.Add(pts[i - 1], pts[i], Palette.White, 4f); }
+                        yield return Tween.Wait(Timing.Instant);
                         board.Lines.ClearLines();
-                        yield return Tween.Wait(0.04f);
+                        yield return Tween.Wait(Timing.Instant);
                     }
-                    Sparks(at, 8, new Color(1f, 1f, 0.6f));
+                    Sparks(at, 8, Palette.GoldLight);
                     break;
                 }
                 case DamageType.Poison:
@@ -1709,7 +1697,7 @@ namespace GridGame.App
                     {
                         var p = Particle(Random.Range(14f, 26f), new Color(0.55f, 1f, 0.35f));
                         float x0 = Random.Range(-70f, 70f), delay = Random.Range(0f, 0.25f), rise = Random.Range(60f, 130f);
-                        App.StartCoroutine(Tween.Run(0.7f, k =>
+                        App.StartCoroutine(Tween.Run(Timing.Dramatic, k =>
                         {
                             float kk = Mathf.Clamp01((k - delay) / (1f - delay));
                             float s2 = 0.6f + kk * 0.8f;
@@ -1720,7 +1708,7 @@ namespace GridGame.App
                     }
                     break;
                 case DamageType.Holy:
-                    yield return Tween.Run(0.4f, k =>
+                    yield return Tween.Run(Timing.Emphasis, k =>
                     {
                         board.Lines.ClearLines();
                         board.Lines.Ring(at, 40f + 120f * k, new Color(1f, 0.95f, 0.6f, 1f - k), 10f);
@@ -1733,7 +1721,7 @@ namespace GridGame.App
                     {
                         var p = Particle(22f, new Color(0.6f, 0.25f, 0.95f));
                         float ang = Random.Range(0f, 6.28f), dist = Random.Range(120f, 190f);
-                        App.StartCoroutine(Tween.Run(0.35f, k =>
+                        App.StartCoroutine(Tween.Run(Timing.Emphasis, k =>
                         {
                             var pos = at + new Vector2(Mathf.Cos(ang), Mathf.Sin(ang)) * dist * (1f - Tween.EaseInOut(k));
                             p.style.left = pos.x - 11; p.style.top = pos.y - 11; p.style.opacity = 0.3f + 0.7f * k; if (k >= 1f) p.RemoveFromHierarchy();
@@ -1741,7 +1729,7 @@ namespace GridGame.App
                     }
                     break;
                 default:
-                    yield return Tween.Run(0.35f, k => { board.Lines.Rings.Clear(); board.Lines.Ring(at, 20f + 120f * k, new Color(c.r, c.g, c.b, 1f - k), 9f); });
+                    yield return Tween.Run(Timing.Emphasis, k => { board.Lines.Rings.Clear(); board.Lines.Ring(at, 20f + 120f * k, new Color(c.r, c.g, c.b, 1f - k), 9f); });
                     break;
             }
             if (board.Lines.Rings.Count > 0) { board.Lines.Rings.Clear(); board.Lines.MarkDirtyRepaint(); }
@@ -1759,7 +1747,7 @@ namespace GridGame.App
             {
                 var p = Particle(Random.Range(14f, 24f), c);
                 float ang = i * Mathf.PI * 2f / motes + Random.Range(-0.2f, 0.2f), dist = Random.Range(120f, 170f), spin = Random.Range(1.5f, 2.5f);
-                App.StartCoroutine(Tween.Run(0.34f, k =>
+                App.StartCoroutine(Tween.Run(Timing.Emphasis, k =>
                 {
                     float r = dist * (1f - k * k), aa = ang + spin * k;
                     var pos = from + new Vector2(Mathf.Cos(aa), Mathf.Sin(aa)) * r;
@@ -1767,7 +1755,7 @@ namespace GridGame.App
                     p.style.opacity = 0.4f + 0.6f * k; if (k >= 1f) p.RemoveFromHierarchy();
                 }));
             }
-            yield return Tween.Wait(0.34f);
+            yield return Tween.Wait(Timing.Emphasis);
             cv?.SetGlow(Color.white, 0f);
         }
 
@@ -1784,9 +1772,9 @@ namespace GridGame.App
         {
             for (int i = 0; i < 7; i++)
             {
-                var p = Particle(Random.Range(16f, 26f), new Color(0.5f, 1f, 0.6f));
+                var p = Particle(Random.Range(16f, 26f), Palette.Good);
                 float x0 = Random.Range(-60f, 60f), rise = Random.Range(70f, 140f);
-                App.StartCoroutine(Tween.Run(0.6f, k =>
+                App.StartCoroutine(Tween.Run(Timing.Dramatic, k =>
                 {
                     p.style.left = at.x + x0 - 10; p.style.top = at.y + 20 - rise * Tween.EaseOut(k) - 10;
                     p.style.opacity = 1f - k; if (k >= 1f) p.RemoveFromHierarchy();
@@ -1809,7 +1797,7 @@ namespace GridGame.App
                 board.FxLayer.Add(p);
                 float ang = Random.Range(0f, Mathf.PI * 2f), dist = Random.Range(60f, 150f);
                 var dir = new Vector2(Mathf.Cos(ang), Mathf.Sin(ang));
-                App.StartCoroutine(Tween.Run(Random.Range(0.25f, 0.4f), k =>
+                App.StartCoroutine(Tween.Run(Timing.Standard, k =>
                 {
                     var pos = at + dir * dist * Tween.EaseOut(k) + Vector2.up * (60f * k * k);
                     p.style.left = pos.x - size / 2; p.style.top = pos.y - size / 2;
@@ -1877,7 +1865,7 @@ namespace GridGame.App
                 xp = State.Results.Xp,
                 heroesStanding = State.Units.Count(u => u.IsHero && u.Alive),
             });
-            yield return Tween.Wait(0.6f);
+            yield return Tween.Wait(Timing.Dramatic);
             if (!CommitsToSave || App.Save == null)
             {
                 App.Router.Back();

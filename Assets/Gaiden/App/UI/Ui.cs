@@ -1,5 +1,6 @@
 using System;
 using System.Collections.Generic;
+using System.Linq;
 using GridGame.Core.Battle;
 using GridGame.Core.Content;
 using UnityEngine;
@@ -24,7 +25,27 @@ namespace GridGame.App
         public static void AddClasses(VisualElement e, string classes)
         {
             if (string.IsNullOrEmpty(classes)) return;
-            foreach (var c in classes.Split(' ')) if (c.Length > 0) e.AddToClassList(c);
+            bool heavy = false;
+            foreach (var c in classes.Split(' '))
+            {
+                if (c.Length == 0) continue;
+                e.AddToClassList(c);
+                heavy |= HeavyClasses.Contains(c);
+            }
+            if (heavy) Fonts.UseHeavy(e);
+        }
+
+        /// <summary>Classes that used to be faux-bold in Theme.uss; they take the real Heavy cut instead (POL-A3).
+        /// Fonts are runtime SDF assets, so USS can't reference them; the weight is applied here.</summary>
+        private static readonly HashSet<string> HeavyClasses = new HashSet<string>
+            { "t-heavy", "title", "h1", "h2", "window-title", "header-title", "btn", "tab--active", "role-badge", "pip" };
+
+        /// <summary>Heavy for elements a screen tagged with a heavy class outside these helpers, leaving any element
+        /// whose font is already set inline (a Display headline) alone.</summary>
+        public static void ApplyHeavy(VisualElement root)
+        {
+            root.Query<VisualElement>().Where(x => x.style.unityFontDefinition.keyword == StyleKeyword.Null && x.GetClasses().Any(HeavyClasses.Contains))
+                .ForEach(Fonts.UseHeavy);
         }
 
         public static Label Text(string text, string classes = null, VisualElement parent = null)
@@ -75,6 +96,7 @@ namespace GridGame.App
                 onClick?.Invoke();
             }) { text = text };
             b.AddToClassList("btn");
+            Fonts.UseHeavy(b);
             AddClasses(b, classes);
             Pressable(b);
             parent?.Add(b);
@@ -318,19 +340,7 @@ namespace GridGame.App
         public static string Keywords(string text) =>
             string.IsNullOrEmpty(text) ? "" : System.Text.RegularExpressions.Regex.Replace(text, @"\[([^\]]+)\]", "<color=#9CC8FF>$1</color>");
 
-        public static Color RoleColor(string role)
-        {
-            switch (role)
-            {
-                case "Tank": return new Color(0.95f, 0.36f, 0.3f);
-                case "Healer": return new Color(0.4f, 0.9f, 0.5f);
-                case "Mage": return new Color(0.55f, 0.6f, 1f);
-                case "Striker": return new Color(1f, 0.66f, 0.25f);
-                case "Support": return new Color(0.35f, 0.85f, 0.85f);
-                case "Ranged": return new Color(0.68f, 0.85f, 0.35f);
-                default: return new Color(0.8f, 0.8f, 0.85f);
-            }
-        }
+        public static Color RoleColor(string role) => Palette.Role(role);
 
         /// <summary>What each role brings to the party (§25.13), one line.</summary>
         public static string RoleBlurb(string role)
@@ -416,7 +426,7 @@ namespace GridGame.App
             pip.style.borderTopLeftRadius = pip.style.borderTopRightRadius = pip.style.borderBottomLeftRadius = pip.style.borderBottomRightRadius = size / 2f;
             pip.style.borderTopWidth = pip.style.borderBottomWidth = pip.style.borderLeftWidth = pip.style.borderRightWidth = 3;
             pip.style.borderTopColor = pip.style.borderBottomColor = pip.style.borderLeftColor = pip.style.borderRightColor = color;
-            pip.style.backgroundColor = new Color(0.05f, 0.06f, 0.14f, 0.95f);
+            pip.style.backgroundColor = Palette.Ink.WithA(0.95f);
             var tex = Art.StatusIcon(iconId);
             if (tex != null)
             {
@@ -431,7 +441,7 @@ namespace GridGame.App
             {
                 var l = new Label(letter) { pickingMode = PickingMode.Ignore };
                 l.style.flexGrow = 1; l.style.unityTextAlign = TextAnchor.MiddleCenter;
-                l.style.fontSize = size * 0.55f; l.style.color = color; l.style.unityFontStyleAndWeight = FontStyle.Bold;
+                l.style.fontSize = size * 0.55f; l.style.color = color; Fonts.UseHeavy(l);
                 pip.Add(l);
             }
             parent?.Add(pip);

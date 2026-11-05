@@ -93,7 +93,7 @@ namespace GridGame.App
             var sub = Ui.Text("GAIDEN", "title shadow", col);
             Fonts.UseHeavy(sub);
             sub.style.fontSize = 150;
-            sub.style.color = new Color(1f, 0.82f, 0.36f);
+            sub.style.color = Palette.Neutral;
             var tag = Ui.Text("Slide. Flank. Strike.", "h2 shadow dim", col);
             tag.style.marginTop = 10;
             tag.style.marginBottom = 160;
@@ -290,7 +290,7 @@ namespace GridGame.App
 
         private IEnumerator Finish()
         {
-            yield return Tween.Wait(0.7f);
+            yield return Tween.Wait(Timing.Dramatic);
             onDone(new List<string>(locked));
         }
 
@@ -301,7 +301,7 @@ namespace GridGame.App
             target.style.scale = new Scale(Vector2.one * 1.5f);
             target.style.rotate = new Rotate(-6f);
             App.Audio.Sfx("shatter", 0.55f);
-            yield return Tween.Run(0.22f, k =>
+            yield return Tween.Run(Timing.Standard, k =>
             {
                 float s = Mathf.LerpUnclamped(1.5f, 1f, Tween.Back(k));
                 target.style.scale = new Scale(Vector2.one * s);
@@ -319,11 +319,11 @@ namespace GridGame.App
             var rng = new System.Random();
             while (!finishing && locked.Count < PartySize)
             {
-                yield return Tween.Wait(0.5f);
+                yield return Tween.Wait(Timing.Emphasis);
                 var pool = App.Content.Classes.Values.Where(d => d.Team == Team.Hero && !locked.Contains(d.Id)).ToList();
                 if (pool.Count == 0) yield break;
                 Pick(pool[rng.Next(pool.Count)].Id);
-                yield return Tween.Wait(0.6f);
+                yield return Tween.Wait(Timing.Dramatic);
                 LockInHighlighted();
             }
         }
@@ -362,7 +362,7 @@ namespace GridGame.App
                 frame.style.borderTopWidth = frame.style.borderBottomWidth = frame.style.borderLeftWidth = frame.style.borderRightWidth = 4;
                 var roleColor = Ui.RoleColor(def.Role);
                 frame.style.borderTopColor = frame.style.borderBottomColor = frame.style.borderLeftColor = frame.style.borderRightColor = roleColor;
-                frame.style.backgroundColor = new Color(0.1f, 0.1f, 0.15f, 0.6f);
+                frame.style.backgroundColor = Palette.Ink.WithA(0.6f);
                 frame.style.backgroundImage = new StyleBackground(Art.Portrait(showId));
                 frame.style.backgroundSize = new BackgroundSize(BackgroundSizeType.Contain);
                 var info = Ui.El("col", row);
@@ -443,7 +443,7 @@ namespace GridGame.App
                 foreach (var done in Paywall.FinishReady(c, s, DateTime.UtcNow)) { App.Toast(done.Message ?? "Done"); App.Persist(); }
             var bg = Ui.El("fill", root);
             bg.style.backgroundImage = new StyleBackground(Art.Background(ThemeFor(c, s), 2));
-            bg.style.unityBackgroundImageTintColor = new Color(0.55f, 0.6f, 0.75f);
+            bg.style.unityBackgroundImageTintColor = Palette.TextDim;
 
             var col = Ui.El("fill col", root);
             col.style.paddingTop = 40; col.style.paddingLeft = col.style.paddingRight = 16; col.style.paddingBottom = 30;
@@ -470,7 +470,7 @@ namespace GridGame.App
                 info.style.flexShrink = 1; info.style.minWidth = 0;
                 var top = Ui.El("row", info);
                 var name = Ui.Text(c.Class(id).Name, "small grow", top);
-                name.style.unityFontStyleAndWeight = FontStyle.Bold;
+                Fonts.UseHeavy(name);
                 name.style.overflow = Overflow.Hidden; name.style.textOverflow = TextOverflow.Ellipsis;
                 Ui.RoleBadge(c.Class(id).Role, top, 20).style.marginLeft = 4;
                 Ui.Text($"Lv {u.Level}", "small gold", top);

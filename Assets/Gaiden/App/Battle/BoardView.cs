@@ -113,12 +113,12 @@ namespace GridGame.App
             CastChip.style.width = CastChip.style.height = 50;
             CastChip.style.borderTopLeftRadius = CastChip.style.borderTopRightRadius = CastChip.style.borderBottomLeftRadius = CastChip.style.borderBottomRightRadius = 12;
             CastChip.style.borderTopWidth = CastChip.style.borderBottomWidth = CastChip.style.borderLeftWidth = CastChip.style.borderRightWidth = 3;
-            CastChip.style.backgroundColor = new Color(0.06f, 0.07f, 0.17f, 1f);
+            CastChip.style.backgroundColor = Palette.Ink;
             CastChip.style.backgroundSize = new BackgroundSize(BackgroundSizeType.Contain);
             CastChip.style.display = DisplayStyle.None;
             CastChip.Add(new Label { name = "castchip-letter", pickingMode = PickingMode.Ignore });
             CastChip[0].AddToClassList("shadow");
-            CastChip[0].style.fontSize = 30; CastChip[0].style.unityFontStyleAndWeight = FontStyle.Bold;
+            CastChip[0].style.fontSize = 30; Fonts.UseHeavy(CastChip[0]);
             CastChip[0].style.unityTextAlign = TextAnchor.MiddleCenter; CastChip[0].style.flexGrow = 1;
             Root.Add(CastChip);
 
@@ -127,7 +127,7 @@ namespace GridGame.App
             Plate.style.position = Position.Absolute;
             Plate.style.backgroundColor = new Color(0.72f, 0.76f, 0.84f);
             Plate.style.borderTopWidth = Plate.style.borderBottomWidth = Plate.style.borderLeftWidth = Plate.style.borderRightWidth = 3;
-            Plate.style.borderTopColor = Plate.style.borderLeftColor = new Color(0.95f, 0.97f, 1f);
+            Plate.style.borderTopColor = Plate.style.borderLeftColor = Palette.Text;
             Plate.style.borderBottomColor = Plate.style.borderRightColor = new Color(0.3f, 0.32f, 0.4f);
             Plate.style.borderTopLeftRadius = Plate.style.borderTopRightRadius = Plate.style.borderBottomLeftRadius = Plate.style.borderBottomRightRadius = 6;
             Plate.style.display = DisplayStyle.None;
@@ -145,10 +145,10 @@ namespace GridGame.App
             CastBar = new VisualElement { name = "castbar-" + u.Id, pickingMode = PickingMode.Ignore };
             CastBar.style.position = Position.Absolute;
             CastBar.style.left = 18; CastBar.style.right = 18; CastBar.style.bottom = 34; CastBar.style.height = 14;
-            CastBar.style.backgroundColor = new Color(0.03f, 0.04f, 0.12f, 0.9f);
+            CastBar.style.backgroundColor = Palette.Ink.WithA(0.9f);
             CastBar.style.borderTopLeftRadius = CastBar.style.borderTopRightRadius = CastBar.style.borderBottomLeftRadius = CastBar.style.borderBottomRightRadius = 7;
             CastBar.style.borderTopWidth = CastBar.style.borderBottomWidth = CastBar.style.borderLeftWidth = CastBar.style.borderRightWidth = 2;
-            CastBar.style.borderTopColor = CastBar.style.borderBottomColor = CastBar.style.borderLeftColor = CastBar.style.borderRightColor = new Color(1f, 1f, 1f, 0.7f);
+            CastBar.style.borderTopColor = CastBar.style.borderBottomColor = CastBar.style.borderLeftColor = CastBar.style.borderRightColor = Palette.White.WithA(0.7f);
             CastBar.style.overflow = Overflow.Hidden;
             CastBar.style.display = DisplayStyle.None;
             castBarFill = new VisualElement { pickingMode = PickingMode.Ignore };
@@ -188,7 +188,7 @@ namespace GridGame.App
             WeaponCrack.style.borderTopLeftRadius = WeaponCrack.style.borderTopRightRadius = WeaponCrack.style.borderBottomLeftRadius = WeaponCrack.style.borderBottomRightRadius = 12;
             WeaponCrack.style.backgroundColor = new Color(0.5f, 0.06f, 0.05f, 0.92f);
             WeaponCrack.style.borderTopWidth = WeaponCrack.style.borderBottomWidth = WeaponCrack.style.borderLeftWidth = WeaponCrack.style.borderRightWidth = 2;
-            WeaponCrack.style.borderTopColor = WeaponCrack.style.borderBottomColor = WeaponCrack.style.borderLeftColor = WeaponCrack.style.borderRightColor = new Color(1f, 0.35f, 0.3f);
+            WeaponCrack.style.borderTopColor = WeaponCrack.style.borderBottomColor = WeaponCrack.style.borderLeftColor = WeaponCrack.style.borderRightColor = Palette.Bad;
             WeaponCrack.style.display = DisplayStyle.None;
             var shardA = new VisualElement { pickingMode = PickingMode.Ignore };
             shardA.style.position = Position.Absolute;
@@ -235,8 +235,8 @@ namespace GridGame.App
             var tag = new Label(u.IsNeutral ? "TALK" : "GUEST") { name = "guest-" + u.Id, pickingMode = PickingMode.Ignore };
             tag.AddToClassList("shadow");
             tag.style.position = Position.Absolute; tag.style.left = 10; tag.style.top = 6;
-            tag.style.fontSize = 22; tag.style.unityFontStyleAndWeight = FontStyle.Bold;
-            tag.style.color = u.IsNeutral ? new Color(1f, 0.82f, 0.4f) : new Color(0.6f, 1f, 0.75f);
+            tag.style.fontSize = 22; Fonts.UseHeavy(tag);
+            tag.style.color = u.IsNeutral ? Palette.Neutral : new Color(0.6f, 1f, 0.75f);
             Frame.Add(tag);
         }
 
@@ -258,10 +258,10 @@ namespace GridGame.App
         public void SetBuffs(Unit u, bool colorblind, bool stunned = false)
         {
             statuses.Clear();
-            if (stunned) statuses.Add(("stunned", "!", new Color(1f, 0.85f, 0.3f), 1f)); // pushback stun isn't a buff, but it's why it isn't moving
+            if (stunned) statuses.Add(("stunned", "!", Palette.Gold, 1f)); // pushback stun isn't a buff, but it's why it isn't moving
             foreach (var b in u.Buffs)
                 statuses.Add((b.Def.Id, string.IsNullOrEmpty(b.Def.Letter) ? b.Def.Name.Substring(0, 1) : b.Def.Letter,
-                    App.Art.HexColor(b.Def.Color, b.Def.Kind == BuffKind.Buff ? new Color(0.4f, 0.8f, 1f) : new Color(0.8f, 0.4f, 0.9f)),
+                    App.Art.HexColor(b.Def.Color, b.Def.Kind == BuffKind.Buff ? Palette.Mana : new Color(0.8f, 0.4f, 0.9f)),
                     Mathf.Clamp01(b.Remaining / (float)Mathf.Max(1, b.Def.Duration))));
             ShowStatus();
         }
@@ -287,7 +287,7 @@ namespace GridGame.App
                 var more = new Label((statuses.Count).ToString()) { pickingMode = PickingMode.Ignore };
                 more.AddToClassList("shadow");
                 more.style.position = Position.Absolute; more.style.right = -6; more.style.bottom = -10;
-                more.style.fontSize = 20; more.style.unityFontStyleAndWeight = FontStyle.Bold;
+                more.style.fontSize = 20; Fonts.UseHeavy(more);
                 pip.Add(more);
             }
         }
@@ -432,7 +432,7 @@ namespace GridGame.App
                     bool light = (x + y) % 2 == 0;
                     t.style.backgroundImage = new StyleBackground(App.Art.BoardTile(theme));
                     // Owner direction 2026-10-11: lighter and lower-contrast so the stage background reads clearly through the board.
-                    t.style.unityBackgroundImageTintColor = light ? new Color(1.0f, 1.0f, 1.0f, 0.34f) : new Color(0.78f, 0.82f, 0.9f, 0.24f);
+                    t.style.unityBackgroundImageTintColor = light ? Palette.White.WithA(0.34f) : new Color(0.78f, 0.82f, 0.9f, 0.24f);
                     TileLayer.Add(t);
                     tiles[x, y] = t;
 
@@ -522,7 +522,7 @@ namespace GridGame.App
                 glow.style.position = Position.Absolute;
                 glow.style.left = glow.style.top = glow.style.right = glow.style.bottom = -30;
                 glow.style.backgroundImage = new StyleBackground(App.Art.Glow);
-                glow.style.unityBackgroundImageTintColor = new Color(1f, 0.8f, 0.3f, 0.8f);
+                glow.style.unityBackgroundImageTintColor = Palette.Warn.WithA(0.8f);
                 amp.Add(glow);
                 MarkLayer.Add(amp);
                 amp.schedule.Execute(() =>
@@ -601,7 +601,7 @@ namespace GridGame.App
             var root = new VisualElement { name = "pickup-" + p.Id, pickingMode = PickingMode.Ignore };
             root.style.position = Position.Absolute;
             root.style.width = root.style.height = Tile * 0.56f;
-            var c = App.Art.HexColor(def?.Color, new Color(1f, 0.85f, 0.4f));
+            var c = App.Art.HexColor(def?.Color, Palette.Gold);
             var glow = new VisualElement { pickingMode = PickingMode.Ignore };
             glow.style.position = Position.Absolute;
             glow.style.left = glow.style.top = glow.style.right = glow.style.bottom = -36;
@@ -612,7 +612,7 @@ namespace GridGame.App
             disc.style.position = Position.Absolute;
             disc.style.left = disc.style.top = disc.style.right = disc.style.bottom = 0;
             SetRadius(disc, Tile * 0.28f);
-            disc.style.backgroundColor = new Color(0.05f, 0.06f, 0.14f, 0.92f);
+            disc.style.backgroundColor = Palette.Ink.WithA(0.92f);
             disc.style.borderTopWidth = disc.style.borderBottomWidth = disc.style.borderLeftWidth = disc.style.borderRightWidth = 5;
             disc.style.borderTopColor = disc.style.borderBottomColor = disc.style.borderLeftColor = disc.style.borderRightColor = c;
             var icon = new VisualElement { pickingMode = PickingMode.Ignore };
@@ -723,7 +723,7 @@ namespace GridGame.App
                 var c = r.center;
                 float radius = Mathf.Min(r.width, r.height) / 2f - 2f;
                 p.lineWidth = 4f;
-                p.strokeColor = new Color(1f, 0.92f, 0.35f, 0.95f);
+                p.strokeColor = Palette.Gold.WithA(0.95f);
                 p.lineCap = LineCap.Round;
                 p.BeginPath();
                 p.Arc(c, radius, Angle.Degrees(-90f), Angle.Degrees(-90f + 360f * this.frac));

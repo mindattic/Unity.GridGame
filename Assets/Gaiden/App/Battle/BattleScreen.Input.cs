@@ -163,7 +163,7 @@ namespace GridGame.App
             var v = board.Units[dragHeroId];
             v.Root.BringToFront();
             v.Root.style.scale = new Scale(new Vector2(1.12f, 1.12f));
-            v.SetGlow(new Color(1f, 0.95f, 0.6f), 0.9f);
+            v.SetGlow(Palette.GoldLight, 0.9f);
             board.Trail.Follow(v.Root, HeroTrail);
             App.Audio.Sfx("pickup");
             ShowBanner("");
@@ -182,7 +182,7 @@ namespace GridGame.App
         private VisualElement holdDrain, holdDrainFill, holdLane;
         private Label holdLabel;
         private IVisualElementScheduledItem holdTicker;
-        private static readonly Color HoldFull = new Color(0.45f, 0.95f, 0.55f), HoldEmpty = new Color(1f, 0.3f, 0.25f);
+        private static readonly Color HoldFull = Palette.Good, HoldEmpty = new Color(1f, 0.3f, 0.25f);
 
         private void BeginHold()
         {
@@ -198,7 +198,7 @@ namespace GridGame.App
             holdDrain.style.position = Position.Absolute;
             holdDrain.style.left = Length.Percent(8); holdDrain.style.right = Length.Percent(8);
             holdDrain.style.bottom = -16; holdDrain.style.height = 14;
-            holdDrain.style.backgroundColor = new Color(0.05f, 0.05f, 0.1f, 0.85f);
+            holdDrain.style.backgroundColor = Palette.Ink.WithA(0.85f);
             Round(holdDrain, 7);
             holdDrainFill = new VisualElement { name = "hold-drain-fill", pickingMode = PickingMode.Ignore };
             holdDrainFill.style.position = Position.Absolute;
@@ -212,7 +212,7 @@ namespace GridGame.App
             holdLane = new VisualElement { name = "hold-lane", pickingMode = PickingMode.Ignore };
             holdLane.style.position = Position.Absolute;
             holdLane.style.right = 0; holdLane.style.top = TrackY - 7; holdLane.style.height = 14;
-            holdLane.style.backgroundColor = new Color(1f, 0.85f, 0.3f, 0.55f);
+            holdLane.style.backgroundColor = Palette.Gold.WithA(0.55f);
             Round(holdLane, 7);
             timelineFrame.Insert(1, holdLane); // above the track, under the icons
             holdLabel = Ui.Text("", "tiny warn shadow", timelineFrame);
@@ -262,7 +262,7 @@ namespace GridGame.App
             holdLabel.style.display = limited ? DisplayStyle.Flex : DisplayStyle.None;
             if (!limited) return;
             holdLane.style.left = nextU * TimelineWidth;
-            holdLane.style.backgroundColor = Color.Lerp(new Color(1f, 0.3f, 0.25f, 0.7f), new Color(1f, 0.85f, 0.3f, 0.55f), 1f - k);
+            holdLane.style.backgroundColor = Color.Lerp(new Color(1f, 0.3f, 0.25f, 0.7f), Palette.Gold.WithA(0.55f), 1f - k);
             holdLabel.text = $"{Mathf.Max(0f, holdWindow - holdElapsed):0.0}s";
             holdLabel.style.left = Mathf.Max(0f, nextU * TimelineWidth - 20f);
         }
@@ -327,7 +327,7 @@ namespace GridGame.App
             }
         }
 
-        private static readonly Color HeroTrail = new Color(1f, 0.9f, 0.45f), EnemyTrail = new Color(1f, 0.35f, 0.3f);
+        private static readonly Color HeroTrail = new Color(1f, 0.9f, 0.45f), EnemyTrail = Palette.Bad;
 
         /// <summary>Slide displaced actors to their preview tiles and draw the pincers this drop would make.</summary>
         private void ApplyPreview(MovePreview pv, int heroId)
@@ -341,7 +341,7 @@ namespace GridGame.App
                     App.Audio.Sfx("slide", 0.6f);
                     var from = BoardView.PosOf(v.Tile);
                     v.Tile = kv.Value;
-                    App.StartCoroutine(Tween.Move(v.Root, from, BoardView.PosOf(kv.Value), 0.1f));
+                    App.StartCoroutine(Tween.Move(v.Root, from, BoardView.PosOf(kv.Value), Timing.Instant));
                 }
             }
             board.Lines.ClearLines();
@@ -363,7 +363,7 @@ namespace GridGame.App
                 foreach (var o in oppAt) group.Add((o.At, o.W, o.H));
                 var geometryError = PincerGeometry.Error(new UnitFootprint { UnitId = p.A.Id, At = a, W = p.A.W, H = p.A.H }, new UnitFootprint { UnitId = p.B.Id, At = b, W = p.B.W, H = p.B.H }, oppAt);
                 if (geometryError != null && Debug.isDebugBuild) Debug.LogError($"[GG-T98] malformed preview pincer outline: {geometryError}");
-                board.Lines.Outline(BoardView.GroupRect(group), new Color(1f, 0.85f, 0.3f, 0.9f), 8f, 1f);
+                board.Lines.Outline(BoardView.GroupRect(group), Palette.Gold.WithA(0.9f), 8f, 1f);
                 foreach (var sup in p.SupportersA.Concat(p.SupportersB).Distinct())
                 {
                     // GG-T187: link each supporter to the unit its chain runs through (an attacker or the next ally).
@@ -371,15 +371,15 @@ namespace GridGame.App
                     var sp = pv.Positions.TryGetValue(sup.Id, out var spp) ? spp : sup.Pos;
                     var partner = pv.Positions.TryGetValue(via.Id, out var vp) ? vp : via.Pos;
                     var (la, lb) = BoardView.EdgeLink(sp, partner);
-                    board.Lines.Add(la, lb, new Color(0.4f, 0.8f, 1f, 0.9f), 10f);
+                    board.Lines.Add(la, lb, Palette.Mana.WithA(0.9f), 10f);
                 }
                 foreach (var o in p.Opponents)
                 {
                     foreach (var t in o.Tiles()) board.Mark(t, new Color(1f, 0.25f, 0.2f), 0.32f);
                     if (board.Units.TryGetValue(o.Id, out var ov)) ov.SetGlow(new Color(1f, 0.3f, 0.2f), 0.8f);
                 }
-                foreach (var s in p.SupportersA) if (board.Units.TryGetValue(s.Id, out var sv)) sv.SetGlow(new Color(0.4f, 0.8f, 1f), 0.7f);
-                foreach (var s in p.SupportersB) if (board.Units.TryGetValue(s.Id, out var sv)) sv.SetGlow(new Color(0.4f, 0.8f, 1f), 0.7f);
+                foreach (var s in p.SupportersA) if (board.Units.TryGetValue(s.Id, out var sv)) sv.SetGlow(Palette.Mana, 0.7f);
+                foreach (var s in p.SupportersB) if (board.Units.TryGetValue(s.Id, out var sv)) sv.SetGlow(Palette.Mana, 0.7f);
             }
             // A pincer a shove completes: the shoved foe (or the shoved partner) pulses so the cause reads at a glance.
             foreach (var p in pv.Pincers)
@@ -414,7 +414,7 @@ namespace GridGame.App
         /// <summary>GG-T190: a displaced actor's ghost tile plus an arrow to where the drop leaves it (amber for a foe, blue for a hero).</summary>
         private void DrawShoveArrow(ShovedActor d)
         {
-            var col = d.IsEnemy ? new Color(1f, 0.55f, 0.2f, 0.9f) : new Color(0.45f, 0.85f, 1f, 0.9f);
+            var col = d.IsEnemy ? new Color(1f, 0.55f, 0.2f, 0.9f) : Palette.Mana.WithA(0.9f);
             board.Mark(d.From, col, 0.16f);
             var a = BoardView.CenterOf(d.From);
             var b = BoardView.CenterOf(d.To);
@@ -454,7 +454,7 @@ namespace GridGame.App
             float timeLeft = App.Settings.DragTimer ? Mathf.Max(0f, dragTimeLeft) : 0f;
             var cmd = new MoveCommand { HeroId = dragHeroId, Path = new List<Coord>(dragPath), TimeLeftSeconds = timeLeft, HeldSeconds = held };
             // Snap the dragged hero onto its final tile before playback.
-            App.StartCoroutine(Tween.Move(v.Root, new Vector2(v.Root.resolvedStyle.left, v.Root.resolvedStyle.top), BoardView.PosOf(dragTile), 0.06f));
+            App.StartCoroutine(Tween.Move(v.Root, new Vector2(v.Root.resolvedStyle.left, v.Root.resolvedStyle.top), BoardView.PosOf(dragTile), Timing.Instant));
             Commit(cmd, true, perfectCmd);
         }
 
@@ -464,11 +464,11 @@ namespace GridGame.App
             var a = hero == null ? null : BattleEngine.SlotAbility(State, hero, TargetingSlot);
             if (a == null || a.Mode == TargetMode.Auto) return;
             board.ClearMarks();
-            foreach (var vt in BattleEngine.ValidTargets(State, hero.Id, TargetingSlot)) board.Mark(vt, new Color(1f, 0.82f, 0.3f), 0.25f);
+            foreach (var vt in BattleEngine.ValidTargets(State, hero.Id, TargetingSlot)) board.Mark(vt, Palette.Gold, 0.25f);
             if (!TargetResolver.IsValidPick(State, a, hero, tile)) return;
             bool harmful = a.BaseDamage > 0 || a.Filter == TargetFilter.EnemyOnly;
             var color = harmful ? new Color(1f, 0.3f, 0.25f) : new Color(0.4f, 0.9f, 0.5f);
-            if (a.IsTeleport) { board.Mark(tile, new Color(0.5f, 0.8f, 1f), 0.6f); return; }
+            if (a.IsTeleport) { board.Mark(tile, Palette.Mana, 0.6f); return; }
             foreach (var t in TargetResolver.Tiles(tile, a.Shape, a.Radius)) board.Mark(t, color, 0.38f);
         }
     }

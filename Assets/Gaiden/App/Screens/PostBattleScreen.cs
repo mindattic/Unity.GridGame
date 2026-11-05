@@ -46,7 +46,7 @@ namespace GridGame.App
             if (report.Crucible) { BuildCrucible(root, col, c); return; }
             var title = Ui.Text(report.Victory ? "VICTORY" : report.Retreated ? "RETREATED" : report.Escaped ? "ESCAPED" : "DEFEAT", "title shadow", col);
             Fonts.UseDisplay(title);
-            title.style.color = report.Victory ? new Color(1f, 0.85f, 0.4f) : new Color(1f, 0.45f, 0.45f);
+            title.style.color = report.Victory ? Palette.Gold : new Color(1f, 0.45f, 0.45f);
             Ui.Text(NameOf(c, report, stageId), "h2 shadow dim", col).style.unityTextAlign = TextAnchor.MiddleCenter;
 
             var w = Ui.Window(null, col);
@@ -185,7 +185,7 @@ namespace GridGame.App
 
         private IEnumerator NewBest(VisualElement label)
         {
-            yield return Tween.Wait(0.5f);
+            yield return Tween.Wait(Timing.Emphasis);
             App.Audio.Sfx("crucible_best");
             label.style.opacity = 1f;
             yield return Tween.Pop(label, 1.25f, 0.3f);

@@ -85,7 +85,7 @@ namespace GridGame.App
             bool masterwork = res.Message != null && res.Message.StartsWith("★");
             app.Audio.Sfx(masterwork ? "powerup" : "clang");
             text.text = res.Message;
-            yield return Tween.All(app, Tween.Fade(text, 0f, 1f, 0.3f), Tween.Pop(gem, masterwork ? 1.4f : 1.1f, 0.35f));
+            yield return Tween.All(app, Tween.Fade(text, 0f, 1f, 0.3f), Tween.Pop(gem, masterwork ? 1.4f : 1.1f, Timing.Emphasis));
             yield return Tween.Wait(1.2f);
             yield return Tween.Fade(veil, 1f, 0f, 0.25f);
             veil.RemoveFromHierarchy();
