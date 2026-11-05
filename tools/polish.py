@@ -31,7 +31,6 @@ DIMENSIONS = {"A": "Type", "B": "Color", "C": "Layout and touch", "D": "Informat
 SCREENS = ["hub", "stages", "items", "status", "equip", "abilities", "talents", "respec", "party", "shop", "blacksmith",
            "alchemist", "enchantress", "talk", "summon", "mercenaries", "bounties", "quests", "crucible", "bestiary",
            "settings", "credits"]
-PROPS = {"bonepile", "corpse", "gravestone"}  # POL-H1: props, not people
 
 
 class Tally:
@@ -187,26 +186,12 @@ def lint(tally):
 
 
 def art(tally):
-    """POL-H1: portrait canvases are 640 px tall with a transparent background and the figure filling >= 95% of the
-    height (props exempt)."""
-    from PIL import Image
-    d = os.path.join(ROOT, "Assets", "Gaiden", "Resources", "Portraits")
-    for f in sorted(os.listdir(d)):
-        if not f.endswith(".png") or f[:-4] in PROPS:
-            continue
-        im = Image.open(os.path.join(d, f))
-        w, hgt = im.size
-        why = []
-        if hgt != 640:
-            why.append(f"canvas {w}x{hgt}, not 640 tall")
-        if im.mode not in ("RGBA", "LA"):
-            why.append("no transparency")
-        else:
-            bb = im.getchannel("A").point(lambda v: 255 if v > 16 else 0).getbbox()
-            fill = (bb[3] - bb[1]) / hgt if bb else 0
-            if fill < 0.95:
-                why.append(f"figure fills {fill:.0%} of the height")
-        tally.one("POL-H1", not why, {"screen": "art", "subject": f, "detail": "; ".join(why)})
+    """POL-H1..H4 from check_assets.art_findings (one rule set for the gate and the score)."""
+    sys.path.insert(0, TOOLS)
+    import check_assets
+    for rule, subject, ok, detail, _hard in check_assets.art_findings():
+        if rule.startswith("POL-"):
+            tally.one(rule, ok, {"screen": "art", "subject": subject, "detail": detail})
 
 
 def gates():

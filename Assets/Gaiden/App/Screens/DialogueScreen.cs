@@ -152,10 +152,12 @@ namespace GridGame.App
             if (DemoMode.Active) App.StartCoroutine(AutoPlay());
         }
 
+        /// <summary>On-screen height of a full 640-px-tall portrait canvas (POL-H1: 640 px = one person's height).</summary>
+        private const float FigureHeight = 1200f;
+        private const float PersonCanvas = 640f;
+
         /// <summary>Builds a side's whole-portrait frame (contain-fit, bottom-aligned, never a thumbnail framing) and
         /// its name plate, which sits on the text box's top edge with two soft glow layers behind it.</summary>
-        private const float FigureHeight = 1200f;
-
         private static void BuildSide(Side s, VisualElement stage, VisualElement box)
         {
             string tag = s.Index == 0 ? "left" : "right";
@@ -272,8 +274,14 @@ namespace GridGame.App
             if (s.Art == null) return;
             var tex = s.Portrait != null ? Art.Portrait(s.Portrait) : null;
             s.Art.style.backgroundImage = new StyleBackground(tex);
-            // Same on-screen height for every speaker; canvases vary from 336x640 to 640x640, so width follows the art.
-            if (tex != null) s.Art.style.width = FigureHeight * tex.width / (float)tex.height;
+            // One scale for every speaker: 640 canvas px = FigureHeight. A creature canvas shorter than 640 is drawn
+            // that much smaller (POL-H1), so a 234-px slime isn't stretched to a person's height.
+            if (tex != null)
+            {
+                float k = FigureHeight / PersonCanvas;
+                s.Art.style.height = Mathf.Min(tex.height, PersonCanvas) * k;
+                s.Art.style.width = tex.width * k;
+            }
             s.NameLabel.text = name ?? "";
             s.Plate.style.display = string.IsNullOrEmpty(name) ? DisplayStyle.None : DisplayStyle.Flex;
         }
