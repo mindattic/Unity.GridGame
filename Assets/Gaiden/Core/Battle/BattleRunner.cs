@@ -545,6 +545,7 @@ namespace GridGame.Core.Battle
 
         private void Kill(Unit u, Unit killer)
         {
+            if (DefiesDeath(u)) return;
             var at = u.Pos;
             if (!u.IsHero && u.Def.DeathBurst > 0) DeathBurstPending.Add(u);
             u.Hp = 0;

@@ -30,6 +30,7 @@ namespace GridGame.Core.Battle
                 return;
             }
 
+            if (RuleBreakBeforeTurn(enemy)) return;
             if (BrainTurn(enemy)) return;
 
             bool alreadyCasting = S.CastEntryOf(enemy.Id) != null;

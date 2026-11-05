@@ -264,11 +264,13 @@ namespace GridGame.Core.Battle
                 // so this only happens on a stage packed with blocks) — never stacked on another actor (GG-T97).
                 var u = SpawnEnemy(def, level, sp.X, sp.Y);
                 if (u == null) continue;
+                ArmRuleBreak(u, sp.RuleBreak);
                 started.Spawned.Add(u.Id);
                 if (def.SnakeSegments > 0) GrowSnake(u, def.SnakeSegments, started.Spawned);
             }
             foreach (var id in started.Spawned) if (S.UnitById(id) is Unit su) started.SpawnedAt.Add(UnitFootprint.Of(su));
             Emit(started);
+            AnnounceRuleBreaks(started.Spawned);
         }
 
         /// <summary>Resolves any delayed reinforcements (§14.8) for the current wave whose trigger tick has arrived.</summary>
@@ -295,6 +297,7 @@ namespace GridGame.Core.Battle
                     continue;
                 }
                 pending.Consumed = true;
+                ArmRuleBreak(u, pending.Spawn.RuleBreak);
                 spawned ??= new List<int>();
                 spawned.Add(u.Id);
                 if (def.SnakeSegments > 0) GrowSnake(u, def.SnakeSegments, spawned);
@@ -309,6 +312,7 @@ namespace GridGame.Core.Battle
                 var arrived = new ReinforcementsArrivedEvent { Wave = S.Wave, Spawned = spawned, SpeakerClassId = speakerClassId, Line = line };
                 foreach (var id in spawned) if (S.UnitById(id) is Unit su) arrived.SpawnedAt.Add(UnitFootprint.Of(su));
                 Emit(arrived);
+                AnnounceRuleBreaks(spawned);
             }
             S.PendingSpawns.RemoveAll(p => p.Consumed);
         }

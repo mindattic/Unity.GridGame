@@ -192,6 +192,7 @@ namespace GridGame.Core.Battle
             foreach (var su in supporters) { formed.Supporters.Add(su.Id); formed.SupportersAt.Add(UnitFootprint.Of(su)); formed.SupporterLinks.Add(p.LinkOf(su)?.Id ?? p.AttackerOf(su).Id); }
             Emit(formed);
             if (team == Team.Hero) MarkPincerWitnesses(p); // a recruitable beside a striking hero fought with them (GG-T132)
+            WardPincer(p, team);
 
             // Power Amplifier: a hero attacker standing on it strikes amplified and uses it up (§1.2.6).
             Unit amplified = null;
@@ -218,7 +219,7 @@ namespace GridGame.Core.Battle
                 bool twice = HasPassive(attacker, "double_attack");
                 foreach (var target in p.Opponents)
                 {
-                    if (!target.Alive || !attacker.Alive) continue;
+                    if (!target.Alive || !attacker.Alive || wardedThisPincer.Contains(target)) continue;
                     Strike(attacker, target, mult, false);
                     if (twice && target.Alive && attacker.Alive) Strike(attacker, target, mult * 0.5f, false);
                     if (target.Alive) TryWeaponPincerBuff(attacker, target);
@@ -255,7 +256,7 @@ namespace GridGame.Core.Battle
             var def = PincerDetector.SupportOf(sup);
             var attacker = p.AttackerOf(sup);
             var targets = new List<Unit>();
-            if (def.Effect == SupportEffect.Strike) { foreach (var o in p.Opponents) if (o.Alive) targets.Add(o); }
+            if (def.Effect == SupportEffect.Strike) { foreach (var o in p.Opponents) if (o.Alive && !wardedThisPincer.Contains(o)) targets.Add(o); }
             else
                 switch (def.Target)
                 {

@@ -342,6 +342,7 @@
         "Enemies": [
           {
             "Class": "captain",
+            "RuleBreak": "TwinTurn",
             "Level": 1,
             "X": -1,
             "Y": -1
@@ -704,6 +705,7 @@
           },
           {
             "Class": "mechaarmor01",
+            "RuleBreak": "AxisWard",
             "Level": 1,
             "X": -1,
             "Y": -1
@@ -1016,6 +1018,7 @@
         "Enemies": [
           {
             "Class": "swampmistress00",
+            "RuleBreak": "MireSwap",
             "Level": 5,
             "X": -1,
             "Y": -1
@@ -1388,6 +1391,7 @@
           },
           {
             "Class": "cyclops02",
+            "RuleBreak": "GravityStamp",
             "Level": 1,
             "X": -1,
             "Y": -1
@@ -1732,6 +1736,7 @@
         "Enemies": [
           {
             "Class": "vampire",
+            "RuleBreak": "Undying",
             "Level": 10,
             "X": -1,
             "Y": -1

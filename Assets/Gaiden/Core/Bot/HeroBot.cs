@@ -174,6 +174,9 @@ namespace GridGame.Core.Bot
                 {
                     if (BattleEngine.IsArmored(s, o)) { score -= 1f; continue; }
                     if (o.IsCorpse) { score += 1f; continue; } // clearing a body is worth little on its own
+                    // An AxisWard (§14.9) turns a row pincer aside: it only cracks the ward, so a column pincer is worth far more.
+                    if (RuleBreakRules.WardsPincer(o, pv.Positions.TryGetValue(p.A.Id, out var wa) ? wa : p.A.Pos, pv.Positions.TryGetValue(p.B.Id, out var wb) ? wb : p.B.Pos))
+                    { score += 3f; continue; }
                     score += 10f;
                     if (o.HasPlate)
                     {

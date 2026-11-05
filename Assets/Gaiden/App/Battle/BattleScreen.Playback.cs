@@ -188,6 +188,7 @@ namespace GridGame.App
                 case ArmorBrokenEvent ab: App.Audio.Sfx("shatter", 0.7f); return FloatText(ab.UnitId, "Armor broken!", new Color(1f, 0.6f, 0.4f), 0.4f, 64);
                 case WeaponSwappedEvent sw: App.Audio.Sfx("dash"); SyncBar(); return FloatText(sw.UnitId, "⭾ " + (App.Content.TryItem(sw.ToWeapon)?.Name ?? "Swap"), new Color(0.85f, 0.9f, 1f), 0.3f, 54);
                 case BossPhaseEvent bp: return BossAnim(bp);
+                case RuleBrokenEvent rb: return RuleBreakAnim(rb);
                 case WaveStartedEvent wv: TutorialWaveStarted(); return WaveAnim(wv);
                 case ReinforcementsArrivedEvent ra: return ReinforcementsAnim(ra);
                 case EggLaidEvent el: return EggLaidAnim(el);

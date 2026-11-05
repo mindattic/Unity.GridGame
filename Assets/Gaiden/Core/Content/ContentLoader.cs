@@ -165,6 +165,7 @@ namespace GridGame.Core.Content
                     foreach (var g in w.Guests) NeedClass(g.Class, $"stage {s.Id} guest");
                     foreach (var r in w.Recruitables) RecruitableDef.Validate(db, r, $"stage {s.Id} recruitable", p);
                     NeedClass(w.SurpriseSpeaker, $"stage {s.Id} surprise speaker");
+                    RuleBreaks.Validate(db, s, w, p);
                 }
             // ContentDb.ThemeOf resolves a stage id to the *first* theme that lists it — a stage accidentally
             // listed in two themes would silently belong to the wrong one there (expedition tracking,

@@ -91,7 +91,7 @@ namespace GridGame.Core.Battle
                 {
                     next.Ip = 0;
                     var owner = S.UnitById(next.OwnerId);
-                    if (owner != null && owner.Alive) { RunEnemyTurn(owner); enemyTurnResolved = true; CheckTilesStrict("turn of " + owner); }
+                    if (owner != null && owner.Alive) { RunEnemyTurn(owner); RuleBreakAfterTurn(owner); enemyTurnResolved = true; CheckTilesStrict("turn of " + owner); }
                 }
             }
         }

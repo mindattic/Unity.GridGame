@@ -538,6 +538,8 @@ namespace GridGame.Core.Content
         public int Y = -1;
         /// <summary>Ticks after this wave starts before this entry spawns (§14.8). 0 = immediate, today's only behavior.</summary>
         public int DelayTicks;
+        /// <summary>A finale boss's rule-break (§14.9, GG-T234); None = plays by the rules.</summary>
+        public RuleBreak RuleBreak;
     }
 
     public sealed class WaveDef

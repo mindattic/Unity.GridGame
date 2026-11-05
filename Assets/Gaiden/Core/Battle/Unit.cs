@@ -99,6 +99,10 @@ namespace GridGame.Core.Battle
         public int SnakeIndex;
 
         public int BossPhase = -1;
+        /// <summary>A finale boss's rule-break (§14.9, GG-T234).</summary>
+        public RuleBreak RuleBreak;
+        /// <summary>Rule-break bookkeeping: AxisWard cracks taken; Undying 1 once it has risen.</summary>
+        public int RuleBreakCount;
         /// <summary>Damage this hero has dealt this battle (enemy threat targeting, US-080).</summary>
         public int DamageDealt;
 
