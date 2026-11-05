@@ -967,7 +967,7 @@ Invariant: while the event player is busy (`BattleScreen.Busy`) no command can b
    6. **Knockback** (`Knockback`, [§6.6](#66-knockback-added-2026-10-10-owner-direction)), then **Pull** (`Pull`) and **Swap** (`SwapsPlaces`) ([§6.7](#67-movement-timeline-and-drain-gg-t183)).
    7. **Heal** (`BaseHeal`). **Amended 2026-10-22 (GG-T183):** a heal only ever lands on the caster's side. On a foe it is a **drain** when the ability's filter is `EnemyOnly` (the caster is mended instead), and nothing when the filter is `Any`; and an ability that both harms and heals never harms a friend (before this, Soul Feast, Collect the Debt, Bloodletting and Blood Harvest healed the foe they hit, and Harm into Hope scorched allies and mended enemies).
    8. **Hasten** (`HastenU`), then **Delay** (`DelayU`).
-   9. **Buff** (`ApplyBuff`, chance `ApplyBuffChance`): Sleep on a Warm target lasts ×1.5 (ceil).
+   9. **Buff** (`ApplyBuff`, chance `ApplyBuffChance`): Sleep on a Warm target lasts ×1.5 (ceil). **Amended 2026-11-05 (GG-T266):** a *beneficial* buff (`BuffKind.Buff`) never lands on a foe: on a foe-targeting ability it is the **caster's own**, granted once per cast however many foes are caught (War Stomp and Battle Cry make the caster taunt, Opening Jab empowers the caster's next strike; before this, all three buffed the enemies they hit). *(Test: `A_beneficial_buff_on_a_foe_targeting_ability_lands_on_the_caster_not_the_foe`.)*
 5. **Step back** (`StepBack`): the caster backs away from the nearest foe.
 6. Battle-end check.
 

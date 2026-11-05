@@ -270,6 +270,10 @@ namespace GridGame.Core.Bot
             var targets = TargetResolver.Collect(s, a, caster, anchor);
             float score = 0f;
             bool close = FightIsClose(s);
+            // GG-T266: a beneficial buff on a foe-targeting ability lands on the caster, once per cast.
+            var selfGift = a.Filter == TargetFilter.EnemyOnly ? s.Content.TryBuff(a.ApplyBuff) : null;
+            if (selfGift != null && selfGift.Kind == BuffKind.Buff && targets.Count > 0 && !caster.HasBuff(selfGift.Id))
+                score += close ? BuffValue(selfGift, caster, s) : 0.3f;
             // GG-T246: effects that don't depend on who is caught in the shape.
             if (a.Revives)
             {

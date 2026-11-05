@@ -205,6 +205,9 @@ namespace GridGame.Core.Battle
             Emit(resolved);
             if (targets.Count == 0) { Announce("Missed!", caster.Id); return; }
 
+            // A beneficial buff on a foe-targeting ability is the caster's own (War Stomp/Battle Cry taunt, Opening Jab
+            // empowers the next strike), granted once per cast however many foes are caught (GG-T266).
+            bool selfGift = false;
             foreach (var t in targets)
             {
                 if (S.IsOver) return;
@@ -274,7 +277,11 @@ namespace GridGame.Core.Battle
                 if (a.DelayU > 0f && t.Alive) Delay(t, a.DelayU);
 
                 var buff = C.TryBuff(a.ApplyBuff);
-                if (buff != null && t.Alive && S.Rng.Chance(a.ApplyBuffChance <= 0f ? 1f : a.ApplyBuffChance))
+                if (buff != null && buff.Kind == BuffKind.Buff && !friend)
+                {
+                    if (!selfGift && caster.Alive) { selfGift = true; ApplyBuff(caster, buff, buff.Duration); }
+                }
+                else if (buff != null && t.Alive && S.Rng.Chance(a.ApplyBuffChance <= 0f ? 1f : a.ApplyBuffChance))
                 {
                     int dur = buff.Duration;
                     if (buff.Id == "sleep" && t.HasBuff("warm")) dur = (int)Math.Ceiling(dur * BattleConfig.SleepWhenWarmMultiplier);

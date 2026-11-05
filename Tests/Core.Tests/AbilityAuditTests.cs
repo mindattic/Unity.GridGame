@@ -128,6 +128,17 @@ namespace GridGame.Tests
         }
 
         [Test]
+        public void A_beneficial_buff_on_a_foe_targeting_ability_lands_on_the_caster_not_the_foe()
+        {
+            // GG-T266: Opening Jab empowered the foe it hit; War Stomp and Battle Cry made enemies taunt.
+            var (s, k) = WithSkill(new AbilityDef { Id = "jab", BaseDamage = 1, ApplyBuff = "protection", Shape = TargetShape.SingleActor, Mode = TargetMode.PickActor, Filter = TargetFilter.EnemyOnly }, Stage(("tank", 2, 0)));
+            var foe = Foe(s);
+            var gifts = Use(s, k, foe.Pos).OfType<BuffAppliedEvent>().Where(b => b.BuffId == "protection").ToList();
+            Assert.That(gifts.Any(b => b.UnitId == foe.Id), Is.False, "the foe is never buffed by our jab");
+            Assert.That(gifts.Count(b => b.UnitId == k.Id), Is.EqualTo(1), "the caster is, once");
+        }
+
+        [Test]
         public void A_heal_aimed_at_a_foe_drains_into_the_caster()
         {
             var (s, k) = WithSkill(new AbilityDef { Id = "feast", BaseDamage = 5, BaseHeal = 10, Shape = TargetShape.SingleActor, Mode = TargetMode.PickActor, Filter = TargetFilter.EnemyOnly }, Stage(("tank", 2, 0)));
