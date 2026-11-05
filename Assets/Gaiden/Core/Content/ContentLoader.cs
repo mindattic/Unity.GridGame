@@ -284,9 +284,9 @@ namespace GridGame.Core.Content
             foreach (var set in db.ArmorSetOrder) ValidateArmorSet(db, set, p);
             EncounterCatalog.Validate(db, p);
             MercenaryContent.Validate(db, p);
+            QuestCatalog.Validate(db, p);
             return p;
         }
-            QuestCatalog.Validate(db, p);
 
         /// <summary>Armor sets (GG-T182): five real armor pieces, one per armor slot, all the set's weight, no piece in
         /// two sets, and bonuses at distinct piece counts between 2 and 5.</summary>
