@@ -52,9 +52,12 @@ namespace GridGame.Tests
                     for (int start = 0; start < heroes.Count; start += 5, b++)
                         plan.Add((Enumerable.Range(0, 5).Select(i => heroes[(start + i + round * 2) % heroes.Count]).Distinct().ToList(), stages[b % stages.Count]));
             }
+            string onlyStage = Environment.GetEnvironmentVariable("GAIDEN_ABILITY_STAGE");
             int battle = 0;
             foreach (var (party, stage) in plan)
                 {
+                    // GAIDEN_ABILITY_STAGE=<id> fights only that stage, with the same parties and seeds as the full run (GG-T274).
+                    if (onlyStage != null && stage.Id != onlyStage) { battle++; continue; }
                     int seed = 1000 + battle;
                     var save = Progression.NewGame(c, "Usage", party);
                     int level = Progression.StageRecommendedLevel(c, save, stage);

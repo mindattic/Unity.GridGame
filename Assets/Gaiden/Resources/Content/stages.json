@@ -875,7 +875,13 @@
       {
         "Enemies": [
           {
-            "Class": "hag00",
+            "Class": "frog00",
+            "Level": 1,
+            "X": -1,
+            "Y": -1
+          },
+          {
+            "Class": "marshshambler00",
             "Level": 1,
             "X": -1,
             "Y": -1

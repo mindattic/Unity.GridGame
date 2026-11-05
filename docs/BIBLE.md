@@ -1164,6 +1164,7 @@ POLISH G4/G5 ("every ability earns its slot", "no dead or dominant abilities") r
 - **Result (same seeds, before → after):** G 69.3 → 74.9.
   - G1 50.0 → 66.7, G4 59.7 → 73.4, G5 74.7 → 78.0, G7 61.5 → 76.9, G3 100 → 100.
   - G2 85.7 → 78.6: swamp-02's lone-hag wave deals about 1000 damage to a casual party and tips that stage, a stage-tuning matter.
+    **Amended 2026-11-05 (GG-T274):** Mireholt Fens II's wave 2 is now a frog and a marsh shambler instead of the lone kiting hag (hags stay in Mireholt Fens III's finale), and its Naga closer (used on no other stage) drops to Strength 10 / Vitality 10 (was 15 / 12). Casual wins 3/12 → 9/12.
   - G6 53.5 → 50.4.
   - Remaining G5 lows are pure utility buffs (taunts, wards, empowers), which do little against 45%-HP foes. Trapline is high (78) because its row Slow takes real turns away.
 

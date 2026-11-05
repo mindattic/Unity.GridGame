@@ -725,3 +725,11 @@ Owner: "gaining mana is too generous since I see the whole bar filled almost in 
   - A buff with `Tempo` on a hero subtracts: `slowed` is −1, ready for the Chronomancer (GG-T275). No enemy slows heroes yet.
   - One cast is one effect.
   - Shown as "Tempo ±N" on the timeline, with a track tint and a cue.
+
+## 2026-11-05 — Mireholt Fens II back in band (GG-T274)
+
+- **Was:** after GG-T263 the casual bot won swamp-02 3 of 12. The lone kiting hag (wave 2) bled the party, and the snake Naga closer (wave 5) finished it.
+- **Now:**
+  - **Wave 2:** frog + marsh shambler instead of the lone hag. Hags still appear in Mireholt Fens III's finale.
+  - **Naga** (only on swamp-02): Strength 15 → 10, Vitality 12 → 10.
+  - **Result:** casual wins 3/12 → 9/12 on the same seeds and parties. Neighbouring stages are untouched.
