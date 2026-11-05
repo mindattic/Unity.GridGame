@@ -298,6 +298,15 @@ namespace GridGame.App.Automation
                     app.Save.AddItem(itemId, (int)F(q["count"], 1));
                     return new { ok = true, count = app.Save.Count(itemId) };
                 }
+                case "devrested":
+                {
+                    // Test-only (GG-T232): sets the party's Rested points; `limit=1` turns the pool on for this run.
+                    if (app.Save == null) return new { error = "no save" };
+                    if (q["limit"] != null) RestedPool.Unlimited = F(q["limit"]) == 0;
+                    if (q["points"] != null) app.Save.Rested.Points = Math.Max(0, Math.Min(RestedPool.Max, (int)F(q["points"])));
+                    app.Save.Rested.RegenUtc = DateTime.UtcNow;
+                    return new { ok = true, points = app.Save.Rested.Points, unlimited = RestedPool.Unlimited };
+                }
                 case "goto":
                     if (!StartScreens.TryGet(q["screen"], out var screen)) return new { error = "unknown screen" };
                     app.Router.Push(screen);

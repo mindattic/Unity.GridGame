@@ -136,7 +136,7 @@ namespace GridGame.Tests
             var recruit = Summon.Pool(c, s).First(d => s.Hero(d.Id) == null);
             int price = Summon.Price(c, s);
             Assert.That(Summon.Recruit(c, s, recruit.Id).Ok, Is.True);
-            Assert.That(Summon.Price(c, s), Is.EqualTo(price + 250));
+            Assert.That(Summon.Price(c, s), Is.EqualTo(price)); // a paywall hook now (§25.18, GG-T232): flat, not rising
             // GG-T49: a recruit arrives with the skill points its arrival level would already have earned.
             var recruited = s.Hero(recruit.Id);
             Assert.That(recruited.SkillPoints, Is.EqualTo(Formulas.SkillPointsForLevelUp(1, Progression.Level(recruited))));

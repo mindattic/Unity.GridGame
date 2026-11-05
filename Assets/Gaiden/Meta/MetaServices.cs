@@ -2143,19 +2143,42 @@ namespace GridGame.Meta
 
     public static class Summon
     {
-        public static int Price(ContentDb c, SaveData s) => c.Summon.BasePrice + c.Summon.PriceStep * s.Recruits;
+        /// <summary>A paywall hook (§25.18, GG-T232): <see cref="Paywall.Cost"/>, no longer rising per recruit.</summary>
+        public static int Price(ContentDb c, SaveData s) => Paywall.Cost(PaywallKind.Summon, s);
 
         public static List<ClassDef> Pool(ContentDb c, SaveData s) =>
             c.Summon.Pool.Where(id => !Permadeath.IsLost(s, id)).Select(c.TryClass).Where(d => d != null).ToList();
 
-        public static Result Recruit(ContentDb c, SaveData s, string classId)
+        private static Result CanRecruit(ContentDb c, SaveData s, string classId)
         {
             if (!c.Summon.Pool.Contains(classId)) return Result.Fail("Not summonable");
             if (Permadeath.IsLost(s, classId)) return Result.Fail("Fell in battle for good");
             if (s.Hero(classId) != null) return Result.Fail("Already in your roster");
-            int price = Price(c, s);
-            if (s.Gold < price) return Result.Fail("Not enough gold");
-            s.Gold -= price;
+            if (Paywall.Pending(s, PaywallKind.Summon) != null) return Result.Fail("A summoning is already under way");
+            if (s.Gold < Price(c, s)) return Result.Fail("Not enough gold");
+            return Result.Success();
+        }
+
+        /// <summary>The instant path (bots, tests): pays and the recruit arrives at once.</summary>
+        public static Result Recruit(ContentDb c, SaveData s, string classId)
+        {
+            var ok = CanRecruit(c, s, classId);
+            if (!ok.Ok) return ok;
+            s.Gold -= Price(c, s);
+            return Arrive(c, s, classId);
+        }
+
+        /// <summary>The player's path: pays and starts the summoning job; <see cref="Paywall.Finish"/> brings the hero.</summary>
+        public static Result BeginRecruit(ContentDb c, SaveData s, string classId, DateTime now, out PaywallJob job)
+        {
+            job = null;
+            var ok = CanRecruit(c, s, classId);
+            return ok.Ok ? Paywall.Start(s, PaywallKind.Summon, classId, now, out job) : ok;
+        }
+
+        internal static Result Arrive(ContentDb c, SaveData s, string classId)
+        {
+            if (c.TryClass(classId) == null || s.Hero(classId) != null) return Result.Fail("The summoning fizzles");
             s.Recruits++;
             Join(c, s, classId);
             return Result.Success($"{c.Class(classId).Name} joins you!");

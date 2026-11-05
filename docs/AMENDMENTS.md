@@ -601,3 +601,11 @@ and make sure powerups and spawns get moved the same way actors get moved."
   tile shoves it onto the tile it just left (lane-aware for 2×2s, behind a snake's tail), else the nearest open
   item-free tile, else it fades — `PickupMovedEvent`, animated as a slide with a cue. A unit on a pickup is a
   `FindTileConflict` conflict. Enemy AI never targeted pickups, so it is unchanged.
+
+## 2026-11-05 — Rested and the paywall hooks (owner direction, GG-T232)
+
+- **Was:** stage launches were free; the Summon Circle cost 250 + 250 × recruits so far and the recruit arrived at once.
+- **Now:** a party-wide Rested pool (max 10, back 1 point per 10 minutes) pays for every launch; refilling it, summoning and (GG-T235) the
+  Diamond lucky craft are **paywall hooks**, priced and timed by `Paywall.Cost`/`Duration` — 1 g and 1 s today — and played out as a timed
+  job. *Why:* the owner wants the monetization slots wired but inert ("until I call it monetize, it's not"); every other price stays as it
+  was. Bots, Test Mode, `-demo` and harness runs are exempt from Rested. See BIBLE §25.18.

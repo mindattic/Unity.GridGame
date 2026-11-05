@@ -676,8 +676,6 @@ namespace GridGame.Core.Content
     public sealed class SummonDef
     {
         public List<string> Pool = new List<string>();
-        public int BasePrice = 250;
-        public int PriceStep = 250;
     }
 
     public sealed class EnchantDef

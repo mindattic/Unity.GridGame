@@ -438,6 +438,9 @@ namespace GridGame.App
         protected override void Build(VisualElement root)
         {
             var c = App.Content; var s = App.Save;
+            // Paywall jobs left running when the app closed land now (§25.18), unless one is playing out on screen.
+            if (App.Overlay.Q(TimedJobView.VeilName) == null)
+                foreach (var done in Paywall.FinishReady(c, s, DateTime.UtcNow)) { App.Toast(done.Message ?? "Done"); App.Persist(); }
             var bg = Ui.El("fill", root);
             bg.style.backgroundImage = new StyleBackground(Art.Background(ThemeFor(c, s), 2));
             bg.style.unityBackgroundImageTintColor = new Color(0.55f, 0.6f, 0.75f);
@@ -557,6 +560,7 @@ namespace GridGame.App
                 Ui.Text($"Battle {s.Expedition.Next + 1}/{th?.Stages.Count ?? 0}", "small", ex);
                 Ui.Text($"{s.Expedition.CarriedOrbs} orbs carried", "tiny dim", ex);
             }
+            RestedGate.Panel(side, Refresh);
             var goldW = Ui.Window(null, side);
             Ui.Text("Gold", "small dim", goldW);
             Ui.Text(Ui.Gold(s.Gold), "h2 gold num", goldW);
@@ -639,7 +643,7 @@ namespace GridGame.App
                     // Same level BattleFactory.Build actually fights it at: the postgame bonus stages carry a
                     // LevelOverride, so the index-based curve alone advertised the wrong level for them (GG-T70).
                     int recommended = st.LevelOverride ?? Progression.RecommendedLevel(index);
-                    var row = Ui.MenuRow(label, can ? $"Lv {recommended} · {st.Waves.Count} waves" : (why ?? "Locked"), () => Launch(st, index), list.contentContainer, null, can);
+                    var row = Ui.MenuRow(label, can ? $"Lv {recommended} · {st.Waves.Count} waves · {RestedPool.LaunchCost} Rested" : (why ?? "Locked"), () => Launch(st, index), list.contentContainer, null, can);
                     row.style.marginLeft = 40;
                     if (CaravanUpgrades.Level(S, "scouts") > 0)
                     {
@@ -680,6 +684,8 @@ namespace GridGame.App
             if (app.Save != null)
             {
                 if (!Expeditions.CanLaunch(app.Content, app.Save, stageId, out var why)) { app.Toast(why); return; }
+                if (!RestedGate.Check(() => Launch(stageId, replaceCurrent))) return;
+                RestedGate.Spend();
                 Expeditions.Begin(app.Content, app.Save, stageId);
                 app.Persist();
             }
@@ -710,6 +716,8 @@ namespace GridGame.App
         {
             var app = GameApp.I;
             if (!Crucible.CanLaunch(app.Content, app.Save, out var why)) { app.Toast(why); app.Audio.Sfx("ui.error"); return; }
+            if (!RestedGate.Check(() => Launch(replaceCurrent))) return;
+            RestedGate.Spend();
             var stage = Crucible.Prepare(app.Content, app.Save);
             app.Audio.Sfx("crucible_enter");
             GameScreen next = new BattleScreen(stage.Id);

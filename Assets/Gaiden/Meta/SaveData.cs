@@ -81,6 +81,10 @@ namespace GridGame.Meta
         public BountySave Bounty = new BountySave();
         /// <summary>Crucible record (§22.10): best waves survived and runs fought on this save.</summary>
         public CrucibleSave Crucible = new CrucibleSave();
+        /// <summary>Party-wide energy spent per stage launch (§25.18, <see cref="RestedPool"/>).</summary>
+        public RestedSave Rested = new RestedSave();
+        /// <summary>Paid, timed paywall jobs still running (§25.18, <see cref="Paywall"/>).</summary>
+        public List<PaywallJob> Jobs = new List<PaywallJob>();
         public Dictionary<string, BestiaryEntry> Bestiary = new Dictionary<string, BestiaryEntry>();
         // Settings no longer live in a save slot (GG-T99): they belong to the player profile's settings.json
         // (PlayerProfiles.cs). An older slot's "Settings" block is ignored on load; LegacySaveMigration reads it once.
@@ -271,6 +275,8 @@ namespace GridGame.Meta
             s.Flags ??= new HashSet<string>();
             s.SeenDialogues ??= new HashSet<string>();
             s.SeenCampTips ??= new HashSet<string>();
+            s.Rested ??= new RestedSave();
+            s.Jobs ??= new List<PaywallJob>();
             foreach (var h in s.Roster) while (h.Bar.Count < 5) h.Bar.Add(null);
             if (s.Version < 3)
             {

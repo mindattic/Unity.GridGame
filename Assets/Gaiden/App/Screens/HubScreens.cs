@@ -1215,8 +1215,10 @@ namespace GridGame.App
         protected override void BuildBody(VisualElement body)
         {
             int price = Summon.Price(C, S);
+            var tag = Paywall.Tag(PaywallKind.Summon, S);
+            bool busy = Paywall.Pending(S, PaywallKind.Summon) != null;
             var head = Ui.Window(null, body);
-            Ui.Text($"Recruit a hero for {Ui.Gold(price)}. The price rises with each recruit.", "small", head).style.whiteSpace = WhiteSpace.Normal;
+            Ui.Text($"Summon a hero to your side ({tag}). The circle takes a moment to answer.", "small", head).style.whiteSpace = WhiteSpace.Normal;
             var w = Ui.Window(null, body);
             w.style.flexGrow = 1;
             var list = Ui.List(w).contentContainer;
@@ -1229,8 +1231,9 @@ namespace GridGame.App
                 var col = Ui.El("col grow", card);
                 Ui.Text(d.Name, "h2", col);
                 Ui.Text(Ui.Keywords(d.Card ?? d.Description ?? ""), "tiny dim", col).style.whiteSpace = WhiteSpace.Normal;
-                var b = Ui.Button(owned ? "Joined" : "Recruit", () => Confirm.Show($"Recruit {def.Name} for {Ui.Gold(price)}?", "Recruit", () => Done(Summon.Recruit(C, S, def.Id))), "btn--small", card);
-                Ui.SetEnabled(b, !owned && S.Gold >= price);
+                var b = Ui.Button(owned ? "Joined" : "Recruit", () => Confirm.Show($"Summon {def.Name} for {Ui.Gold(price)}?", "Summon", () =>
+                    TimedJobView.Begin(now => (Summon.BeginRecruit(C, S, def.Id, now, out var job), job), $"Summoning {def.Name}…", _ => Refresh())), "btn--small", card);
+                Ui.SetEnabled(b, !owned && !busy && S.Gold >= price);
             }
         }
     }
@@ -1276,6 +1279,9 @@ namespace GridGame.App
             var enter = Ui.Button("Enter the Crucible", () => CrucibleLauncher.Launch(false), "btn--primary", row);
             enter.name = "crucible-enter";
             Ui.SetEnabled(enter, can);
+            var cost = Ui.Text($"Costs {RestedPool.LaunchCost} Rested", "small dim", body);
+            cost.style.unityTextAlign = TextAnchor.MiddleCenter;
+            cost.style.marginTop = 8;
         }
     }
 
