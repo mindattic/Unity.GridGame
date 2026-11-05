@@ -61,16 +61,19 @@ namespace GridGame.App.Automation
                 }
 
                 var why = new List<string>();
+                // GG-T271: a marquee label is meant to be wider than its clipping box; the box scrolls it into view.
+                bool marquee = t.parent != null && t.parent.ClassListContains(Marquee.BoxClass);
                 bool scrolled = InScroll(t); // scroll content legitimately runs past the stage
-                if (!scrolled && (wb.xMin < sb.xMin - 2 || wb.xMax > sb.xMax + 2 || wb.yMin < sb.yMin - 2 || wb.yMax > sb.yMax + 2))
+                if (!scrolled && !marquee && (wb.xMin < sb.xMin - 2 || wb.xMax > sb.xMax + 2 || wb.yMin < sb.yMin - 2 || wb.yMax > sb.yMax + 2))
                     why.Add($"off-stage {r.xMin:0},{r.yMin:0}..{r.xMax:0},{r.yMax:0}");
                 else if (!scrolled && (wb.yMin < safe.yMin - 2 || wb.yMax > safe.yMax + 2))
                     why.Add("inside the unsafe area");
-                if (t.contentRect.width > 0)
+                if (t.contentRect.width > 0 && !marquee)
                 {
                     if (wrap)
                     {
-                        var need = t.MeasureTextSize(t.text, t.contentRect.width, VisualElement.MeasureMode.Exactly, 0, VisualElement.MeasureMode.Undefined);
+                        // +1 px: a label sized to its own text re-measured at exactly that width wraps by a rounding hair (a false "cut off").
+                        var need = t.MeasureTextSize(t.text, t.contentRect.width + 1f, VisualElement.MeasureMode.Exactly, 0, VisualElement.MeasureMode.Undefined);
                         if (need.y > t.contentRect.height + 4) why.Add($"wrapped text cut off ({need.y:0}>{t.contentRect.height:0})");
                     }
                     else
@@ -79,7 +82,7 @@ namespace GridGame.App.Automation
                         if (need.x > t.contentRect.width + 4) why.Add($"text overflows ({need.x:0}>{t.contentRect.width:0})");
                     }
                 }
-                if (ClippedByAncestor(t, wb)) why.Add("clipped by a parent");
+                if (!marquee && ClippedByAncestor(t, wb)) why.Add("clipped by a parent");
                 Tally("POL-C5", why.Count == 0, subj, string.Join("; ", why));
 
                 var c = t.resolvedStyle.color;

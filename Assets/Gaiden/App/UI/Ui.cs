@@ -57,6 +57,9 @@ namespace GridGame.App
             return l;
         }
 
+        /// <summary>GG-T271: a single-line label that would overflow scrolls to show the rest instead (see <see cref="GridGame.App.Marquee"/>).</summary>
+        public static Label Marquee(Label label, bool grow = true) => GridGame.App.Marquee.Apply(label, grow);
+
         public static VisualElement Window(string title = null, VisualElement parent = null, string classes = null)
         {
             var w = El("window " + (classes ?? ""), parent);
@@ -182,6 +185,11 @@ namespace GridGame.App
             l.name = "label";
             var v = Text(value ?? "", "menu-value", row);
             v.name = "value";
+            // A value (price, count, "Lv 1 · 5 waves") stays on one line: never squeezed below its text, never wider
+            // than 55% of the row; longer ones scroll (GG-T271). The label wraps instead.
+            Marquee(v, false);
+            v.parent.style.flexShrink = 0f;
+            v.parent.style.maxWidth = Length.Percent(55);
             row.EnableInClassList("menu-row--disabled", !enabled);
             Pressable(row);
             row.RegisterCallback<PointerEnterEvent>(_ => Select(row));
