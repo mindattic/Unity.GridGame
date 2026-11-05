@@ -187,6 +187,7 @@ namespace GridGame.Core.Bot
                     var e = s.TurnEntryOf(o.Id);
                     if (e != null && e.InZone) score += 4f;
                     if (o.HpFraction < 0.4f) score += 3f;
+                    if (ChargesTempoDrain(s, o)) score += 6f; // GG-T275: staggering a Temporal Drag keeps the party's tempo
                 }
                 score += 2f * (p.SupportersA.Count + p.SupportersB.Count);
                 // Power Amplifier (owner direction 2026-10-11): a pincer attacker (never a supporter)
@@ -256,6 +257,18 @@ namespace GridGame.Core.Bot
             return side == o.Facing;
         }
 
+        /// <summary>True while <paramref name="o"/> charges a spell that would lower the party's tempo (a Chronomancer's Drag).</summary>
+        internal static bool ChargesTempoDrain(BattleState s, Unit o)
+        {
+            foreach (var e in s.Timeline)
+            {
+                if (e.Kind != TimelineKind.Cast || !e.IsCharge || e.OwnerId != o.Id) continue;
+                var buff = s.Content.TryBuff(s.Content.TryAbility(e.AbilityId)?.ApplyBuff);
+                if (buff != null && buff.Tempo < 0) return true;
+            }
+            return false;
+        }
+
         private float ScoreAbility(BattleState s, Unit caster, AbilityDef a, Coord anchor)
         {
             if (a.IsTeleport)
@@ -299,6 +312,7 @@ namespace GridGame.Core.Bot
                     if (a.StealsMana) score += s.Bank.IsFull ? 0f : 3f;
                     if (a.HastenU > 0) score -= 5f;
                     if (a.DelayU > 0f) score += 3f; // GG-T183: shoving a foe back on the timeline buys the party a turn
+                    if ((a.BaseDamage > 0 || a.DelayU > 0f) && ChargesTempoDrain(s, t)) score += 5f; // GG-T275: stagger a Temporal Drag
                     if (a.BaseHeal > 0 && a.Filter == TargetFilter.EnemyOnly) score += Math.Min(caster.MaxHp - caster.Hp, a.BaseHeal) * 0.3f; // drain
                     if (a.Knockback > 0)
                     {
@@ -316,6 +330,10 @@ namespace GridGame.Core.Bot
                     if (a.BaseHeal > 0) score += Math.Min(t.MaxHp - t.Hp, a.BaseHeal) * (t.HpFraction < 0.5f ? 0.9f : 0.2f);
                     if (a.RemovesDebuffs) foreach (var b in t.Buffs) if (b.Def.Kind == BuffKind.Debuff) score += 4f;
                     if (a.RemovesBuff != null && t.HasBuff(a.RemovesBuff)) score += 5f;
+                    if (s.NetTempo < 0)
+                        // GG-T275: lifting a Slow (a negative-tempo debuff) gives the party its tempo back.
+                        foreach (var b in t.Buffs)
+                            if (b.Def.Tempo < 0 && (a.RemovesDebuffs || a.RemovesBuff == b.Def.Id)) { score += 4f * -b.Def.Tempo; break; }
                     if (a.HastenU > 0f && t.Alive && t.IsHero && s.LivingList(Team.Enemy).Count > 0
                         && BattleEngine.EnemyTempoMultiplier(s) > BattleConfig.TempoMinMultiplier + 0.01f)
                     {

@@ -21609,5 +21609,36 @@
     "WeaponProficiencies": [
       "Martial"
     ]
+  },
+  {
+    "Id": "chronomancer",
+    "Name": "Chronomancer",
+    "Team": "Enemy",
+    "Tags": [ "Humanoid", "Caster" ],
+    "Description": "A caster who fights the party's tempo instead of its health.",
+    "Lore": "It does not hurry. It makes everyone else late.",
+    "Card": "Charges [Temporal Drag]: the party loses [tempo] and every foe acts sooner. [Interrupt] the charge, [cleanse] Slowed or [out-haste] it. Rewinds once when badly hurt.",
+    "Portrait": "Hag03",
+    "Thumbnail": { "Zoom": 2.3787, "X": 0.4977, "Y": 0.2102 },
+    "Footprint": { "W": 1, "H": 1 },
+    "BaseStats": { "Strength": 10, "Vitality": 8, "Agility": 12, "Speed": 14, "Stamina": 8, "Intelligence": 15, "Wisdom": 13, "Luck": 12 },
+    "Growth": { "Strength": 0.6, "Vitality": 0.7, "Agility": 0.7, "Speed": 0.7, "Stamina": 0.7, "Intelligence": 0.8, "Wisdom": 0.7, "Luck": 0.7 },
+    "Milestones": [],
+    "Resistances": {},
+    "Abilities": [ "charge_temporal_drag", "chrono_rewind" ],
+    "DefaultLoadout": [],
+    "DropTable": "hag",
+    "MoveRange": 1,
+    "Targeting": "Weakest",
+    "AttackRange": 3,
+    "XpReward": 14,
+    "BossPhases": [
+      { "HpThreshold": 0.4, "PrefersCharge": false, "OnEnterAbility": "chrono_rewind", "Announce": "The Chronomancer rewinds its wounds!" }
+    ],
+    "ChargeAbility": "charge_temporal_drag",
+    "ChargeShape": "Single",
+    "Trap": null,
+    "SnakeSegments": 0,
+    "Brain": "Kiter"
   }
 ]

@@ -679,7 +679,8 @@ Owner 2026-11-05: hero haste "slows enemy motion down the timeline, thus you are
 - **What it does.** Every turn icon not on the hero team advances at its normal rate × `TempoStep^(−net)` (`TempoStep` 1.25), clamped to **×0.5–×2** (`TempoMin/MaxMultiplier`), so neither side ever freezes or runs away. Net +1 is ×0.8, +2 ×0.64, −1 ×1.25. `BattleEngine.TimelineScale` applies it everywhere an icon's rate is read: the clock, `TicksUntilTurn`, the countdown badges (§2.10), the held-turn window (§2.0) and the icon glide.
 - **Sources.**
   - A haste (`HastenU`) landing on a hero (an ability, Fade Step's landing, a pickup) adds `max(1, round(HastenU / 0.15))` points for `AbilityDef.TempoTurns` (default `DefaultTempoTurns`, 2). Quicken 0.30 is +2; Relay, Follow-through and Fade Step are +1.
-  - A buff with `BuffDef.Tempo ≠ 0` applied **to a hero** adds that many points for its duration. `slowed` carries −1, so a Slow cast on the party (no enemy does this yet; the Chronomancer, GG-T275, will) cancels haste and then speeds the foes up.
+  - A buff with `BuffDef.Tempo ≠ 0` applied **to a hero** adds that many points for its duration. `slowed` carries −1, so a Slow cast on the party (the Chronomancer's Temporal Drag, §14.10) cancels haste and then speeds the foes up.
+  - **Cleansing gives it back** (*added 2026-11-05, GG-T275*): when a tempo buff is removed from the **last** hero carrying it (a cleanse, a cure), its tempo effect lifts with it (`BattleRunner.DropBuffTempo`). Expiry still follows the tempo effect's own turn count.
   - Haste on an enemy still slides its own icon (§2.7.1) and doesn't touch tempo.
 - **Per cast.** One cast is one effect, however many allies an area haste touches.
 - **Timing.** Effects count down at the party's turn boundary (`ReturnControl`), and skip the boundary of the command that applied them, so "2 turns" means the next two turns.
@@ -1685,6 +1686,22 @@ Owner: "a boss who 'breaks the rules' as far as standard gameplay goes." Each ma
 | Veshker Ruins III | Vampire Lord | a fallen foe stays down (§13.3) | **Undying:** the first time it falls while any other foe still stands (graves, eggs and bodies don't count), it rises at half HP, shedding its debuffs | slay its thralls first; it rises only once |
 
 A frozen or sleeping rule-breaker skips its rule along with its turn. The bot handles them without special-casing beyond pincer scoring: a warded row pincer is worth +3 (it cracks the ward) instead of +10 (`HeroBot.ScoreMove`), so it prefers a column pincer. *(Tests: `RuleBreakTests` — the arrival banner on the flagged spawn only; TwinTurn's second turn and its engaged counter; AxisWard's glancing row pincer, landing column pincer and shatter; MireSwap's swap and its no-ally counter; GravityStamp's warning then pull, out-of-reach heroes untouched; Undying's single rise with a thrall standing, and staying down with none or once risen; the five finales carry exactly these rule-breaks and no other stage does; validation of a guest rule-break and a big-body swap.)*
+
+### 14.10 The Chronomancer (added 2026-11-05, owner direction, GG-T275)
+
+Owner: "Stack haste, while a Chronomancer casts slow on you would be an interesting battle mechanic." A caster that fights the party's **tempo** (§2.11) instead of its health.
+
+- **Class.** `chronomancer`, an enemy caster (Kiter brain, shoots 3 tiles, moves 1). It reuses the `Hag03` portrait (house defector convention; no hero pool uses it). It is not a Crucible family: it has a boss phase, which the Crucible excludes.
+- **Temporal Drag** (`charge_temporal_drag`). A telegraphed charge (2.5 s on the cast lane), `AllEnemies`: 4 Arcane to every hero plus **Slowed** (2 turns). That is one −1 tempo effect for the whole party, not one per hero, so every foe's icon runs ×1.25.
+- **Rewind** (`chrono_rewind`). Once, at 40% HP (its boss phase), it heals 20 and hastens **its own** icon 0.5 u. That never touches party tempo (§2.7.1).
+- **Brain.** It holds Drag while the party's net tempo is already negative (`EnemyPlanner.PlanCast`). It moves or shoots instead, and drags when the party is level or hasted, which is the tug-of-war. As a Kiter it keeps out of pincers.
+- **Counterplay** (named on its kit line and in Drag's InspectCard text):
+  - **interrupt**: hit it while it charges (§13.4 stagger and cancel)
+  - **cleanse** Slowed off every hero (§2.11, the tempo lifts)
+  - **out-haste** it: stacked haste outweighs one Drag
+- **Bot.** `HeroBot` values pincering or damaging a foe that is charging a tempo drain (+6 / +5) and cleansing a negative-tempo debuff while net tempo is below zero (+4 per point).
+- **Placement.** Frostmaw Caverns II, wave 2 (behind two ceramic knights). On the same 12 casual-bot seeds and parties it wins 9 of 12 (75%) with the Chronomancer and 8 of 12 without, inside the POL-G1 55–85% band. The wave was already long (36 actions without it, about 43 with it): the knights' tough hide is the slog, and that's left to the balance loop (GG-T276).
+- *(Tests: `ChronomancerTests`. Content validates and is placed; one Drag on two heroes is −1 tempo with both Slowed; cleansing the last Slowed hero restores tempo; Drag is held while tempo is negative and cast when level or hasted; Rewind is self-only.)*
 
 ## 15. Save
 

@@ -753,10 +753,18 @@ namespace GridGame.Core.Battle
             for (int i = u.Buffs.Count - 1; i >= 0; i--)
             {
                 if (!pred(u.Buffs[i])) continue;
-                var id = u.Buffs[i].Def.Id;
+                var def = u.Buffs[i].Def;
                 u.Buffs.RemoveAt(i);
-                Emit(new BuffRemovedEvent { UnitId = u.Id, BuffId = id, Reason = reason });
+                Emit(new BuffRemovedEvent { UnitId = u.Id, BuffId = def.Id, Reason = reason });
+                if (u.IsHero && def.Tempo != 0) DropBuffTempo(def.Id);
             }
+        }
+
+        /// <summary>Cleansing a tempo buff (Slow) off the last hero carrying it lifts its party tempo too (GG-T275).</summary>
+        private void DropBuffTempo(string buffId)
+        {
+            foreach (var h in S.Living(Team.Hero)) if (h.HasBuff(buffId)) return;
+            if (S.Tempo.RemoveAll(t => t.Source == "buff:" + buffId) > 0) EmitTempo("cleansed");
         }
 
         private void Expire(Unit u, BuffInstance b)

@@ -414,6 +414,8 @@ namespace GridGame.App
             if (d.MoveRange > 1) t.Add($"moves {d.MoveRange} tiles");
             if (d.AttackRange > 1) t.Add($"shoots {d.AttackRange} tiles");
             if (!string.IsNullOrEmpty(d.ChargeAbility)) t.Add("casts " + (c.TryAbility(d.ChargeAbility)?.Name ?? d.ChargeAbility));
+            if (c.TryBuff(c.TryAbility(d.ChargeAbility)?.ApplyBuff) is BuffDef drain && drain.Tempo < 0)
+                t.Add("drains party tempo (interrupt it, cleanse " + drain.Name + " or out-haste it)");
             if (!string.IsNullOrEmpty(d.Trap) && c.Traps.TryGetValue(d.Trap, out var tr)) t.Add("lays " + tr.Name);
             if (!string.IsNullOrEmpty(d.Trail) && c.Traps.TryGetValue(d.Trail, out var tl)) t.Add("leaves a " + tl.Name);
             if (!string.IsNullOrEmpty(d.OnHitBuff)) t.Add($"hits may inflict {c.TryBuff(d.OnHitBuff)?.Name ?? d.OnHitBuff} ({Mathf.RoundToInt(d.OnHitChance * 100)}%)");

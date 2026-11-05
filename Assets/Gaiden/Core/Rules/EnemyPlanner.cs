@@ -367,6 +367,10 @@ namespace GridGame.Core.Rules
                 }
                 return new ChargePlan { Target = pick, Ability = ability, Shape = ChargeShape.Single };
             }
+            // Tempo drains (Temporal Drag, GG-T275) are timed against the party's tempo: wasted while the party is
+            // already behind, so the caster moves or shoots instead and saves the charge for when the party hastes.
+            var drain = s.Content.TryBuff(ability.ApplyBuff);
+            if (drain != null && drain.Tempo < 0 && s.NetTempo < 0) return null;
             var target = PickFrom(s, enemy, heroes);
             var plan = new ChargePlan { Target = target, Ability = ability, Shape = enemy.Def.ChargeShape };
             if (plan.Shape == ChargeShape.Line)
