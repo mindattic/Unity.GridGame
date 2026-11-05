@@ -76,6 +76,8 @@ namespace GridGame.App
             if (masterwork) label = "★ " + label;
             var row = Ui.MenuRow(label, value, onClick, parent, icon, enabled);
             row.Q<Label>("label").AddToClassList(Ui.RarityClass(i.Rarity));
+            // Hold any item row to read the whole item — stats, set, slot — without selecting it (GG-T252).
+            InspectCard.Attach(row, b => { Detail(b, i, GameApp.I?.Content); return true; });
             return row;
         }
 
@@ -501,7 +503,9 @@ namespace GridGame.App
             {
                 int idx = i;
                 var cell = Ui.El("col center", bar);
-                cell.style.width = 196; cell.style.height = 170; cell.style.marginRight = 6;
+                // Every bar slot shares the row with even gutters, however many slots or however wide the stage (POL-C8).
+                cell.style.flexGrow = 1; cell.style.flexBasis = 0; cell.style.height = 170;
+                cell.style.marginLeft = cell.style.marginRight = Space.S8 / 2f;
                 cell.style.borderTopLeftRadius = cell.style.borderTopRightRadius = cell.style.borderBottomLeftRadius = cell.style.borderBottomRightRadius = 14;
                 cell.style.borderTopWidth = cell.style.borderBottomWidth = cell.style.borderLeftWidth = cell.style.borderRightWidth = i == slot ? 6 : 3;
                 var bc = i == slot ? Palette.Gold : Palette.Text.WithA(0.7f);
@@ -515,6 +519,7 @@ namespace GridGame.App
                 var t = Ui.Text(label ?? "Empty", "tiny" + (label == null ? " dim" : ""), cell);
                 t.style.unityTextAlign = TextAnchor.MiddleCenter; t.style.whiteSpace = WhiteSpace.Normal;
                 cell.AddToClassList("card-tap");
+                InspectCard.Attach(cell, b => InspectEntry(b, entry));
                 Ui.Tappable(cell, () => { slot = idx; Refresh(); });
             }
             var tools = Ui.El("row", barW);
@@ -540,6 +545,7 @@ namespace GridGame.App
                     if (a == null) continue;
                     var row = Ui.MenuRow(a.Name, KindLabel(a), () => Done(Abilities.Assign(C, S, h, slot, a.Id)), list, Art.AbilityIcon(a), slot < unlocked);
                     if (a.Cost > 0) Ui.CostPips(a.Cost, row);
+                    InspectCard.Attach(row, b => InspectCard.Ability(b, a));
                     Describe(a, list);
                 }
             }
@@ -563,6 +569,7 @@ namespace GridGame.App
                     int price = Abilities.Price(S, a);
                     var row = Ui.MenuRow(a.Name, price == 0 ? "Free" : Ui.Gold(price), () => Confirm.Show($"Teach {C.Class(h.ClassId).Name} {ab.Name} for {(price == 0 ? "free" : Ui.Gold(price))}?", "Learn", () => LearnDone(Abilities.Learn(C, S, h, ab.Id), h, ab.Id)), list, Art.AbilityIcon(a), S.Gold >= price);
                     row.name = Training.LearnRowPrefix + a.Id;
+                    InspectCard.Attach(row, b => InspectCard.Ability(b, ab));
                     Describe(a, list);
                 }
             }
@@ -602,6 +609,15 @@ namespace GridGame.App
         {
             var d = Ui.Text(a.Description ?? "", "tiny dim", list);
             d.style.whiteSpace = WhiteSpace.Normal; d.style.marginLeft = 64; d.style.marginBottom = 8;
+        }
+
+        /// <summary>The hold-to-read card for a bar entry: an ability, a battle item or a swap weapon.</summary>
+        private bool InspectEntry(VisualElement body, string entry)
+        {
+            if (entry == null) return false;
+            if (entry.StartsWith("item:") || entry.StartsWith("weapon:"))
+                return InspectCard.Item(body, C.TryItem(entry.Substring(entry.IndexOf(':') + 1)));
+            return InspectCard.Ability(body, C.TryAbility(entry));
         }
 
         private static string KindLabel(AbilityDef a) => a.Kind == AbilityKind.Skill ? (a.CooldownTurns > 0 ? $"Skill · CD {a.CooldownTurns}" : "Skill") : a.CastTime > 0 ? $"{a.CastTime:0.#}s" : "Instant";
@@ -1353,13 +1369,33 @@ namespace GridGame.App
                 S.Bestiary.TryGetValue(e.Id, out var entry);
                 var t = Ui.Thumb(e.Id, grid, 160);
                 t.name = "beast-" + e.Id;
-                t.style.marginRight = 8; t.style.marginBottom = 8;
                 if (entry == null || !entry.Seen) { t.Q(Ui.ThumbArt).style.unityBackgroundImageTintColor = new Color(0, 0, 0, 0.92f); }
                 t.AddToClassList("card-tap");
                 Ui.Tappable(t, () => { selected = def.Id; Show(detail, def, entry); });
             }
+            grid.RegisterCallback<GeometryChangedEvent>(_ => EvenGrid(grid, 160f, Space.S16));
             if (selected != null) Show(detail, C.Class(selected), S.Bestiary.TryGetValue(selected, out var se) ? se : null);
             else Ui.Text("Tap a creature.", "small dim", detail);
+        }
+
+        /// <summary>Fits as many cells of about <paramref name="target"/> px as the width allows, then stretches them so the
+        /// left, right and between-cell gutters are all exactly <paramref name="gap"/> (POL-C1/C8): no ragged right edge.</summary>
+        private static void EvenGrid(VisualElement grid, float target, float gap)
+        {
+            float w = grid.resolvedStyle.width - grid.resolvedStyle.paddingLeft - grid.resolvedStyle.paddingRight;
+            if (float.IsNaN(w) || w <= 0) return;
+            int cols = Mathf.Max(1, Mathf.FloorToInt((w - gap) / (target + gap)));
+            float size = Mathf.Floor((w - gap * (cols + 1)) / cols);
+            int i = 0;
+            foreach (var t in grid.Children())
+            {
+                t.style.width = t.style.height = size;
+                t.style.marginLeft = i % cols == 0 ? gap : gap / 2f;
+                t.style.marginRight = i % cols == cols - 1 ? gap : gap / 2f;
+                t.style.marginTop = i < cols ? gap : 0;
+                t.style.marginBottom = gap;
+                i++;
+            }
         }
 
         private void Show(VisualElement w, ClassDef d, BestiaryEntry e)
@@ -1389,6 +1425,23 @@ namespace GridGame.App
                 Ui.Text(Ui.StatLine(d.BaseStats), "small", w);
                 var kit = Ui.KitTraits(C, d);
                 if (kit.Length > 0) Ui.Text(kit, "small gold", w).style.whiteSpace = WhiteSpace.Normal;
+                // Its abilities as chips: hold one to read it whole (GG-T252).
+                var ids = d.Abilities.Concat(string.IsNullOrEmpty(d.ChargeAbility) ? Enumerable.Empty<string>() : new[] { d.ChargeAbility }).Distinct();
+                var chips = Ui.El("row", w);
+                chips.style.flexWrap = Wrap.Wrap;
+                foreach (var id in ids)
+                {
+                    if (!(C.TryAbility(id) is AbilityDef ab) || string.IsNullOrEmpty(ab.Name)) continue;
+                    var chip = Ui.El("row", chips);
+                    chip.name = "beast-ability-" + ab.Id;
+                    chip.style.alignItems = Align.Center;
+                    chip.style.minHeight = 132;
+                    chip.style.marginRight = Space.S16;
+                    var icon = Art.AbilityIcon(ab);
+                    if (icon != null) { var ic = Ui.El("menu-icon", chip); ic.style.backgroundImage = new StyleBackground(icon); }
+                    Ui.Text(ab.Name, "small", chip);
+                    InspectCard.Attach(chip, b => InspectCard.Ability(b, ab));
+                }
                 Ui.Text(GridGame.Core.Rules.EnemyPlanner.Describe(d.Targeting != Targeting.Auto ? d.Targeting : d.BaseStats.Intelligence >= 14 ? Targeting.Weakest : d.Tags.Contains("Humanoid") ? Targeting.Threat : Targeting.Closest), "small warn", w);
                 Ui.Text(GridGame.Core.Rules.EnemyPlanner.DescribeBrain(d.Brain), "small", w).style.whiteSpace = WhiteSpace.Normal;
             }

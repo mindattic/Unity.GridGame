@@ -56,20 +56,20 @@ Status values: ❌ fails, 🟡 partly passes or partly measured, ✅ passes, ⬜
 | POL-C3 | ≥ **24 px** between adjacent targets | Avoids mis-taps | Material 3 (8 dp spacing) | layout | ⬜ |
 | POL-C4 | Primary actions sit in the **bottom 45%** of the stage | One-handed thumb reach | Hoober's thumb-zone research; Fitts's law | layout (primary-tagged elements) | ⬜ |
 | POL-C5 | Nothing **off-stage, clipped, overlapping or inside an unsafe area**, on any supported aspect | Basic finish | Apple HIG safe areas | layout across `aspects` | 🟡 only horizontal NoWrap overflow and squashed tabs/buttons are checked |
-| POL-C6 | **Use the space:** on the widest stage (1424 px) content width grows ≥ **80%** of the extra width; no fixed widths that leave dead gutters | Wide phones should get more content, not more border | Responsive-layout practice | layout (1170 vs 1424 `aspects`) | ❌ fixed widths: confirm column 330, pause 800, menus 760/860, PaywallUi 760, AbilitiesScreen cells 196 |
+| POL-C6 | **Use the space:** on the widest stage (1424 px) content width grows ≥ **80%** of the extra width; no fixed widths that leave dead gutters | Wide phones should get more content, not more border | Responsive-layout practice | polish.py (content span at 1170 vs 1424) | 🟡 GG-T252 made the confirm column, pause, title menu, confirm dialog, PaywallUi, Camp side column, battle feed, ability-bar slots and Abilities bar cells proportional; other fixed widths remain |
 | POL-C7 | ≤ **7 choices** per visible menu group (group or nest beyond that), and one visually primary action per screen | Decision time grows with choices | Hick–Hyman law; Miller 7±2 | layout (rows per group) | ⬜ Camp has many rows in one group |
 
 ### D. Information and feedback
 
 | ID | Rule | Why | Source | Measured by | Status |
 |---|---|---|---|---|---|
-| POL-D1 | **Press-and-hold inspects anything:** ability slots, item stacks, buff/debuff pips, unit tokens, timeline icons, a charging enemy's ability, gear and skill nodes. It opens an Inspect card with name, cost, cooldown, shape/range and numbers | Players must know what a thing does before they commit | Nielsen #6 (recognition over recall), #10 (help) | uicheck (hold probe per element kind) | 🟡 slot hold and enemy tap only; timeline icons not tappable |
-| POL-D2 | **Outcome preview before commit:** damage/heal range, kills, status chance and mana gain on the target confirm card and the pincer preview | Lets players plan; prevents "I didn't mean that" | Nielsen #1 (visibility of status), #5 (error prevention) | uicheck | ❌ none |
+| POL-D1 | **Press-and-hold inspects anything:** ability slots, item stacks, buff/debuff pips, unit tokens, timeline icons, a charging enemy's ability, gear and skill nodes. It opens an Inspect card with name, cost, cooldown, shape/range and numbers | Players must know what a thing does before they commit | Nielsen #6 (recognition over recall), #10 (help) | uicheck (hold probe per element kind) | ✅ GG-T252: `InspectCard` on slots, units, status pips, timeline icons (turn + cast), a charging foe's whole spell, Abilities bar/rows, every item row, talent nodes, Bestiary ability chips |
+| POL-D2 | **Outcome preview before commit:** damage/heal range, kills, status chance and mana gain on the target confirm card and the pincer preview | Lets players plan; prevents "I didn't mean that" | Nielsen #1 (visibility of status), #5 (error prevention) | uicheck | ✅ GG-T252: `OutcomePreviewer` (Core, pure, sampled) on the confirm card and as tags on pincered foes during a drag |
 | POL-D3 | Visible touch response within **100 ms** | Feels instantaneous | Nielsen response-time limits (0.1 s) | uicheck (tap → first changed frame) | 🟡 `Ui.Pressable` exists; unmeasured |
 | POL-D4 | Every state change has **visual + audio** feedback | No silent changes (existing Law 5) | Game feel / juice practice | assets (event → cue map) | 🟡 |
-| POL-D5 | Costly or destructive actions confirm, and every gesture can be **cancelled** before commit | User control and freedom | Nielsen #3 | uicheck + R7 | ❌ a drag always commits on release |
+| POL-D5 | Costly or destructive actions confirm, and every gesture can be **cancelled** before commit | User control and freedom | Nielsen #3 | uicheck + R7 | ✅ GG-T252: release off the board, or home with nothing shoved, cancels a drag |
 | POL-D6 | **No dead taps:** anything styled as tappable responds; anything that responds looks tappable | Affordance | Norman (affordances/signifiers); Nielsen #4 | layout (clickable classes vs handlers) | ⬜ |
-| POL-D7 | **Every mechanic the game uses is taught** in a tutorial lesson, hint or first-time tip | Nobody reads manuals | Nielsen #10; onboarding practice | R8 | ❌ holding to inspect, buffs/debuffs, armor plates and the hold timer are untaught |
+| POL-D7 | **Every mechanic the game uses is taught** in a tutorial lesson, hint or first-time tip | Nobody reads manuals | Nielsen #10; onboarding practice | R8 | 🟡 GG-T252 added lessons for holding to read, the hold timer/cancel, buffs/debuffs and armor plates; not yet re-reviewed against R8 |
 
 ### E. Motion and VFX cohesion
 

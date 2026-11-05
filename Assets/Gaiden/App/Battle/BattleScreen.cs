@@ -84,10 +84,6 @@ namespace GridGame.App
         private const float HintDelay = 5f;
         private bool HintsEnabled => App.Save == null || App.Save.HighestClearedStage < 2;
 
-        private int slotPress = -1;
-        private float slotPressTime;
-        private bool slotInfoShown;
-
         // drag state
         private bool pressing, dragging;
         /// <summary>True for the duration of <see cref="SimulatedHumanDrag"/> — pauses the real drag-timer
@@ -218,7 +214,7 @@ namespace GridGame.App
             feed.pickingMode = PickingMode.Ignore;
             feed.style.position = Position.Absolute;
             feed.style.top = BoardTop + BoardView.Tile * BattleConfig.Rows - 140;
-            feed.style.width = 640;
+            feed.style.width = Length.Percent(55);
             feed.style.backgroundColor = new Color(0f, 0f, 0.05f, 0.35f);
             feed.style.borderTopRightRadius = 12;
             feed.style.justifyContent = Justify.FlexEnd;
@@ -239,6 +235,12 @@ namespace GridGame.App
             if (!firstBuild) return;
             App.StartCoroutine(Play(initial, false));
             if (CommandLine.Has("-autobattle") || DemoMode.Active || TestMode.Active) AutoPlay = true;
+            else if (TutorialStep < 0 && App.Save != null && App.Save.Flags.Add("hint:inspect"))
+            {
+                // GG-T252: a player who skipped the tutorial still learns the gesture once.
+                App.Persist();
+                panel.schedule.Execute(() => ShowBanner("Tip: hold any hero, foe, slot or icon to read it")).StartingIn(2500);
+            }
             CaptureUnity.Raise("battle-start", new CaptureData { ["stage"] = State.Stage.Id });
         }
 
@@ -319,30 +321,25 @@ namespace GridGame.App
             var bar = Ui.El("row", root);
             bar.name = "abilitybar";
             bar.style.position = Position.Absolute;
-            bar.style.left = 25; bar.style.right = 25; bar.style.top = BoardTop + BoardView.Tile * BattleConfig.Rows + 20; bar.style.height = 196;
-            bar.style.justifyContent = Justify.SpaceBetween;
+            // Even gutters on the space scale; the slots, not the gaps, take a wider stage (POL-C1/C8).
+            bar.style.left = Space.S16; bar.style.right = Space.S16; bar.style.top = BoardTop + BoardView.Tile * BattleConfig.Rows + 20; bar.style.height = 196;
+            bar.style.justifyContent = Justify.FlexStart;
             for (int i = 0; i < 5; i++)
             {
                 int idx = i;
                 var slot = Ui.El("col center", bar);
                 slot.name = "slot" + i;
-                slot.style.width = 216; slot.style.height = 196;
+                slot.style.flexGrow = 1; slot.style.flexBasis = 0; slot.style.height = 196;
+                slot.style.marginLeft = slot.style.marginRight = Space.S8;
                 slot.style.borderTopLeftRadius = slot.style.borderTopRightRadius = slot.style.borderBottomLeftRadius = slot.style.borderBottomRightRadius = 18;
                 slot.style.borderTopWidth = slot.style.borderBottomWidth = slot.style.borderLeftWidth = slot.style.borderRightWidth = 4;
                 slot.style.backgroundImage = new StyleBackground(Art.Window);
                 slot.AddToClassList("slot");
                 Ui.Pressable(slot);
-                slot.RegisterCallback<PointerDownEvent>(_ => { slotPress = idx; slotPressTime = Time.unscaledTime; slotInfoShown = false; });
-                slot.RegisterCallback<PointerLeaveEvent>(_ => { if (slotPress == idx) slotPress = -1; });
-                slot.RegisterCallback<ClickEvent>(_ =>
-                {
-                    bool wasInfo = slotInfoShown;
-                    slotPress = -1; slotInfoShown = false;
-                    if (wasInfo) { SyncPanel(); return; }
-                    OnSlot(idx);
-                });
+                AttachSlotInspect(slot, idx);
+                slot.RegisterCallback<ClickEvent>(_ => OnSlot(idx));
                 var icon = Ui.El("menu-icon", slot); icon.name = "icon"; icon.style.marginRight = 0; icon.style.width = icon.style.height = 76;
-                var name = Ui.Text("", "tiny", slot); name.name = "name"; name.style.unityTextAlign = TextAnchor.MiddleCenter; name.style.whiteSpace = WhiteSpace.Normal; name.style.maxWidth = 200;
+                var name = Ui.Text("", "tiny", slot); name.name = "name"; name.style.unityTextAlign = TextAnchor.MiddleCenter; name.style.whiteSpace = WhiteSpace.Normal; name.style.maxWidth = Length.Percent(94);
                 var cost = Ui.El("row", slot); cost.name = "cost"; cost.style.height = 36;
                 slotViews.Add(slot);
             }
@@ -512,6 +509,7 @@ namespace GridGame.App
                 var tex = Art.AbilityIcon(a);
                 if (tex != null) { icon.style.backgroundImage = new StyleBackground(tex); icon.style.backgroundSize = new BackgroundSize(BackgroundSizeType.Contain); }
             }
+            AttachTimelineInspect(icon, e);
             return icon;
         }
 
@@ -822,20 +820,24 @@ namespace GridGame.App
             var statusTurn = State.TurnEntryOf(u.Id);
             if (statusTurn != null && statusTurn.StunTicks > 0) StatusRow(col, "stunned", "!", Palette.Gold, "Stunned", "knocked back on the timeline — its turn icon is held");
             foreach (var b in u.Buffs)
-                StatusRow(col, b.Def.Id, string.IsNullOrEmpty(b.Def.Letter) ? b.Def.Name.Substring(0, 1) : b.Def.Letter,
+            {
+                var pip = StatusRow(col, b.Def.Id, string.IsNullOrEmpty(b.Def.Letter) ? b.Def.Name.Substring(0, 1) : b.Def.Letter,
                     Art.HexColor(b.Def.Color, b.Def.Kind == BuffKind.Buff ? Palette.Mana : new Color(0.8f, 0.4f, 0.9f)),
                     b.Def.Name, $"{Ui.BuffEffect(b.Def)} ({b.Remaining} {(b.Def.Unit == GridGame.Core.Content.DurationUnit.Turns ? "turns" : "s")} left)");
+                AttachStatusInspect(pip, b.Def, b.Remaining);
+            }
         }
 
         private static string SideName(Coord f) => f.Y > 0 ? "front (facing down)" : f.Y < 0 ? "front (facing up)" : f.X > 0 ? "front (facing right)" : "front (facing left)";
 
-        private static void StatusRow(VisualElement parent, string icon, string letter, Color color, string name, string what)
+        private static VisualElement StatusRow(VisualElement parent, string icon, string letter, Color color, string name, string what)
         {
             var row = Ui.El("row", parent);
             var pip = Ui.StatusPip(icon, letter, color, 40, row);
             pip.style.marginRight = 10;
             var t = Ui.Text($"{name} — {what}", "tiny", row);
             t.style.whiteSpace = WhiteSpace.Normal; t.style.flexShrink = 1;
+            return pip;
         }
 
         /// <summary>
@@ -844,7 +846,7 @@ namespace GridGame.App
         /// </summary>
         private void AbilityInfo(AbilityDef a)
         {
-            bool confirm = PendingTarget.HasValue && TargetingSlot >= 0 && !slotInfoShown;
+            bool confirm = PendingTarget.HasValue && TargetingSlot >= 0;
             var row = Ui.El("row", panel);
             row.style.alignItems = Align.Center;
             var icon = Ui.El("menu-icon", row);
@@ -876,8 +878,10 @@ namespace GridGame.App
             var summary = Ui.Text(who, "small", col);
             summary.name = "confirm-summary";
             summary.style.whiteSpace = WhiteSpace.Normal;
+            OutcomeLines(col, a);
             var btns = Ui.El("col", row);
-            btns.style.width = 330; btns.style.flexShrink = 0;
+            btns.style.width = Length.Percent(28); btns.style.minWidth = 264; btns.style.flexShrink = 0;
+            btns.style.marginLeft = Space.S16;
             string verb = a.Kind == AbilityKind.Item ? "Use" : a.Kind == AbilityKind.Spell ? "Cast" : "Go";
             var ok = Ui.Button(verb, ConfirmPending, "btn--primary", btns);
             ok.name = "confirm-action";
@@ -1203,7 +1207,7 @@ namespace GridGame.App
             veil.pickingMode = PickingMode.Position;
             PauseBattle();
             var w = Ui.Window("Paused", veil);
-            w.style.width = 800;
+            w.style.width = Length.Percent(72);
             void Close() { veil.RemoveFromHierarchy(); pauseVeil = null; ResumeBattle(); }
             closePause = Close;
             Ui.MenuRow("Resume", "", Close, w);
@@ -1296,12 +1300,8 @@ namespace GridGame.App
             }
             else if (timerLabel != null) timerLabel.text = "";
 
-            if (slotPress >= 0 && !slotInfoShown && Time.unscaledTime - slotPressTime > 0.45f)
-            {
-                var hero = State.UnitById(SelectedHeroId);
-                var ab = hero == null ? null : BattleEngine.SlotAbility(State, hero, slotPress);
-                if (ab != null) { panel.Clear(); AbilityInfo(ab); slotInfoShown = true; App.Audio.Sfx("ui.select", 0.5f); }
-            }
+            TickBoardInspect();
+            if (TutorialActive && !LessonWaiting && CurrentLesson.DoneOnInspect && InspectCard.IsOpen) NextLesson();
 
             if (!AutoPlay && CanCommand() && !pressing && TargetingSlot < 0 && HintsEnabled)
             {

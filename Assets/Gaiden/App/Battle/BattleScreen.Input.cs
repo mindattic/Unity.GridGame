@@ -36,6 +36,7 @@ namespace GridGame.App
                 return;
             }
 
+            if (unit != null) BeginBoardInspect(unit);
             if (unit != null && unit.IsHero)
             {
                 SelectHero(unit.Id);
@@ -88,6 +89,7 @@ namespace GridGame.App
             if (!dragging)
             {
                 if ((local - pressPos).magnitude < DragThreshold) return;
+                EndBoardInspect();
                 BeginDrag();
             }
             // Diagonal slip tech: a fast, near-45° flick between polled frames offers a diagonal step;
@@ -134,6 +136,8 @@ namespace GridGame.App
             // the next click anywhere (a slot, GUARD, the menu) was routed to the board instead (GG-T70).
             bool wasPressing = pressing;
             if (board.Root.HasPointerCapture(evt.pointerId)) board.Root.ReleasePointer(evt.pointerId);
+            // A hold that opened an inspect card only read it: the release does nothing else (GG-T252).
+            if (EndBoardInspect() && !dragging) { pressing = false; return; }
             if (!wasPressing) return;
             if (TargetingSlot >= 0)
             {
@@ -152,7 +156,11 @@ namespace GridGame.App
                 }
                 return;
             }
-            if (dragging) CommitDrag();
+            if (dragging)
+            {
+                if (DropCancels(evt.localPosition)) CancelDrag();
+                else CommitDrag();
+            }
             pressing = false;
         }
 
@@ -346,6 +354,7 @@ namespace GridGame.App
             }
             board.Lines.ClearLines();
             board.ClearMarks();
+            if (heroId == dragHeroId && dragging && !simulatingDrag) ShowDragOutcome(pv);
             foreach (var u in State.Units)
                 if (board.Units.TryGetValue(u.Id, out var uv) && u.Alive && u.Id != heroId) uv.SetGlow(Color.white, 0f);
             // GG-T190: shoving is a tactic, so show the whole migration — a ghost on every displaced hero's and
@@ -436,6 +445,7 @@ namespace GridGame.App
             if (!dragging) return;
             dragging = false;
             pressing = false;
+            ClearOutcomeTags();
             board.Lines.ClearLines();
             board.ClearMarks();
             var v = board.Units[dragHeroId];

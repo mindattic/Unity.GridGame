@@ -182,6 +182,7 @@ namespace GridGame.App
             var tagLbl = Ui.Text(tag, "tiny", card);
             tagLbl.style.color = StateColor(state);
             card.AddToClassList("card-tap");
+            if (a != null) InspectCard.Attach(card, b => InspectCard.Ability(b, a, $"{tag} · {tree.Name}"));
             Ui.Tappable(card, () => { selected = n.Id; Refresh(); }, "ui.select");
             return card;
         }

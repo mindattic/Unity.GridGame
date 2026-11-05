@@ -34,11 +34,12 @@ namespace GridGame.App
             veil.name = VeilName;
             veil.pickingMode = PickingMode.Position;
             var w = Ui.Window(null, veil);
-            w.style.width = 760;
+            w.style.width = Length.Percent(66);
             var title = Ui.Text(label, "h2", w);
             title.style.whiteSpace = WhiteSpace.Normal;
             title.style.marginBottom = 18;
-            var gauge = Ui.Gauge(0f, w, 700);
+            var gauge = Ui.Gauge(0f, w);
+            gauge.style.width = Length.Percent(100);
             gauge.name = "paywall-gauge";
             var left = Ui.Text("", "small dim", w);
             left.style.marginTop = 10;

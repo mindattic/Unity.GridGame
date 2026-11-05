@@ -99,7 +99,7 @@ namespace GridGame.App
             tag.style.marginBottom = 160;
 
             var menu = Ui.Window(null, col);
-            menu.style.width = 760;
+            menu.style.width = Length.Percent(66);
             int recent = App.Saves.MostRecent();
             Debug.Log($"[Title] most recent save slot: {recent}");
             if (recent >= 0) Ui.MenuRow("Continue", "", () => Continue(recent), menu);
@@ -402,7 +402,7 @@ namespace GridGame.App
             veil.name = VeilName;
             veil.pickingMode = PickingMode.Position;
             var w = Ui.Window(null, veil);
-            w.style.width = 860;
+            w.style.width = Length.Percent(76);
             var q = Ui.Text(question, "h2", w);
             q.style.whiteSpace = WhiteSpace.Normal;
             q.style.marginBottom = 24;
@@ -556,7 +556,7 @@ namespace GridGame.App
             Ui.Select(list.contentContainer[0]);
 
             var side = Ui.El("col", lower);
-            side.style.width = 330;
+            side.style.width = Length.Percent(29); side.style.minWidth = 300;
             if (s.Expedition != null)
             {
                 var ex = Ui.Window(null, side);

@@ -30,6 +30,8 @@ namespace GridGame.App
             public string FocusHero; public int FocusSlot = -1;
             /// <summary>Actions after which the lesson moves on by itself.</summary>
             public int Patience = 5;
+            /// <summary>Done the moment the player holds something to read it (GG-T252).</summary>
+            public bool DoneOnInspect;
         }
 
         private static readonly Lesson[] Lessons =
@@ -42,11 +44,20 @@ namespace GridGame.App
                 Text = "Trap an enemy in a straight line between two heroes to PINCER it — both heroes strike. Heroes linked to an attacker by an unbroken chain of allies join in as supporters, each with its class's support action.",
                 Example = "Example: Hero · Slime · Hero in a row or column.",
                 Done = (b, c, e) => e.Exists(x => x is PincerFormedEvent p && p.Team == Team.Hero) },
+            // GG-T252: recognition over recall — anything on screen explains itself when held.
+            new Lesson { Title = "Hold to read", Patience = 3, DoneOnInspect = true,
+                Text = "Hold anything for a moment to read it: a hero, an enemy, a spell slot, a status pip or an icon on the timeline. Let go to close the card — holding never acts.",
+                Example = "Example: press and hold a slime until its card opens.",
+                Done = (b, c, e) => false },
             // GG-T190: shoving is a tactic, not an accident — the held hero moves other heroes and enemies into place.
             new Lesson { Title = "Shoving", Patience = 4,
                 Text = "Your held hero is a lever. Drag it through an enemy and the enemy slides into the tile you just left — so shove a foe into line between two heroes and the drop pincers it. While you drag, arrows show where everyone will slide and gold outlines show the pincers the drop completes.",
                 Example = "Example: a slime sits above the gap beside your hero. Step into the gap, then up through the slime: it drops into the gap, between your heroes.",
                 Done = (b, c, e) => ShovedIntoPincer(e) },
+            new Lesson { Title = "The hold timer", Patience = 3,
+                Text = "Picking a hero up starts the clock: the bar under it drains until the next enemy reaches ACT, then the hero drops where it is. Changed your mind? Drop it back on its own tile, or off the board, to cancel — no time spent.",
+                Example = "Example: lift a hero, then drag it off the board and let go.",
+                Done = (b, c, e) => c is MoveCommand },
             new Lesson { Title = "Mana",
                 Text = "Pincers fill the mana bubble at the end of your orb row; at 100 it becomes an orb. Lean pincers earn the most: every extra hero divides the mana, every chain link multiplies it.",
                 Example = "Example: two heroes taking half a foe's HP earn 60 of the 100.",
@@ -59,6 +70,10 @@ namespace GridGame.App
                 Text = "Tap a hero, a lit spell, then a target, then Confirm. A spell charges first — its bar fills as time moves — then it flies and lands.",
                 Example = "Example: Cleric → Heal → a hurt ally → Cast.",
                 Done = (b, c, e) => e.Exists(x => x is CastQueuedEvent q && !q.IsCharge) },
+            new Lesson { Title = "Buffs & debuffs", Wave = 2, Patience = 3,
+                Text = "Coloured pips on a token are its buffs (blue) and debuffs (purple): poison, haste, shields, slows. Hold a unit, or a pip in the panel, to read exactly what each does and how long it lasts.",
+                Example = "Example: hold a hero after the Cleric's spell lands.",
+                Done = (b, c, e) => e.Exists(x => x is BuffAppliedEvent) },
             new Lesson { Title = "The timeline", Wave = 2, Patience = 3,
                 Text = "Time moves only when you act. Enemies act when their icon reaches ACT; the gold ring hits next. Hit a foe inside the orange zone to push it back. GUARD skips ahead with everyone shielded.",
                 Example = "Example: pincer the gold-ringed foe while it's in the zone.",
@@ -75,6 +90,10 @@ namespace GridGame.App
                 Text = "A charging enemy wears a ring and marks its target. Hit it with a pincer to stagger the cast — enough blows cancel it and earn mana.",
                 Example = "Example: pincer the wolf while it howls.",
                 Done = (b, c, e) => e.Exists(x => x is CastStaggeredEvent || (x is CastCancelledEvent cc && cc.Reason == "interrupted")) },
+            new Lesson { Title = "Armor plates", Wave = 4, Patience = 2,
+                Text = "Some foes wear an armor plate on one side, drawn as a thick edge. Blows into the plate chip it instead of the foe: strike from the sides, break it head-on, or use spells, which ignore it.",
+                Example = "Example: hold an armored foe later on to see its plate and which way it faces.",
+                Done = (b, c, e) => e.Exists(x => x is PlateBrokenEvent) },
             new Lesson { Title = "Ready", Wave = 4, Patience = 99,
                 Text = "That's the whole toolkit: move, pincer, chain for mana, cast with care, let your tank take the hits. Clear the last wave!",
                 Example = "Tip: Settings → How to play has all of this.",
