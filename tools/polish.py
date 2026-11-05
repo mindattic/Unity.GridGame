@@ -4,7 +4,9 @@ dimension A-H 0-100, write a scorecard + report, and ratchet against docs/polish
     python tools/polish.py                 # full pass: live sweep + aspects + uicheck + gates + lint + art
     python tools/polish.py --quick         # skip aspects and uicheck
     python tools/polish.py --no-player     # static parts only (lint, art, gates, records)
-    python tools/polish.py --balance       # also run the ability-usage soak (minutes) and score dimension G
+    python tools/polish.py --balance       # also run the greedy + casual bot soaks (minutes) and score dimension G
+                           [--per-stage N] # casual battles per campaign stage (default 4); --keep-records keeps them
+    python tools/polish.py --accept-dims G # merge only these dimensions' rules into the baseline
     python tools/polish.py --records DIR   # score dimension G from existing battle records
     python tools/polish.py --accept        # write this pass as the new baseline (only when nothing regressed)
 
@@ -242,19 +244,32 @@ def uicheck():
     return {"ok": r.returncode == 0, "tail": (r.stdout + r.stderr).strip().splitlines()[-3:], "report": rep if summary else None}
 
 
-def balance(tally, rec_dir):
-    """Dimension G from battle records (records.py): POL-G3 per-battle mana waste, POL-G4 ability use share,
-    POL-G5 impact band (against the median of the same ability kind, a stand-in for the role median),
-    POL-G6 actions per wave, POL-G1 casual-bot win band per stage."""
+def campaign_order():
+    try:
+        camp = json.load(open(os.path.join(ROOT, "Assets", "Gaiden", "Resources", "Content", "campaign.json"), encoding="utf-8"))
+        return [sid for t in camp["Themes"] for sid in t["Stages"]]
+    except Exception:
+        return []
+
+
+def balance(tally, rec_dirs):
+    """Dimension G from battle records (records.py). POL-G1 casual win band and HP-left band per stage, POL-G2 no
+    spike between consecutive stages, POL-G3 mana waste and full-bank share per battle, POL-G4 ability use share,
+    POL-G5 impact band (against the median of the same ability kind, a stand-in for the role median), POL-G6
+    actions per completed wave, POL-G7 no role composition winning > 90% for the casual bot."""
     import records
-    recs = records.load([rec_dir], None)
+    recs = records.load(rec_dirs if isinstance(rec_dirs, list) else [rec_dirs], None)
     if not recs:
         return 0
     for r in recs:
         _, mana = records.ability_usage([r])
         if mana["minted"]:
             waste = mana["overflowed"] / mana["minted"]
-            tally.one("POL-G3", waste <= 0.20, {"screen": "records", "subject": r.get("stage", "?"), "detail": f"{waste:.0%} of orbs wasted"})
+            tally.one("POL-G3", waste <= 0.20, {"screen": "records", "subject": r.get("stage", "?"), "detail": f"{waste:.0%} of orbs wasted ({r.get('source')})"})
+        turns = r["turns"]
+        if turns:
+            full = sum(1 for t in turns if t["before"].get("bankCapacity") and t["before"]["bank"] >= t["before"]["bankCapacity"])
+            tally.one("POL-G3", full / len(turns) <= 0.08, {"screen": "records", "subject": r.get("stage", "?"), "detail": f"bank full on {full / len(turns):.0%} of turns ({r.get('source')})"})
     barred, used = {}, {}
     for r in recs:
         stats, _ = records.ability_usage([r])
@@ -280,26 +295,61 @@ def balance(tally, rec_dir):
         waves = {}
         for t in r["turns"]:
             waves[t.get("wave") or 0] = waves.get(t.get("wave") or 0, 0) + 1
+        won = r["outcome"]["phase"] == "Victory"
+        last = max(waves) if waves else 0
         for w, n in waves.items():
+            if w == last and not won:
+                continue  # a wave the party fell or left on isn't a finished wave
             tally.one("POL-G6", 6 <= n <= 20, {"screen": "records", "subject": f"{r.get('stage', '?')} wave {w + 1}", "detail": f"{n} actions"})
     stages = {}
     for r in recs:
-        if "casual" in str(r.get("source", "")):
-            s = stages.setdefault(r.get("stage", "?"), [0, 0])
-            s[0] += 1
-            s[1] += r["outcome"]["phase"] == "Victory"
-    for st, (n, wins) in stages.items():
-        tally.one("POL-G1", 0.55 <= wins / n <= 0.85, {"screen": "records", "subject": st, "detail": f"casual wins {wins}/{n}"})
+        if "casual" not in str(r.get("source", "")):
+            continue
+        s = stages.setdefault(r.get("stage", "?"), {"n": 0, "wins": 0, "hp": []})
+        s["n"] += 1
+        if r["outcome"]["phase"] == "Victory":
+            s["wins"] += 1
+            maxhp = sum(h.get("maxHp", 0) for h in r["party"]) or 1
+            last_hp = r["turns"][-1]["after"].get("heroHp", []) if r["turns"] else []
+            s["hp"].append(sum(last_hp) / maxhp)
+    for st, s in stages.items():
+        rate = s["wins"] / s["n"]
+        tally.one("POL-G1", 0.55 <= rate <= 0.85, {"screen": "records", "subject": st, "detail": f"casual wins {s['wins']}/{s['n']} ({rate:.0%})"})
+        if s["hp"]:
+            hp = statistics.mean(s["hp"])
+            tally.one("POL-G1", 0.20 <= hp <= 0.60, {"screen": "records", "subject": st, "detail": f"{hp:.0%} party HP left on victories"})
+    order = [sid for sid in campaign_order() if sid in stages]
+    for prev, cur in zip(order, order[1:]):
+        a, b = stages[prev]["wins"] / stages[prev]["n"], stages[cur]["wins"] / stages[cur]["n"]
+        tally.one("POL-G2", b >= a - 0.20, {"screen": "records", "subject": cur, "detail": f"casual wins {b:.0%} after {prev} {a:.0%}"})
+    comps = {}
+    for r in recs:
+        if "casual" not in str(r.get("source", "")):
+            continue
+        key = "+".join(sorted(h.get("role", "?") for h in r["party"] if not h.get("guest")))
+        c = comps.setdefault(key, {"n": 0, "wins": 0, "stages": set()})
+        c["n"] += 1
+        c["wins"] += r["outcome"]["phase"] == "Victory"
+        c["stages"].add(r.get("stage"))
+    for key, c in sorted(comps.items()):
+        if c["n"] >= 5 and len(c["stages"]) >= 3:
+            rate = c["wins"] / c["n"]
+            tally.one("POL-G7", rate <= 0.90, {"screen": "records", "subject": key, "detail": f"casual wins {c['wins']}/{c['n']} across {len(c['stages'])} stages"})
     return len(recs)
 
 
-def run_soak(out):
-    d = os.path.join(out, "records")
-    os.makedirs(d, exist_ok=True)
-    subprocess.run(["dotnet", "test", os.path.join(ROOT, "Tests", "Core.Tests", "Core.Tests.csproj"),
-                    "--filter", "FullyQualifiedName~AbilityUsageSoak"], cwd=ROOT,
-                   env={**os.environ, "GAIDEN_ABILITY_RECORDS": d})
-    return d
+def run_soak(out, per_stage=4):
+    """The two measurement soaks: the greedy bot through every hero class (ability use, POL-G3..G6) and the casual
+    bot fighting each campaign stage `per_stage` times with rotating parties (POL-G1, G2, G7)."""
+    proj = os.path.join(ROOT, "Tests", "Core.Tests", "Core.Tests.csproj")
+    dirs = []
+    for label, extra in (("greedy", {}), ("casual", {"GAIDEN_ABILITY_BOT": "casual", "GAIDEN_ABILITY_PER_STAGE": str(per_stage)})):
+        d = os.path.join(out, "records", label)
+        os.makedirs(d, exist_ok=True)
+        subprocess.run(["dotnet", "test", proj, "--filter", "FullyQualifiedName~AbilityUsageSoak"], cwd=ROOT,
+                       env={**os.environ, "GAIDEN_ABILITY_RECORDS": d, **extra})
+        dirs.append(d)
+    return dirs
 
 
 # ── scoring, ratchet, report ───────────────────────────────────────────────────
@@ -372,9 +422,14 @@ def main():
     if ui is not None:
         g["uicheck"] = ui
     g["log-errors"] = {"ok": not errors, "tail": errors[:3]}
+    soaked = None
     if "--balance" in args:
-        rec_dir = run_soak(out)
+        per_stage = int(args[args.index("--per-stage") + 1]) if "--per-stage" in args else 4
+        rec_dir = soaked = run_soak(out, per_stage)
     battles = balance(tally, rec_dir) if rec_dir else 0
+    if soaked and "--keep-records" not in args:
+        import shutil
+        shutil.rmtree(os.path.join(out, "records"), ignore_errors=True)  # MAT-T90: soak records are scratch, not artifacts
 
     rules = tally.scores()
     # Dimension C is scored at its worst aspect: a layout that only works on one phone shape isn't polished.
@@ -405,7 +460,16 @@ def main():
     if drops:
         print("REGRESSIONS:", *drops, sep="\n  ")
         sys.exit(1)
-    if accept or (base is None and not quick and not no_player):
+    if "--accept-dims" in args:
+        # Merge only the named dimensions' rules into the baseline, e.g. after a --balance pass: --accept-dims G.
+        dims = args[args.index("--accept-dims") + 1].upper()
+        merged = dict((base or {}).get("rules", {}))
+        merged = {r: v for r, v in merged.items() if r[4:5] not in dims}
+        merged.update({r: v for r, v in rules.items() if r[4:5] in dims})
+        with open(BASELINE, "w", encoding="utf-8") as fh:
+            json.dump({"date": stamp, "dimensions": dimension_scores(merged), "rules": merged}, fh, indent=1)
+        print(f"baseline dimensions {dims} merged:", os.path.relpath(BASELINE, ROOT))
+    elif accept or (base is None and not quick and not no_player):
         os.makedirs(os.path.dirname(BASELINE), exist_ok=True)
         with open(BASELINE, "w", encoding="utf-8") as fh:
             json.dump({"date": stamp, "dimensions": card["dimensions"], "rules": rules}, fh, indent=1)
