@@ -600,16 +600,16 @@ namespace GridGame.Core.Content
         public string Description;
         public string Icon;
         public List<CaravanLevel> Levels = new List<CaravanLevel>();
-    }
-
-    public sealed class CaravanLevel
-    {
         /// <summary>The crew member who runs this wagon (GG-T75), e.g. "Brannoc".</summary>
         public string Crew;
         /// <summary>Their job on the caravan, e.g. "cask-keeper".</summary>
         public string CrewRole;
         /// <summary>One-line flavor barks shown on Camp and the Caravan screen — never dialogue: no branching, no choices (§27).</summary>
         public List<string> Barks = new List<string>();
+    }
+
+    public sealed class CaravanLevel
+    {
         public int Cost;
         public float Value;
         public string Text;
