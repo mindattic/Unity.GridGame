@@ -1127,6 +1127,7 @@ The biggest reskin family was the plain adjacent strike: 21 rows (Cleave, Killin
 | Id | Kind | Duration | Knobs | On expire |
 |---|---|---|---|---|
 | `protection` | Buff | 1 Turn | incoming damage ×0.85 | — |
+| `empowered` | Buff | 3 Turns | outgoing damage ×1.3 (GG-T264: 2 → 3 Turns; at 2 it mostly ran out before the buffed hero struck again) | — |
 | `burning` | Debuff | 5 Ticks | 4 dmg/tick | → `warm` |
 | `frozen` | Debuff | 1 Turn | immobile, halts timeline | → `wet` |
 | `wet` | Debuff | 6 Ticks | Lightning ×1.5; Fire strips it | — |

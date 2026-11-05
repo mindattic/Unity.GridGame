@@ -666,3 +666,22 @@ Owner: "gaining mana is too generous since I see the whole bar filled almost in 
   116). Scaling HP down and strikes up keeps the threat while shortening the fight; the greedy bot now clears a wave in a median of ~10
   actions, the casual bot (half its moves random) in ~19. Polish POL-G6 41.4 → 56.3; dimension G 66.3 → 67.4. POL-G4 (ability use share)
   fell 65.3 → 53.2 since shorter fights fire fewer abilities — that is GG-T263's to answer.
+
+## 2026-11-05 — Ability impact is measured, not flat (GG-T264)
+
+- **Was:** `records.impact` credited every buff, debuff, haste, delay or move a flat 6 per application, so a taunt, a ward or an
+  empower read as dead weight (POL-G5) whatever it did.
+- **Now:** `records.credit_utility` follows each buff/debuff after it lands and credits the ability that applied it, in HP:
+  - **damage-up:** the extra share of the buffed ally's damage
+  - **guard or taunt:** damage the multiplier prevented, plus every hit a taunter absorbed
+  - **ticks:** damage and heal ticks at face value
+  - **frozen or sleep:** each skipped enemy turn counts as one enemy turn's average damage
+  - **slow:** the enemy turns it took away
+  - **blind:** expected misses
+  - **silence:** half an enemy turn per turn it held
+
+  Repositioning, traps, cleanses and orbs keep the flat 6.
+- **Tuned on the measured numbers:**
+  - **Blood Harvest:** 3 → 2 orbs so it gets cast, and its drain trimmed 10/14 → 7/10. At 10/14 for 2 orbs it measured 73 impact/use against a Spell median of 28.
+  - **`empowered`:** 2 → 3 Turns. Its skills measured about 0 because the buff ran out before the hero struck again.
+- **Result:** G5 74.7 → 78.0 (206 battles). The remaining lows are pure utility buffs that genuinely do little against 45%-HP foes. They show as measured values now, not as metric artifacts.

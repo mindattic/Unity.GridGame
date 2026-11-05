@@ -236,7 +236,7 @@
     "Name": "Empowered",
     "Kind": "Buff",
     "Unit": "Turns",
-    "Duration": 2,
+    "Duration": 3,
     "DamagePerTick": 0,
     "Immobile": false,
     "HaltsTimeline": false,

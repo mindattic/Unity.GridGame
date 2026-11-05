@@ -103,7 +103,7 @@ Status values: ❌ fails, 🟡 partly passes or partly measured, ✅ passes, ⬜
 | POL-G2 | No stage's casual win rate is **> 20 points** below the stage before it | No difficulty spikes | Difficulty-curve practice | records | ⬜ |
 | POL-G3 | The mana bank is full on ≤ **8%** of turns; ≤ **20%** of minted orbs are wasted | A full bar should be an earned peak (owner, GG-T247) | Resource-economy design | records | ❌ greedy bot 17.4% full / 45.6% wasted; ability soak 77% wasted |
 | POL-G4 | Every equipped ability fires in ≥ **25%** of the battles where it could be used | Every ability earns its slot | Content-usefulness balance practice | records `--abilities` | ❌ 68 equipped abilities never fired (GG-T246 baseline) |
-| POL-G5 | Impact per use within **0.5× – 2×** of its role's median | No dead or dominant abilities | Balance practice (outlier bands) | records `--abilities` | ⬜ |
+| POL-G5 | Impact per use within **0.5× – 2×** of its role's median | No dead or dominant abilities | Balance practice (outlier bands) | records `--abilities`; utility is measured, not flat (GG-T264, `records.credit_utility`: damage-up share, damage prevented/absorbed, ticks, skipped/slowed enemy turns, expected misses) | 🟡 78.0: the lows are pure utility buffs, the one high is Trapline |
 | POL-G6 | **6–20 player actions** per wave | Waves neither trivial nor a slog | Session-pacing practice (BIBLE A §0.3) | records | ⬜ |
 | POL-G7 | No single party composition or strategy wins **> 90%** of all stages for the casual bot | No dominant strategy | Game-theory balance practice | records (party rotation) | ⬜ |
 

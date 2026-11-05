@@ -111,8 +111,12 @@ def ability_usage(recs, known=None):
     ItemUsed before it) to the next boundary event, so a cast-time spell is credited when it lands, not when queued."""
     stats = collections.defaultdict(collections.Counter)
     mana = collections.Counter()
+    buffs = known_buffs()
     for r in recs:
         team = {}
+        enemy_turn, hero_action = action_values(r)
+        active = {}       # (unitId, buffId) -> the ability whose resolution applied it (GG-T264 utility credit)
+        ticked = None     # (unitId, buffId) of the BuffTicked just before a tick's Damaged/Healed
         for t in r["turns"]:
             for u in t["before"]["units"]:
                 team[u["id"]] = u["team"]
@@ -129,6 +133,8 @@ def ability_usage(recs, known=None):
             cur, caster, item = None, None, None
             for e in t["events"]:
                 ty = e["type"]
+                credit_utility(e, ty, team, active, buffs, stats, enemy_turn, hero_action, ticked)
+                ticked = (e["UnitId"], e["BuffId"]) if ty == "BuffTicked" else None
                 if ty == "OrbMinted":
                     mana["minted"] += 1
                     mana["landed" if e.get("Landed") else "overflowed"] += 1
@@ -157,6 +163,7 @@ def ability_usage(recs, known=None):
                     c["kills"] += 1
                 elif ty == "BuffApplied":
                     c["buffsOnFoes" if team.get(e["UnitId"]) == "Enemy" else "buffsOnAllies"] += 1
+                    active[(e["UnitId"], e["BuffId"])] = cur
                 elif ty == "BuffRemoved" and team.get(e["UnitId"]) == "Hero":
                     c["cleansed"] += 1
                 elif ty == "PushedBack" and team.get(e["UnitId"]) == "Enemy":
@@ -176,12 +183,105 @@ def ability_usage(recs, known=None):
     return stats, mana
 
 
+def known_buffs():
+    path = os.path.join(ROOT, "Assets", "Gaiden", "Resources", "Content", "buffs.json")
+    with open(path, encoding="utf-8-sig") as fh:
+        data = json.load(fh)
+    items = data if isinstance(data, list) else next(iter(data.values()))
+    return {b["Id"]: b for b in items}
+
+
+def action_values(r):
+    """What one enemy turn and one hero action are worth in this battle, in HP: enemy damage to heroes per enemy
+    turn started, and hero damage plus healing per player command. The exchange rate for utility credit."""
+    team, enemy_dmg, enemy_turns, hero_val = {}, 0, 0, 0
+    for t in r["turns"]:
+        for u in t["before"]["units"]:
+            team[u["id"]] = u["team"]
+        for e in t["events"]:
+            ty = e["type"]
+            if ty == "TurnStarted" and team.get(e["UnitId"]) == "Enemy":
+                enemy_turns += 1
+            elif ty == "Damaged":
+                if team.get(e["SourceId"]) == "Enemy" and team.get(e["TargetId"]) == "Hero":
+                    enemy_dmg += e["Amount"]
+                elif team.get(e["SourceId"]) == "Hero" and team.get(e["TargetId"]) == "Enemy":
+                    hero_val += e["Amount"]
+            elif ty == "Healed" and team.get(e["TargetId"]) == "Hero":
+                hero_val += e["Amount"]
+    return enemy_dmg / max(1, enemy_turns), hero_val / max(1, len(r["turns"]))
+
+
+def credit_utility(e, ty, team, active, buffs, stats, enemy_turn, hero_action, ticked):
+    """GG-T264: what a buff or debuff actually did after it landed, credited (in HP) to the ability that applied it.
+    Damage-up: the extra share of the buffed ally's damage. Guard/taunt: damage the multiplier prevented, and a taunt
+    is also credited every hit its tank absorbed (redirected away from squishier allies). Damage/heal ticks
+    at face value. Frozen/sleep: each skipped enemy turn = one enemy turn's damage. Slow: the turns it took away.
+    Blind: the expected misses. Silence: half an enemy turn per turn it held. Haste/push-back: the timeline shift
+    times one action's worth."""
+    def on(unit):
+        return [(b, owner) for (u, b), owner in active.items() if u == unit and owner]
+
+    def give(owner, kind, v):
+        if owner and v > 0:
+            stats[owner]["utility"] += v
+            stats[owner][kind] += v
+
+    if ty == "Damaged":
+        src, tgt, amt = e["SourceId"], e["TargetId"], e["Amount"]
+        if ticked and ticked[0] == tgt and buffs.get(ticked[1], {}).get("DamagePerTick"):
+            give(active.get(ticked), "u_ticks", amt)
+            return
+        if team.get(src) == "Hero" and team.get(tgt) == "Enemy":
+            for b, owner in on(src):
+                m = buffs.get(b, {}).get("OutgoingDamageMultiplier") or 1.0
+                if m > 1:
+                    give(owner, "u_dmgUp", amt * (1 - 1 / m))
+        if team.get(tgt) == "Hero" and team.get(src) == "Enemy":
+            for b, owner in on(tgt):
+                d = buffs.get(b, {})
+                m = d.get("IncomingDamageMultiplier") or 1.0
+                if m < 1:
+                    give(owner, "u_prevented", amt * (1 / m - 1))
+                if d.get("Taunts"):
+                    give(owner, "u_redirected", amt)
+    elif ty == "Healed":
+        if ticked and ticked[0] == e["TargetId"] and buffs.get(ticked[1], {}).get("HealPerTick"):
+            give(active.get(ticked), "u_ticks", e["Amount"])
+    elif ty == "TurnSkipped" and team.get(e["UnitId"]) == "Enemy":
+        for b, owner in on(e["UnitId"]):
+            d = buffs.get(b, {})
+            if d.get("Immobile") or d.get("HaltsTimeline"):
+                give(owner, "u_skipped", enemy_turn)
+                break
+    elif ty == "TurnStarted" and team.get(e["UnitId"]) == "Enemy":
+        for b, owner in on(e["UnitId"]):
+            d = buffs.get(b, {})
+            m = d.get("TimelineSpeedMultiplier") or 1.0
+            if m < 1:
+                give(owner, "u_slowed", enemy_turn * (1 / m - 1))
+            if d.get("BlocksSpells"):
+                give(owner, "u_silenced", enemy_turn * 0.5)
+    elif ty == "Attack" and team.get(e["AttackerId"]) == "Enemy":
+        for b, owner in on(e["AttackerId"]):
+            acc = buffs.get(b, {}).get("AccuracyMultiplier") or 1.0
+            if acc < 1:
+                give(owner, "u_blinded", enemy_turn * (1 - acc))
+    elif ty == "BuffRemoved":
+        active.pop((e["UnitId"], e["BuffId"]), None)
+    elif ty == "Died":
+        for k in [k for k in active if k[0] == e.get("UnitId")]:
+            del active[k]
+
+
 def impact(c):
-    """One rough usefulness number per resolution: damage and healing at face value, a kill ≈ 15, every
-    status/tempo/positioning effect ≈ 6, a revive ≈ 40."""
+    """One usefulness number per resolution, in HP: damage and healing at face value, a kill ≈ 15, a revive ≈ 40,
+    plus (GG-T264) the measured utility of every buff/debuff it applied (credit_utility) and its tempo shifts
+    (haste/push-back ≈ 6 each, the timeline equivalent of a short delay); repositioning, traps, cleanses and orbs
+    keep a flat 6 each because the records can't follow their downstream effect."""
     u = max(1, c["uses"])
-    v = (c["damage"] + c["healing"] + 15 * c["kills"] + 40 * c["revives"]
-         + 6 * (c["buffsOnFoes"] + c["buffsOnAllies"] + c["cleansed"] + c["delayed"] + c["hastened"] + c["moved"] + c["traps"] + c["orbs"]))
+    v = (c["damage"] + c["healing"] + 15 * c["kills"] + 40 * c["revives"] + c["utility"]
+         + 6 * (c["cleansed"] + c["delayed"] + c["hastened"] + c["moved"] + c["traps"] + c["orbs"]))
     return v / u
 
 
