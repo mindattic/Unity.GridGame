@@ -26,7 +26,7 @@ namespace GridGame.App
                 var qs = quests.ToList();
                 if (qs.Count == 0) return;
                 any = true;
-                Ui.Text(title, "h2 gold", list).style.marginTop = 12;
+                Ui.Text(title, "h2 gold", list).style.marginTop = Space.S16;
                 foreach (var q in qs) Card(q, list, extra);
             }
 

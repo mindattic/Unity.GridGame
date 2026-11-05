@@ -191,7 +191,7 @@ namespace GridGame.App
             if (icon != null)
             {
                 var ic = Ui.El("menu-icon", row);
-                ic.style.width = ic.style.height = 96;
+                ic.style.width = ic.style.height = Size.Avatar;
                 ic.style.marginRight = Space.S16;
                 ic.style.flexShrink = 0;
                 ic.style.backgroundImage = new StyleBackground(icon);

@@ -205,12 +205,12 @@ namespace GridGame.App
             holdDrain = new VisualElement { name = "hold-drain", pickingMode = PickingMode.Ignore };
             holdDrain.style.position = Position.Absolute;
             holdDrain.style.left = Length.Percent(8); holdDrain.style.right = Length.Percent(8);
-            holdDrain.style.bottom = -16; holdDrain.style.height = 14;
+            holdDrain.style.bottom = -Space.S16; holdDrain.style.height = Size.Gauge;
             holdDrain.style.backgroundColor = Palette.Ink.WithA(0.85f);
             Round(holdDrain, 7);
             holdDrainFill = new VisualElement { name = "hold-drain-fill", pickingMode = PickingMode.Ignore };
             holdDrainFill.style.position = Position.Absolute;
-            holdDrainFill.style.left = 2; holdDrainFill.style.top = 2; holdDrainFill.style.bottom = 2;
+            holdDrainFill.style.left = Space.S4; holdDrainFill.style.top = Space.S4; holdDrainFill.style.bottom = Space.S4;
             holdDrainFill.style.width = Length.Percent(100);
             Round(holdDrainFill, 5);
             holdDrain.Add(holdDrainFill);
@@ -219,7 +219,7 @@ namespace GridGame.App
             // On the timeline: the stretch between the next enemy icon and ACT, and the seconds it stands for.
             holdLane = new VisualElement { name = "hold-lane", pickingMode = PickingMode.Ignore };
             holdLane.style.position = Position.Absolute;
-            holdLane.style.right = 0; holdLane.style.top = TrackY - 7; holdLane.style.height = 14;
+            holdLane.style.right = Space.S0; holdLane.style.top = TrackY - 7; holdLane.style.height = Size.Gauge;
             holdLane.style.backgroundColor = Palette.Gold.WithA(0.55f);
             Round(holdLane, 7);
             timelineFrame.Insert(1, holdLane); // above the track, under the icons

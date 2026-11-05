@@ -23,7 +23,7 @@ namespace GridGame.App
             var col = Ui.El("fill col", root);
             Ui.Header("Profiles", () => App.Router.Back(), col, out _);
             var hint = Ui.Text("Each profile keeps its own settings and its own three save slots.", "small dim", col);
-            hint.style.marginLeft = 24; hint.style.marginBottom = 8;
+            hint.style.marginLeft = Space.S24; hint.style.marginBottom = Space.S8;
             hint.style.whiteSpace = WhiteSpace.Normal;
 
             var w = Ui.Window("Choose a profile", col);
@@ -38,10 +38,10 @@ namespace GridGame.App
                 row.name = "profile-" + n;
                 if (active) row.Q<Label>("label").AddToClassList("gold");
                 var actions = Ui.El("row", list);
-                actions.style.marginLeft = 64; actions.style.marginBottom = 14;
+                actions.style.marginLeft = Space.S64; actions.style.marginBottom = Space.S16;
                 var rename = Ui.Button("Rename", () => App.Router.Push(new ProfileNameScreen(n)), "btn--small", actions);
                 rename.name = "rename-" + n;
-                rename.style.marginRight = 16;
+                rename.style.marginRight = Space.S16;
                 var delete = Ui.Button("Delete", () => AskDelete(n), "btn--small", actions);
                 delete.name = "delete-" + n;
             }
@@ -95,14 +95,14 @@ namespace GridGame.App
 
             field = new TextField { name = "profile-name-field", maxLength = ProfileStore.MaxNameLength, value = renaming ?? "" };
             field.style.fontSize = 48;
-            field.style.marginTop = 10; field.style.marginBottom = 10;
+            field.style.marginTop = Space.S8; field.style.marginBottom = Space.S8;
             field.style.minHeight = 96;
             var input = field.Q(className: "unity-text-field__input") ?? field.Q(className: "unity-base-text-field__input");
             if (input != null)
             {
                 input.style.backgroundColor = Palette.Ink.WithA(0.9f);
                 input.style.color = Color.white;
-                input.style.paddingLeft = input.style.paddingRight = 18;
+                input.style.paddingLeft = input.style.paddingRight = Space.S16;
                 input.style.borderTopWidth = input.style.borderBottomWidth = input.style.borderLeftWidth = input.style.borderRightWidth = 3;
                 input.style.borderTopColor = input.style.borderBottomColor = input.style.borderLeftColor = input.style.borderRightColor = Palette.Neutral.WithA(0.8f);
             }
@@ -116,7 +116,7 @@ namespace GridGame.App
 
             var row = Ui.El("row", w);
             row.style.justifyContent = Justify.FlexEnd;
-            row.style.marginTop = 16;
+            row.style.marginTop = Space.S16;
             Ui.Button("Cancel", () => App.Router.Back(), null, row);
             ok = Ui.Button(renaming == null ? "Create" : "Rename", Submit, "btn--primary", row);
             ok.name = "profile-name-ok";

@@ -84,12 +84,12 @@ namespace GridGame.App
             }
             var w = Ui.Window($"{tree.Name} — {Talents.PointsIn(h, tree)} pts in tree{offNote}", body);
             w.style.flexGrow = 1;
-            if (trees.Count > 1) w.style.marginTop = 0;
+            if (trees.Count > 1) w.style.marginTop = Space.S0;
             var list = Ui.List(w).contentContainer;
             if (!string.IsNullOrEmpty(tree.Description))
             {
                 var d = Ui.Text(tree.Description, "tiny dim", list);
-                d.style.whiteSpace = WhiteSpace.Normal; d.style.marginBottom = 10;
+                d.style.whiteSpace = WhiteSpace.Normal; d.style.marginBottom = Space.S8;
             }
             var cards = Graph(tree, h, list);
 
@@ -133,10 +133,10 @@ namespace GridGame.App
             {
                 var row = Ui.El("row", graph);
                 row.style.alignItems = Align.Center;
-                row.style.marginBottom = 34;
+                row.style.marginBottom = Space.S32;
                 int need = Talents.IsHome(C, h, tree) ? tier.Key : Talents.ScaledRequirement(tier.Key);
                 var lbl = Ui.Text(need == 0 ? "Start" : $"{need} pts", "tiny dim", row);
-                lbl.style.width = 100; lbl.style.unityTextAlign = TextAnchor.MiddleCenter;
+                lbl.style.width = Size.ColumnL; lbl.style.unityTextAlign = TextAnchor.MiddleCenter;
                 var cells = Ui.El("row grow", row);
                 cells.style.justifyContent = Justify.SpaceAround; // cards shrink to share a wide tier rather than wrap
                 foreach (var n in tier.OrderBy(RootIndex).ThenBy(x => tree.Nodes.IndexOf(x)))
@@ -156,9 +156,9 @@ namespace GridGame.App
             var a = C.TryAbility(n.Grants);
             var card = Ui.El("col center talent-node", parent);
             card.name = "talent-" + n.Id;
-            card.style.width = 300; card.style.minHeight = 150;
-            card.style.paddingTop = card.style.paddingBottom = 10;
-            card.style.paddingLeft = card.style.paddingRight = 8;
+            card.style.width = Size.Card; card.style.minHeight = Size.Thumb + Space.S32;
+            card.style.paddingTop = card.style.paddingBottom = Space.S8;
+            card.style.paddingLeft = card.style.paddingRight = Space.S8;
             card.style.borderTopLeftRadius = card.style.borderTopRightRadius = card.style.borderBottomLeftRadius = card.style.borderBottomRightRadius = 16;
             bool sel = n.Id == selected;
             float bw = sel ? 7 : state == TalentState.Available ? 5 : 3;
@@ -172,7 +172,7 @@ namespace GridGame.App
             {
                 var ic = Ui.El("menu-icon", card);
                 ic.style.backgroundImage = new StyleBackground(icon);
-                ic.style.marginRight = 0;
+                ic.style.marginRight = Space.S0;
                 if (state == TalentState.Locked) ic.style.unityBackgroundImageTintColor = new Color(0.5f, 0.5f, 0.6f, 0.7f);
             }
             var name = Ui.Text(n.Name ?? a?.Name ?? n.Id, "tiny" + (state == TalentState.Locked ? " dim" : ""), card);
@@ -205,14 +205,14 @@ namespace GridGame.App
             var st = Ui.Text(StateLabel(state), "small", top);
             st.style.color = StateColor(state);
             var desc = Ui.Text(Ui.Keywords(a?.Description ?? n.Description ?? ""), "small dim", w);
-            desc.style.whiteSpace = WhiteSpace.Normal; desc.style.marginTop = 8;
+            desc.style.whiteSpace = WhiteSpace.Normal; desc.style.marginTop = Space.S8;
             if (!string.IsNullOrEmpty(n.Description) && a?.Description != null && n.Description != a.Description)
             {
                 var flavor = Ui.Text(n.Description, "tiny dim", w);
-                flavor.style.whiteSpace = WhiteSpace.Normal; flavor.style.marginTop = 4;
+                flavor.style.whiteSpace = WhiteSpace.Normal; flavor.style.marginTop = Space.S4;
             }
             var foot = Ui.El("row", w);
-            foot.style.alignItems = Align.Center; foot.style.marginTop = 10;
+            foot.style.alignItems = Align.Center; foot.style.marginTop = Space.S8;
             int cost = Talents.Cost(C, h, tree, n);
             string pts = $"{cost} skill point{(cost == 1 ? "" : "s")}";
             bool offTree = !Talents.IsHome(C, h, tree);
@@ -251,7 +251,7 @@ namespace GridGame.App
         {
             pickingMode = PickingMode.Ignore;
             style.position = Position.Absolute;
-            style.left = style.top = style.right = style.bottom = 0;
+            style.left = style.top = style.right = style.bottom = Space.S0;
             generateVisualContent += Draw;
         }
 

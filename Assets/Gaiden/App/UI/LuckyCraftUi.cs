@@ -17,13 +17,13 @@ namespace GridGame.App
                 || result.Type != ItemType.Equipment || result.Durability <= 0) return;
             var box = Ui.El("col", w);
             box.name = "lucky-craft";
-            box.style.marginTop = 12;
+            box.style.marginTop = Space.S16;
             var head = Ui.El("row", box);
             var tex = Art.ItemIcon(Crafting.DiamondId);
             if (tex != null)
             {
                 var img = Ui.El(null, head);
-                img.style.width = 40; img.style.height = 40; img.style.marginRight = 8;
+                img.style.width = img.style.height = Size.IconS; img.style.marginRight = Space.S8;
                 img.style.backgroundImage = new StyleBackground(tex);
             }
             Ui.Text($"Diamonds: {s.Count(Crafting.DiamondId)}", "small", head);
@@ -32,7 +32,7 @@ namespace GridGame.App
                 TimedJobView.Begin(now => (Paywall.Start(GameApp.I.Save, PaywallKind.LuckyDiamond, Crafting.DiamondId, now, out var job), job),
                     "Cutting a Diamond…", _ => refresh()), "btn--small", box);
             buy.name = "buy-diamond";
-            buy.style.marginTop = 6;
+            buy.style.marginTop = Space.S8;
             Ui.SetEnabled(buy, s.Gold >= Paywall.Cost(PaywallKind.LuckyDiamond, s) && Paywall.Pending(s, PaywallKind.LuckyDiamond) == null);
 
             bool can = Crafting.CanLucky(c, s, r);
@@ -43,7 +43,7 @@ namespace GridGame.App
                 Reveal(res, refresh);
             }, can ? "btn--primary" : null, box);
             lucky.name = "lucky-craft-btn";
-            lucky.style.marginTop = 6;
+            lucky.style.marginTop = Space.S8;
             Ui.SetEnabled(lucky, can && craftable);
         }
 
@@ -62,11 +62,11 @@ namespace GridGame.App
             veil.name = "lucky-reveal";
             veil.pickingMode = PickingMode.Position;
             var gem = Ui.El(null, veil);
-            gem.style.width = 192; gem.style.height = 192;
+            gem.style.width = gem.style.height = Size.Gem;
             var tex = Art.ItemIcon(Crafting.DiamondId);
             if (tex != null) gem.style.backgroundImage = new StyleBackground(tex);
             var text = Ui.Text("", "h2", veil);
-            text.style.marginTop = 24;
+            text.style.marginTop = Space.S24;
             text.style.whiteSpace = WhiteSpace.Normal;
             text.style.opacity = 0f;
             app.StartCoroutine(Play(gem, text, veil, res, refresh));

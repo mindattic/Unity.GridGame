@@ -61,8 +61,8 @@ namespace GridGame.App
             Frame = new VisualElement { pickingMode = PickingMode.Ignore };
             Frame.AddToClassList("unit-frame");
             Frame.style.position = Position.Absolute;
-            Frame.style.left = Frame.style.top = 6;
-            Frame.style.right = Frame.style.bottom = 6;
+            Frame.style.left = Frame.style.top = Space.S8;
+            Frame.style.right = Frame.style.bottom = Space.S8;
             Frame.style.backgroundImage = new StyleBackground(App.Art.Window);
             Root.Add(Frame);
 
@@ -70,7 +70,7 @@ namespace GridGame.App
             // The host flips (so the framing mirrors about the token's centre); Art is the portrait child that tints.
             var artHost = new VisualElement { name = "token-art", pickingMode = PickingMode.Ignore };
             artHost.style.position = Position.Absolute;
-            artHost.style.left = artHost.style.top = artHost.style.right = artHost.style.bottom = 0;
+            artHost.style.left = artHost.style.top = artHost.style.right = artHost.style.bottom = Space.S0;
             if (!u.IsHero && !u.IsNeutral) artHost.style.scale = new Scale(new Vector2(-1, 1)); // enemies face the party
             Frame.Add(artHost);
             // A corpse shows the fallen unit's own art, upright and greyed (§14.7; owner 2026-10-19: never turn art sideways).
@@ -90,7 +90,7 @@ namespace GridGame.App
             Hp = new VisualElement { pickingMode = PickingMode.Ignore };
             Hp.AddToClassList("gauge");
             Hp.style.position = Position.Absolute;
-            Hp.style.left = 18; Hp.style.right = 18; Hp.style.bottom = 12; Hp.style.height = 18;
+            Hp.style.left = Space.S16; Hp.style.right = Space.S16; Hp.style.bottom = Space.S8; Hp.style.height = Size.HpBar;
             HpFill = new VisualElement { name = "fill" };
             HpFill.AddToClassList("gauge-fill");
             Hp.Add(HpFill);
@@ -99,7 +99,7 @@ namespace GridGame.App
             Buffs = new VisualElement { name = "buffs-" + u.Id, pickingMode = PickingMode.Ignore };
             Buffs.style.position = Position.Absolute;
             Buffs.style.flexDirection = FlexDirection.Row;
-            Buffs.style.right = 10; Buffs.style.top = 10;
+            Buffs.style.right = Space.S8; Buffs.style.top = Space.S8;
             Root.Add(Buffs);
 
 
@@ -109,8 +109,8 @@ namespace GridGame.App
             Root.Add(Cast);
             CastChip = new VisualElement { name = "castchip-" + u.Id, pickingMode = PickingMode.Ignore };
             CastChip.style.position = Position.Absolute;
-            CastChip.style.left = 4; CastChip.style.top = 4;
-            CastChip.style.width = CastChip.style.height = 50;
+            CastChip.style.left = Space.S4; CastChip.style.top = Space.S4;
+            CastChip.style.width = CastChip.style.height = Size.Chip;
             CastChip.style.borderTopLeftRadius = CastChip.style.borderTopRightRadius = CastChip.style.borderBottomLeftRadius = CastChip.style.borderBottomRightRadius = 12;
             CastChip.style.borderTopWidth = CastChip.style.borderBottomWidth = CastChip.style.borderLeftWidth = CastChip.style.borderRightWidth = 3;
             CastChip.style.backgroundColor = Palette.Ink;
@@ -134,7 +134,7 @@ namespace GridGame.App
             for (int i = 0; i < 3; i++)
             {
                 var rivet = new VisualElement { name = "rivet", pickingMode = PickingMode.Ignore };
-                rivet.style.width = rivet.style.height = 8;
+                rivet.style.width = rivet.style.height = Size.Bar;
                 rivet.style.backgroundColor = new Color(0.35f, 0.37f, 0.45f);
                 rivet.style.borderTopLeftRadius = rivet.style.borderTopRightRadius = rivet.style.borderBottomLeftRadius = rivet.style.borderBottomRightRadius = 4;
                 Plate.Add(rivet);
@@ -144,7 +144,7 @@ namespace GridGame.App
 
             CastBar = new VisualElement { name = "castbar-" + u.Id, pickingMode = PickingMode.Ignore };
             CastBar.style.position = Position.Absolute;
-            CastBar.style.left = 18; CastBar.style.right = 18; CastBar.style.bottom = 34; CastBar.style.height = 14;
+            CastBar.style.left = Space.S16; CastBar.style.right = Space.S16; CastBar.style.bottom = Space.S32; CastBar.style.height = Size.Gauge;
             CastBar.style.backgroundColor = Palette.Ink.WithA(0.9f);
             CastBar.style.borderTopLeftRadius = CastBar.style.borderTopRightRadius = CastBar.style.borderBottomLeftRadius = CastBar.style.borderBottomRightRadius = 7;
             CastBar.style.borderTopWidth = CastBar.style.borderBottomWidth = CastBar.style.borderLeftWidth = CastBar.style.borderRightWidth = 2;
@@ -153,7 +153,7 @@ namespace GridGame.App
             CastBar.style.display = DisplayStyle.None;
             castBarFill = new VisualElement { pickingMode = PickingMode.Ignore };
             castBarFill.style.position = Position.Absolute;
-            castBarFill.style.left = castBarFill.style.top = castBarFill.style.bottom = 0;
+            castBarFill.style.left = castBarFill.style.top = castBarFill.style.bottom = Space.S0;
             CastBar.Add(castBarFill);
             Root.Add(CastBar);
 
@@ -161,19 +161,19 @@ namespace GridGame.App
             // plus a badge that only shows once the weapon is on its last point.
             Gear = new VisualElement { name = "gear-" + u.Id, pickingMode = PickingMode.Ignore };
             Gear.style.position = Position.Absolute;
-            Gear.style.left = 18; Gear.style.right = 18; Gear.style.bottom = 50; Gear.style.height = 8;
+            Gear.style.left = Space.S16; Gear.style.right = Space.S16; Gear.style.bottom = Space.S48; Gear.style.height = Size.Bar;
             Gear.style.flexDirection = FlexDirection.Row;
             Gear.style.display = DisplayStyle.None;
             weaponBarEl = new VisualElement { name = "weapon-bar-" + u.Id };
             weaponBarEl.AddToClassList("gauge");
-            weaponBarEl.style.height = 8; weaponBarEl.style.flexGrow = 1; weaponBarEl.style.marginRight = 4;
+            weaponBarEl.style.height = Size.Bar; weaponBarEl.style.flexGrow = 1; weaponBarEl.style.marginRight = Space.S4;
             WeaponFill = new VisualElement { name = "weapon-fill-" + u.Id };
             WeaponFill.AddToClassList("gauge-fill");
             weaponBarEl.Add(WeaponFill);
             Gear.Add(weaponBarEl);
             armorBarEl = new VisualElement { name = "armor-bar-" + u.Id };
             armorBarEl.AddToClassList("gauge");
-            armorBarEl.style.height = 8; armorBarEl.style.flexGrow = 1;
+            armorBarEl.style.height = Size.Bar; armorBarEl.style.flexGrow = 1;
             ArmorFill = new VisualElement { name = "armor-fill-" + u.Id };
             ArmorFill.AddToClassList("gauge-fill");
             armorBarEl.Add(ArmorFill);
@@ -183,8 +183,8 @@ namespace GridGame.App
             // A cracked badge, not a glyph (GG-LAW-11): a red roundel with two crossed white shards.
             WeaponCrack = new VisualElement { name = "weapon-crack-" + u.Id, pickingMode = PickingMode.Ignore };
             WeaponCrack.style.position = Position.Absolute;
-            WeaponCrack.style.left = 14; WeaponCrack.style.bottom = 60;
-            WeaponCrack.style.width = WeaponCrack.style.height = 24;
+            WeaponCrack.style.left = Space.S16; WeaponCrack.style.bottom = Space.S64;
+            WeaponCrack.style.width = WeaponCrack.style.height = Size.Crack;
             WeaponCrack.style.borderTopLeftRadius = WeaponCrack.style.borderTopRightRadius = WeaponCrack.style.borderBottomLeftRadius = WeaponCrack.style.borderBottomRightRadius = 12;
             WeaponCrack.style.backgroundColor = new Color(0.5f, 0.06f, 0.05f, 0.92f);
             WeaponCrack.style.borderTopWidth = WeaponCrack.style.borderBottomWidth = WeaponCrack.style.borderLeftWidth = WeaponCrack.style.borderRightWidth = 2;
@@ -192,13 +192,13 @@ namespace GridGame.App
             WeaponCrack.style.display = DisplayStyle.None;
             var shardA = new VisualElement { pickingMode = PickingMode.Ignore };
             shardA.style.position = Position.Absolute;
-            shardA.style.left = 10; shardA.style.top = 2; shardA.style.width = 3; shardA.style.height = 13;
+            shardA.style.left = Space.S8; shardA.style.top = Space.S4; shardA.style.width = Size.Hairline; shardA.style.height = Size.Shard;
             shardA.style.backgroundColor = Color.white;
             shardA.style.rotate = new Rotate(22f);
             WeaponCrack.Add(shardA);
             var shardB = new VisualElement { pickingMode = PickingMode.Ignore };
             shardB.style.position = Position.Absolute;
-            shardB.style.left = 10; shardB.style.top = 9; shardB.style.width = 3; shardB.style.height = 13;
+            shardB.style.left = Space.S8; shardB.style.top = Space.S8; shardB.style.width = Size.Hairline; shardB.style.height = Size.Shard;
             shardB.style.backgroundColor = Color.white;
             shardB.style.rotate = new Rotate(-26f);
             WeaponCrack.Add(shardB);
@@ -234,7 +234,7 @@ namespace GridGame.App
             if (!u.IsGuest && !u.IsNeutral) return;
             var tag = new Label(u.IsNeutral ? "TALK" : "GUEST") { name = "guest-" + u.Id, pickingMode = PickingMode.Ignore };
             tag.AddToClassList("shadow");
-            tag.style.position = Position.Absolute; tag.style.left = 10; tag.style.top = 6;
+            tag.style.position = Position.Absolute; tag.style.left = Space.S8; tag.style.top = Space.S8;
             tag.style.fontSize = 22; Fonts.UseHeavy(tag);
             tag.style.color = u.IsNeutral ? Palette.Neutral : new Color(0.6f, 1f, 0.75f);
             Frame.Add(tag);
@@ -286,7 +286,7 @@ namespace GridGame.App
             {
                 var more = new Label((statuses.Count).ToString()) { pickingMode = PickingMode.Ignore };
                 more.AddToClassList("shadow");
-                more.style.position = Position.Absolute; more.style.right = -6; more.style.bottom = -10;
+                more.style.position = Position.Absolute; more.style.right = -Space.S8; more.style.bottom = -Space.S8;
                 more.style.fontSize = 20; Fonts.UseHeavy(more);
                 pip.Add(more);
             }
@@ -410,13 +410,13 @@ namespace GridGame.App
             // Under the units: the streak trails behind the moving token (GG-T219).
             Trail = new TrailLayer { name = "trail" };
             Trail.style.position = Position.Absolute;
-            Trail.style.left = Trail.style.top = Trail.style.right = Trail.style.bottom = 0;
+            Trail.style.left = Trail.style.top = Trail.style.right = Trail.style.bottom = Space.S0;
             Root.Add(Trail);
             UnitLayer = Layer("units");
             MarkLayer = Layer("marks");
             Lines = new LineLayer();
             Lines.style.position = Position.Absolute;
-            Lines.style.left = Lines.style.top = Lines.style.right = Lines.style.bottom = 0;
+            Lines.style.left = Lines.style.top = Lines.style.right = Lines.style.bottom = Space.S0;
             Lines.pickingMode = PickingMode.Ignore;
             Root.Add(Lines);
             FxLayer = Layer("fx");
@@ -451,7 +451,7 @@ namespace GridGame.App
         {
             var l = new VisualElement { name = name, pickingMode = PickingMode.Ignore };
             l.style.position = Position.Absolute;
-            l.style.left = l.style.top = l.style.right = l.style.bottom = 0;
+            l.style.left = l.style.top = l.style.right = l.style.bottom = Space.S0;
             Root.Add(l);
             return l;
         }
@@ -520,7 +520,7 @@ namespace GridGame.App
                 amp.style.borderTopLeftRadius = amp.style.borderTopRightRadius = amp.style.borderBottomLeftRadius = amp.style.borderBottomRightRadius = 10;
                 var glow = new VisualElement { pickingMode = PickingMode.Ignore };
                 glow.style.position = Position.Absolute;
-                glow.style.left = glow.style.top = glow.style.right = glow.style.bottom = -30;
+                glow.style.left = glow.style.top = glow.style.right = glow.style.bottom = -Space.S32;
                 glow.style.backgroundImage = new StyleBackground(App.Art.Glow);
                 glow.style.unityBackgroundImageTintColor = Palette.Warn.WithA(0.8f);
                 amp.Add(glow);
@@ -604,20 +604,20 @@ namespace GridGame.App
             var c = App.Art.HexColor(def?.Color, Palette.Gold);
             var glow = new VisualElement { pickingMode = PickingMode.Ignore };
             glow.style.position = Position.Absolute;
-            glow.style.left = glow.style.top = glow.style.right = glow.style.bottom = -36;
+            glow.style.left = glow.style.top = glow.style.right = glow.style.bottom = -Space.S32;
             glow.style.backgroundImage = new StyleBackground(App.Art.Glow);
             glow.style.unityBackgroundImageTintColor = new Color(c.r, c.g, c.b, 0.85f);
             root.Add(glow);
             var disc = new VisualElement { name = "disc", pickingMode = PickingMode.Ignore };
             disc.style.position = Position.Absolute;
-            disc.style.left = disc.style.top = disc.style.right = disc.style.bottom = 0;
+            disc.style.left = disc.style.top = disc.style.right = disc.style.bottom = Space.S0;
             SetRadius(disc, Tile * 0.28f);
             disc.style.backgroundColor = Palette.Ink.WithA(0.92f);
             disc.style.borderTopWidth = disc.style.borderBottomWidth = disc.style.borderLeftWidth = disc.style.borderRightWidth = 5;
             disc.style.borderTopColor = disc.style.borderBottomColor = disc.style.borderLeftColor = disc.style.borderRightColor = c;
             var icon = new VisualElement { pickingMode = PickingMode.Ignore };
             icon.style.position = Position.Absolute;
-            icon.style.left = icon.style.top = icon.style.right = icon.style.bottom = 8;
+            icon.style.left = icon.style.top = icon.style.right = icon.style.bottom = Space.S8;
             var tex = App.Art.UiIcon(def?.Icon);
             if (tex != null) { icon.style.backgroundImage = new StyleBackground(tex); icon.style.backgroundSize = new BackgroundSize(BackgroundSizeType.Contain); }
             disc.Add(icon);
@@ -697,7 +697,7 @@ namespace GridGame.App
             l.AddToClassList("shadow");
             l.style.position = Position.Absolute;
             l.style.left = at.x - 150; l.style.top = at.y - 60;
-            l.style.width = 300;
+            l.style.width = Size.Card;
             l.style.unityTextAlign = TextAnchor.MiddleCenter;
             l.style.fontSize = size;
             Fonts.UseHeavy(l);
@@ -715,7 +715,7 @@ namespace GridGame.App
         {
             this.frac = frac;
             style.position = Position.Absolute;
-            style.left = style.top = style.right = style.bottom = -4;
+            style.left = style.top = style.right = style.bottom = -Space.S4;
             generateVisualContent += ctx =>
             {
                 var p = ctx.painter2D;
@@ -746,7 +746,7 @@ namespace GridGame.App
         public CastRing()
         {
             style.position = Position.Absolute;
-            style.left = style.top = 2; style.right = style.bottom = 2;
+            style.left = style.top = Space.S4; style.right = style.bottom = Space.S4;
             generateVisualContent += Draw;
         }
 

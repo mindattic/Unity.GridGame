@@ -66,6 +66,9 @@ namespace GridGame.App
         private VisualElement bannerViewport;
         private Coroutine bannerScrollRoutine;
         private const float BannerViewportHeight = 90f;
+        /// <summary>The banner row sits between the timeline and the board; the info panel starts under the mana row and
+        /// stretches to the bottom, so it alone absorbs a taller stage (§26.3).</summary>
+        private const float BannerTop = 318f, InfoPanelTop = 2250f, TopBarHeight = 110f, TimelineFrameHeight = 100f;
         private Label banner, waveLabel, coinLabel, timerLabel;
         private VisualElement shake;
         private VisualElement boardHost;
@@ -180,11 +183,11 @@ namespace GridGame.App
             bannerViewport = Ui.El("", shake);
             bannerViewport.name = "banner-viewport";
             bannerViewport.style.position = Position.Absolute;
-            bannerViewport.style.left = 0; bannerViewport.style.right = 0; bannerViewport.style.top = 318; bannerViewport.style.height = BannerViewportHeight;
+            bannerViewport.style.left = Space.S0; bannerViewport.style.right = Space.S0; bannerViewport.style.top = BannerTop; bannerViewport.style.height = BannerViewportHeight;
             bannerViewport.style.overflow = Overflow.Hidden;
             banner = Ui.Text("", "h2 shadow", bannerViewport);
             banner.style.position = Position.Absolute;
-            banner.style.left = 0; banner.style.right = 0; banner.style.top = 0;
+            banner.style.left = Space.S0; banner.style.right = Space.S0; banner.style.top = Space.S0;
             banner.style.unityTextAlign = TextAnchor.UpperCenter;
             banner.style.whiteSpace = WhiteSpace.Normal;
 
@@ -223,9 +226,9 @@ namespace GridGame.App
             BuildOrbs(shake);
             panel = Ui.Window(null, shake, "window--compact");
             panel.style.position = Position.Absolute;
-            panel.style.left = 20; panel.style.right = 20; panel.style.top = 2250; panel.style.bottom = 20;
-            panel.style.marginTop = panel.style.marginBottom = 0;
-            panel.style.paddingTop = panel.style.paddingBottom = 14;
+            panel.style.left = Fit.Edge; panel.style.right = Fit.Edge; panel.style.top = InfoPanelTop; panel.style.bottom = Space.S24;
+            panel.style.marginTop = panel.style.marginBottom = Space.S0;
+            panel.style.paddingTop = panel.style.paddingBottom = Space.S16;
 
             ApplyStageLayout();
             foreach (var u in State.Units) if (u.Alive) board.Add(u);
@@ -252,17 +255,17 @@ namespace GridGame.App
         {
             var bar = Ui.El("row", root);
             bar.style.position = Position.Absolute;
-            bar.style.left = 20; bar.style.right = 20; bar.style.top = 30; bar.style.height = 110;
+            bar.style.left = Fit.Edge; bar.style.right = Fit.Edge; bar.style.top = Space.S32; bar.style.height = TopBarHeight;
             Ui.Button("II", OpenMenu, "btn--small btn--icon", bar).name = "menu";
             var mid = Ui.El("col grow", bar);
             mid.style.alignItems = Align.Center;
             Ui.Text(State.Stage.Name, "h2 shadow", mid);
             waveLabel = Ui.Text("", "small shadow dim", mid);
             coinLabel = Ui.Text("", "h2 gold shadow", bar);
-            coinLabel.style.width = 200; coinLabel.style.unityTextAlign = TextAnchor.MiddleRight;
+            coinLabel.style.width = Fit.W(17f); coinLabel.style.unityTextAlign = TextAnchor.MiddleRight;
             timerLabel = Ui.Text("", "h1 shadow warn", root);
             timerLabel.style.position = Position.Absolute;
-            timerLabel.style.right = 40; timerLabel.style.top = 318;
+            timerLabel.style.right = Space.S48; timerLabel.style.top = BannerTop;
         }
 
         /// <summary>Re-applies the positions that depend on the stage width (build time and on resize).</summary>
@@ -289,30 +292,30 @@ namespace GridGame.App
             var frame = Ui.El("", root);
             timelineFrame = frame;
             frame.style.position = Position.Absolute;
-            frame.style.left = TimelineLeft; frame.style.top = TimelineY - 50; frame.style.height = 100;
+            frame.style.left = TimelineLeft; frame.style.top = TimelineY - TimelineFrameHeight / 2f; frame.style.height = TimelineFrameHeight;
             timelineBar = Ui.El("", frame);
             timelineBar.name = "timeline-track";
             timelineBar.style.position = Position.Absolute;
-            timelineBar.style.left = 0; timelineBar.style.right = 0; timelineBar.style.top = TrackY - 3; timelineBar.style.height = 6;
+            timelineBar.style.left = Space.S0; timelineBar.style.right = Space.S0; timelineBar.style.top = TrackY - 3; timelineBar.style.height = Size.Track;
             timelineBar.style.backgroundColor = Palette.Text.WithA(0.85f);
             timelineBar.style.borderTopLeftRadius = timelineBar.style.borderTopRightRadius = timelineBar.style.borderBottomLeftRadius = timelineBar.style.borderBottomRightRadius = 3;
             zone = Ui.El("", frame);
             zone.style.position = Position.Absolute;
-            zone.style.left = Length.Percent((1f - BattleConfig.ZoneU) * 100f); zone.style.right = 0;
-            zone.style.top = 8; zone.style.bottom = 8;
+            zone.style.left = Length.Percent((1f - BattleConfig.ZoneU) * 100f); zone.style.right = Space.S0;
+            zone.style.top = Space.S8; zone.style.bottom = Space.S8;
             zone.style.backgroundColor = new Color(1f, 0.55f, 0.2f, 0.18f);
             zone.style.borderLeftWidth = 4; zone.style.borderLeftColor = new Color(1f, 0.6f, 0.25f, 0.9f);
             var act = Ui.Text("ACT", "tiny warn shadow", frame);
-            act.style.position = Position.Absolute; act.style.right = -6; act.style.top = -22;
+            act.style.position = Position.Absolute; act.style.right = -Space.S8; act.style.top = -Space.S24;
             timelineIcons = Ui.El("", frame);
             timelineIcons.style.position = Position.Absolute;
-            timelineIcons.style.left = timelineIcons.style.top = timelineIcons.style.right = timelineIcons.style.bottom = 0;
+            timelineIcons.style.left = timelineIcons.style.top = timelineIcons.style.right = timelineIcons.style.bottom = Space.S0;
             timelineIcons.schedule.Execute(CycleCastRings).Every(1200);
 
             var shield = Ui.Button("GUARD", () => { if (CanCommand()) Commit(new ShieldCommand()); }, "btn--icon", root);
             shield.name = "shield";
             shield.style.position = Position.Absolute;
-            shield.style.right = 18; shield.style.top = TimelineY - 64; shield.style.width = 128; shield.style.height = 128;
+            shield.style.right = Space.S16; shield.style.top = TimelineY - 64; shield.style.width = shield.style.height = Size.Target;
             shield.style.fontSize = 30;
         }
 
@@ -322,14 +325,14 @@ namespace GridGame.App
             bar.name = "abilitybar";
             bar.style.position = Position.Absolute;
             // Even gutters on the space scale; the slots, not the gaps, take a wider stage (POL-C1/C8).
-            bar.style.left = Space.S16; bar.style.right = Space.S16; bar.style.top = BoardTop + BoardView.Tile * BattleConfig.Rows + 20; bar.style.height = 196;
+            bar.style.left = Space.S16; bar.style.right = Space.S16; bar.style.top = BoardTop + BoardView.Tile * BattleConfig.Rows + 20; bar.style.height = Size.Slot;
             bar.style.justifyContent = Justify.FlexStart;
             for (int i = 0; i < 5; i++)
             {
                 int idx = i;
                 var slot = Ui.El("col center", bar);
                 slot.name = "slot" + i;
-                slot.style.flexGrow = 1; slot.style.flexBasis = 0; slot.style.height = 196;
+                slot.style.flexGrow = 1; slot.style.flexBasis = 0; slot.style.height = Size.Slot;
                 slot.style.marginLeft = slot.style.marginRight = Space.S8;
                 slot.style.borderTopLeftRadius = slot.style.borderTopRightRadius = slot.style.borderBottomLeftRadius = slot.style.borderBottomRightRadius = 18;
                 slot.style.borderTopWidth = slot.style.borderBottomWidth = slot.style.borderLeftWidth = slot.style.borderRightWidth = 4;
@@ -338,9 +341,9 @@ namespace GridGame.App
                 Ui.Pressable(slot);
                 AttachSlotInspect(slot, idx);
                 slot.RegisterCallback<ClickEvent>(_ => OnSlot(idx));
-                var icon = Ui.El("menu-icon", slot); icon.name = "icon"; icon.style.marginRight = 0; icon.style.width = icon.style.height = 76;
+                var icon = Ui.El("menu-icon", slot); icon.name = "icon"; icon.style.marginRight = Space.S0; icon.style.width = icon.style.height = Size.IconL;
                 var name = Ui.Text("", "tiny", slot); name.name = "name"; name.style.unityTextAlign = TextAnchor.MiddleCenter; name.style.whiteSpace = WhiteSpace.Normal; name.style.maxWidth = Length.Percent(94);
-                var cost = Ui.El("row", slot); cost.name = "cost"; cost.style.height = 36;
+                var cost = Ui.El("row", slot); cost.name = "cost"; cost.style.height = Size.Pip;
                 slotViews.Add(slot);
             }
         }
@@ -350,7 +353,7 @@ namespace GridGame.App
             var row = Ui.El("row", root);
             row.name = "orbs";
             row.style.position = Position.Absolute;
-            row.style.left = 40; row.style.right = 40; row.style.top = BoardTop + BoardView.Tile * BattleConfig.Rows + 228; row.style.height = 76;
+            row.style.left = Fit.Edge; row.style.right = Fit.Edge; row.style.top = BoardTop + BoardView.Tile * BattleConfig.Rows + 228; row.style.height = Size.IconL;
             row.style.justifyContent = Justify.SpaceBetween;
             int cap = Mathf.Clamp(State.Bank.Capacity, ManaBank.DefaultCapacity, 16);
             float size = cap <= 12 ? 74 : Mathf.Floor(1080f / cap) - 6;
@@ -493,7 +496,7 @@ namespace GridGame.App
                 // Heroes and enemies alike: the unit's portrait through its Thumbnail window (§12.1.1, GG-T221).
                 var sprite = new VisualElement { name = "tl-art", pickingMode = PickingMode.Ignore };
                 sprite.style.position = Position.Absolute;
-                sprite.style.left = sprite.style.top = sprite.style.right = sprite.style.bottom = 3;
+                sprite.style.left = sprite.style.top = sprite.style.right = sprite.style.bottom = Space.S4;
                 Ui.PortraitThumb(sprite, owner?.Def.Id);
                 icon.Add(sprite);
             }
@@ -835,7 +838,7 @@ namespace GridGame.App
         {
             var row = Ui.El("row", parent);
             var pip = Ui.StatusPip(icon, letter, color, 40, row);
-            pip.style.marginRight = 10;
+            pip.style.marginRight = Space.S8;
             var t = Ui.Text($"{name} — {what}", "tiny", row);
             t.style.whiteSpace = WhiteSpace.Normal; t.style.flexShrink = 1;
             return pip;
@@ -851,7 +854,7 @@ namespace GridGame.App
             var row = Ui.El("row", panel);
             row.style.alignItems = Align.Center;
             var icon = Ui.El("menu-icon", row);
-            icon.style.width = icon.style.height = 96;
+            icon.style.width = icon.style.height = Size.Avatar;
             var itemTex = a.Id != null && a.Id.StartsWith("item:") ? Art.ItemIcon(a.Id.Substring(5)) : null;
             icon.style.backgroundImage = new StyleBackground(itemTex ?? Art.AbilityIcon(a) ?? Art.Orb);
             var col = Ui.El("col grow", row);
@@ -859,7 +862,7 @@ namespace GridGame.App
             var top = Ui.El("row", col);
             top.style.alignItems = Align.Center;
             Ui.Text(a.Name, "h2", top);
-            if (a.Cost > 0) Ui.CostPips(a.Cost, top, 32).style.marginLeft = 12;
+            if (a.Cost > 0) Ui.CostPips(a.Cost, top, 32).style.marginLeft = Space.S16;
             string timing = a.Kind == AbilityKind.Skill ? (a.CooldownTurns > 0 ? $"Skill · recharges in {a.CooldownTurns} turns" : "Skill")
                 : a.Kind == AbilityKind.Item ? "Item · acts at once"
                 : a.CastTime > 0 ? $"Charges {a.CastTime:0.#}s on the timeline" : "Instant";
@@ -886,10 +889,10 @@ namespace GridGame.App
             string verb = a.Kind == AbilityKind.Item ? "Use" : a.Kind == AbilityKind.Spell ? "Cast" : "Go";
             var ok = Ui.Button(verb, ConfirmPending, "btn--primary", btns);
             ok.name = "confirm-action";
-            ok.style.marginTop = ok.style.marginBottom = 4;
+            ok.style.marginTop = ok.style.marginBottom = Space.S4;
             var cancel = Ui.Button("Cancel", CancelByPlayer, "btn--small", btns);
             cancel.name = "confirm-cancel";
-            cancel.style.marginTop = cancel.style.marginBottom = 4;
+            cancel.style.marginTop = cancel.style.marginBottom = Space.S4;
         }
 
         // ─────────────────────────────────────────────────────────────────────────
@@ -1516,7 +1519,7 @@ namespace GridGame.App
             text ??= "";
             banner.text = text;
             banner.style.fontSize = text.Length > 44 ? 32 : text.Length > 32 ? 38 : 48;
-            banner.style.top = 0;
+            banner.style.top = Space.S0;
             if (bannerScrollRoutine != null) { App.StopCoroutine(bannerScrollRoutine); bannerScrollRoutine = null; }
             if (text.Length > 0) bannerScrollRoutine = App.StartCoroutine(ScrollBannerIfNeeded());
         }

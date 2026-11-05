@@ -91,12 +91,12 @@ namespace GridGame.App
             var d = Ui.Text(string.IsNullOrEmpty(i.Description) ? "—" : i.Description, "small", w);
             d.style.whiteSpace = WhiteSpace.Normal;
             var st = StatsText(i);
-            if (st.Length > 0) { var l = Ui.Text(st, "small gold", w); l.style.whiteSpace = WhiteSpace.Normal; l.style.marginTop = 8; }
+            if (st.Length > 0) { var l = Ui.Text(st, "small gold", w); l.style.whiteSpace = WhiteSpace.Normal; l.style.marginTop = Space.S8; }
             var set = c?.TryArmorSetOf(i.Id);
             if (set != null)
             {
                 var head = Ui.Text($"{set.Name} set · {set.Weight} · Lv {set.Level}", "small", w);
-                head.style.marginTop = 8;
+                head.style.marginTop = Space.S8;
                 foreach (var b in set.Bonuses) Wrap(Ui.Text($"{b.Pieces} pieces: {ArmorSets.Describe(b)}", "tiny dim", w));
             }
         }
@@ -139,7 +139,7 @@ namespace GridGame.App
         {
             Ui.Tabs(Tabs, tab, i => { tab = i; selected = null; Refresh(); }, body);
             var w = Ui.Window(null, body);
-            w.style.flexGrow = 1; w.style.marginTop = 0;
+            w.style.flexGrow = 1; w.style.marginTop = Space.S0;
             var list = Ui.List(w);
             var items = S.Inventory.Where(kv => kv.Value > 0).Select(kv => (item: C.TryItem(kv.Key), n: kv.Value)).Where(x => x.item != null)
                 .Where(x => tab == 0 || (tab == 1 && x.item.Type == ItemType.Consumable) || (tab == 2 && x.item.Type == ItemType.Equipment) || (tab == 3 && x.item.Type == ItemType.CraftingMaterial))
@@ -184,19 +184,19 @@ namespace GridGame.App
             {
                 var note = Ui.Text("Broken. Can't be equipped or repaired — salvage it at the Blacksmith for materials.", "small bad", detail);
                 note.style.whiteSpace = WhiteSpace.Normal;
-                note.style.marginTop = 10;
+                note.style.marginTop = Space.S8;
                 return;
             }
             if (it != null && it.Type == ItemType.RecipeScroll)
             {
                 var learnRow = Ui.El("row", detail);
-                learnRow.style.marginTop = 10;
+                learnRow.style.marginTop = Space.S8;
                 Ui.Button("Learn recipe", () => { selected = it; Done(RecipeDiscovery.Learn(C, S, it.Id)); }, "btn--small btn--primary", learnRow);
                 return;
             }
             if (!Camp.UsableAtCamp(it)) return;
             var row = Ui.El("row", detail);
-            row.style.marginTop = 10;
+            row.style.marginTop = Space.S8;
             if (Camp.HealsWholeParty(it))
             {
                 Ui.Button("Use on party", () => Done(Camp.Use(C, S, it.Id, null)), "btn--small btn--primary", row);
@@ -226,7 +226,7 @@ namespace GridGame.App
             var bar = Ui.Window(null, parent);
             var row = Ui.El("row", bar);
             Ui.Button("‹", () => { HeroId = roster[(idx - 1 + roster.Count) % roster.Count]; Refresh(); }, "btn--small btn--icon", row);
-            Ui.Thumb(Hero.ClassId, row, 120).style.marginLeft = 16;
+            Ui.Thumb(Hero.ClassId, row, 120).style.marginLeft = Space.S16;
             var col = Ui.El("col grow", row);
             var u = Progression.Preview(C, Hero);
             Ui.Text(C.Class(Hero.ClassId).Name, "h2", col);
@@ -250,7 +250,7 @@ namespace GridGame.App
 
             // GG-T48: the build summary — class, tree investment and role, all read off the numbers below.
             var summary = Ui.Text(Progression.BuildSummary(C, h), "small gold", body);
-            summary.style.whiteSpace = WhiteSpace.Normal; summary.style.marginBottom = 10;
+            summary.style.whiteSpace = WhiteSpace.Normal; summary.style.marginBottom = Space.S8;
 
             // Sized by its own content (portrait + stats + gear + lore), not flex-grown: the Known
             // Abilities/Skill Trees/Proficiencies block below is the one that absorbs leftover height and
@@ -259,53 +259,53 @@ namespace GridGame.App
             var w = Ui.Window(null, body);
             var top = Ui.El("row", w);
             var art = Ui.El("", top);
-            art.style.width = 420; art.style.height = 620;
+            art.style.width = Size.ArtW; art.style.height = Size.ArtH;
             art.style.backgroundImage = new StyleBackground(Art.Portrait(h.ClassId));
             art.style.backgroundSize = new BackgroundSize(BackgroundSizeType.Contain);
             var stats = Ui.El("col grow", top);
-            stats.style.marginLeft = 20;
+            stats.style.marginLeft = Space.S24;
             int hp = h.Hp > 0 ? Math.Min(h.Hp, u.MaxHp) : u.MaxHp;
             var roleRow = Ui.El("row", stats);
-            roleRow.style.marginBottom = 10;
-            Ui.RoleBadge(def.Role, roleRow, 30).style.marginLeft = 0;
+            roleRow.style.marginBottom = Space.S8;
+            Ui.RoleBadge(def.Role, roleRow, 30).style.marginLeft = Space.S0;
             var blurb = Ui.Text(Ui.RoleBlurb(def.Role), "tiny dim", roleRow);
             blurb.style.whiteSpace = WhiteSpace.Normal; blurb.style.flexShrink = 1;
             Ui.Text($"HP  {hp} / {u.MaxHp}", "h2", stats);
-            Ui.Gauge(hp / (float)u.MaxHp, stats).style.marginBottom = 18;
+            Ui.Gauge(hp / (float)u.MaxHp, stats).style.marginBottom = Space.S16;
             var (lvl, into) = GridGame.Core.Rules.Formulas.LevelFromTotalXp(h.TotalXp);
             Ui.Text($"Level {lvl}", "h2 gold", stats);
             Ui.Text($"Next: {GridGame.Core.Rules.Formulas.XpToNext(lvl) - into} XP", "small dim", stats);
-            Ui.Text($"Skill Points: {h.SkillPoints}", "small dim", stats).style.marginBottom = 12;
+            Ui.Text($"Skill Points: {h.SkillPoints}", "small dim", stats).style.marginBottom = Space.S16;
 
             // GG-T48: base (pre-gear) vs. gear-bought vs. total, instead of just the effective total.
             var baseStats = u.LevelStats;
             var eff = u.Effective;
             var statHead = Ui.El("row", stats);
-            Ui.Text("", "small dim", statHead).style.width = 90;
-            Ui.Text("Base", "tiny dim", statHead).style.width = 70;
-            Ui.Text("Gear", "tiny dim", statHead).style.width = 70;
-            Ui.Text("Total", "tiny dim", statHead).style.width = 90;
+            Ui.Text("", "small dim", statHead).style.width = Size.Column;
+            Ui.Text("Base", "tiny dim", statHead).style.width = Size.ColumnS;
+            Ui.Text("Gear", "tiny dim", statHead).style.width = Size.ColumnS;
+            Ui.Text("Total", "tiny dim", statHead).style.width = Size.Column;
             void Stat(string n, float b, float t)
             {
                 var r = Ui.El("row", stats);
-                Ui.Text(n, "small dim", r).style.width = 90;
-                Ui.Text($"{b:0}", "small dim", r).style.width = 70;
+                Ui.Text(n, "small dim", r).style.width = Size.Column;
+                Ui.Text($"{b:0}", "small dim", r).style.width = Size.ColumnS;
                 float d = t - b;
                 string gearClass = d > 0.05f ? "small good" : d < -0.05f ? "small bad" : "small dim";
-                Ui.Text(Math.Abs(d) < 0.05f ? "—" : $"{(d > 0 ? "+" : "")}{d:0}", gearClass, r).style.width = 70;
-                Ui.Text($"{t:0}", "h2", r).style.width = 90;
+                Ui.Text(Math.Abs(d) < 0.05f ? "—" : $"{(d > 0 ? "+" : "")}{d:0}", gearClass, r).style.width = Size.ColumnS;
+                Ui.Text($"{t:0}", "h2", r).style.width = Size.Column;
             }
             Stat("STR", baseStats.Strength, eff.Strength); Stat("VIT", baseStats.Vitality, eff.Vitality);
             Stat("AGI", baseStats.Agility, eff.Agility); Stat("SPD", baseStats.Speed, eff.Speed);
             Stat("INT", baseStats.Intelligence, eff.Intelligence); Stat("WIS", baseStats.Wisdom, eff.Wisdom);
             Stat("LCK", baseStats.Luck, eff.Luck);
 
-            var gear = Ui.El("col", w); gear.style.marginTop = 16;
+            var gear = Ui.El("col", w); gear.style.marginTop = Space.S16;
             void G(string label, string id, int dur = -1, int repairs = 0, float mastery = 1f, string enchant = null)
             {
                 var it = C.TryItem(id);
                 var r = Ui.El("row", gear);
-                Ui.Text(label, "small dim", r).style.width = 180;
+                Ui.Text(label, "small dim", r).style.width = Size.Label;
                 string name = it == null ? "—" : (mastery > 1f ? "★ " : "") + it.Name +
                     (dur >= 0 && it.Durability > 0 ? $"  ({dur}/{Repair.EffectiveMax(it, repairs, mastery)})" : "");
                 Ui.Text(name, "small " + (it != null ? Ui.RarityClass(it.Rarity) : "dim"), r);
@@ -322,7 +322,7 @@ namespace GridGame.App
             foreach (var slot in Equipment.JewelrySlots)
                 G(ItemUi.SlotName(slot), h.Jewelry.TryGetValue(slot, out var jid) ? jid : null);
             var lore = Ui.Text(Ui.Keywords(def.Lore ?? def.Description ?? ""), "small dim", w);
-            lore.style.whiteSpace = WhiteSpace.Normal; lore.style.marginTop = 16;
+            lore.style.whiteSpace = WhiteSpace.Normal; lore.style.marginTop = Space.S16;
 
             // GG-T48: known abilities, skill-tree point spend by tree, and gated proficiencies — one
             // flex-grown, scrollable block (the EquipScreen/AbilitiesScreen pattern) so a long Known list
@@ -340,7 +340,7 @@ namespace GridGame.App
             foreach (var p in worn)
             {
                 var block = Ui.El("col", setsWindow);
-                block.style.marginBottom = 8;
+                block.style.marginBottom = Space.S8;
                 ItemUi.SetLines(block, p, p.Worn);
             }
 
@@ -362,7 +362,7 @@ namespace GridGame.App
             foreach (var t in trees)
             {
                 var r = Ui.El("row", treeWindow);
-                Ui.Text(t.TreeName, "small dim", r).style.width = 180;
+                Ui.Text(t.TreeName, "small dim", r).style.width = Size.Label;
                 Ui.Text($"{t.Points} pts", "h2 gold", r);
             }
 
@@ -414,7 +414,7 @@ namespace GridGame.App
             var (now, then) = Equipment.Compare(C, h, slot, thenId);
             var grid = Ui.El("row", cmp);
             grid.style.flexWrap = Wrap.Wrap;
-            void Cell(string n, float a, float b) { var c = Ui.El("row", grid); c.style.width = Length.Percent(25); Ui.Text(n, "small dim", c).style.width = 90; Ui.Text(Ui.Delta(a, b), "small", c); }
+            void Cell(string n, float a, float b) { var c = Ui.El("row", grid); c.style.width = Length.Percent(25); Ui.Text(n, "small dim", c).style.width = Size.Column; Ui.Text(Ui.Delta(a, b), "small", c); }
             Cell("STR", now.Strength, then.Strength); Cell("VIT", now.Vitality, then.Vitality); Cell("AGI", now.Agility, then.Agility); Cell("SPD", now.Speed, then.Speed);
             Cell("INT", now.Intelligence, then.Intelligence); Cell("WIS", now.Wisdom, then.Wisdom); Cell("LCK", now.Luck, then.Luck);
             var curItem = C.TryItem(curId);
@@ -422,7 +422,7 @@ namespace GridGame.App
             if (!string.IsNullOrEmpty(curItem?.PassiveName) || (!string.IsNullOrEmpty(thenItem?.PassiveName) && thenId != curId))
             {
                 var prow = Ui.El("col", cmp);
-                prow.style.marginTop = 8;
+                prow.style.marginTop = Space.S8;
                 if (!string.IsNullOrEmpty(curItem?.PassiveName))
                     Ui.Text($"Now: {curItem.PassiveName} — {curItem.PassiveDescription}", "small dim", prow).style.whiteSpace = WhiteSpace.Normal;
                 if (!string.IsNullOrEmpty(thenItem?.PassiveName) && thenId != curId)
@@ -443,7 +443,7 @@ namespace GridGame.App
                     var preview = thenSets.FirstOrDefault(p => p.Set == set) ?? new SetProgress { Set = set };
                     int nowWorn = nowSets.FirstOrDefault(p => p.Set == set)?.Worn ?? 0;
                     var block = Ui.El("col", cmp);
-                    block.style.marginTop = 6;
+                    block.style.marginTop = Space.S8;
                     ItemUi.SetLines(block, preview, nowWorn, compact: true);
                 }
             }
@@ -504,7 +504,7 @@ namespace GridGame.App
                 int idx = i;
                 var cell = Ui.El("col center", bar);
                 // Every bar slot shares the row with even gutters, however many slots or however wide the stage (POL-C8).
-                cell.style.flexGrow = 1; cell.style.flexBasis = 0; cell.style.height = 170;
+                cell.style.flexGrow = 1; cell.style.flexBasis = 0; cell.style.height = Size.Cell;
                 cell.style.marginLeft = cell.style.marginRight = Space.S8 / 2f;
                 cell.style.borderTopLeftRadius = cell.style.borderTopRightRadius = cell.style.borderBottomLeftRadius = cell.style.borderBottomRightRadius = 14;
                 cell.style.borderTopWidth = cell.style.borderBottomWidth = cell.style.borderLeftWidth = cell.style.borderRightWidth = i == slot ? 6 : 3;
@@ -515,7 +515,7 @@ namespace GridGame.App
                 var entry = h.Bar[i];
                 var label = EntryName(entry);
                 var icon = EntryIcon(entry);
-                if (icon != null) { var ic = Ui.El("menu-icon", cell); ic.style.backgroundImage = new StyleBackground(icon); ic.style.marginRight = 0; }
+                if (icon != null) { var ic = Ui.El("menu-icon", cell); ic.style.backgroundImage = new StyleBackground(icon); ic.style.marginRight = Space.S0; }
                 var t = Ui.Text(label ?? "Empty", "tiny" + (label == null ? " dim" : ""), cell);
                 t.style.unityTextAlign = TextAnchor.MiddleCenter; t.style.whiteSpace = WhiteSpace.Normal;
                 cell.AddToClassList("card-tap");
@@ -523,7 +523,7 @@ namespace GridGame.App
                 Ui.Tappable(cell, () => { slot = idx; Refresh(); });
             }
             var tools = Ui.El("row", barW);
-            tools.style.marginTop = 10; tools.style.alignItems = Align.Center;
+            tools.style.marginTop = Space.S8; tools.style.alignItems = Align.Center;
             Ui.Text("Pick a slot, then choose what goes in it — or move it along the bar.", "tiny dim grow", tools).style.whiteSpace = WhiteSpace.Normal;
             var left = Ui.Button("‹ Move", () => { var r = Abilities.Swap(S, h, slot, slot - 1); if (r.Ok) slot--; Done(r); }, "btn--small", tools);
             left.name = "bar-move-left";
@@ -534,7 +534,7 @@ namespace GridGame.App
 
             Ui.Tabs(new[] { "Known", "Items", "Learn" }, tab, i => { tab = i; Refresh(); }, body);
             var w = Ui.Window(null, body);
-            w.style.flexGrow = 1; w.style.marginTop = 0;
+            w.style.flexGrow = 1; w.style.marginTop = Space.S0;
             var list = Ui.List(w).contentContainer;
             if (slot < unlocked && h.Bar[slot] != null) Ui.MenuRow("Clear slot", "", () => Done(Abilities.Assign(C, S, h, slot, null)), list);
             if (tab == 0)
@@ -591,7 +591,7 @@ namespace GridGame.App
             Ui.Text($"First lesson free — it goes onto the {hero}'s battle bar" + (plan.Slot >= 0 ? $", slot {plan.Slot + 1}." : "."), "small gold", card).style.whiteSpace = WhiteSpace.Normal;
             var btn = Ui.Button("Learn", () => LearnDone(Abilities.Learn(C, S, plan.Hero, plan.Skill.Id), plan.Hero, plan.Skill.Id), "btn--primary", card);
             btn.name = CampTips.CraftButton;
-            btn.style.marginTop = 10;
+            btn.style.marginTop = Space.S8;
         }
 
         /// <summary>After learning, select the bar slot the skill went into (the guided first one is slotted automatically).</summary>
@@ -608,7 +608,7 @@ namespace GridGame.App
         private void Describe(AbilityDef a, VisualElement list)
         {
             var d = Ui.Text(a.Description ?? "", "tiny dim", list);
-            d.style.whiteSpace = WhiteSpace.Normal; d.style.marginLeft = 64; d.style.marginBottom = 8;
+            d.style.whiteSpace = WhiteSpace.Normal; d.style.marginLeft = Space.S64; d.style.marginBottom = Space.S8;
         }
 
         /// <summary>The hold-to-read card for a bar entry: an ability, a battle item or a swap weapon.</summary>
@@ -689,7 +689,7 @@ namespace GridGame.App
             if (tab == 2) { BuildBargain(body); return; }
             bool selling = tab == 1;
             var w = Ui.Window(null, body);
-            w.style.flexGrow = 1; w.style.marginTop = 0;
+            w.style.flexGrow = 1; w.style.marginTop = Space.S0;
             var list = Ui.List(w).contentContainer;
             var cart = selling ? sellCart : buyCart;
             var items = selling ? Shop.Sellable(C, S) : Shop.Stock(C);
@@ -705,10 +705,10 @@ namespace GridGame.App
                 int max = selling ? S.Count(item.Id) : Shop.MaxBuy(S, item);
                 var row = ItemUi.Row(item, $"{price} G", () => ItemUi.Detail(detail, item, C), list);
                 var owned = Ui.Text($"own {S.Count(item.Id)}", "tiny dim", row);
-                owned.style.marginLeft = 12; owned.style.width = 110;
+                owned.style.marginLeft = Space.S16; owned.style.width = Size.Thumb;
                 var minus = Ui.Button("−", () => { Step(cart, item.Id, -1, max); }, "btn--small btn--icon", row);
                 var n = Ui.Text(q.ToString(), "h2", row);
-                n.style.width = 70; n.style.unityTextAlign = TextAnchor.MiddleCenter;
+                n.style.width = Size.ColumnS; n.style.unityTextAlign = TextAnchor.MiddleCenter;
                 var plus = Ui.Button("+", () => { Step(cart, item.Id, +1, max); }, "btn--small btn--icon", row);
                 plus.name = "cart-plus-" + item.Id;
                 Ui.SetEnabled(minus, q > 0);
@@ -741,7 +741,7 @@ namespace GridGame.App
         private void BuildBargain(VisualElement body)
         {
             var w = Ui.Window(null, body);
-            w.style.flexGrow = 1; w.style.marginTop = 0;
+            w.style.flexGrow = 1; w.style.marginTop = Space.S0;
             var list = Ui.List(w).contentContainer;
             var detail = Ui.Window(null, body);
             detail.style.minHeight = 260;
@@ -761,9 +761,9 @@ namespace GridGame.App
         private void ShowBargain(VisualElement w, BargainOffer offer)
         {
             ItemUi.Detail(w, offer.Item, C);
-            var row = Ui.El("row", w); row.style.marginTop = 12;
+            var row = Ui.El("row", w); row.style.marginTop = Space.S16;
             Ui.Text($"Durability {offer.Durability}/{offer.Item.Durability}", "small dim grow", row);
-            Ui.Gauge((float)offer.Durability / offer.Item.Durability, w, 320).style.marginBottom = 10;
+            Ui.Gauge((float)offer.Durability / offer.Item.Durability, w, 320).style.marginBottom = Space.S8;
             var warn = Ui.Text("Used gear: cheap now, but it can shatter mid-battle before you get a chance to repair it.", "small warn", w);
             warn.style.whiteSpace = WhiteSpace.Normal;
             bool owned = S.Count(offer.Item.Id) >= offer.Item.MaxStack;
@@ -772,7 +772,7 @@ namespace GridGame.App
                 bargainSelected = null;
                 Done(Bargains.Buy(C, S, offer.Item.Id));
             }, "btn--primary", w);
-            btn.style.marginTop = 10;
+            btn.style.marginTop = Space.S8;
             Ui.SetEnabled(btn, !owned && S.Gold >= offer.Price);
         }
     }
@@ -810,7 +810,7 @@ namespace GridGame.App
                 for (int i = 0; i < bar.childCount; i++)
                     if (i != RepairTab) { bar[i].style.opacity = 0.4f; bar[i].AddToClassList("tab--locked"); }
             var w = Ui.Window(null, body);
-            w.style.flexGrow = 1; w.style.marginTop = 0;
+            w.style.flexGrow = 1; w.style.marginTop = Space.S0;
             var list = Ui.List(w).contentContainer;
             var detail = Ui.Window(null, body);
             detail.style.minHeight = 330;
@@ -878,7 +878,7 @@ namespace GridGame.App
                 Ui.Text("??? — Undiscovered Recipe", "h2 grow dim", w);
                 var tease = Ui.Text("You sense you're close. Find the missing material to learn how this is made.", "small dim", w);
                 tease.style.whiteSpace = WhiteSpace.Normal;
-                var undiscoveredNeed = Ui.El("col", w); undiscoveredNeed.style.marginTop = 12;
+                var undiscoveredNeed = Ui.El("col", w); undiscoveredNeed.style.marginTop = Space.S16;
                 if (r.BaseItem != null)
                 {
                     var b = c.TryItem(r.BaseItem);
@@ -901,7 +901,7 @@ namespace GridGame.App
                 var kind = Crafting.StationFor(r.Station);
                 Ui.Text($"🔒 Requires {StationProgress.TierName(r.Tier)} ({StationProgress.Id(kind)} is {StationProgress.LevelName(s, kind)})", "small bad", w).style.whiteSpace = WhiteSpace.Normal;
             }
-            var need = Ui.El("col", w); need.style.marginTop = 12;
+            var need = Ui.El("col", w); need.style.marginTop = Space.S16;
             if (r.BaseItem != null)
             {
                 var b = c.TryItem(r.BaseItem);
@@ -938,7 +938,7 @@ namespace GridGame.App
             if (r.PotencyResult != null)
             {
                 var greater = c.Item(r.PotencyResult);
-                Ui.Text($"With a rarer reagent: {greater.Name}", "small gold", w).style.marginTop = 10;
+                Ui.Text($"With a rarer reagent: {greater.Name}", "small gold", w).style.marginTop = Space.S8;
                 var pneed = Ui.El("col", w);
                 foreach (var ic in r.PotencyInputs)
                 {
@@ -1141,7 +1141,7 @@ namespace GridGame.App
             var p = C.TryAbility(enchant.Passive);
             Ui.Text($"{enchant.Name} — {p?.Name ?? enchant.Passive}", "h2", detail);
             Ui.Text(p?.Description ?? "", "small dim", detail).style.whiteSpace = WhiteSpace.Normal;
-            var need = Ui.El("col", detail); need.style.marginTop = 10;
+            var need = Ui.El("col", detail); need.style.marginTop = Space.S8;
             foreach (var ic in enchant.Inputs)
             {
                 int have = S.Count(ic.Item);
@@ -1160,7 +1160,7 @@ namespace GridGame.App
             }
             var btn = Ui.Button("Enchant", () => Done(ArmorEnchanting.Enchant(C, S, piece?.Hero, piece?.Slot ?? EquipmentSlot.Head, enchant)), "btn--primary", detail);
             btn.name = CampTips.CraftButton;
-            btn.style.marginTop = 10;
+            btn.style.marginTop = Space.S8;
             Ui.SetEnabled(btn, piece != null && unlocked && ArmorEnchanting.HasInputs(S, enchant) && ArmorEnchanting.CanAfford(C, S, enchant) && piece.Piece.Enchant != enchant.Id);
         }
     }
@@ -1189,7 +1189,7 @@ namespace GridGame.App
                 var card = Ui.El("card", list);
                 card.name = "caravan-" + d.Id;
                 var ic = Ui.El("thumb", card);
-                ic.style.width = ic.style.height = 120;
+                ic.style.width = ic.style.height = Size.Thumb;
                 ic.style.backgroundImage = new StyleBackground(Art.ItemIcon(d.Icon) ?? Art.Orb);
                 ic.style.backgroundSize = new BackgroundSize(BackgroundSizeType.Contain);
                 var col = Ui.El("col grow", card);
@@ -1215,7 +1215,7 @@ namespace GridGame.App
             if (line == null) return null;
             var box = Ui.El("col", parent);
             box.name = "caravan-bark";
-            box.style.marginTop = 8;
+            box.style.marginTop = Space.S8;
             Ui.Text($"\"{line}\"", "small", box).style.whiteSpace = WhiteSpace.Normal;
             Ui.Text("— " + CaravanUpgrades.CrewName(crew), "tiny dim", box).style.whiteSpace = WhiteSpace.Normal;
             return box;
@@ -1281,7 +1281,7 @@ namespace GridGame.App
             Ui.MenuRow("Foes", $"{fams.Count} famil{(fams.Count == 1 ? "y" : "ies")} met", null, w);
             var names = Ui.Text(string.Join(", ", fams.Select(f => f[0].Name)), "tiny dim", w);
             names.style.whiteSpace = WhiteSpace.Normal;
-            names.style.marginLeft = 40;
+            names.style.marginLeft = Space.S48;
 
             var rec = Ui.Window("Record", body);
             rec.name = "crucible-record";
@@ -1290,16 +1290,16 @@ namespace GridGame.App
             Ui.MenuRow("Waves cleared", S.Crucible.TotalWaves.ToString(), null, rec);
 
             bool can = Crucible.CanLaunch(C, S, out var why);
-            if (!can) Ui.Text(why, "small bad", body).style.marginTop = 10;
+            if (!can) Ui.Text(why, "small bad", body).style.marginTop = Space.S8;
             var row = Ui.El("row", body);
             row.style.justifyContent = Justify.Center;
-            row.style.marginTop = 20;
+            row.style.marginTop = Space.S24;
             var enter = Ui.Button("Enter the Crucible", () => CrucibleLauncher.Launch(false), "btn--primary", row);
             enter.name = "crucible-enter";
             Ui.SetEnabled(enter, can);
             var cost = Ui.Text($"Costs {RestedPool.LaunchCost} Rested", "small dim", body);
             cost.style.unityTextAlign = TextAnchor.MiddleCenter;
-            cost.style.marginTop = 8;
+            cost.style.marginTop = Space.S8;
         }
     }
 
@@ -1436,7 +1436,7 @@ namespace GridGame.App
             lore.style.whiteSpace = WhiteSpace.Normal;
             if (d.DropTable != null && C.DropTables.TryGetValue(d.DropTable, out var drops) && drops.Entries.Count > 0)
             {
-                Ui.Text("Drops", "small dim", w).style.marginTop = 6;
+                Ui.Text("Drops", "small dim", w).style.marginTop = Space.S8;
                 var row = Ui.El("row", w);
                 row.style.flexWrap = Wrap.Wrap;
                 foreach (var de in drops.Entries.OrderByDescending(x => x.Chance))
@@ -1444,7 +1444,7 @@ namespace GridGame.App
                     var it = C.TryItem(de.Item);
                     if (it == null) continue;
                     var tag = Ui.Text(it.Name, "small " + Ui.RarityClass(it.Rarity), row);
-                    tag.style.marginRight = 10;
+                    tag.style.marginRight = Space.S8;
                 }
             }
             if (e.Scanned)
@@ -1489,7 +1489,7 @@ namespace GridGame.App
             var st = App.Settings;
             var who = Ui.Text($"Profile: {App.Profile?.Name}", "small gold", body);
             who.name = "settings-profile";
-            who.style.marginLeft = 16; who.style.marginBottom = 6;
+            who.style.marginLeft = Space.S16; who.style.marginBottom = Space.S8;
             var w = Ui.Window(null, body);
             void Toggle(string label, bool value, Action<bool> set) => Ui.MenuRow(label, value ? "ON" : "OFF", () => { set(!value); App.ApplySettings(); App.SaveSettings(); Refresh(); }, w);
             void Cycle(string label, float value, float[] opts, string fmt, Action<float> set)
@@ -1536,7 +1536,7 @@ namespace GridGame.App
                     int i = Array.FindIndex(mults, o => Mathf.Abs(o - value) < 0.01f);
                     if (i < 0) i = 2; // default to the ×1 slot if the stored value doesn't land on a step
                     var row = Ui.MenuRow(label, $"×{value:0.##}", () => { set(mults[(i + 1) % mults.Length]); App.SaveSettings(); Refresh(); }, w);
-                    row.style.marginLeft = 40;
+                    row.style.marginLeft = Space.S48;
                 }
                 CycleMult("Enemy HP", diff.EnemyHp, v => diff.EnemyHp = v);
                 CycleMult("Enemy damage", diff.EnemyDamage, v => diff.EnemyDamage = v);
@@ -1573,7 +1573,7 @@ namespace GridGame.App
             {
                 var replay = Ui.Button("Replay camp tips", () => { CampTips.ResetAll(S); Done(Result.Success("Camp tips will show again")); }, "btn--small", help);
                 replay.name = "replay-camp-tips";
-                replay.style.marginTop = 14;
+                replay.style.marginTop = Space.S16;
                 replay.style.alignSelf = Align.FlexStart;
             }
         }

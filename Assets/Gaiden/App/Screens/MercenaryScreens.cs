@@ -57,15 +57,15 @@ namespace GridGame.App
                 col.style.flexShrink = 1; col.style.minWidth = 0;
                 var top = Ui.El("row", col);
                 Ui.Text(def.Name, "h2", top);
-                Ui.RoleBadge(def.Role, top).style.marginLeft = 6;
-                Ui.Text(m.Temperament.ToString(), "tiny dim", top).style.marginLeft = 8;
+                Ui.RoleBadge(def.Role, top).style.marginLeft = Space.S8;
+                Ui.Text(m.Temperament.ToString(), "tiny dim", top).style.marginLeft = Space.S8;
                 Ui.Text($"\"{m.Pitch}\"", "tiny", col).style.whiteSpace = WhiteSpace.Normal;
                 int adj = Mercenaries.HaggleAdjust(S, m.Class);
                 if (adj != 0) Ui.Text(adj < 0 ? $"Haggled down {-adj}%" : $"Price up {adj}%", adj < 0 ? "tiny gold" : "tiny bad", col);
                 if (walked) { Ui.Text("Walked off. Back after the next battle.", "small bad", col); continue; }
                 var terms = Ui.El("row", col);
                 terms.style.flexWrap = Wrap.Wrap;
-                terms.style.marginTop = 6;
+                terms.style.marginTop = Space.S8;
                 foreach (var t in m.Terms.OrderBy(x => x))
                 {
                     int term = t, price = Mercenaries.Price(C, S, m.Class, t);
@@ -73,7 +73,7 @@ namespace GridGame.App
                         $"Hire {def.Name} for {term} battles at {Ui.Gold(price)}, paid now? The contract runs down every battle, used or not.", "Hire",
                         () => Done(Mercenaries.Hire(C, S, merc.Class, term))), "btn--small", terms);
                     b.name = $"merc-hire-{m.Class}-{term}";
-                    b.style.marginRight = 6; b.style.marginBottom = 4;
+                    b.style.marginRight = Space.S8; b.style.marginBottom = Space.S4;
                     Ui.SetEnabled(b, S.Gold >= price && !haggling);
                 }
                 var haggle = Ui.Button(Mercenaries.Haggled(S, m.Class) ? "Haggled" : "Haggle", () => App.StartCoroutine(Haggle(merc, card)), "btn--small", terms);
@@ -110,7 +110,7 @@ namespace GridGame.App
             if (k == null) return;
             var tag = Ui.Text($"MERC · {k.BattlesLeft} left", "tiny gold", parent);
             tag.name = "merc-tag-" + classId;
-            tag.style.marginLeft = 6;
+            tag.style.marginLeft = Space.S8;
         }
 
         /// <summary>Called from Camp's Build: settle spent contracts, toast who left, then open the reoffer for a merc
@@ -162,7 +162,7 @@ namespace GridGame.App
             var portrait = Ui.El(null, root);
             portrait.name = "merc-portrait";
             portrait.style.position = Position.Absolute;
-            portrait.style.left = 40; portrait.style.right = 40; portrait.style.top = 160; portrait.style.bottom = 980;
+            portrait.style.left = Fit.Edge; portrait.style.right = Fit.Edge; portrait.style.top = Fit.H(6.3f); portrait.style.bottom = Fit.H(38.7f);
             portrait.style.backgroundImage = new StyleBackground(Art.Portrait(classId));
             portrait.style.backgroundSize = new BackgroundSize(BackgroundSizeType.Contain);
             portrait.style.opacity = 0f;
@@ -170,7 +170,7 @@ namespace GridGame.App
             var box = Ui.Window(null, root);
             box.name = "merc-renewal-box";
             box.style.position = Position.Absolute;
-            box.style.left = 24; box.style.right = 24; box.style.bottom = 60;
+            box.style.left = Fit.Edge; box.style.right = Fit.Edge; box.style.bottom = Space.S64;
             var plate = Ui.El("row", box);
             Ui.Text(def.Name, "h2 gold", plate);
             MercenaryCamp.Tag(S, classId, plate);
@@ -180,7 +180,7 @@ namespace GridGame.App
             string speech = m?.Renewal ?? "My contract's nearly up. Renew, or do we part ways?";
 
             var choices = Ui.El("col", box);
-            choices.style.marginTop = 12;
+            choices.style.marginTop = Space.S16;
             choices.style.opacity = 0f;
             if (m != null && k != null)
             {

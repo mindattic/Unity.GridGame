@@ -73,7 +73,7 @@ namespace GridGame.App
                 hand.name = "camp-tip-hand";
                 hand.pickingMode = PickingMode.Ignore;
                 hand.style.position = Position.Absolute;
-                hand.style.width = hand.style.height = 88;
+                hand.style.width = hand.style.height = Size.Glyph;
                 hand.style.backgroundImage = new StyleBackground(Art.Cursor);
                 float hx = Mathf.Max(6f, rect.xMin - 100f), hy = rect.center.y - 44f;
                 hand.style.left = hx; hand.style.top = hy;
@@ -84,15 +84,15 @@ namespace GridGame.App
             var card = Ui.Window(null, veil);
             card.name = "camp-tip-card";
             card.style.position = Position.Absolute;
-            card.style.left = 40; card.style.right = 40;
-            if (targetLow) card.style.top = 200; else card.style.bottom = 60;
+            card.style.left = Fit.Edge; card.style.right = Fit.Edge;
+            if (targetLow) card.style.top = Fit.H(7.9f); else card.style.bottom = Space.S64;
             Ui.Text("Camp tip · " + tip.Title, "small gold", card);
             var text = Ui.Text(tip.Text, "", card);
             text.style.whiteSpace = WhiteSpace.Normal;
-            text.style.marginTop = 8;
+            text.style.marginTop = Space.S8;
             var row = Ui.El("row", card);
             row.style.justifyContent = Justify.FlexEnd;
-            row.style.marginTop = 16;
+            row.style.marginTop = Space.S16;
             var ok = Ui.Button("Got it", () => Dismiss(veil, tip), "btn--primary", row);
             ok.name = "camp-tip-ok";
 

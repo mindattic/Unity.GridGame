@@ -102,23 +102,23 @@ namespace GridGame.App
             var stage = Ui.El(null, root);
             stage.name = "dlg-stage";
             stage.style.position = Position.Absolute;
-            stage.style.left = 0; stage.style.right = 0; stage.style.top = 150; stage.style.bottom = 640;
+            stage.style.left = Space.S0; stage.style.right = Space.S0; stage.style.top = Fit.H(5.9f); stage.style.bottom = Fit.H(25.3f);
             stage.RegisterCallback<ClickEvent>(_ => TapLine());
 
             var title = Ui.Text(def.Title ?? "", "small dim shadow", root);
-            title.style.position = Position.Absolute; title.style.left = 30; title.style.top = 40;
+            title.style.position = Position.Absolute; title.style.left = Space.S32; title.style.top = Space.S48;
 
             var skip = Ui.Button("Skip ›", SkipAhead, "btn--small", root);
             skip.name = "dlg-skip";
-            skip.style.position = Position.Absolute; skip.style.right = 24; skip.style.top = 24;
+            skip.style.position = Position.Absolute; skip.style.right = Space.S24; skip.style.top = Space.S24;
 
             // The one shared text box: each line replaces the last in it; the choices sit in it too.
             var box = Ui.Window(null, root, "window--plain");
             box.name = "dlg-box";
             box.style.position = Position.Absolute;
-            box.style.left = 20; box.style.right = 20; box.style.bottom = 50;
+            box.style.left = Fit.Edge; box.style.right = Fit.Edge; box.style.bottom = Space.S48;
             box.style.minHeight = 560;
-            box.style.paddingTop = 60;
+            box.style.paddingTop = Space.S64;
             box.style.overflow = Overflow.Visible;
             box.RegisterCallback<ClickEvent>(e =>
             {
@@ -165,8 +165,8 @@ namespace GridGame.App
             p.name = "dlg-portrait-" + tag;
             p.pickingMode = PickingMode.Ignore;
             p.style.position = Position.Absolute;
-            p.style.bottom = 0; p.style.height = FigureHeight; p.style.width = FigureHeight;
-            if (s.Index == 0) p.style.left = -70; else p.style.right = -70;
+            p.style.bottom = Space.S0; p.style.height = FigureHeight; p.style.width = FigureHeight;
+            if (s.Index == 0) p.style.left = -Space.S64; else p.style.right = -Space.S64;
             p.style.backgroundSize = new BackgroundSize(BackgroundSizeType.Contain);
             p.style.backgroundPositionY = new BackgroundPosition(BackgroundPositionKeyword.Bottom);
             p.style.opacity = 0f;
@@ -176,11 +176,11 @@ namespace GridGame.App
             plate.name = "dlg-plate-" + tag;
             plate.pickingMode = PickingMode.Ignore;
             plate.style.position = Position.Absolute;
-            plate.style.top = -58;
-            if (s.Index == 0) plate.style.left = 36; else plate.style.right = 36;
-            plate.style.height = 92;
+            plate.style.top = -Space.S64;
+            if (s.Index == 0) plate.style.left = Space.S32; else plate.style.right = Space.S32;
+            plate.style.height = Size.Plate;
             plate.style.minWidth = 260;
-            plate.style.paddingLeft = plate.style.paddingRight = 34;
+            plate.style.paddingLeft = plate.style.paddingRight = Space.S32;
             plate.style.justifyContent = Justify.Center;
             plate.style.alignItems = Align.Center;
             SetRadius(plate, 22);
@@ -371,7 +371,7 @@ namespace GridGame.App
                     int idx = i;
                     var b = Ui.Button(choices[i].Label, () => Choose(idx), i == 0 ? "btn--primary" : null, controls);
                     b.name = "choice-" + i;
-                    b.style.marginTop = 10;
+                    b.style.marginTop = Space.S8;
                     b.style.opacity = 0f;
                     App.StartCoroutine(FadeUp(b, i * 0.06f));
                 }
@@ -380,7 +380,7 @@ namespace GridGame.App
             {
                 var b = Ui.Button(run.Node.Next == null ? "Done ›" : "Next ›", Advance, "btn--primary btn--small", controls);
                 b.name = "dlg-next";
-                b.style.alignSelf = Align.FlexEnd; b.style.width = 300;
+                b.style.alignSelf = Align.FlexEnd; b.style.width = Size.Card;
                 b.style.opacity = 0f;
                 App.StartCoroutine(FadeUp(b, 0f));
             }
@@ -478,7 +478,7 @@ namespace GridGame.App
                     string art = topic?.Speakers.Select(sp => sp.Portrait ?? sp.Class).FirstOrDefault(DialogueScreen.HasPortrait);
                     if (art != null)
                     {
-                        ic.style.width = 80; ic.style.height = 96;
+                        ic.style.width = Size.AvatarW; ic.style.height = Size.Avatar;
                         ic.style.backgroundImage = new StyleBackground(Art.Portrait(art));
                         ic.style.backgroundPositionY = new BackgroundPosition(BackgroundPositionKeyword.Bottom);
                         row.Insert(1, ic); // after the cursor, where MenuRow puts an icon

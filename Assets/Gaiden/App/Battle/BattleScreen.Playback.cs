@@ -396,6 +396,8 @@ namespace GridGame.App
             new Keyframe(1.2f, -0.05f, 0f, 0f, 0.33333334f, 0.33322528f),
             new Keyframe(1.993103f, 1.0f, 0f, 0f, 0f, 0f));
         private const float CutInSpeed = 1.75f;
+        /// <summary>How far a rotated shot band bleeds past the stage so its tilted ends never show.</summary>
+        private const float ShotOverscan = 200f;
         private const float CutInStagger = 0.14f;
         private static float CutInSeconds => 1.993103f / CutInSpeed;
 
@@ -424,11 +426,11 @@ namespace GridGame.App
             CutInsShown++;
             var layer = new VisualElement { name = "cutin", pickingMode = PickingMode.Ignore };
             layer.style.position = Position.Absolute;
-            layer.style.left = 0; layer.style.top = 0; layer.style.right = 0; layer.style.bottom = 0;
+            layer.style.left = Space.S0; layer.style.top = Space.S0; layer.style.right = Space.S0; layer.style.bottom = Space.S0;
             layer.style.overflow = Overflow.Hidden;
             var dim = new VisualElement { pickingMode = PickingMode.Ignore };
             dim.style.position = Position.Absolute;
-            dim.style.left = 0; dim.style.top = 0; dim.style.right = 0; dim.style.bottom = 0;
+            dim.style.left = Space.S0; dim.style.top = Space.S0; dim.style.right = Space.S0; dim.style.bottom = Space.S0;
             dim.style.backgroundColor = team == Team.Hero ? new Color(0.02f, 0.03f, 0.08f) : new Color(0.12f, 0.0f, 0.02f);
             dim.style.opacity = 0f;
             layer.Add(dim);
@@ -497,11 +499,11 @@ namespace GridGame.App
                 core.style.position = Position.Absolute;
                 core.style.backgroundImage = new StyleBackground(BandTex);
                 core.style.unityBackgroundImageTintColor = Palette.White.WithA(0.95f);
-                if (rowLine) { core.style.left = 0; core.style.right = 0; core.style.top = Length.Percent(46); core.style.height = 5; }
-                else { core.style.top = 0; core.style.bottom = 0; core.style.left = Length.Percent(46); core.style.width = 5; }
+                if (rowLine) { core.style.left = Space.S0; core.style.right = Space.S0; core.style.top = Length.Percent(46); core.style.height = Size.Track; }
+                else { core.style.top = Space.S0; core.style.bottom = Space.S0; core.style.left = Length.Percent(46); core.style.width = Size.Track; }
                 band.Add(core);
-                if (rowLine) { band.style.left = -200; band.style.width = StageW + 400; band.style.top = shot.Lane - thick / 2f; band.style.height = thick; band.style.rotate = new Rotate(shot.Dir * -3f); }
-                else { band.style.top = -200; band.style.height = StageH + 400; band.style.left = shot.Lane - thick / 2f; band.style.width = thick; band.style.rotate = new Rotate(shot.Dir * 3f); }
+                if (rowLine) { band.style.left = -ShotOverscan; band.style.width = StageW + ShotOverscan * 2f; band.style.top = shot.Lane - thick / 2f; band.style.height = thick; band.style.rotate = new Rotate(shot.Dir * -3f); }
+                else { band.style.top = -ShotOverscan; band.style.height = StageH + ShotOverscan * 2f; band.style.left = shot.Lane - thick / 2f; band.style.width = thick; band.style.rotate = new Rotate(shot.Dir * 3f); }
                 band.style.opacity = 0f;
                 layer.Insert(1, band); // above the dim, below the portraits
                 bands.Add(band);
@@ -515,7 +517,7 @@ namespace GridGame.App
             float camTwist = (Random.value < 0.5f ? -1f : 1f) * 2.6f;
             var flash = new VisualElement { pickingMode = PickingMode.Ignore };
             flash.style.position = Position.Absolute;
-            flash.style.left = flash.style.top = flash.style.right = flash.style.bottom = 0;
+            flash.style.left = flash.style.top = flash.style.right = flash.style.bottom = Space.S0;
             flash.style.backgroundColor = Palette.White;
             layer.Add(flash);
             App.StartCoroutine(Tween.Shake(shake, 14f * Fx, Timing.Standard));
@@ -916,7 +918,7 @@ namespace GridGame.App
             var row = Ui.El("row", veil);
             row.style.opacity = 0f;
             var frame = Ui.El(null, row);
-            frame.style.width = 360; frame.style.height = 400;
+            frame.style.width = Size.PortraitW; frame.style.height = Size.PortraitH;
             frame.style.borderTopWidth = frame.style.borderBottomWidth = frame.style.borderLeftWidth = frame.style.borderRightWidth = 4;
             var bandColor = BandColor(Team.Enemy);
             frame.style.borderTopColor = frame.style.borderBottomColor = frame.style.borderLeftColor = frame.style.borderRightColor = bandColor;
@@ -931,13 +933,13 @@ namespace GridGame.App
             }
 
             var info = Ui.El("col", row);
-            info.style.marginLeft = 24; info.style.width = 420;
+            info.style.marginLeft = Space.S24; info.style.width = Fit.W(36f);
             var nm = Ui.Text(def?.Name ?? "???", "h1 shadow", info);
             Fonts.UseDisplay(nm);
             nm.style.color = bandColor;
             var body = Ui.Text(line, "h2 shadow", info);
             body.style.whiteSpace = WhiteSpace.Normal;
-            body.style.marginTop = 12;
+            body.style.marginTop = Space.S16;
 
             bool done = false;
             void Finish() { if (done) return; done = true; }
@@ -1107,8 +1109,8 @@ namespace GridGame.App
                 billboard.name = "billboard";
                 billboard.pickingMode = PickingMode.Ignore;
                 billboard.style.position = Position.Absolute;
-                billboard.style.left = 120; billboard.style.right = 120; billboard.style.top = BoardTop - 30;
-                billboard.style.paddingTop = billboard.style.paddingBottom = 10;
+                billboard.style.left = billboard.style.right = BoardLeft + Space.S64; billboard.style.top = BoardTop - 30;
+                billboard.style.paddingTop = billboard.style.paddingBottom = Space.S8;
                 billboard.style.alignItems = Align.Center;
             }
             billboard.style.display = DisplayStyle.Flex;
@@ -1119,7 +1121,7 @@ namespace GridGame.App
             if (icon != null)
             {
                 var ic = Ui.El("", row);
-                ic.style.width = ic.style.height = 56; ic.style.marginRight = 14;
+                ic.style.width = ic.style.height = Size.IconM; ic.style.marginRight = Space.S16;
                 ic.style.backgroundImage = new StyleBackground(icon);
                 ic.style.backgroundSize = new BackgroundSize(BackgroundSizeType.Contain);
             }
@@ -1167,7 +1169,7 @@ namespace GridGame.App
             {
                 var coin = new VisualElement { name = "coin", pickingMode = PickingMode.Ignore };
                 coin.style.position = Position.Absolute;
-                coin.style.width = coin.style.height = 34;
+                coin.style.width = coin.style.height = Size.Pip;
                 coin.style.backgroundImage = new StyleBackground(Art.Orb);
                 coin.style.unityBackgroundImageTintColor = new Color(1f, 0.82f, 0.25f);
                 App.Overlay.Add(coin);
@@ -1226,7 +1228,7 @@ namespace GridGame.App
             // Fly a small orb from the source to its slot in the line.
             var orb = new VisualElement { pickingMode = PickingMode.Ignore };
             orb.style.position = Position.Absolute;
-            orb.style.width = orb.style.height = 60;
+            orb.style.width = orb.style.height = Size.Orb;
             orb.style.backgroundImage = new StyleBackground(Art.Orb);
             orb.style.unityBackgroundImageTintColor = Art.Mana;
             App.Overlay.Add(orb);

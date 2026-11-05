@@ -263,7 +263,7 @@ namespace GridGame.App
             bool thrown = targets.Count > 0 && targets.Any(t => t != user);
             var bottle = new VisualElement { pickingMode = PickingMode.Ignore };
             bottle.style.position = Position.Absolute;
-            bottle.style.width = bottle.style.height = 140;
+            bottle.style.width = bottle.style.height = Size.Medallion;
             if (tex != null) { bottle.style.backgroundImage = new StyleBackground(tex); bottle.style.backgroundSize = new BackgroundSize(BackgroundSizeType.Contain); }
             else { bottle.style.backgroundImage = new StyleBackground(Art.Orb); bottle.style.unityBackgroundImageTintColor = liquid; }
             board.FxLayer.Add(bottle);

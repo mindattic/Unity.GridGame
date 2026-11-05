@@ -2699,6 +2699,12 @@ One UI-only camera (`cullingMask = 0`, black clear); the board is UI Toolkit, so
 `GameApp.ApplySafeArea` insets the `screens` container where `Screen.safeArea` (notch, home bar) overlaps the stage — which on a phone that fills the screen is every time. `-safeArea <topPx>,<bottomPx>` simulates one on desktop.
 
 ---
+### 26.6 Units and overflow (GG-T272, GG-T271; owner 2026-11-05)
+
+Owner: "measure things in agnostic units" and "all overflow should be avoided when possible, when not possible automatic marquee that prints out the rest and then resets back to left".
+
+- **Units.** Design px already scale uniformly to every resolution (§26.2), so type (`TypeScale`), spacing (`Space`, 8-px scale with a 4-px half step) and fixed-size art and controls (`Size`) stay in design px. What design px don't absorb is aspect, so layout widths and vertical bands that should breathe use stage units: `Fit.W(%)` / `Fit.H(%)` (percent of the safe-area stage, `GameApp.SafeTop/SafeBottom`) or flex/`Length.Percent`, and every full-width panel sits `Fit.Edge` (24) from the stage edge. No App or USS margin, padding, size or position is a bare number any more (`tools/polish_lint.py` POL-C1). The battle board's 1080-px grid and its HUD rows stay fixed game geometry, named beside `BoardTop` (`BannerTop`, `InfoPanelTop`, `TopBarHeight`, `TimelineFrameHeight`).
+
 
 ## 27. Story crawl (no dialog)
 

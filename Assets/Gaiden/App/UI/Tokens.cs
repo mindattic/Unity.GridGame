@@ -86,10 +86,39 @@ namespace GridGame.App
         public const float Badge = 24, Caption = 30, Small = 36, Body = 40, H3 = 48, H2 = 60, H1 = 76, Display = 96, Title = 120;
     }
 
-    /// <summary>8-px spacing scale (POL-C1).</summary>
+    /// <summary>8-px spacing scale (POL-C1); S4 is the half step for hairline insets inside small widgets.</summary>
     public static class Space
     {
-        public const float S8 = 8, S16 = 16, S24 = 24, S32 = 32, S48 = 48, S64 = 64, S96 = 96;
+        public const float S0 = 0, S4 = 4, S8 = 8, S16 = 16, S24 = 24, S32 = 32, S48 = 48, S64 = 64, S96 = 96;
+    }
+
+    /// <summary>Named element sizes in design px (POL-C1). Design px already scale uniformly to every resolution
+    /// (bible §26.2), so fixed-size things (icons, pips, portraits) use these; layout widths use <see cref="Fit"/>.</summary>
+    public static class Size
+    {
+        // Lines, bars and pips
+        public const float Hairline = 3, Track = 6, Bar = 8, Shard = 13, Gauge = 14, HpBar = 18, Crack = 24, Pip = 34;
+        // Icons and pictures
+        public const float IconS = 40, Chip = 50, IconM = 56, Orb = 60, Icon = 64, IconL = 76, AvatarW = 80, Glyph = 88,
+            Avatar = 96, PartySlot = 108, Thumb = 120, Medallion = 140, Gem = 192, PortraitW = 360, PortraitH = 400,
+            ArtW = 420, ArtH = 620;
+        // Controls and table columns (POL-C2: a tap target is at least 132×132)
+        public const float Plate = 92, Target = 132, Cell = 170, Slot = 196, Card = 300,
+            ColumnS = 70, Column = 90, ColumnL = 100, Label = 180;
+    }
+
+    /// <summary>Aspect-agnostic layout units (GG-T272): fractions of the safe-area stage, which grows from 1170×2532 up to
+    /// 9:16 or 9:21 (§26.3). Read them when a screen builds; every screen rebuilds on <see cref="GameApp.StageResized"/>.</summary>
+    public static class Fit
+    {
+        /// <summary>The one screen-edge gutter: every full-width panel sits this far from the stage's left and right edges.</summary>
+        public const float Edge = Space.S24;
+        public static float Width => GameApp.StageWidth;
+        public static float Height => GameApp.StageHeight - GameApp.SafeTop - GameApp.SafeBottom;
+        /// <summary><paramref name="pct"/> percent of the usable stage width.</summary>
+        public static float W(float pct) => Width * pct / 100f;
+        /// <summary><paramref name="pct"/> percent of the usable stage height.</summary>
+        public static float H(float pct) => Height * pct / 100f;
     }
 
     /// <summary>Duration tokens in seconds (POL-E1). Anything longer than Cinematic is a hold, also in the cinematic band.</summary>

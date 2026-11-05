@@ -47,6 +47,7 @@
     --type-h1: 76px;
     --type-display: 96px;
     --type-title: 120px;
+    --space-4: 4px;
     --space-8: 8px;
     --space-16: 16px;
     --space-24: 24px;
@@ -97,8 +98,8 @@
     border-width: 5px;
     border-color: var(--color-frame);
     border-radius: 18px;
-    padding: 22px 28px;
-    margin: 10px;
+    padding: var(--space-24) var(--space-32);
+    margin: var(--space-8);
     background-size: 100% 100%;
     flex-shrink: 0;
 }
@@ -132,14 +133,14 @@
     flex-direction: row;
     align-items: center;
     min-height: 96px;
-    padding: 6px 12px 6px 6px;
+    padding: var(--space-8) var(--space-16) var(--space-8) var(--space-8);
     border-radius: 10px;
-    margin: 2px 0;
+    margin: var(--space-4) 0;
 }
 .menu-row:hover { background-color: rgba(255, 255, 255, 0.06); }
 .menu-row--selected { background-color: rgba(140, 170, 255, 0.20); }
 .menu-row--disabled { opacity: 0.42; }
-.menu-cursor { width: 56px; height: 56px; margin-right: 8px; opacity: 0; background-size: contain; flex-shrink: 0; }
+.menu-cursor { width: 56px; height: 56px; margin-right: var(--space-8); opacity: 0; background-size: contain; flex-shrink: 0; }
 .menu-row--selected > .menu-cursor { opacity: 1; }
 .menu-label { flex-grow: 1; font-size: var(--type-body); flex-shrink: 1; min-width: 0; white-space: normal; }
 /* A long value (a locked station's "Opens after …" hint) wraps rather than clipping or squeezing the label. */
@@ -150,7 +151,7 @@
 /* Every button stands on a darker lip (the thick bottom border). Pressing sinks it onto the lip. */
 .btn {
     min-height: 104px;
-    padding: 0 40px;
+    padding: 0 var(--space-48);
     margin: var(--space-8);
     border-width: 4px;
     border-bottom-width: 12px;
@@ -171,8 +172,8 @@
 .role-badge {
     border-width: 3px;
     border-radius: 10px;
-    padding: 0 10px;
-    margin: 0 8px;
+    padding: 0 var(--space-8);
+    margin: 0 var(--space-8);
     background-color: rgba(4, 6, 20, 0.75);
     -unity-text-align: middle-center;
     flex-shrink: 0;
@@ -205,7 +206,7 @@
     flex-direction: row;
     align-items: center;
     height: 150px;
-    padding: 0 20px;
+    padding: 0 var(--space-24);
     background-color: rgba(4, 8, 30, 0.85);
     border-bottom-width: 4px;
     border-color: var(--color-frame);
@@ -214,11 +215,11 @@
 .header-gold { font-size: var(--type-h3); color: var(--color-gold); -unity-text-align: middle-right; margin-right: var(--space-16); }
 
 /* ── Tabs ────────────────────────────────────────────────────────────────── */
-.tabs { flex-direction: row; margin: 10px 10px 0 10px; flex-shrink: 0; }
+.tabs { flex-direction: row; margin: var(--space-8) var(--space-8) 0 var(--space-8); flex-shrink: 0; }
 .tab {
     flex-grow: 1;
     height: 96px;
-    margin: 0 4px;
+    margin: 0 var(--space-4);
     border-width: 4px 4px 0 4px;
     border-color: var(--color-frame);
     border-top-left-radius: 16px;
@@ -240,7 +241,7 @@
 .toast {
     position: absolute;
     left: 120px; right: 120px; bottom: 260px;
-    padding: 26px 34px;
+    padding: var(--space-24) var(--space-32);
     border-radius: 18px;
     border-width: 4px;
     border-color: var(--color-frame);
@@ -265,8 +266,8 @@
 .card {
     flex-direction: row;
     align-items: center;
-    padding: 14px;
-    margin: 8px 0;
+    padding: var(--space-16);
+    margin: var(--space-8) 0;
     border-radius: 14px;
     background-color: rgba(255, 255, 255, 0.05);
 }
@@ -278,7 +279,7 @@
     border-color: var(--color-frame);
     background-color: rgb(30, 36, 70);
     background-size: cover;
-    margin-right: 22px;
+    margin-right: var(--space-24);
 }
 
 /* ── Battle unit frame — the same frame as .thumb, so battle and menus share one look ── */
@@ -296,7 +297,7 @@
 .unit-keyline--neutral { border-color: var(--color-neutral); }
 
 /* ── Orb pips (generic mana) ──────────────────────────────────────────── */
-.pip { width: 34px; height: 34px; border-radius: 17px; margin: 0 3px; border-width: 2px; border-color: rgba(255,255,255,0.8); font-size: var(--type-badge); -unity-text-align: middle-center; color: var(--color-ink); }
+.pip { width: 34px; height: 34px; border-radius: 17px; margin: 0 var(--space-4); border-width: 2px; border-color: rgba(255,255,255,0.8); font-size: var(--type-badge); -unity-text-align: middle-center; color: var(--color-ink); }
 .pip--mana { background-color: var(--color-mana); }
 
 /* ── Rarity colors ───────────────────────────────────────────────────────── */

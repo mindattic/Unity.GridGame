@@ -29,6 +29,9 @@ namespace GridGame.App
         /// <summary>The live stage size in design pixels; never below DesignWidth×DesignHeight.</summary>
         public static float StageWidth { get; private set; } = DesignWidth;
         public static float StageHeight { get; private set; } = DesignHeight;
+        /// <summary>Design px of the stage covered by the device's notch / home bar (§26.5).</summary>
+        public static float SafeTop { get; private set; }
+        public static float SafeBottom { get; private set; }
         /// <summary>Raised after the stage changes size (window resize, harness resize).</summary>
         public static event Action StageResized;
 
@@ -249,8 +252,10 @@ namespace GridGame.App
             float stageTop = (logicalH - StageHeight) / 2f, stageBottom = stageTop + StageHeight;
             float safeTop = (Screen.height - safe.yMax) * k, safeBottom = logicalH - safe.yMin * k;
             var screens = Stage.Q("screens");
-            screens.style.top = Mathf.Max(0f, safeTop - stageTop);
-            screens.style.bottom = Mathf.Max(0f, stageBottom - safeBottom);
+            SafeTop = Mathf.Max(0f, safeTop - stageTop);
+            SafeBottom = Mathf.Max(0f, stageBottom - safeBottom);
+            screens.style.top = SafeTop;
+            screens.style.bottom = SafeBottom;
         }
 
         private void Update()

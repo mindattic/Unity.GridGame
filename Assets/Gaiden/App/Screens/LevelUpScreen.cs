@@ -59,12 +59,12 @@ namespace GridGame.App
             var head = Ui.Text("LEVEL UP!", "title shadow", col);
             Fonts.UseDisplay(head);
             head.style.color = Palette.Gold;
-            head.style.marginBottom = 30;
+            head.style.marginBottom = Space.S32;
 
             portraitRow = Ui.El("row", col);
             portraitRow.style.opacity = 0f;
             var frame = Ui.El(null, portraitRow);
-            frame.style.width = 360; frame.style.height = 400;
+            frame.style.width = Size.PortraitW; frame.style.height = Size.PortraitH;
             frame.style.borderTopWidth = frame.style.borderBottomWidth = frame.style.borderLeftWidth = frame.style.borderRightWidth = 4;
             var roleColor = Ui.RoleColor(def.Role);
             frame.style.borderTopColor = frame.style.borderBottomColor = frame.style.borderLeftColor = frame.style.borderRightColor = roleColor;
@@ -73,16 +73,16 @@ namespace GridGame.App
             frame.style.backgroundSize = new BackgroundSize(BackgroundSizeType.Contain);
 
             var info = Ui.El("col", portraitRow);
-            info.style.marginLeft = 24; info.style.width = 320;
+            info.style.marginLeft = Space.S24; info.style.width = Fit.W(27f);
             var nm = Ui.Text(def.Name, "h1 shadow", info);
             Fonts.UseDisplay(nm);
-            Ui.RoleBadge(def.Role, info).style.marginBottom = 10;
+            Ui.RoleBadge(def.Role, info).style.marginBottom = Space.S8;
             levelLabel = Ui.Text($"Lv {from}", "h1 shadow gold", info);
             xpGauge = Ui.Gauge(0f, info, 300);
-            xpGauge.style.marginTop = 10;
+            xpGauge.style.marginTop = Space.S8;
 
             statColumn = Ui.El("col", col);
-            statColumn.style.marginTop = 24;
+            statColumn.style.marginTop = Space.S24;
 
             // Root is reused across Refresh() calls (one per hero that leveled up) — Root.Clear() drops
             // child elements but not callbacks registered on Root itself, so this must only ever bind once
@@ -91,7 +91,7 @@ namespace GridGame.App
             // tap on "Skip ›" ran Skip() twice and jumped past the next hero's fanfare too (GG-T70).
             if (!skipHandlerBound) { root.RegisterCallback<ClickEvent>(e => { if (!(e.target is Button)) Skip(); }); skipHandlerBound = true; }
             var skip = Ui.Button("Skip ›", Skip, "btn--small", root);
-            skip.style.position = Position.Absolute; skip.style.right = 30; skip.style.bottom = 40;
+            skip.style.position = Position.Absolute; skip.style.right = Space.S32; skip.style.bottom = Space.S48;
 
             running = App.StartCoroutine(PlayHero());
         }
@@ -144,7 +144,7 @@ namespace GridGame.App
             foreach (var (label, b, a) in StatRows(before, after))
             {
                 var row = Ui.El("row", statColumn);
-                Ui.Text(label, "small dim", row).style.width = 60;
+                Ui.Text(label, "small dim", row).style.width = Size.ColumnS;
                 Ui.Text($"{b:0} → {a:0}  (+{a - b:0})", "small good", row);
                 reveals.Add(App.StartCoroutine(Tween.Pop(row, 1.15f, 0.15f)));
                 yield return Tween.Wait(Timing.Instant);

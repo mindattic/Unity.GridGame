@@ -37,12 +37,12 @@ namespace GridGame.App
             w.style.width = Length.Percent(66);
             var title = Ui.Text(label, "h2", w);
             title.style.whiteSpace = WhiteSpace.Normal;
-            title.style.marginBottom = 18;
+            title.style.marginBottom = Space.S16;
             var gauge = Ui.Gauge(0f, w);
             gauge.style.width = Length.Percent(100);
             gauge.name = "paywall-gauge";
             var left = Ui.Text("", "small dim", w);
-            left.style.marginTop = 10;
+            left.style.marginTop = Space.S8;
             app.Audio.Sfx("ui.buy");
             bool finished = false;
             veil.schedule.Execute(() =>
@@ -118,7 +118,7 @@ namespace GridGame.App
             Ui.Text($"+1 in {(int)next.TotalMinutes}:{next.Seconds:00}", "tiny dim", w);
             var b = Ui.Button($"Refill · {Paywall.Tag(PaywallKind.RestedRefill, s)}", () => Refill(refresh), "btn--small", w);
             b.name = "rested-refill";
-            b.style.marginTop = 8;
+            b.style.marginTop = Space.S8;
             Ui.SetEnabled(b, s.Gold >= Paywall.Cost(PaywallKind.RestedRefill, s));
         }
     }

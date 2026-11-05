@@ -104,7 +104,7 @@ namespace GridGame.App
 
             Content = new VisualElement { name = "pan-zoom-content", pickingMode = PickingMode.Position };
             Content.style.position = Position.Absolute;
-            Content.style.left = 0; Content.style.top = 0;
+            Content.style.left = Space.S0; Content.style.top = Space.S0;
             Content.style.minWidth = Length.Percent(100);
             Content.style.transformOrigin = new TransformOrigin(0, 0);
             hierarchy.Add(Content);

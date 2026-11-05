@@ -41,7 +41,7 @@ namespace GridGame.App
             bg.style.backgroundImage = new StyleBackground(Art.Background(ThemeOf(c, report, stageId), 3));
             bg.style.unityBackgroundImageTintColor = new Color(0.45f, 0.45f, 0.55f);
             var col = Ui.El("fill col", root);
-            col.style.paddingTop = 140; col.style.paddingLeft = col.style.paddingRight = 30; col.style.paddingBottom = 40;
+            col.style.paddingTop = Fit.H(5.5f); col.style.paddingLeft = col.style.paddingRight = Space.S32; col.style.paddingBottom = Space.S48;
 
             if (report.Crucible) { BuildCrucible(root, col, c); return; }
             var title = Ui.Text(report.Victory ? "VICTORY" : report.Retreated ? "RETREATED" : report.Escaped ? "ESCAPED" : "DEFEAT", "title shadow", col);
@@ -50,7 +50,7 @@ namespace GridGame.App
             Ui.Text(NameOf(c, report, stageId), "h2 shadow dim", col).style.unityTextAlign = TextAnchor.MiddleCenter;
 
             var w = Ui.Window(null, col);
-            w.style.marginTop = 40;
+            w.style.marginTop = Space.S48;
             w.style.flexGrow = 1;
             var list = Ui.List(w).contentContainer;
             if (report.Victory)
@@ -159,7 +159,7 @@ namespace GridGame.App
             }
 
             var w = Ui.Window(null, col);
-            w.style.marginTop = 30;
+            w.style.marginTop = Space.S32;
             w.style.flexGrow = 1;
             var list = Ui.List(w).contentContainer;
             var t = Ui.Text(report.Victory ? "Every wave falls. The Crucible is silent, and the whole haul is yours." :

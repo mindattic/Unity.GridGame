@@ -290,7 +290,7 @@ namespace GridGame.App
             {
                 clip = new VisualElement { name = "thumb-clip", pickingMode = PickingMode.Ignore };
                 clip.style.position = Position.Absolute;
-                clip.style.left = clip.style.top = clip.style.right = clip.style.bottom = 0;
+                clip.style.left = clip.style.top = clip.style.right = clip.style.bottom = Space.S0;
                 clip.style.overflow = Overflow.Hidden;
                 host.Insert(0, clip);
             }
@@ -306,7 +306,7 @@ namespace GridGame.App
             var th = GameApp.I?.Content?.TryClass(classId)?.Thumbnail;
             if (th == null || tex == null || tex.width <= 0)
             {
-                art.style.left = art.style.top = 0;
+                art.style.left = art.style.top = Space.S0;
                 art.style.width = art.style.height = Length.Percent(100);
                 art.style.backgroundSize = new BackgroundSize(BackgroundSizeType.Contain);
                 return art;
@@ -434,7 +434,7 @@ namespace GridGame.App
             {
                 var img = new VisualElement { pickingMode = PickingMode.Ignore };
                 img.style.position = Position.Absolute;
-                img.style.left = img.style.top = img.style.right = img.style.bottom = 1;
+                img.style.left = img.style.top = img.style.right = img.style.bottom = Space.S0;
                 img.style.backgroundImage = new StyleBackground(tex);
                 img.style.backgroundSize = new BackgroundSize(BackgroundSizeType.Contain);
                 pip.Add(img);

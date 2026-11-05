@@ -51,7 +51,7 @@ Status values: ❌ fails, 🟡 partly passes or partly measured, ✅ passes, ⬜
 
 | ID | Rule | Why | Source | Measured by | Status |
 |---|---|---|---|---|---|
-| POL-C1 | Spacing comes only from the scale **8 / 16 / 24 / 32 / 48 / 64 / 96**, via tokens | A rhythm the eye can feel | 8-pt grid (Material 3) | lint | ❌ 22 ad hoc margin/padding values; 82 literal widths/heights |
+| POL-C1 | Spacing comes only from the scale **8 / 16 / 24 / 32 / 48 / 64 / 96** (4 as the half step), via tokens; sizes from `Size`; layout widths and bands from stage units (`Fit`, GG-T272) | A rhythm the eye can feel | 8-pt grid (Material 3) | lint | ✅ every App/USS margin, padding, size and position is a token (GG-T272) |
 | POL-C2 | Touch targets ≥ **132 × 132 px** (44 pt) | Finger accuracy | Apple HIG 44 pt; Material 48 dp; WCAG 2.2 SC 2.5.8 | layout | 🟡 slots 216×196 and tiles 180² pass; other elements unmeasured |
 | POL-C3 | ≥ **24 px** between adjacent targets | Avoids mis-taps | Material 3 (8 dp spacing) | layout | ⬜ |
 | POL-C4 | Primary actions sit in the **bottom 45%** of the stage | One-handed thumb reach | Hoober's thumb-zone research; Fitts's law | layout (primary-tagged elements) | ⬜ |
@@ -141,6 +141,19 @@ Status values: ❌ fails, 🟡 partly passes or partly measured, ✅ passes, ⬜
 
 **Enforcement.** `tools/check_assets.py` fails on hard breaks: a portrait with no transparency or taller than 640, an icon at the wrong size, or a backdrop that isn't a 720×1440 JPEG. Everything else is printed as an art warning. `tools/polish.py` scores POL-H1 to H4 from the same `art_findings()`.
 | POL-H5 | Side-by-side test: a stranger can't pick out "the asset from somewhere else" | Cohesion | Art-direction practice | R10 | ❌ owner: "a collection of random effects" |
+
+
+### Units (GG-T272, owner 2026-11-05: "measure things in agnostic units")
+
+Three kinds of length, each with one job:
+
+| Kind | Token | Scales with | Use for |
+|---|---|---|---|
+| Spacing | `Space.S0…S96` / `--space-*` | resolution only | margins, paddings, gaps, gutters |
+| Element size | `Size.*` | resolution only | icons, pips, bars, portraits, table columns, tap targets |
+| Stage unit | `Fit.W(%)`, `Fit.H(%)`, `Fit.Edge`, `Length.Percent` | resolution **and** aspect | panel widths, vertical bands, screen-edge gutters |
+
+Design px are already resolution-agnostic: the panel scales uniformly from the 1170×2532 design stage to every device (§26.2). So type, spacing and fixed-size art stay in design px, and a 40-px label reads the same on every phone. What design px don't absorb is **aspect**: a wider or taller stage (up to 1424 wide or 2730 tall, §26.3) has extra room. Layout that should breathe uses `Fit` (percent of the safe-area stage, read when the screen builds; every screen rebuilds on `GameApp.StageResized`) or flex. `Fit.Edge` (24) is the one screen-edge gutter. The battle board's 1080-px grid and its HUD rows are fixed game geometry (`BoardTop`, `BannerTop`, `InfoPanelTop`), centered and padded per §26.3.
 
 ## 3. Scoring
 
