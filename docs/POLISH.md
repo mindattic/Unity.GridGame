@@ -58,6 +58,8 @@ Status values: ❌ fails, 🟡 partly passes or partly measured, ✅ passes, ⬜
 | POL-C5 | Nothing **off-stage, clipped, overlapping or inside an unsafe area**, on any supported aspect | Basic finish | Apple HIG safe areas | layout across `aspects` | 🟡 only horizontal NoWrap overflow and squashed tabs/buttons are checked |
 | POL-C6 | **Use the space:** on the widest stage (1424 px) content width grows ≥ **80%** of the extra width; no fixed widths that leave dead gutters | Wide phones should get more content, not more border | Responsive-layout practice | polish.py (content span at 1170 vs 1424) | 🟡 GG-T252 made the confirm column, pause, title menu, confirm dialog, PaywallUi, Camp side column, battle feed, ability-bar slots and Abilities bar cells proportional; other fixed widths remain |
 | POL-C7 | ≤ **7 choices** per visible menu group (group or nest beyond that), and one visually primary action per screen | Decision time grows with choices | Hick–Hyman law; Miller 7±2 | layout (rows per group) | ⬜ Camp has many rows in one group |
+| POL-C8 | **Even gutters:** in a row or wrapping grid of like-sized items, the left, right and between-item gaps are equal (±2 px) and the gap sits on the space scale. No ragged right edge from a fixed item width that doesn't divide the row | Even gutters are what make a grid look designed (owner 2026-11-05: "gutters and spacing are important") | 8-pt grid; Material 3 layout grids | layout | 🟡 Bestiary grid fixed by GG-T252 (`EvenGrid`: cells stretch so every gutter is 16 px); party cards still 28 px edges vs 22 px gaps |
+| POL-C9 | **No dead bands:** at every aspect, each side margin ≤ **10%** of the stage width and no empty horizontal band > **15%** of its height (art-led screens such as the title, credits, crawls and dialogue are exempt from the band check) | Content grows or redistributes to fill the phone, never floats in a sea of backdrop (owner 2026-11-05: "scaling to fit those various aspect ratios and resolutions is important") | Responsive-layout practice | layout | ❌ first pass: short list screens (Adventure, Quests, Bounties, Talk, Party) leave 1100–2250 px empty |
 
 ### D. Information and feedback
 
@@ -120,6 +122,7 @@ Status values: ❌ fails, 🟡 partly passes or partly measured, ✅ passes, ⬜
 - **Automated rule:** score 0–100 = the share of its subjects that pass (screens, elements, abilities, cues, assets).
 - **Checklist item:** 0–3, mapped to 0 / 33 / 67 / 100.
 - **Dimension score:** the mean of its rules' scores, equally weighted.
+- **Every aspect:** the full pass runs the layout audit on every screen at every `harness.py aspects` shape (9:23, 9:21, 9:20, 9:19.5, 9:18, 9:16, 2:3, 3:4). Each **POL-C rule scores at its worst aspect**, and the scorecard names that aspect. POL-C6 compares each screen's content span at 9:19.5 (1170 px wide) with 9:16 (1424 px wide). `--quick` audits the default window only and never writes the baseline.
 - `tools/polish.py` (GG-T251) writes `artifacts/polish/<date>/scorecard.json` plus `report.html`: every dimension, every failing rule with its subject and screenshot, and the delta against the baseline.
 
 ## 4. The polish pass and the ratchet

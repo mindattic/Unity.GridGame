@@ -34,7 +34,7 @@ namespace GridGame.App.Automation
     /// ok:false with an error.
     /// </para>
     /// </summary>
-    public sealed class AutomationServer : MonoBehaviour
+    public sealed partial class AutomationServer : MonoBehaviour
     {
         private HttpListener listener;
         private Thread thread;
@@ -951,7 +951,7 @@ namespace GridGame.App.Automation
                 if (want > 0 && got < want * 0.8f)
                     problems.Add($"squashed {(el.ClassListContains("tab") ? "tab" : "button")} '{Trim((el as TextElement)?.text ?? el.name ?? "")}' {got:0}px of {want:0}");
             }
-            return new { screen = GameApp.I.Router.Current?.Id, labels, problems };
+            return new { screen = GameApp.I.Router.Current?.Id, labels, problems, polish = PolishAudit() };
         }
 
         private static string Trim(string s) => s.Length > 40 ? s.Substring(0, 40) + "…" : s;
