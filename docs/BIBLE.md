@@ -286,7 +286,7 @@ For combat/targeting/VFX sub-vocabulary see [Appendix §18 Glossary](#18-glossar
 
 A tactical-RPG hybrid where the player **drags heroes one tile at a time across a 6×8 grid** to flank enemies and trigger **pincer attacks**. Combat runs on a **timeline** of enemy icons that "load" left → right and act when they arrive; the clock advances only when the player commits an action. Magic, items and class skills are managed through the **AbilityBar**. Between battles the party rests at a Final Fantasy–style **Camp** menu.
 
-The game is a **deterministic pure-C# simulation** (`Gaiden.Core`) with a **code-built UI Toolkit front end** (`Gaiden.App`) that plays the simulation's events back. There are no prefabs, no hand-built scenes and no Inspector wiring; art, audio and content load from `Resources`.
+The game is a **deterministic pure-C# simulation** (`Gaiden.Core`) with a **code-built UI Toolkit front end** (`Gaiden.App`) that plays the simulation's events back. There are no prefabs, no hand-built scenes and no Inspector wiring; art, audio and content load from `Resources`. **One exception (amended 2026-11-05, owner, GG-T269):** premade particle-effect prefabs under `Resources/Vfx/`, spawned and driven by code ([§6.2](#62-vfx-pipeline)).
 
 ### 0.1 Design pillars
 
@@ -998,6 +998,14 @@ Invariant: while the event player is busy (`BattleScreen.Busy`) no command can b
 
 ### 6.2 VFX pipeline
 
+**Amended 2026-11-05 — effect prefabs (owner, GG-T269: "Prefabs that played either once or in a loop; they all might need to be normalized"):** where `vfxstyle.json` names an effect, a premade particle prefab plays instead of the code-drawn burst. The prefabs are the owned GridGame2026 set (54 prefabs plus their materials, textures and meshes, imported with their GUIDs into `Resources/Vfx` and `Assets/Gaiden/Vfx`, licence record `Assets/Gaiden/Vfx/SOURCES.md`).
+- **Catalog:** `vfx.json` (validated) lists every effect: `Mode` Once or Loop, `Tiles` (on-screen size of its 80th-percentile particle reach), `Extent` (authored size, measured by `GaidenBuild`-style batch tool `VfxImport.Prepare` into `tools/vfx-measure.json`), `Duration` (a Once effect stops emitting then fades), `Tint`, `Cue`, `Source`.
+- **Mapping:** an element lists `TierPrefabs` (Minor/Major/Ultimate). A tier it leaves out, an unmapped element (Ice and Arcane today) and Reduce Motion all keep the code-drawn effect, which stays the fallback. A status names its own `Prefab`; it never inherits its element's impact. A Loop status prefab (burning → flame, wet → bubble) stays on its unit exactly while the unit stands with that status, reconciled every frame, so death, cleanse, expiry and wave end all stop it.
+- **Rendering:** an orthographic effects camera renders layer 31 into a RenderTexture, one world unit per board pixel. A composite pass rebuilds alpha from brightness, because additive legacy particles write none. A stage-sized UI Toolkit overlay inside the board's FX layer shows it, following resizes (§26), so harness screenshots and MindAttic.Capture include it.
+- **Time:** pause sets every live system's `simulationSpeed` to 0 (frozen mid-burst), and battle speed scales it. Instances are pooled.
+- **Imported materials:** URP-only ones moved to the legacy particle shaders, renderers with no material got `GaidenDefaultParticle`, and the old scripts and audio sources were stripped.
+- **Checked:** harness `vfxprefabs` films every catalog effect into a contact sheet (only effects that read well there are mapped), pause freezes them pixel-for-pixel, 60 fps with a dozen heavy effects live, and they stay aligned at 9:23 and 3:4.
+
 **Amended 2026-10-11 — staging (owner: "there is a rhythm and tempo to gameplay that does require pauses and transitions … if I clicked poison and an icon just appeared on an enemy it would feel meaningless"):** every action plays as readable beats (`BattleScreen.Fx.cs`, `BattleScreen.CutIns.cs`):
 1. **Wind-up:** motes spiral into the caster in the spell's element colour (`CastColor`: fire orange, poison green, heals green, status spells their status colour).
 2. **Charging:** a channel halo pulses on the caster and motes orbit it; a **charging bar** fills on its tile (plus the existing ring) while the timeline glides. Hero casts queue and land inside one action, so playback tracks them as *cast ghosts* from `CastQueuedEvent` to the resolve.
@@ -1304,7 +1312,7 @@ A hero has five equipment slots (`EquipmentSlot`: Weapon, Armor, Relic1–3) sto
 
 ### 11.1 Code-only boot
 
-**Amended 2026-10-09:** `Assets/Gaiden/Scenes/Main.unity` is an empty scene (the only one in the build, ensured by `GaidenBuild.EnsureScene`). `GameApp.Boot` (`[RuntimeInitializeOnLoadMethod(AfterSceneLoad)]`) creates a `DontDestroyOnLoad` `GameApp` that builds, in code: a UI-only camera (black clear), a `UIDocument` with runtime `PanelSettings` (ScaleWithScreenSize, 1170×2532, theme `UI/GaidenTheme` + style sheet `UI/Theme.uss`), the letterboxed stage, the screens host, an overlay layer and a fade layer; then loads content, the save store and audio, and shows the Title (or `-start <screen>`). There are no prefabs, no `[SerializeField]`s and no scene builders; every screen is a `GameScreen` subclass whose `Build(root)` composes UI Toolkit elements via `App/UI/Ui.cs` helpers and USS classes.
+**Amended 2026-10-09:** `Assets/Gaiden/Scenes/Main.unity` is an empty scene (the only one in the build, ensured by `GaidenBuild.EnsureScene`). `GameApp.Boot` (`[RuntimeInitializeOnLoadMethod(AfterSceneLoad)]`) creates a `DontDestroyOnLoad` `GameApp` that builds, in code: a UI-only camera (black clear), a `UIDocument` with runtime `PanelSettings` (ScaleWithScreenSize, 1170×2532, theme `UI/GaidenTheme` + style sheet `UI/Theme.uss`), the letterboxed stage, the screens host, an overlay layer and a fade layer; then loads content, the save store and audio, and shows the Title (or `-start <screen>`). There are no prefabs (except the code-spawned effect prefabs in `Resources/Vfx`, amended 2026-11-05, GG-T269, [§6.2](#62-vfx-pipeline)), no `[SerializeField]`s and no scene builders; every screen is a `GameScreen` subclass whose `Build(root)` composes UI Toolkit elements via `App/UI/Ui.cs` helpers and USS classes.
 
 ### 11.2 Screen list
 
@@ -1398,7 +1406,7 @@ Owner: "these new coordinates and zoom are kept in memory in the character's Thu
 
 ### 12.3 VFX
 
-✅ **GG-T253:** one element/status table (`Resources/Content/vfxstyle.json`) drives every effect, with intensity tiers and timing/easing tokens; code-drawn UI Toolkit, no particle prefabs (law #3). Details and the contact-sheet tool in [§6.2](#62-vfx-pipeline); rules in [`POLISH.md`](POLISH.md) §E (POL-E1–E8).
+✅ **GG-T253:** one element/status table (`Resources/Content/vfxstyle.json`) drives every effect, with intensity tiers and timing/easing tokens; code-drawn UI Toolkit, with premade effect prefabs layered on top where mapped (GG-T269, §6.2; the one exception to "no prefabs"). Details and the contact-sheet tool in [§6.2](#62-vfx-pipeline); rules in [`POLISH.md`](POLISH.md) §E (POL-E1–E8).
 
 ---
 

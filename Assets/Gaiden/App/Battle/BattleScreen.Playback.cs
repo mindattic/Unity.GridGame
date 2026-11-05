@@ -1651,6 +1651,7 @@ namespace GridGame.App
         /// <summary>An element's impact (bible §6.2, GG-T253): its vfxstyle.json look at the hit's tier.</summary>
         private IEnumerator ElementBurst(Vector2 at, VfxStyleDef style, VfxTierDef tier)
         {
+            if (TryPrefab(style, at, tier.Tier, out _)) { yield return Tween.Wait(Timing.Instant); yield break; }
             Emit(style, at, tier.Count, sizeMul: tier.Size);
             yield return Tween.Wait(style.Motion == "bolt" ? Timing.Quick : Timing.Instant);
         }

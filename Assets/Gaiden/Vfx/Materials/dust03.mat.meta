@@ -1,0 +1,15 @@
+fileFormatVersion: 2
+guid: 4b9407c2fdc55854780024d6bc6498b3
+NativeFormatImporter:
+  externalObjects: {}
+  mainObjectFileID: 2100000
+  userData: 
+  assetBundleName: 
+  assetBundleVariant: 
+AssetOrigin:
+  serializedVersion: 1
+  productId: 290657
+  packageName: Game VFX - Particle Trails Collection
+  packageVersion: 1.0
+  assetPath: Assets/VFX_Particle Trails/Materials/dust03.mat
+  uploadId: 678419

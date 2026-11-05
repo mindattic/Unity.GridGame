@@ -1,0 +1,15 @@
+fileFormatVersion: 2
+guid: ecb6be73f3236864f8f5028774de43c2
+NativeFormatImporter:
+  externalObjects: {}
+  mainObjectFileID: 0
+  userData: 
+  assetBundleName: fx_textures_dust_materials.unity3d
+  assetBundleVariant: 
+AssetOrigin:
+  serializedVersion: 1
+  productId: 289811
+  packageName: RPG_GameVFX Collection Vol.3
+  packageVersion: 1.0
+  assetPath: Assets/GameVFX Collection Vol3/Materials/dust10.mat
+  uploadId: 679549

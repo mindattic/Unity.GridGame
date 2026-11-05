@@ -1,0 +1,326 @@
+{
+  "AcidSplash": {
+    "loop": false,
+    "duration": 10.0,
+    "extent": 5.499,
+    "systems": 8
+  },
+  "AirSlash": {
+    "loop": false,
+    "duration": 7.0,
+    "extent": 12.447,
+    "systems": 18
+  },
+  "AntidoteSparkle": {
+    "loop": false,
+    "duration": 1.7,
+    "extent": 1.384,
+    "systems": 1
+  },
+  "BloodClaw": {
+    "loop": false,
+    "duration": 10.0,
+    "extent": 5.691,
+    "systems": 16
+  },
+  "BlueGlow": {
+    "loop": true,
+    "duration": 6.3,
+    "extent": 2.845,
+    "systems": 5
+  },
+  "BlueSlash1": {
+    "loop": false,
+    "duration": 6.0,
+    "extent": 10.0,
+    "systems": 8
+  },
+  "BlueSlash2": {
+    "loop": false,
+    "duration": 10.0,
+    "extent": 5.424,
+    "systems": 5
+  },
+  "BlueSlash3": {
+    "loop": false,
+    "duration": 10.0,
+    "extent": 3.835,
+    "systems": 9
+  },
+  "BlueSlash4": {
+    "loop": false,
+    "duration": 0.6,
+    "extent": 1.0,
+    "systems": 1
+  },
+  "BlueSword": {
+    "loop": false,
+    "duration": 7.0,
+    "extent": 4.411,
+    "systems": 5
+  },
+  "BlueSword4X": {
+    "loop": false,
+    "duration": 10.0,
+    "extent": 8.055,
+    "systems": 22
+  },
+  "BlueYellowSword": {
+    "loop": false,
+    "duration": 10.0,
+    "extent": 4.027,
+    "systems": 10
+  },
+  "BlueYellowSword3X": {
+    "loop": false,
+    "duration": 10.45,
+    "extent": 6.111,
+    "systems": 29
+  },
+  "Bubble": {
+    "loop": true,
+    "duration": 10.0,
+    "extent": 1.0,
+    "systems": 5
+  },
+  "BuffLife": {
+    "loop": false,
+    "duration": 7.0,
+    "extent": 3.713,
+    "systems": 4
+  },
+  "DoubleClaw": {
+    "loop": false,
+    "duration": 10.0,
+    "extent": 8.424,
+    "systems": 22
+  },
+  "Feather": {
+    "loop": true,
+    "duration": 10.0,
+    "extent": 0.682,
+    "systems": 7
+  },
+  "Fireball": {
+    "loop": true,
+    "duration": 10.0,
+    "extent": 1.962,
+    "systems": 4
+  },
+  "FireRain": {
+    "loop": false,
+    "duration": 10.0,
+    "extent": 14.518,
+    "systems": 209
+  },
+  "Flame": {
+    "loop": true,
+    "duration": 5.5,
+    "extent": 0.66,
+    "systems": 4
+  },
+  "FlamingTwist": {
+    "loop": false,
+    "duration": 1.4,
+    "extent": 1.391,
+    "systems": 1
+  },
+  "GodRays": {
+    "loop": true,
+    "duration": 7.0,
+    "extent": 26.937,
+    "systems": 9
+  },
+  "GoldBuff": {
+    "loop": false,
+    "duration": 7.0,
+    "extent": 11.967,
+    "systems": 5
+  },
+  "GoldSparkle": {
+    "loop": true,
+    "duration": 10.0,
+    "extent": 1.171,
+    "systems": 8
+  },
+  "GreenBuff": {
+    "loop": false,
+    "duration": 10.0,
+    "extent": 10.813,
+    "systems": 15
+  },
+  "GreenSparkle": {
+    "loop": true,
+    "duration": 101.5,
+    "extent": 0.823,
+    "systems": 4
+  },
+  "HealAura": {
+    "loop": false,
+    "duration": 2.7,
+    "extent": 0.965,
+    "systems": 1
+  },
+  "HexShield": {
+    "loop": true,
+    "duration": 8.0,
+    "extent": 5.0,
+    "systems": 5
+  },
+  "IceSparkle": {
+    "loop": true,
+    "duration": 10.0,
+    "extent": 130.847,
+    "systems": 7
+  },
+  "IcyWind": {
+    "loop": false,
+    "duration": 1.9,
+    "extent": 1.415,
+    "systems": 1
+  },
+  "LevelUp": {
+    "loop": false,
+    "duration": 10.0,
+    "extent": 3.258,
+    "systems": 7
+  },
+  "LightningExplosion": {
+    "loop": false,
+    "duration": 10.0,
+    "extent": 7.025,
+    "systems": 46
+  },
+  "LightningStrike": {
+    "loop": false,
+    "duration": 10.0,
+    "extent": 7.413,
+    "systems": 11
+  },
+  "MoonFeather": {
+    "loop": false,
+    "duration": 10.0,
+    "extent": 1.0,
+    "systems": 7
+  },
+  "OrangeSlash": {
+    "loop": false,
+    "duration": 10.0,
+    "extent": 33.653,
+    "systems": 12
+  },
+  "PinkDust": {
+    "loop": true,
+    "duration": 10.0,
+    "extent": 1.436,
+    "systems": 4
+  },
+  "PinkSpark": {
+    "loop": false,
+    "duration": 7.0,
+    "extent": 9.899,
+    "systems": 9
+  },
+  "PoisonCloud": {
+    "loop": false,
+    "duration": 2.8,
+    "extent": 1.08,
+    "systems": 1
+  },
+  "PuffyExplosion": {
+    "loop": false,
+    "duration": 4.55,
+    "extent": 3.715,
+    "systems": 7
+  },
+  "RayBlast": {
+    "loop": false,
+    "duration": 10.45,
+    "extent": 8.509,
+    "systems": 28
+  },
+  "RedSlash2X": {
+    "loop": false,
+    "duration": 10.45,
+    "extent": 4.36,
+    "systems": 17
+  },
+  "RedSword": {
+    "loop": false,
+    "duration": 3.0,
+    "extent": 3.988,
+    "systems": 11
+  },
+  "RosePetal": {
+    "loop": true,
+    "duration": 10.0,
+    "extent": 1.0,
+    "systems": 4
+  },
+  "RotaryKnife": {
+    "loop": false,
+    "duration": 10.0,
+    "extent": 5.4,
+    "systems": 9
+  },
+  "ScanRays": {
+    "loop": false,
+    "duration": 1.9,
+    "extent": 0.497,
+    "systems": 1
+  },
+  "ShockBolt": {
+    "loop": false,
+    "duration": 0.6,
+    "extent": 0.317,
+    "systems": 1
+  },
+  "Shuriken": {
+    "loop": true,
+    "duration": 7.0,
+    "extent": 1.0,
+    "systems": 2
+  },
+  "SilenceMute": {
+    "loop": false,
+    "duration": 1.3,
+    "extent": 0.977,
+    "systems": 1
+  },
+  "SleepDust": {
+    "loop": false,
+    "duration": 2.2,
+    "extent": 0.762,
+    "systems": 1
+  },
+  "SlowShimmer": {
+    "loop": false,
+    "duration": 2.2,
+    "extent": 0.73,
+    "systems": 1
+  },
+  "StarSparkle": {
+    "loop": true,
+    "duration": 7.0,
+    "extent": 9.834,
+    "systems": 3
+  },
+  "TechSword": {
+    "loop": true,
+    "duration": 10.0,
+    "extent": 5.36,
+    "systems": 7
+  },
+  "ToxicCloud": {
+    "loop": false,
+    "duration": 10.0,
+    "extent": 6.978,
+    "systems": 4
+  },
+  "YellowHit": {
+    "loop": false,
+    "duration": 7.0,
+    "extent": 4.526,
+    "systems": 7
+  }
+}

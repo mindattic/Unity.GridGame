@@ -39,9 +39,11 @@ namespace GridGame.Core.Content
         public bool? Swell;
         /// <summary>Statuses: one lingering particle every N beats while the status lasts (0 = none).</summary>
         public int? LingerEvery;
-        /// <summary>Reserved for the effect-prefab pass (follow-up to GG-T253): a prefab id that, when set, replaces this
-        /// style's code-drawn burst. Null today; nothing reads it yet, and the code-drawn burst stays the fallback.</summary>
+        /// <summary>A vfx.json effect id (GG-T269) that replaces this style's code-drawn burst; null keeps the code-drawn
+        /// effect. A status's prefab plays as it takes hold, and a Loop prefab stays on the unit while the status lasts.</summary>
         public string Prefab;
+        /// <summary>Per-tier effect ids ("Minor"/"Major"/"Ultimate"), overriding <see cref="Prefab"/> at that tier.</summary>
+        public Dictionary<string, string> TierPrefabs;
     }
 
     public sealed class VfxTierDef
@@ -50,8 +52,7 @@ namespace GridGame.Core.Content
         public float Count = 1f, Size = 1f, Shake;
         /// <summary>Seconds the impact freezes before follow-through (POL-E6).</summary>
         public float HitStop;
-        /// <summary>Reserved for the effect-prefab pass: a tier-specific prefab id (e.g. a bigger explosion for an
-        /// Ultimate) that overrides the element's <see cref="VfxStyleDef.Prefab"/>. Null today; unread.</summary>
+        /// <summary>A tier-wide vfx.json effect id, used when a style names none for this tier (GG-T269).</summary>
         public string Prefab;
     }
 
@@ -107,7 +108,8 @@ namespace GridGame.Core.Content
                 Count = s.Count ?? b.Count, Size = s.Size ?? b.Size, Reach = s.Reach ?? b.Reach, Time = s.Time ?? b.Time,
                 Ring = s.Ring ?? b.Ring, Glyph = s.Glyph ?? b.Glyph,
                 Tint = s.Tint, TintHolds = s.TintHolds, Swell = s.Swell, LingerEvery = s.LingerEvery,
-                Prefab = s.Prefab ?? b.Prefab,
+                Prefab = s.Prefab,
+                TierPrefabs = s.TierPrefabs,
             };
         }
 

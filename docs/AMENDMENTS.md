@@ -733,3 +733,21 @@ Owner: "gaining mana is too generous since I see the whole bar filled almost in 
   - **Wave 2:** frog + marsh shambler instead of the lone hag. Hags still appear in Mireholt Fens III's finale.
   - **Naga** (only on swamp-02): Strength 15 → 10, Vitality 12 → 10.
   - **Result:** casual wins 3/12 → 9/12 on the same seeds and parties. Neighbouring stages are untouched.
+
+## 2026-11-05 — Effect prefabs come back (GG-T269)
+
+- **Was:** "no prefabs" (repo law #3, BIBLE §11.1). Since GG-T253 every effect has been drawn in code from `vfxstyle.json`.
+- **Now:** the owner chose premade particle prefabs that play once or loop, normalized, as GridGame2026 had: "it works".
+  - **Where they live:** effect prefabs only, in `Resources/Vfx`, spawned and driven by code with no Inspector wiring. The source is the owned GridGame2026 set; any additions must be free/CC0.
+  - **How they're set up:** `vfx.json` normalizes each prefab's size (in tiles), its duration and once/loop. `vfxstyle.json` maps elements, tiers and statuses to them.
+  - **Rendering and time:** an effects camera feeds a RenderTexture overlay, driven by pause and battle speed.
+  - **Fallback:** the code-drawn effects remain wherever no prefab is mapped, and under Reduce Motion.
+- **Also changed:** a status no longer inherits its element's prefab (a burning unit doesn't replay the Fire impact explosion).
+
+## 2026-11-05 — The Chronomancer: a foe that slows the party (GG-T275)
+
+- **Was:** nothing put Slow on heroes. `slowed`'s −1 tempo (GG-T268) only came from traps (Shock Mine, Mire, Quicksand), and a cleanse removed the debuff but not the tempo it cost.
+- **Now (owner: "Stack haste, while a Chronomancer casts slow on you"):** see BIBLE §14.10.
+  - New enemy `chronomancer` charges **Temporal Drag**: party-wide, 4 Arcane plus Slowed, −1 tempo once. It holds Drag while the party is already behind on tempo, and rewinds once at 40% HP.
+  - It is placed in Frostmaw Caverns II, wave 2. Casual wins there are 9/12 with it and 8/12 without it on the same seeds, in band. The wave was already long (the knights' tough hide).
+  - **Cleansing** a tempo debuff off the last hero carrying it now lifts its tempo effect too (BIBLE §2.11).

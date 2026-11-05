@@ -1,0 +1,17 @@
+fileFormatVersion: 2
+guid: 396d670c12b8bd7448a8af2d696b0602
+timeCreated: 1542679983
+licenseType: Store
+NativeFormatImporter:
+  externalObjects: {}
+  mainObjectFileID: 2100000
+  userData: 
+  assetBundleName: fx_textures_flare_materials.unity3d
+  assetBundleVariant: 
+AssetOrigin:
+  serializedVersion: 1
+  productId: 291813
+  packageName: Unity Game VFX - Cartoon Skill Collection Vol.2
+  packageVersion: 1.0
+  assetPath: Assets/Game VFX - Cartoon Skill Collection Vol2/Materials/God_hit01_light00.mat
+  uploadId: 681449

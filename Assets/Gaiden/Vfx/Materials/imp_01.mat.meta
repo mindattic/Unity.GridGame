@@ -1,0 +1,15 @@
+fileFormatVersion: 2
+guid: d872dead66dfbd247b42319595036137
+NativeFormatImporter:
+  externalObjects: {}
+  mainObjectFileID: 2100000
+  userData: 
+  assetBundleName: base/effect2/character/material/fx1630.unity3d
+  assetBundleVariant: 
+AssetOrigin:
+  serializedVersion: 1
+  productId: 293636
+  packageName: Game VFX - Slash Collection(URP)
+  packageVersion: 1.01
+  assetPath: Assets/Materials/imp_01.mat
+  uploadId: 768429

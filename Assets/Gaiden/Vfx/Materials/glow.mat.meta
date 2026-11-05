@@ -1,0 +1,16 @@
+fileFormatVersion: 2
+guid: e8ebd9bb546f0bd4bac5e0ef62573c6e
+timeCreated: 1541688380
+licenseType: Store
+NativeFormatImporter:
+  mainObjectFileID: 2100000
+  userData: 
+  assetBundleName: 
+  assetBundleVariant: 
+AssetOrigin:
+  serializedVersion: 1
+  productId: 286542
+  packageName: Game VFX - DarkSkill Collection
+  packageVersion: 1.0
+  assetPath: Assets/GameVFX Collection Vol3/Materials/glow.mat
+  uploadId: 668264

@@ -1,0 +1,14 @@
+fileFormatVersion: 2
+guid: f8fc602f1dd633547be1cd437c18d647
+PrefabImporter:
+  externalObjects: {}
+  userData: 
+  assetBundleName: 
+  assetBundleVariant: 
+AssetOrigin:
+  serializedVersion: 1
+  productId: 290657
+  packageName: Game VFX - Particle Trails Collection
+  packageVersion: 1.0
+  assetPath: Assets/VFX_Particle Trails/Prefab/VFX_LineTrail_Green.prefab
+  uploadId: 678419

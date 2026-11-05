@@ -1,0 +1,18 @@
+fileFormatVersion: 2
+guid: bb670c11401e52e4497295274b9bdab1
+timeCreated: 1522674425
+licenseType: Store
+NativeFormatImporter:
+  externalObjects: {}
+  mainObjectFileID: 2100000
+  userData: 
+  assetBundleName: fx_textures_fire_materials.unity3d
+  assetBundleVariant: 
+AssetOrigin:
+  serializedVersion: 1
+  productId: 291813
+  packageName: Unity Game VFX - Cartoon Skill Collection Vol.2
+  packageVersion: 1.0
+  assetPath: Assets/Game VFX - Cartoon Skill Collection Vol2/Materials/explosion_smoke_4_sheet
+    1.mat
+  uploadId: 681449

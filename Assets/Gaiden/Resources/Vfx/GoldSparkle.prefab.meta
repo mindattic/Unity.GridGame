@@ -1,0 +1,14 @@
+fileFormatVersion: 2
+guid: 9263c45164b34c845ba8a1cadf40ac86
+PrefabImporter:
+  externalObjects: {}
+  userData: 
+  assetBundleName: 
+  assetBundleVariant: 
+AssetOrigin:
+  serializedVersion: 1
+  productId: 290657
+  packageName: Game VFX - Particle Trails Collection
+  packageVersion: 1.0
+  assetPath: Assets/VFX_Particle Trails/Prefab/FX_ParticleTrail_Gold.prefab
+  uploadId: 678419

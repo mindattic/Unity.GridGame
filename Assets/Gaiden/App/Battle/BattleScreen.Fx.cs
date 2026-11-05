@@ -237,7 +237,7 @@ namespace GridGame.App
                 // A held tint (Frozen) survives the hit flash that resets the art between beats.
                 if (st.TintHolds == true && st.Tint != null) v.Art.style.unityBackgroundImageTintColor = Palette.Hex(st.Tint, Palette.White);
                 int every = st.LingerEvery ?? 0;
-                if (every > 0 && lingerBeat % every == 0) Linger(st, BoardView.CenterOf(v.Tile, v.W, v.H));
+                if (every > 0 && lingerBeat % every == 0 && !HasPrefabLoop(u, b.Def.Id)) Linger(st, BoardView.CenterOf(v.Tile, v.W, v.H));
             }
         }
 

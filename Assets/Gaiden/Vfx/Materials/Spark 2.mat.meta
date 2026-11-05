@@ -1,0 +1,15 @@
+fileFormatVersion: 2
+guid: d8d52549fe88ac34b9ed657d9a0dc22d
+NativeFormatImporter:
+  externalObjects: {}
+  mainObjectFileID: 0
+  userData: 
+  assetBundleName: fx_textures_particle_materials.unity3d
+  assetBundleVariant: 
+AssetOrigin:
+  serializedVersion: 1
+  productId: 289069
+  packageName: Game VFX - BloodSkill Collection
+  packageVersion: 1.0
+  assetPath: Assets/Game VFX - Cartoon Skill Collection Vol2/Materials/Spark.mat
+  uploadId: 674228

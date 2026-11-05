@@ -1,0 +1,15 @@
+fileFormatVersion: 2
+guid: 8648327e59b7b4249b1d35f7672ecd4b
+NativeFormatImporter:
+  externalObjects: {}
+  mainObjectFileID: 0
+  userData: 
+  assetBundleName: fx_textures_glow_materials.unity3d
+  assetBundleVariant: 
+AssetOrigin:
+  serializedVersion: 1
+  productId: 289811
+  packageName: RPG_GameVFX Collection Vol.3
+  packageVersion: 1.0
+  assetPath: Assets/GameVFX Collection Vol3/Materials/glow_ball2_grey_5.mat
+  uploadId: 679549

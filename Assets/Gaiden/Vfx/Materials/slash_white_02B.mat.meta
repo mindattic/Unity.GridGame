@@ -1,0 +1,17 @@
+fileFormatVersion: 2
+guid: d01fb8946f143664ba2e7084ab239a3f
+timeCreated: 1555214466
+licenseType: Store
+NativeFormatImporter:
+  externalObjects: {}
+  mainObjectFileID: 2100000
+  userData: 
+  assetBundleName: fx_textures_slash_materials.unity3d
+  assetBundleVariant: 
+AssetOrigin:
+  serializedVersion: 1
+  productId: 291813
+  packageName: Unity Game VFX - Cartoon Skill Collection Vol.2
+  packageVersion: 1.0
+  assetPath: Assets/Game VFX - Cartoon Skill Collection Vol2/Materials/slash_white_02B.mat
+  uploadId: 681449

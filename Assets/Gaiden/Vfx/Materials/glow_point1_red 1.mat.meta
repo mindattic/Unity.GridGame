@@ -1,0 +1,15 @@
+fileFormatVersion: 2
+guid: 9eaac7a460a2b814bae7481339524829
+NativeFormatImporter:
+  externalObjects: {}
+  mainObjectFileID: 0
+  userData: 
+  assetBundleName: fx_textures_glow_materials.unity3d
+  assetBundleVariant: 
+AssetOrigin:
+  serializedVersion: 1
+  productId: 289915
+  packageName: Game VFX - Cartoon Skill Collection
+  packageVersion: 1.0
+  assetPath: Assets/Game VFX - Cartoon Skill Collection Vol2/Materials/glow_point1_red.mat
+  uploadId: 676589

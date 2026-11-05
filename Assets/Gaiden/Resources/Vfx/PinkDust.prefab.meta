@@ -1,0 +1,14 @@
+fileFormatVersion: 2
+guid: 0cc61da64e192f146b38f812cc5645b4
+PrefabImporter:
+  externalObjects: {}
+  userData: 
+  assetBundleName: 
+  assetBundleVariant: 
+AssetOrigin:
+  serializedVersion: 1
+  productId: 290657
+  packageName: Game VFX - Particle Trails Collection
+  packageVersion: 1.0
+  assetPath: Assets/VFX_Particle Trails/Prefab/FX_ParticleTrail_Dust.prefab
+  uploadId: 678419

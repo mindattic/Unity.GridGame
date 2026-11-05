@@ -1,0 +1,15 @@
+fileFormatVersion: 2
+guid: f631d2cee74d39443afee296280862a0
+NativeFormatImporter:
+  externalObjects: {}
+  mainObjectFileID: 0
+  userData: 
+  assetBundleName: fx_textures_ground_materials.unity3d
+  assetBundleVariant: 
+AssetOrigin:
+  serializedVersion: 1
+  productId: 293636
+  packageName: Game VFX - Slash Collection(URP)
+  packageVersion: 1.01
+  assetPath: Assets/Materials/stone02_3.mat
+  uploadId: 768429

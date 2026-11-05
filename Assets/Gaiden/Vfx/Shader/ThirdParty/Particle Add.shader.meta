@@ -1,0 +1,14 @@
+fileFormatVersion: 2
+guid: 5d9af52b9e541384faa29f5e213eef21
+ShaderImporter:
+  defaultTextures: []
+  userData: 
+  assetBundleName: 
+  assetBundleVariant: 
+AssetOrigin:
+  serializedVersion: 1
+  productId: 289915
+  packageName: Game VFX - Cartoon Skill Collection
+  packageVersion: 1.0
+  assetPath: Assets/Game VFX - Cartoon Skill Collection Vol2/Shaders/Particle Add.shader
+  uploadId: 676589

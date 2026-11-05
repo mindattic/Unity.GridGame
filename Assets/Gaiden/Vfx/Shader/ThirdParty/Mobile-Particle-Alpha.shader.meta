@@ -1,0 +1,15 @@
+fileFormatVersion: 2
+guid: 2a24f0788e11fc645958aaa781f099c3
+ShaderImporter:
+  externalObjects: {}
+  defaultTextures: []
+  userData: 
+  assetBundleName: builtin_builtin_shader.unity3d
+  assetBundleVariant: 
+AssetOrigin:
+  serializedVersion: 1
+  productId: 289915
+  packageName: Game VFX - Cartoon Skill Collection
+  packageVersion: 1.0
+  assetPath: Assets/Game VFX - Cartoon Skill Collection Vol2/Shaders/Mobile-Particle-Alpha.shader
+  uploadId: 676589

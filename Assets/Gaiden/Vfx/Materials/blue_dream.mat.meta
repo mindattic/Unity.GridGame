@@ -1,0 +1,15 @@
+fileFormatVersion: 2
+guid: cc92956ec8fad9b4c8da6746e2748afa
+timeCreated: 1440568938
+licenseType: Store
+NativeFormatImporter:
+  userData: 
+  assetBundleName: 
+  assetBundleVariant: 
+AssetOrigin:
+  serializedVersion: 1
+  productId: 293636
+  packageName: Game VFX - Slash Collection(URP)
+  packageVersion: 1.01
+  assetPath: Assets/Materials/blue_dream.mat
+  uploadId: 768429

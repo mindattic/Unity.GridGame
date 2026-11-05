@@ -1,0 +1,17 @@
+fileFormatVersion: 2
+guid: ee17f46a68c03f340814a678c2d58d3d
+timeCreated: 1528452931
+licenseType: Store
+NativeFormatImporter:
+  externalObjects: {}
+  mainObjectFileID: 2100000
+  userData: 
+  assetBundleName: fx_textures_line_rotate_materials.unity3d
+  assetBundleVariant: 
+AssetOrigin:
+  serializedVersion: 1
+  productId: 291813
+  packageName: Unity Game VFX - Cartoon Skill Collection Vol.2
+  packageVersion: 1.0
+  assetPath: Assets/Game VFX - Cartoon Skill Collection Vol2/Materials/tuowei 2.mat
+  uploadId: 681449

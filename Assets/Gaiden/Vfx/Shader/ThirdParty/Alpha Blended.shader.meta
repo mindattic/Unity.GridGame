@@ -1,0 +1,17 @@
+fileFormatVersion: 2
+guid: 2b02ff58d507c6a478f8b1a00964a56d
+ShaderImporter:
+  externalObjects: {}
+  defaultTextures: []
+  nonModifiableTextures: []
+  preprocessorOverride: 0
+  userData: 
+  assetBundleName: 
+  assetBundleVariant: 
+AssetOrigin:
+  serializedVersion: 1
+  productId: 293636
+  packageName: Game VFX - Slash Collection(URP)
+  packageVersion: 1.01
+  assetPath: Assets/Shader/ThirdParty/Alpha Blended.shader
+  uploadId: 768429

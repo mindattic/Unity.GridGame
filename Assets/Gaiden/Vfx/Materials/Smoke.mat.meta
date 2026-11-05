@@ -1,0 +1,15 @@
+fileFormatVersion: 2
+guid: d101c7d8a8bdf3449b3eab56daf6aff6
+timeCreated: 1467842835
+licenseType: Store
+NativeFormatImporter:
+  userData: 
+  assetBundleName: 
+  assetBundleVariant: 
+AssetOrigin:
+  serializedVersion: 1
+  productId: 290657
+  packageName: Game VFX - Particle Trails Collection
+  packageVersion: 1.0
+  assetPath: Assets/VFX_Particle Trails/Materials/Smoke.mat
+  uploadId: 678419

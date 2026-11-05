@@ -1,0 +1,15 @@
+fileFormatVersion: 2
+guid: b8ab2c5160dffd2468692a40d1f16655
+NativeFormatImporter:
+  externalObjects: {}
+  mainObjectFileID: 2100000
+  userData: 
+  assetBundleName: base/effect2/character/material/fx1421.unity3d
+  assetBundleVariant: 
+AssetOrigin:
+  serializedVersion: 1
+  productId: 293636
+  packageName: Game VFX - Slash Collection(URP)
+  packageVersion: 1.01
+  assetPath: Assets/Materials/noise_07.mat
+  uploadId: 768429

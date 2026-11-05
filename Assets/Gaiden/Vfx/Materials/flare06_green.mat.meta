@@ -1,0 +1,17 @@
+fileFormatVersion: 2
+guid: e51a5c2be123830439240f30e773716e
+timeCreated: 1529742753
+licenseType: Store
+NativeFormatImporter:
+  externalObjects: {}
+  mainObjectFileID: 2100000
+  userData: 
+  assetBundleName: fx_textures_flare_materials.unity3d
+  assetBundleVariant: 
+AssetOrigin:
+  serializedVersion: 1
+  productId: 289811
+  packageName: RPG_GameVFX Collection Vol.3
+  packageVersion: 1.0
+  assetPath: Assets/GameVFX Collection Vol3/Materials/flare06_green.mat
+  uploadId: 679549

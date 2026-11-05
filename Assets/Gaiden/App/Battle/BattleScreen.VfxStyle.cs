@@ -122,6 +122,8 @@ namespace GridGame.App
         private float Emit(VfxStyleDef s, Vector2 at, float intensity = 1f, string motion = null, float sizeMul = 1f, bool quiet = false)
         {
             if (s == null || board == null) return 0f;
+            // GG-T269: a named prefab replaces the burst (not lingering wisps or named flourishes).
+            if (motion == null && intensity >= 0.75f && TryPrefab(s, at, hitTier, out float prefabSeconds)) return prefabSeconds;
             motion = motion ?? s.Motion;
             float seconds = Dur(s.Time);
             int n = Mathf.Max(1, Mathf.RoundToInt((s.Count ?? 8) * intensity * (ReduceMotion ? 0.5f : 1f)));

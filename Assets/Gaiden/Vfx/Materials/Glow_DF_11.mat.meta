@@ -1,0 +1,17 @@
+fileFormatVersion: 2
+guid: b35bdcb791b2ff8458488598850a9b36
+timeCreated: 1532512856
+licenseType: Store
+NativeFormatImporter:
+  externalObjects: {}
+  mainObjectFileID: 2100000
+  userData: 
+  assetBundleName: fx_textures_glow_materials.unity3d
+  assetBundleVariant: 
+AssetOrigin:
+  serializedVersion: 1
+  productId: 289811
+  packageName: RPG_GameVFX Collection Vol.3
+  packageVersion: 1.0
+  assetPath: Assets/GameVFX Collection Vol3/Materials/Glow_DF_11.mat
+  uploadId: 679549

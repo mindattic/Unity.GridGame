@@ -50,6 +50,7 @@ namespace GridGame.Core.Content
             db.Campaign = ReadOne<CampaignDef>(readText, "campaign") ?? new CampaignDef();
             db.Summon = ReadOne<SummonDef>(readText, "summon") ?? new SummonDef();
             db.Vfx = ReadOne<VfxStyleSheet>(readText, "vfxstyle") ?? new VfxStyleSheet();
+            db.VfxPrefabs = ReadOne<VfxCatalog>(readText, "vfx") ?? new VfxCatalog();
             db.Mercenaries.AddRange(ReadList<MercenaryDef>(readText, "mercenaries"));
             AddAll(db.Caravan, ReadList<CaravanUpgradeDef>(readText, "caravan"), x => x.Id);
             AddAll(db.Pickups, ReadList<PickupDef>(readText, "pickups"), x => x.Id);
@@ -287,6 +288,7 @@ namespace GridGame.Core.Content
             MercenaryContent.Validate(db, p);
             QuestCatalog.Validate(db, p);
             VfxStyleSheet.Validate(db, p);
+            VfxCatalog.Validate(db, p);
             return p;
         }
 

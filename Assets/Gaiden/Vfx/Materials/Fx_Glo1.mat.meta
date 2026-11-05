@@ -1,0 +1,15 @@
+fileFormatVersion: 2
+guid: 32e91fd7a18e3e24ebf192e0860e89a2
+NativeFormatImporter:
+  externalObjects: {}
+  mainObjectFileID: 2100000
+  userData: 
+  assetBundleName: fx_textures_glow_materials.unity3d
+  assetBundleVariant: 
+AssetOrigin:
+  serializedVersion: 1
+  productId: 289915
+  packageName: Game VFX - Cartoon Skill Collection
+  packageVersion: 1.0
+  assetPath: Assets/FX_CartoonSkill Collection/Materials/Fx_Glo1.mat
+  uploadId: 676589

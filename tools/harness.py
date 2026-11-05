@@ -168,6 +168,56 @@ def vfxsheet(run="vfxsheet", limit=0, extra=(), frames=48, every=4):
     return rows
 
 
+def vfxprefabs(run="vfxprefabs", ids=None, extra=(), frames=36, every=3):
+    """GG-T269 prefab contact sheet: plays every vfx.json effect (devprefab) on the first foe of one battle, records a
+    fixed-step strip of each, and composes artifacts/<run>/prefabs.png (a row per effect, its id burned in) so sizes
+    and looks can be normalized by eye."""
+    from PIL import Image, ImageDraw
+    effects = json.load(open(os.path.join(ROOT, "Assets", "Gaiden", "Resources", "Content", "vfx.json"), encoding="utf-8"))["Effects"]
+    if ids:
+        effects = [e for e in effects if e["Id"] in ids]
+    launch(run, extra=extra, fresh=True)
+    call("setting", key="cutins", value="0")
+    call("battle", stage="greenvalley-02")
+    _wait_screen("battle", 10)
+    time.sleep(2.5)
+    foe = next(u for u in call("state")["battle"]["units"] if u["team"] != "Hero")
+    cx, cy = BOARD_LEFT + TILE * (foe["x"] + foe["W"] / 2), BOARD_TOP + TILE * (foe["y"] + foe["H"] / 2)
+    span = (cx - TILE * 1.6, cy - TILE * 1.6, cx + TILE * 1.6, cy + TILE * 1.6)
+    art = os.path.join(ROOT, "artifacts", run)
+    os.makedirs(art, exist_ok=True)
+    strips = []
+    for e in effects:
+        if not call("devprefab", id=e["Id"]).get("ok"):
+            print("skip", e["Id"])
+            continue
+        rec = call("record", name="pf_" + e["Id"].replace(".", "_"), frames=frames, every=every, step=1 / 30, timeout=120)
+        time.sleep(0.3)
+        shots = sorted(f for f in os.listdir(rec["dir"]) if f.endswith(".png"))
+        imgs = [Image.open(os.path.join(rec["dir"], f)).convert("RGB") for f in shots]
+        if imgs:
+            w, h = imgs[0].size
+            sx, sy = w / 1170, h / 2532
+            box = (max(0, int(span[0] * sx)), max(0, int(span[1] * sy)), min(w, int(span[2] * sx)), min(h, int(span[3] * sy)))
+            cells = [im.crop(box).resize((150, 150)) for im in imgs[::2]]
+            strip = Image.new("RGB", (len(cells) * 150 + 220, 150), (8, 10, 24))
+            ImageDraw.Draw(strip).text((6, 66), e["Id"], fill=(255, 255, 255))
+            for i, c in enumerate(cells):
+                strip.paste(c, (220 + i * 150, 0))
+            strips.append(strip)
+        for f in shots:
+            os.remove(os.path.join(rec["dir"], f))
+    for page in range(0, len(strips), 24):
+        part = strips[page:page + 24]
+        grid = Image.new("RGB", (max(s.width for s in part), len(part) * 154), (0, 0, 0))
+        for i, s in enumerate(part):
+            grid.paste(s, (0, i * 154))
+        grid.save(os.path.join(art, f"prefabs_{page // 24 + 1}.png"))
+    print(len(strips), "effects ->", art)
+    call("quit", timeout=3)
+    return len(strips)
+
+
 def drag_tiles(*tiles, step=0.12):
     pts = ";".join(f"{x},{y}" for x, y in (tile(*t) for t in tiles))
     return call("drag", path=pts, step=step)
@@ -2209,6 +2259,8 @@ if __name__ == "__main__":
         sys.exit(0 if orb_fanout() else 1)
     elif cmd == "pause":
         sys.exit(0 if pause_check() else 1)
+    elif cmd == "vfxprefabs":
+        vfxprefabs(sys.argv[2] if len(sys.argv) > 2 else "vfxprefabs", ids=sys.argv[3].split(",") if len(sys.argv) > 3 else None)
     elif cmd == "vfxsheet":
         vfxsheet(sys.argv[2] if len(sys.argv) > 2 else "vfxsheet", int(sys.argv[3]) if len(sys.argv) > 3 else 0,
                  extra=tuple(sys.argv[4:]))

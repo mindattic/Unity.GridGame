@@ -1,0 +1,626 @@
+{
+ "Effects": [
+  {
+   "Id": "RedSlash2X.Physical.Major",
+   "Mode": "Once",
+   "Tiles": 1.4,
+   "Extent": 4.36,
+   "Source": "GridGame2026 (owned)",
+   "Path": "Vfx/RedSlash2X",
+   "Duration": 0.9
+  },
+  {
+   "Id": "RedSlash2X.Physical.Ultimate",
+   "Mode": "Once",
+   "Tiles": 2.0,
+   "Extent": 4.36,
+   "Source": "GridGame2026 (owned)",
+   "Path": "Vfx/RedSlash2X",
+   "Duration": 1.4
+  },
+  {
+   "Id": "PuffyExplosion.Fire.Minor",
+   "Mode": "Once",
+   "Tiles": 1.6,
+   "Extent": 3.715,
+   "Source": "GridGame2026 (owned)",
+   "Path": "Vfx/PuffyExplosion",
+   "Duration": 0.6
+  },
+  {
+   "Id": "PuffyExplosion.Fire.Major",
+   "Mode": "Once",
+   "Tiles": 2.3,
+   "Extent": 3.715,
+   "Source": "GridGame2026 (owned)",
+   "Path": "Vfx/PuffyExplosion",
+   "Duration": 0.9
+  },
+  {
+   "Id": "RayBlast.Fire.Ultimate",
+   "Mode": "Once",
+   "Tiles": 1.8,
+   "Extent": 8.509,
+   "Source": "GridGame2026 (owned)",
+   "Path": "Vfx/RayBlast",
+   "Duration": 1.4
+  },
+  {
+   "Id": "LightningStrike.Lightning.Major",
+   "Mode": "Once",
+   "Tiles": 1.5,
+   "Extent": 7.413,
+   "Source": "GridGame2026 (owned)",
+   "Path": "Vfx/LightningStrike",
+   "Duration": 0.9
+  },
+  {
+   "Id": "LightningExplosion.Lightning.Ultimate",
+   "Mode": "Once",
+   "Tiles": 2.0,
+   "Extent": 7.025,
+   "Source": "GridGame2026 (owned)",
+   "Path": "Vfx/LightningExplosion",
+   "Duration": 1.4
+  },
+  {
+   "Id": "ToxicCloud.Poison.Major",
+   "Mode": "Once",
+   "Tiles": 1.4,
+   "Extent": 6.978,
+   "Source": "GridGame2026 (owned)",
+   "Path": "Vfx/ToxicCloud",
+   "Duration": 0.9
+  },
+  {
+   "Id": "ToxicCloud.Poison.Ultimate",
+   "Mode": "Once",
+   "Tiles": 2.1,
+   "Extent": 6.978,
+   "Source": "GridGame2026 (owned)",
+   "Path": "Vfx/ToxicCloud",
+   "Duration": 1.4
+  },
+  {
+   "Id": "GoldSparkle.Holy.Minor",
+   "Mode": "Once",
+   "Tiles": 1.2,
+   "Extent": 1.171,
+   "Source": "GridGame2026 (owned)",
+   "Path": "Vfx/GoldSparkle",
+   "Duration": 0.6
+  },
+  {
+   "Id": "GoldSparkle.Holy.Major",
+   "Mode": "Once",
+   "Tiles": 1.7,
+   "Extent": 1.171,
+   "Source": "GridGame2026 (owned)",
+   "Path": "Vfx/GoldSparkle",
+   "Duration": 0.9
+  },
+  {
+   "Id": "GoldSparkle.Holy.Ultimate",
+   "Mode": "Once",
+   "Tiles": 2.4,
+   "Extent": 1.171,
+   "Source": "GridGame2026 (owned)",
+   "Path": "Vfx/GoldSparkle",
+   "Duration": 1.4
+  },
+  {
+   "Id": "DoubleClaw.Dark.Major",
+   "Mode": "Once",
+   "Tiles": 1.9,
+   "Extent": 8.424,
+   "Source": "GridGame2026 (owned)",
+   "Path": "Vfx/DoubleClaw",
+   "Duration": 0.9
+  },
+  {
+   "Id": "PinkSpark.Dark.Ultimate",
+   "Mode": "Once",
+   "Tiles": 2.0,
+   "Extent": 9.899,
+   "Source": "GridGame2026 (owned)",
+   "Path": "Vfx/PinkSpark",
+   "Duration": 1.4
+  },
+  {
+   "Id": "GreenSparkle.Heal.Minor",
+   "Mode": "Once",
+   "Tiles": 1.5,
+   "Extent": 0.823,
+   "Source": "GridGame2026 (owned)",
+   "Path": "Vfx/GreenSparkle",
+   "Duration": 0.6
+  },
+  {
+   "Id": "BuffLife.Heal.Major",
+   "Mode": "Once",
+   "Tiles": 1.5,
+   "Extent": 3.713,
+   "Source": "GridGame2026 (owned)",
+   "Path": "Vfx/BuffLife",
+   "Duration": 0.9
+  },
+  {
+   "Id": "BuffLife.Heal.Ultimate",
+   "Mode": "Once",
+   "Tiles": 2.2,
+   "Extent": 3.713,
+   "Source": "GridGame2026 (owned)",
+   "Path": "Vfx/BuffLife",
+   "Duration": 1.4
+  },
+  {
+   "Id": "Bubble.Water.Minor",
+   "Mode": "Once",
+   "Tiles": 0.9,
+   "Extent": 1.0,
+   "Source": "GridGame2026 (owned)",
+   "Path": "Vfx/Bubble",
+   "Duration": 0.6
+  },
+  {
+   "Id": "Bubble.Water.Major",
+   "Mode": "Once",
+   "Tiles": 1.2,
+   "Extent": 1.0,
+   "Source": "GridGame2026 (owned)",
+   "Path": "Vfx/Bubble",
+   "Duration": 0.9
+  },
+  {
+   "Id": "Bubble.Water.Ultimate",
+   "Mode": "Once",
+   "Tiles": 1.6,
+   "Extent": 1.0,
+   "Source": "GridGame2026 (owned)",
+   "Path": "Vfx/Bubble",
+   "Duration": 1.4
+  },
+  {
+   "Id": "Flame.Loop",
+   "Mode": "Loop",
+   "Tiles": 1.0,
+   "Extent": 0.66,
+   "Source": "GridGame2026 (owned)",
+   "Path": "Vfx/Flame"
+  },
+  {
+   "Id": "GreenBuff.Status",
+   "Mode": "Once",
+   "Tiles": 1.2,
+   "Extent": 10.813,
+   "Source": "GridGame2026 (owned)",
+   "Path": "Vfx/GreenBuff",
+   "Duration": 0.8
+  },
+  {
+   "Id": "Bubble.Loop",
+   "Mode": "Loop",
+   "Tiles": 0.9,
+   "Extent": 1.0,
+   "Source": "GridGame2026 (owned)",
+   "Path": "Vfx/Bubble"
+  },
+  {
+   "Id": "AcidSplash",
+   "Mode": "Once",
+   "Tiles": 1.5,
+   "Extent": 5.499,
+   "Source": "GridGame2026 (owned)",
+   "Duration": 1.2
+  },
+  {
+   "Id": "AirSlash",
+   "Mode": "Once",
+   "Tiles": 1.5,
+   "Extent": 12.447,
+   "Source": "GridGame2026 (owned)",
+   "Duration": 1.2
+  },
+  {
+   "Id": "AntidoteSparkle",
+   "Mode": "Once",
+   "Tiles": 1.5,
+   "Extent": 1.384,
+   "Source": "GridGame2026 (owned)",
+   "Duration": 1.2
+  },
+  {
+   "Id": "BloodClaw",
+   "Mode": "Once",
+   "Tiles": 1.5,
+   "Extent": 5.691,
+   "Source": "GridGame2026 (owned)",
+   "Duration": 1.2
+  },
+  {
+   "Id": "BlueGlow",
+   "Mode": "Loop",
+   "Tiles": 1.5,
+   "Extent": 2.845,
+   "Source": "GridGame2026 (owned)"
+  },
+  {
+   "Id": "BlueSlash1",
+   "Mode": "Once",
+   "Tiles": 1.5,
+   "Extent": 10.0,
+   "Source": "GridGame2026 (owned)",
+   "Duration": 1.2
+  },
+  {
+   "Id": "BlueSlash2",
+   "Mode": "Once",
+   "Tiles": 1.5,
+   "Extent": 5.424,
+   "Source": "GridGame2026 (owned)",
+   "Duration": 1.2
+  },
+  {
+   "Id": "BlueSlash3",
+   "Mode": "Once",
+   "Tiles": 1.5,
+   "Extent": 3.835,
+   "Source": "GridGame2026 (owned)",
+   "Duration": 1.2
+  },
+  {
+   "Id": "BlueSlash4",
+   "Mode": "Once",
+   "Tiles": 1.5,
+   "Extent": 1.0,
+   "Source": "GridGame2026 (owned)",
+   "Duration": 0.6
+  },
+  {
+   "Id": "BlueSword",
+   "Mode": "Once",
+   "Tiles": 1.5,
+   "Extent": 4.411,
+   "Source": "GridGame2026 (owned)",
+   "Duration": 1.2
+  },
+  {
+   "Id": "BlueSword4X",
+   "Mode": "Once",
+   "Tiles": 1.5,
+   "Extent": 8.055,
+   "Source": "GridGame2026 (owned)",
+   "Duration": 1.2
+  },
+  {
+   "Id": "BlueYellowSword",
+   "Mode": "Once",
+   "Tiles": 1.5,
+   "Extent": 4.027,
+   "Source": "GridGame2026 (owned)",
+   "Duration": 1.2
+  },
+  {
+   "Id": "BlueYellowSword3X",
+   "Mode": "Once",
+   "Tiles": 1.5,
+   "Extent": 6.111,
+   "Source": "GridGame2026 (owned)",
+   "Duration": 1.2
+  },
+  {
+   "Id": "Bubble",
+   "Mode": "Loop",
+   "Tiles": 1.5,
+   "Extent": 1.0,
+   "Source": "GridGame2026 (owned)"
+  },
+  {
+   "Id": "BuffLife",
+   "Mode": "Once",
+   "Tiles": 1.5,
+   "Extent": 3.713,
+   "Source": "GridGame2026 (owned)",
+   "Duration": 1.2
+  },
+  {
+   "Id": "DoubleClaw",
+   "Mode": "Once",
+   "Tiles": 1.5,
+   "Extent": 8.424,
+   "Source": "GridGame2026 (owned)",
+   "Duration": 1.2
+  },
+  {
+   "Id": "Feather",
+   "Mode": "Loop",
+   "Tiles": 1.5,
+   "Extent": 0.682,
+   "Source": "GridGame2026 (owned)"
+  },
+  {
+   "Id": "Fireball",
+   "Mode": "Loop",
+   "Tiles": 1.5,
+   "Extent": 1.962,
+   "Source": "GridGame2026 (owned)"
+  },
+  {
+   "Id": "FireRain",
+   "Mode": "Once",
+   "Tiles": 1.5,
+   "Extent": 14.518,
+   "Source": "GridGame2026 (owned)",
+   "Duration": 1.2
+  },
+  {
+   "Id": "Flame",
+   "Mode": "Loop",
+   "Tiles": 1.5,
+   "Extent": 0.66,
+   "Source": "GridGame2026 (owned)"
+  },
+  {
+   "Id": "FlamingTwist",
+   "Mode": "Once",
+   "Tiles": 1.5,
+   "Extent": 1.391,
+   "Source": "GridGame2026 (owned)",
+   "Duration": 1.2
+  },
+  {
+   "Id": "GodRays",
+   "Mode": "Loop",
+   "Tiles": 1.5,
+   "Extent": 26.937,
+   "Source": "GridGame2026 (owned)"
+  },
+  {
+   "Id": "GoldBuff",
+   "Mode": "Once",
+   "Tiles": 1.5,
+   "Extent": 11.967,
+   "Source": "GridGame2026 (owned)",
+   "Duration": 1.2
+  },
+  {
+   "Id": "GoldSparkle",
+   "Mode": "Loop",
+   "Tiles": 1.5,
+   "Extent": 1.171,
+   "Source": "GridGame2026 (owned)"
+  },
+  {
+   "Id": "GreenBuff",
+   "Mode": "Once",
+   "Tiles": 1.5,
+   "Extent": 10.813,
+   "Source": "GridGame2026 (owned)",
+   "Duration": 1.2
+  },
+  {
+   "Id": "GreenSparkle",
+   "Mode": "Loop",
+   "Tiles": 1.5,
+   "Extent": 0.823,
+   "Source": "GridGame2026 (owned)"
+  },
+  {
+   "Id": "HealAura",
+   "Mode": "Once",
+   "Tiles": 1.5,
+   "Extent": 0.965,
+   "Source": "GridGame2026 (owned)",
+   "Duration": 1.2
+  },
+  {
+   "Id": "HexShield",
+   "Mode": "Loop",
+   "Tiles": 1.5,
+   "Extent": 5.0,
+   "Source": "GridGame2026 (owned)"
+  },
+  {
+   "Id": "IceSparkle",
+   "Mode": "Loop",
+   "Tiles": 1.5,
+   "Extent": 130.847,
+   "Source": "GridGame2026 (owned)"
+  },
+  {
+   "Id": "IcyWind",
+   "Mode": "Once",
+   "Tiles": 1.5,
+   "Extent": 1.415,
+   "Source": "GridGame2026 (owned)",
+   "Duration": 1.2
+  },
+  {
+   "Id": "LevelUp",
+   "Mode": "Once",
+   "Tiles": 1.5,
+   "Extent": 3.258,
+   "Source": "GridGame2026 (owned)",
+   "Duration": 1.2
+  },
+  {
+   "Id": "LightningExplosion",
+   "Mode": "Once",
+   "Tiles": 1.5,
+   "Extent": 7.025,
+   "Source": "GridGame2026 (owned)",
+   "Duration": 1.2
+  },
+  {
+   "Id": "LightningStrike",
+   "Mode": "Once",
+   "Tiles": 1.5,
+   "Extent": 7.413,
+   "Source": "GridGame2026 (owned)",
+   "Duration": 1.2
+  },
+  {
+   "Id": "MoonFeather",
+   "Mode": "Once",
+   "Tiles": 1.5,
+   "Extent": 1.0,
+   "Source": "GridGame2026 (owned)",
+   "Duration": 1.2
+  },
+  {
+   "Id": "OrangeSlash",
+   "Mode": "Once",
+   "Tiles": 1.5,
+   "Extent": 33.653,
+   "Source": "GridGame2026 (owned)",
+   "Duration": 1.2
+  },
+  {
+   "Id": "PinkDust",
+   "Mode": "Loop",
+   "Tiles": 1.5,
+   "Extent": 1.436,
+   "Source": "GridGame2026 (owned)"
+  },
+  {
+   "Id": "PinkSpark",
+   "Mode": "Once",
+   "Tiles": 1.5,
+   "Extent": 9.899,
+   "Source": "GridGame2026 (owned)",
+   "Duration": 1.2
+  },
+  {
+   "Id": "PoisonCloud",
+   "Mode": "Once",
+   "Tiles": 1.5,
+   "Extent": 1.08,
+   "Source": "GridGame2026 (owned)",
+   "Duration": 1.2
+  },
+  {
+   "Id": "PuffyExplosion",
+   "Mode": "Once",
+   "Tiles": 1.5,
+   "Extent": 3.715,
+   "Source": "GridGame2026 (owned)",
+   "Duration": 1.2
+  },
+  {
+   "Id": "RayBlast",
+   "Mode": "Once",
+   "Tiles": 1.5,
+   "Extent": 8.509,
+   "Source": "GridGame2026 (owned)",
+   "Duration": 1.2
+  },
+  {
+   "Id": "RedSlash2X",
+   "Mode": "Once",
+   "Tiles": 1.5,
+   "Extent": 4.36,
+   "Source": "GridGame2026 (owned)",
+   "Duration": 1.2
+  },
+  {
+   "Id": "RedSword",
+   "Mode": "Once",
+   "Tiles": 1.5,
+   "Extent": 3.988,
+   "Source": "GridGame2026 (owned)",
+   "Duration": 1.2
+  },
+  {
+   "Id": "RosePetal",
+   "Mode": "Loop",
+   "Tiles": 1.5,
+   "Extent": 1.0,
+   "Source": "GridGame2026 (owned)"
+  },
+  {
+   "Id": "RotaryKnife",
+   "Mode": "Once",
+   "Tiles": 1.5,
+   "Extent": 5.4,
+   "Source": "GridGame2026 (owned)",
+   "Duration": 1.2
+  },
+  {
+   "Id": "ScanRays",
+   "Mode": "Once",
+   "Tiles": 1.5,
+   "Extent": 0.497,
+   "Source": "GridGame2026 (owned)",
+   "Duration": 1.2
+  },
+  {
+   "Id": "ShockBolt",
+   "Mode": "Once",
+   "Tiles": 1.5,
+   "Extent": 0.317,
+   "Source": "GridGame2026 (owned)",
+   "Duration": 0.6
+  },
+  {
+   "Id": "Shuriken",
+   "Mode": "Loop",
+   "Tiles": 1.5,
+   "Extent": 1.0,
+   "Source": "GridGame2026 (owned)"
+  },
+  {
+   "Id": "SilenceMute",
+   "Mode": "Once",
+   "Tiles": 1.5,
+   "Extent": 0.977,
+   "Source": "GridGame2026 (owned)",
+   "Duration": 1.2
+  },
+  {
+   "Id": "SleepDust",
+   "Mode": "Once",
+   "Tiles": 1.5,
+   "Extent": 0.762,
+   "Source": "GridGame2026 (owned)",
+   "Duration": 1.2
+  },
+  {
+   "Id": "SlowShimmer",
+   "Mode": "Once",
+   "Tiles": 1.5,
+   "Extent": 0.73,
+   "Source": "GridGame2026 (owned)",
+   "Duration": 1.2
+  },
+  {
+   "Id": "StarSparkle",
+   "Mode": "Loop",
+   "Tiles": 1.5,
+   "Extent": 9.834,
+   "Source": "GridGame2026 (owned)"
+  },
+  {
+   "Id": "TechSword",
+   "Mode": "Loop",
+   "Tiles": 1.5,
+   "Extent": 5.36,
+   "Source": "GridGame2026 (owned)"
+  },
+  {
+   "Id": "ToxicCloud",
+   "Mode": "Once",
+   "Tiles": 1.5,
+   "Extent": 6.978,
+   "Source": "GridGame2026 (owned)",
+   "Duration": 1.2
+  },
+  {
+   "Id": "YellowHit",
+   "Mode": "Once",
+   "Tiles": 1.5,
+   "Extent": 4.526,
+   "Source": "GridGame2026 (owned)",
+   "Duration": 1.2
+  }
+ ]
+}

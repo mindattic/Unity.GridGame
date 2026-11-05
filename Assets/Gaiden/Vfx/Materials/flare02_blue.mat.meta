@@ -1,0 +1,15 @@
+fileFormatVersion: 2
+guid: 0a3971338e1b7774fa60f5e9eff38cd4
+NativeFormatImporter:
+  externalObjects: {}
+  mainObjectFileID: 0
+  userData: 
+  assetBundleName: fx_textures_flare_materials.unity3d
+  assetBundleVariant: 
+AssetOrigin:
+  serializedVersion: 1
+  productId: 293636
+  packageName: Game VFX - Slash Collection(URP)
+  packageVersion: 1.01
+  assetPath: Assets/Materials/flare02_blue.mat
+  uploadId: 768429

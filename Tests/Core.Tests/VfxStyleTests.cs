@@ -43,18 +43,19 @@ namespace GridGame.Tests
         }
 
         [Test]
-        public void A_status_inherits_its_elements_prefab_slot()
+        public void A_status_names_its_own_prefab_rather_than_inheriting_its_elements_impact()
         {
+            // GG-T269: a burning unit doesn't replay the Fire impact explosion; a status's prefab is its own.
             var sheet = new VfxStyleSheet
             {
                 Elements = { new VfxStyleDef { Id = "Fire", Core = "#FF7326", Prefab = "fx_fire_burst" } },
                 Statuses = { new VfxStyleDef { Id = "burning", Element = "Fire" }, new VfxStyleDef { Id = "warm", Element = "Fire", Prefab = "fx_warm" } },
                 Tiers = { new VfxTierDef { Tier = VfxTier.Ultimate, Prefab = "fx_big" } },
             };
-            Assert.That(sheet.Status("burning").Prefab, Is.EqualTo("fx_fire_burst"));
+            Assert.That(sheet.Status("burning").Prefab, Is.Null);
             Assert.That(sheet.Status("warm").Prefab, Is.EqualTo("fx_warm"));
             Assert.That(sheet.TierDef(VfxTier.Ultimate).Prefab, Is.EqualTo("fx_big"));
-            Assert.That(FreshReal().Vfx.Element(DamageType.Fire).Prefab, Is.Null, "no prefabs wired yet");
+            Assert.That(FreshReal().Vfx.Element(DamageType.Fire).Prefab, Is.Not.Null, "Fire is wired to an effect prefab");
         }
 
         [Test]

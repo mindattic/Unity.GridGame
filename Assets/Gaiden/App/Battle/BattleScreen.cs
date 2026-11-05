@@ -121,6 +121,7 @@ namespace GridGame.App
         public override void OnHidden()
         {
             GameApp.StageResized -= OnStageResized;
+            DisposePrefabFx();
             if (pauseVeil != null) { pauseVeil.RemoveFromHierarchy(); pauseVeil = null; ResumeBattle(); }
             // The billboard lives on the Overlay too; without this, each battle left one behind (lines from the
             // last ~1.6 s showing over the PostBattle screen) and they piled up battle after battle (GG-T70).
@@ -195,6 +196,7 @@ namespace GridGame.App
             boardHost.style.position = Position.Absolute;
             boardHost.style.top = BoardTop;
             board = new BoardView(boardHost, State.Stage.Theme);
+            CreatePrefabFx();
             board.Root.pickingMode = PickingMode.Position;
             // The pincer outline (board.Lines) stays inside the board, so it inherits every camera twist, zoom,
             // drift and screen shake and always hugs its tiles (GG-T128). Cut-in cards (ActionCard: SupporterPop,
@@ -1274,6 +1276,7 @@ namespace GridGame.App
 
         public override void Tick(float dt)
         {
+            TickPrefabFx();
             if (Paused)
             {
                 // GG-T126: the battle's clock is stopped — no watchdog, drag timer, hint, long-press or auto battle

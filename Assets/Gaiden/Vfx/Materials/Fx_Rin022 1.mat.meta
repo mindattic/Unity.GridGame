@@ -1,0 +1,17 @@
+fileFormatVersion: 2
+guid: 4be75f5660cd2ca48bce0770ea0905ab
+timeCreated: 1531896460
+licenseType: Store
+NativeFormatImporter:
+  externalObjects: {}
+  mainObjectFileID: 2100000
+  userData: 
+  assetBundleName: fx_textures_ring_materials.unity3d
+  assetBundleVariant: 
+AssetOrigin:
+  serializedVersion: 1
+  productId: 286708
+  packageName: RPG_GameVFX Collection
+  packageVersion: 1.0
+  assetPath: Assets/GameVFX Collection Vol3/Materials/Fx_Rin022.mat
+  uploadId: 671947

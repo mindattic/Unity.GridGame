@@ -531,6 +531,11 @@ namespace GridGame.App.Automation
                 case "devcast":
                     if (app.Router.Current is BattleScreen dcs) { int caster = dcs.DevQueueCast((int)F(q["target"]), q["ability"], (int)F(q["ticks"], 30)); return new { ok = caster >= 0, caster }; }
                     return new { error = "not in battle" };
+                case "devprefab":
+                    // GG-T269: play one vfx.json effect prefab on the first foe (the prefab contact sheet).
+                    if (app.Router.Current is BattleScreen dpf)
+                        return new { ok = dpf.DevPrefab(q["id"], q["keep"] == "1", int.TryParse(q["nth"], out var nth) ? nth : 0) };
+                    return new { error = "not in battle" };
                 case "devvfx":
                     // GG-T253: play one ability's whole look (cast, flight, impact at its tier, the status) without touching state.
                     if (app.Router.Current is BattleScreen dvx) return new { ok = dvx.DevVfx(q["ability"]) };

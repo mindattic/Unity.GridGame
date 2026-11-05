@@ -1,0 +1,17 @@
+fileFormatVersion: 2
+guid: a4f76898950baf54a92fa5b6e23329f0
+timeCreated: 1460443015
+licenseType: Store
+NativeFormatImporter:
+  externalObjects: {}
+  mainObjectFileID: 0
+  userData: 
+  assetBundleName: fx_textures_flare_materials.unity3d
+  assetBundleVariant: 
+AssetOrigin:
+  serializedVersion: 1
+  productId: 289811
+  packageName: RPG_GameVFX Collection Vol.3
+  packageVersion: 1.0
+  assetPath: Assets/GameVFX Collection Vol3/Materials/eye_lwy_9.mat
+  uploadId: 679549

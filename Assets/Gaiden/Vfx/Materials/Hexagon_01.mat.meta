@@ -1,0 +1,15 @@
+fileFormatVersion: 2
+guid: ca88f58feffa52b4a9d17ee18d779ada
+timeCreated: 1477989993
+licenseType: Store
+NativeFormatImporter:
+  userData: 
+  assetBundleName: 
+  assetBundleVariant: 
+AssetOrigin:
+  serializedVersion: 1
+  productId: 286708
+  packageName: RPG_GameVFX Collection
+  packageVersion: 1.0
+  assetPath: Assets/GameVFX Collection(URP)/FX_Deflector_Shield/Textures/Materials/Hexagon_01.mat
+  uploadId: 671947

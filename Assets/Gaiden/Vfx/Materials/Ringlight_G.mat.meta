@@ -1,0 +1,17 @@
+fileFormatVersion: 2
+guid: 8985373930d7ea94d91c4e33470dd1cf
+timeCreated: 1517228352
+licenseType: Store
+NativeFormatImporter:
+  externalObjects: {}
+  mainObjectFileID: 2100000
+  userData: 
+  assetBundleName: 
+  assetBundleVariant: 
+AssetOrigin:
+  serializedVersion: 1
+  productId: 289811
+  packageName: RPG_GameVFX Collection Vol.3
+  packageVersion: 1.0
+  assetPath: Assets/GameVFX Collection Vol3/Materials/Ringlight_G.mat
+  uploadId: 679549

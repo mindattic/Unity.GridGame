@@ -1,0 +1,17 @@
+fileFormatVersion: 2
+guid: df839176201dd694ebf3460832b569ff
+timeCreated: 1439064635
+licenseType: Store
+NativeFormatImporter:
+  externalObjects: {}
+  mainObjectFileID: 0
+  userData: 
+  assetBundleName: fx_textures_flare_materials.unity3d
+  assetBundleVariant: 
+AssetOrigin:
+  serializedVersion: 1
+  productId: 290657
+  packageName: Game VFX - Particle Trails Collection
+  packageVersion: 1.0
+  assetPath: Assets/VFX_Particle Trails/Materials/vfx_twinkle-blurred-add-[1.0].mat
+  uploadId: 678419

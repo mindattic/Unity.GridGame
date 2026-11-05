@@ -1,0 +1,18 @@
+fileFormatVersion: 2
+guid: 2160d380820c9f647aafd21e94e6894a
+timeCreated: 1528272711
+licenseType: Store
+NativeFormatImporter:
+  externalObjects: {}
+  mainObjectFileID: 2100000
+  userData: 
+  assetBundleName: 
+  assetBundleVariant: 
+AssetOrigin:
+  serializedVersion: 1
+  productId: 291813
+  packageName: Unity Game VFX - Cartoon Skill Collection Vol.2
+  packageVersion: 1.0
+  assetPath: Assets/Game VFX - Cartoon Skill Collection Vol2/Materials/dust_puff_particle_sheet
+    1.mat
+  uploadId: 681449

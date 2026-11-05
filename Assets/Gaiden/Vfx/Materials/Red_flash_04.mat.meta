@@ -1,0 +1,17 @@
+fileFormatVersion: 2
+guid: adeb31b9ce4c1094d81a1a2c5b0e774a
+timeCreated: 1531121783
+licenseType: Store
+NativeFormatImporter:
+  externalObjects: {}
+  mainObjectFileID: 2100000
+  userData: 
+  assetBundleName: 
+  assetBundleVariant: 
+AssetOrigin:
+  serializedVersion: 1
+  productId: 293636
+  packageName: Game VFX - Slash Collection(URP)
+  packageVersion: 1.01
+  assetPath: Assets/Materials/Red_flash_04.mat
+  uploadId: 768429
