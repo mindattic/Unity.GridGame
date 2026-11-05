@@ -269,6 +269,15 @@ namespace GridGame.Core.Bot
             }
             var targets = TargetResolver.Collect(s, a, caster, anchor);
             float score = 0f;
+            bool close = FightIsClose(s);
+            // GG-T246: effects that don't depend on who is caught in the shape.
+            if (a.Revives)
+            {
+                foreach (var u in s.Units) if (u.Team == Team.Hero && !u.Alive && !u.IsCorpse) { score += 40f; break; }
+            }
+            if (a.GrantsOrbs > 0) score += Math.Min(a.GrantsOrbs, s.Bank.Capacity - s.Bank.Count) * 3f - (s.Bank.IsFull ? 6f : 0f);
+            if (a.StepBack > 0 && caster.HpFraction < 0.6f)
+                foreach (var e in s.LivingList(Team.Enemy)) if (e.IsAdjacentTo(caster)) { score += 3f; break; }
             foreach (var t in targets)
             {
                 // A recruitable that wants healing (GG-T132) is worth a heal even at half HP.
@@ -281,23 +290,33 @@ namespace GridGame.Core.Bot
                         int dmg = (int)Math.Round(Formulas.SpellDamage(a, t, false) * Formulas.CasterPower(a, caster) * caster.OutgoingDamageMultiplier);
                         score += Math.Min(t.Hp, dmg) * 0.6f + (t.Hp <= dmg ? 8f : 0f);
                     }
-                    if (a.ApplyBuff != null && !t.HasBuff(a.ApplyBuff)) score += 3f;
+                    var curse = s.Content.TryBuff(a.ApplyBuff);
+                    if (curse != null && !t.HasBuff(curse.Id)) score += DebuffValue(curse) * Math.Max(0.25f, a.ApplyBuffChance);
                     if (a.StealsMana) score += s.Bank.IsFull ? 0f : 3f;
                     if (a.HastenU > 0) score -= 5f;
                     if (a.DelayU > 0f) score += 3f; // GG-T183: shoving a foe back on the timeline buys the party a turn
                     if (a.BaseHeal > 0 && a.Filter == TargetFilter.EnemyOnly) score += Math.Min(caster.MaxHp - caster.Hp, a.BaseHeal) * 0.3f; // drain
+                    if (a.Knockback > 0)
+                    {
+                        // Peeling a foe off a hurt hero is worth more than shoving it for its own sake.
+                        bool peel = false;
+                        foreach (var h in s.LivingList(Team.Hero)) if (h.IsAdjacentTo(t) && h.HpFraction < 0.5f) peel = true;
+                        score += 1.5f * a.Knockback + (peel ? 3f : 0f);
+                    }
+                    if (a.Pull > 0) score += 2.5f;
+                    if (a.SwapsPlaces) score += 2f;
+                    if (a.IsScan && !s.Results.Scanned.Contains(t.Def.Id)) score += t.BossPhase >= 0 ? 3f : 2f;
                 }
                 else
                 {
                     if (a.BaseHeal > 0) score += Math.Min(t.MaxHp - t.Hp, a.BaseHeal) * (t.HpFraction < 0.5f ? 0.9f : 0.2f);
                     if (a.RemovesDebuffs) foreach (var b in t.Buffs) if (b.Def.Kind == BuffKind.Debuff) score += 4f;
+                    if (a.RemovesBuff != null && t.HasBuff(a.RemovesBuff)) score += 5f;
+                    if (a.HastenU > 0f && close && t.Alive) score += 20f * a.HastenU; // 0.3 of the bar ≈ a third of a turn sooner
                     var gift = s.Content.TryBuff(a.ApplyBuff);
                     if (gift != null && gift.Kind == BuffKind.Buff && !t.HasBuff(gift.Id) && s.LivingList(Team.Enemy).Count > 0)
                     {
                         // Only worth a turn when the fight is close: a foe within 2 tiles of some hero.
-                        bool close = false;
-                        foreach (var ally in s.LivingList(Team.Hero))
-                            foreach (var e in s.LivingList(Team.Enemy)) if (e.DistanceTo(ally) <= 2) close = true;
                         if (gift.Taunts)
                         {
                             // Taunt (§14.1.1): worth it when the tank is sturdy and allies are exposed or casting.
@@ -310,8 +329,7 @@ namespace GridGame.Core.Bot
                                 if (exposed > 0 || s.HeroCastsInFlight > 0) score += 6f + 5f * exposed + 3f * s.HeroCastsInFlight;
                             }
                         }
-                        else if (gift.OutgoingDamageMultiplier > 1f) score += close ? 1.2f : 0f;
-                        else score += close ? 1f : 0.3f;
+                        else score += close ? BuffValue(gift, t, s) : 0.3f;
                     }
                     if ((a.BaseDamage > 0 && a.BaseHeal <= 0) || (a.ApplyBuff != null && s.Content.TryBuff(a.ApplyBuff)?.Kind == BuffKind.Debuff)) score -= 20f; // harm+heal spares friends (GG-T183)
                 }
@@ -319,9 +337,56 @@ namespace GridGame.Core.Bot
             // A lone hero's bar is its only way to hurt anything (no pincers with one hero): spend mana and items on
             // damage freely rather than hoarding them for a pincer that can never come (GG-T123).
             bool lone = EnemyPlanner.LoneHero(s) && score > 0f && a.BaseDamage > 0;
-            if (a.Kind == AbilityKind.Spell) score -= a.Cost * (lone ? 0.5f : 1.5f);
+            if (a.Kind == AbilityKind.Spell) score -= a.Cost * OrbPenalty(s, lone);
             if (a.Kind == AbilityKind.Item) score -= lone ? 1f : 4f;
             return score;
+        }
+
+        /// <summary>GG-T246: what one orb is worth keeping. A filling bank makes hoarding pointless (every orb minted into
+        /// a full bank overflows), so the price of spending falls as it fills.</summary>
+        private static float OrbPenalty(BattleState s, bool lone)
+        {
+            if (lone) return 0.5f;
+            if (s.Bank.IsFull) return 0.2f;
+            float fill = s.Bank.Capacity > 0 ? (float)s.Bank.Count / s.Bank.Capacity : 0f;
+            return 1.5f * (1f - 0.8f * fill);
+        }
+
+        private static bool FightIsClose(BattleState s)
+        {
+            foreach (var ally in s.LivingList(Team.Hero))
+                foreach (var e in s.LivingList(Team.Enemy)) if (e.DistanceTo(ally) <= 2) return true;
+            return false;
+        }
+
+        /// <summary>GG-T246: a debuff on a foe, valued by what it actually does rather than a flat +3.</summary>
+        private static float DebuffValue(BuffDef d)
+        {
+            if (d.Kind != BuffKind.Debuff) return 0f;
+            float v = 1f;
+            if (d.HaltsTimeline || d.Immobile) v += 6f;
+            if (d.TimelineSpeedMultiplier < 1f) v += 4f;
+            if (d.IncomingDamageMultiplier > 1f) v += 4f;
+            if (d.AccuracyMultiplier < 1f) v += 3f;
+            if (d.BlocksSpells) v += 3f;
+            if (d.OutgoingDamageMultiplier < 1f) v += 3f;
+            if (d.DamagePerTick > 0) v += d.DamagePerTick * Math.Max(1, d.Duration) * 0.5f;
+            return v;
+        }
+
+        /// <summary>GG-T246: a non-taunt buff on an ally in a close fight, valued by its numbers.</summary>
+        private static float BuffValue(BuffDef d, Unit t, BattleState s)
+        {
+            float v = 1f;
+            int turns = d.Unit == DurationUnit.Turns ? Math.Max(1, d.Duration) : 1;
+            if (d.OutgoingDamageMultiplier > 1f) v += (d.OutgoingDamageMultiplier - 1f) * 10f * turns;
+            bool exposed = false;
+            foreach (var e in s.LivingList(Team.Enemy)) if (e.IsAdjacentTo(t) || e.DistanceTo(t) <= Math.Max(1, e.Def.AttackRange)) { exposed = true; break; }
+            if (d.IncomingDamageMultiplier < 1f) v += (1f - d.IncomingDamageMultiplier) * (exposed ? 15f : 4f);
+            if (d.HealPerTick > 0) v += d.HealPerTick * Math.Max(1, d.Duration) * 0.5f * (1f - t.HpFraction);
+            if (d.TimelineSpeedMultiplier > 1f) v += (d.TimelineSpeedMultiplier - 1f) * 10f;
+            if (d.AccuracyMultiplier > 1f) v += 2f;
+            return v;
         }
     }
 

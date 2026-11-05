@@ -108,6 +108,13 @@ GridGame Gaiden is **NOT**:
 - `Formulas` — stats-at-level, HP, hit/crit, physical/magic/spell damage, cast time, XP curve. ([§13.1](#131-damage-formulas))
 - `BattleFactory.Build / Commit` — save → battle setup, finished battle → save. ([§22.1](#221-per-transition-state-contract))
 - `HeroBot.Decide` / `BotRunner.Play` — a player stand-in that drives the real command API (soak tests, in-game Auto battle, first-battles hints).
+  - **It uses the whole bar (GG-T246, 2026-11-05, owner: "the Abilities need to be utilized in the gameplay demos, to see if they are useful or not"):** a spell's mana price falls as the shared bank fills (`OrbPenalty`: 1.5 per orb when empty, down to 0.3 near full and 0.2 when full, since every orb minted into a full bank is lost). Every effect is valued from its own numbers:
+    - foe debuffs by what the BuffDef does (halt/immobile, slow, vulnerability, blind, silence, weakness, damage over time)
+    - ally buffs by damage-up, damage-taken-down on an exposed ally, regen on a hurt one, haste
+    - knockback (more when it peels a foe off a hurt hero), pull, swap, step-back when hurt and engaged
+    - revive with someone down, ethers only into a bank with room, a first scan per class, single-buff cures
+
+    A clean pincer stays the strongest move, so abilities win only on real value. Measured with `AbilityUsageSoak` + `records.py --abilities` (§22.6, `docs/research/AbilityUsage.md`).
 - `CampRoutine.Run` (Meta) + `MetaHeuristics` (Core/Bot/MetaBot.cs) — "what a sensible player does at Camp" (repair, rest, claim/accept bounties, recruit into an open party slot, forge/equip better gear, learn a spell, fill empty slots, restock potions) through the same services the screens call; drives the campaign balance simulation.
 
 ### 4.4 Content is data {#GG-§4.4}
@@ -1875,6 +1882,7 @@ Owner: "optional quests and bounty board … make it a complete experience." Opt
 `BattleRecorder` (Core) writes one JSON document per battle, schema v3 (v2 added per-turn skill level / perfect command; v3, GG-T98, added formation-time footprints on PincerFormed and `SpawnedAt` on wave/reinforcement events): `source` (player / bot:greedy / bot:casual / bot:autoplay / player+autoplay), stage, seed, waves, the party (class, role, level, stats, gear, bar), the opening state and events, then every turn — the full state **before** (units with position, HP, buffs, cooldowns, bar, brain, timeline position, casts; pickups, traps, blocks, amplifier, bank, mana charge), the **command**, whether it was accepted, **every event** it produced (type + fields), and a summary after — and finally the outcome (phase, wave reached, actions, coins, XP, kills, items used, heroes standing).
 - The game saves every battle (victory, defeat, retreat) to `persistentDataPath/battle-records/` (or `<artifacts>/records` under the harness, or `-records <dir>`).
 - `RecordTests.Record_soak_of_the_first_battle` with `GAIDEN_RECORDS=<dir>` writes bot-played battles; `tools/records.py` prints per-wave tables (turns, damage taken, deaths, potions, pincers, chains, mana, pickups, taunts), each role's damage/healing, damage taken by enemy brain, and the most-used abilities. The original 20-wave first battle (since compressed to 5, [§22.7](#227-the-first-battle)) and several rules (skirmisher dart, last stand, taunt valuation, hard-won experience) were tuned from these tables.
+- **Per-ability usefulness (GG-T246):** `python tools/records.py --abilities <dir>` credits each hero ability with what its resolutions did. Effects are attributed from an `AbilityResolved` (or the `ItemUsed` before it) up to the next action, turn, pincer, attack or wave, so a cast-time spell is credited when it lands. It reports uses, damage, healing, kills, status and tempo/movement effects and an impact score per use, the abilities that sat on a bar but never fired, the weak ones, and the mana flow (orbs banked, overflowed and spent). `AbilityUsageSoak` (env `GAIDEN_ABILITY_RECORDS=<dir>`, `GAIDEN_ABILITY_ROUNDS`) feeds it every hero class in rotating parties of five across the first 15 campaign stages at their recommended levels. Findings: `docs/research/AbilityUsage.md`.
 
 ### 22.7 The first battle (amended 2026-10-12, owner: superseding "make the first battle 20 rounds" — every stage, including this one, normalized to 5 waves)
 
