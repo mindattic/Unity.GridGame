@@ -181,6 +181,9 @@ This game is built so co-op or PvP can be added without re-architecting, per Uni
 
 How Gaiden meets it (audit 2026-11-02, GG-T192): **commands** — `MoveCommand` / `UseSlotCommand` / `ShieldCommand` are plain data (hero id, tiles, slot) carrying `BattleCommand.Player` (a `PlayerId` seat), round-tripped by `CommandCodec`; **pipeline** — `BattleScreen.Commit` stamps `ISession.LocalPlayer` and submits to `LocalSession`, which applies one queued command per session tick through `BattleEngine.Apply` and raises its events; **authority** — `BattleState` + `BattleEngine` in engine-free Core ([GG-LAW-9](#GG-LAW-9)); each hero has an `Owner` seat and the engine refuses (`AbilityRefusedEvent`, "Not your hero") a command for a hero another seat owns, while party-wide Guard is open to every seat; **no global player** — the single-player game is seat 0 everywhere, and only presentation asks `LocalPlayer`; **determinism** — `Rng` (xoshiro128\*\*) seeded in the state, the act-advanced clock ([§2.0](#20-the-act-advanced-clock)) is the rules' fixed tick, no frame time in rules; **stable ids** — `Unit.Id` assigned by the authority in setup order; **serialization** — setup + seed + `LocalSession.CommandLog` replays a battle exactly (`LocalSession.Replay`), and `BattleRecorder.Snapshot` is the state's JSON view. *(Tests: `MultiplayerReadyTests` — two seats, wrong-seat refusal, command JSON round-trip, replay equality, one-seat session identical to the engine.)* Known gaps, out of scope here: the meta/camp layer is one save profile (fine for battle co-op, not for split campaigns), and `BattleState` has no full load-from-snapshot yet (replay from the command log is the restore path).
 
+### {#GG-LAW-14} Polish never regresses
+"Polish" has one official, measured definition: [`docs/POLISH.md`](POLISH.md) — eight dimensions (type, color, layout/touch, information/feedback, motion/VFX cohesion, audio, balance/pacing, art cohesion), each rule with an ID (`POL-A1`…), a numeric threshold and a source (Apple HIG, Material 3, WCAG 2.2, Nielsen, Fitts/Hick, the 12 principles of animation, EBU R128). Every test cycle runs the polish pass (`tools/polish.py`) and a review checklist against the recorded clip; **no dimension score may drop** below `docs/polish/baseline.json`, a drop is a `fix` ticket worked first, and the three lowest rule groups become the next cycle's tickets. Thresholds only tighten; loosening one is an owner decision in `docs/AMENDMENTS.md` (owner 2026-11-05, GG-T249).
+
 ## 6. Verified state {#GG-§6}
 
 > Status legend: ✅ done (verified) · 🟡 partial · ⬜ planned · living.
@@ -232,8 +235,9 @@ Definition of done for a feature (also the per-story DoD in [`USER_STORIES.md`](
 4. **Visible things are harnessed** — a `tools/harness.py` step (or a new one) reaches it and the layout audit is clean; screenshots land in `artifacts/<run>/`.
 5. **Glyph check green** ([GG-LAW-11](#GG-LAW-11)).
 6. **One commit at the end** — verify-then-checkpoint, no mid-phase commits.
+7. **Polish doesn't regress** — for visible or balance-affecting work, the polish pass ([`POLISH.md`](POLISH.md)) scores no dimension below the baseline ([GG-LAW-14](#GG-LAW-14)).
 
-A story is ✅ only when 1–6 hold; otherwise 🟡/⬜ ([GG-LAW-12](#GG-LAW-12)).
+A story is ✅ only when 1–7 hold; otherwise 🟡/⬜ ([GG-LAW-12](#GG-LAW-12)).
 
 ## 9. Glossary {#GG-§9}
 
@@ -1253,6 +1257,8 @@ Final victory (first time, §27.0): PostBattle → Continue → StoryCrawl (Endi
 
 ### 11.5 The visual language
 
+**Polish rules (GG-T249):** type scale, color tokens/contrast, spacing, touch targets and motion tokens are defined and measured in [`POLISH.md`](POLISH.md) §A–§C, §E ([GG-LAW-14](#GG-LAW-14)).
+
 **Amended 2026-10-11 — one press feel (owner: "all button presses need feedback like depress … a standardized look and feel"):** every tappable thing goes through `Ui.Pressable` (buttons, menu rows, tabs, cards, bar cells, battle slots). On touch it sinks — buttons stand on a darker lip (thick bottom border) and drop onto it, everything shrinks to 95 % and darkens — with a soft `ui.press` tick; on release it springs back (`ease-out-back`), then the action plays its own cue (`ui.click` / `ui.select` / `ui.confirm` / `ui.cancel`). Disabled things don't sink. Battle tiles are lighter and lower-contrast so the stage background reads through the board.
 
 One Final Fantasy–style language (`Resources/UI/Theme.uss`): deep blue gradient windows (`Art.Window`, generated) with white rounded frames, pointing-cursor menu rows (`Ui.MenuRow`, selected row highlighted), gold numbers, rarity-colored item names, gauges, tabs, primary/danger buttons, toasts on the overlay. **Amended 2026-10-10 (owner):** battle units wear the same frame as menu portraits (`.thumb` → `.unit-frame`: white 4 px rounded border over the window gradient); team reads from a thin inner keyline (hero blue, foe red, boss purple `.unit-keyline--*`). Fonts (`App/Services/Fonts.cs`): **Outfit** body, **Cinzel** display (titles), both with Noto Sans → Noto Sans Symbols 2 fallbacks ([GG-LAW-11](#GG-LAW-11)). **Amended 2026-10-09:** replaces HubTheme / UiFonts / UiKit (Attic + Outfit).
@@ -1307,7 +1313,7 @@ Owner: "these new coordinates and zoom are kept in memory in the character's Thu
 
 ### 12.3 VFX
 
-⬜ Not yet built (see [§6.2](#62-vfx-pipeline)).
+⬜ Not yet built (see [§6.2](#62-vfx-pipeline)). Cohesion target: one element table driving every effect, intensity tiers, timing/easing tokens — [`POLISH.md`](POLISH.md) §E (POL-E1–E8, GG-T253).
 
 ---
 
