@@ -828,11 +828,16 @@ namespace GridGame.App
             roll.name = "credits-roll";
             roll.style.position = Position.Absolute;
             roll.style.left = 90; roll.style.right = 90;
-            var title = Ui.Text("GRIDGAME GAIDEN", "title shadow gold", roll);
+            var title = Ui.Text("GridGame Gaiden", "h1 shadow gold", roll);
             Fonts.UseDisplay(title);
+            title.style.whiteSpace = WhiteSpace.Normal;
             title.style.unityTextAlign = TextAnchor.MiddleCenter;
             title.style.marginBottom = 80;
             var text = Resources.Load<TextAsset>("Credits")?.text ?? "GridGame Gaiden — MindAttic";
+            // Credits.txt opens with the game's name; the display title above already says it.
+            var lines = text.Replace("\r", "").Split('\n');
+            if (lines.Length > 1 && lines[0].Trim().Equals("GridGame Gaiden", StringComparison.OrdinalIgnoreCase))
+                text = string.Join("\n", lines.Skip(1)).TrimStart('\n');
             var body = Ui.Text(text, "h2 shadow", roll);
             body.style.whiteSpace = WhiteSpace.Normal;
             body.style.unityTextAlign = TextAnchor.UpperCenter;
