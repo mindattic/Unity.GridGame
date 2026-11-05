@@ -307,6 +307,44 @@ namespace GridGame.App.Automation
                     app.Save.Rested.RegenUtc = DateTime.UtcNow;
                     return new { ok = true, points = app.Save.Rested.Points, unlimited = RestedPool.Unlimited };
                 }
+                case "devxp":
+                {
+                    // Test-only (GG-T241): sets a roster hero's experience to the start of `level` (LevelReached beats).
+                    if (app.Save == null) return new { error = "no save" };
+                    // hero=all levels the whole roster.
+                    var heroes = q["hero"] == "all" ? app.Save.Roster.ToList()
+                        : new[] { q["hero"] != null ? app.Save.Hero(q["hero"]) : app.Save.Roster.FirstOrDefault() }.Where(x => x != null).ToList();
+                    if (heroes.Count == 0) return new { error = "no such hero" };
+                    foreach (var h in heroes) { h.TotalXp = GridGame.Core.Rules.Formulas.TotalXpForLevel((int)F(q["level"], 10)); h.Hp = 0; }
+                    app.Persist();
+                    return new { ok = true, levels = heroes.ToDictionary(h => h.ClassId, Progression.Level) };
+                }
+                case "devstage":
+                {
+                    // Test-only (GG-T241): jump the campaign to `stage` — every earlier stage cleared, its expedition
+                    // under way at that battle — so a biome finale or the ending stage can be launched directly.
+                    if (app.Save == null) return new { error = "no save" };
+                    var stages = app.Content.CampaignStages();
+                    int idx = stages.FindIndex(x => x.Id == q["stage"]);
+                    if (idx < 0) return new { error = "unknown stage" };
+                    app.Save.HighestClearedStage = Math.Max(app.Save.HighestClearedStage, idx - 1);
+                    var theme = app.Content.ThemeOf(stages[idx].Id);
+                    int at = theme.Stages.IndexOf(stages[idx].Id);
+                    app.Save.Expedition = at == 0 ? null : new ExpeditionSave { ThemeId = theme.Id, Next = at };
+                    app.Persist();
+                    return new { ok = true, cleared = app.Save.HighestClearedStage };
+                }
+                case "launch":
+                    // GG-T241: the real launch path (crawl, story beats, Rested, expedition gate) for one stage.
+                    StageLauncher.Launch(q["stage"], false);
+                    return new { ok = true, screen = app.Router.Current?.Id };
+                case "devwin":
+                    if (app.Router.Current is BattleScreen dwin) return new { ok = dwin.DevWin() };
+                    return new { error = "not in battle" };
+                case "devcaptive":
+                    // GG-T241: the next player-launched battle holds this captive (skips the 25% rescue roll).
+                    BattleScreen.DevNextCaptive = q["class"] ?? Rescues.Pool(app.Content, app.Save).FirstOrDefault();
+                    return new { ok = BattleScreen.DevNextCaptive != null, captive = BattleScreen.DevNextCaptive };
                 case "goto":
                     if (!StartScreens.TryGet(q["screen"], out var screen)) return new { error = "unknown screen" };
                     app.Router.Push(screen);
@@ -839,7 +877,10 @@ namespace GridGame.App.Automation
                 ["slot"] = app.Save != null ? app.Slot : -1, // GG-T116: which of the profile's slots is loaded (0-based)
             };
             if (app.Save != null)
-                dump["save"] = new { app.Save.Gold, app.Save.HighestClearedStage, party = app.Save.Party, inventory = app.Save.Inventory, levels = app.Save.Roster.ToDictionary(h => h.ClassId, Progression.Level), xp = app.Save.Roster.ToDictionary(h => h.ClassId, h => h.TotalXp), hp = app.Save.Roster.ToDictionary(h => h.ClassId, h => h.Hp), crucible = new { app.Save.Crucible.Best, app.Save.Crucible.Runs, app.Save.Crucible.TotalWaves }, expedition = app.Save.Expedition?.ThemeId };
+                dump["save"] = new { app.Save.Gold, app.Save.HighestClearedStage, party = app.Save.Party, inventory = app.Save.Inventory, levels = app.Save.Roster.ToDictionary(h => h.ClassId, Progression.Level), xp = app.Save.Roster.ToDictionary(h => h.ClassId, h => h.TotalXp), hp = app.Save.Roster.ToDictionary(h => h.ClassId, h => h.Hp), crucible = new { app.Save.Crucible.Best, app.Save.Crucible.Runs, app.Save.Crucible.TotalWaves }, expedition = app.Save.Expedition?.ThemeId,
+                    // GG-T241: story arc checks (seen beats, the ending flag, Rested, the roster, mercenary contracts).
+                    seen = app.Save.SeenDialogues, flags = app.Save.Flags, rested = app.Save.Rested.Points,
+                    roster = app.Save.Roster.Select(h => h.ClassId).ToList(), mercs = app.Save.Mercenaries.Contracts.Select(k => k.ClassId).ToList() };
             if (TestMode.Active) dump["testmode"] = new { cycles = TestMode.Completed, last = TestMode.LastLine };
             if (app.Router.Current is BattleScreen b && b.State != null)
             {

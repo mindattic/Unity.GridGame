@@ -11,6 +11,7 @@ Self-play harness: launches the development player with the automation endpoint 
     python tools/harness.py outline          # GG-T128: frame-record a pincer; the outline must ride the camera twist/shake
     python tools/harness.py durability       # GG-T39: last-strike weapon badge + drag-preview shatter warning
     python tools/harness.py crucible [WAVES [RUN]]  # GG-T95: camp -> Crucible -> Auto -> leave after WAVES (99 = fight to a wipe) -> results -> camp
+    python tools/harness.py storyarc [RUN] [--nocapture]  # GG-T241: title -> prologue -> camp systems -> boss -> ending -> credits, recorded
     python tools/harness.py stress HOURS     # unattended soak test (GG-T21); default 4h
     python tools/harness.py endless N [--seed S] [--capture] [--speed X]  # GG-T62: -demo -endless run of N encounters, auto-relaunching on crash/hang
     python tools/harness.py testmode N       # GG-T93: -testmode self-play, N full battle→results→camp cycles
@@ -947,6 +948,198 @@ def story_recruits(run="recruits", speed=3):
     logs = call("logs")
     errors = [l[:300] for l in logs if l.startswith(("Error", "Exception")) and "first mouse" not in l]
     print(json.dumps({"checks": ok, "party_before": party0, "party_after": party1, "dialogue_text": texts[:12], "errors": errors}, indent=1))
+    return all(ok.values()) and not errors
+
+
+def _drain_story(seen, tag, limit=30):
+    """Plays through whatever story screens are up (crawls, conversations, a mercenary reoffer), screenshotting the
+    first of each kind under `tag`; records each screen's texts into `seen` so callers can assert what played."""
+    for n in range(limit):
+        sc = call("state")["screen"]
+        if sc == "crawl":
+            time.sleep(2.5); shot(f"{tag}-crawl{n}")
+            seen.append(("crawl", " ".join(map(str, call("texts")))[:400]))
+            call("clicktext", text="Skip"); time.sleep(1.2)
+        elif sc == "dialogue":
+            # One conversation at a time (finish_dialogue would run straight through back-to-back ones).
+            time.sleep(1.0); shot(f"{tag}-dialogue{n}")
+            texts = call("texts"); first = texts[0] if texts else None
+            seen.append(("dialogue", " ".join(map(str, texts))[:400]))
+            for _ in range(60):
+                if call("state")["screen"] != "dialogue":
+                    break
+                t = call("texts")
+                if t and t[0] != first:
+                    break  # the next conversation has opened; the outer loop shoots it
+                choices = sorted(call("names", prefix="choice-"))
+                call("click", name=choices[-1] if choices else "dlg-skip"); time.sleep(0.7)
+            time.sleep(0.8)
+        elif sc == "merc-renewal":
+            shot(f"{tag}-merc-renewal"); call("click", name="merc-finish"); time.sleep(1.2)
+        else:
+            return sc
+    return call("state")["screen"]
+
+
+_ANNOUNCE = ("captive", "ignores", "rises", "joins the fight")
+
+
+def _watch_banners(seconds=8.0, until_battle_ends=False):
+    """Every distinct battle banner shown over the next few seconds, plus billboard announcements read off the screen
+    (captives, rule-breaks). With until_battle_ends, keeps watching until the screen leaves the battle."""
+    out, end = [], time.time() + seconds
+    while time.time() < end:
+        st = call("state")
+        if st["screen"] != "battle":
+            break
+        texts = [(call("banner") or {}).get("text")] + [str(t) for t in call("texts") if any(k in str(t).lower() for k in _ANNOUNCE)]
+        for t in texts:
+            if t and t not in out:
+                out.append(t)
+        time.sleep(0.25)
+    return out
+
+
+def storyarc(run="storyarc", capture=True):
+    """GG-T241: the title-to-credits experience (GG-T231..T237), recorded. Part 1 is a real new campaign: Title -> New
+    Game -> pick three -> the prologue crawl -> Camp (Rested meter) -> Green Valley I with a forced captive, a hero
+    pushed to Lv 10 and a forced win -> the rescue conversation -> the Lv 10 interlude -> Camp; then Rested at 0
+    refuses a launch and the 1g/1s refill relaunches it. Part 2, on a stocked save: hire a mercenary, the Quests
+    journal, a 1s Summon, a Diamond bought and spent on a lucky craft, Green Valley III's boss intro and rule-break
+    banner, then cityruins-03's intro, a forced win, the ending crawl, the rolling credits and the Title."""
+    ok, notes, seen = {}, {}, []
+    st = lambda: call("state")
+    save = lambda: st().get("save") or {}
+    launch(run, fresh=True, extra=("-capture", "video", "hq") if capture else ())
+    _wait_screen("title", 15); time.sleep(0.8); shot("01-title")
+    _tap_until(lambda: call("clicktext", text="New Game"), lambda: any("Slot 1" in t for t in call("texts")), tries=4)
+    _tap_until(lambda: call("clicktext", text="Slot 1"), lambda: st()["screen"] == "charselect", tries=4, wait=1.0)
+    pick_party()
+    ok["prologue_plays"] = _wait_screen("crawl", 6)
+    if ok["prologue_plays"]:
+        time.sleep(3.0); shot("02-prologue-mid")
+        ok["prologue_is_footfall_oath"] = any("Footfall" in str(t) for t in call("texts"))
+        call("clicktext", text="Skip")
+    ok["prologue_then_camp"] = _wait_screen("hub", 8)
+    time.sleep(0.8); shot("03-camp")
+    ok["camp_rested_meter"] = bool(call("names", prefix="camp-rested"))
+    call("devrested", limit=1, points=5)
+    call("devcaptive")
+    call("clicktext", text="Adventure"); time.sleep(0.8)
+    call("clicktext", text="Green Valley I"); time.sleep(1.5)
+    _drain_story(seen, "04-gv1")
+    ok["gv1_in_battle"] = _wait_screen("battle", 8)
+    ok["rested_spent_on_launch"] = save().get("rested") == 4
+    banners = _watch_banners(8)
+    notes["gv1_banners"] = banners
+    shot("05-gv1-captive")
+    ok["captive_billboard"] = any("captive" in b.lower() for b in banners)
+    lead = (save().get("party") or ["paladin"])[0]
+    call("devxp", hero=lead, level=10)
+    ok["gv1_forced_win"] = (call("devwin") or {}).get("ok") is True
+    time.sleep(1.5); _skip_levelups(st())
+    _wait_screen("postbattle", 6); time.sleep(0.8); shot("06-gv1-results")
+    ok["captive_freed_on_results"] = any("freed" in str(t).lower() for t in call("texts"))
+    call("click", name="continue"); time.sleep(1.5)
+    before = len(seen)
+    _drain_story(seen, "07-after-gv1")
+    played = " ".join(t for _, t in seen[before:])
+    ok["rescue_conversation"] = any(k == "dialogue" for k, _ in seen[before:]) and "rescue_freed" in save().get("seen", [])
+    ok["lv10_interlude_crawl"] = "What We Swore For" in played
+    ok["lv10_interlude_seen"] = "interlude_level10_motives" in save().get("seen", [])
+    ok["back_at_camp"] = _wait_screen("hub", 6)
+    shot("08-camp-after")
+    # Rested at 0 refuses the next launch and offers the 1g / 1s refill, which relaunches.
+    call("devrested", points=0)
+    call("launch", stage="greenvalley-02"); time.sleep(1.0); shot("09-rested-empty")
+    ok["rested_refusal_offers_refill"] = any("Refill" in str(t) for t in call("texts"))
+    gold0 = save().get("Gold", 0)
+    call("click", name="confirm-yes"); time.sleep(0.4); shot("10-rested-refilling"); time.sleep(2.0)
+    _drain_story(seen, "11-gv2")
+    ok["refill_relaunches"] = _wait_screen("battle", 8) and save().get("Gold", 0) == gold0 - 1
+    time.sleep(3.0)
+    call("devwin"); time.sleep(1.5); _skip_levelups(st())
+
+    # Part 2: a stocked save with the Blacksmith's workshop open (as tools firstforge sets it up).
+    call("newgame", slot=1, gold=5000, npcs="merchant,blacksmith,alchemist,innkeeper,enchantress", seen="blacksmith"); time.sleep(1)
+    call("devrested", limit=1, points=10)
+    for item, n in (("mat_slime_gel", 2), ("mat_tattered_cloth", 1)):
+        call("devgive", item=item, count=n)
+    _goto("mercenaries"); time.sleep(0.8); shot("12-mercenaries")
+    hire = sorted(call("names", prefix="merc-hire-"))
+    if hire:
+        call("click", name=hire[0]); time.sleep(0.5); call("click", name="confirm-yes"); time.sleep(1.0)
+    ok["mercenary_hired"] = len(save().get("mercs") or []) == 1
+    shot("13-merc-hired")
+    call("back"); time.sleep(0.6)
+    _goto("quests"); time.sleep(0.8); shot("14-quests")
+    ok["quests_journal_opens"] = st()["screen"] == "quests"
+    call("back"); time.sleep(0.6)
+    _goto("summon"); time.sleep(0.8); shot("15-summon")
+    roster0 = len(save().get("roster") or [])
+    gold0 = save().get("Gold", 0)
+    call("clicktext", text="Recruit"); time.sleep(0.5); call("click", name="confirm-yes"); time.sleep(0.4)
+    shot("16-summoning"); time.sleep(2.0)
+    ok["summon_timed_1g"] = len(save().get("roster") or []) == roster0 + 1 and save().get("Gold", 0) == gold0 - 1
+    call("back"); time.sleep(0.6)
+    _goto("blacksmith"); time.sleep(1.0); shot("17-forge")
+    ok["lucky_craft_section"] = bool(call("names", prefix="lucky-craft"))
+    call("click", name="buy-diamond"); time.sleep(0.4); shot("18-cutting-diamond"); time.sleep(2.0)
+    ok["diamond_bought"] = (save().get("inventory") or {}).get("mat_diamond", 0) == 1
+    call("click", name="lucky-craft-btn"); time.sleep(0.6); shot("19-lucky-reveal"); time.sleep(3.0)
+    ok["diamond_spent_on_lucky_craft"] = (save().get("inventory") or {}).get("mat_diamond", 0) == 0
+    shot("20-after-lucky")
+    call("back"); time.sleep(0.6)
+
+    # Boss intros and a rule-break: Green Valley III.
+    call("devstage", stage="greenvalley-03")
+    call("devxp", hero="all", level=12)
+    call("launch", stage="greenvalley-03"); time.sleep(1.5)
+    _drain_story(seen, "21-gv3")
+    ok["gv3_boss_intro"] = "boss_intro_greenvalley" in save().get("seen", [])
+    ok["gv3_in_battle"] = _wait_screen("battle", 8)
+    # The Captain arrives on a later wave: fight it out on Auto with a levelled party, watching for the rule-break.
+    shot("22-gv3-battle")
+    call("speed", x=4); call("autoplay", on=1)
+    banners = _watch_banners(420, until_battle_ends=True)
+    call("speed", x=1)
+    notes["gv3_banners"] = banners
+    ok["twinturn_banner"] = any("turn order" in b for b in banners)
+    ok["gv3_won_on_auto"] = st()["screen"] in ("levelup", "postbattle")
+    _skip_levelups(st())
+    _wait_screen("postbattle", 6); shot("22b-gv3-results"); call("click", name="continue"); time.sleep(1.5)
+    _drain_story(seen, "23-after-gv3")
+
+    # The finale: cityruins-03 -> intro -> win -> ending crawl -> rolling credits -> Title.
+    call("devstage", stage="cityruins-03")
+    call("launch", stage="cityruins-03"); time.sleep(1.5)
+    _drain_story(seen, "24-cr3")
+    ok["vampire_boss_intro"] = "boss_intro_cityruins" in save().get("seen", [])
+    ok["cr3_in_battle"] = _wait_screen("battle", 8)
+    notes["cr3_banners"] = _watch_banners(10)
+    shot("25-cr3-battle")
+    call("devwin"); time.sleep(1.5); _skip_levelups(st())
+    _wait_screen("postbattle", 6); time.sleep(0.8); shot("26-cr3-results")
+    call("click", name="continue")
+    ok["ending_crawl"] = _wait_screen("crawl", 6)
+    if ok["ending_crawl"]:
+        time.sleep(3.0); shot("27-ending-crawl")
+        ok["ending_is_longmother"] = any("Longmother" in str(t) for t in call("texts"))
+        call("clicktext", text="Skip")
+    ok["credits_roll"] = _wait_screen("credits-roll", 6)
+    if ok["credits_roll"]:
+        time.sleep(4.0); shot("28-credits-mid")
+        call("press", x=585, y=1266, ms=2500); shot("29-credits-after-hold")
+    ok["credits_then_title"] = _wait_screen("title", 90)
+    shot("30-title-after")
+    ok["ending_flag_set"] = "story:ending" in (save().get("flags") or [])
+    logs = call("logs")
+    errors = [l[:300] for l in logs if l.startswith(("Error", "Exception")) and "first mouse" not in l]
+    print(json.dumps({"checks": ok, "notes": notes, "story": seen, "errors": errors}, indent=1))
+    try:
+        call("quit", timeout=5)
+    except Exception:
+        pass
     return all(ok.values()) and not errors
 
 
@@ -1946,6 +2139,8 @@ if __name__ == "__main__":
         sys.exit(0 if s["completed"] == a.count and not s["crashes"] and not s["stalls"] and not s["hangs"] else 1)
     elif cmd == "recruits":
         sys.exit(0 if story_recruits() else 1)
+    elif cmd == "storyarc":
+        sys.exit(0 if storyarc(sys.argv[2] if len(sys.argv) > 2 else "storyarc", capture="--nocapture" not in sys.argv) else 1)
     elif cmd == "profiles":
         sys.exit(0 if profiles(sys.argv[2] if len(sys.argv) > 2 else "profiles") else 1)
     elif cmd == "testmode":

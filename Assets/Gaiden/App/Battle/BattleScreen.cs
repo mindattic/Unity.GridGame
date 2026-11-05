@@ -157,6 +157,7 @@ namespace GridGame.App
                 int seed = InCrucible && App.Save != null ? Crucible.SeedFor(App.Save) : Environment.TickCount;
                 var setup = setupOverride ?? BattleFactory.Build(App.Content, App.Save, stageId, seed);
                 if (setupOverride == null) Rescues.Apply(App.Content, App.Save, setup); // GG-T236: maybe a captive to free
+                if (setupOverride == null && DevNextCaptive != null) { setup.Captive = new CaptiveSpec { Class = DevNextCaptive, Wave = 0 }; DevNextCaptive = null; }
                 State = BattleEngine.Create(App.Content, setup, initial);
                 recorder = new BattleRecorder(State, setup, "player", initial);
                 var diff = App.Settings.Difficulty;
@@ -926,6 +927,22 @@ namespace GridGame.App
         }
 
         /// <summary>Dev/automation helper: set a unit's HP (art review: make the next blow a kill).</summary>
+        /// <summary>Dev/automation (GG-T241): the next player-launched battle holds this captive, skipping the 25% roll.</summary>
+        public static string DevNextCaptive;
+
+        /// <summary>Dev/automation (GG-T241): end the battle as a victory now and commit it like a real one, so story
+        /// beats that hang off a win (the ending, interludes, rescues) can be reached without fighting every wave.</summary>
+        public bool DevWin()
+        {
+            if (playing || ended || State.IsOver || App.Save == null || !CommitsToSave) return false;
+            ended = true;
+            State.Phase = BattlePhase.Victory;
+            var rep = BattleFactory.Commit(App.Content, App.Save, State);
+            App.Persist();
+            PostBattleScreen.RouteFrom(rep, State.Stage.Id);
+            return true;
+        }
+
         public bool DevHp(int unitId, int hp)
         {
             var u = State.UnitById(unitId);
