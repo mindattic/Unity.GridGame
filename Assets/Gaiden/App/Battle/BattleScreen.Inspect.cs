@@ -135,7 +135,7 @@ namespace GridGame.App
                 tag.style.position = Position.Absolute;
                 tag.style.width = BoardView.Tile * 1.6f;
                 tag.style.left = c.x - BoardView.Tile * 0.8f;
-                tag.style.top = c.y - BoardView.Tile * 0.78f;
+                tag.style.top = c.y - BoardView.Tile * 0.46f; // inside the foe's own tile, along its top edge
                 tag.style.unityTextAlign = TextAnchor.MiddleCenter;
                 tag.style.fontSize = TypeScale.Caption;
                 tag.style.color = t.KillChance > 0f ? Palette.Gold : Palette.Text;

@@ -1358,7 +1358,8 @@ namespace GridGame.App
             int seen = enemies.Count(e => S.Bestiary.TryGetValue(e.Id, out var b) && b.Seen);
             var w = Ui.Window($"Seen {seen}/{enemies.Count}", body);
             w.style.flexGrow = 1;
-            var grid = Ui.List(w).contentContainer;
+            var scroll = Ui.List(w);
+            var grid = scroll.contentContainer;
             grid.style.flexDirection = FlexDirection.Row;
             grid.style.flexWrap = Wrap.Wrap;
             var detail = Ui.Window(null, body);
@@ -1373,29 +1374,55 @@ namespace GridGame.App
                 t.AddToClassList("card-tap");
                 Ui.Tappable(t, () => { selected = def.Id; Show(detail, def, entry); });
             }
-            grid.RegisterCallback<GeometryChangedEvent>(_ => EvenGrid(grid, 160f, Space.S16));
+            grid.style.flexDirection = FlexDirection.Column;
+            grid.style.flexWrap = Wrap.NoWrap;
+            var cells = grid.Children().ToList();
+            int laidCols = -1;
+            scroll.RegisterCallback<GeometryChangedEvent>(_ =>
+            {
+                // The ScrollView's own width minus its vertical scroller is what the rows can really use.
+                var bar = scroll.verticalScroller;
+                float barW = bar != null && bar.resolvedStyle.display == DisplayStyle.Flex ? bar.resolvedStyle.width : 0f;
+                laidCols = EvenGrid(grid, cells, scroll.resolvedStyle.width - barW, 160f, Space.S16, laidCols);
+            });
             if (selected != null) Show(detail, C.Class(selected), S.Bestiary.TryGetValue(selected, out var se) ? se : null);
             else Ui.Text("Tap a creature.", "small dim", detail);
         }
 
         /// <summary>Fits as many cells of about <paramref name="target"/> px as the width allows, then stretches them so the
-        /// left, right and between-cell gutters are all exactly <paramref name="gap"/> (POL-C1/C8): no ragged right edge.</summary>
-        private static void EvenGrid(VisualElement grid, float target, float gap)
+        /// left, right and between-cell gutters are all exactly <paramref name="gap"/> (POL-C1/C8): no ragged right edge.
+        /// Cells go into explicit row containers (never wrap), so every row has exactly the same count and edges.
+        /// Returns the column count laid out; a call with the same count only resizes.</summary>
+        private static int EvenGrid(VisualElement grid, List<VisualElement> cells, float width, float target, float gap, int laidCols)
         {
-            float w = grid.resolvedStyle.width - grid.resolvedStyle.paddingLeft - grid.resolvedStyle.paddingRight;
-            if (float.IsNaN(w) || w <= 0) return;
+            float w = width - grid.resolvedStyle.paddingLeft - grid.resolvedStyle.paddingRight - 2f;
+            if (float.IsNaN(w) || w <= target) return laidCols;
             int cols = Mathf.Max(1, Mathf.FloorToInt((w - gap) / (target + gap)));
             float size = Mathf.Floor((w - gap * (cols + 1)) / cols);
-            int i = 0;
-            foreach (var t in grid.Children())
+            if (cols != laidCols)
+            {
+                grid.Clear();
+                VisualElement row = null;
+                for (int i = 0; i < cells.Count; i++)
+                {
+                    if (i % cols == 0)
+                    {
+                        row = new VisualElement { name = "grid-row" };
+                        row.style.flexDirection = FlexDirection.Row;
+                        row.style.paddingLeft = row.style.paddingRight = gap / 2f;
+                        row.style.marginTop = i == 0 ? gap / 2f : 0;
+                        grid.Add(row);
+                    }
+                    row.Add(cells[i]);
+                }
+            }
+            foreach (var t in cells)
             {
                 t.style.width = t.style.height = size;
-                t.style.marginLeft = i % cols == 0 ? gap : gap / 2f;
-                t.style.marginRight = i % cols == cols - 1 ? gap : gap / 2f;
-                t.style.marginTop = i < cols ? gap : 0;
-                t.style.marginBottom = gap;
-                i++;
+                t.style.flexShrink = 0;
+                t.style.marginLeft = t.style.marginRight = t.style.marginTop = t.style.marginBottom = gap / 2f;
             }
+            return cols;
         }
 
         private void Show(VisualElement w, ClassDef d, BestiaryEntry e)
