@@ -226,7 +226,7 @@ namespace GridGame.Core.Rules
             if (target == null) return enemy.Pos;
             var brain = EffectiveBrain(s, enemy);
             if (brain == Brain.Sentinel) return enemy.Pos;
-            if (brain == Brain.Ambusher && NearestHeroDistance(s, enemy) > 2) return enemy.Pos;
+            if (brain == Brain.Ambusher && NearestHeroDistance(s, enemy) > 2 && enemy.TurnsTaken < BattleConfig.AmbushPatienceTurns) return enemy.Pos;
             if (brain == Brain.Sluggish && enemy.TurnsTaken % 2 == 0) return enemy.Pos;
 
             var candidates = new List<Coord> { enemy.Pos };

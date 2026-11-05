@@ -757,7 +757,7 @@ Added 2026-10-11 (owner direction). `BattleState.ManaCharge` (0–99) is the for
 
 | Stat | Drives | Read in |
 |---|---|---|
-| HP / MaxHP | life | `Formulas.MaxHp = floor(12 + 5·VIT + level)` |
+| HP / MaxHP | life | `Formulas.MaxHp = floor(12 + 5·VIT + level)`; an enemy spawns with `× EnemyHpScale` (0.45, GG-T262) |
 | STR | physical offense; pushback; stagger push | `Formulas.Physical`, `Pushback`, `StaggerCasts` |
 | VIT | HP + physical defense | `MaxHp`, `Physical` |
 | AGI | pushback stun recovery; Steal; ½ into Speed from gear | `Pushback`, Steal roll |
@@ -1409,7 +1409,7 @@ The first hero to enter the tile collects it (walking, being displaced, or telep
 
 ### 13.5 Armor plates (added 2026-10-11, owner: "some enemies are armored and need to take damage from that side to break it off")
 
-`ClassDef.ArmorPlate` gives a family a plate on the side it **faces** (`Unit.Facing`, turned toward the hero it wants at spawn and at the end of each of its turns — `FacingChangedEvent`). Plate HP = `ArmorPlate × (1 + 0.15 × (level − 1))`. A **physical** blow (pincer strike, supporter, Cleave, Shield Bash) from the plated side (`SideOf`, dominant axis) dents the plate instead of the body (`PlateHitEvent`, "CLANG! −n"); at 0 the plate breaks off for good (`PlateBrokenEvent`, shards, "ARMOR BROKEN!"). Blows from the flanks or behind land normally; **spells go around the plate**. Families: ceramic knights 30, templars 30, mecha armour 40, soldiers 18, the captain 24. Tactics: pincer it across its line of sight, break the plate head-on, or let the mage burn it. The plate is a riveted steel bar on the tile's rim; the enemy card says where it faces and how much is left. The bot avoids lining an attacker up on the plated side. *(Tests: `A_plate_takes_the_blow_from_its_facing_side_and_the_flank_hits_flesh`, `A_pincer_across_its_line_of_sight_skips_the_plate_and_a_broken_plate_stops_blocking`, `Spells_go_around_the_plate`.)*
+`ClassDef.ArmorPlate` gives a family a plate on the side it **faces** (`Unit.Facing`, turned toward the hero it wants at spawn and at the end of each of its turns — `FacingChangedEvent`). Plate HP = `ArmorPlate × (1 + 0.15 × (level − 1)) × EnemyHpScale` (the scale added 2026-11-05, GG-T262). A **physical** blow (pincer strike, supporter, Cleave, Shield Bash) from the plated side (`SideOf`, dominant axis) dents the plate instead of the body (`PlateHitEvent`, "CLANG! −n"); at 0 the plate breaks off for good (`PlateBrokenEvent`, shards, "ARMOR BROKEN!"). Blows from the flanks or behind land normally; **spells go around the plate**. Families: ceramic knights 30, templars 30, mecha armour 40, soldiers 18, the captain 24. Tactics: pincer it across its line of sight, break the plate head-on, or let the mage burn it. The plate is a riveted steel bar on the tile's rim; the enemy card says where it faces and how much is left. The bot avoids lining an attacker up on the plated side. *(Tests: `A_plate_takes_the_blow_from_its_facing_side_and_the_flank_hits_flesh`, `A_pincer_across_its_line_of_sight_skips_the_plate_and_a_broken_plate_stops_blocking`, `Spells_go_around_the_plate`.)*
 
 ### 13.4 The interrupt path
 
@@ -1563,7 +1563,7 @@ Owner: "some undead enemies should spawn a solid grave stone like in Darkest Dun
 |---|---|---|
 | Hunter | closes on its prey (the classic) | purple prototype, yeti |
 | Pack | +1.5 per kin beside it — moves as a group | wolves, gangers, skelepedes |
-| Ambusher | holds still until a hero is within 2 tiles | lurkers, naga, scorpion |
+| Ambusher | holds still until a hero is within 2 tiles, for at most 3 of its own turns (`AmbushPatienceTurns`, GG-T262) | lurkers, naga, scorpion |
 | Skirmisher | adjacent at turn start → strikes first, then darts away | bats, flying monkey, steppin' razors |
 | Kiter | holds ~3 tiles from heroes (melee kiters keep charging spells) | hags, mecha armour |
 | Guardian | stays beside its most valuable ally (boss, caster, commander, medic) | ceramic knights, templars, ice mauler |
@@ -1582,7 +1582,7 @@ Owner: "some undead enemies should spawn a solid grave stone like in Darkest Dun
 | Sentinel | never moves | mannequin, remains |
 | Relentless | never retreats | undead, mountain troll |
 
-No two families share brain + targeting + kit (`Every_enemy_family_plays_differently`). Enemy physical strikes carry `EnemyStrikeMultiplier` 0.9 (retuned after the brains with `BalanceReport`). *(Tests: `An_ambusher_waits_until_a_hero_comes_close`, `A_sentinel_never_moves_and_a_sluggish_foe_moves_every_other_turn`, `A_hopper_leaps_two_tiles_over_a_unit`, `A_bomber_dives_where_it_touches_the_most_heroes`, `A_skirmisher_strikes_then_darts_away`, `A_burrower_surfaces_beside_its_target`, `A_guardian_stays_by_its_ward`.)*
+No two families share brain + targeting + kit (`Every_enemy_family_plays_differently`). Enemy physical strikes carry `EnemyStrikeMultiplier` 0.9 (retuned after the brains with `BalanceReport`). **Amended 2026-11-05 (GG-T262):** enemies spawn with `EnemyHpScale` **0.45** of the MaxHP formula (and plate, §13.5) and strike at **1.2** — faster fights, same threat (AMENDMENTS 2026-11-05). *(Tests: `An_ambusher_waits_until_a_hero_comes_close`, `A_sentinel_never_moves_and_a_sluggish_foe_moves_every_other_turn`, `A_hopper_leaps_two_tiles_over_a_unit`, `A_bomber_dives_where_it_touches_the_most_heroes`, `A_skirmisher_strikes_then_darts_away`, `A_burrower_surfaces_beside_its_target`, `A_guardian_stays_by_its_ward`.)*
 
 ### 14.7 Corpses (added 2026-10-11, owner: "add in the corpses for some things so they get in the way like Darkest Dungeon")
 

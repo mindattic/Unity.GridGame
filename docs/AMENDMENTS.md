@@ -655,3 +655,14 @@ Owner: "gaining mana is too generous since I see the whole bar filled almost in 
   Casual-bot wins, before (6 per stage) → after (8 per stage, rotating parties): Green Valley I–III 67/100/0 → 75/88/100 %, Sandsea Reaches
   I–III 67/83/83 → 50/88/75 %, Mireholt Fens I–III 33/0/17 → 88/38/62 %, Frostmaw Caverns I–III 0/0/0 → 62/100/88 %, Veshker Ruins I–III
   0/0/0 → 75/62/25 % (Veshker Ruins III's second wave was trimmed after this run). Polish POL-G1 17.4 → 31.0, POL-G2 71.4 → 78.6.
+
+## 2026-11-05 — Faster waves: enemy HP scale, ambush patience (GG-T262)
+
+- **Was:** enemies spawned with the full `Formulas.MaxHp` and armor plate, struck at `EnemyStrikeMultiplier` 0.9, and an Ambusher waited
+  for a hero within 2 tiles indefinitely.
+- **Now:** enemies spawn with `BattleConfig.EnemyHpScale` **0.45** of the MaxHP formula and of their plate, strike at **1.2**, and an
+  Ambusher lies in wait for at most `AmbushPatienceTurns` (3) of its own turns. *Why:* POL-G6 wants 6–20 player actions per wave; the
+  records had a median of 34 (30 for the casual bot alone, cave-03 wave 1 at 68, a lone ambushing naga holding Mireholt Fens II's last wave to
+  116). Scaling HP down and strikes up keeps the threat while shortening the fight; the greedy bot now clears a wave in a median of ~10
+  actions, the casual bot (half its moves random) in ~19. Polish POL-G6 41.4 → 56.3; dimension G 66.3 → 67.4. POL-G4 (ability use share)
+  fell 65.3 → 53.2 since shorter fights fire fewer abilities — that is GG-T263's to answer.

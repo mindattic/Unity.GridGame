@@ -337,9 +337,9 @@ namespace GridGame.Core.Battle
                 H = h,
             };
             u.LevelStats = Formulas.StatsAtLevel(def, u.Level);
-            u.MaxHp = Formulas.MaxHp(u.Effective, u.Level);
+            u.MaxHp = Math.Max(1, (int)Math.Round(Formulas.MaxHp(u.Effective, u.Level) * BattleConfig.EnemyHpScale));
             u.Hp = u.MaxHp;
-            if (def.ArmorPlate > 0) u.PlateHp = u.PlateMax = (int)Math.Round(def.ArmorPlate * (1f + BattleConfig.PlatePerLevel * (u.Level - 1)));
+            if (def.ArmorPlate > 0) u.PlateHp = u.PlateMax = Math.Max(1, (int)Math.Round(def.ArmorPlate * (1f + BattleConfig.PlatePerLevel * (u.Level - 1)) * BattleConfig.EnemyHpScale));
             if (!AddUnit(u)) return null;
             if (u.PlateMax > 0) FaceTarget(u, false);
             S.Timeline.Add(new TimelineEntry
