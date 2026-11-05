@@ -338,6 +338,20 @@ namespace GridGame.App.Automation
                     // GG-T241: the real launch path (crawl, story beats, Rested, expedition gate) for one stage.
                     StageLauncher.Launch(q["stage"], false);
                     return new { ok = true, screen = app.Router.Current?.Id };
+                case "devtalk":
+                {
+                    // Test-only (GG-T241): a throwaway two-speaker conversation between classes a and b (portrait layout checks).
+                    string a = q["a"] ?? "cleric", b = q["b"] ?? "monk";
+                    if (app.Content.TryClass(a) == null || app.Content.TryClass(b) == null) return new { error = "unknown class" };
+                    var def = new DialogueDef { Id = "dev_talk", Title = "Portrait check" };
+                    def.Speakers.Add(new DialogueSpeaker { Id = "a", Class = a });
+                    def.Speakers.Add(new DialogueSpeaker { Id = "b", Class = b });
+                    def.Nodes.Add(new DialogueNode { Id = "n1", Speaker = "a", Text = "Hold still a moment. I want to see how we stand side by side.", Next = "n2" });
+                    def.Nodes.Add(new DialogueNode { Id = "n2", Speaker = "b", Text = "Side by side, then. Same box, same light, whoever's speaking.", Next = "n3" });
+                    def.Nodes.Add(new DialogueNode { Id = "n3", Speaker = "a", Text = "Good. Back to the road." });
+                    app.Router.Push(new DialogueScreen(def, () => new HubScreen()));
+                    return new { ok = true };
+                }
                 case "devwin":
                     if (app.Router.Current is BattleScreen dwin) return new { ok = dwin.DevWin() };
                     return new { error = "not in battle" };
@@ -379,8 +393,10 @@ namespace GridGame.App.Automation
                         app.Content.Stages.Remove(oldId);
                     var realStages = app.Content.Stages.Values.Where(s => !s.IsTest && s.Waves.Count > 0).ToList();
                     if (realStages.Count == 0) return new { error = "no stages available" };
-                    var src = realStages[UnityEngine.Random.Range(0, realStages.Count)];
-                    var wave = src.Waves[UnityEngine.Random.Range(0, src.Waves.Count)];
+                    // stage=/wave= (GG-T241) pin the pick, e.g. a biome finale's boss wave.
+                    var src = q["stage"] != null ? app.Content.TryStage(q["stage"]) : realStages[UnityEngine.Random.Range(0, realStages.Count)];
+                    if (src == null || src.Waves.Count == 0) return new { error = "unknown stage" };
+                    var wave = q["wave"] != null ? src.Waves[Mathf.Clamp((int)F(q["wave"]), 0, src.Waves.Count - 1)] : src.Waves[UnityEngine.Random.Range(0, src.Waves.Count)];
                     int srcIndex = app.Content.CampaignStages().FindIndex(x => x.Id == src.Id);
                     int level = src.LevelOverride ?? (srcIndex >= 0 ? Progression.RecommendedLevel(srcIndex) : 5);
                     var synthId = SynthPrefix + Guid.NewGuid().ToString("N").Substring(0, 8);

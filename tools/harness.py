@@ -1011,7 +1011,7 @@ def storyarc(run="storyarc", capture=True):
     st = lambda: call("state")
     save = lambda: st().get("save") or {}
     launch(run, fresh=True, extra=("-capture", "video", "hq") if capture else ())
-    _wait_screen("title", 15); time.sleep(0.8); shot("01-title")
+    _wait_screen("title", 15); time.sleep(1.5); shot("01-title"); shot("fc_title")
     _tap_until(lambda: call("clicktext", text="New Game"), lambda: any("Slot 1" in t for t in call("texts")), tries=4)
     _tap_until(lambda: call("clicktext", text="Slot 1"), lambda: st()["screen"] == "charselect", tries=4, wait=1.0)
     pick_party()
@@ -1093,22 +1093,46 @@ def storyarc(run="storyarc", capture=True):
 
     # Boss intros and a rule-break: Green Valley III.
     call("devstage", stage="greenvalley-03")
-    call("devxp", hero="all", level=12)
+    call("devxp", hero="all", level=20)
     call("launch", stage="greenvalley-03"); time.sleep(1.5)
     _drain_story(seen, "21-gv3")
     ok["gv3_boss_intro"] = "boss_intro_greenvalley" in save().get("seen", [])
     ok["gv3_in_battle"] = _wait_screen("battle", 8)
-    # The Captain arrives on a later wave: fight it out on Auto with a levelled party, watching for the rule-break.
     shot("22-gv3-battle")
-    call("speed", x=4); call("autoplay", on=1)
-    banners = _watch_banners(420, until_battle_ends=True)
-    call("speed", x=1)
-    notes["gv3_banners"] = banners
-    ok["twinturn_banner"] = any("turn order" in b for b in banners)
-    ok["gv3_won_on_auto"] = st()["screen"] in ("levelup", "postbattle")
-    _skip_levelups(st())
-    _wait_screen("postbattle", 6); shot("22b-gv3-results"); call("click", name="continue"); time.sleep(1.5)
+    time.sleep(3.0); call("devwin"); time.sleep(1.5); _skip_levelups(st())
+    _wait_screen("postbattle", 6); call("click", name="continue"); time.sleep(1.5)
     _drain_story(seen, "23-after-gv3")
+    # The Captain only arrives on wave 5 of 5, so fight that wave on its own (randombattle stage=/wave=) on Auto.
+    call("randombattle", stage="greenvalley-03", wave=4)
+    _wait_screen("battle", 8)
+    call("autoplay", on=1)
+    banners = _watch_banners(90, until_battle_ends=True)
+    notes["gv3_boss_wave_banners"] = banners
+    ok["twinturn_banner"] = any("turn order" in b for b in banners)
+    shot("22b-gv3-boss-wave")
+    dmg = 0
+    for _ in range(480):  # let the fight finish so the board audit sees the rule-break's moves too
+        s = st()
+        if s["screen"] != "battle":
+            break
+        # Damage numbers float during playback: grab a few frames mid-beat.
+        if dmg < 3 and (s.get("battle") or {}).get("busy"):
+            time.sleep(0.35); dmg += 1; shot(f"fc_damage_{dmg}"); time.sleep(1.5)
+        time.sleep(0.5)
+    notes["damage_frames"] = dmg
+    ok["boss_wave_finished"] = st()["screen"] in ("levelup", "postbattle")
+    _skip_levelups(st())
+    _wait_screen("postbattle", 6); call("click", name="continue"); time.sleep(1.5)
+    _drain_story(seen, "23b-after-boss-wave")
+
+    # Portrait layout: a narrow-canvas speaker (Cleric 375x640) with square-canvas ones (Monk, Engineer 640x640).
+    for i, (a, b) in enumerate((("cleric", "monk"), ("engineer", "cleric")), 1):
+        call("devtalk", a=a, b=b)
+        if _wait_screen("dialogue", 5):
+            time.sleep(2.5); call("clicktext", text="Next"); time.sleep(2.0)  # the second speaker steps on and talks
+            shot(f"fc_dialogue_{i}_{a}_{b}")
+            finish_dialogue(); time.sleep(1.0)
+    ok["portrait_talks_return"] = st()["screen"] == "hub"
 
     # The finale: cityruins-03 -> intro -> win -> ending crawl -> rolling credits -> Title.
     call("devstage", stage="cityruins-03")
