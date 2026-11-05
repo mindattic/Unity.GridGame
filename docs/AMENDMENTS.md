@@ -704,3 +704,14 @@ Owner: "gaining mana is too generous since I see the whole bar filled almost in 
   - **G2 85.7 → 78.6:** swamp-02's lone-hag wave still deals about 1000 damage to a casual party, and the stage drops from 42% to 17%. That's stage tuning.
   - **G6 53.5 → 50.4.**
   - **A Cleave of 16 was tried first:** striker parties lost their main damage and swamp-02 fell to 0/12.
+
+## 2026-11-05 — The late-campaign mana flood is gone; the 2+ orbs target is retired (GG-T265)
+
+- **Was:** GG-T255 measured the greedy bot's bank full on 94% of cityruins-03 turns (87% wasted), and the casual bot holding 2+ orbs on only 21% of turns against GG-T247's ≥ 30% target.
+- **Now (measured, no rule change):** after GG-T247's tempering and GG-T262's 45% enemy HP, the bank is full on 0% of turns on every stage, cityruins-03 included, with 0% wasted.
+  - The bots bank about 0.09 (greedy) and 0.05 (casual) orbs per player action.
+  - The casual bot holds 2+ orbs on 22% of turns.
+- **Retired:** the "2+ orbs held ≥ 30%" target. It measures hoarding, and a bot that spends the moment it can rarely holds two whatever it earns.
+  - **Tried:** `PincerChargePerHp` 105 → 200 to buy a spell-per-wave earn rate.
+  - **Result:** that raised the casual bot only to 0.08 orbs/action (the fullness damping caps it), and flooded the Green Valley stages, where that bot doesn't spend (full on 36–55% of turns). G fell 74.0 → 73.5.
+  - **Outcome:** the charge stays at 105, and POL-G3 (no flood) remains the gate.
