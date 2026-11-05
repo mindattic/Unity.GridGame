@@ -1217,7 +1217,7 @@ namespace GridGame.App
             box.name = "caravan-bark";
             box.style.marginTop = 8;
             Ui.Text($"\"{line}\"", "small", box).style.whiteSpace = WhiteSpace.Normal;
-            Ui.Text("— " + CaravanUpgrades.CrewName(crew), "tiny dim", box);
+            Ui.Text("— " + CaravanUpgrades.CrewName(crew), "tiny dim", box).style.whiteSpace = WhiteSpace.Normal;
             return box;
         }
     }

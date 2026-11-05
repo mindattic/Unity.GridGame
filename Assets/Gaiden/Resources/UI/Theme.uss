@@ -141,7 +141,7 @@
 .menu-row--disabled { opacity: 0.42; }
 .menu-cursor { width: 56px; height: 56px; margin-right: 8px; opacity: 0; background-size: contain; flex-shrink: 0; }
 .menu-row--selected > .menu-cursor { opacity: 1; }
-.menu-label { flex-grow: 1; font-size: var(--type-body); flex-shrink: 0; }
+.menu-label { flex-grow: 1; font-size: var(--type-body); flex-shrink: 1; min-width: 0; white-space: normal; }
 /* A long value (a locked station's "Opens after …" hint) wraps rather than clipping or squeezing the label. */
 .menu-value { font-size: var(--type-body); -unity-text-align: middle-right; margin-left: var(--space-16); flex-shrink: 1; white-space: normal; }
 .menu-icon { width: 64px; height: 64px; margin-right: var(--space-16); background-size: contain; }

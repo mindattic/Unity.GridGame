@@ -581,7 +581,7 @@ namespace GridGame.App
             {
                 var gossip = Ui.Window(null, side);
                 gossip.name = "camp-gossip";
-                Ui.Text("Around the wagons", "small dim", gossip);
+                Ui.Text("Around the wagons", "small dim", gossip).style.whiteSpace = WhiteSpace.Normal;
                 CaravanScreen.BarkLine(c, s, gossip);
             }
             MercenaryCamp.OnCamp(this);
