@@ -242,6 +242,10 @@
    "lorc/checked-shield",
    "green"
   ],
+  "ward": [
+   "lorc/shield-reflect",
+   "water"
+  ],
   "regen": [
    "zeromancer/heart-plus",
    "heal"

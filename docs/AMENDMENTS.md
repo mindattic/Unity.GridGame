@@ -685,3 +685,22 @@ Owner: "gaining mana is too generous since I see the whole bar filled almost in 
   - **Blood Harvest:** 3 → 2 orbs so it gets cast, and its drain trimmed 10/14 → 7/10. At 10/14 for 2 orbs it measured 73 impact/use against a Spell median of 28.
   - **`empowered`:** 2 → 3 Turns. Its skills measured about 0 because the buff ran out before the hero struck again.
 - **Result:** G5 74.7 → 78.0 (206 battles). The remaining lows are pure utility buffs that genuinely do little against 45%-HP foes. They show as measured values now, not as metric artifacts.
+
+## 2026-11-05 — Every ability earns its slot (GG-T263)
+
+- **Was:** 58 of 124 equipped abilities fired in under 25% of their battles, 27 never.
+  - **Cleave** (the striker baseline, 24 damage, 2-turn cooldown) beat every bespoke 8–16-damage finisher.
+  - **`protection`** (×0.85 for 1 Turn) was too light to spend an action on.
+  - **Some spells were priced above their effect.**
+  - **Hero haste-only skills did nothing**, because heroes have no turn icons (GG-T268).
+- **Now:** see BIBLE §7.2.
+  - **Cleave** 20.
+  - **Finishers** raised to 12–26 damage.
+  - **Four spells** cost 2 → 1.
+  - **Weak spells and supports** buffed.
+  - **Haste-only tempo skills** also empower.
+  - **New `ward` buff** (×0.70 for 2 Turns) for every hero guard skill. Guard and the enemy rally keep `protection`. It gets a status icon and a status style.
+- **Result:** G 69.3 → 74.9 (12 casual battles per stage plus the greedy sweep, same seeds): G1 50.0 → 66.7, G4 59.7 → 73.4, G7 61.5 → 76.9.
+  - **G2 85.7 → 78.6:** swamp-02's lone-hag wave still deals about 1000 damage to a casual party, and the stage drops from 42% to 17%. That's stage tuning.
+  - **G6 53.5 → 50.4.**
+  - **A Cleave of 16 was tried first:** striker parties lost their main damage and swamp-02 fell to 0/12.

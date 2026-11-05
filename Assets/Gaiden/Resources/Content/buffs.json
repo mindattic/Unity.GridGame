@@ -19,6 +19,25 @@
     "Color": "#66CC73"
   },
   {
+    "Id": "ward",
+    "Name": "Ward",
+    "Kind": "Buff",
+    "Unit": "Turns",
+    "Duration": 2,
+    "DamagePerTick": 0,
+    "Immobile": false,
+    "HaltsTimeline": false,
+    "BreaksOnDamage": false,
+    "BreaksOnMove": false,
+    "IncomingDamageMultiplier": 0.7,
+    "TimelineSpeedMultiplier": 1.0,
+    "AccuracyMultiplier": 1.0,
+    "BlocksSpells": false,
+    "OnExpireApply": null,
+    "Letter": "D",
+    "Color": "#4FA3E0"
+  },
+  {
     "Id": "burning",
     "Name": "Burning",
     "Kind": "Debuff",

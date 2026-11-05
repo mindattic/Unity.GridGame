@@ -1062,7 +1062,7 @@ All entries in `abilities.json`. Every spell has base cast time **1.5 s** (scale
 | **Poison** | 2 | Cross(1) / PickTile / EnemyOnly | Bezier | 6 Poison + Poisoned | long tail |
 | **Sleep** | 1 | SingleActor / PickActor / EnemyOnly | Homing | Asleep (breaks on damage/move) | hard CC |
 | **Slow** | 2 | Row / PickActor / EnemyOnly | Bezier | Slowed (icon ×0.5) | row tempo |
-| **Quicken** | 1 | SingleActor / PickActor / Any | Straight | +0.30 u (or rush a cast) | tempo |
+| **Quicken** | 1 | SingleActor / PickActor / Any | Straight | +0.30 u (or rush a cast) + Empowered (GG-T263: heroes have no turn icons, so haste alone was inert; GG-T268) | tempo |
 | **Silence** | 1 | SingleActor / PickActor / EnemyOnly | Straight | Silenced | see note |
 | **Meteor** | 2 | Diamond(2) / PickTile / EnemyOnly | Strike | 22 Fire + Burning | big AoE |
 | **ShockWave** | 3 | Column / PickActor / EnemyOnly | Strike | 10 Lightning | column cleave |
@@ -1118,6 +1118,38 @@ The biggest reskin family was the plain adjacent strike: 21 rows (Cleave, Killin
 
 ---
 
+### 7.2 Usefulness pass (GG-T263, GG-T264, 2026-11-05)
+
+POLISH G4/G5 ("every ability earns its slot", "no dead or dominant abilities") read from `records.py --abilities` over the `polish.py --balance` soaks. Measured at 12 casual battles per stage plus the greedy class sweep (206 battles); the 4-per-stage default swung a stage ±25 points with party make-up alone.
+
+- **What was wrong:**
+  - **Cleave crowded out every finisher.** It is the striker baseline in every striker's slot 0, and at 24 damage on a 2-turn cooldown it beat the bespoke 8–16-damage adjacent finishers. 27 abilities never fired.
+  - **`protection`** (×0.85 for 1 Turn) was too light to spend an action on.
+  - **Several spells cost more than they did.**
+  - **Hero haste is inert under the held turn** (heroes have no turn icons, §2.0; GG-T268).
+- **Changes:**
+  - **Cleave** 24 → 20.
+  - **Plain finishers now out-hit it on their longer cooldowns:** Combo/Prism Fang 20, Jab-Cross 22, Contract 20, Flurry 18, Perfect Cut 24, Iaijutsu 26, Shock/Flame Fang 18, Finishing Blow 20, Reckless 24.
+  - **Finishers with a rider move closer to Cleave:** blind, silence, delay, steal, knockback and swap finishers go to 12–18.
+  - **Spells:** Shadow Bolt, Shock, Bloodrite and Swap cost 2 → 1. Mirror Curse 10, Overdrive 12, Frost Nova 14 and Fury 20 damage.
+  - **Support:** Moonlit 22 heal. Transmute and Jury-rig also mend 10, and Howl and Insight deal 6 and 8.
+  - **Haste-only tempo skills** (Quicken, Shortcut, Relay, Blitz) also empower their target.
+  - **New `ward` buff** (×0.70 for 2 Turns) for every hero guard skill; Guard keeps `protection`.
+  - **GG-T264 trims:** Blood Harvest is re-costed 3 → 2 but drains 7/10 (at 10/14 it measured 73 impact/use against a Spell median of 28), and `empowered` lasts 3 Turns.
+- **Impact metric (GG-T264):** `records.impact` used to credit every buff, debuff and tempo effect a flat 6. It now credits what each one did after it landed (`records.credit_utility`), in HP:
+  - **damage-up:** the extra share of the buffed ally's damage
+  - **guard or taunt:** damage prevented, plus every hit a taunter absorbed
+  - **ticks:** damage and heal ticks at face value
+  - **frozen or sleep:** a skipped enemy turn counts as one enemy turn's damage
+  - **slow:** the enemy turns it took away
+  - **blind:** expected misses
+  - **silence:** half an enemy turn per turn
+- **Result (same seeds, before → after):** G 69.3 → 74.9.
+  - G1 50.0 → 66.7, G4 59.7 → 73.4, G5 74.7 → 78.0, G7 61.5 → 76.9, G3 100 → 100.
+  - G2 85.7 → 78.6: swamp-02's lone-hag wave deals about 1000 damage to a casual party and tips that stage, a stage-tuning matter.
+  - G6 53.5 → 50.4.
+  - Remaining G5 lows are pure utility buffs (taunts, wards, empowers), which do little against 45%-HP foes. Trapline is high (78) because its row Slow takes real turns away.
+
 ## 8. Buffs and Debuffs
 
 `BuffDef` (`buffs.json`) + `BuffInstance` (`Remaining`, `TickAccumulator`) on `Unit.Buffs`, applied and removed only by `BattleRunner.ApplyBuff / RemoveBuffsWhere / Expire`.
@@ -1126,7 +1158,8 @@ The biggest reskin family was the plain adjacent strike: 21 rows (Cleave, Killin
 
 | Id | Kind | Duration | Knobs | On expire |
 |---|---|---|---|---|
-| `protection` | Buff | 1 Turn | incoming damage ×0.85 | — |
+| `protection` | Buff | 1 Turn | incoming damage ×0.85 — Guard's shield and the enemy rally | — |
+| `ward` | Buff | 2 Turns | incoming damage ×0.70 — every hero guard/ward skill (GG-T263; it had used `protection`, too light to be worth an action) | — |
 | `empowered` | Buff | 3 Turns | outgoing damage ×1.3 (GG-T264: 2 → 3 Turns; at 2 it mostly ran out before the buffed hero struck again) | — |
 | `burning` | Debuff | 5 Ticks | 4 dmg/tick | → `warm` |
 | `frozen` | Debuff | 1 Turn | immobile, halts timeline | → `wet` |
