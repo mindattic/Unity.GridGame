@@ -49,6 +49,7 @@ namespace GridGame.Core.Content
             db.ArmorEnchantOrder.AddRange(armorEnchants);
             db.Campaign = ReadOne<CampaignDef>(readText, "campaign") ?? new CampaignDef();
             db.Summon = ReadOne<SummonDef>(readText, "summon") ?? new SummonDef();
+            db.Mercenaries.AddRange(ReadList<MercenaryDef>(readText, "mercenaries"));
             AddAll(db.Caravan, ReadList<CaravanUpgradeDef>(readText, "caravan"), x => x.Id);
             AddAll(db.Pickups, ReadList<PickupDef>(readText, "pickups"), x => x.Id);
             AddAll(db.SkillTrees, ReadList<SkillTreeDef>(readText, "skilltrees"), x => x.Id);
@@ -276,6 +277,7 @@ namespace GridGame.Core.Content
             foreach (var d in db.DialogueOrder) ValidateDialogue(db, d, portraitExists, p);
             foreach (var set in db.ArmorSetOrder) ValidateArmorSet(db, set, p);
             EncounterCatalog.Validate(db, p);
+            MercenaryContent.Validate(db, p);
             return p;
         }
 

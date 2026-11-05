@@ -609,3 +609,13 @@ and make sure powerups and spawns get moved the same way actors get moved."
   Diamond lucky craft are **paywall hooks**, priced and timed by `Paywall.Cost`/`Duration` — 1 g and 1 s today — and played out as a timed
   job. *Why:* the owner wants the monetization slots wired but inert ("until I call it monetize, it's not"); every other price stays as it
   was. Bots, Test Mode, `-demo` and harness runs are exempt from Rested. See BIBLE §25.18.
+
+## 2026-11-05 — Mercenaries on contract (owner direction, GG-T233)
+
+- **Was:** nobody ever leaves the roster (GG-T114, §25.17/§27.1): recruits, guests and dialogue joins are permanent.
+- **Now:** a hero hired on the Mercenaries board is on a **contract**: paid upfront for a negotiated number of battles, counting down on
+  every battle fought whether they were used or not; with one battle left they reoffer at Camp (renew at a loyalty discount, finish the
+  contract, or part ways), and at zero they **leave the roster** (gear handed back to the bag) until hired again. *Why:* owner: "they stay
+  for a negotiated amount of battles at a price; whether you use them or not; they will reoffer their services when they are about to leave
+  and you can choose to renegotiate or part ways." Scoped as its own contract system: the dialogue vocabulary still has no effect that
+  removes a hero, and no story recruit, guest or summon is ever a merc. Ordinary gold, not a paywall hook. See BIBLE §25.10.1.

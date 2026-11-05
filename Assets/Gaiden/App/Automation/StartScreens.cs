@@ -43,6 +43,7 @@ namespace GridGame.App.Automation
                 case "enchantress": screen = new EnchantressScreen(); break;
                 case "talk": screen = new TalkScreen(); break;
                 case "summon": screen = new SummonScreen(); break;
+                case "mercenaries": screen = new MercenaryScreen(); break;
                 case "bounties": screen = new BountyScreen(); break;
                 case "crucible": screen = new CrucibleScreen(); break;
                 case "bestiary": screen = new BestiaryScreen(); break;

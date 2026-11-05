@@ -480,6 +480,7 @@ namespace GridGame.Meta
 
         public static BattleSetup Build(ContentDb c, SaveData s, StageDef stage, int seed)
         {
+            Mercenaries.Settle(c, s); // a spent contract never fights an unpaid battle (GG-T233)
             bool crucible = Crucible.IsStage(stage.Id);
             var setup = new BattleSetup
             {
@@ -512,6 +513,7 @@ namespace GridGame.Meta
         {
             // Gold paid to a recruitable mid-battle (GG-T132) left the purse at that moment, whatever the outcome.
             if (battle.Results.CoinsSpent > 0) s.Gold = Math.Max(0, s.Gold - battle.Results.CoinsSpent);
+            Mercenaries.CountBattle(s); // every contract loses a battle, fought in or not (GG-T233)
             if (Crucible.IsStage(battle.Stage.Id)) return Crucible.Commit(c, s, battle);
             var r = battle.Results;
             var rep = new BattleReport

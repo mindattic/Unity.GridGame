@@ -81,6 +81,8 @@ namespace GridGame.Meta
         public BountySave Bounty = new BountySave();
         /// <summary>Crucible record (§22.10): best waves survived and runs fought on this save.</summary>
         public CrucibleSave Crucible = new CrucibleSave();
+        /// <summary>Mercenary contracts and the hiring board (GG-T233, <see cref="Mercenaries"/>).</summary>
+        public MercenarySave Mercenaries = new MercenarySave();
         /// <summary>Party-wide energy spent per stage launch (§25.18, <see cref="RestedPool"/>).</summary>
         public RestedSave Rested = new RestedSave();
         /// <summary>Paid, timed paywall jobs still running (§25.18, <see cref="Paywall"/>).</summary>
@@ -268,6 +270,7 @@ namespace GridGame.Meta
             }
             s.Bounty ??= new BountySave();
             s.Crucible ??= new CrucibleSave();
+            s.Mercenaries ??= new MercenarySave();
             s.Worn ??= new Dictionary<string, List<WornGear>>();
             s.Broken ??= new Dictionary<string, int>();
             s.StationXp ??= new Dictionary<string, int>();

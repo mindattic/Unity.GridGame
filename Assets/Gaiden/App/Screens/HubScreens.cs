@@ -646,6 +646,7 @@ namespace GridGame.App
                 var nameRow = Ui.El("row", col);
                 Ui.Text(C.Class(h.ClassId).Name, "h2", nameRow);
                 Ui.RoleBadge(C.Class(h.ClassId).Role, nameRow);
+                MercenaryCamp.Tag(S, h.ClassId, nameRow);
                 Ui.Text($"Lv {u.Level}   HP {u.MaxHp}   {(active ? "<color=#78EC96>Active</color>" : "Reserve")}", "small", col);
                 Ui.Text(Ui.Keywords(C.Class(h.ClassId).Card ?? ""), "tiny dim", col).style.whiteSpace = WhiteSpace.Normal;
                 card.AddToClassList("card-tap");

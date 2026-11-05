@@ -477,6 +477,7 @@ namespace GridGame.App
                 int hp = h.Hp > 0 ? Math.Min(h.Hp, u.MaxHp) : u.MaxHp;
                 Ui.Gauge(hp / (float)u.MaxHp, info, 300).style.marginTop = 6;
                 Ui.Text($"{hp}/{u.MaxHp}", "tiny dim", info);
+                MercenaryCamp.Tag(s, id, info);
                 card.AddToClassList("card-tap");
                 Ui.Tappable(card, () => App.Router.Push(new StatusScreen(id)), "ui.select");
             }
@@ -534,6 +535,8 @@ namespace GridGame.App
             Station("Bounties", CampUnlocks.BountiesOpen(s), CampUnlocks.MilestoneHint(c, CampUnlocks.BountiesAfter), () => new BountyScreen(),
                 Bounties.Active(c, s) != null ? $"{s.Bounty.Progress}/{Bounties.Active(c, s).Kills}" : "");
             Station("Summon Circle", CampUnlocks.SummonOpen(s), CampUnlocks.MilestoneHint(c, CampUnlocks.SummonAfter), () => new SummonScreen());
+            Station("Mercenaries", Mercenaries.Open(s), CampUnlocks.MilestoneHint(c, CampUnlocks.BountiesAfter), () => new MercenaryScreen(),
+                s.Mercenaries.Contracts.Count > 0 ? $"{s.Mercenaries.Contracts.Count} hired" : "");
             int caravanLevels = c.Caravan.Keys.Sum(k => CaravanUpgrades.Level(s, k));
             Station("Caravan", CampUnlocks.CaravanOpen(s), CampUnlocks.MilestoneHint(c, CampUnlocks.CaravanAfter), () => new CaravanScreen(), caravanLevels > 0 ? $"{caravanLevels} upgrades" : "");
             Item("Bestiary", () => new BestiaryScreen());
@@ -583,6 +586,7 @@ namespace GridGame.App
                 Ui.Text("Around the wagons", "small dim", gossip);
                 CaravanScreen.BarkLine(c, s, gossip);
             }
+            MercenaryCamp.OnCamp(this);
             App.Audio.Sfx(r.Ok ? "heal" : "ui.error");
             if (r.Ok) { App.Persist(); Refresh(); }
         }

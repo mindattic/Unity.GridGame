@@ -24,6 +24,9 @@ namespace GridGame.Core.Content
         public readonly List<StageDef> StageOrder = new List<StageDef>();
         public CampaignDef Campaign = new CampaignDef();
         public SummonDef Summon = new SummonDef();
+        /// <summary>mercenaries.json (GG-T233), in file order.</summary>
+        public readonly List<MercenaryDef> Mercenaries = new List<MercenaryDef>();
+        public MercenaryDef TryMercenary(string classId) => Mercenaries.Find(m => string.Equals(m.Class, classId, StringComparison.OrdinalIgnoreCase));
         public readonly Dictionary<string, CaravanUpgradeDef> Caravan = new Dictionary<string, CaravanUpgradeDef>(StringComparer.OrdinalIgnoreCase);
         public readonly Dictionary<string, SkillTreeDef> SkillTrees = new Dictionary<string, SkillTreeDef>(StringComparer.OrdinalIgnoreCase);
         /// <summary>dialogues.json in file order (§27.1, GG-T117) — the first matching beat wins, so order matters.</summary>
