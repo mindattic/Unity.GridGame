@@ -1,4 +1,15 @@
 {
+  "Prologue": {
+    "Title": "The Footfall Oath",
+    "Backdrop": "greenvalley",
+    "Crawl": "Every child in the town learns the same three things before they learn their letters. The ground below is not your friend. The Longmother does not stop. And when she puts a foot down, somebody has to go and stand where it landed.\n\nThat somebody is the vanguard. Crews of a handful, sworn at the rail with a hand on her warm plate, lowered on chains into the dust of each new footfall to clear whatever her step woke before the caravan's wheels roll down after it. Most crews last a season. The good ones last two. Nobody's lasted long enough to say what's past the edge of the old maps.\n\nThe last crew that held the forward chains didn't come back up from the Green Valley drop. The rail is empty, the bell is ringing, and the council has run out of veterans to ask.\n\nSo they're asking you.\n\nYou've never cleared a footfall. You've never seen what the blight makes of a living thing that held still too long. You don't know yet that every crew who ever swore this oath swore it for a different reason -- coin, debt, faith, a name to clear, someone below they couldn't leave.\n\nYou'll learn all of that on the road. For now there's only the oath, the chain, and the ground coming up fast.\n\nDrop at the footfall. Clear what the step disturbed. Be back on the chain before she walks on."
+  },
+  "Ending": {
+    "Title": "The Longmother Walks On",
+    "Backdrop": "cityruins",
+    "Stage": "cityruins-03",
+    "Crawl": "The Vampire Lord falls the way everything on this road was always meant to: all at once, after holding still far too long.\n\nThere is no cure in his ashes. The wells of Veshker stay sour, the stone keeps its rot, and somewhere under the world the blight goes on doing what it has always done, patient as the ground itself. That was never the fight you could win.\n\nThe fight you could win was simpler. A ruler who couldn't bear to keep walking had reached up from his dead city to drag the Longmother down beside him -- to make the last moving thing on this road stand still and spoil like everything else. He didn't get her. She felt the knot go out of the road the way a sleeper feels a stone leave her shoe, and she walked on without breaking stride.\n\nThe bell at the rail rings once, for the crew that came back up the chain. Not veterans anymore. Not strangers, either -- whatever each of you swore for at the start, you found something the oath didn't mention: each other, and the plain stubborn work of keeping a whole town moving one footfall at a time.\n\nShe curls the road ahead toward green country again, deeper than any map has ever run. The blight is older there. Whatever has been growing in that ground has had longer, undisturbed, to get good at it.\n\nThe chains are already being oiled.\n\nThe road continues."
+  },
   "Themes": [
     {
       "Id": "greenvalley",

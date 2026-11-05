@@ -1784,6 +1784,109 @@
     ]
   },
   {
+    "Id": "interlude_level10_motives",
+    "Title": "What We Swore For",
+    "Trigger": { "Kind": "LevelReached", "Level": 10 },
+    "Crawl": "Somewhere between one footfall and the next, the crew stopped being the new faces on the chain.\n\nThe rail-hands nod now when you come back up. The cooks save the good end of the pot. Children on the upper streets have started playing at being you -- dropping off crates onto the cobbles, shouting the pincer call, arguing over who gets to be the one who falls and gets back up.\n\nIt would be easy to keep going on that alone. Most crews do, right up until the season they don't come back.\n\nBut the road has been saying something, footfall after footfall, and it gets louder the further she walks. The things that come up out of the ground are older here, and stranger, and some of them were built. Someone, a long time ago, wanted this blight to be what it is. Someone is still out there who wants the Longmother to stop.\n\nThat changes what the oath is for. A vanguard crew clears a step. What you are turning into might have to clear the road.\n\nSo that night, around a fire on the Longmother's back, with the whole town swaying gently under the stars, somebody finally asks the question every crew avoids.\n\nWhy are you really here?",
+    "Backdrop": "cave",
+    "Speakers": [
+      { "Id": "lead", "Class": "$lead" },
+      { "Id": "innkeeper", "Name": "Innkeeper", "Portrait": "pandagirl" }
+    ],
+    "Nodes": [
+      { "Id": "a", "Speaker": "innkeeper", "Text": "Ten levels of scar tissue and you still eat like you're expecting the bell. Sit. The pot can wait. I want to ask you something I ask every crew that makes it this far.", "Next": "b" },
+      { "Id": "b", "Speaker": "lead", "Text": "Every crew that makes it this far. How many is that?", "Next": "c" },
+      { "Id": "c", "Speaker": "innkeeper", "Text": "Four, in my time. Two of them couldn't answer, and they didn't make it much further. So. When you put your hand on her plate and swore -- what were you swearing for?",
+        "Choices": [
+          { "Label": "For the coin. Somebody has to get paid for this.", "Next": "coin", "Effects": [ { "Type": "SetFlag", "Id": "motive:coin" } ] },
+          { "Label": "For the people below. Someone has to stand where she lands.", "Next": "people", "Effects": [ { "Type": "SetFlag", "Id": "motive:people" } ] },
+          { "Label": "To find out who made the blight, and make them answer for it.", "Next": "truth", "Effects": [ { "Type": "SetFlag", "Id": "motive:truth" } ] },
+          { "Label": "Honestly? For the crew. These are my people now.", "Next": "crew", "Effects": [ { "Type": "SetFlag", "Id": "motive:crew" } ] }
+        ]
+      },
+      { "Id": "coin", "Speaker": "innkeeper", "Text": "Ha. Honest, at least. Coin keeps a crew fed, and fed crews come back. Just remember that whoever's waiting at the end of this road won't be paying.", "Next": "close" },
+      { "Id": "people", "Speaker": "innkeeper", "Text": "The town says that one at the rail and forgets it by supper. You didn't forget. Keep it close -- it's the kind of reason that holds when the others snap.", "Next": "close" },
+      { "Id": "truth", "Speaker": "innkeeper", "Text": "Careful. Every crew that went looking for whoever's behind the blight found something first. But if anyone's going to put a name to it, I'd rather it was you.", "Next": "close" },
+      { "Id": "crew", "Speaker": "innkeeper", "Text": "That's the one the four had in common. Not the coin, not the cause. Each other. You'll want that, where she's taking us.", "Next": "close" },
+      { "Id": "close", "Speaker": "lead", "Text": "Then we keep walking. Wherever she goes, we drop first -- and we come back up the chain together." }
+    ]
+  },
+  {
+    "Id": "boss_intro_greenvalley",
+    "Title": "The Captain's Field",
+    "Trigger": { "Kind": "StageStart", "Id": "greenvalley-03" },
+    "Speakers": [
+      { "Id": "boss", "Class": "captain" },
+      { "Id": "lead", "Class": "$lead" }
+    ],
+    "Nodes": [
+      { "Id": "a", "Speaker": "boss", "Text": "The new chain crew. I wondered when she'd send somebody down after the last lot. Fine work on their gear, by the way. It fits my soldiers nicely.", "Next": "b" },
+      { "Id": "b", "Speaker": "lead", "Text": "You took it off the crew that didn't come back. You're squatting on a footfall -- the blight will have you by spring.", "Next": "c" },
+      { "Id": "c", "Speaker": "boss", "Text": "Maybe. But this field is mine until it does, and in my field the rules you learned at the rail don't hold. Come and find out which ones.", "Next": "d" },
+      { "Id": "d", "Speaker": "lead", "Text": "Everyone, eyes open. Whatever he's got, we learn it fast and we flank it anyway." }
+    ]
+  },
+  {
+    "Id": "boss_intro_desert",
+    "Title": "The Sentinel in the Sand",
+    "Trigger": { "Kind": "StageStart", "Id": "desert-03" },
+    "Speakers": [
+      { "Id": "boss", "Class": "mechaarmor01" },
+      { "Id": "lead", "Class": "$lead" }
+    ],
+    "Nodes": [
+      { "Id": "a", "Speaker": "boss", "Text": "MOTION DETECTED. MOTION IS NOT PERMITTED. THIS SECTOR HOLDS. THIS SECTOR HAS ALWAYS HELD.", "Next": "b" },
+      { "Id": "b", "Speaker": "lead", "Text": "It's been standing here longer than the dunes. The blight never touched it -- it doesn't care, and it doesn't rot.", "Next": "c" },
+      { "Id": "c", "Speaker": "boss", "Text": "INTRUDERS WILL CONFORM TO SECTOR PROTOCOL. STANDARD ENGAGEMENT RULES: SUSPENDED.", "Next": "d" },
+      { "Id": "d", "Speaker": "lead", "Text": "Suspended. Wonderful. Watch how it moves before you commit -- machines have patterns." }
+    ]
+  },
+  {
+    "Id": "boss_intro_swamp",
+    "Title": "The Mistress of Mireholt",
+    "Trigger": { "Kind": "StageStart", "Id": "swamp-03" },
+    "Speakers": [
+      { "Id": "boss", "Class": "swampmistress00" },
+      { "Id": "lead", "Class": "$lead" }
+    ],
+    "Nodes": [
+      { "Id": "a", "Speaker": "boss", "Text": "Oh, little walkers. You come down into my fen thinking the ground is the danger. The ground is my oldest friend. We came to an arrangement, it and I.", "Next": "b" },
+      { "Id": "b", "Speaker": "lead", "Text": "You let the blight in on purpose. Half the hags in this marsh are wearing it.", "Next": "c" },
+      { "Id": "c", "Speaker": "boss", "Text": "I let it teach me. And what it taught me is that the way you fight -- all those tidy lines and flanks -- is only a habit. Habits break.", "Next": "d" },
+      { "Id": "d", "Speaker": "lead", "Text": "Then we'll break hers first. Stay close, keep each other standing." }
+    ]
+  },
+  {
+    "Id": "boss_intro_cave",
+    "Title": "The Old One Under the Ice",
+    "Trigger": { "Kind": "StageStart", "Id": "cave-03" },
+    "Speakers": [
+      { "Id": "boss", "Class": "cyclops02" },
+      { "Id": "lead", "Class": "$lead" }
+    ],
+    "Nodes": [
+      { "Id": "a", "Speaker": "boss", "Text": "...Small. Quick. Loud. I have slept since before your spider learned to walk, and now you come stamping in my halls.", "Next": "b" },
+      { "Id": "b", "Speaker": "lead", "Text": "The cold kept you. Kept the blight slow in you, too. Whatever you were, you're carrying it now.", "Next": "c" },
+      { "Id": "c", "Speaker": "boss", "Text": "Time is a long teacher. I learned the shape of every fight that ever came down here. Yours too. The old ways do not work on me.", "Next": "d" },
+      { "Id": "d", "Speaker": "lead", "Text": "Then we'll find a new one. Spread out, keep moving, and don't give it a target it expects." }
+    ]
+  },
+  {
+    "Id": "boss_intro_cityruins",
+    "Title": "The Lord Who Stopped",
+    "Trigger": { "Kind": "StageStart", "Id": "cityruins-03" },
+    "Speakers": [
+      { "Id": "boss", "Class": "vampire" },
+      { "Id": "lead", "Class": "$lead" }
+    ],
+    "Nodes": [
+      { "Id": "a", "Speaker": "boss", "Text": "So this is what she sends. Children on chains. Do you know how tired she is? Do you ever listen to her, between the footfalls?", "Next": "b" },
+      { "Id": "b", "Speaker": "lead", "Text": "We know what you want. You want her to stop, here, on your dead stone, so you can finally rest with company.", "Next": "c" },
+      { "Id": "c", "Speaker": "boss", "Text": "I want the walking to end. I made stillness last past death; I can make it last past her. And in my city, little vanguard, I decide how a battle is fought.", "Next": "d" },
+      { "Id": "d", "Speaker": "lead", "Text": "This is the knot in the road. Everything we've learned comes down to this footfall. Together -- now!" }
+    ]
+  },
+  {
     "Id": "quest_offer_wells_wolves",
     "Title": "Something on the innkeeper's mind",
     "Trigger": { "Kind": "Talk", "Id": "npc:innkeeper" },

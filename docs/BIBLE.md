@@ -1239,6 +1239,8 @@ Title ──▶ SaveSlot (New / Load) ──▶ Camp (HubScreen) ◀────
                                       ├─ Settings                                   │ (Continue → Camp,
                                       └─ Save & Quit ─▶ Title                       │  Retry / Next stage
                                                                                     └── → Battle)
+New Game: SaveSlot → CharacterSelect → StoryCrawl (Prologue) → Camp.
+Final victory (first time, §27.0): PostBattle → Continue → StoryCrawl (Ending) → Credits (rolling) → Title.
 ```
 
 ### 11.3 Screen navigation
@@ -1758,7 +1760,7 @@ A Beast `{"Id":"frostwolf","Team":"Enemy","Tags":["Beast"],"Resistances":{"Ice":
 ## 22. The Macro Loop
 
 ```
-Title ─▶ (Continue | New Game → slot → CharacterSelect (pick 5) | Load Game → slot)
+Title ─▶ (Continue | New Game → slot → CharacterSelect (pick 3) → Prologue crawl | Load Game → slot)
    ▼
 Camp (HubScreen)  ◀══════════════════════════════════════════╗
    │  Adventure ─▶ stage list (newest-first)                 ║
@@ -1766,12 +1768,15 @@ Camp (HubScreen)  ◀═══════════════════�
    ▼                                                         ║
 StoryCrawl (first entry into a theme only)                   ║
    ▼                                                         ║
+Story beats (dialogue; a finale's boss intro; §27.1)         ║
+   ▼                                                         ║
 Battle — clear every wave                                    ║
    ▼                                                         ║
 LevelUp — one hero at a time, only when someone leveled ═════╣
    ▼                                                         ║
 PostBattle — gold, items, unlocks, bounty ════════════════════╝
-             (Continue → Camp · Next stage › → Battle · Retry → Battle)
+             (Continue → [level interlude] → Camp · Next stage › → Battle · Retry → Battle)
+             (first win over the Vampire Lord: Continue → Ending crawl → rolling Credits → Title)
 ```
 
 - **Stage = waves.** Clearing a wave spawns the next immediately inside the same action; clearing the last wave is victory.
@@ -2589,6 +2594,16 @@ One UI-only camera (`cullingMask = 0`, black clear); the board is UI Toolkit, so
 `StoryCrawlScreen`: the theme name (Cinzel) and its `campaign.json` `Crawl` text scroll upward at 95 design-px/s over a dimmed theme backdrop; **Skip ›** or a tap anywhere ends it and replaces it with the battle. It plays on the **first** launch of any stage in a theme — from Adventure or from the results screen's "Next stage ›" (both go through `StageLauncher.Launch`); the theme is recorded in `SaveData.SeenCrawls` (and saved) when the crawl starts. **Amended 2026-10-09** (timing by scroll speed instead of a 26 s duration). Writers edit `campaign.json` only.
 
 ~~No dialog system: no character dialogue, no branching, no cutscenes.~~ **Amended 2026-10-19 (owner, GG-T117):** character dialogue now exists ([§27.1](#271-dialogue-gg-t117)); there are still no cutscenes. **Amended 2026-11-02 (GG-T75):** the caravan crew's rotating one-line barks ([§25.12.1](#25121-the-caravan-crew-and-their-barks-gg-t75-added-2026-11-02-owner-direction-2026-10-16)) are not part of the dialogue system: they are not in `dialogues.json`, have no speakers' portraits, branches, choices, effects or flags, and need no tap. The in-battle "surprise" reinforcement beat ([§14.8](#148-reinforcements-and-eggs-added-2026-10-12-owner-direction)) stays a lightweight one-line announcement card.
+
+### 27.0 The story start to finish (GG-T231, owner 2026-11-05: "make the story from start to finish; title screen, new campaign, text scroll … a story crawl at a certain level … a boss … roll credits")
+
+Owner clarification: a "cutscene" is a conversation ([§27.1](#271-dialogue-gg-t117)) or a text crawl — no new cinematic system. `StoryCrawlScreen` now takes any title, text and backdrop, not only a theme's.
+- **Prologue.** `campaign.json` `Prologue` (`CrawlDef`: `Title`, `Crawl`, `Backdrop`) — "The Footfall Oath": the party sworn as the new vanguard crew. Plays once, right after the last lock on character select (`StoryBeats.NewCampaign`), then Camp. Never for automation, Test Mode or `-demo` saves (they don't come through New Game).
+- **Level interlude.** Trigger `LevelReached` (`DialogueTrigger.Level`, 2+) fires once any roster hero is at that level. It plays on the way back to Camp from the results screen (`DialogueRunner.PendingInterlude` → `StoryBeats.Camp`), or at the next launch if that comes first (it's an ordinary beat to `PendingBeat`). A story beat may open with its own crawl (`DialogueDef.Crawl`, headed by its `Title`; story beats only, validated). Content: **Lv 10 — "What We Swore For"**, a crawl on why the road has changed, then a talk with the Innkeeper where the player names the crew's motive (flags `motive:coin|people|truth|crew`).
+- **Boss introductions.** Trigger `StageStart` (`Id` = stage) plays before that stage's battle, once. Each main-biome finale opens with its boss speaking: Green Valley III the Captain, Sandsea Reaches III the Mecha Armor, Mireholt Fens III the Swamp Mistress, Frostmaw Caverns III the Cyclops, Veshker Ruins III the Vampire Lord. Each warns that "the rules don't hold here" in general terms; the mechanics themselves are GG-T234's.
+- **Ending.** `campaign.json` `Ending` (`CrawlDef` + `Stage` = `cityruins-03`). The **first victory** over that stage, after LevelUp and PostBattle as always, turns the results screen's Continue into: the ending crawl ("The Longmother Walks On") → `CreditsScreen` in **rolling mode** (`Resources/Credits.txt` scrolls up over the ruins at 110 px/s, hold anywhere to fast-forward ×4, **Skip ›**, a coda line, `HeroicAge`) → **Title**. "Next expedition ›" is hidden on that one results screen. The save flag `story:ending` (`Story.EndingFlag`) records it; the postgame themes stay open after it and Continue from Title lands in Camp. New Game+ clears the flag, so the ending plays again each cycle. Never on a Test Mode save.
+- **Bots** play `LevelReached`/`StageStart` beats headlessly like every other beat (`PlayPendingBeatsHeadless`); they never see the prologue, ending or credits.
+- *(Tests: `StoryArcTests`.)*
 
 ### 27.1 Dialogue (GG-T117)
 

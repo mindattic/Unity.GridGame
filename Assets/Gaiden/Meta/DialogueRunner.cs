@@ -260,10 +260,24 @@ namespace GridGame.Meta
                     || d.Trigger.Kind == DialogueTriggerKind.StageCleared && s.ClearedStages.Contains(d.Trigger.Id)
                     || d.Trigger.Kind == DialogueTriggerKind.GearWorn && (Repair.AnyBelow(c, s, d.Trigger.Percent) || ReachedTheme(c, theme, d.Trigger.Id))
                     || d.Trigger.Kind == DialogueTriggerKind.CanBrew && (Brewing.LootedForFirstBrew(c, s) || ReachedTheme(c, theme, d.Trigger.Id))
-                    || d.Trigger.Kind == DialogueTriggerKind.FirstArmor && (s.Flags.Contains(Forging.FirstArmorFlag) || ReachedTheme(c, theme, d.Trigger.Id));
+                    || d.Trigger.Kind == DialogueTriggerKind.FirstArmor && (s.Flags.Contains(Forging.FirstArmorFlag) || ReachedTheme(c, theme, d.Trigger.Id))
+                    || d.Trigger.Kind == DialogueTriggerKind.LevelReached && LevelReached(s, d.Trigger.Level)
+                    || d.Trigger.Kind == DialogueTriggerKind.StageStart && string.Equals(d.Trigger.Id, stageId, StringComparison.OrdinalIgnoreCase);
                 if (fires) return d;
             }
             return null;
+        }
+
+        /// <summary>True once any roster hero is at <paramref name="level"/> or above (GG-T231).</summary>
+        public static bool LevelReached(SaveData s, int level) => level > 0 && s.Roster.Any(h => Progression.Level(h) >= level);
+
+        /// <summary>GG-T231: the LevelReached beat to play on the way back to Camp after a battle (it would otherwise
+        /// wait for the next launch), or null. Never on a Test Mode save.</summary>
+        public static DialogueDef PendingInterlude(ContentDb c, SaveData s)
+        {
+            if (s == null || s.TestMode) return null;
+            return c.DialogueOrder.FirstOrDefault(d => d.Trigger?.Kind == DialogueTriggerKind.LevelReached && !s.SeenDialogues.Contains(d.Id)
+                && LevelReached(s, d.Trigger.Level) && All(c, s, d.Conditions));
         }
 
         /// <summary>True when <paramref name="theme"/> is <paramref name="fallbackThemeId"/> or comes after it in the campaign.</summary>

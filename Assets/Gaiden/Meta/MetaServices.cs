@@ -122,6 +122,7 @@ namespace GridGame.Meta
             s.ClearedStages.Clear();
             s.SeenCrawls.Clear();
             s.SeenDialogues.Clear(); // story beats replay with the crawls; flags (joined NPCs) carry over
+            s.Flags.Remove(Story.EndingFlag);
             return Result.Success($"New Game+ {s.NewGamePlus} — enemies grow stronger");
         }
 

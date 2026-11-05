@@ -183,7 +183,7 @@ namespace GridGame.App
                 App.Slot = slot;
                 App.ApplySettings();
                 App.Persist();
-                App.Router.ResetTo(new HubScreen());
+                App.Router.ResetTo(StoryBeats.NewCampaign());
             }));
         }
     }
@@ -704,7 +704,7 @@ namespace GridGame.App
             GameScreen BeatsThenBattle()
             {
                 var beat = DialogueRunner.PendingBeat(app.Content, app.Save, stageId);
-                return beat == null ? new BattleScreen(stageId) : new DialogueScreen(beat, BeatsThenBattle, theme?.Id);
+                return beat == null ? new BattleScreen(stageId) : StoryBeats.Play(beat, BeatsThenBattle, theme?.Id);
             }
             GameScreen next = BeatsThenBattle();
             if (theme != null && !string.IsNullOrEmpty(theme.Crawl) && app.Save != null && !app.Save.SeenCrawls.Contains(theme.Id))
@@ -735,30 +735,36 @@ namespace GridGame.App
 
     public sealed class StoryCrawlScreen : GameScreen
     {
-        private readonly ThemeDef theme;
+        private readonly string title, crawl, backdrop;
         private readonly GameScreen next;
         private VisualElement text;
         private float y;
         private bool done;
-        public StoryCrawlScreen(ThemeDef theme, GameScreen next) { this.theme = theme; this.next = next; }
+        public StoryCrawlScreen(ThemeDef theme, GameScreen next) : this(theme.Name, theme.Crawl, theme.Id, next) { }
+        /// <summary>Any crawl (GG-T231): the prologue, a story beat's interlude, the ending.</summary>
+        public StoryCrawlScreen(string title, string crawl, string backdrop, GameScreen next)
+        {
+            this.title = title; this.crawl = crawl; this.next = next;
+            this.backdrop = backdrop ?? HubScreen.ThemeFor(GameApp.I.Content, GameApp.I.Save);
+        }
         public override string Id => "crawl";
         public override string Music => "TellerOfTheTales";
 
         protected override void Build(VisualElement root)
         {
             var bg = Ui.El("fill", root);
-            bg.style.backgroundImage = new StyleBackground(Art.Background(theme.Id, 0));
+            bg.style.backgroundImage = new StyleBackground(Art.Background(backdrop, 0));
             bg.style.unityBackgroundImageTintColor = new Color(0.35f, 0.35f, 0.45f);
             var clip = Ui.El("fill", root);
             clip.style.overflow = Overflow.Hidden;
             text = Ui.El("col", clip);
             text.style.position = Position.Absolute;
             text.style.left = 90; text.style.right = 90;
-            var h = Ui.Text(theme.Name, "h1 shadow gold", text);
+            var h = Ui.Text(title, "h1 shadow gold", text);
             Fonts.UseDisplay(h);
             h.style.unityTextAlign = TextAnchor.MiddleCenter;
             h.style.marginBottom = 60;
-            var body = Ui.Text(theme.Crawl, "h2 shadow", text);
+            var body = Ui.Text(crawl, "h2 shadow", text);
             body.style.whiteSpace = WhiteSpace.Normal;
             body.style.unityTextAlign = TextAnchor.UpperCenter;
             y = GameApp.StageHeight;
@@ -787,9 +793,20 @@ namespace GridGame.App
 
     public sealed class CreditsScreen : GameScreen
     {
-        public override string Id => "credits";
+        private readonly Func<GameScreen> rollThen;
+        private VisualElement roll;
+        private float rollY;
+        private bool fast, rolled;
+        public CreditsScreen() { }
+        /// <summary>GG-T231: the end-of-story roll — the credits scroll up over the last battlefield, hold-to-speed, then
+        /// <paramref name="then"/> (the Title).</summary>
+        public CreditsScreen(Func<GameScreen> then) { rollThen = then; }
+        public override string Id => rollThen != null ? "credits-roll" : "credits";
+        public override string Music => rollThen != null ? "HeroicAge" : null;
+
         protected override void Build(VisualElement root)
         {
+            if (rollThen != null) { BuildRoll(root); return; }
             var col = Ui.El("fill col", root);
             Ui.Header("Credits", () => App.Router.Back(), col, out _);
             var w = Ui.Window(null, col);
@@ -798,6 +815,105 @@ namespace GridGame.App
             var text = Resources.Load<TextAsset>("Credits")?.text ?? "GridGame Gaiden — MindAttic";
             var l = Ui.Text(text, "small", list.contentContainer);
             l.style.whiteSpace = WhiteSpace.Normal;
+        }
+
+        private void BuildRoll(VisualElement root)
+        {
+            var bg = Ui.El("fill", root);
+            bg.style.backgroundImage = new StyleBackground(Art.Background(App.Content.Campaign.Ending?.Backdrop ?? "cityruins", 3));
+            bg.style.unityBackgroundImageTintColor = new Color(0.25f, 0.25f, 0.32f);
+            var clip = Ui.El("fill", root);
+            clip.style.overflow = Overflow.Hidden;
+            roll = Ui.El("col", clip);
+            roll.name = "credits-roll";
+            roll.style.position = Position.Absolute;
+            roll.style.left = 90; roll.style.right = 90;
+            var title = Ui.Text("GRIDGAME GAIDEN", "title shadow gold", roll);
+            Fonts.UseDisplay(title);
+            title.style.unityTextAlign = TextAnchor.MiddleCenter;
+            title.style.marginBottom = 80;
+            var text = Resources.Load<TextAsset>("Credits")?.text ?? "GridGame Gaiden — MindAttic";
+            var body = Ui.Text(text, "h2 shadow", roll);
+            body.style.whiteSpace = WhiteSpace.Normal;
+            body.style.unityTextAlign = TextAnchor.UpperCenter;
+            var coda = Ui.Text("The Longmother walks on. So does the road.\n\nThank you for playing.", "h2 shadow dim", roll);
+            coda.style.whiteSpace = WhiteSpace.Normal;
+            coda.style.unityTextAlign = TextAnchor.MiddleCenter;
+            coda.style.marginTop = 220;
+            rollY = GameApp.StageHeight;
+            roll.style.top = rollY;
+            // Hold anywhere to fast-forward; Skip ends it.
+            root.RegisterCallback<PointerDownEvent>(_ => fast = true);
+            root.RegisterCallback<PointerUpEvent>(_ => fast = false);
+            root.RegisterCallback<PointerLeaveEvent>(_ => fast = false);
+            var skip = Ui.Button("Skip ›", EndRoll, "btn--small", root);
+            skip.name = "credits-skip";
+            skip.style.position = Position.Absolute; skip.style.right = 30; skip.style.bottom = 40;
+            App.Audio.Sfx("ui.confirm");
+            if (DemoMode.Active || TestMode.Active) root.schedule.Execute(EndRoll).ExecuteLater(600);
+        }
+
+        public override void Tick(float dt)
+        {
+            if (rollThen == null || rolled || roll == null) return;
+            rollY -= dt * (fast ? 480f : 110f);
+            roll.style.top = rollY;
+            // Ends once the coda has scrolled up to the middle of the screen and held there a moment.
+            if (roll.layout.height > 0 && rollY < -roll.layout.height + GameApp.StageHeight * 0.5f - 300f) EndRoll();
+        }
+
+        private void EndRoll()
+        {
+            if (rolled) return;
+            rolled = true;
+            App.Audio.Sfx("ui.select");
+            App.Router.ResetTo(rollThen());
+        }
+    }
+
+    /// <summary>
+    /// Story beats as screens (§27, GG-T231): a beat with a <see cref="DialogueDef.Crawl"/> scrolls it before its
+    /// conversation; the way back to Camp after a battle plays a pending level interlude; the final boss's first
+    /// defeat rolls the ending crawl, the credits, then the Title.
+    /// </summary>
+    public static class StoryBeats
+    {
+        /// <summary>The beat's crawl (if it has one), then its conversation, then <paramref name="next"/>.</summary>
+        public static GameScreen Play(DialogueDef beat, Func<GameScreen> next, string backdrop)
+        {
+            GameScreen talk = new DialogueScreen(beat, next, backdrop);
+            return string.IsNullOrEmpty(beat.Crawl) ? talk : new StoryCrawlScreen(beat.Title, beat.Crawl, beat.Backdrop ?? backdrop, talk);
+        }
+
+        /// <summary>Camp, after any level interlude that's due (one after another, each chosen when the last ends).</summary>
+        public static GameScreen Camp()
+        {
+            var app = GameApp.I;
+            var beat = DialogueRunner.PendingInterlude(app.Content, app.Save);
+            return beat == null ? new HubScreen() : Play(beat, Camp, null);
+        }
+
+        /// <summary>The results screen's Continue: the ending if this victory earned it, else Camp (via any interlude).</summary>
+        public static void AfterResults(bool victory, string stageId)
+        {
+            var app = GameApp.I;
+            if (Story.EndingDue(app.Content, app.Save, victory, stageId))
+            {
+                Story.MarkEndingSeen(app.Save);
+                app.Persist();
+                var e = app.Content.Campaign.Ending;
+                app.Router.ResetTo(new StoryCrawlScreen(e.Title, e.Crawl, e.Backdrop ?? app.Content.ThemeOf(stageId)?.Id,
+                    new CreditsScreen(() => new TitleScreen())));
+                return;
+            }
+            app.Router.ResetTo(Camp());
+        }
+
+        /// <summary>A new campaign's first screen: the prologue crawl (if any), then Camp.</summary>
+        public static GameScreen NewCampaign()
+        {
+            var p = GameApp.I.Content.Campaign.Prologue;
+            return p == null ? new HubScreen() : new StoryCrawlScreen(p.Title, p.Crawl, p.Backdrop, new HubScreen());
         }
     }
 }

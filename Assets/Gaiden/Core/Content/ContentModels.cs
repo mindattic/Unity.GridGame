@@ -626,6 +626,9 @@ namespace GridGame.Core.Content
     public sealed class CampaignDef
     {
         public List<ThemeDef> Themes = new List<ThemeDef>();
+        /// <summary>GG-T231: the crawl after New Campaign's party pick, and the one after the final boss.</summary>
+        public CrawlDef Prologue;
+        public CrawlDef Ending;
     }
 
     /// <summary>
@@ -790,8 +793,11 @@ namespace GridGame.Core.Content
     /// FirstArmor (GG-T179) fires once the guided first armor piece has been forged (the save flag
     /// <c>onboard:first-armor</c>), with the same optional fallback theme in <see cref="DialogueTrigger.Id"/>.
     /// Recruit (GG-T132) is never played between battles: a stage's <see cref="RecruitableDef.Dialogue"/> names it and the
-    /// battle speaks it when a hero talks to the neutral (<see cref="DialogueTrigger.Id"/> = the recruitable's class).</summary>
-    public enum DialogueTriggerKind { ThemeStart, StageCleared, Talk, GearWorn, CanBrew, FirstArmor, Recruit }
+    /// battle speaks it when a hero talks to the neutral (<see cref="DialogueTrigger.Id"/> = the recruitable's class).
+    /// LevelReached (GG-T231) fires once any roster hero is at <see cref="DialogueTrigger.Level"/> or above — on the way back
+    /// to Camp after the battle that did it, or at the next launch. StageStart (GG-T231) fires on launching the stage
+    /// <see cref="DialogueTrigger.Id"/> (a boss's introduction).</summary>
+    public enum DialogueTriggerKind { ThemeStart, StageCleared, Talk, GearWorn, CanBrew, FirstArmor, Recruit, LevelReached, StageStart }
 
     public sealed class DialogueTrigger
     {
@@ -801,6 +807,8 @@ namespace GridGame.Core.Content
         public string Id;
         /// <summary>GearWorn only: the durability percentage (1-99) a piece must fall below.</summary>
         public int Percent;
+        /// <summary>LevelReached only: the hero level (2+) that fires it.</summary>
+        public int Level;
     }
 
     /// <summary>QuestAvailable / QuestActive / QuestDone (GG-T237, §22.11): <see cref="DialogueCondition.Id"/> is a quests.json id.
@@ -886,6 +894,8 @@ namespace GridGame.Core.Content
         public bool Once;
         /// <summary>Backdrop theme id (defaults to the trigger's theme, else the camp's).</summary>
         public string Backdrop;
+        /// <summary>Story beats only (GG-T231): a text crawl, titled <see cref="Title"/>, that scrolls before the conversation.</summary>
+        public string Crawl;
         public List<DialogueSpeaker> Speakers = new List<DialogueSpeaker>();
         /// <summary>First node id; defaults to the first node.</summary>
         public string Start;

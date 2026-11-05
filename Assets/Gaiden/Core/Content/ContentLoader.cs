@@ -178,6 +178,8 @@ namespace GridGame.Core.Content
                     else if (stageThemeOwner.TryGetValue(s, out var owner)) p.Add($"theme {t.Id}: stage '{s}' already belongs to theme '{owner}'");
                     else stageThemeOwner[s] = t.Id;
                 }
+            ValidateCrawl(db, db.Campaign.Prologue, "campaign Prologue", false, p);
+            ValidateCrawl(db, db.Campaign.Ending, "campaign Ending", true, p);
             foreach (var t in db.Traps.Values) NeedBuff(t.ApplyBuff, $"trap {t.Id}");
             foreach (var pk in db.Pickups.Values)
             {
@@ -316,6 +318,18 @@ namespace GridGame.Core.Content
         private static bool IsArmorSlot(EquipmentSlot s) =>
             s == EquipmentSlot.Head || s == EquipmentSlot.Torso || s == EquipmentSlot.Legs || s == EquipmentSlot.Gloves || s == EquipmentSlot.Boots;
 
+        /// <summary>GG-T231: a campaign crawl (Prologue/Ending) is optional, but one that exists needs text, a known
+        /// backdrop theme, and (the Ending) a campaign stage to follow.</summary>
+        private static void ValidateCrawl(ContentDb db, CrawlDef crawl, string w, bool needsStage, List<string> p)
+        {
+            if (crawl == null) return;
+            if (string.IsNullOrWhiteSpace(crawl.Title)) p.Add($"{w}: needs a Title");
+            if (string.IsNullOrWhiteSpace(crawl.Crawl)) p.Add($"{w}: needs Crawl text");
+            if (crawl.Backdrop != null && !db.Campaign.Themes.Exists(t => string.Equals(t.Id, crawl.Backdrop, StringComparison.OrdinalIgnoreCase))) p.Add($"{w}: unknown backdrop theme '{crawl.Backdrop}'");
+            if (needsStage && (crawl.Stage == null || db.ThemeOf(crawl.Stage) == null)) p.Add($"{w}: needs a campaign Stage, has '{crawl.Stage}'");
+            if (!needsStage && crawl.Stage != null) p.Add($"{w}: only the Ending names a Stage");
+        }
+
         public const string NpcFlagPrefix = "npc:";
 
         /// <summary>The Merchant's cheap Empty Bottle (GG-T176): an Alchemy recipe that takes one is a "bottle recipe",
@@ -365,6 +379,18 @@ namespace GridGame.Core.Content
                     if (d.Nodes.Exists(n => n != null && n.Choices.Count > 0)) p.Add($"{w}: a Recruit dialogue can't have choices");
                     if (!d.Nodes.Exists(n => n != null && string.Equals(n.Id, RecruitableDef.JoinNode, StringComparison.OrdinalIgnoreCase))) p.Add($"{w}: a Recruit dialogue needs a '{RecruitableDef.JoinNode}' node");
                     break;
+                case DialogueTriggerKind.LevelReached:
+                    if (trigger.Level < 2) p.Add($"{w}: LevelReached needs a Level of 2 or more, has {trigger.Level}");
+                    break;
+                case DialogueTriggerKind.StageStart:
+                    if (trigger.Id == null || !db.Stages.ContainsKey(trigger.Id)) p.Add($"{w}: unknown StageStart stage '{trigger.Id}'");
+                    break;
+            }
+            if (d.Crawl != null)
+            {
+                if (trigger.Kind == DialogueTriggerKind.Talk || trigger.Kind == DialogueTriggerKind.Recruit) p.Add($"{w}: only a story beat can open with a Crawl");
+                if (string.IsNullOrWhiteSpace(d.Crawl)) p.Add($"{w}: empty Crawl");
+                if (string.IsNullOrWhiteSpace(d.Title)) p.Add($"{w}: a Crawl needs a Title to head it");
             }
             bool talkWithHero = (trigger.Kind == DialogueTriggerKind.Talk || trigger.Kind == DialogueTriggerKind.Recruit) && trigger.Id != null && !trigger.Id.StartsWith(NpcFlagPrefix);
             bool joinsHero = false;

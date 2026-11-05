@@ -109,16 +109,18 @@ namespace GridGame.App
                 string retryId = report.ExpeditionFailed && theme != null ? theme.Stages[0] : stageId;
                 if (c.TryStage(retryId) != null) Ui.Button("Retry", () => StageLauncher.Launch(retryId, true), null, row); // a pruned generated stage can't be retried
             }
-            var cont = Ui.Button("Continue", () => App.Router.ResetTo(new HubScreen()), "btn--primary", row);
+            var cont = Ui.Button("Continue", () => StoryBeats.AfterResults(report.Victory, stageId), "btn--primary", row);
             cont.name = "continue";
-            if (report.Victory && report.NextStageId != null)
+            bool ending = Story.EndingDue(c, App.Save, report.Victory, stageId);
+            if (ending) Ui.Text("The road ahead is quiet, for now. Continue to see how the story closes.", "small gold", list).style.whiteSpace = WhiteSpace.Normal;
+            if (!ending && report.Victory && report.NextStageId != null)
             {
                 Ui.Button("Retreat early", () => Confirm.Show(
                     "Stop the expedition here? You keep everything you've earned so far — you just give up the completion bonus for pushing on.",
                     "Retreat early", () => { Expeditions.Abandon(App.Save); App.Persist(); App.Router.ResetTo(new HubScreen()); }), null, row);
                 Ui.Button("Next battle ›", () => StageLauncher.Launch(report.NextStageId, true), "btn--primary", row).name = "next";
             }
-            else if (report.Victory)
+            else if (!ending && report.Victory)
             {
                 var stages = c.CampaignStages();
                 int idx = stages.FindIndex(s => s.Id == stageId);
