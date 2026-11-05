@@ -52,6 +52,8 @@ namespace GridGame.Meta
             foreach (var e in c.Dialogues.Values.SelectMany(d => d.AllEffects()))
                 if (e != null && (e.Type == DialogueEffectType.JoinHero || e.Type == DialogueEffectType.RecruitHero) && e.Id != null) taken.Add(e.Id);
             foreach (var m in c.Mercenaries) taken.Add(m.Class);
+            // A Camp NPC wears its hero class's face (the Alchemist), so a captive of that class would be the NPC's double.
+            foreach (var npc in CampNpcs.All) taken.Add(npc);
             return c.Classes.Values
                 .Where(d => d.Team == Team.Hero && s.Hero(d.Id) == null && !Permadeath.IsLost(s, d.Id) && !taken.Contains(d.Id))
                 .Select(d => d.Id).OrderBy(id => id, StringComparer.Ordinal).ToList();
