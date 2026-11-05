@@ -274,9 +274,9 @@ namespace GridGame.Meta
         public string UnlockedStage;
         public int NewSlots;
         public string BountyProgress;
-        /// <summary>Loot past an item's stack limit is sold on the spot (inventory policy, US-245).</summary>
         /// <summary>Side quests this victory moved (§22.11, GG-T237), one line each.</summary>
         public List<string> QuestProgress = new List<string>();
+        /// <summary>Loot past an item's stack limit is sold on the spot (inventory policy, US-245).</summary>
         public int AutoSold;
         public bool CampaignComplete;
         // Expedition (§22.5)
@@ -573,12 +573,12 @@ namespace GridGame.Meta
                     if (index + 1 < list.Count) rep.UnlockedStage = list[index + 1].Name;
                 }
                 rep.BountyProgress = Bounties.RecordKills(c, s, r.Kills);
+                rep.QuestProgress = Quests.RecordBattle(c, s, battle);
             }
             else if (rep.Escaped)
             {
                 // Escaping keeps wounds (no defeat reset) and grants nothing.
                 foreach (var u in battle.Units.Where(u => u.IsHero))
-                rep.QuestProgress = Quests.RecordBattle(c, s, battle);
                 {
                     var h = s.Hero(u.Def.Id);
                     if (h != null) h.Hp = u.Alive ? (u.Hp >= u.MaxHp ? 0 : u.Hp) : 1;

@@ -414,6 +414,10 @@ namespace GridGame.Core.Content
                         if (!IsHero(c.Id)) p.Add($"{where}: {c.Type} needs a hero class, has '{c.Id}'"); break;
                     case DialogueConditionType.NpcJoined:
                         if (!IsNpc(c.Id)) p.Add($"{where}: unknown NPC '{c.Id}'"); break;
+                    case DialogueConditionType.QuestAvailable:
+                    case DialogueConditionType.QuestActive:
+                    case DialogueConditionType.QuestDone:
+                        if (db.TryQuest(c.Id) == null) p.Add($"{where}: unknown quest '{c.Id}'"); break;
                 }
             }
             void Effect(DialogueEffect e, string where)
@@ -446,10 +450,8 @@ namespace GridGame.Core.Content
                         if (e.Id != null && !IsHero(e.Id)) p.Add($"{where}: JoinHero needs a hero class, has '{e.Id}'");
                         if (e.Role != null && !HeroRoles.Contains(e.Role)) p.Add($"{where}: JoinHero has unknown Role '{e.Role}'");
                         break;
-                    case DialogueConditionType.QuestAvailable:
-                    case DialogueConditionType.QuestActive:
-                    case DialogueConditionType.QuestDone:
-                        if (db.TryQuest(c.Id) == null) p.Add($"{where}: unknown quest '{c.Id}'"); break;
+                    case DialogueEffectType.StartQuest:
+                        if (db.TryQuest(e.Id) == null) p.Add($"{where}: unknown quest '{e.Id}'"); break;
                 }
             }
             foreach (var c in d.Conditions) Cond(c, w);
@@ -482,8 +484,6 @@ namespace GridGame.Core.Content
                 string nw = $"{w} node {n.Id}";
                 if (n.Speaker == null || !speakers.Contains(n.Speaker)) p.Add($"{nw}: unknown speaker '{n.Speaker}'");
                 if (string.IsNullOrWhiteSpace(n.Text)) p.Add($"{nw}: empty text");
-                    case DialogueEffectType.StartQuest:
-                        if (db.TryQuest(e.Id) == null) p.Add($"{where}: unknown quest '{e.Id}'"); break;
                 if (n.Next != null && !nodes.ContainsKey(n.Next)) p.Add($"{nw}: unknown next node '{n.Next}'");
                 if (n.Next != null && n.Choices.Count > 0) p.Add($"{nw}: has both Next and Choices");
                 foreach (var e in n.Effects) Effect(e, nw);
