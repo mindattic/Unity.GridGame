@@ -215,8 +215,7 @@ namespace GridGame.App.Automation
                     var btn = app.Stage.Query<Button>().ToList().FirstOrDefault(b => b.text != null && b.text.Contains(target) && b.worldBound.width > 0);
                     VisualElement hit = (VisualElement)btn ?? label;
                     if (hit == null) return new { error = $"no visible text '{target}'" };
-                    var c = DesignPoint(hit.worldBound.center);
-                    StartCoroutine(Tap(c.x, c.y, reply));
+                    StartCoroutine(ScrollIntoViewThenTap(hit, reply));
                     return Pending;
                 }
                 case "pick":
@@ -749,6 +748,22 @@ namespace GridGame.App.Automation
             if (!down.Arrived || !up.Arrived)
                 return new { ok = false, error = $"tap at ({x:0},{y:0}) not delivered to the panel (down={down.Arrived}, up={up.Arrived})", x, y };
             return null;
+        }
+
+        /// <summary>clicktext on a row below a ScrollView's fold (Camp's menu outgrew the stage, so Save &amp; Quit sits
+        /// past y=2532): scroll it into view the way a player would, let layout settle, then tap its new centre
+        /// (GG-T260). Elements outside any ScrollView tap straight away.</summary>
+        private IEnumerator ScrollIntoViewThenTap(VisualElement hit, Action<object> reply)
+        {
+            var sv = hit.GetFirstAncestorOfType<ScrollView>();
+            if (sv != null && !sv.contentViewport.worldBound.Contains(hit.worldBound.center))
+            {
+                sv.ScrollTo(hit);
+                yield return null;
+                yield return null;
+            }
+            var c = DesignPoint(hit.worldBound.center);
+            yield return Tap(c.x, c.y, reply);
         }
 
         private IEnumerator Tap(float x, float y, Action<object> reply)
