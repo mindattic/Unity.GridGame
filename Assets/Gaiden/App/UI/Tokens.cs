@@ -90,6 +90,9 @@ namespace GridGame.App
     public static class Space
     {
         public const float S0 = 0, S4 = 4, S8 = 8, S16 = 16, S24 = 24, S32 = 32, S48 = 48, S64 = 64, S96 = 96;
+        /// <summary>Half of the 24-px gap between tap targets (POL-C3): each neighbour's margin, so two add up to S24
+        /// (USS <c>--space-12</c>).</summary>
+        public const float TargetHalfGap = 12;
     }
 
     /// <summary>Named element sizes in design px (POL-C1). Design px already scale uniformly to every resolution

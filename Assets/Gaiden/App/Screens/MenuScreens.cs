@@ -453,7 +453,16 @@ namespace GridGame.App
             party.name = "camp-party";
             party.style.flexDirection = FlexDirection.Row;
             party.style.flexWrap = Wrap.Wrap;
-            party.style.justifyContent = Justify.SpaceBetween;
+            // Two columns with edge = gap = 24 (row padding 12 + card margin 12): even gutters at every width (POL-C8),
+            // and 24 px between the tappable cards (POL-C3).
+            party.style.paddingLeft = party.style.paddingRight = Space.TargetHalfGap;
+            var cards = new List<VisualElement>();
+            party.RegisterCallback<GeometryChangedEvent>(_ =>
+            {
+                // 1 px of slack per card: pixel snapping otherwise rounds two exact halves past the row and wraps the second card.
+                float cw = Mathf.Floor((party.contentRect.width - 4 * Space.TargetHalfGap) / 2f) - 1f;
+                if (cw > 0) foreach (var cd in cards) cd.style.width = cw;
+            });
             foreach (var id in s.Party)
             {
                 var h = s.Hero(id);
@@ -461,22 +470,23 @@ namespace GridGame.App
                 var u = Progression.Preview(c, h);
                 var card = Ui.El("card", party);
                 card.name = "camp-hero-" + id;
-                card.style.width = Length.Percent(49);
-                card.style.marginTop = card.style.marginBottom = Space.S4;
+                cards.Add(card);
+                card.style.width = Length.Percent(45);
+                card.style.marginTop = card.style.marginBottom = card.style.marginLeft = card.style.marginRight = Space.TargetHalfGap;
                 card.style.paddingTop = card.style.paddingBottom = card.style.paddingLeft = card.style.paddingRight = Space.S8;
                 var thumb = Ui.Thumb(id, card, 104);
                 thumb.style.marginRight = Space.S16;
                 var info = Ui.El("col grow", card);
                 info.style.flexShrink = 1; info.style.minWidth = 0;
                 var top = Ui.El("row", info);
-                var name = Ui.Text(c.Class(id).Name, "small grow", top);
+                var name = Ui.Text(c.Class(id).Name, "small", top);
                 Fonts.UseHeavy(name);
-                name.style.overflow = Overflow.Hidden; name.style.textOverflow = TextOverflow.Ellipsis;
-                Ui.RoleBadge(c.Class(id).Role, top, 20).style.marginLeft = Space.S4;
+                Ui.Marquee(name);
+                Ui.RoleBadge(c.Class(id).Role, top, TypeScale.Caption).style.marginLeft = Space.S4;
                 Ui.Text($"Lv {u.Level}", "small gold", top);
                 int hp = h.Hp > 0 ? Math.Min(h.Hp, u.MaxHp) : u.MaxHp;
                 Ui.Gauge(hp / (float)u.MaxHp, info, 300).style.marginTop = Space.S8;
-                Ui.Text($"{hp}/{u.MaxHp}", "tiny dim", info);
+                Ui.Text($"{hp}/{u.MaxHp}", "small dim", info);
                 MercenaryCamp.Tag(s, id, info);
                 card.AddToClassList("card-tap");
                 Ui.Tappable(card, () => App.Router.Push(new StatusScreen(id)), "ui.select");

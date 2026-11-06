@@ -499,13 +499,15 @@ namespace GridGame.App
             int unlocked = Progression.UnlockedSlots(S);
             var barW = Ui.Window("Battle bar", body);
             var bar = Ui.El("row", barW);
+            // Edge = row padding + cell margin = gap between cells = 24 (POL-C8 equal gutters; POL-C3 24 px between targets).
+            bar.style.paddingLeft = bar.style.paddingRight = Space.TargetHalfGap;
             for (int i = 0; i < Progression.MaxBarSlots; i++)
             {
                 int idx = i;
                 var cell = Ui.El("col center", bar);
                 // Every bar slot shares the row with even gutters, however many slots or however wide the stage (POL-C8).
                 cell.style.flexGrow = 1; cell.style.flexBasis = 0; cell.style.height = Size.Cell;
-                cell.style.marginLeft = cell.style.marginRight = Space.S8 / 2f;
+                cell.style.marginLeft = cell.style.marginRight = Space.TargetHalfGap;
                 cell.style.borderTopLeftRadius = cell.style.borderTopRightRadius = cell.style.borderBottomLeftRadius = cell.style.borderBottomRightRadius = 14;
                 cell.style.borderTopWidth = cell.style.borderBottomWidth = cell.style.borderLeftWidth = cell.style.borderRightWidth = i == slot ? 6 : 3;
                 var bc = i == slot ? Palette.Gold : Palette.Text.WithA(0.7f);
@@ -516,7 +518,7 @@ namespace GridGame.App
                 var label = EntryName(entry);
                 var icon = EntryIcon(entry);
                 if (icon != null) { var ic = Ui.El("menu-icon", cell); ic.style.backgroundImage = new StyleBackground(icon); ic.style.marginRight = Space.S0; }
-                var t = Ui.Text(label ?? "Empty", "tiny" + (label == null ? " dim" : ""), cell);
+                var t = Ui.Text(label ?? "Empty", "small" + (label == null ? " dim" : ""), cell);
                 t.style.unityTextAlign = TextAnchor.MiddleCenter; t.style.whiteSpace = WhiteSpace.Normal;
                 cell.AddToClassList("card-tap");
                 InspectCard.Attach(cell, b => InspectEntry(b, entry));
@@ -1378,12 +1380,12 @@ namespace GridGame.App
             grid.style.flexWrap = Wrap.NoWrap;
             var cells = grid.Children().ToList();
             int laidCols = -1;
-            scroll.RegisterCallback<GeometryChangedEvent>(_ =>
+            // Listen on the viewport, not the ScrollView: the vertical scroller appears only after the cells fill it,
+            // shrinking the viewport without resizing the ScrollView, so a ScrollView listener never re-lays the grid.
+            scroll.contentViewport.RegisterCallback<GeometryChangedEvent>(_ =>
             {
-                // The ScrollView's own width minus its vertical scroller is what the rows can really use.
-                var bar = scroll.verticalScroller;
-                float barW = bar != null && bar.resolvedStyle.display == DisplayStyle.Flex ? bar.resolvedStyle.width : 0f;
-                laidCols = EvenGrid(grid, cells, scroll.resolvedStyle.width - barW, 160f, Space.S16, laidCols);
+                // The content viewport (inside the ScrollView's border, padding and scroller) is what the rows really get.
+                laidCols = EvenGrid(grid, cells, scroll.contentViewport.layout.width, 160f, Space.S24, laidCols);
             });
             if (selected != null) Show(detail, C.Class(selected), S.Bestiary.TryGetValue(selected, out var se) ? se : null);
             else Ui.Text("Tap a creature.", "small dim", detail);
@@ -1395,10 +1397,11 @@ namespace GridGame.App
         /// Returns the column count laid out; a call with the same count only resizes.</summary>
         private static int EvenGrid(VisualElement grid, List<VisualElement> cells, float width, float target, float gap, int laidCols)
         {
-            float w = width - grid.resolvedStyle.paddingLeft - grid.resolvedStyle.paddingRight - 2f;
+            float w = width - grid.resolvedStyle.paddingLeft - grid.resolvedStyle.paddingRight;
             if (float.IsNaN(w) || w <= target) return laidCols;
             int cols = Mathf.Max(1, Mathf.FloorToInt((w - gap) / (target + gap)));
-            float size = Mathf.Floor((w - gap * (cols + 1)) / cols);
+            // Exact (unfloored) size: flooring dumped the remainder on the right edge, a ragged gutter (POL-C8).
+            float size = (w - gap * (cols + 1)) / cols - 0.01f;
             if (cols != laidCols)
             {
                 grid.Clear();
@@ -1415,11 +1418,23 @@ namespace GridGame.App
                     }
                     row.Add(cells[i]);
                 }
+                // Pad a short last row with invisible fillers so its cells stay the same size as every other row's.
+                for (int i = cells.Count % cols; i > 0 && i < cols; i++)
+                {
+                    var filler = new VisualElement { name = "grid-filler", pickingMode = PickingMode.Ignore };
+                    filler.style.visibility = Visibility.Hidden;
+                    filler.style.flexBasis = 0; filler.style.flexGrow = 1; filler.style.flexShrink = 1;
+                    filler.style.marginLeft = filler.style.marginRight = gap / 2f;
+                    row.Add(filler);
+                }
             }
             foreach (var t in cells)
             {
-                t.style.width = t.style.height = size;
-                t.style.flexShrink = 0;
+                // Flex shares the row exactly (equal grow, zero basis): a fixed width computed here drifted wider than the row
+                // by the cells' own borders and min sizes, leaving a ragged right edge. Height follows the computed size.
+                t.style.width = StyleKeyword.Auto; t.style.minWidth = 0; t.style.maxWidth = StyleKeyword.None;
+                t.style.flexBasis = 0; t.style.flexGrow = 1; t.style.flexShrink = 1;
+                t.style.height = size;
                 t.style.marginLeft = t.style.marginRight = t.style.marginTop = t.style.marginBottom = gap / 2f;
             }
             return cols;
