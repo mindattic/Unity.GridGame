@@ -751,3 +751,9 @@ Owner: "gaining mana is too generous since I see the whole bar filled almost in 
   - New enemy `chronomancer` charges **Temporal Drag**: party-wide, 4 Arcane plus Slowed, −1 tempo once. It holds Drag while the party is already behind on tempo, and rewinds once at 40% HP.
   - It is placed in Frostmaw Caverns II, wave 2. Casual wins there are 9/12 with it and 8/12 without it on the same seeds, in band. The wave was already long (the knights' tough hide).
   - **Cleansing** a tempo debuff off the last hero carrying it now lifts its tempo effect too (BIBLE §2.11).
+
+## 2026-11-05 — Enemy lifesteal heals a quarter, not half (GG-T282, balance loop GG-T276)
+
+- **Was:** the `lifesteal` enemy passive healed half of every landed hit. That was tuned when enemies struck at 0.9 with their full stat HP.
+- **Why it broke:** GG-T262 raised the strike to 1.2 and cut enemy HP to 45%, so half a hit healed about three times as much of the pool. In casual-bot losses on Veshker Ruins III, the wave-1 undead healed back 75–85% of all the damage dealt to them, and the wave ran a median 76 actions.
+- **Now:** `BattleConfig.EnemyLifestealFraction` = 0.25. On the same seeds (8 casual battles per stage): Veshker Ruins II 4/8 → 6/8, Veshker Ruins III 3/8 → 6/8; POL-G 70.1 → 71.8, G7 69.2 → 84.6.

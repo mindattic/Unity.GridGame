@@ -490,11 +490,12 @@ namespace GridGame.Core.Battle
         private float KitDamageMultiplier(Unit attacker) =>
             attacker.IsHero ? 1f : BattleConfig.EnemyStrikeMultiplier * (skirmishing ? 0.8f : 1f) * (attacker.HpFraction < 0.5f && HasPassive(attacker, "berserk") ? 1.35f : 1f);
 
-        /// <summary>After an enemy's attack lands: lifesteal heals half the damage; an on-hit buff may stick.</summary>
+        /// <summary>After an enemy's attack lands: lifesteal heals a share of the damage (BattleConfig.EnemyLifestealFraction);
+        /// an on-hit buff may stick.</summary>
         private void AfterLandedHit(Unit attacker, Unit target, int dealt)
         {
             if (attacker.IsHero || !attacker.Alive) return;
-            if (dealt > 0 && HasPassive(attacker, "lifesteal")) Heal(attacker, Math.Max(1, dealt / 2), attacker);
+            if (dealt > 0 && HasPassive(attacker, "lifesteal")) Heal(attacker, Math.Max(1, (int)Math.Round(dealt * BattleConfig.EnemyLifestealFraction)), attacker);
             var buff = C.TryBuff(attacker.Def.OnHitBuff);
             if (buff != null && target.Alive && S.Rng.Chance(attacker.Def.OnHitChance)) ApplyBuff(target, buff, buff.Duration);
         }

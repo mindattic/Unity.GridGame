@@ -168,6 +168,11 @@ namespace GridGame.Core.Battle
         /// <summary>Enemy MaxHP at spawn, as a share of the stat formula (GG-T262: waves ran a median 34 player actions
         /// against POL-G6's 6–20).</summary>
         public const float EnemyHpScale = 0.45f;
+        /// <summary>The `lifesteal` enemy passive heals this share of the damage its attack lands (GG-T282). It was a flat
+        /// half when enemies struck at 0.9 with full HP; after GG-T262 (strike 1.2, HP 0.45) half healed about three times
+        /// as much of the pool, and Veshker Ruins' undead out-healed whole parties (casual losses healed 75–85% of the
+        /// damage dealt to them). A quarter keeps the heal near its designed share of the pool.</summary>
+        public const float EnemyLifestealFraction = 0.25f;
         /// <summary>An Ambusher lies in wait for at most this many of its own turns, then comes out (GG-T262: a lone
         /// ambushing naga held Mireholt Fens II's last wave to a median 116 player actions).</summary>
         public const int AmbushPatienceTurns = 3;

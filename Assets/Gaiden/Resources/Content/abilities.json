@@ -928,7 +928,7 @@
  {
   "Id": "lifesteal",
   "Name": "Lifesteal",
-  "Description": "Heals for half the damage its attacks deal.",
+  "Description": "Heals for a quarter of the damage its attacks deal.",
   "Kind": "Passive",
   "Cost": 0,
   "CastTime": 0.0,
