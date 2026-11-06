@@ -763,3 +763,9 @@ Owner: "gaining mana is too generous since I see the whole bar filled almost in 
 - **Was:** a caster charged its spell on every turn no hero stood next to it, with no cooldown. Templars are melee Guardians carrying `charge_smite`; from the board edge they charged Smite every turn and never closed in. In Veshker Ruins I wave 2 the casual bot took up to 154 Smites and dealt the two templars 41 damage in 102 actions.
 - **Now:** enemy charges honour the ability's `CooldownTurns`, counted down at the start of the caster's own turn; `charge_smite` = 2. Same seeds: Veshker Ruins I 2/8 → 4/8, its wave 2 a median 66 → 48 actions, Smites per wave at most 24; POL-G 71.8 → 71.8, G2 71.4 → 78.6, G6 51.8 → 52.4.
 - **Still open:** the casual bot lands only 1–5 pincers on edge-hugging Guardians; that is bot positioning, left to the loop.
+
+## 2026-11-05 — One shared bag for the party's item slots (GG-T285, balance loop GG-T276)
+
+- **Was:** `BattleFactory.Build` copied the whole inventory into every hero's spec, and a slot's stack split only within that hero. Owning 5 X-Potions put a full stack of 5 on every hero's bar, 25 full heals a battle, and the overdraw clamped to 0 afterwards, so it was free. Casual-bot victories ended with 60–75% of the party's HP left (POL-G1 wants 20–60%), on a median 15 potions.
+- **Now:** one shared pool, drawn in party order; 5 owned is 5 charges across the party (`SharedInventoryTests`). A fresh game is unchanged (5 heroes × a stack of 5).
+- **Measurement note:** the balance soak starts every battle from a fresh save, so it still carries 25 potions and its HP-left numbers don't move; a soak that carries a campaign's dwindling bag is the next instrument fix for POL-G1.

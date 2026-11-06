@@ -504,12 +504,15 @@ namespace GridGame.Meta
             foreach (var g in s.LostGuests) if (Permadeath.IsLost(s, g)) setup.ExcludedGuests.Add(g);
             setup.Permadeath = Permadeath.Enabled(s);
             setup.Purse = s.Gold; // a recruitable's PayGold comes out of the banked coins (GG-T132)
+            // One shared pool: every hero's item slots draw from the same owned counts, in party order, so five heroes
+            // can't each carry a full stack of the same five potions (GG-T285: 5 owned X-Potions became 25 heals).
+            var owned = new Dictionary<string, int>(s.Inventory);
             foreach (var id in s.Party)
             {
                 var h = s.Hero(id);
                 if (h == null) continue;
                 var spec = SpecFor(c, h);
-                foreach (var kv in s.Inventory) spec.ItemCounts[kv.Key] = kv.Value;
+                spec.ItemCounts = owned;
                 setup.Party.Add(spec);
             }
             return setup;
