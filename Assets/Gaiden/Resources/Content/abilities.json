@@ -60,7 +60,7 @@
  {
   "Id": "bolt",
   "Name": "Bolt",
-  "Description": "14 Lightning dmg (x1.5 if target Wet) + 30% chance blinded",
+  "Description": "14 Lightning dmg (x1.5 if target [Wet]) + 30% chance [blinded]",
   "Kind": "Spell",
   "Cost": 3,
   "CastTime": 1.5,
@@ -118,7 +118,7 @@
  {
   "Id": "sleep",
   "Name": "Sleep",
-  "Description": "sleep (breaks on damage / move)",
+  "Description": "[Asleep] (breaks on damage / move)",
   "Kind": "Spell",
   "Cost": 1,
   "CastTime": 1.5,
@@ -147,7 +147,7 @@
  {
   "Id": "slow",
   "Name": "Slow",
-  "Description": "slowed - icon speed x0.5",
+  "Description": "[Slowed] - icon speed x0.5",
   "Kind": "Spell",
   "Cost": 2,
   "CastTime": 1.5,
@@ -205,7 +205,7 @@
  {
   "Id": "silence",
   "Name": "Silence",
-  "Description": "silenced - Spell slots blocked; casts refused with \"Silenced!\" popup",
+  "Description": "[Silenced] - Spell slots blocked; casts refused with \"Silenced!\" popup",
   "Kind": "Spell",
   "Cost": 1,
   "CastTime": 1.5,
@@ -466,7 +466,7 @@
  {
   "Id": "teleport",
   "Name": "Teleport",
-  "Description": "Relocate caster; auto-resolves any new pincer",
+  "Description": "Relocate caster; auto-resolves any new [pincer]",
   "Kind": "Skill",
   "Cost": 0,
   "CastTime": 0.0,
@@ -698,7 +698,7 @@
  {
   "Id": "regen",
   "Name": "Regen",
-  "Description": "Grants Regen: heals 4 HP every second for 6 seconds.",
+  "Description": "Grants [Regen]: heals 4 HP every second for 6 seconds.",
   "Kind": "Spell",
   "Cost": 1,
   "CastTime": 0.0,
@@ -784,7 +784,7 @@
  {
   "Id": "charge_rally",
   "Name": "Rally",
-  "Description": "A battle cry: allies within 2 tiles gain Protection.",
+  "Description": "A battle cry: allies within 2 tiles gain [Protection].",
   "Kind": "Spell",
   "Cost": 0,
   "CastTime": 2.0,
@@ -1100,7 +1100,7 @@
  {
   "Id": "shield_bash",
   "Name": "Shield Bash",
-  "Description": "Slam an adjacent foe 2 tiles away. Crashing into another unit hurts both; hitting stone or the edge hurts a lot.",
+  "Description": "Slam an [adjacent] foe 2 tiles away. Crashing into another unit hurts both; hitting stone or the edge hurts a lot.",
   "Kind": "Skill",
   "Cost": 0,
   "CastTime": 0.0,
@@ -1161,7 +1161,7 @@
  {
   "Id": "taunt",
   "Name": "Taunt",
-  "Description": "Roar a challenge: for two turns every enemy that can reach you must come for you, and you take 25% less damage. Keeps your casters safe from staggering blows.",
+  "Description": "Roar a challenge: for two turns every enemy that can reach you must come for you ([Taunting]), and you take 25% less damage. Keeps your casters safe from [staggering] blows.",
   "Kind": "Skill",
   "Cost": 0,
   "CastTime": 0.0,
@@ -1190,7 +1190,7 @@
  {
   "Id": "war_cry",
   "Name": "War Cry",
-  "Description": "A rallying shout: every ally strikes 30% harder for two turns. Pincers, skills and spells alike.",
+  "Description": "A rallying shout: every ally strikes 30% harder for two turns. [Pincers], skills and spells alike.",
   "Kind": "Skill",
   "Cost": 0,
   "CastTime": 0.0,
@@ -1219,7 +1219,7 @@
  {
   "Id": "cleave",
   "Name": "Cleave",
-  "Description": "A heavy swing at an adjacent foe. Scales with STR; recharges in 2 turns.",
+  "Description": "A heavy swing at an [adjacent] foe. Scales with [STR]; recharges in 2 turns.",
   "Kind": "Skill",
   "Cost": 0,
   "CastTime": 0.0,
@@ -2606,7 +2606,7 @@
  {
   "Id": "duelist_riposte",
   "Name": "Riposte",
-  "Description": "A practiced parry-and-counter that punishes a careless foe and knocks its next turn back.",
+  "Description": "A practiced parry-and-counter that punishes a careless foe and knocks its next turn back ([Pushback]).",
   "Kind": "Skill",
   "Cost": 0,
   "CastTime": 0.0,
@@ -2789,7 +2789,7 @@
  {
   "Id": "prizefighter_knockout",
   "Name": "Knockout Punch",
-  "Description": "A finishing punch aimed for the knockout: half the time the foe stays down (asleep) until something hits it.",
+  "Description": "A finishing punch aimed for the knockout: a [good] chance the foe stays down ([asleep]) until something hits it.",
   "Kind": "Skill",
   "Cost": 0,
   "CastTime": 0.0,
@@ -4442,7 +4442,7 @@
  {
   "Id": "duelist_guardstance",
   "Name": "Guard Stance",
-  "Description": "Settle into a textbook guard: the next blow against you is turned aside, leaving the attacker open to a counter-strike.",
+  "Description": "Settle into a textbook guard: the next blow against you is turned aside, leaving the attacker open to a [Counterstrike].",
   "Kind": "Skill",
   "Cost": 0,
   "CastTime": 0.0,
@@ -6288,7 +6288,7 @@
  {
   "Id": "shove",
   "Name": "Shove",
-  "Description": "Plant a shoulder in an adjacent foe and drive it two tiles back - no blade, but walls and bodies still hurt.",
+  "Description": "Plant a shoulder in an [adjacent] foe and drive it two tiles back - no blade, but walls and bodies still hurt.",
   "Kind": "Skill",
   "Cost": 0,
   "CastTime": 0.0,

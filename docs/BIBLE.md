@@ -274,6 +274,8 @@ A story is ✅ only when 1–7 hold; otherwise 🟡/⬜ ([GG-LAW-12](#GG-LAW-12)
 - **Story crawl** — the skippable per-theme intro text shown on first entry into a theme. ([§27](#27-story-crawl-no-dialog))
 - **Summon Circle** — the Camp service where gold recruits a hero class. ([§25.10](#2510-summon-circle))
 - **Bounty** — a posted kill contract: accept one, track kills, claim gold + an item. ([§22.4](#224-bounty-board))
+- **Tap term / `[term]`** (*added 2026-11-06, GG-T300, owner: "anything in brackets is a tap tooltip"*) — content text marks a keyword in square brackets; the player sees it highlighted and underlined (light blue `Palette.Term`, brackets hidden) and a **tap** on it opens a small definition card. Every bracketed term must resolve, case-insensitively, to an `Id`, `Term` or `Aliases` entry of `Resources/Content/glossary.json` (`GlossaryEntry`: `Id`, `Term`, `Aliases[]`, `Text`, optional `LinkKind` Buff/Ability/Stat/Item + `LinkId` for live numbers on the card); `ContentLoader.Validate` (`Glossary.Validate`) fails on an unknown term in any ability, item (incl. relic passive), class or skill-tree text, and requires an entry for every status name. Text without brackets is always valid. The glossary is seeded with every status, the stats, the timeline words (Pushback, Guard, Cast time, Haste, Slow, Stun, Sentient, Pincer, Supporter, Prominence, Tempo, Interrupt), the reach/reaction words ([directly], [adjacent], [surrounded], [Counterstrike], [Reactive], [Passive], [Active], [Dodge]) and the class-card archetype words.
+- **Chance words** (*GG-T300*) — a description that doesn't print a number says how likely with one word, one band each (`Glossary.ChanceBands`, `Glossary.ChanceWord(p)`): **[slight]** ~10% (≤15%) · **[small]** ~20% (16–27%) · **[fair]** ~35% (28–42%) · **[good]** ~50% (43–62%) · **[likely]** ~75% (63%+).
 
 For combat/targeting/VFX sub-vocabulary see [Appendix §18 Glossary](#18-glossary).
 
@@ -1301,6 +1303,8 @@ Source (spell, item, charge, trap, expire chain, Shield) → `ApplyBuff` (refres
 │ Actor panel: portrait · name · Lv · │  selected hero, or tapped enemy
 │ HP/stats (??? until known) ·        │
 │ "Acts in N moves" · buffs           │
+**Tap a [term]** (*added 2026-11-06, GG-T300*): wherever a description renders (the hold cards above, the ability card/confirm card in the actor panel, enemy kit lines and status rows, the Abilities screen, every item detail and weapon passive, gear compare, enchants, talent nodes and trees, the Bestiary, class/party/summon cards) it is a `GlossaryText`: text with bracketed terms becomes a wrapping row of word labels in the same classes, terms highlighted and underlined. A **tap** on a term opens a term card (headword, Buff/Debuff/Stat/Chance/Keyword, the definition, and a linked status's effect and duration) with the InspectCard's anchoring, stage/safe-area clamp, ease-in and `ui.select`; it stays after release and the next press anywhere closes it (re-tapping the same word just closes it); the tap never also acts on the row or card around it. Holding the element still opens its InspectCard (where terms are drawn but inert). Each term's hit area is padded 24 px vertically and 16 px horizontally and pulled back by the same negative margin, so layout is unchanged (POL-C2). Plain labels that receive bracketed content still tint the terms instead of showing brackets. Long GlossaryText paragraphs follow the 60-character measure rule (`Typography.Paragraphs`).
+
 └─────────────────────────────────────┘
 ```
 

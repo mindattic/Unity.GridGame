@@ -53,6 +53,12 @@ namespace GridGame.Core.Content
         public readonly Dictionary<string, QuestDef> Quests = new Dictionary<string, QuestDef>(StringComparer.OrdinalIgnoreCase);
         public QuestDef TryQuest(string id) => id != null && Quests.TryGetValue(id, out var q) ? q : null;
 
+        /// <summary>glossary.json (GG-T300), in file order, and by every Id/Term/Alias (case-insensitive).</summary>
+        public readonly List<GlossaryEntry> GlossaryOrder = new List<GlossaryEntry>();
+        public readonly Dictionary<string, GlossaryEntry> GlossaryIndex = new Dictionary<string, GlossaryEntry>(StringComparer.OrdinalIgnoreCase);
+        /// <summary>The entry a bracketed <c>[term]</c> names, or null.</summary>
+        public GlossaryEntry TryTerm(string term) => term != null && GlossaryIndex.TryGetValue(term.Trim(), out var g) ? g : null;
+
         public ArmorSetDef TryArmorSetOf(string itemId) => itemId != null && SetByItem.TryGetValue(itemId, out var a) ? a : null;
 
         public ClassDef Class(string id) => Get(Classes, id, "class");

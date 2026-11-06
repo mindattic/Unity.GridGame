@@ -17,6 +17,14 @@ namespace GridGame.App
                 float cap = TypeScale.Body * ParagraphChars * 0.5f;
                 if (l.style.maxWidth.value.value != cap) l.style.maxWidth = cap;
             });
+            // A GlossaryText paragraph (GG-T300) is a row of word labels: the same rule, on its whole text.
+            root.Query(className: GlossaryText.UssClass).ForEach(box =>
+            {
+                if (!(box.userData is int chars) || chars <= ParagraphChars) return;
+                box.Query<Label>().ForEach(l => { if (l.resolvedStyle.fontSize < TypeScale.Body - 0.5f) l.style.fontSize = TypeScale.Body; });
+                float cap = TypeScale.Body * ParagraphChars * 0.5f;
+                if (box.style.maxWidth.value.value != cap) box.style.maxWidth = cap;
+            });
         }
 
         /// <summary>Applies <see cref="Paragraphs"/> now and whenever a panel refills (detail windows rebuild on selection).</summary>

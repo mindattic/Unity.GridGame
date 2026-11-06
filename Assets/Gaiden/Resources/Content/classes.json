@@ -9,7 +9,7 @@
     ],
     "Description": "A battlefield support that sustains allies and manipulates tempo.",
     "Lore": "Knows every reagent, every breath, and when to spend both.",
-    "Card": "Backline [healer][buffer]. Restores tempo with [cleanse] and [aid].",
+    "Card": "Backline [healer] [buffer]. Restores tempo with [cleanse] and [aid].",
     "Portrait": "Alchemist",
     "Thumbnail": {
       "Zoom": 1.4906,
@@ -143,7 +143,7 @@
     ],
     "Description": "A swift combatant who wins through speed, angles, and precision strikes.",
     "Lore": "Years of quiet training forged a will that moves faster than thought.",
-    "Card": "Mobile [striker][flanker]. Leans on [crit] and [backstab] windows.",
+    "Card": "Mobile [striker] [flanker]. Leans on [crit] and [backstab] windows.",
     "Portrait": "Assassain",
     "Thumbnail": {
       "Zoom": 1.0017,
@@ -550,7 +550,7 @@
     ],
     "Description": "A feral threat that overwhelms foes with instinct and power.",
     "Lore": "Born to the deep places, it runs by instinct and strikes without doubt.",
-    "Card": "Ferocious [pouncer][mauler]. Disrupts with [roar] and [knockdown].",
+    "Card": "Ferocious [pouncer] [mauler]. Disrupts with [roar] and [knockdown].",
     "Portrait": "Bat00",
     "Thumbnail": {
       "Zoom": 0.8696,
@@ -661,7 +661,7 @@
     ],
     "Description": "A feral threat that overwhelms foes with instinct and power.",
     "Lore": "Born to the deep places, it runs by instinct and strikes without doubt.",
-    "Card": "Ferocious [pouncer][mauler]. Disrupts with [roar] and [knockdown].",
+    "Card": "Ferocious [pouncer] [mauler]. Disrupts with [roar] and [knockdown].",
     "Portrait": "Bat01",
     "Thumbnail": {
       "Zoom": 0.8564,
@@ -773,7 +773,7 @@
     ],
     "Description": "A feral threat that overwhelms foes with instinct and power.",
     "Lore": "Born to the deep places, it runs by instinct and strikes without doubt.",
-    "Card": "Ferocious [pouncer][mauler]. Disrupts with [roar] and [knockdown].",
+    "Card": "Ferocious [pouncer] [mauler]. Disrupts with [roar] and [knockdown].",
     "Portrait": "Bat02",
     "Thumbnail": {
       "Zoom": 0.8527,
@@ -884,7 +884,7 @@
     ],
     "Description": "A swift combatant who wins through speed, angles, and precision strikes.",
     "Lore": "Years of quiet training forged a will that moves faster than thought.",
-    "Card": "Mobile [striker][flanker]. Leans on [crit] and [backstab] windows.",
+    "Card": "Mobile [striker] [flanker]. Leans on [crit] and [backstab] windows.",
     "Portrait": "BlackNinja",
     "Thumbnail": {
       "Zoom": 2.4262,
@@ -1020,7 +1020,7 @@
     ],
     "Description": "A ranged spellcaster that shapes the fight with arcane control and damage.",
     "Lore": "Disciplines of ink and flame taught that power begins in focus.",
-    "Card": "Arcane [controller][debuffer]. Shapes fights with [aoe][curse].",
+    "Card": "Arcane [controller] [debuffer]. Shapes fights with [aoe] [curse].",
     "Portrait": "BlackWitch",
     "Thumbnail": {
       "Zoom": 2.0711,
@@ -1294,7 +1294,7 @@
     ],
     "Description": "A swift combatant who wins through speed, angles, and precision strikes.",
     "Lore": "Years of quiet training forged a will that moves faster than thought.",
-    "Card": "Mobile [striker][flanker]. Leans on [crit] and [backstab] windows.",
+    "Card": "Mobile [striker] [flanker]. Leans on [crit] and [backstab] windows.",
     "Portrait": "BlueNinja",
     "Thumbnail": {
       "Zoom": 1.923,
@@ -1679,7 +1679,7 @@
     ],
     "Description": "A stalwart defender that anchors the line and absorbs pressure.",
     "Lore": "Built on vows and iron patience, they stand where others fall back.",
-    "Card": "Frontline [guardian][bruiser]. Absorbs pressure and [taunts].",
+    "Card": "Frontline [guardian] [bruiser]. Absorbs pressure and [taunts].",
     "Portrait": "CeramicKnight00",
     "Thumbnail": {
       "Zoom": 1.2572,
@@ -1798,7 +1798,7 @@
     ],
     "Description": "A stalwart defender that anchors the line and absorbs pressure.",
     "Lore": "Built on vows and iron patience, they stand where others fall back.",
-    "Card": "Frontline [guardian][bruiser]. Absorbs pressure and [taunts].",
+    "Card": "Frontline [guardian] [bruiser]. Absorbs pressure and [taunts].",
     "Portrait": "CeramicKnight01",
     "Thumbnail": {
       "Zoom": 1.2868,
@@ -1917,7 +1917,7 @@
     ],
     "Description": "A stalwart defender that anchors the line and absorbs pressure.",
     "Lore": "Built on vows and iron patience, they stand where others fall back.",
-    "Card": "Frontline [guardian][bruiser]. Absorbs pressure and [taunts].",
+    "Card": "Frontline [guardian] [bruiser]. Absorbs pressure and [taunts].",
     "Portrait": "CeramicKnight02",
     "Thumbnail": {
       "Zoom": 1.7373,
@@ -2036,7 +2036,7 @@
     ],
     "Description": "A stalwart defender that anchors the line and absorbs pressure.",
     "Lore": "Built on vows and iron patience, they stand where others fall back.",
-    "Card": "Frontline [guardian][bruiser]. Absorbs pressure and [taunts].",
+    "Card": "Frontline [guardian] [bruiser]. Absorbs pressure and [taunts].",
     "Portrait": "CeramicKnight03",
     "Thumbnail": {
       "Zoom": 1.2559,
@@ -2155,7 +2155,7 @@
     ],
     "Description": "A stalwart defender that anchors the line and absorbs pressure.",
     "Lore": "Built on vows and iron patience, they stand where others fall back.",
-    "Card": "Frontline [guardian][bruiser]. Absorbs pressure and [taunts].",
+    "Card": "Frontline [guardian] [bruiser]. Absorbs pressure and [taunts].",
     "Portrait": "CeramicKnight04",
     "Thumbnail": {
       "Zoom": 1.2623,
@@ -2274,7 +2274,7 @@
     ],
     "Description": "A stalwart defender that anchors the line and absorbs pressure.",
     "Lore": "Built on vows and iron patience, they stand where others fall back.",
-    "Card": "Frontline [guardian][bruiser]. Absorbs pressure and [taunts].",
+    "Card": "Frontline [guardian] [bruiser]. Absorbs pressure and [taunts].",
     "Portrait": "CeramicKnight05",
     "Thumbnail": {
       "Zoom": 1.2718,
@@ -2393,7 +2393,7 @@
     ],
     "Description": "A stalwart defender that anchors the line and absorbs pressure.",
     "Lore": "Built on vows and iron patience, they stand where others fall back.",
-    "Card": "Frontline [guardian][bruiser]. Absorbs pressure and [taunts].",
+    "Card": "Frontline [guardian] [bruiser]. Absorbs pressure and [taunts].",
     "Portrait": "CeramicKnight06",
     "Thumbnail": {
       "Zoom": 1.2302,
@@ -2510,7 +2510,7 @@
     ],
     "Description": "A swift combatant who wins through speed, angles, and precision strikes.",
     "Lore": "Years of quiet training forged a will that moves faster than thought.",
-    "Card": "Mobile [striker][flanker]. Leans on [crit] and [backstab] windows.",
+    "Card": "Mobile [striker] [flanker]. Leans on [crit] and [backstab] windows.",
     "Portrait": "ChromaNinja",
     "Thumbnail": {
       "Zoom": 1.0009,
@@ -2646,7 +2646,7 @@
     ],
     "Description": "A battlefield support that sustains allies and manipulates tempo.",
     "Lore": "Knows every reagent, every breath, and when to spend both.",
-    "Card": "Backline [healer][buffer]. Restores tempo with [cleanse] and [aid].",
+    "Card": "Backline [healer] [buffer]. Restores tempo with [cleanse] and [aid].",
     "Portrait": "Cleric",
     "Thumbnail": {
       "Zoom": 1.3933,
@@ -2780,7 +2780,7 @@
     ],
     "Description": "A battlefield support that sustains allies and manipulates tempo.",
     "Lore": "Knows every reagent, every breath, and when to spend both.",
-    "Card": "Backline [healer][buffer]. Restores tempo with [cleanse] and [aid].",
+    "Card": "Backline [healer] [buffer]. Restores tempo with [cleanse] and [aid].",
     "Portrait": "Courier",
     "Thumbnail": {
       "Zoom": 1.0053,
@@ -2915,7 +2915,7 @@
     ],
     "Description": "An unnatural entity that endures through grim resilience and dread.",
     "Lore": "Life ended. Purpose remained. The rest is hunger and memory.",
-    "Card": "Grim [attrition][drain]. Pressures with [fear] and [rot].",
+    "Card": "Grim [attrition] [drain]. Pressures with [fear] and [rot].",
     "Portrait": "CyberZombie00",
     "Thumbnail": {
       "Zoom": 0.9037,
@@ -3031,7 +3031,7 @@
     ],
     "Description": "An unnatural entity that endures through grim resilience and dread.",
     "Lore": "Life ended. Purpose remained. The rest is hunger and memory.",
-    "Card": "Grim [attrition][drain]. Pressures with [fear] and [rot].",
+    "Card": "Grim [attrition] [drain]. Pressures with [fear] and [rot].",
     "Portrait": "CyberZombie01",
     "Thumbnail": {
       "Zoom": 0.873,
@@ -3147,7 +3147,7 @@
     ],
     "Description": "An unnatural entity that endures through grim resilience and dread.",
     "Lore": "Life ended. Purpose remained. The rest is hunger and memory.",
-    "Card": "Grim [attrition][drain]. Pressures with [fear] and [rot].",
+    "Card": "Grim [attrition] [drain]. Pressures with [fear] and [rot].",
     "Portrait": "CyberZombie02",
     "Thumbnail": {
       "Zoom": 0.8828,
@@ -3263,7 +3263,7 @@
     ],
     "Description": "An unnatural entity that endures through grim resilience and dread.",
     "Lore": "Life ended. Purpose remained. The rest is hunger and memory.",
-    "Card": "Grim [attrition][drain]. Pressures with [fear] and [rot].",
+    "Card": "Grim [attrition] [drain]. Pressures with [fear] and [rot].",
     "Portrait": "CyberZombie03",
     "Thumbnail": {
       "Zoom": 0.7853,
@@ -3379,7 +3379,7 @@
     ],
     "Description": "An unnatural entity that endures through grim resilience and dread.",
     "Lore": "Life ended. Purpose remained. The rest is hunger and memory.",
-    "Card": "Grim [attrition][drain]. Pressures with [fear] and [rot].",
+    "Card": "Grim [attrition] [drain]. Pressures with [fear] and [rot].",
     "Portrait": "CyberZombie04",
     "Thumbnail": {
       "Zoom": 0.8616,
@@ -4177,7 +4177,7 @@
     ],
     "Description": "A stalwart defender that anchors the line and absorbs pressure.",
     "Lore": "Built on vows and iron patience, they stand where others fall back.",
-    "Card": "Frontline [guardian][bruiser]. Absorbs pressure and [taunts].",
+    "Card": "Frontline [guardian] [bruiser]. Absorbs pressure and [taunts].",
     "Portrait": "DarkTemplar",
     "Thumbnail": {
       "Zoom": 2.152,
@@ -4315,7 +4315,7 @@
     ],
     "Description": "A stalwart defender that anchors the line and absorbs pressure.",
     "Lore": "Built on vows and iron patience, they stand where others fall back.",
-    "Card": "Frontline [guardian][bruiser]. Absorbs pressure and [taunts].",
+    "Card": "Frontline [guardian] [bruiser]. Absorbs pressure and [taunts].",
     "Portrait": "Defender",
     "Thumbnail": {
       "Zoom": 1.7094,
@@ -4565,7 +4565,7 @@
     ],
     "Description": "A battlefield support that sustains allies and manipulates tempo.",
     "Lore": "Knows every reagent, every breath, and when to spend both.",
-    "Card": "Backline [healer][buffer]. Restores tempo with [cleanse] and [aid].",
+    "Card": "Backline [healer] [buffer]. Restores tempo with [cleanse] and [aid].",
     "Portrait": "Dervish",
     "Thumbnail": {
       "Zoom": 1.7127,
@@ -4700,7 +4700,7 @@
     ],
     "Description": "A battlefield support that sustains allies and manipulates tempo.",
     "Lore": "Knows every reagent, every breath, and when to spend both.",
-    "Card": "Backline [healer][buffer]. Restores tempo with [cleanse] and [aid].",
+    "Card": "Backline [healer] [buffer]. Restores tempo with [cleanse] and [aid].",
     "Portrait": "Doctor",
     "Thumbnail": {
       "Zoom": 2.3786,
@@ -4834,7 +4834,7 @@
     ],
     "Description": "A battlefield support that sustains allies and manipulates tempo.",
     "Lore": "Knows every reagent, every breath, and when to spend both.",
-    "Card": "Backline [healer][buffer]. Restores tempo with [cleanse] and [aid].",
+    "Card": "Backline [healer] [buffer]. Restores tempo with [cleanse] and [aid].",
     "Portrait": "Drifter",
     "Thumbnail": {
       "Zoom": 2.2414,
@@ -4973,7 +4973,7 @@
     ],
     "Description": "A close-quarters specialist that thrives in direct engagements.",
     "Lore": "Every scar is a lesson. Every lesson becomes an opening.",
-    "Card": "Close-range [brawler][cleaver]. Wins trades with [stagger].",
+    "Card": "Close-range [brawler] [cleaver]. Wins trades with [stagger].",
     "Portrait": "Duelist",
     "Thumbnail": {
       "Zoom": 2.0434,
@@ -5108,7 +5108,7 @@
     ],
     "Description": "A gadgeteer who leverages devices, traps, and tactical tools.",
     "Lore": "Blueprints and boldness turned problems into levers and switches.",
-    "Card": "Tactical [engineer][controller]. Deploys [traps][turrets][gadgets].",
+    "Card": "Tactical [engineer] [controller]. Deploys [traps] [turrets] [gadgets].",
     "Portrait": "Engineer",
     "Thumbnail": {
       "Zoom": 2.3905,
@@ -5243,7 +5243,7 @@
     ],
     "Description": "A close-quarters specialist that thrives in direct engagements.",
     "Lore": "Every scar is a lesson. Every lesson becomes an opening.",
-    "Card": "Close-range [brawler][cleaver]. Wins trades with [stagger].",
+    "Card": "Close-range [brawler] [cleaver]. Wins trades with [stagger].",
     "Portrait": "Fencer",
     "Thumbnail": {
       "Zoom": 1.2737,
@@ -5378,7 +5378,7 @@
     ],
     "Description": "A close-quarters specialist that thrives in direct engagements.",
     "Lore": "Every scar is a lesson. Every lesson becomes an opening.",
-    "Card": "Close-range [brawler][cleaver]. Wins trades with [stagger].",
+    "Card": "Close-range [brawler] [cleaver]. Wins trades with [stagger].",
     "Portrait": "Fighter",
     "Thumbnail": {
       "Zoom": 2.3787,
@@ -5514,7 +5514,7 @@
     ],
     "Description": "A feral threat that overwhelms foes with instinct and power.",
     "Lore": "Born to the deep places, it runs by instinct and strikes without doubt.",
-    "Card": "Ferocious [pouncer][mauler]. Disrupts with [roar] and [knockdown].",
+    "Card": "Ferocious [pouncer] [mauler]. Disrupts with [roar] and [knockdown].",
     "Portrait": "FlyingMonkey",
     "Thumbnail": {
       "Zoom": 0.9623,
@@ -5625,7 +5625,7 @@
     ],
     "Description": "A feral threat that overwhelms foes with instinct and power.",
     "Lore": "Born to the deep places, it runs by instinct and strikes without doubt.",
-    "Card": "Ferocious [pouncer][mauler]. Disrupts with [roar] and [knockdown].",
+    "Card": "Ferocious [pouncer] [mauler]. Disrupts with [roar] and [knockdown].",
     "Portrait": "Frog00",
     "Thumbnail": {
       "Zoom": 0.9615,
@@ -5736,7 +5736,7 @@
     ],
     "Description": "A feral threat that overwhelms foes with instinct and power.",
     "Lore": "Born to the deep places, it runs by instinct and strikes without doubt.",
-    "Card": "Ferocious [pouncer][mauler]. Disrupts with [roar] and [knockdown].",
+    "Card": "Ferocious [pouncer] [mauler]. Disrupts with [roar] and [knockdown].",
     "Portrait": "Frog01",
     "Thumbnail": {
       "Zoom": 0.9615,
@@ -5847,7 +5847,7 @@
     ],
     "Description": "A feral threat that overwhelms foes with instinct and power.",
     "Lore": "Born to the deep places, it runs by instinct and strikes without doubt.",
-    "Card": "Ferocious [pouncer][mauler]. Disrupts with [roar] and [knockdown].",
+    "Card": "Ferocious [pouncer] [mauler]. Disrupts with [roar] and [knockdown].",
     "Portrait": "Frog02",
     "Thumbnail": {
       "Zoom": 0.9615,
@@ -5958,7 +5958,7 @@
     ],
     "Description": "A feral threat that overwhelms foes with instinct and power.",
     "Lore": "Born to the deep places, it runs by instinct and strikes without doubt.",
-    "Card": "Ferocious [pouncer][mauler]. Disrupts with [roar] and [knockdown].",
+    "Card": "Ferocious [pouncer] [mauler]. Disrupts with [roar] and [knockdown].",
     "Portrait": "Frog03",
     "Thumbnail": {
       "Zoom": 0.9615,
@@ -6852,7 +6852,7 @@
     ],
     "Description": "An unnatural entity that endures through grim resilience and dread.",
     "Lore": "Life ended. Purpose remained. The rest is hunger and memory.",
-    "Card": "Grim [attrition][drain]. Pressures with [fear] and [rot].",
+    "Card": "Grim [attrition] [drain]. Pressures with [fear] and [rot].",
     "Portrait": "Ghost",
     "Thumbnail": {
       "Zoom": 0.4872,
@@ -7072,7 +7072,7 @@
     ],
     "Description": "A swift combatant who wins through speed, angles, and precision strikes.",
     "Lore": "Years of quiet training forged a will that moves faster than thought.",
-    "Card": "Mobile [striker][flanker]. Leans on [crit] and [backstab] windows.",
+    "Card": "Mobile [striker] [flanker]. Leans on [crit] and [backstab] windows.",
     "Portrait": "GreenNinja",
     "Thumbnail": {
       "Zoom": 1.4396,
@@ -7909,7 +7909,7 @@
     ],
     "Description": "A stalwart defender that anchors the line and absorbs pressure.",
     "Lore": "Built on vows and iron patience, they stand where others fall back.",
-    "Card": "Frontline [guardian][bruiser]. Absorbs pressure and [taunts].",
+    "Card": "Frontline [guardian] [bruiser]. Absorbs pressure and [taunts].",
     "Portrait": "JadeKnight",
     "Thumbnail": {
       "Zoom": 1.1125,
@@ -8046,7 +8046,7 @@
     ],
     "Description": "A stalwart defender that anchors the line and absorbs pressure.",
     "Lore": "Built on vows and iron patience, they stand where others fall back.",
-    "Card": "Frontline [guardian][bruiser]. Absorbs pressure and [taunts].",
+    "Card": "Frontline [guardian] [bruiser]. Absorbs pressure and [taunts].",
     "Portrait": "Knight",
     "Thumbnail": {
       "Zoom": 2.0842,
@@ -8184,7 +8184,7 @@
     ],
     "Description": "A close-quarters specialist that thrives in direct engagements.",
     "Lore": "Every scar is a lesson. Every lesson becomes an opening.",
-    "Card": "Close-range [brawler][cleaver]. Wins trades with [stagger].",
+    "Card": "Close-range [brawler] [cleaver]. Wins trades with [stagger].",
     "Portrait": "Lancer",
     "Thumbnail": {
       "Zoom": 2.6062,
@@ -8656,7 +8656,7 @@
     ],
     "Description": "A gadgeteer who leverages devices, traps, and tactical tools.",
     "Lore": "Blueprints and boldness turned problems into levers and switches.",
-    "Card": "Tactical [engineer][controller]. Deploys [traps][turrets][gadgets].",
+    "Card": "Tactical [engineer] [controller]. Deploys [traps] [turrets] [gadgets].",
     "Portrait": "Machinist",
     "Thumbnail": {
       "Zoom": 1.0533,
@@ -8791,7 +8791,7 @@
     ],
     "Description": "An unnatural entity that endures through grim resilience and dread.",
     "Lore": "Life ended. Purpose remained. The rest is hunger and memory.",
-    "Card": "Grim [attrition][drain]. Pressures with [fear] and [rot].",
+    "Card": "Grim [attrition] [drain]. Pressures with [fear] and [rot].",
     "Portrait": "Mannequin",
     "Thumbnail": {
       "Zoom": 2.3786,
@@ -9374,7 +9374,7 @@
     ],
     "Description": "A gadgeteer who leverages devices, traps, and tactical tools.",
     "Lore": "Blueprints and boldness turned problems into levers and switches.",
-    "Card": "Tactical [engineer][controller]. Deploys [traps][turrets][gadgets].",
+    "Card": "Tactical [engineer] [controller]. Deploys [traps] [turrets] [gadgets].",
     "Portrait": "MechaArmor00",
     "Thumbnail": {
       "Zoom": 2.4424,
@@ -9487,7 +9487,7 @@
     ],
     "Description": "A gadgeteer who leverages devices, traps, and tactical tools.",
     "Lore": "Blueprints and boldness turned problems into levers and switches.",
-    "Card": "Tactical [engineer][controller]. Deploys [traps][turrets][gadgets].",
+    "Card": "Tactical [engineer] [controller]. Deploys [traps] [turrets] [gadgets].",
     "Portrait": "MechaArmor01",
     "Thumbnail": {
       "Zoom": 2.4363,
@@ -9600,7 +9600,7 @@
     ],
     "Description": "A gadgeteer who leverages devices, traps, and tactical tools.",
     "Lore": "Blueprints and boldness turned problems into levers and switches.",
-    "Card": "Tactical [engineer][controller]. Deploys [traps][turrets][gadgets].",
+    "Card": "Tactical [engineer] [controller]. Deploys [traps] [turrets] [gadgets].",
     "Portrait": "MechaArmor02",
     "Thumbnail": {
       "Zoom": 2.4363,
@@ -9849,7 +9849,7 @@
     ],
     "Description": "A feral threat that overwhelms foes with instinct and power.",
     "Lore": "Born to the deep places, it runs by instinct and strikes without doubt.",
-    "Card": "Ferocious [pouncer][mauler]. Disrupts with [roar] and [knockdown].",
+    "Card": "Ferocious [pouncer] [mauler]. Disrupts with [roar] and [knockdown].",
     "Portrait": "MountainTroll",
     "Thumbnail": {
       "Zoom": 2.3591,
@@ -9961,7 +9961,7 @@
     ],
     "Description": "A stalwart defender that anchors the line and absorbs pressure.",
     "Lore": "Built on vows and iron patience, they stand where others fall back.",
-    "Card": "Frontline [guardian][bruiser]. Absorbs pressure and [taunts].",
+    "Card": "Frontline [guardian] [bruiser]. Absorbs pressure and [taunts].",
     "Portrait": "Myrmidon",
     "Thumbnail": {
       "Zoom": 1.8704,
@@ -10101,7 +10101,7 @@
     ],
     "Description": "A feral threat that overwhelms foes with instinct and power.",
     "Lore": "Born to the deep places, it runs by instinct and strikes without doubt.",
-    "Card": "Ferocious [pouncer][mauler]. Disrupts with [roar] and [knockdown].",
+    "Card": "Ferocious [pouncer] [mauler]. Disrupts with [roar] and [knockdown].",
     "Portrait": "Naga00",
     "Thumbnail": {
       "Zoom": 0.9616,
@@ -10349,7 +10349,7 @@
     ],
     "Description": "A close-quarters specialist that thrives in direct engagements.",
     "Lore": "Every scar is a lesson. Every lesson becomes an opening.",
-    "Card": "Close-range [brawler][cleaver]. Wins trades with [stagger].",
+    "Card": "Close-range [brawler] [cleaver]. Wins trades with [stagger].",
     "Portrait": "Odachi",
     "Thumbnail": {
       "Zoom": 2.3787,
@@ -10821,7 +10821,7 @@
     ],
     "Description": "A gadgeteer who leverages devices, traps, and tactical tools.",
     "Lore": "Blueprints and boldness turned problems into levers and switches.",
-    "Card": "Tactical [engineer][controller]. Deploys [traps][turrets][gadgets].",
+    "Card": "Tactical [engineer] [controller]. Deploys [traps] [turrets] [gadgets].",
     "Portrait": "Operative",
     "Thumbnail": {
       "Zoom": 1.0006,
@@ -10960,7 +10960,7 @@
     ],
     "Description": "A stalwart defender that anchors the line and absorbs pressure.",
     "Lore": "Built on vows and iron patience, they stand where others fall back.",
-    "Card": "Frontline [guardian][bruiser]. Absorbs pressure and [taunts].",
+    "Card": "Frontline [guardian] [bruiser]. Absorbs pressure and [taunts].",
     "Portrait": "Paladin",
     "Thumbnail": {
       "Zoom": 1.711,
@@ -11097,7 +11097,7 @@
     ],
     "Description": "A feral threat that overwhelms foes with instinct and power.",
     "Lore": "Born to the deep places, it runs by instinct and strikes without doubt.",
-    "Card": "Ferocious [pouncer][mauler]. Disrupts with [roar] and [knockdown].",
+    "Card": "Ferocious [pouncer] [mauler]. Disrupts with [roar] and [knockdown].",
     "Portrait": "PandaGirl",
     "Thumbnail": {
       "Zoom": 2.3106,
@@ -11344,7 +11344,7 @@
     ],
     "Description": "A close-quarters specialist that thrives in direct engagements.",
     "Lore": "Every scar is a lesson. Every lesson becomes an opening.",
-    "Card": "Close-range [brawler][cleaver]. Wins trades with [stagger].",
+    "Card": "Close-range [brawler] [cleaver]. Wins trades with [stagger].",
     "Portrait": "PrizeFighter",
     "Thumbnail": {
       "Zoom": 1.0823,
@@ -11479,7 +11479,7 @@
     ],
     "Description": "A close-quarters specialist that thrives in direct engagements.",
     "Lore": "Every scar is a lesson. Every lesson becomes an opening.",
-    "Card": "Close-range [brawler][cleaver]. Wins trades with [stagger].",
+    "Card": "Close-range [brawler] [cleaver]. Wins trades with [stagger].",
     "Portrait": "Pugilist",
     "Thumbnail": {
       "Zoom": 1.0037,
@@ -11615,7 +11615,7 @@
     ],
     "Description": "A gadgeteer who leverages devices, traps, and tactical tools.",
     "Lore": "Blueprints and boldness turned problems into levers and switches.",
-    "Card": "Tactical [engineer][controller]. Deploys [traps][turrets][gadgets].",
+    "Card": "Tactical [engineer] [controller]. Deploys [traps] [turrets] [gadgets].",
     "Portrait": "PurplePrototype00",
     "Thumbnail": {
       "Zoom": 2.1992,
@@ -11726,7 +11726,7 @@
     ],
     "Description": "A gadgeteer who leverages devices, traps, and tactical tools.",
     "Lore": "Blueprints and boldness turned problems into levers and switches.",
-    "Card": "Tactical [engineer][controller]. Deploys [traps][turrets][gadgets].",
+    "Card": "Tactical [engineer] [controller]. Deploys [traps] [turrets] [gadgets].",
     "Portrait": "PurplePrototype01",
     "Thumbnail": {
       "Zoom": 1.9494,
@@ -11837,7 +11837,7 @@
     ],
     "Description": "A gadgeteer who leverages devices, traps, and tactical tools.",
     "Lore": "Blueprints and boldness turned problems into levers and switches.",
-    "Card": "Tactical [engineer][controller]. Deploys [traps][turrets][gadgets].",
+    "Card": "Tactical [engineer] [controller]. Deploys [traps] [turrets] [gadgets].",
     "Portrait": "PurplePrototype02",
     "Thumbnail": {
       "Zoom": 1.7456,
@@ -11948,7 +11948,7 @@
     ],
     "Description": "A gadgeteer who leverages devices, traps, and tactical tools.",
     "Lore": "Blueprints and boldness turned problems into levers and switches.",
-    "Card": "Tactical [engineer][controller]. Deploys [traps][turrets][gadgets].",
+    "Card": "Tactical [engineer] [controller]. Deploys [traps] [turrets] [gadgets].",
     "Portrait": "PurplePrototype03",
     "Thumbnail": {
       "Zoom": 2.1557,
@@ -12059,7 +12059,7 @@
     ],
     "Description": "A gadgeteer who leverages devices, traps, and tactical tools.",
     "Lore": "Blueprints and boldness turned problems into levers and switches.",
-    "Card": "Tactical [engineer][controller]. Deploys [traps][turrets][gadgets].",
+    "Card": "Tactical [engineer] [controller]. Deploys [traps] [turrets] [gadgets].",
     "Portrait": "PurplePrototype04",
     "Thumbnail": {
       "Zoom": 2.0826,
@@ -12169,7 +12169,7 @@
     ],
     "Description": "A close-quarters specialist that thrives in direct engagements.",
     "Lore": "Every scar is a lesson. Every lesson becomes an opening.",
-    "Card": "Close-range [brawler][cleaver]. Wins trades with [stagger].",
+    "Card": "Close-range [brawler] [cleaver]. Wins trades with [stagger].",
     "Portrait": "Raider",
     "Thumbnail": {
       "Zoom": 1.5353,
@@ -12417,7 +12417,7 @@
     ],
     "Description": "A ranged spellcaster that shapes the fight with arcane control and damage.",
     "Lore": "Disciplines of ink and flame taught that power begins in focus.",
-    "Card": "Arcane [controller][debuffer]. Shapes fights with [aoe][curse].",
+    "Card": "Arcane [controller] [debuffer]. Shapes fights with [aoe] [curse].",
     "Portrait": "RedMage",
     "Thumbnail": {
       "Zoom": 1.1683,
@@ -12556,7 +12556,7 @@
     ],
     "Description": "A swift combatant who wins through speed, angles, and precision strikes.",
     "Lore": "Years of quiet training forged a will that moves faster than thought.",
-    "Card": "Mobile [striker][flanker]. Leans on [crit] and [backstab] windows.",
+    "Card": "Mobile [striker] [flanker]. Leans on [crit] and [backstab] windows.",
     "Portrait": "RedNinja",
     "Thumbnail": {
       "Zoom": 1.9173,
@@ -12828,7 +12828,7 @@
     ],
     "Description": "A ranged spellcaster that shapes the fight with arcane control and damage.",
     "Lore": "Disciplines of ink and flame taught that power begins in focus.",
-    "Card": "Arcane [controller][debuffer]. Shapes fights with [aoe][curse].",
+    "Card": "Arcane [controller] [debuffer]. Shapes fights with [aoe] [curse].",
     "Portrait": "Ritualist",
     "Thumbnail": {
       "Zoom": 2.4363,
@@ -12967,7 +12967,7 @@
     ],
     "Description": "A close-quarters specialist that thrives in direct engagements.",
     "Lore": "Every scar is a lesson. Every lesson becomes an opening.",
-    "Card": "Close-range [brawler][cleaver]. Wins trades with [stagger].",
+    "Card": "Close-range [brawler] [cleaver]. Wins trades with [stagger].",
     "Portrait": "Ronin",
     "Thumbnail": {
       "Zoom": 1.5356,
@@ -13104,7 +13104,7 @@
     ],
     "Description": "A ranged spellcaster that shapes the fight with arcane control and damage.",
     "Lore": "Disciplines of ink and flame taught that power begins in focus.",
-    "Card": "Arcane [controller][debuffer]. Shapes fights with [aoe][curse].",
+    "Card": "Arcane [controller] [debuffer]. Shapes fights with [aoe] [curse].",
     "Portrait": "Sage",
     "Thumbnail": {
       "Zoom": 2.3787,
@@ -13239,7 +13239,7 @@
     "Tags": [],
     "Description": "A feral threat that overwhelms foes with instinct and power.",
     "Lore": "Born to the deep places, it runs by instinct and strikes without doubt.",
-    "Card": "Ferocious [pouncer][mauler]. Disrupts with [roar] and [knockdown].",
+    "Card": "Ferocious [pouncer] [mauler]. Disrupts with [roar] and [knockdown].",
     "Portrait": "SandMaw",
     "Thumbnail": {
       "Zoom": 0.964,
@@ -13350,7 +13350,7 @@
     ],
     "Description": "A close-quarters specialist that thrives in direct engagements.",
     "Lore": "Every scar is a lesson. Every lesson becomes an opening.",
-    "Card": "Close-range [brawler][cleaver]. Wins trades with [stagger].",
+    "Card": "Close-range [brawler] [cleaver]. Wins trades with [stagger].",
     "Portrait": "Scorpion",
     "Thumbnail": {
       "Zoom": 1.8801,
@@ -13463,7 +13463,7 @@
     ],
     "Description": "A close-quarters specialist that thrives in direct engagements.",
     "Lore": "Every scar is a lesson. Every lesson becomes an opening.",
-    "Card": "Close-range [brawler][cleaver]. Wins trades with [stagger].",
+    "Card": "Close-range [brawler] [cleaver]. Wins trades with [stagger].",
     "Portrait": "Sellsword",
     "Thumbnail": {
       "Zoom": 1.7941,
@@ -13598,7 +13598,7 @@
     ],
     "Description": "A stalwart defender that anchors the line and absorbs pressure.",
     "Lore": "Built on vows and iron patience, they stand where others fall back.",
-    "Card": "Frontline [guardian][bruiser]. Absorbs pressure and [taunts].",
+    "Card": "Frontline [guardian] [bruiser]. Absorbs pressure and [taunts].",
     "Portrait": "ShieldMaiden",
     "Thumbnail": {
       "Zoom": 2.3791,
@@ -13871,7 +13871,7 @@
     ],
     "Description": "An unnatural entity that endures through grim resilience and dread.",
     "Lore": "Life ended. Purpose remained. The rest is hunger and memory.",
-    "Card": "Grim [attrition][drain]. Pressures with [fear] and [rot].",
+    "Card": "Grim [attrition] [drain]. Pressures with [fear] and [rot].",
     "Portrait": "Skelepede00",
     "Thumbnail": {
       "Zoom": 0.9161,
@@ -13983,7 +13983,7 @@
     ],
     "Description": "An unnatural entity that endures through grim resilience and dread.",
     "Lore": "Life ended. Purpose remained. The rest is hunger and memory.",
-    "Card": "Grim [attrition][drain]. Pressures with [fear] and [rot].",
+    "Card": "Grim [attrition] [drain]. Pressures with [fear] and [rot].",
     "Portrait": "Skelepede01",
     "Thumbnail": {
       "Zoom": 0.9616,
@@ -14095,7 +14095,7 @@
     ],
     "Description": "An unnatural entity that endures through grim resilience and dread.",
     "Lore": "Life ended. Purpose remained. The rest is hunger and memory.",
-    "Card": "Grim [attrition][drain]. Pressures with [fear] and [rot].",
+    "Card": "Grim [attrition] [drain]. Pressures with [fear] and [rot].",
     "Portrait": "Skelepede02",
     "Thumbnail": {
       "Zoom": 0.9512,
@@ -14206,7 +14206,7 @@
     ],
     "Description": "A close-quarters specialist that thrives in direct engagements.",
     "Lore": "Every scar is a lesson. Every lesson becomes an opening.",
-    "Card": "Close-range [brawler][cleaver]. Wins trades with [stagger].",
+    "Card": "Close-range [brawler] [cleaver]. Wins trades with [stagger].",
     "Portrait": "Slasher",
     "Thumbnail": {
       "Zoom": 1.5714,
@@ -14340,7 +14340,7 @@
     "Tags": [],
     "Description": "A feral threat that overwhelms foes with instinct and power.",
     "Lore": "Born to the deep places, it runs by instinct and strikes without doubt.",
-    "Card": "Ferocious [pouncer][mauler]. Disrupts with [roar] and [knockdown].",
+    "Card": "Ferocious [pouncer] [mauler]. Disrupts with [roar] and [knockdown].",
     "Portrait": "Slime00",
     "Thumbnail": {
       "Zoom": 0.9625,
@@ -14447,7 +14447,7 @@
     "Tags": [],
     "Description": "A feral threat that overwhelms foes with instinct and power.",
     "Lore": "Born to the deep places, it runs by instinct and strikes without doubt.",
-    "Card": "Ferocious [pouncer][mauler]. Disrupts with [roar] and [knockdown].",
+    "Card": "Ferocious [pouncer] [mauler]. Disrupts with [roar] and [knockdown].",
     "Portrait": "Slime01",
     "Thumbnail": {
       "Zoom": 0.9636,
@@ -14554,7 +14554,7 @@
     "Tags": [],
     "Description": "A feral threat that overwhelms foes with instinct and power.",
     "Lore": "Born to the deep places, it runs by instinct and strikes without doubt.",
-    "Card": "Ferocious [pouncer][mauler]. Disrupts with [roar] and [knockdown].",
+    "Card": "Ferocious [pouncer] [mauler]. Disrupts with [roar] and [knockdown].",
     "Portrait": "Slime02",
     "Thumbnail": {
       "Zoom": 0.9632,
@@ -14661,7 +14661,7 @@
     "Tags": [],
     "Description": "A feral threat that overwhelms foes with instinct and power.",
     "Lore": "Born to the deep places, it runs by instinct and strikes without doubt.",
-    "Card": "Ferocious [pouncer][mauler]. Disrupts with [roar] and [knockdown].",
+    "Card": "Ferocious [pouncer] [mauler]. Disrupts with [roar] and [knockdown].",
     "Portrait": "Slime03",
     "Thumbnail": {
       "Zoom": 0.9633,
@@ -15222,7 +15222,7 @@
     ],
     "Description": "A swift combatant who wins through speed, angles, and precision strikes.",
     "Lore": "Years of quiet training forged a will that moves faster than thought.",
-    "Card": "Mobile [striker][flanker]. Leans on [crit] and [backstab] windows.",
+    "Card": "Mobile [striker] [flanker]. Leans on [crit] and [backstab] windows.",
     "Portrait": "Speedster",
     "Thumbnail": {
       "Zoom": 0.9957,
@@ -15912,7 +15912,7 @@
     ],
     "Description": "A close-quarters specialist that thrives in direct engagements.",
     "Lore": "Every scar is a lesson. Every lesson becomes an opening.",
-    "Card": "Close-range [brawler][cleaver]. Wins trades with [stagger].",
+    "Card": "Close-range [brawler] [cleaver]. Wins trades with [stagger].",
     "Portrait": "StreetFighter",
     "Thumbnail": {
       "Zoom": 2.3428,
@@ -16047,7 +16047,7 @@
     ],
     "Description": "A swift combatant who wins through speed, angles, and precision strikes.",
     "Lore": "Years of quiet training forged a will that moves faster than thought.",
-    "Card": "Mobile [striker][flanker]. Leans on [crit] and [backstab] windows.",
+    "Card": "Mobile [striker] [flanker]. Leans on [crit] and [backstab] windows.",
     "Portrait": "Striker",
     "Thumbnail": {
       "Zoom": 1.0055,
@@ -16295,7 +16295,7 @@
     ],
     "Description": "A close-quarters specialist that thrives in direct engagements.",
     "Lore": "Every scar is a lesson. Every lesson becomes an opening.",
-    "Card": "Close-range [brawler][cleaver]. Wins trades with [stagger].",
+    "Card": "Close-range [brawler] [cleaver]. Wins trades with [stagger].",
     "Portrait": "SwordMaster",
     "Thumbnail": {
       "Zoom": 2.3791,
@@ -16430,7 +16430,7 @@
     ],
     "Description": "A stalwart defender that anchors the line and absorbs pressure.",
     "Lore": "Built on vows and iron patience, they stand where others fall back.",
-    "Card": "Frontline [guardian][bruiser]. Absorbs pressure and [taunts].",
+    "Card": "Frontline [guardian] [bruiser]. Absorbs pressure and [taunts].",
     "Portrait": "Tank",
     "Thumbnail": {
       "Zoom": 2.0236,
@@ -16569,7 +16569,7 @@
     ],
     "Description": "A gadgeteer who leverages devices, traps, and tactical tools.",
     "Lore": "Blueprints and boldness turned problems into levers and switches.",
-    "Card": "Tactical [engineer][controller]. Deploys [traps][turrets][gadgets].",
+    "Card": "Tactical [engineer] [controller]. Deploys [traps] [turrets] [gadgets].",
     "Portrait": "TechGremlin00",
     "Thumbnail": {
       "Zoom": 2.2451,
@@ -16678,7 +16678,7 @@
     ],
     "Description": "A gadgeteer who leverages devices, traps, and tactical tools.",
     "Lore": "Blueprints and boldness turned problems into levers and switches.",
-    "Card": "Tactical [engineer][controller]. Deploys [traps][turrets][gadgets].",
+    "Card": "Tactical [engineer] [controller]. Deploys [traps] [turrets] [gadgets].",
     "Portrait": "TechGremlin01",
     "Thumbnail": {
       "Zoom": 2.2768,
@@ -16787,7 +16787,7 @@
     ],
     "Description": "A gadgeteer who leverages devices, traps, and tactical tools.",
     "Lore": "Blueprints and boldness turned problems into levers and switches.",
-    "Card": "Tactical [engineer][controller]. Deploys [traps][turrets][gadgets].",
+    "Card": "Tactical [engineer] [controller]. Deploys [traps] [turrets] [gadgets].",
     "Portrait": "TechGremlin02",
     "Thumbnail": {
       "Zoom": 2.2618,
@@ -16895,7 +16895,7 @@
     ],
     "Description": "A gadgeteer who leverages devices, traps, and tactical tools.",
     "Lore": "Blueprints and boldness turned problems into levers and switches.",
-    "Card": "Tactical [engineer][controller]. Deploys [traps][turrets][gadgets].",
+    "Card": "Tactical [engineer] [controller]. Deploys [traps] [turrets] [gadgets].",
     "Portrait": "Technician",
     "Thumbnail": {
       "Zoom": 1.0008,
@@ -17030,7 +17030,7 @@
     ],
     "Description": "A stalwart defender that anchors the line and absorbs pressure.",
     "Lore": "Built on vows and iron patience, they stand where others fall back.",
-    "Card": "Frontline [guardian][bruiser]. Absorbs pressure and [taunts].",
+    "Card": "Frontline [guardian] [bruiser]. Absorbs pressure and [taunts].",
     "Portrait": "Templar00",
     "Thumbnail": {
       "Zoom": 2.3787,
@@ -17143,7 +17143,7 @@
     ],
     "Description": "A stalwart defender that anchors the line and absorbs pressure.",
     "Lore": "Built on vows and iron patience, they stand where others fall back.",
-    "Card": "Frontline [guardian][bruiser]. Absorbs pressure and [taunts].",
+    "Card": "Frontline [guardian] [bruiser]. Absorbs pressure and [taunts].",
     "Portrait": "Templar01",
     "Thumbnail": {
       "Zoom": 2.3787,
@@ -17256,7 +17256,7 @@
     ],
     "Description": "A stalwart defender that anchors the line and absorbs pressure.",
     "Lore": "Built on vows and iron patience, they stand where others fall back.",
-    "Card": "Frontline [guardian][bruiser]. Absorbs pressure and [taunts].",
+    "Card": "Frontline [guardian] [bruiser]. Absorbs pressure and [taunts].",
     "Portrait": "Templar02",
     "Thumbnail": {
       "Zoom": 2.3787,
@@ -17369,7 +17369,7 @@
     ],
     "Description": "A stalwart defender that anchors the line and absorbs pressure.",
     "Lore": "Built on vows and iron patience, they stand where others fall back.",
-    "Card": "Frontline [guardian][bruiser]. Absorbs pressure and [taunts].",
+    "Card": "Frontline [guardian] [bruiser]. Absorbs pressure and [taunts].",
     "Portrait": "Templar03",
     "Thumbnail": {
       "Zoom": 2.3787,
@@ -17482,7 +17482,7 @@
     ],
     "Description": "A stalwart defender that anchors the line and absorbs pressure.",
     "Lore": "Built on vows and iron patience, they stand where others fall back.",
-    "Card": "Frontline [guardian][bruiser]. Absorbs pressure and [taunts].",
+    "Card": "Frontline [guardian] [bruiser]. Absorbs pressure and [taunts].",
     "Portrait": "Templar04",
     "Thumbnail": {
       "Zoom": 2.3787,
@@ -17595,7 +17595,7 @@
     ],
     "Description": "A stalwart defender that anchors the line and absorbs pressure.",
     "Lore": "Built on vows and iron patience, they stand where others fall back.",
-    "Card": "Frontline [guardian][bruiser]. Absorbs pressure and [taunts].",
+    "Card": "Frontline [guardian] [bruiser]. Absorbs pressure and [taunts].",
     "Portrait": "Templar05",
     "Thumbnail": {
       "Zoom": 2.3788,
@@ -17707,7 +17707,7 @@
     ],
     "Description": "A swift combatant who wins through speed, angles, and precision strikes.",
     "Lore": "Years of quiet training forged a will that moves faster than thought.",
-    "Card": "Mobile [striker][flanker]. Leans on [crit] and [backstab] windows.",
+    "Card": "Mobile [striker] [flanker]. Leans on [crit] and [backstab] windows.",
     "Portrait": "Thief",
     "Thumbnail": {
       "Zoom": 1.6466,
@@ -17978,7 +17978,7 @@
     ],
     "Description": "A feral threat that overwhelms foes with instinct and power.",
     "Lore": "Born to the deep places, it runs by instinct and strikes without doubt.",
-    "Card": "Ferocious [pouncer][mauler]. Disrupts with [roar] and [knockdown].",
+    "Card": "Ferocious [pouncer] [mauler]. Disrupts with [roar] and [knockdown].",
     "Portrait": "Toad00",
     "Thumbnail": {
       "Zoom": 0.9615,
@@ -18090,7 +18090,7 @@
     ],
     "Description": "A feral threat that overwhelms foes with instinct and power.",
     "Lore": "Born to the deep places, it runs by instinct and strikes without doubt.",
-    "Card": "Ferocious [pouncer][mauler]. Disrupts with [roar] and [knockdown].",
+    "Card": "Ferocious [pouncer] [mauler]. Disrupts with [roar] and [knockdown].",
     "Portrait": "TreeGolem00",
     "Thumbnail": {
       "Zoom": 0.963,
@@ -18207,7 +18207,7 @@
     ],
     "Description": "A feral threat that overwhelms foes with instinct and power.",
     "Lore": "Born to the deep places, it runs by instinct and strikes without doubt.",
-    "Card": "Ferocious [pouncer][mauler]. Disrupts with [roar] and [knockdown].",
+    "Card": "Ferocious [pouncer] [mauler]. Disrupts with [roar] and [knockdown].",
     "Portrait": "TreeGolem01",
     "Thumbnail": {
       "Zoom": 0.9614,
@@ -18324,7 +18324,7 @@
     ],
     "Description": "A feral threat that overwhelms foes with instinct and power.",
     "Lore": "Born to the deep places, it runs by instinct and strikes without doubt.",
-    "Card": "Ferocious [pouncer][mauler]. Disrupts with [roar] and [knockdown].",
+    "Card": "Ferocious [pouncer] [mauler]. Disrupts with [roar] and [knockdown].",
     "Portrait": "TreeGolem02",
     "Thumbnail": {
       "Zoom": 0.9614,
@@ -18441,7 +18441,7 @@
     ],
     "Description": "A feral threat that overwhelms foes with instinct and power.",
     "Lore": "Born to the deep places, it runs by instinct and strikes without doubt.",
-    "Card": "Ferocious [pouncer][mauler]. Disrupts with [roar] and [knockdown].",
+    "Card": "Ferocious [pouncer] [mauler]. Disrupts with [roar] and [knockdown].",
     "Portrait": "TreeGolem03",
     "Thumbnail": {
       "Zoom": 0.9614,
@@ -18558,7 +18558,7 @@
     ],
     "Description": "A feral threat that overwhelms foes with instinct and power.",
     "Lore": "Born to the deep places, it runs by instinct and strikes without doubt.",
-    "Card": "Ferocious [pouncer][mauler]. Disrupts with [roar] and [knockdown].",
+    "Card": "Ferocious [pouncer] [mauler]. Disrupts with [roar] and [knockdown].",
     "Portrait": "TreeGolem04",
     "Thumbnail": {
       "Zoom": 0.9614,
@@ -18675,7 +18675,7 @@
     ],
     "Description": "A feral threat that overwhelms foes with instinct and power.",
     "Lore": "Born to the deep places, it runs by instinct and strikes without doubt.",
-    "Card": "Ferocious [pouncer][mauler]. Disrupts with [roar] and [knockdown].",
+    "Card": "Ferocious [pouncer] [mauler]. Disrupts with [roar] and [knockdown].",
     "Portrait": "TreeGolem06",
     "Thumbnail": {
       "Zoom": 0.9525,
@@ -18791,7 +18791,7 @@
     ],
     "Description": "An unnatural entity that endures through grim resilience and dread.",
     "Lore": "Life ended. Purpose remained. The rest is hunger and memory.",
-    "Card": "Grim [attrition][drain]. Pressures with [fear] and [rot].",
+    "Card": "Grim [attrition] [drain]. Pressures with [fear] and [rot].",
     "Portrait": "Undead00",
     "Thumbnail": {
       "Zoom": 0.9611,
@@ -18902,7 +18902,7 @@
     ],
     "Description": "An unnatural entity that endures through grim resilience and dread.",
     "Lore": "Life ended. Purpose remained. The rest is hunger and memory.",
-    "Card": "Grim [attrition][drain]. Pressures with [fear] and [rot].",
+    "Card": "Grim [attrition] [drain]. Pressures with [fear] and [rot].",
     "Portrait": "Undead01",
     "Thumbnail": {
       "Zoom": 0.9614,
@@ -19013,7 +19013,7 @@
     ],
     "Description": "An unnatural entity that endures through grim resilience and dread.",
     "Lore": "Life ended. Purpose remained. The rest is hunger and memory.",
-    "Card": "Grim [attrition][drain]. Pressures with [fear] and [rot].",
+    "Card": "Grim [attrition] [drain]. Pressures with [fear] and [rot].",
     "Portrait": "Undead02",
     "Thumbnail": {
       "Zoom": 0.9614,
@@ -19124,7 +19124,7 @@
     ],
     "Description": "An unnatural entity that endures through grim resilience and dread.",
     "Lore": "Life ended. Purpose remained. The rest is hunger and memory.",
-    "Card": "Grim [attrition][drain]. Pressures with [fear] and [rot].",
+    "Card": "Grim [attrition] [drain]. Pressures with [fear] and [rot].",
     "Portrait": "Undead04",
     "Thumbnail": {
       "Zoom": 0.9616,
@@ -19238,7 +19238,7 @@
     ],
     "Description": "An unnatural entity that endures through grim resilience and dread.",
     "Lore": "Life ended. Purpose remained. The rest is hunger and memory.",
-    "Card": "Grim [attrition][drain]. Pressures with [fear] and [rot].",
+    "Card": "Grim [attrition] [drain]. Pressures with [fear] and [rot].",
     "Portrait": "Vampire",
     "Thumbnail": {
       "Zoom": 1.1391,
@@ -19374,7 +19374,7 @@
     ],
     "Description": "A feral threat that overwhelms foes with instinct and power.",
     "Lore": "Born to the deep places, it runs by instinct and strikes without doubt.",
-    "Card": "Ferocious [pouncer][mauler]. Disrupts with [roar] and [knockdown].",
+    "Card": "Ferocious [pouncer] [mauler]. Disrupts with [roar] and [knockdown].",
     "Portrait": "Vulture",
     "Thumbnail": {
       "Zoom": 0.9614,
@@ -19482,7 +19482,7 @@
     ],
     "Description": "A stalwart defender that anchors the line and absorbs pressure.",
     "Lore": "Built on vows and iron patience, they stand where others fall back.",
-    "Card": "Frontline [guardian][bruiser]. Absorbs pressure and [taunts].",
+    "Card": "Frontline [guardian] [bruiser]. Absorbs pressure and [taunts].",
     "Portrait": "WarChief",
     "Thumbnail": {
       "Zoom": 2.3088,
@@ -19620,7 +19620,7 @@
     ],
     "Description": "A feral threat that overwhelms foes with instinct and power.",
     "Lore": "Born to the deep places, it runs by instinct and strikes without doubt.",
-    "Card": "Ferocious [pouncer][mauler]. Disrupts with [roar] and [knockdown].",
+    "Card": "Ferocious [pouncer] [mauler]. Disrupts with [roar] and [knockdown].",
     "Portrait": "Werewolf00",
     "Thumbnail": {
       "Zoom": 2.3787,
@@ -19737,7 +19737,7 @@
     ],
     "Description": "A swift combatant who wins through speed, angles, and precision strikes.",
     "Lore": "Years of quiet training forged a will that moves faster than thought.",
-    "Card": "Mobile [striker][flanker]. Leans on [crit] and [backstab] windows.",
+    "Card": "Mobile [striker] [flanker]. Leans on [crit] and [backstab] windows.",
     "Portrait": "WhiteNinja",
     "Thumbnail": {
       "Zoom": 2.3787,
@@ -19875,7 +19875,7 @@
     ],
     "Description": "A ranged spellcaster that shapes the fight with arcane control and damage.",
     "Lore": "Disciplines of ink and flame taught that power begins in focus.",
-    "Card": "Arcane [controller][debuffer]. Shapes fights with [aoe][curse].",
+    "Card": "Arcane [controller] [debuffer]. Shapes fights with [aoe] [curse].",
     "Portrait": "WhiteWitch",
     "Thumbnail": {
       "Zoom": 2.3787,
@@ -20145,7 +20145,7 @@
     ],
     "Description": "A feral threat that overwhelms foes with instinct and power.",
     "Lore": "Born to the deep places, it runs by instinct and strikes without doubt.",
-    "Card": "Ferocious [pouncer][mauler]. Disrupts with [roar] and [knockdown].",
+    "Card": "Ferocious [pouncer] [mauler]. Disrupts with [roar] and [knockdown].",
     "Portrait": "Wolf00",
     "Thumbnail": {
       "Zoom": 0.7956,
@@ -20260,7 +20260,7 @@
     ],
     "Description": "A feral threat that overwhelms foes with instinct and power.",
     "Lore": "Born to the deep places, it runs by instinct and strikes without doubt.",
-    "Card": "Ferocious [pouncer][mauler]. Disrupts with [roar] and [knockdown].",
+    "Card": "Ferocious [pouncer] [mauler]. Disrupts with [roar] and [knockdown].",
     "Portrait": "Wolf01",
     "Thumbnail": {
       "Zoom": 0.884,
@@ -20375,7 +20375,7 @@
     ],
     "Description": "A feral threat that overwhelms foes with instinct and power.",
     "Lore": "Born to the deep places, it runs by instinct and strikes without doubt.",
-    "Card": "Ferocious [pouncer][mauler]. Disrupts with [roar] and [knockdown].",
+    "Card": "Ferocious [pouncer] [mauler]. Disrupts with [roar] and [knockdown].",
     "Portrait": "Wolf02",
     "Thumbnail": {
       "Zoom": 0.8679,
@@ -20490,7 +20490,7 @@
     ],
     "Description": "A feral threat that overwhelms foes with instinct and power.",
     "Lore": "Born to the deep places, it runs by instinct and strikes without doubt.",
-    "Card": "Ferocious [pouncer][mauler]. Disrupts with [roar] and [knockdown].",
+    "Card": "Ferocious [pouncer] [mauler]. Disrupts with [roar] and [knockdown].",
     "Portrait": "Wolf03",
     "Thumbnail": {
       "Zoom": 0.94,
@@ -20605,7 +20605,7 @@
     ],
     "Description": "A swift combatant who wins through speed, angles, and precision strikes.",
     "Lore": "Years of quiet training forged a will that moves faster than thought.",
-    "Card": "Mobile [striker][flanker]. Leans on [crit] and [backstab] windows.",
+    "Card": "Mobile [striker] [flanker]. Leans on [crit] and [backstab] windows.",
     "Portrait": "YellowNinja",
     "Thumbnail": {
       "Zoom": 1.3203,
@@ -20741,7 +20741,7 @@
     ],
     "Description": "A feral threat that overwhelms foes with instinct and power.",
     "Lore": "Born to the deep places, it runs by instinct and strikes without doubt.",
-    "Card": "Ferocious [pouncer][mauler]. Disrupts with [roar] and [knockdown].",
+    "Card": "Ferocious [pouncer] [mauler]. Disrupts with [roar] and [knockdown].",
     "Portrait": "Yeti",
     "Thumbnail": {
       "Zoom": 2.4082,

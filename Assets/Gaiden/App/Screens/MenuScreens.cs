@@ -371,7 +371,7 @@ namespace GridGame.App
                 var nm = Ui.Text(def.Name, "h1 shadow", info);
                 Fonts.UseDisplay(nm);
                 Ui.RoleBadge(def.Role, info).style.marginBottom = Space.S8;
-                var desc = Ui.Text(def.Description ?? "", "small dim", info);
+                var desc = GlossaryText.Create(def.Description ?? "", "small dim", info);
                 desc.style.whiteSpace = WhiteSpace.Normal;
                 if (locked.Contains(showId)) Ui.Text("Locked in", "small good", info).style.marginTop = Space.S8;
                 App.StartCoroutine(SlamIn(row));

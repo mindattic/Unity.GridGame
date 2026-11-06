@@ -24,7 +24,11 @@ namespace GridGame.App
         private static VisualElement card;
         private static VisualElement shownFor;
         private static EventCallback<PointerUpEvent> globalUp;
+        private static EventCallback<PointerDownEvent> globalDown;
         private static VisualElement globalRoot;
+        // A tapped term card (GG-T300) closed by the press that re-taps its own word must not reopen on that tap's click.
+        private static VisualElement closedFor;
+        private static float closedAt;
 
         public static bool IsOpen => card != null;
         public static VisualElement ShownFor => shownFor;
@@ -69,7 +73,11 @@ namespace GridGame.App
         }
 
         /// <summary>Opens the card at <paramref name="anchor"/> now. Returns false if <paramref name="build"/> had nothing.</summary>
-        public static bool Show(VisualElement anchor, Func<VisualElement, bool> build)
+        public static bool Show(VisualElement anchor, Func<VisualElement, bool> build) => Show(anchor, build, false);
+
+        /// <summary><paramref name="sticky"/>: the card stays after release and the next press anywhere closes it (a
+        /// tapped glossary term, GG-T300); otherwise it is a hold card, gone on release.</summary>
+        private static bool Show(VisualElement anchor, Func<VisualElement, bool> build, bool sticky)
         {
             var app = GameApp.I;
             var layer = app?.Overlay;
@@ -97,10 +105,15 @@ namespace GridGame.App
 
             // A release anywhere closes it, even if the finger drifted off the held element.
             globalRoot = anchor.panel?.visualTree;
-            if (globalRoot != null)
+            if (globalRoot != null && !sticky)
             {
                 globalUp = _ => Hide();
                 globalRoot.RegisterCallback(globalUp, TrickleDown.TrickleDown);
+            }
+            else if (globalRoot != null)
+            {
+                globalDown = _ => { closedFor = shownFor; closedAt = Time.realtimeSinceStartup; Hide(); };
+                globalRoot.RegisterCallback(globalDown, TrickleDown.TrickleDown);
             }
             app.Audio?.Sfx("ui.select", 0.5f);
             return true;
@@ -160,8 +173,10 @@ namespace GridGame.App
         private static void DetachGlobal()
         {
             if (globalRoot != null && globalUp != null) globalRoot.UnregisterCallback(globalUp, TrickleDown.TrickleDown);
+            if (globalRoot != null && globalDown != null) globalRoot.UnregisterCallback(globalDown, TrickleDown.TrickleDown);
             globalRoot = null;
             globalUp = null;
+            globalDown = null;
         }
 
         private static IEnumerator Disappear(VisualElement c)
@@ -233,7 +248,7 @@ namespace GridGame.App
             if (a.BaseDamage > 0) facts.Add($"<color=#{ColorUtility.ToHtmlStringRGB(Palette.Element(a.DamageType))}>{a.BaseDamage} {a.DamageType} damage</color> (before stats)");
             if (a.BaseHeal > 0) facts.Add(a.Revives ? $"Revives a fallen ally with {a.BaseHeal} HP" : $"Heals {a.BaseHeal} (before stats)");
             if (!string.IsNullOrEmpty(a.ApplyBuff) && GameApp.I?.Content?.TryBuff(a.ApplyBuff) is BuffDef bd)
-                facts.Add($"{(a.ApplyBuffChance < 1f ? $"{Mathf.RoundToInt(a.ApplyBuffChance * 100)}% to apply" : "Applies")} {bd.Name}: {Ui.BuffEffect(bd)}");
+                facts.Add($"{(a.ApplyBuffChance < 1f ? $"{Mathf.RoundToInt(a.ApplyBuffChance * 100)}% to apply" : "Applies")} {TermOf(bd.Name)}: {Ui.BuffEffect(bd)}");
             if (a.Knockback > 0) facts.Add($"Knocks back {a.Knockback} tiles");
             if (a.Pull > 0) facts.Add($"Pulls {a.Pull} tiles toward the caster");
             if (a.SwapsPlaces) facts.Add("Swaps places with the target");
@@ -249,10 +264,10 @@ namespace GridGame.App
             if (a.GrantsOrbs > 0) facts.Add($"Grants {a.GrantsOrbs} orbs");
             var factBox = Ui.El("col", body);
             factBox.style.marginTop = Space.S16;
-            foreach (var f in facts) Line(factBox, "• " + f, "t-caption");
+            foreach (var f in facts) GlossaryText.Create("• " + f, "t-caption", factBox, false);
             if (!string.IsNullOrEmpty(a.Description))
             {
-                var d = Line(body, a.Description, "t-body");
+                var d = GlossaryText.Create(a.Description, "t-body", body, false);
                 d.style.marginTop = Space.S16;
             }
             if (!string.IsNullOrEmpty(note)) { var n = Line(body, note, "t-caption", Palette.TextDim); n.style.marginTop = Space.S8; }
@@ -320,8 +335,47 @@ namespace GridGame.App
                 var col = Art.HexColor(b.Def.Color, b.Def.Kind == BuffKind.Buff ? Palette.Mana : new Color(0.8f, 0.4f, 0.9f));
                 var pip = Ui.StatusPip(b.Def.Id, string.IsNullOrEmpty(b.Def.Letter) ? b.Def.Name.Substring(0, 1) : b.Def.Letter, col, 40, r);
                 pip.style.marginRight = Space.S8;
-                var t = Line(r, $"{b.Def.Name} — {Ui.BuffEffect(b.Def)} ({b.Remaining} left)", "t-caption");
+                var t = GlossaryText.Create($"{TermOf(b.Def.Name)} — {Ui.BuffEffect(b.Def)} ({b.Remaining} left)", "t-caption", r, false);
                 t.style.flexShrink = 1;
+            }
+            return true;
+        }
+
+        /// <summary>"[name]" when the glossary knows the name (a status), so it reads as a term; else the bare name.</summary>
+        private static string TermOf(string name) => GameApp.I?.Content?.TryTerm(name) != null ? $"[{name}]" : name;
+
+        /// <summary>A tapped glossary term (GG-T300): the same card, opened by a tap, closed by the next press anywhere.</summary>
+        public static void ShowTerm(VisualElement anchor, GlossaryEntry e)
+        {
+            if (e == null || anchor == null) return;
+            if (closedFor == anchor && Time.realtimeSinceStartup - closedAt < HoldSeconds + 0.1f) { closedFor = null; return; }
+            Show(anchor, b => Term(b, e), true);
+        }
+
+        /// <summary>The term card: headword, what kind of word it is, its definition and, for a link, the live numbers.</summary>
+        public static bool Term(VisualElement body, GlossaryEntry e)
+        {
+            if (e == null) return false;
+            var db = GameApp.I?.Content;
+            var buff = e.LinkKind == GlossaryLinkKind.Buff ? db?.TryBuff(e.LinkId) : null;
+            string kind = buff != null ? (buff.Kind == BuffKind.Buff ? "Buff" : "Debuff")
+                : e.LinkKind == GlossaryLinkKind.Stat ? "Stat"
+                : e.LinkKind == GlossaryLinkKind.Ability ? "Ability"
+                : Array.Exists(Glossary.ChanceBands, c => string.Equals(c.Word, e.Id, StringComparison.OrdinalIgnoreCase)) ? "Chance"
+                : "Keyword";
+            var head = Header(body, null, e.Term, kind, buff == null ? Palette.Term : buff.Kind == BuffKind.Buff ? Palette.Good : Palette.Bad);
+            head.parent.style.marginBottom = Space.S8;
+            GlossaryText.Create(e.Text, "t-body", body, false);
+            if (buff != null)
+            {
+                string unit = buff.Unit == GridGame.Core.Content.DurationUnit.Turns ? "turns" : "s";
+                var n = Line(body, $"{char.ToUpper(Ui.BuffEffect(buff)[0])}{Ui.BuffEffect(buff).Substring(1)} · lasts {buff.Duration} {unit}", "t-caption", Palette.TextDim);
+                n.style.marginTop = Space.S8;
+            }
+            else if (e.LinkKind == GlossaryLinkKind.Ability && db?.TryAbility(e.LinkId) is AbilityDef la)
+            {
+                var n = Line(body, $"{la.Name}{(la.CastTime > 0 ? $" · charges {la.CastTime:0.#}s" : "")}", "t-caption", Palette.TextDim);
+                n.style.marginTop = Space.S8;
             }
             return true;
         }
@@ -332,7 +386,7 @@ namespace GridGame.App
             if (it == null) return false;
             var head = Header(body, Art.ItemIcon(it.Id), it.Name, $"{it.Rarity} {Words(it.Type.ToString())}", Palette.Gold);
             head.Q<Label>()?.AddToClassList(Ui.RarityClass(it.Rarity));
-            if (!string.IsNullOrEmpty(it.Description)) { var d = Line(body, it.Description, "t-body"); d.style.marginTop = Space.S16; }
+            if (!string.IsNullOrEmpty(it.Description)) { var d = GlossaryText.Create(it.Description, "t-body", body, false); d.style.marginTop = Space.S16; }
             return true;
         }
     }

@@ -88,10 +88,10 @@ namespace GridGame.App
             var top = Ui.El("row", w);
             var n = Ui.Text(i.Name, "h2 grow " + Ui.RarityClass(i.Rarity), top);
             Ui.Text($"{i.Rarity} {TypeLabel(i)}", "small dim", top);
-            var d = Ui.Text(string.IsNullOrEmpty(i.Description) ? "—" : i.Description, "small", w);
+            var d = GlossaryText.Create(string.IsNullOrEmpty(i.Description) ? "—" : i.Description, "small", w);
             d.style.whiteSpace = WhiteSpace.Normal;
             var st = StatsText(i);
-            if (st.Length > 0) { var l = Ui.Text(st, "small gold", w); l.style.whiteSpace = WhiteSpace.Normal; l.style.marginTop = Space.S8; }
+            if (st.Length > 0) { var l = GlossaryText.Create(st, "small gold", w); l.style.whiteSpace = WhiteSpace.Normal; l.style.marginTop = Space.S8; }
             var set = c?.TryArmorSetOf(i.Id);
             if (set != null)
             {
@@ -325,7 +325,7 @@ namespace GridGame.App
             }
             foreach (var slot in Equipment.JewelrySlots)
                 G(ItemUi.SlotName(slot), h.Jewelry.TryGetValue(slot, out var jid) ? jid : null);
-            var lore = Ui.Text(Ui.Keywords(def.Lore ?? def.Description ?? ""), "small dim", w);
+            var lore = GlossaryText.Create(def.Lore ?? def.Description ?? "", "small dim", w);
             lore.style.whiteSpace = WhiteSpace.Normal; lore.style.marginTop = Space.S16;
 
             // GG-T48: known abilities, skill-tree point spend by tree, and gated proficiencies — one
@@ -428,13 +428,13 @@ namespace GridGame.App
                 var prow = Ui.El("col", cmp);
                 prow.style.marginTop = Space.S8;
                 if (!string.IsNullOrEmpty(curItem?.PassiveName))
-                    Ui.Text($"Now: {curItem.PassiveName} — {curItem.PassiveDescription}", "small dim", prow).style.whiteSpace = WhiteSpace.Normal;
+                    GlossaryText.Create($"Now: {curItem.PassiveName} — {curItem.PassiveDescription}", "small dim", prow).style.whiteSpace = WhiteSpace.Normal;
                 if (!string.IsNullOrEmpty(thenItem?.PassiveName) && thenId != curId)
-                    Ui.Text($"Then: {thenItem.PassiveName} — {thenItem.PassiveDescription}", "small gold", prow).style.whiteSpace = WhiteSpace.Normal;
+                    GlossaryText.Create($"Then: {thenItem.PassiveName} — {thenItem.PassiveDescription}", "small gold", prow).style.whiteSpace = WhiteSpace.Normal;
             }
             // GG-T179: the worn piece's armor enchant goes with it if it's swapped out.
             if (h.Armor.TryGetValue(slot, out var cur) && ArmorEnchanting.PassiveOf(C, cur.Enchant) is AbilityDef ench)
-                Ui.Text($"✦ Enchanted: {ench.Name} — {ench.Description}", "small gold", cmp).style.whiteSpace = WhiteSpace.Normal;
+                GlossaryText.Create($"✦ Enchanted: {ench.Name} — {ench.Description}", "small gold", cmp).style.whiteSpace = WhiteSpace.Normal;
             // GG-T182: set progress for the set(s) this slot's current and previewed pieces belong to — "2/5 → 3/5"
             // when the preview would change it, with each bonus tier lit once it's reached.
             if (Array.IndexOf(BattleEngine.ArmorSlots, slot) >= 0)
@@ -592,7 +592,7 @@ namespace GridGame.App
             var icon = Art.AbilityIcon(plan.Skill);
             if (icon != null) { var ic = Ui.El("menu-icon", head); ic.style.backgroundImage = new StyleBackground(icon); }
             Ui.Text($"{plan.Skill.Name} — {KindLabel(plan.Skill)}", "h2 grow", head);
-            Ui.Text(plan.Skill.Description ?? "", "small dim", card).style.whiteSpace = WhiteSpace.Normal;
+            GlossaryText.Create(plan.Skill.Description ?? "", "small dim", card).style.whiteSpace = WhiteSpace.Normal;
             string hero = C.TryClass(plan.Hero.ClassId)?.Name ?? plan.Hero.ClassId;
             Ui.Text($"First lesson free — it goes onto the {hero}'s battle bar" + (plan.Slot >= 0 ? $", slot {plan.Slot + 1}." : "."), "small gold", card).style.whiteSpace = WhiteSpace.Normal;
             var btn = Ui.Button("Learn", () => LearnDone(Abilities.Learn(C, S, plan.Hero, plan.Skill.Id), plan.Hero, plan.Skill.Id), "btn--primary", card);
@@ -613,7 +613,7 @@ namespace GridGame.App
 
         private void Describe(AbilityDef a, VisualElement list)
         {
-            var d = Ui.Text(a.Description ?? "", "tiny dim", list);
+            var d = GlossaryText.Create(a.Description ?? "", "tiny dim", list);
             d.style.whiteSpace = WhiteSpace.Normal; d.style.marginLeft = Space.S64; d.style.marginBottom = Space.S8;
         }
 
@@ -670,7 +670,7 @@ namespace GridGame.App
                 Ui.RoleBadge(C.Class(h.ClassId).Role, nameRow);
                 MercenaryCamp.Tag(S, h.ClassId, nameRow);
                 Ui.Text($"Lv {u.Level}   HP {u.MaxHp}   {(active ? "<color=#78EC96>Active</color>" : "Reserve")}", "small", col);
-                Ui.Text(Ui.Keywords(C.Class(h.ClassId).Card ?? ""), "tiny dim", col).style.whiteSpace = WhiteSpace.Normal;
+                GlossaryText.Create(C.Class(h.ClassId).Card ?? "", "tiny dim", col).style.whiteSpace = WhiteSpace.Normal;
                 card.AddToClassList("card-tap");
                 Ui.Tappable(card, () => Done(Party.Toggle(S, hero.ClassId)), "ui.select");
             }
@@ -1146,7 +1146,7 @@ namespace GridGame.App
             if (enchant == null) { Ui.Text("Pick an enchant to see what it binds.", "small dim", detail); return; }
             var p = C.TryAbility(enchant.Passive);
             Ui.Text($"{enchant.Name} — {p?.Name ?? enchant.Passive}", "h2", detail);
-            Ui.Text(p?.Description ?? "", "small dim", detail).style.whiteSpace = WhiteSpace.Normal;
+            GlossaryText.Create(p?.Description ?? "", "small dim", detail).style.whiteSpace = WhiteSpace.Normal;
             var need = Ui.El("col", detail); need.style.marginTop = Space.S8;
             foreach (var ic in enchant.Inputs)
             {
@@ -1254,7 +1254,7 @@ namespace GridGame.App
                 Ui.Thumb(d.Id, card, 140);
                 var col = Ui.El("col grow", card);
                 Ui.Text(d.Name, "h2", col);
-                Ui.Text(Ui.Keywords(d.Card ?? d.Description ?? ""), "tiny dim", col).style.whiteSpace = WhiteSpace.Normal;
+                GlossaryText.Create(d.Card ?? d.Description ?? "", "tiny dim", col).style.whiteSpace = WhiteSpace.Normal;
                 var b = Ui.Button(owned ? "Joined" : "Recruit", () => Confirm.Show($"Summon {def.Name} for {Ui.Gold(price)}?", "Summon", () =>
                     TimedJobView.Begin(now => (Summon.BeginRecruit(C, S, def.Id, now, out var job), job), $"Summoning {def.Name}…", _ => Refresh())), "btn--small", card);
                 Ui.SetEnabled(b, !owned && !busy && S.Gold >= price);
@@ -1455,8 +1455,8 @@ namespace GridGame.App
             var top = Ui.El("row", w);
             Ui.Text(d.Name, "h2 grow", top);
             Ui.Text($"Defeated {e.Defeated}", "small gold", top);
-            if (!string.IsNullOrEmpty(d.Description)) Ui.Text(Ui.Keywords(d.Description), "small", w).style.whiteSpace = WhiteSpace.Normal;
-            if (!string.IsNullOrEmpty(d.Lore) && d.Lore != d.Description) Ui.Text(Ui.Keywords(d.Lore), "small dim", w).style.whiteSpace = WhiteSpace.Normal;
+            if (!string.IsNullOrEmpty(d.Description)) GlossaryText.Create(d.Description, "small", w).style.whiteSpace = WhiteSpace.Normal;
+            if (!string.IsNullOrEmpty(d.Lore) && d.Lore != d.Description) GlossaryText.Create(d.Lore, "small dim", w).style.whiteSpace = WhiteSpace.Normal;
             if (d.DropTable != null && C.DropTables.TryGetValue(d.DropTable, out var drops) && drops.Entries.Count > 0)
             {
                 Ui.Text("Drops", "small dim", w).style.marginTop = Space.S8;
@@ -1478,7 +1478,7 @@ namespace GridGame.App
             if (tier >= BestiaryKnowledge.Abilities)
             {
                 var kit = Ui.KitTraits(C, d);
-                if (kit.Length > 0) Ui.Text(kit, "small gold", w).style.whiteSpace = WhiteSpace.Normal;
+                if (kit.Length > 0) GlossaryText.Create(kit, "small gold", w).style.whiteSpace = WhiteSpace.Normal;
                 // Its abilities as chips: hold one to read it whole (GG-T252).
                 var ids = d.Abilities.Concat(string.IsNullOrEmpty(d.ChargeAbility) ? Enumerable.Empty<string>() : new[] { d.ChargeAbility }).Distinct();
                 var chips = Ui.El("row", w);

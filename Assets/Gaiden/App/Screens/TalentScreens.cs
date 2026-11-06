@@ -88,7 +88,7 @@ namespace GridGame.App
             var list = Ui.List(w).contentContainer;
             if (!string.IsNullOrEmpty(tree.Description))
             {
-                var d = Ui.Text(tree.Description, "tiny dim", list);
+                var d = GlossaryText.Create(tree.Description, "tiny dim", list);
                 d.style.whiteSpace = WhiteSpace.Normal; d.style.marginBottom = Space.S8;
             }
             var cards = Graph(tree, h, list);
@@ -204,11 +204,11 @@ namespace GridGame.App
             Ui.Text($"{kind}{(a != null && a.Name != n.Name ? " · grants " + a.Name : "")}", "tiny dim", title);
             var st = Ui.Text(StateLabel(state), "small", top);
             st.style.color = StateColor(state);
-            var desc = Ui.Text(Ui.Keywords(a?.Description ?? n.Description ?? ""), "small dim", w);
+            var desc = GlossaryText.Create(a?.Description ?? n.Description ?? "", "small dim", w);
             desc.style.whiteSpace = WhiteSpace.Normal; desc.style.marginTop = Space.S8;
             if (!string.IsNullOrEmpty(n.Description) && a?.Description != null && n.Description != a.Description)
             {
-                var flavor = Ui.Text(n.Description, "tiny dim", w);
+                var flavor = GlossaryText.Create(n.Description, "tiny dim", w);
                 flavor.style.whiteSpace = WhiteSpace.Normal; flavor.style.marginTop = Space.S4;
             }
             var foot = Ui.El("row", w);

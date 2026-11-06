@@ -26,6 +26,8 @@ namespace GridGame.App
         public static readonly Color Bad = new Color(1f, 0.38f, 0.34f);
         public static readonly Color Warn = new Color(1f, 0.77f, 0.36f);
         public static readonly Color Info = new Color(0.86f, 0.88f, 1f);
+        /// <summary>A tappable glossary [term] (GG-T300): the same light blue class cards always marked keywords with.</summary>
+        public static readonly Color Term = new Color(0.61f, 0.78f, 1f);
         public static readonly Color Mana = Art.Mana;
 
         // Teams

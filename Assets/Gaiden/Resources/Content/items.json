@@ -3541,7 +3541,7 @@
     "SoldByVendor": false,
     "Icon": null,
     "PassiveName": "Ironwall",
-    "PassiveDescription": "Adjacent ally heroes take 8% less damage.",
+    "PassiveDescription": "[Adjacent] ally heroes take 8% less damage.",
     "AdjacentAllyDamageReduction": 0.08
   },
   {
@@ -3637,7 +3637,7 @@
     "SoldByVendor": false,
     "Icon": null,
     "PassiveName": "Steel Bulwark",
-    "PassiveDescription": "Adjacent ally heroes take 10% less damage.",
+    "PassiveDescription": "[Adjacent] ally heroes take 10% less damage.",
     "AdjacentAllyDamageReduction": 0.1
   },
   {
@@ -3925,7 +3925,7 @@
     "SoldByVendor": false,
     "Icon": null,
     "PassiveName": "Guardian's Bulwark",
-    "PassiveDescription": "Adjacent ally heroes take 12% less damage.",
+    "PassiveDescription": "[Adjacent] ally heroes take 12% less damage.",
     "AdjacentAllyDamageReduction": 0.12
   },
   {
@@ -4117,7 +4117,7 @@
     "SoldByVendor": false,
     "Icon": null,
     "PassiveName": "Flamebrand",
-    "PassiveDescription": "Pincer strikes have a 20% chance to Burn the target.",
+    "PassiveDescription": "[Pincer] strikes have a 20% chance to [Burn] the target.",
     "PincerApplyBuff": "burning",
     "PincerApplyBuffChance": 0.2
   },
@@ -4214,7 +4214,7 @@
     "SoldByVendor": false,
     "Icon": null,
     "PassiveName": "Silencing Shard",
-    "PassiveDescription": "Pincer strikes have a 20% chance to Silence the target.",
+    "PassiveDescription": "[Pincer] strikes have a 20% chance to [Silence] the target.",
     "PincerApplyBuff": "silenced",
     "PincerApplyBuffChance": 0.2
   },
@@ -4311,7 +4311,7 @@
     "SoldByVendor": false,
     "Icon": null,
     "PassiveName": "Serpent's Kiss",
-    "PassiveDescription": "Pincer strikes have a 25% chance to Poison the target.",
+    "PassiveDescription": "[Pincer] strikes have a 25% chance to [Poison] the target.",
     "PincerApplyBuff": "poisoned",
     "PincerApplyBuffChance": 0.25
   },
@@ -4408,7 +4408,7 @@
     "SoldByVendor": false,
     "Icon": null,
     "PassiveName": "Rune Frost",
-    "PassiveDescription": "Pincer strikes have a 15% chance to Freeze the target.",
+    "PassiveDescription": "[Pincer] strikes have a 15% chance to [Freeze] the target.",
     "PincerApplyBuff": "frozen",
     "PincerApplyBuffChance": 0.15
   },
@@ -4505,7 +4505,7 @@
     "SoldByVendor": false,
     "Icon": null,
     "PassiveName": "Duskfang",
-    "PassiveDescription": "Pincer strikes have a 20% chance to Blind the target.",
+    "PassiveDescription": "[Pincer] strikes have a 20% chance to [Blind] the target.",
     "PincerApplyBuff": "blinded",
     "PincerApplyBuffChance": 0.2
   },
@@ -4602,7 +4602,7 @@
     "SoldByVendor": false,
     "Icon": null,
     "PassiveName": "Celestial Aegis",
-    "PassiveDescription": "Adjacent ally heroes take 10% less damage.",
+    "PassiveDescription": "[Adjacent] ally heroes take 10% less damage.",
     "AdjacentAllyDamageReduction": 0.1
   },
   {
@@ -7701,7 +7701,7 @@
     "SoldByVendor": false,
     "Icon": null,
     "PassiveName": "Knotted Guard",
-    "PassiveDescription": "Adjacent ally heroes take 6% less damage.",
+    "PassiveDescription": "[Adjacent] ally heroes take 6% less damage.",
     "AdjacentAllyDamageReduction": 0.06
   },
   {
@@ -8327,7 +8327,7 @@
     "SoldByVendor": false,
     "Icon": null,
     "PassiveName": "Grit in the Eye",
-    "PassiveDescription": "Pincer strikes have a 15% chance to Blind the target.",
+    "PassiveDescription": "[Pincer] strikes have a 15% chance to [Blind] the target.",
     "PincerApplyBuff": "blinded",
     "PincerApplyBuffChance": 0.15
   },
@@ -8641,7 +8641,7 @@
     "SoldByVendor": false,
     "Icon": null,
     "PassiveName": "Sweeping Ward",
-    "PassiveDescription": "Adjacent ally heroes take 7% less damage.",
+    "PassiveDescription": "[Adjacent] ally heroes take 7% less damage.",
     "AdjacentAllyDamageReduction": 0.07
   },
   {
@@ -9267,7 +9267,7 @@
     "SoldByVendor": false,
     "Icon": null,
     "PassiveName": "Pinning Throw",
-    "PassiveDescription": "Pincer strikes have a 20% chance to Slow the target.",
+    "PassiveDescription": "[Pincer] strikes have a 20% chance to [Slow] the target.",
     "PincerApplyBuff": "slowed",
     "PincerApplyBuffChance": 0.2
   },
@@ -9585,7 +9585,7 @@
     "Icon": null,
     "RegenPerTurn": 1,
     "PassiveName": "Willow Shelter",
-    "PassiveDescription": "Adjacent ally heroes take 6% less damage.",
+    "PassiveDescription": "[Adjacent] ally heroes take 6% less damage.",
     "AdjacentAllyDamageReduction": 0.06
   },
   {
@@ -9904,7 +9904,7 @@
     "SoldByVendor": false,
     "Icon": null,
     "PassiveName": "Tangling Tines",
-    "PassiveDescription": "Pincer strikes have a 15% chance to Slow the target.",
+    "PassiveDescription": "[Pincer] strikes have a 15% chance to [Slow] the target.",
     "PincerApplyBuff": "slowed",
     "PincerApplyBuffChance": 0.15
   },
@@ -10127,7 +10127,7 @@
     "PincerApplyBuff": "poisoned",
     "PincerApplyBuffChance": 0.1,
     "PassiveName": "Venom Tip",
-    "PassiveDescription": "Pincer strikes have a 10% chance to Poison the target."
+    "PassiveDescription": "[Pincer] strikes have a 10% chance to [Poison] the target."
   },
   {
     "Id": "eq_dart_frog_plus1",
@@ -10162,7 +10162,7 @@
     "PincerApplyBuff": "poisoned",
     "PincerApplyBuffChance": 0.1,
     "PassiveName": "Venom Tip",
-    "PassiveDescription": "Pincer strikes have a 10% chance to Poison the target."
+    "PassiveDescription": "[Pincer] strikes have a 10% chance to [Poison] the target."
   },
   {
     "Id": "eq_dart_frog_plus2",
@@ -10197,7 +10197,7 @@
     "PincerApplyBuff": "poisoned",
     "PincerApplyBuffChance": 0.1,
     "PassiveName": "Venom Tip",
-    "PassiveDescription": "Pincer strikes have a 10% chance to Poison the target."
+    "PassiveDescription": "[Pincer] strikes have a 10% chance to [Poison] the target."
   },
   {
     "Id": "eq_dart_frog_plus3",
@@ -10232,7 +10232,7 @@
     "PincerApplyBuff": "poisoned",
     "PincerApplyBuffChance": 0.25,
     "PassiveName": "Toxic Volley",
-    "PassiveDescription": "Pincer strikes have a 25% chance to Poison the target."
+    "PassiveDescription": "[Pincer] strikes have a 25% chance to [Poison] the target."
   },
   {
     "Id": "eq_dart_frog_ench_flame",
@@ -10267,7 +10267,7 @@
     "PincerApplyBuff": "poisoned",
     "PincerApplyBuffChance": 0.1,
     "PassiveName": "Venom Tip",
-    "PassiveDescription": "Pincer strikes have a 10% chance to Poison the target."
+    "PassiveDescription": "[Pincer] strikes have a 10% chance to [Poison] the target."
   },
   {
     "Id": "eq_dart_frog_ench_frost",
@@ -10302,7 +10302,7 @@
     "PincerApplyBuff": "poisoned",
     "PincerApplyBuffChance": 0.1,
     "PassiveName": "Venom Tip",
-    "PassiveDescription": "Pincer strikes have a 10% chance to Poison the target."
+    "PassiveDescription": "[Pincer] strikes have a 10% chance to [Poison] the target."
   },
   {
     "Id": "eq_dart_frog_ench_spark",
@@ -10337,7 +10337,7 @@
     "PincerApplyBuff": "poisoned",
     "PincerApplyBuffChance": 0.1,
     "PassiveName": "Venom Tip",
-    "PassiveDescription": "Pincer strikes have a 10% chance to Poison the target."
+    "PassiveDescription": "[Pincer] strikes have a 10% chance to [Poison] the target."
   },
   {
     "Id": "eq_dart_frog_ench_shadow",
@@ -10372,7 +10372,7 @@
     "PincerApplyBuff": "poisoned",
     "PincerApplyBuffChance": 0.1,
     "PassiveName": "Venom Tip",
-    "PassiveDescription": "Pincer strikes have a 10% chance to Poison the target."
+    "PassiveDescription": "[Pincer] strikes have a 10% chance to [Poison] the target."
   },
   {
     "Id": "eq_dart_frog_ench_poison",
@@ -10407,7 +10407,7 @@
     "PincerApplyBuff": "poisoned",
     "PincerApplyBuffChance": 0.1,
     "PassiveName": "Venom Tip",
-    "PassiveDescription": "Pincer strikes have a 10% chance to Poison the target."
+    "PassiveDescription": "[Pincer] strikes have a 10% chance to [Poison] the target."
   },
   {
     "Id": "eq_dart_frog_ench_holy",
@@ -10442,7 +10442,7 @@
     "PincerApplyBuff": "poisoned",
     "PincerApplyBuffChance": 0.1,
     "PassiveName": "Venom Tip",
-    "PassiveDescription": "Pincer strikes have a 10% chance to Poison the target."
+    "PassiveDescription": "[Pincer] strikes have a 10% chance to [Poison] the target."
   },
   {
     "Id": "eq_lantern_tallow",
@@ -10572,7 +10572,7 @@
     "Icon": null,
     "BankCapacityBonus": 1,
     "PassiveName": "Glare",
-    "PassiveDescription": "Pincer strikes have a 15% chance to Blind the target.",
+    "PassiveDescription": "[Pincer] strikes have a 15% chance to [Blind] the target.",
     "PincerApplyBuff": "blinded",
     "PincerApplyBuffChance": 0.15
   },
@@ -11205,7 +11205,7 @@
     "SoldByVendor": false,
     "Icon": null,
     "PassiveName": "Iron Hoop",
-    "PassiveDescription": "Adjacent ally heroes take 8% less damage.",
+    "PassiveDescription": "[Adjacent] ally heroes take 8% less damage.",
     "AdjacentAllyDamageReduction": 0.08
   },
   {
@@ -11522,7 +11522,7 @@
     "Icon": null,
     "RegenPerTurn": 2,
     "PassiveName": "Wayfarer's Blessing",
-    "PassiveDescription": "Adjacent ally heroes take 8% less damage.",
+    "PassiveDescription": "[Adjacent] ally heroes take 8% less damage.",
     "AdjacentAllyDamageReduction": 0.08
   },
   {
@@ -11750,7 +11750,7 @@
     "PincerApplyBuff": "blinded",
     "PincerApplyBuffChance": 0.1,
     "PassiveName": "Dirty Trick",
-    "PassiveDescription": "Pincer strikes have a 10% chance to Blind the target."
+    "PassiveDescription": "[Pincer] strikes have a 10% chance to [Blind] the target."
   },
   {
     "Id": "eq_knife_bandit_plus1",
@@ -11785,7 +11785,7 @@
     "PincerApplyBuff": "blinded",
     "PincerApplyBuffChance": 0.1,
     "PassiveName": "Dirty Trick",
-    "PassiveDescription": "Pincer strikes have a 10% chance to Blind the target."
+    "PassiveDescription": "[Pincer] strikes have a 10% chance to [Blind] the target."
   },
   {
     "Id": "eq_knife_bandit_plus2",
@@ -11820,7 +11820,7 @@
     "PincerApplyBuff": "blinded",
     "PincerApplyBuffChance": 0.1,
     "PassiveName": "Dirty Trick",
-    "PassiveDescription": "Pincer strikes have a 10% chance to Blind the target."
+    "PassiveDescription": "[Pincer] strikes have a 10% chance to [Blind] the target."
   },
   {
     "Id": "eq_knife_bandit_plus3",
@@ -11855,7 +11855,7 @@
     "PincerApplyBuff": "blinded",
     "PincerApplyBuffChance": 0.2,
     "PassiveName": "Cutpurse's Feint",
-    "PassiveDescription": "Pincer strikes have a 20% chance to Blind the target."
+    "PassiveDescription": "[Pincer] strikes have a 20% chance to [Blind] the target."
   },
   {
     "Id": "eq_knife_bandit_ench_flame",
@@ -11890,7 +11890,7 @@
     "PincerApplyBuff": "blinded",
     "PincerApplyBuffChance": 0.1,
     "PassiveName": "Dirty Trick",
-    "PassiveDescription": "Pincer strikes have a 10% chance to Blind the target."
+    "PassiveDescription": "[Pincer] strikes have a 10% chance to [Blind] the target."
   },
   {
     "Id": "eq_knife_bandit_ench_frost",
@@ -11925,7 +11925,7 @@
     "PincerApplyBuff": "blinded",
     "PincerApplyBuffChance": 0.1,
     "PassiveName": "Dirty Trick",
-    "PassiveDescription": "Pincer strikes have a 10% chance to Blind the target."
+    "PassiveDescription": "[Pincer] strikes have a 10% chance to [Blind] the target."
   },
   {
     "Id": "eq_knife_bandit_ench_spark",
@@ -11960,7 +11960,7 @@
     "PincerApplyBuff": "blinded",
     "PincerApplyBuffChance": 0.1,
     "PassiveName": "Dirty Trick",
-    "PassiveDescription": "Pincer strikes have a 10% chance to Blind the target."
+    "PassiveDescription": "[Pincer] strikes have a 10% chance to [Blind] the target."
   },
   {
     "Id": "eq_knife_bandit_ench_shadow",
@@ -11995,7 +11995,7 @@
     "PincerApplyBuff": "blinded",
     "PincerApplyBuffChance": 0.1,
     "PassiveName": "Dirty Trick",
-    "PassiveDescription": "Pincer strikes have a 10% chance to Blind the target."
+    "PassiveDescription": "[Pincer] strikes have a 10% chance to [Blind] the target."
   },
   {
     "Id": "eq_knife_bandit_ench_poison",
@@ -12030,7 +12030,7 @@
     "PincerApplyBuff": "blinded",
     "PincerApplyBuffChance": 0.1,
     "PassiveName": "Dirty Trick",
-    "PassiveDescription": "Pincer strikes have a 10% chance to Blind the target."
+    "PassiveDescription": "[Pincer] strikes have a 10% chance to [Blind] the target."
   },
   {
     "Id": "eq_knife_bandit_ench_holy",
@@ -12065,7 +12065,7 @@
     "PincerApplyBuff": "blinded",
     "PincerApplyBuffChance": 0.1,
     "PassiveName": "Dirty Trick",
-    "PassiveDescription": "Pincer strikes have a 10% chance to Blind the target."
+    "PassiveDescription": "[Pincer] strikes have a 10% chance to [Blind] the target."
   },
   {
     "Id": "eq_sling_wolfbone",
@@ -12191,7 +12191,7 @@
     "SoldByVendor": false,
     "Icon": null,
     "PassiveName": "Howling Stone",
-    "PassiveDescription": "Pincer strikes have a 20% chance to Slow the target.",
+    "PassiveDescription": "[Pincer] strikes have a 20% chance to [Slow] the target.",
     "PincerApplyBuff": "slowed",
     "PincerApplyBuffChance": 0.2
   },
@@ -12414,7 +12414,7 @@
     "PincerApplyBuff": "poisoned",
     "PincerApplyBuffChance": 0.1,
     "PassiveName": "Bog Rot",
-    "PassiveDescription": "Pincer strikes have a 10% chance to Poison the target."
+    "PassiveDescription": "[Pincer] strikes have a 10% chance to [Poison] the target."
   },
   {
     "Id": "eq_sickle_marsh_plus1",
@@ -12449,7 +12449,7 @@
     "PincerApplyBuff": "poisoned",
     "PincerApplyBuffChance": 0.1,
     "PassiveName": "Bog Rot",
-    "PassiveDescription": "Pincer strikes have a 10% chance to Poison the target."
+    "PassiveDescription": "[Pincer] strikes have a 10% chance to [Poison] the target."
   },
   {
     "Id": "eq_sickle_marsh_plus2",
@@ -12484,7 +12484,7 @@
     "PincerApplyBuff": "poisoned",
     "PincerApplyBuffChance": 0.1,
     "PassiveName": "Bog Rot",
-    "PassiveDescription": "Pincer strikes have a 10% chance to Poison the target."
+    "PassiveDescription": "[Pincer] strikes have a 10% chance to [Poison] the target."
   },
   {
     "Id": "eq_sickle_marsh_plus3",
@@ -12519,7 +12519,7 @@
     "PincerApplyBuff": "poisoned",
     "PincerApplyBuffChance": 0.22,
     "PassiveName": "Mire Reaper",
-    "PassiveDescription": "Pincer strikes have a 22% chance to Poison the target."
+    "PassiveDescription": "[Pincer] strikes have a 22% chance to [Poison] the target."
   },
   {
     "Id": "eq_sickle_marsh_ench_flame",
@@ -12554,7 +12554,7 @@
     "PincerApplyBuff": "poisoned",
     "PincerApplyBuffChance": 0.1,
     "PassiveName": "Bog Rot",
-    "PassiveDescription": "Pincer strikes have a 10% chance to Poison the target."
+    "PassiveDescription": "[Pincer] strikes have a 10% chance to [Poison] the target."
   },
   {
     "Id": "eq_sickle_marsh_ench_frost",
@@ -12589,7 +12589,7 @@
     "PincerApplyBuff": "poisoned",
     "PincerApplyBuffChance": 0.1,
     "PassiveName": "Bog Rot",
-    "PassiveDescription": "Pincer strikes have a 10% chance to Poison the target."
+    "PassiveDescription": "[Pincer] strikes have a 10% chance to [Poison] the target."
   },
   {
     "Id": "eq_sickle_marsh_ench_spark",
@@ -12624,7 +12624,7 @@
     "PincerApplyBuff": "poisoned",
     "PincerApplyBuffChance": 0.1,
     "PassiveName": "Bog Rot",
-    "PassiveDescription": "Pincer strikes have a 10% chance to Poison the target."
+    "PassiveDescription": "[Pincer] strikes have a 10% chance to [Poison] the target."
   },
   {
     "Id": "eq_sickle_marsh_ench_shadow",
@@ -12659,7 +12659,7 @@
     "PincerApplyBuff": "poisoned",
     "PincerApplyBuffChance": 0.1,
     "PassiveName": "Bog Rot",
-    "PassiveDescription": "Pincer strikes have a 10% chance to Poison the target."
+    "PassiveDescription": "[Pincer] strikes have a 10% chance to [Poison] the target."
   },
   {
     "Id": "eq_sickle_marsh_ench_poison",
@@ -12694,7 +12694,7 @@
     "PincerApplyBuff": "poisoned",
     "PincerApplyBuffChance": 0.1,
     "PassiveName": "Bog Rot",
-    "PassiveDescription": "Pincer strikes have a 10% chance to Poison the target."
+    "PassiveDescription": "[Pincer] strikes have a 10% chance to [Poison] the target."
   },
   {
     "Id": "eq_sickle_marsh_ench_holy",
@@ -12729,7 +12729,7 @@
     "PincerApplyBuff": "poisoned",
     "PincerApplyBuffChance": 0.1,
     "PassiveName": "Bog Rot",
-    "PassiveDescription": "Pincer strikes have a 10% chance to Poison the target."
+    "PassiveDescription": "[Pincer] strikes have a 10% chance to [Poison] the target."
   },
   {
     "Id": "eq_bolas_courier",
@@ -12855,7 +12855,7 @@
     "SoldByVendor": false,
     "Icon": null,
     "PassiveName": "Hobbling Throw",
-    "PassiveDescription": "Pincer strikes have a 25% chance to Slow the target.",
+    "PassiveDescription": "[Pincer] strikes have a 25% chance to [Slow] the target.",
     "PincerApplyBuff": "slowed",
     "PincerApplyBuffChance": 0.25
   },
@@ -13177,7 +13177,7 @@
     "SoldByVendor": false,
     "Icon": null,
     "PassiveName": "Hearthglow",
-    "PassiveDescription": "Adjacent ally heroes take 8% less damage.",
+    "PassiveDescription": "[Adjacent] ally heroes take 8% less damage.",
     "AdjacentAllyDamageReduction": 0.08
   },
   {
@@ -13819,7 +13819,7 @@
     "Icon": null,
     "StartsProtected": true,
     "PassiveName": "Oathkeeper",
-    "PassiveDescription": "Adjacent ally heroes take 10% less damage.",
+    "PassiveDescription": "[Adjacent] ally heroes take 10% less damage.",
     "AdjacentAllyDamageReduction": 0.1
   },
   {
@@ -14142,7 +14142,7 @@
     "Icon": null,
     "BankCapacityBonus": 1,
     "PassiveName": "Overclock",
-    "PassiveDescription": "Pincer strikes have a 20% chance to Slow the target.",
+    "PassiveDescription": "[Pincer] strikes have a 20% chance to [Slow] the target.",
     "PincerApplyBuff": "slowed",
     "PincerApplyBuffChance": 0.2
   },
@@ -14466,7 +14466,7 @@
     "Icon": null,
     "RegenPerTurn": 3,
     "PassiveName": "Will-o'-Wisp",
-    "PassiveDescription": "Pincer strikes have a 12% chance to put the target to Sleep.",
+    "PassiveDescription": "[Pincer] strikes have a 12% chance to put the target to [Sleep].",
     "PincerApplyBuff": "sleep",
     "PincerApplyBuffChance": 0.12
   },
@@ -14786,7 +14786,7 @@
     "SoldByVendor": false,
     "Icon": null,
     "PassiveName": "Shattering Ring",
-    "PassiveDescription": "Pincer strikes have a 20% chance to Slow the target.",
+    "PassiveDescription": "[Pincer] strikes have a 20% chance to [Slow] the target.",
     "PincerApplyBuff": "slowed",
     "PincerApplyBuffChance": 0.2
   },
@@ -15448,7 +15448,7 @@
     "SoldByVendor": false,
     "Icon": null,
     "PassiveName": "Permafrost",
-    "PassiveDescription": "Pincer strikes have a 15% chance to Freeze the target.",
+    "PassiveDescription": "[Pincer] strikes have a 15% chance to [Freeze] the target.",
     "PincerApplyBuff": "frozen",
     "PincerApplyBuffChance": 0.15
   },
@@ -15778,7 +15778,7 @@
     "Icon": null,
     "RegenPerTurn": 4,
     "PassiveName": "Choir of Wings",
-    "PassiveDescription": "Adjacent ally heroes take 12% less damage.",
+    "PassiveDescription": "[Adjacent] ally heroes take 12% less damage.",
     "AdjacentAllyDamageReduction": 0.12
   },
   {
@@ -16101,7 +16101,7 @@
     "Icon": null,
     "RegenPerTurn": 5,
     "PassiveName": "Deep Roots",
-    "PassiveDescription": "Adjacent ally heroes take 14% less damage.",
+    "PassiveDescription": "[Adjacent] ally heroes take 14% less damage.",
     "AdjacentAllyDamageReduction": 0.14
   },
   {
@@ -16424,7 +16424,7 @@
     "Icon": null,
     "PincerDamageBonus": 0.1,
     "PassiveName": "Totality",
-    "PassiveDescription": "Pincer strikes have a 25% chance to Blind the target.",
+    "PassiveDescription": "[Pincer] strikes have a 25% chance to [Blind] the target.",
     "PincerApplyBuff": "blinded",
     "PincerApplyBuffChance": 0.25
   },
@@ -16744,7 +16744,7 @@
     "SoldByVendor": false,
     "Icon": null,
     "PassiveName": "Shield Wall",
-    "PassiveDescription": "Adjacent ally heroes take 7% less damage.",
+    "PassiveDescription": "[Adjacent] ally heroes take 7% less damage.",
     "AdjacentAllyDamageReduction": 0.07
   },
   {
@@ -17370,7 +17370,7 @@
     "SoldByVendor": false,
     "Icon": null,
     "PassiveName": "Hewing Blow",
-    "PassiveDescription": "Pincer strikes have a 15% chance to Slow the target.",
+    "PassiveDescription": "[Pincer] strikes have a 15% chance to [Slow] the target.",
     "PincerApplyBuff": "slowed",
     "PincerApplyBuffChance": 0.15
   },
@@ -17684,7 +17684,7 @@
     "SoldByVendor": false,
     "Icon": null,
     "PassiveName": "Bolt Through",
-    "PassiveDescription": "Pincer strikes have a 15% chance to Slow the target.",
+    "PassiveDescription": "[Pincer] strikes have a 15% chance to [Slow] the target.",
     "PincerApplyBuff": "slowed",
     "PincerApplyBuffChance": 0.15
   },
@@ -18311,7 +18311,7 @@
     "SoldByVendor": false,
     "Icon": null,
     "PassiveName": "Hold the Line",
-    "PassiveDescription": "Adjacent ally heroes take 9% less damage.",
+    "PassiveDescription": "[Adjacent] ally heroes take 9% less damage.",
     "AdjacentAllyDamageReduction": 0.09
   },
   {
@@ -18533,7 +18533,7 @@
     "PincerApplyBuff": "slowed",
     "PincerApplyBuffChance": 0.1,
     "PassiveName": "Snare",
-    "PassiveDescription": "Pincer strikes have a 10% chance to Slow the target."
+    "PassiveDescription": "[Pincer] strikes have a 10% chance to [Slow] the target."
   },
   {
     "Id": "eq_whip_razorwire_plus1",
@@ -18568,7 +18568,7 @@
     "PincerApplyBuff": "slowed",
     "PincerApplyBuffChance": 0.1,
     "PassiveName": "Snare",
-    "PassiveDescription": "Pincer strikes have a 10% chance to Slow the target."
+    "PassiveDescription": "[Pincer] strikes have a 10% chance to [Slow] the target."
   },
   {
     "Id": "eq_whip_razorwire_plus2",
@@ -18603,7 +18603,7 @@
     "PincerApplyBuff": "slowed",
     "PincerApplyBuffChance": 0.1,
     "PassiveName": "Snare",
-    "PassiveDescription": "Pincer strikes have a 10% chance to Slow the target."
+    "PassiveDescription": "[Pincer] strikes have a 10% chance to [Slow] the target."
   },
   {
     "Id": "eq_whip_razorwire_plus3",
@@ -18638,7 +18638,7 @@
     "PincerApplyBuff": "slowed",
     "PincerApplyBuffChance": 0.25,
     "PassiveName": "Barbed Coil",
-    "PassiveDescription": "Pincer strikes have a 25% chance to Slow the target."
+    "PassiveDescription": "[Pincer] strikes have a 25% chance to [Slow] the target."
   },
   {
     "Id": "eq_whip_razorwire_ench_flame",
@@ -18673,7 +18673,7 @@
     "PincerApplyBuff": "slowed",
     "PincerApplyBuffChance": 0.1,
     "PassiveName": "Snare",
-    "PassiveDescription": "Pincer strikes have a 10% chance to Slow the target."
+    "PassiveDescription": "[Pincer] strikes have a 10% chance to [Slow] the target."
   },
   {
     "Id": "eq_whip_razorwire_ench_frost",
@@ -18708,7 +18708,7 @@
     "PincerApplyBuff": "slowed",
     "PincerApplyBuffChance": 0.1,
     "PassiveName": "Snare",
-    "PassiveDescription": "Pincer strikes have a 10% chance to Slow the target."
+    "PassiveDescription": "[Pincer] strikes have a 10% chance to [Slow] the target."
   },
   {
     "Id": "eq_whip_razorwire_ench_spark",
@@ -18743,7 +18743,7 @@
     "PincerApplyBuff": "slowed",
     "PincerApplyBuffChance": 0.1,
     "PassiveName": "Snare",
-    "PassiveDescription": "Pincer strikes have a 10% chance to Slow the target."
+    "PassiveDescription": "[Pincer] strikes have a 10% chance to [Slow] the target."
   },
   {
     "Id": "eq_whip_razorwire_ench_shadow",
@@ -18778,7 +18778,7 @@
     "PincerApplyBuff": "slowed",
     "PincerApplyBuffChance": 0.1,
     "PassiveName": "Snare",
-    "PassiveDescription": "Pincer strikes have a 10% chance to Slow the target."
+    "PassiveDescription": "[Pincer] strikes have a 10% chance to [Slow] the target."
   },
   {
     "Id": "eq_whip_razorwire_ench_poison",
@@ -18813,7 +18813,7 @@
     "PincerApplyBuff": "slowed",
     "PincerApplyBuffChance": 0.1,
     "PassiveName": "Snare",
-    "PassiveDescription": "Pincer strikes have a 10% chance to Slow the target."
+    "PassiveDescription": "[Pincer] strikes have a 10% chance to [Slow] the target."
   },
   {
     "Id": "eq_whip_razorwire_ench_holy",
@@ -18848,7 +18848,7 @@
     "PincerApplyBuff": "slowed",
     "PincerApplyBuffChance": 0.1,
     "PassiveName": "Snare",
-    "PassiveDescription": "Pincer strikes have a 10% chance to Slow the target."
+    "PassiveDescription": "[Pincer] strikes have a 10% chance to [Slow] the target."
   },
   {
     "Id": "eq_knuckles_fang",
@@ -19287,7 +19287,7 @@
     "SoldByVendor": false,
     "Icon": null,
     "PassiveName": "Disarming Thrust",
-    "PassiveDescription": "Pincer strikes have a 15% chance to Blind the target.",
+    "PassiveDescription": "[Pincer] strikes have a 15% chance to [Blind] the target.",
     "PincerApplyBuff": "blinded",
     "PincerApplyBuffChance": 0.15
   },
@@ -19601,7 +19601,7 @@
     "SoldByVendor": false,
     "Icon": null,
     "PassiveName": "Night Swoop",
-    "PassiveDescription": "Pincer strikes have a 15% chance to Blind the target.",
+    "PassiveDescription": "[Pincer] strikes have a 15% chance to [Blind] the target.",
     "PincerApplyBuff": "blinded",
     "PincerApplyBuffChance": 0.15
   },
@@ -19824,7 +19824,7 @@
     "PincerApplyBuff": "wet",
     "PincerApplyBuffChance": 0.12,
     "PassiveName": "Tidecall",
-    "PassiveDescription": "Pincer strikes have a 12% chance to Soak the target."
+    "PassiveDescription": "[Pincer] strikes have a 12% chance to [Soak] the target."
   },
   {
     "Id": "eq_trident_naga_plus1",
@@ -19859,7 +19859,7 @@
     "PincerApplyBuff": "wet",
     "PincerApplyBuffChance": 0.12,
     "PassiveName": "Tidecall",
-    "PassiveDescription": "Pincer strikes have a 12% chance to Soak the target."
+    "PassiveDescription": "[Pincer] strikes have a 12% chance to [Soak] the target."
   },
   {
     "Id": "eq_trident_naga_plus2",
@@ -19894,7 +19894,7 @@
     "PincerApplyBuff": "wet",
     "PincerApplyBuffChance": 0.12,
     "PassiveName": "Tidecall",
-    "PassiveDescription": "Pincer strikes have a 12% chance to Soak the target."
+    "PassiveDescription": "[Pincer] strikes have a 12% chance to [Soak] the target."
   },
   {
     "Id": "eq_trident_naga_plus3",
@@ -19929,7 +19929,7 @@
     "PincerApplyBuff": "wet",
     "PincerApplyBuffChance": 0.3,
     "PassiveName": "Riptide",
-    "PassiveDescription": "Pincer strikes have a 30% chance to Soak the target."
+    "PassiveDescription": "[Pincer] strikes have a 30% chance to [Soak] the target."
   },
   {
     "Id": "eq_trident_naga_ench_flame",
@@ -19964,7 +19964,7 @@
     "PincerApplyBuff": "wet",
     "PincerApplyBuffChance": 0.12,
     "PassiveName": "Tidecall",
-    "PassiveDescription": "Pincer strikes have a 12% chance to Soak the target."
+    "PassiveDescription": "[Pincer] strikes have a 12% chance to [Soak] the target."
   },
   {
     "Id": "eq_trident_naga_ench_frost",
@@ -19999,7 +19999,7 @@
     "PincerApplyBuff": "wet",
     "PincerApplyBuffChance": 0.12,
     "PassiveName": "Tidecall",
-    "PassiveDescription": "Pincer strikes have a 12% chance to Soak the target."
+    "PassiveDescription": "[Pincer] strikes have a 12% chance to [Soak] the target."
   },
   {
     "Id": "eq_trident_naga_ench_spark",
@@ -20034,7 +20034,7 @@
     "PincerApplyBuff": "wet",
     "PincerApplyBuffChance": 0.12,
     "PassiveName": "Tidecall",
-    "PassiveDescription": "Pincer strikes have a 12% chance to Soak the target."
+    "PassiveDescription": "[Pincer] strikes have a 12% chance to [Soak] the target."
   },
   {
     "Id": "eq_trident_naga_ench_shadow",
@@ -20069,7 +20069,7 @@
     "PincerApplyBuff": "wet",
     "PincerApplyBuffChance": 0.12,
     "PassiveName": "Tidecall",
-    "PassiveDescription": "Pincer strikes have a 12% chance to Soak the target."
+    "PassiveDescription": "[Pincer] strikes have a 12% chance to [Soak] the target."
   },
   {
     "Id": "eq_trident_naga_ench_poison",
@@ -20104,7 +20104,7 @@
     "PincerApplyBuff": "wet",
     "PincerApplyBuffChance": 0.12,
     "PassiveName": "Tidecall",
-    "PassiveDescription": "Pincer strikes have a 12% chance to Soak the target."
+    "PassiveDescription": "[Pincer] strikes have a 12% chance to [Soak] the target."
   },
   {
     "Id": "eq_trident_naga_ench_holy",
@@ -20139,7 +20139,7 @@
     "PincerApplyBuff": "wet",
     "PincerApplyBuffChance": 0.12,
     "PassiveName": "Tidecall",
-    "PassiveDescription": "Pincer strikes have a 12% chance to Soak the target."
+    "PassiveDescription": "[Pincer] strikes have a 12% chance to [Soak] the target."
   },
   {
     "Id": "eq_bow_vulture",
@@ -20891,7 +20891,7 @@
     "SoldByVendor": false,
     "Icon": null,
     "PassiveName": "Bone Breaker",
-    "PassiveDescription": "Pincer strikes have a 20% chance to Slow the target.",
+    "PassiveDescription": "[Pincer] strikes have a 20% chance to [Slow] the target.",
     "PincerApplyBuff": "slowed",
     "PincerApplyBuffChance": 0.2
   },
@@ -21205,7 +21205,7 @@
     "SoldByVendor": false,
     "Icon": null,
     "PassiveName": "Earthshaker",
-    "PassiveDescription": "Adjacent ally heroes take 11% less damage.",
+    "PassiveDescription": "[Adjacent] ally heroes take 11% less damage.",
     "AdjacentAllyDamageReduction": 0.11
   },
   {
@@ -21841,7 +21841,7 @@
     "SoldByVendor": false,
     "Icon": null,
     "PassiveName": "Stinging Harvest",
-    "PassiveDescription": "Pincer strikes have a 20% chance to Poison the target.",
+    "PassiveDescription": "[Pincer] strikes have a 20% chance to [Poison] the target.",
     "PincerApplyBuff": "poisoned",
     "PincerApplyBuffChance": 0.2
   },
@@ -22159,7 +22159,7 @@
     "Icon": null,
     "StartsProtected": true,
     "PassiveName": "Piston Guard",
-    "PassiveDescription": "Adjacent ally heroes take 12% less damage.",
+    "PassiveDescription": "[Adjacent] ally heroes take 12% less damage.",
     "AdjacentAllyDamageReduction": 0.12
   },
   {
@@ -22818,7 +22818,7 @@
     "SoldByVendor": false,
     "Icon": null,
     "PassiveName": "Hexed Bolt",
-    "PassiveDescription": "Pincer strikes have a 15% chance to Silence the target.",
+    "PassiveDescription": "[Pincer] strikes have a 15% chance to [Silence] the target.",
     "PincerApplyBuff": "silenced",
     "PincerApplyBuffChance": 0.15
   },
@@ -23041,7 +23041,7 @@
     "PincerApplyBuff": "burning",
     "PincerApplyBuffChance": 0.1,
     "PassiveName": "Oni Fire",
-    "PassiveDescription": "Pincer strikes have a 10% chance to Burn the target."
+    "PassiveDescription": "[Pincer] strikes have a 10% chance to [Burn] the target."
   },
   {
     "Id": "eq_katana_oni_plus1",
@@ -23076,7 +23076,7 @@
     "PincerApplyBuff": "burning",
     "PincerApplyBuffChance": 0.1,
     "PassiveName": "Oni Fire",
-    "PassiveDescription": "Pincer strikes have a 10% chance to Burn the target."
+    "PassiveDescription": "[Pincer] strikes have a 10% chance to [Burn] the target."
   },
   {
     "Id": "eq_katana_oni_plus2",
@@ -23111,7 +23111,7 @@
     "PincerApplyBuff": "burning",
     "PincerApplyBuffChance": 0.1,
     "PassiveName": "Oni Fire",
-    "PassiveDescription": "Pincer strikes have a 10% chance to Burn the target."
+    "PassiveDescription": "[Pincer] strikes have a 10% chance to [Burn] the target."
   },
   {
     "Id": "eq_katana_oni_plus3",
@@ -23146,7 +23146,7 @@
     "PincerApplyBuff": "burning",
     "PincerApplyBuffChance": 0.22,
     "PassiveName": "Demon's Edge",
-    "PassiveDescription": "Pincer strikes have a 22% chance to Burn the target."
+    "PassiveDescription": "[Pincer] strikes have a 22% chance to [Burn] the target."
   },
   {
     "Id": "eq_katana_oni_ench_flame",
@@ -23181,7 +23181,7 @@
     "PincerApplyBuff": "burning",
     "PincerApplyBuffChance": 0.1,
     "PassiveName": "Oni Fire",
-    "PassiveDescription": "Pincer strikes have a 10% chance to Burn the target."
+    "PassiveDescription": "[Pincer] strikes have a 10% chance to [Burn] the target."
   },
   {
     "Id": "eq_katana_oni_ench_frost",
@@ -23216,7 +23216,7 @@
     "PincerApplyBuff": "burning",
     "PincerApplyBuffChance": 0.1,
     "PassiveName": "Oni Fire",
-    "PassiveDescription": "Pincer strikes have a 10% chance to Burn the target."
+    "PassiveDescription": "[Pincer] strikes have a 10% chance to [Burn] the target."
   },
   {
     "Id": "eq_katana_oni_ench_spark",
@@ -23251,7 +23251,7 @@
     "PincerApplyBuff": "burning",
     "PincerApplyBuffChance": 0.1,
     "PassiveName": "Oni Fire",
-    "PassiveDescription": "Pincer strikes have a 10% chance to Burn the target."
+    "PassiveDescription": "[Pincer] strikes have a 10% chance to [Burn] the target."
   },
   {
     "Id": "eq_katana_oni_ench_shadow",
@@ -23286,7 +23286,7 @@
     "PincerApplyBuff": "burning",
     "PincerApplyBuffChance": 0.1,
     "PassiveName": "Oni Fire",
-    "PassiveDescription": "Pincer strikes have a 10% chance to Burn the target."
+    "PassiveDescription": "[Pincer] strikes have a 10% chance to [Burn] the target."
   },
   {
     "Id": "eq_katana_oni_ench_poison",
@@ -23321,7 +23321,7 @@
     "PincerApplyBuff": "burning",
     "PincerApplyBuffChance": 0.1,
     "PassiveName": "Oni Fire",
-    "PassiveDescription": "Pincer strikes have a 10% chance to Burn the target."
+    "PassiveDescription": "[Pincer] strikes have a 10% chance to [Burn] the target."
   },
   {
     "Id": "eq_katana_oni_ench_holy",
@@ -23356,7 +23356,7 @@
     "PincerApplyBuff": "burning",
     "PincerApplyBuffChance": 0.1,
     "PassiveName": "Oni Fire",
-    "PassiveDescription": "Pincer strikes have a 10% chance to Burn the target."
+    "PassiveDescription": "[Pincer] strikes have a 10% chance to [Burn] the target."
   },
   {
     "Id": "eq_trident_storm",
@@ -23490,7 +23490,7 @@
     "SoldByVendor": false,
     "Icon": null,
     "PassiveName": "Thunderclap",
-    "PassiveDescription": "Pincer strikes have a 20% chance to Slow the target.",
+    "PassiveDescription": "[Pincer] strikes have a 20% chance to [Slow] the target.",
     "PincerApplyBuff": "slowed",
     "PincerApplyBuffChance": 0.2
   },
@@ -24147,7 +24147,7 @@
     "SoldByVendor": false,
     "Icon": null,
     "PassiveName": "Dragon Wall",
-    "PassiveDescription": "Adjacent ally heroes take 14% less damage.",
+    "PassiveDescription": "[Adjacent] ally heroes take 14% less damage.",
     "AdjacentAllyDamageReduction": 0.14
   },
   {
@@ -24381,7 +24381,7 @@
     "PincerApplyBuff": "frozen",
     "PincerApplyBuffChance": 0.08,
     "PassiveName": "Rime",
-    "PassiveDescription": "Pincer strikes have a 8% chance to Freeze the target."
+    "PassiveDescription": "[Pincer] strikes have a 8% chance to [Freeze] the target."
   },
   {
     "Id": "eq_glaive_frostbite_plus1",
@@ -24416,7 +24416,7 @@
     "PincerApplyBuff": "frozen",
     "PincerApplyBuffChance": 0.08,
     "PassiveName": "Rime",
-    "PassiveDescription": "Pincer strikes have a 8% chance to Freeze the target."
+    "PassiveDescription": "[Pincer] strikes have a 8% chance to [Freeze] the target."
   },
   {
     "Id": "eq_glaive_frostbite_plus2",
@@ -24451,7 +24451,7 @@
     "PincerApplyBuff": "frozen",
     "PincerApplyBuffChance": 0.08,
     "PassiveName": "Rime",
-    "PassiveDescription": "Pincer strikes have a 8% chance to Freeze the target."
+    "PassiveDescription": "[Pincer] strikes have a 8% chance to [Freeze] the target."
   },
   {
     "Id": "eq_glaive_frostbite_plus3",
@@ -24486,7 +24486,7 @@
     "PincerApplyBuff": "frozen",
     "PincerApplyBuffChance": 0.18,
     "PassiveName": "Deep Freeze",
-    "PassiveDescription": "Pincer strikes have a 18% chance to Freeze the target."
+    "PassiveDescription": "[Pincer] strikes have a 18% chance to [Freeze] the target."
   },
   {
     "Id": "eq_glaive_frostbite_ench_flame",
@@ -24521,7 +24521,7 @@
     "PincerApplyBuff": "frozen",
     "PincerApplyBuffChance": 0.08,
     "PassiveName": "Rime",
-    "PassiveDescription": "Pincer strikes have a 8% chance to Freeze the target."
+    "PassiveDescription": "[Pincer] strikes have a 8% chance to [Freeze] the target."
   },
   {
     "Id": "eq_glaive_frostbite_ench_frost",
@@ -24556,7 +24556,7 @@
     "PincerApplyBuff": "frozen",
     "PincerApplyBuffChance": 0.08,
     "PassiveName": "Rime",
-    "PassiveDescription": "Pincer strikes have a 8% chance to Freeze the target."
+    "PassiveDescription": "[Pincer] strikes have a 8% chance to [Freeze] the target."
   },
   {
     "Id": "eq_glaive_frostbite_ench_spark",
@@ -24591,7 +24591,7 @@
     "PincerApplyBuff": "frozen",
     "PincerApplyBuffChance": 0.08,
     "PassiveName": "Rime",
-    "PassiveDescription": "Pincer strikes have a 8% chance to Freeze the target."
+    "PassiveDescription": "[Pincer] strikes have a 8% chance to [Freeze] the target."
   },
   {
     "Id": "eq_glaive_frostbite_ench_shadow",
@@ -24626,7 +24626,7 @@
     "PincerApplyBuff": "frozen",
     "PincerApplyBuffChance": 0.08,
     "PassiveName": "Rime",
-    "PassiveDescription": "Pincer strikes have a 8% chance to Freeze the target."
+    "PassiveDescription": "[Pincer] strikes have a 8% chance to [Freeze] the target."
   },
   {
     "Id": "eq_glaive_frostbite_ench_poison",
@@ -24661,7 +24661,7 @@
     "PincerApplyBuff": "frozen",
     "PincerApplyBuffChance": 0.08,
     "PassiveName": "Rime",
-    "PassiveDescription": "Pincer strikes have a 8% chance to Freeze the target."
+    "PassiveDescription": "[Pincer] strikes have a 8% chance to [Freeze] the target."
   },
   {
     "Id": "eq_glaive_frostbite_ench_holy",
@@ -24696,7 +24696,7 @@
     "PincerApplyBuff": "frozen",
     "PincerApplyBuffChance": 0.08,
     "PassiveName": "Rime",
-    "PassiveDescription": "Pincer strikes have a 8% chance to Freeze the target."
+    "PassiveDescription": "[Pincer] strikes have a 8% chance to [Freeze] the target."
   },
   {
     "Id": "eq_crossbow_arc",
@@ -24822,7 +24822,7 @@
     "SoldByVendor": false,
     "Icon": null,
     "PassiveName": "Chain Bolt",
-    "PassiveDescription": "Pincer strikes have a 25% chance to Slow the target.",
+    "PassiveDescription": "[Pincer] strikes have a 25% chance to [Slow] the target.",
     "PincerApplyBuff": "slowed",
     "PincerApplyBuffChance": 0.25
   },
@@ -25358,7 +25358,7 @@
     "PincerApplyBuff": "blinded",
     "PincerApplyBuffChance": 0.1,
     "PassiveName": "Ghost Step",
-    "PassiveDescription": "Pincer strikes have a 10% chance to Blind the target."
+    "PassiveDescription": "[Pincer] strikes have a 10% chance to [Blind] the target."
   },
   {
     "Id": "eq_rapier_phantom_plus1",
@@ -25393,7 +25393,7 @@
     "PincerApplyBuff": "blinded",
     "PincerApplyBuffChance": 0.1,
     "PassiveName": "Ghost Step",
-    "PassiveDescription": "Pincer strikes have a 10% chance to Blind the target."
+    "PassiveDescription": "[Pincer] strikes have a 10% chance to [Blind] the target."
   },
   {
     "Id": "eq_rapier_phantom_plus2",
@@ -25428,7 +25428,7 @@
     "PincerApplyBuff": "blinded",
     "PincerApplyBuffChance": 0.1,
     "PassiveName": "Ghost Step",
-    "PassiveDescription": "Pincer strikes have a 10% chance to Blind the target."
+    "PassiveDescription": "[Pincer] strikes have a 10% chance to [Blind] the target."
   },
   {
     "Id": "eq_rapier_phantom_plus3",
@@ -25463,7 +25463,7 @@
     "PincerApplyBuff": "blinded",
     "PincerApplyBuffChance": 0.22,
     "PassiveName": "Vanishing Point",
-    "PassiveDescription": "Pincer strikes have a 22% chance to Blind the target."
+    "PassiveDescription": "[Pincer] strikes have a 22% chance to [Blind] the target."
   },
   {
     "Id": "eq_rapier_phantom_ench_flame",
@@ -25498,7 +25498,7 @@
     "PincerApplyBuff": "blinded",
     "PincerApplyBuffChance": 0.1,
     "PassiveName": "Ghost Step",
-    "PassiveDescription": "Pincer strikes have a 10% chance to Blind the target."
+    "PassiveDescription": "[Pincer] strikes have a 10% chance to [Blind] the target."
   },
   {
     "Id": "eq_rapier_phantom_ench_frost",
@@ -25533,7 +25533,7 @@
     "PincerApplyBuff": "blinded",
     "PincerApplyBuffChance": 0.1,
     "PassiveName": "Ghost Step",
-    "PassiveDescription": "Pincer strikes have a 10% chance to Blind the target."
+    "PassiveDescription": "[Pincer] strikes have a 10% chance to [Blind] the target."
   },
   {
     "Id": "eq_rapier_phantom_ench_spark",
@@ -25568,7 +25568,7 @@
     "PincerApplyBuff": "blinded",
     "PincerApplyBuffChance": 0.1,
     "PassiveName": "Ghost Step",
-    "PassiveDescription": "Pincer strikes have a 10% chance to Blind the target."
+    "PassiveDescription": "[Pincer] strikes have a 10% chance to [Blind] the target."
   },
   {
     "Id": "eq_rapier_phantom_ench_shadow",
@@ -25603,7 +25603,7 @@
     "PincerApplyBuff": "blinded",
     "PincerApplyBuffChance": 0.1,
     "PassiveName": "Ghost Step",
-    "PassiveDescription": "Pincer strikes have a 10% chance to Blind the target."
+    "PassiveDescription": "[Pincer] strikes have a 10% chance to [Blind] the target."
   },
   {
     "Id": "eq_rapier_phantom_ench_poison",
@@ -25638,7 +25638,7 @@
     "PincerApplyBuff": "blinded",
     "PincerApplyBuffChance": 0.1,
     "PassiveName": "Ghost Step",
-    "PassiveDescription": "Pincer strikes have a 10% chance to Blind the target."
+    "PassiveDescription": "[Pincer] strikes have a 10% chance to [Blind] the target."
   },
   {
     "Id": "eq_rapier_phantom_ench_holy",
@@ -25673,7 +25673,7 @@
     "PincerApplyBuff": "blinded",
     "PincerApplyBuffChance": 0.1,
     "PassiveName": "Ghost Step",
-    "PassiveDescription": "Pincer strikes have a 10% chance to Blind the target."
+    "PassiveDescription": "[Pincer] strikes have a 10% chance to [Blind] the target."
   },
   {
     "Id": "eq_axe_hellforged",
@@ -25803,7 +25803,7 @@
     "Icon": null,
     "PincerDamageBonus": 0.1,
     "PassiveName": "Infernal Cleave",
-    "PassiveDescription": "Pincer strikes have a 25% chance to Burn the target.",
+    "PassiveDescription": "[Pincer] strikes have a 25% chance to [Burn] the target.",
     "PincerApplyBuff": "burning",
     "PincerApplyBuffChance": 0.25
   },
@@ -26776,7 +26776,7 @@
     "SoldByVendor": false,
     "Icon": null,
     "PassiveName": "First Lesson",
-    "PassiveDescription": "Pincer strikes have a 12% chance to Silence the target.",
+    "PassiveDescription": "[Pincer] strikes have a 12% chance to [Silence] the target.",
     "PincerApplyBuff": "silenced",
     "PincerApplyBuffChance": 0.12
   },
@@ -27090,7 +27090,7 @@
     "SoldByVendor": false,
     "Icon": null,
     "PassiveName": "Footnote",
-    "PassiveDescription": "Adjacent ally heroes take 6% less damage.",
+    "PassiveDescription": "[Adjacent] ally heroes take 6% less damage.",
     "AdjacentAllyDamageReduction": 0.06
   },
   {
@@ -27403,7 +27403,7 @@
     "SoldByVendor": false,
     "Icon": null,
     "PassiveName": "Refraction",
-    "PassiveDescription": "Pincer strikes have a 12% chance to Blind the target.",
+    "PassiveDescription": "[Pincer] strikes have a 12% chance to [Blind] the target.",
     "PincerApplyBuff": "blinded",
     "PincerApplyBuffChance": 0.12
   },
@@ -27717,7 +27717,7 @@
     "SoldByVendor": false,
     "Icon": null,
     "PassiveName": "Echolocation",
-    "PassiveDescription": "Pincer strikes have a 15% chance to Blind the target.",
+    "PassiveDescription": "[Pincer] strikes have a 15% chance to [Blind] the target.",
     "PincerApplyBuff": "blinded",
     "PincerApplyBuffChance": 0.15
   },
@@ -28039,7 +28039,7 @@
     "SoldByVendor": false,
     "Icon": null,
     "PassiveName": "Gelatinous",
-    "PassiveDescription": "Pincer strikes have a 15% chance to Slow the target.",
+    "PassiveDescription": "[Pincer] strikes have a 15% chance to [Slow] the target.",
     "PincerApplyBuff": "slowed",
     "PincerApplyBuffChance": 0.15
   },
@@ -28365,7 +28365,7 @@
     "SoldByVendor": false,
     "Icon": null,
     "PassiveName": "Binding Rite",
-    "PassiveDescription": "Pincer strikes have a 15% chance to Silence the target.",
+    "PassiveDescription": "[Pincer] strikes have a 15% chance to [Silence] the target.",
     "PincerApplyBuff": "silenced",
     "PincerApplyBuffChance": 0.15
   },
@@ -28683,7 +28683,7 @@
     "Icon": null,
     "RegenPerTurn": 2,
     "PassiveName": "Overgrowth",
-    "PassiveDescription": "Pincer strikes have a 20% chance to Slow the target.",
+    "PassiveDescription": "[Pincer] strikes have a 20% chance to [Slow] the target.",
     "PincerApplyBuff": "slowed",
     "PincerApplyBuffChance": 0.2
   },
@@ -29003,7 +29003,7 @@
     "SoldByVendor": false,
     "Icon": null,
     "PassiveName": "Grave Chill",
-    "PassiveDescription": "Pincer strikes have a 10% chance to Freeze the target.",
+    "PassiveDescription": "[Pincer] strikes have a 10% chance to [Freeze] the target.",
     "PincerApplyBuff": "frozen",
     "PincerApplyBuffChance": 0.1
   },
@@ -29317,7 +29317,7 @@
     "SoldByVendor": false,
     "Icon": null,
     "PassiveName": "Ossuary Ward",
-    "PassiveDescription": "Adjacent ally heroes take 8% less damage.",
+    "PassiveDescription": "[Adjacent] ally heroes take 8% less damage.",
     "AdjacentAllyDamageReduction": 0.08
   },
   {
@@ -29634,7 +29634,7 @@
     "Icon": null,
     "BankCapacityBonus": 1,
     "PassiveName": "Short Circuit",
-    "PassiveDescription": "Pincer strikes have a 15% chance to Silence the target.",
+    "PassiveDescription": "[Pincer] strikes have a 15% chance to [Silence] the target.",
     "PincerApplyBuff": "silenced",
     "PincerApplyBuffChance": 0.15
   },
@@ -29954,7 +29954,7 @@
     "SoldByVendor": false,
     "Icon": null,
     "PassiveName": "Updraft",
-    "PassiveDescription": "Pincer strikes have a 20% chance to Slow the target.",
+    "PassiveDescription": "[Pincer] strikes have a 20% chance to [Slow] the target.",
     "PincerApplyBuff": "slowed",
     "PincerApplyBuffChance": 0.2
   },
@@ -30177,7 +30177,7 @@
     "PincerApplyBuff": "sleep",
     "PincerApplyBuffChance": 0.08,
     "PassiveName": "Grave Hush",
-    "PassiveDescription": "Pincer strikes have a 8% chance to put the target to Sleep."
+    "PassiveDescription": "[Pincer] strikes have a 8% chance to put the target to [Sleep]."
   },
   {
     "Id": "eq_skullstaff_grave_plus1",
@@ -30212,7 +30212,7 @@
     "PincerApplyBuff": "sleep",
     "PincerApplyBuffChance": 0.08,
     "PassiveName": "Grave Hush",
-    "PassiveDescription": "Pincer strikes have a 8% chance to put the target to Sleep."
+    "PassiveDescription": "[Pincer] strikes have a 8% chance to put the target to [Sleep]."
   },
   {
     "Id": "eq_skullstaff_grave_plus2",
@@ -30247,7 +30247,7 @@
     "PincerApplyBuff": "sleep",
     "PincerApplyBuffChance": 0.08,
     "PassiveName": "Grave Hush",
-    "PassiveDescription": "Pincer strikes have a 8% chance to put the target to Sleep."
+    "PassiveDescription": "[Pincer] strikes have a 8% chance to put the target to [Sleep]."
   },
   {
     "Id": "eq_skullstaff_grave_plus3",
@@ -30282,7 +30282,7 @@
     "PincerApplyBuff": "sleep",
     "PincerApplyBuffChance": 0.16,
     "PassiveName": "Eternal Rest",
-    "PassiveDescription": "Pincer strikes have a 16% chance to put the target to Sleep."
+    "PassiveDescription": "[Pincer] strikes have a 16% chance to put the target to [Sleep]."
   },
   {
     "Id": "eq_skullstaff_grave_ench_flame",
@@ -30317,7 +30317,7 @@
     "PincerApplyBuff": "sleep",
     "PincerApplyBuffChance": 0.08,
     "PassiveName": "Grave Hush",
-    "PassiveDescription": "Pincer strikes have a 8% chance to put the target to Sleep."
+    "PassiveDescription": "[Pincer] strikes have a 8% chance to put the target to [Sleep]."
   },
   {
     "Id": "eq_skullstaff_grave_ench_frost",
@@ -30352,7 +30352,7 @@
     "PincerApplyBuff": "sleep",
     "PincerApplyBuffChance": 0.08,
     "PassiveName": "Grave Hush",
-    "PassiveDescription": "Pincer strikes have a 8% chance to put the target to Sleep."
+    "PassiveDescription": "[Pincer] strikes have a 8% chance to put the target to [Sleep]."
   },
   {
     "Id": "eq_skullstaff_grave_ench_spark",
@@ -30387,7 +30387,7 @@
     "PincerApplyBuff": "sleep",
     "PincerApplyBuffChance": 0.08,
     "PassiveName": "Grave Hush",
-    "PassiveDescription": "Pincer strikes have a 8% chance to put the target to Sleep."
+    "PassiveDescription": "[Pincer] strikes have a 8% chance to put the target to [Sleep]."
   },
   {
     "Id": "eq_skullstaff_grave_ench_shadow",
@@ -30422,7 +30422,7 @@
     "PincerApplyBuff": "sleep",
     "PincerApplyBuffChance": 0.08,
     "PassiveName": "Grave Hush",
-    "PassiveDescription": "Pincer strikes have a 8% chance to put the target to Sleep."
+    "PassiveDescription": "[Pincer] strikes have a 8% chance to put the target to [Sleep]."
   },
   {
     "Id": "eq_skullstaff_grave_ench_poison",
@@ -30457,7 +30457,7 @@
     "PincerApplyBuff": "sleep",
     "PincerApplyBuffChance": 0.08,
     "PassiveName": "Grave Hush",
-    "PassiveDescription": "Pincer strikes have a 8% chance to put the target to Sleep."
+    "PassiveDescription": "[Pincer] strikes have a 8% chance to put the target to [Sleep]."
   },
   {
     "Id": "eq_skullstaff_grave_ench_holy",
@@ -30492,7 +30492,7 @@
     "PincerApplyBuff": "sleep",
     "PincerApplyBuffChance": 0.08,
     "PassiveName": "Grave Hush",
-    "PassiveDescription": "Pincer strikes have a 8% chance to put the target to Sleep."
+    "PassiveDescription": "[Pincer] strikes have a 8% chance to put the target to [Sleep]."
   },
   {
     "Id": "eq_wand_puppeteer",
@@ -30618,7 +30618,7 @@
     "SoldByVendor": false,
     "Icon": null,
     "PassiveName": "Cut Strings",
-    "PassiveDescription": "Pincer strikes have a 20% chance to Slow the target.",
+    "PassiveDescription": "[Pincer] strikes have a 20% chance to [Slow] the target.",
     "PincerApplyBuff": "slowed",
     "PincerApplyBuffChance": 0.2
   },
@@ -30936,7 +30936,7 @@
     "Icon": null,
     "BankCapacityBonus": 1,
     "PassiveName": "Feedback Loop",
-    "PassiveDescription": "Pincer strikes have a 15% chance to Silence the target.",
+    "PassiveDescription": "[Pincer] strikes have a 15% chance to [Silence] the target.",
     "PincerApplyBuff": "silenced",
     "PincerApplyBuffChance": 0.15
   },
@@ -31165,7 +31165,7 @@
     "PincerApplyBuff": "wet",
     "PincerApplyBuffChance": 0.12,
     "PassiveName": "Undertow",
-    "PassiveDescription": "Pincer strikes have a 12% chance to Soak the target."
+    "PassiveDescription": "[Pincer] strikes have a 12% chance to [Soak] the target."
   },
   {
     "Id": "eq_scepter_naga_plus1",
@@ -31200,7 +31200,7 @@
     "PincerApplyBuff": "wet",
     "PincerApplyBuffChance": 0.12,
     "PassiveName": "Undertow",
-    "PassiveDescription": "Pincer strikes have a 12% chance to Soak the target."
+    "PassiveDescription": "[Pincer] strikes have a 12% chance to [Soak] the target."
   },
   {
     "Id": "eq_scepter_naga_plus2",
@@ -31235,7 +31235,7 @@
     "PincerApplyBuff": "wet",
     "PincerApplyBuffChance": 0.12,
     "PassiveName": "Undertow",
-    "PassiveDescription": "Pincer strikes have a 12% chance to Soak the target."
+    "PassiveDescription": "[Pincer] strikes have a 12% chance to [Soak] the target."
   },
   {
     "Id": "eq_scepter_naga_plus3",
@@ -31270,7 +31270,7 @@
     "PincerApplyBuff": "wet",
     "PincerApplyBuffChance": 0.3,
     "PassiveName": "Drowning Tide",
-    "PassiveDescription": "Pincer strikes have a 30% chance to Soak the target."
+    "PassiveDescription": "[Pincer] strikes have a 30% chance to [Soak] the target."
   },
   {
     "Id": "eq_scepter_naga_ench_flame",
@@ -31305,7 +31305,7 @@
     "PincerApplyBuff": "wet",
     "PincerApplyBuffChance": 0.12,
     "PassiveName": "Undertow",
-    "PassiveDescription": "Pincer strikes have a 12% chance to Soak the target."
+    "PassiveDescription": "[Pincer] strikes have a 12% chance to [Soak] the target."
   },
   {
     "Id": "eq_scepter_naga_ench_frost",
@@ -31340,7 +31340,7 @@
     "PincerApplyBuff": "wet",
     "PincerApplyBuffChance": 0.12,
     "PassiveName": "Undertow",
-    "PassiveDescription": "Pincer strikes have a 12% chance to Soak the target."
+    "PassiveDescription": "[Pincer] strikes have a 12% chance to [Soak] the target."
   },
   {
     "Id": "eq_scepter_naga_ench_spark",
@@ -31375,7 +31375,7 @@
     "PincerApplyBuff": "wet",
     "PincerApplyBuffChance": 0.12,
     "PassiveName": "Undertow",
-    "PassiveDescription": "Pincer strikes have a 12% chance to Soak the target."
+    "PassiveDescription": "[Pincer] strikes have a 12% chance to [Soak] the target."
   },
   {
     "Id": "eq_scepter_naga_ench_shadow",
@@ -31410,7 +31410,7 @@
     "PincerApplyBuff": "wet",
     "PincerApplyBuffChance": 0.12,
     "PassiveName": "Undertow",
-    "PassiveDescription": "Pincer strikes have a 12% chance to Soak the target."
+    "PassiveDescription": "[Pincer] strikes have a 12% chance to [Soak] the target."
   },
   {
     "Id": "eq_scepter_naga_ench_poison",
@@ -31445,7 +31445,7 @@
     "PincerApplyBuff": "wet",
     "PincerApplyBuffChance": 0.12,
     "PassiveName": "Undertow",
-    "PassiveDescription": "Pincer strikes have a 12% chance to Soak the target."
+    "PassiveDescription": "[Pincer] strikes have a 12% chance to [Soak] the target."
   },
   {
     "Id": "eq_scepter_naga_ench_holy",
@@ -31480,7 +31480,7 @@
     "PincerApplyBuff": "wet",
     "PincerApplyBuffChance": 0.12,
     "PassiveName": "Undertow",
-    "PassiveDescription": "Pincer strikes have a 12% chance to Soak the target."
+    "PassiveDescription": "[Pincer] strikes have a 12% chance to [Soak] the target."
   },
   {
     "Id": "eq_totem_hag",
@@ -31515,7 +31515,7 @@
     "PincerApplyBuff": "poisoned",
     "PincerApplyBuffChance": 0.1,
     "PassiveName": "Hex Rot",
-    "PassiveDescription": "Pincer strikes have a 10% chance to Poison the target."
+    "PassiveDescription": "[Pincer] strikes have a 10% chance to [Poison] the target."
   },
   {
     "Id": "eq_totem_hag_plus1",
@@ -31550,7 +31550,7 @@
     "PincerApplyBuff": "poisoned",
     "PincerApplyBuffChance": 0.1,
     "PassiveName": "Hex Rot",
-    "PassiveDescription": "Pincer strikes have a 10% chance to Poison the target."
+    "PassiveDescription": "[Pincer] strikes have a 10% chance to [Poison] the target."
   },
   {
     "Id": "eq_totem_hag_plus2",
@@ -31585,7 +31585,7 @@
     "PincerApplyBuff": "poisoned",
     "PincerApplyBuffChance": 0.1,
     "PassiveName": "Hex Rot",
-    "PassiveDescription": "Pincer strikes have a 10% chance to Poison the target."
+    "PassiveDescription": "[Pincer] strikes have a 10% chance to [Poison] the target."
   },
   {
     "Id": "eq_totem_hag_plus3",
@@ -31620,7 +31620,7 @@
     "PincerApplyBuff": "poisoned",
     "PincerApplyBuffChance": 0.22,
     "PassiveName": "Witch's Brew",
-    "PassiveDescription": "Pincer strikes have a 22% chance to Poison the target."
+    "PassiveDescription": "[Pincer] strikes have a 22% chance to [Poison] the target."
   },
   {
     "Id": "eq_totem_hag_ench_flame",
@@ -31655,7 +31655,7 @@
     "PincerApplyBuff": "poisoned",
     "PincerApplyBuffChance": 0.1,
     "PassiveName": "Hex Rot",
-    "PassiveDescription": "Pincer strikes have a 10% chance to Poison the target."
+    "PassiveDescription": "[Pincer] strikes have a 10% chance to [Poison] the target."
   },
   {
     "Id": "eq_totem_hag_ench_frost",
@@ -31690,7 +31690,7 @@
     "PincerApplyBuff": "poisoned",
     "PincerApplyBuffChance": 0.1,
     "PassiveName": "Hex Rot",
-    "PassiveDescription": "Pincer strikes have a 10% chance to Poison the target."
+    "PassiveDescription": "[Pincer] strikes have a 10% chance to [Poison] the target."
   },
   {
     "Id": "eq_totem_hag_ench_spark",
@@ -31725,7 +31725,7 @@
     "PincerApplyBuff": "poisoned",
     "PincerApplyBuffChance": 0.1,
     "PassiveName": "Hex Rot",
-    "PassiveDescription": "Pincer strikes have a 10% chance to Poison the target."
+    "PassiveDescription": "[Pincer] strikes have a 10% chance to [Poison] the target."
   },
   {
     "Id": "eq_totem_hag_ench_shadow",
@@ -31760,7 +31760,7 @@
     "PincerApplyBuff": "poisoned",
     "PincerApplyBuffChance": 0.1,
     "PassiveName": "Hex Rot",
-    "PassiveDescription": "Pincer strikes have a 10% chance to Poison the target."
+    "PassiveDescription": "[Pincer] strikes have a 10% chance to [Poison] the target."
   },
   {
     "Id": "eq_totem_hag_ench_poison",
@@ -31795,7 +31795,7 @@
     "PincerApplyBuff": "poisoned",
     "PincerApplyBuffChance": 0.1,
     "PassiveName": "Hex Rot",
-    "PassiveDescription": "Pincer strikes have a 10% chance to Poison the target."
+    "PassiveDescription": "[Pincer] strikes have a 10% chance to [Poison] the target."
   },
   {
     "Id": "eq_totem_hag_ench_holy",
@@ -31830,7 +31830,7 @@
     "PincerApplyBuff": "poisoned",
     "PincerApplyBuffChance": 0.1,
     "PassiveName": "Hex Rot",
-    "PassiveDescription": "Pincer strikes have a 10% chance to Poison the target."
+    "PassiveDescription": "[Pincer] strikes have a 10% chance to [Poison] the target."
   },
   {
     "Id": "eq_tome_frostbound",
@@ -31964,7 +31964,7 @@
     "SoldByVendor": false,
     "Icon": null,
     "PassiveName": "Glacial Verse",
-    "PassiveDescription": "Pincer strikes have a 15% chance to Freeze the target.",
+    "PassiveDescription": "[Pincer] strikes have a 15% chance to [Freeze] the target.",
     "PincerApplyBuff": "frozen",
     "PincerApplyBuffChance": 0.15
   },
@@ -32603,7 +32603,7 @@
     "SoldByVendor": false,
     "Icon": null,
     "PassiveName": "Evil Eye",
-    "PassiveDescription": "Pincer strikes have a 18% chance to Blind the target.",
+    "PassiveDescription": "[Pincer] strikes have a 18% chance to [Blind] the target.",
     "PincerApplyBuff": "blinded",
     "PincerApplyBuffChance": 0.18
   },
@@ -32826,7 +32826,7 @@
     "PincerApplyBuff": "burning",
     "PincerApplyBuffChance": 0.1,
     "PassiveName": "Kindle",
-    "PassiveDescription": "Pincer strikes have a 10% chance to Burn the target."
+    "PassiveDescription": "[Pincer] strikes have a 10% chance to [Burn] the target."
   },
   {
     "Id": "eq_wand_pyre_plus1",
@@ -32861,7 +32861,7 @@
     "PincerApplyBuff": "burning",
     "PincerApplyBuffChance": 0.1,
     "PassiveName": "Kindle",
-    "PassiveDescription": "Pincer strikes have a 10% chance to Burn the target."
+    "PassiveDescription": "[Pincer] strikes have a 10% chance to [Burn] the target."
   },
   {
     "Id": "eq_wand_pyre_plus2",
@@ -32896,7 +32896,7 @@
     "PincerApplyBuff": "burning",
     "PincerApplyBuffChance": 0.1,
     "PassiveName": "Kindle",
-    "PassiveDescription": "Pincer strikes have a 10% chance to Burn the target."
+    "PassiveDescription": "[Pincer] strikes have a 10% chance to [Burn] the target."
   },
   {
     "Id": "eq_wand_pyre_plus3",
@@ -32931,7 +32931,7 @@
     "PincerApplyBuff": "burning",
     "PincerApplyBuffChance": 0.22,
     "PassiveName": "Funeral Pyre",
-    "PassiveDescription": "Pincer strikes have a 22% chance to Burn the target."
+    "PassiveDescription": "[Pincer] strikes have a 22% chance to [Burn] the target."
   },
   {
     "Id": "eq_wand_pyre_ench_flame",
@@ -32966,7 +32966,7 @@
     "PincerApplyBuff": "burning",
     "PincerApplyBuffChance": 0.1,
     "PassiveName": "Kindle",
-    "PassiveDescription": "Pincer strikes have a 10% chance to Burn the target."
+    "PassiveDescription": "[Pincer] strikes have a 10% chance to [Burn] the target."
   },
   {
     "Id": "eq_wand_pyre_ench_frost",
@@ -33001,7 +33001,7 @@
     "PincerApplyBuff": "burning",
     "PincerApplyBuffChance": 0.1,
     "PassiveName": "Kindle",
-    "PassiveDescription": "Pincer strikes have a 10% chance to Burn the target."
+    "PassiveDescription": "[Pincer] strikes have a 10% chance to [Burn] the target."
   },
   {
     "Id": "eq_wand_pyre_ench_spark",
@@ -33036,7 +33036,7 @@
     "PincerApplyBuff": "burning",
     "PincerApplyBuffChance": 0.1,
     "PassiveName": "Kindle",
-    "PassiveDescription": "Pincer strikes have a 10% chance to Burn the target."
+    "PassiveDescription": "[Pincer] strikes have a 10% chance to [Burn] the target."
   },
   {
     "Id": "eq_wand_pyre_ench_shadow",
@@ -33071,7 +33071,7 @@
     "PincerApplyBuff": "burning",
     "PincerApplyBuffChance": 0.1,
     "PassiveName": "Kindle",
-    "PassiveDescription": "Pincer strikes have a 10% chance to Burn the target."
+    "PassiveDescription": "[Pincer] strikes have a 10% chance to [Burn] the target."
   },
   {
     "Id": "eq_wand_pyre_ench_poison",
@@ -33106,7 +33106,7 @@
     "PincerApplyBuff": "burning",
     "PincerApplyBuffChance": 0.1,
     "PassiveName": "Kindle",
-    "PassiveDescription": "Pincer strikes have a 10% chance to Burn the target."
+    "PassiveDescription": "[Pincer] strikes have a 10% chance to [Burn] the target."
   },
   {
     "Id": "eq_wand_pyre_ench_holy",
@@ -33141,7 +33141,7 @@
     "PincerApplyBuff": "burning",
     "PincerApplyBuffChance": 0.1,
     "PassiveName": "Kindle",
-    "PassiveDescription": "Pincer strikes have a 10% chance to Burn the target."
+    "PassiveDescription": "[Pincer] strikes have a 10% chance to [Burn] the target."
   },
   {
     "Id": "eq_scepter_veilwind",
@@ -33271,7 +33271,7 @@
     "Icon": null,
     "RegenPerTurn": 3,
     "PassiveName": "Mistress's Mercy",
-    "PassiveDescription": "Adjacent ally heroes take 12% less damage.",
+    "PassiveDescription": "[Adjacent] ally heroes take 12% less damage.",
     "AdjacentAllyDamageReduction": 0.12
   },
   {
@@ -33590,7 +33590,7 @@
     "SoldByVendor": false,
     "Icon": null,
     "PassiveName": "Ashfall",
-    "PassiveDescription": "Pincer strikes have a 20% chance to Burn the target.",
+    "PassiveDescription": "[Pincer] strikes have a 20% chance to [Burn] the target.",
     "PincerApplyBuff": "burning",
     "PincerApplyBuffChance": 0.2
   },
@@ -33908,7 +33908,7 @@
     "Icon": null,
     "BankCapacityBonus": 1,
     "PassiveName": "Mind Spike",
-    "PassiveDescription": "Pincer strikes have a 20% chance to Silence the target.",
+    "PassiveDescription": "[Pincer] strikes have a 20% chance to [Silence] the target.",
     "PincerApplyBuff": "silenced",
     "PincerApplyBuffChance": 0.2
   },
@@ -34137,7 +34137,7 @@
     "PincerApplyBuff": "blinded",
     "PincerApplyBuffChance": 0.1,
     "PassiveName": "Haunt",
-    "PassiveDescription": "Pincer strikes have a 10% chance to Blind the target."
+    "PassiveDescription": "[Pincer] strikes have a 10% chance to [Blind] the target."
   },
   {
     "Id": "eq_totem_phantom_plus1",
@@ -34172,7 +34172,7 @@
     "PincerApplyBuff": "blinded",
     "PincerApplyBuffChance": 0.1,
     "PassiveName": "Haunt",
-    "PassiveDescription": "Pincer strikes have a 10% chance to Blind the target."
+    "PassiveDescription": "[Pincer] strikes have a 10% chance to [Blind] the target."
   },
   {
     "Id": "eq_totem_phantom_plus2",
@@ -34207,7 +34207,7 @@
     "PincerApplyBuff": "blinded",
     "PincerApplyBuffChance": 0.1,
     "PassiveName": "Haunt",
-    "PassiveDescription": "Pincer strikes have a 10% chance to Blind the target."
+    "PassiveDescription": "[Pincer] strikes have a 10% chance to [Blind] the target."
   },
   {
     "Id": "eq_totem_phantom_plus3",
@@ -34242,7 +34242,7 @@
     "PincerApplyBuff": "blinded",
     "PincerApplyBuffChance": 0.22,
     "PassiveName": "Possession",
-    "PassiveDescription": "Pincer strikes have a 22% chance to Blind the target."
+    "PassiveDescription": "[Pincer] strikes have a 22% chance to [Blind] the target."
   },
   {
     "Id": "eq_totem_phantom_ench_flame",
@@ -34277,7 +34277,7 @@
     "PincerApplyBuff": "blinded",
     "PincerApplyBuffChance": 0.1,
     "PassiveName": "Haunt",
-    "PassiveDescription": "Pincer strikes have a 10% chance to Blind the target."
+    "PassiveDescription": "[Pincer] strikes have a 10% chance to [Blind] the target."
   },
   {
     "Id": "eq_totem_phantom_ench_frost",
@@ -34312,7 +34312,7 @@
     "PincerApplyBuff": "blinded",
     "PincerApplyBuffChance": 0.1,
     "PassiveName": "Haunt",
-    "PassiveDescription": "Pincer strikes have a 10% chance to Blind the target."
+    "PassiveDescription": "[Pincer] strikes have a 10% chance to [Blind] the target."
   },
   {
     "Id": "eq_totem_phantom_ench_spark",
@@ -34347,7 +34347,7 @@
     "PincerApplyBuff": "blinded",
     "PincerApplyBuffChance": 0.1,
     "PassiveName": "Haunt",
-    "PassiveDescription": "Pincer strikes have a 10% chance to Blind the target."
+    "PassiveDescription": "[Pincer] strikes have a 10% chance to [Blind] the target."
   },
   {
     "Id": "eq_totem_phantom_ench_shadow",
@@ -34382,7 +34382,7 @@
     "PincerApplyBuff": "blinded",
     "PincerApplyBuffChance": 0.1,
     "PassiveName": "Haunt",
-    "PassiveDescription": "Pincer strikes have a 10% chance to Blind the target."
+    "PassiveDescription": "[Pincer] strikes have a 10% chance to [Blind] the target."
   },
   {
     "Id": "eq_totem_phantom_ench_poison",
@@ -34417,7 +34417,7 @@
     "PincerApplyBuff": "blinded",
     "PincerApplyBuffChance": 0.1,
     "PassiveName": "Haunt",
-    "PassiveDescription": "Pincer strikes have a 10% chance to Blind the target."
+    "PassiveDescription": "[Pincer] strikes have a 10% chance to [Blind] the target."
   },
   {
     "Id": "eq_totem_phantom_ench_holy",
@@ -34452,7 +34452,7 @@
     "PincerApplyBuff": "blinded",
     "PincerApplyBuffChance": 0.1,
     "PassiveName": "Haunt",
-    "PassiveDescription": "Pincer strikes have a 10% chance to Blind the target."
+    "PassiveDescription": "[Pincer] strikes have a 10% chance to [Blind] the target."
   },
   {
     "Id": "eq_staff_thunderhead",
@@ -34586,7 +34586,7 @@
     "SoldByVendor": false,
     "Icon": null,
     "PassiveName": "Stormcall",
-    "PassiveDescription": "Pincer strikes have a 25% chance to Slow the target.",
+    "PassiveDescription": "[Pincer] strikes have a 25% chance to [Slow] the target.",
     "PincerApplyBuff": "slowed",
     "PincerApplyBuffChance": 0.25
   },
@@ -34916,7 +34916,7 @@
     "Icon": null,
     "BankCapacityBonus": 1,
     "PassiveName": "Constellation",
-    "PassiveDescription": "Pincer strikes have a 25% chance to Silence the target.",
+    "PassiveDescription": "[Pincer] strikes have a 25% chance to [Silence] the target.",
     "PincerApplyBuff": "silenced",
     "PincerApplyBuffChance": 0.25
   },
@@ -35567,7 +35567,7 @@
     "SoldByVendor": false,
     "Icon": null,
     "PassiveName": "Wyrmgaze",
-    "PassiveDescription": "Pincer strikes have a 25% chance to Burn the target.",
+    "PassiveDescription": "[Pincer] strikes have a 25% chance to [Burn] the target.",
     "PincerApplyBuff": "burning",
     "PincerApplyBuffChance": 0.25
   },

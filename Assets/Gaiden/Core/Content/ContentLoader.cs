@@ -64,6 +64,8 @@ namespace GridGame.Core.Content
             var sets = ReadList<ArmorSetDef>(readText, "armorsets");
             AddAll(db.ArmorSets, sets, x => x.Id);
             db.ArmorSetOrder.AddRange(sets);
+            db.GlossaryOrder.AddRange(ReadList<GlossaryEntry>(readText, "glossary"));
+            Glossary.Index(db);
             // First set wins a piece listed twice; Validate reports the clash.
             foreach (var set in sets)
                 foreach (var piece in set.Pieces)
@@ -295,6 +297,7 @@ namespace GridGame.Core.Content
             VfxStyleSheet.Validate(db, p);
             VfxCatalog.Validate(db, p);
             return p;
+            Glossary.Validate(db, p);
         }
 
         /// <summary>Armor sets (GG-T182): five real armor pieces, one per armor slot, all the set's weight, no piece in

@@ -35,9 +35,9 @@ DURABILITY = {"Club": 160, "Sickle": 100, "Sling": 90, "Quarterstaff": 130, "Kni
               "Flail": 180, "Halberd": 220, "Whip": 100, "Glaive": 170, "Trident": 170, "Katana": 150, "Bow": 110,
               "Scythe": 160, "Morningstar": 190, "Axe": 220, "Wand": 80, "Tome": 90, "Orb": 80, "Totem": 110,
               "Scepter": 110, "Staff": 120, "Skullstaff": 120}
-BUFF_TEXT = {"burning": "Burn the target", "frozen": "Freeze the target", "wet": "Soak the target",
-             "sleep": "put the target to Sleep", "poisoned": "Poison the target", "slowed": "Slow the target",
-             "silenced": "Silence the target", "blinded": "Blind the target"}
+BUFF_TEXT = {"burning": "[Burn] the target", "frozen": "[Freeze] the target", "wet": "[Soak] the target",
+             "sleep": "put the target to [Sleep]", "poisoned": "[Poison] the target", "slowed": "[Slow] the target",
+             "silenced": "[Silence] the target", "blinded": "[Blind] the target"}
 DROP_CHANCE = {"Common": 0.06, "Uncommon": 0.04, "Rare": 0.03, "Epic": 0.015, "Legendary": 0.008}
 FORGE_TIER = {"Common": 1, "Uncommon": 1, "Rare": 2, "Epic": 3, "Legendary": 3}
 
@@ -168,7 +168,7 @@ def parse_traits(spec):
             buff, chance, name = v.split(":", 2)
             t["PincerApplyBuff"], t["PincerApplyBuffChance"] = buff, float(chance)
             t["PassiveName"] = name
-            t["PassiveDescription"] = f"Pincer strikes have a {round(float(chance) * 100)}% chance to {BUFF_TEXT[buff]}."
+            t["PassiveDescription"] = f"[Pincer] strikes have a {round(float(chance) * 100)}% chance to {BUFF_TEXT[buff]}."
         elif k == "steal":
             frac, name = v.split(":", 1)
             t["LifestealFraction"] = float(frac)
@@ -184,14 +184,14 @@ def parse_passive(spec):
     name, kind = parts[0], parts[1]
     if kind == "buff":
         buff, chance = parts[2], float(parts[3])
-        return {"PassiveName": name, "PassiveDescription": f"Pincer strikes have a {round(chance * 100)}% chance to {BUFF_TEXT[buff]}.",
+        return {"PassiveName": name, "PassiveDescription": f"[Pincer] strikes have a {round(chance * 100)}% chance to {BUFF_TEXT[buff]}.",
                 "PincerApplyBuff": buff, "PincerApplyBuffChance": chance}
     if kind == "steal":
         frac = float(parts[2])
         return {"PassiveName": name, "PassiveDescription": f"Heals the wielder {round(frac * 100)}% of damage dealt.", "LifestealFraction": frac}
     if kind == "guard":
         frac = float(parts[2])
-        return {"PassiveName": name, "PassiveDescription": f"Adjacent ally heroes take {round(frac * 100)}% less damage.", "AdjacentAllyDamageReduction": frac}
+        return {"PassiveName": name, "PassiveDescription": f"[Adjacent] ally heroes take {round(frac * 100)}% less damage.", "AdjacentAllyDamageReduction": frac}
     raise ValueError(spec)
 
 

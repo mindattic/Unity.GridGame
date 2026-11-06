@@ -640,7 +640,7 @@ namespace GridGame.App
                 if (u.HasPlate) { var pl = Ui.Text($"Armor plate {u.PlateHp}/{u.PlateMax} on its {SideName(u.Facing)} — strike from the sides, break it head-on, or use spells", "tiny", col); pl.style.whiteSpace = WhiteSpace.Normal; pl.style.color = Palette.Info; }
                 if (u.IsCorpse) { var co = Ui.Text($"The body of a {App.Content.TryClass(u.CorpseOf)?.Name ?? "foe"} — blocks the tile, rots in {u.DecayIn} actions", "tiny dim", col); co.style.whiteSpace = WhiteSpace.Normal; }
                 var kit = Ui.KitTraits(App.Content, u.Def);
-                if (kit.Length > 0) { var kt = Ui.Text(kit, "tiny gold", col); kt.name = "enemy-kit"; kt.style.whiteSpace = WhiteSpace.Normal; }
+                if (kit.Length > 0) { var kt = GlossaryText.Create(kit, "tiny gold", col); kt.name = "enemy-kit"; kt.style.whiteSpace = WhiteSpace.Normal; }
             }
             // What the flashing status slot on the tile means, one line per effect.
             var statusTurn = State.TurnEntryOf(u.Id);
@@ -661,7 +661,7 @@ namespace GridGame.App
             var row = Ui.El("row", parent);
             var pip = Ui.StatusPip(icon, letter, color, 40, row);
             pip.style.marginRight = Space.S8;
-            var t = Ui.Text($"{name} — {what}", "tiny", row);
+            var t = GlossaryText.Create(GameApp.I?.Content?.TryTerm(name) != null ? $"[{name}] — {what}" : $"{name} — {what}", "tiny", row);
             t.style.whiteSpace = WhiteSpace.Normal; t.style.flexShrink = 1;
             return pip;
         }
@@ -691,7 +691,7 @@ namespace GridGame.App
             Ui.Text(timing, "tiny gold", col);
             if (!confirm)
             {
-                var d = Ui.Text(a.Description ?? "", "tiny", col);
+                var d = GlossaryText.Create(a.Description ?? "", "tiny", col);
                 d.style.whiteSpace = WhiteSpace.Normal;
                 Ui.Text("Tap a highlighted tile · tap the slot again to cancel", "tiny dim", col);
                 return;

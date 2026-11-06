@@ -50,7 +50,8 @@ namespace GridGame.App
 
         public static Label Text(string text, string classes = null, VisualElement parent = null)
         {
-            var l = new Label(text) { enableRichText = true };
+            // Content text that reaches a plain label still shows its [terms] as terms, never raw brackets (GG-T300).
+            var l = new Label(GlossaryText.Highlight(text)) { enableRichText = true };
             l.pickingMode = PickingMode.Ignore;
             AddClasses(l, classes);
             parent?.Add(l);
@@ -344,9 +345,9 @@ namespace GridGame.App
 
         public static string RarityClass(ItemRarity r) => "rarity-" + r;
 
-        /// <summary>Class blurbs mark their keywords as [word]; show them as highlighted words instead of raw brackets.</summary>
-        public static string Keywords(string text) =>
-            string.IsNullOrEmpty(text) ? "" : System.Text.RegularExpressions.Regex.Replace(text, @"\[([^\]]+)\]", "<color=#9CC8FF>$1</color>");
+        /// <summary>Class blurbs mark their keywords as [word]; show them as highlighted words instead of raw brackets
+        /// (inert; <see cref="GlossaryText.Create"/> makes them tappable).</summary>
+        public static string Keywords(string text) => string.IsNullOrEmpty(text) ? "" : GlossaryText.Highlight(text);
 
         public static Color RoleColor(string role) => Palette.Role(role);
 

@@ -824,3 +824,5 @@ Owner: "gaining mana is too generous since I see the whole bar filled almost in 
   - Before a move, a tap on any timeline icon or on the prominence diamond selects its owner, exactly like a board tap.
   - The selected unit gets a white ring on each of its diamonds and a white outline on its tile (`BoardView.SetSelection`).
   - A hold still opens the InspectCard. Both stay gated by the Bestiary knowledge tier.
+
+- **Bracketed terms are tap tooltips** (owner 2026-11-06, GG-T300: "anything in brackets is a tap tooltip"). Content marks keywords as `[term]`, each validated against `glossary.json`; tapping one opens a definition card, alongside (not replacing) hold-to-read. Unquantified odds use five fixed chance words ([slight]/[small]/[fair]/[good]/[likely]). *Why:* descriptions stay short while every mechanic word explains itself on demand.
