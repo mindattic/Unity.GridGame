@@ -686,6 +686,125 @@
   }
  },
  {
+  "Id": "evasive_riposte",
+  "Name": "Evasive Riposte",
+  "Description": "When it [dodges] a blow, it answers with a [Counterstrike].",
+  "Kind": "Reactive",
+  "Cost": 0,
+  "CastTime": 0.0,
+  "CooldownTurns": 0,
+  "Shape": "Self",
+  "Radius": 0,
+  "Mode": "Auto",
+  "Filter": "Any",
+  "Motion": "None",
+  "DamageType": "Physical",
+  "BaseDamage": 0,
+  "BaseHeal": 0,
+  "ApplyBuff": null,
+  "ApplyBuffChance": 1.0,
+  "RemovesDebuffs": false,
+  "StealsMana": false,
+  "HastenU": 0.0,
+  "IsTeleport": false,
+  "Icon": null,
+  "CastVfx": null,
+  "ProjectileVfx": null,
+  "ImpactVfx": null,
+  "LingerVfx": null,
+  "Sfx": null,
+  "Trigger": {
+   "On": "OnDodge",
+   "Effects": [
+    {
+     "Kind": "Counterstrike",
+     "Amount": 0.5
+    }
+   ],
+   "Callout": "Riposte!"
+  }
+ },
+ {
+  "Id": "catch_breath",
+  "Name": "Catch Breath",
+  "Description": "When it [dodges] a blow, it catches its breath and recovers 6% of its HP.",
+  "Kind": "Reactive",
+  "Cost": 0,
+  "CastTime": 0.0,
+  "CooldownTurns": 0,
+  "Shape": "Self",
+  "Radius": 0,
+  "Mode": "Auto",
+  "Filter": "Any",
+  "Motion": "None",
+  "DamageType": "Physical",
+  "BaseDamage": 0,
+  "BaseHeal": 0,
+  "ApplyBuff": null,
+  "ApplyBuffChance": 1.0,
+  "RemovesDebuffs": false,
+  "StealsMana": false,
+  "HastenU": 0.0,
+  "IsTeleport": false,
+  "Icon": null,
+  "CastVfx": null,
+  "ProjectileVfx": null,
+  "ImpactVfx": null,
+  "LingerVfx": null,
+  "Sfx": null,
+  "Trigger": {
+   "On": "OnDodge",
+   "Effects": [
+    {
+     "Kind": "Heal",
+     "Amount": 0.06
+    }
+   ],
+   "OncePerAction": true,
+   "Callout": "Catch Breath!"
+  }
+ },
+ {
+  "Id": "blur",
+  "Name": "Blur",
+  "Description": "When it [dodges] a blow, it turns [Blurred]: +15 [Evasion] for 2 turns.",
+  "Kind": "Reactive",
+  "Cost": 0,
+  "CastTime": 0.0,
+  "CooldownTurns": 0,
+  "Shape": "Self",
+  "Radius": 0,
+  "Mode": "Auto",
+  "Filter": "Any",
+  "Motion": "None",
+  "DamageType": "Physical",
+  "BaseDamage": 0,
+  "BaseHeal": 0,
+  "ApplyBuff": null,
+  "ApplyBuffChance": 1.0,
+  "RemovesDebuffs": false,
+  "StealsMana": false,
+  "HastenU": 0.0,
+  "IsTeleport": false,
+  "Icon": null,
+  "CastVfx": null,
+  "ProjectileVfx": null,
+  "ImpactVfx": null,
+  "LingerVfx": null,
+  "Sfx": null,
+  "Trigger": {
+   "On": "OnDodge",
+   "Effects": [
+    {
+     "Kind": "ApplyBuff",
+     "Buff": "blurred"
+    }
+   ],
+   "OncePerAction": true,
+   "Callout": "Blur!"
+  }
+ },
+ {
   "Id": "enrage",
   "Name": "Enrage",
   "Description": "Boss phase transition: hastens its own timeline icon 0.35u.",

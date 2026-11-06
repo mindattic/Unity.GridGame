@@ -477,8 +477,17 @@ namespace GridGame.Core.Battle
             {
                 if (!v.Alive) continue;
                 var roll = Formulas.Magic(caster, v, a.DamageType, S.Rng);
+                if (roll.Dodged)
+                {
+                    // Evasion slips a charged spell too (GG-T297); the dodger's OnDodge reactives answer it.
+                    Emit(new DodgedEvent { UnitId = v.Id, AttackerId = caster.Id });
+                    if (Triggers.Foes(v, caster)) Fire(TriggerOn.OnDodge, v, new TriggerContext { Attacker = caster, Type = a.DamageType });
+                    continue;
+                }
                 int dmg = roll.Damage + (roll.Hit == HitKind.Miss ? 0 : Formulas.SpellDamage(a, v, false));
                 Damage(v, dmg, caster, roll.Hit, a.DamageType);
+                if (roll.Hit == HitKind.Miss && v.Alive && Triggers.Foes(v, caster))
+                    Fire(TriggerOn.OnDodge, v, new TriggerContext { Attacker = caster, Type = a.DamageType });
                 var buff = C.TryBuff(a.ApplyBuff);
                 if (buff != null && v.Alive && roll.Hit != HitKind.Miss) ApplyBuff(v, buff, buff.Duration);
             }

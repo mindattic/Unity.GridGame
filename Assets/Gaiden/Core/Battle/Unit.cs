@@ -241,6 +241,15 @@ namespace GridGame.Core.Battle
             get { float m = 1f; foreach (var b in Buffs) m *= b.Def.AccuracyMultiplier; return m; }
         }
 
+        /// <summary>Evasion points from equipped gear (GG-T297), summed at spawn; a broken piece takes its share back out.</summary>
+        public float GearEvasion;
+
+        /// <summary>Evasion points from gear and buffs (GG-T297); <see cref="GridGame.Core.Rules.Formulas.Evasion"/> adds AGI/Luck and caps it.</summary>
+        public float EvasionBonus
+        {
+            get { float e = GearEvasion; foreach (var b in Buffs) e += b.Def.EvasionBonus; return e; }
+        }
+
         public float ResistanceMultiplier(DamageType type)
         {
             float m = 1f;

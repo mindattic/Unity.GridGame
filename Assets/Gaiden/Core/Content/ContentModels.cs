@@ -513,6 +513,8 @@ namespace GridGame.Core.Content
         /// <summary>Signed party tempo this buff adds while it sits on a hero (GG-T268): Slow on heroes is negative, so enemy icons speed up.</summary>
         public int Tempo;
         public float AccuracyMultiplier = 1f;
+        /// <summary>Evasion points (GG-T297, §13.1.0) the bearer gains while this sits on it (Blur's +15); -40..40.</summary>
+        public float EvasionBonus;
         public bool BlocksSpells;
         /// <summary>Taunt (§14.1.1): while any hero carries this, enemies may only pick taunting heroes.</summary>
         public bool Taunts;
@@ -569,6 +571,8 @@ namespace GridGame.Core.Content
         public int BankCapacityBonus;
         /// <summary>Relic passive: this hero's pincer strikes deal +X (fraction).</summary>
         public float PincerDamageBonus;
+        /// <summary>Gear passive (GG-T297): Evasion points while equipped, 0..20; lost when the piece breaks.</summary>
+        public float EvasionBonus;
         /// <summary>Relic passive: HP restored each time control returns to the player.</summary>
         public int RegenPerTurn;
         /// <summary>Relic passive: start every battle with Protection.</summary>

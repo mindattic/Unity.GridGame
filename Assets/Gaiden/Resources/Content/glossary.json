@@ -414,7 +414,28 @@
       "Miss",
       "Misses"
     ],
-    "Text": "When an attack misses. Hit chance starts at 80%, rises with the attacker's SPD and LCK, and stays between 5% and 95%; [Blinded] attackers miss more."
+    "Text": "When an attack misses or is slipped. Hit chance starts at 80%, rises with the attacker's SPD and LCK, and stays between 5% and 95%; the defender's [Evasion] takes its share off the top, and [Blinded] attackers miss more."
+  },
+  {
+    "Id": "evasion",
+    "Term": "Evasion",
+    "Aliases": [
+      "Evade",
+      "Evades",
+      "Evasive"
+    ],
+    "Text": "Points shaved off a foe's hit chance: AGI × 0.2 + LCK × 0.1 (at most 25), plus gear and [Blurred], capped at 40. A blow it slips is a [Dodge]. [Pincer] and [Supporter] blows can't be dodged."
+  },
+  {
+    "Id": "blurred",
+    "Term": "Blurred",
+    "Aliases": [
+      "Blur",
+      "Blurs"
+    ],
+    "Text": "A brief afterimage: +15 [Evasion] for 2 turns.",
+    "LinkKind": "Buff",
+    "LinkId": "blurred"
   },
   {
     "Id": "cleanse",

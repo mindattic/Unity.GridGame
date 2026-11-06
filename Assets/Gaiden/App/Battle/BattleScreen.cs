@@ -622,7 +622,7 @@ namespace GridGame.App
             var hpRow = Ui.El("row", col);
             Ui.Gauge(u.HpFraction, hpRow, 460);
             Ui.Text(know >= BestiaryKnowledge.Stats ? $"  {u.Hp}/{u.MaxHp}" : "  ???", "small", hpRow);
-            if (know >= BestiaryKnowledge.Stats) Ui.Text(Ui.StatLine(u.Effective), "tiny dim", col);
+            if (know >= BestiaryKnowledge.Stats) Ui.Text($"{Ui.StatLine(u.Effective)}  ·  EVA {GridGame.Core.Rules.Formulas.Evasion(u):0}%", "tiny dim", col); // GG-T297
             else if (know >= BestiaryKnowledge.Speed) Ui.Text($"SPD {u.Effective.Speed:0}  ·  defeat more to learn the rest", "tiny dim", col);
             if (!u.IsHero && know >= BestiaryKnowledge.Elements) Ui.Text(BestiaryKnowledge.ElementLine(u.Def), "tiny dim", col);
             if (!u.IsHero)

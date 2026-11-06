@@ -170,6 +170,14 @@ namespace GridGame.Core.Battle
         public override string ToString() => $"Damaged {TargetId} -{Amount} {Hit} {Type} hp={HpAfter}{(Note != null ? " " + Note : "")}";
     }
 
+    /// <summary>The defender's Evasion slipped a blow that would have landed (GG-T297, §13.1.0): no damage, a "Dodge!"
+    /// float and a whoosh. Stands in for the 0-damage miss <see cref="DamagedEvent"/>; OnDodge reactives follow it.</summary>
+    public sealed class DodgedEvent : BattleEvent
+    {
+        public int UnitId; public int AttackerId;
+        public override string ToString() => $"Dodged {UnitId} <- {AttackerId}";
+    }
+
     public sealed class HealedEvent : BattleEvent
     {
         public int TargetId; public int SourceId; public int Amount; public int HpAfter;

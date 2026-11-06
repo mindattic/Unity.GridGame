@@ -9,6 +9,9 @@ namespace GridGame.Core.Rules
     {
         public int Damage;
         public HitKind Hit;
+        /// <summary>The blow would have landed but the defender's <see cref="Formulas.Evasion"/> slipped it (GG-T297);
+        /// <see cref="Hit"/> is then <see cref="HitKind.Miss"/> and <see cref="Damage"/> 0.</summary>
+        public bool Dodged;
     }
 
     /// <summary>Combat math (bible §3.2, §13.1). Ported from the old Formulas with engine types removed.</summary>
@@ -83,8 +86,40 @@ namespace GridGame.Core.Rules
         public static float HitPercent(Stats s) => Clamp(80f + s.Speed * 0.5f + s.Luck * 0.2f, 5f, 95f);
         public static float CritPercent(Stats s) => Clamp(8f + s.Luck * 0.4f, 0f, 50f);
 
-        public static HitKind RollHit(Unit attacker, Unit defender, Rng rng)
+        /// <summary>Evasion from AGI per point (GG-T297, §13.1.0): percentage points shaved off an attacker's hit chance.</summary>
+        public const float EvasionPerAgility = 0.2f;
+        /// <summary>Evasion from Luck per point (GG-T297).</summary>
+        public const float EvasionPerLuck = 0.1f;
+        /// <summary>Cap on the stat-derived part of Evasion (a high-level AGI build tops out here before buffs/gear).</summary>
+        public const float EvasionStatCap = 25f;
+        /// <summary>Hard cap on Evasion including buffs and gear (GG-T297).</summary>
+        public const float EvasionCap = 40f;
+
+        /// <summary>
+        /// Defender Evasion (GG-T297, §13.1.0), in percentage points: <c>0.2·AGI + 0.1·Luck</c> (capped at 25) plus every
+        /// <see cref="BuffDef.EvasionBonus"/> and gear <see cref="ItemDef.EvasionBonus"/> it carries, clamped 0..40.
+        /// A level-1 hero sits near 3.6 (AGI 12, Luck 12), a ninja near 5, a level-30 skirmisher near 9–12.
+        /// </summary>
+        public static float Evasion(Unit defender) => defender == null ? 0f : Evasion(defender.Effective, defender.EvasionBonus);
+
+        /// <summary>Evasion from bare stats plus <paramref name="bonus"/> points (the Bestiary reads a class's base stats).</summary>
+        public static float Evasion(Stats d, float bonus = 0f)
         {
+            float stat = Clamp(Math.Max(0f, d.Agility) * EvasionPerAgility + Math.Max(0f, d.Luck) * EvasionPerLuck, 0f, EvasionStatCap);
+            return Clamp(stat + bonus, 0f, EvasionCap);
+        }
+
+        public static HitKind RollHit(Unit attacker, Unit defender, Rng rng) => RollHit(attacker, defender, rng, true, out _);
+
+        /// <summary>
+        /// One hit roll, one Rng draw (GG-T297 keeps the draw count so seeded replays only differ where Evasion bites).
+        /// The attacker's own hit band is as before; a would-be hit whose roll falls in the top <see cref="Evasion"/>
+        /// points of that band is <paramref name="dodged"/> instead (returned as a Miss). <paramref name="dodgeable"/>
+        /// false (pincer and supporter blows, §13.1.0) skips Evasion entirely.
+        /// </summary>
+        public static HitKind RollHit(Unit attacker, Unit defender, Rng rng, bool dodgeable, out bool dodged)
+        {
+            dodged = false;
             var a = attacker.Effective;
             int adv = attacker.Level - defender.Level;
             float hit = Clamp(HitPercent(a) + adv * HitShiftPerLevel, 5f, 95f);
@@ -92,9 +127,13 @@ namespace GridGame.Core.Rules
             if (acc < 1f) hit = Clamp(hit * acc, 5f, 95f);
             float crit = CritPercent(a);
             float roll = rng.Range(0f, 100f);
-            if (roll <= crit) return HitKind.Critical;
-            if (roll <= hit) return HitKind.Normal;
-            return HitKind.Miss;
+            HitKind kind = roll <= crit ? HitKind.Critical : roll <= hit ? HitKind.Normal : HitKind.Miss;
+            if (kind != HitKind.Miss && dodgeable && roll > hit - Evasion(defender))
+            {
+                dodged = true;
+                return HitKind.Miss;
+            }
+            return kind;
         }
 
         private static float Variance(Stats s, Rng rng, float range)
@@ -115,7 +154,7 @@ namespace GridGame.Core.Rules
         }
 
         /// <summary>Physical pincer / melee attack (§13.1.1).</summary>
-        public static AttackRoll Physical(Unit attacker, Unit defender, Rng rng, float multiplier = 1f)
+        public static AttackRoll Physical(Unit attacker, Unit defender, Rng rng, float multiplier = 1f, bool dodgeable = true)
         {
             var a = attacker.Effective;
             var d = defender.Effective;
@@ -124,8 +163,8 @@ namespace GridGame.Core.Rules
             float raw = Mitigate(off, def);
             raw *= defender.ResistanceMultiplier(DamageType.Physical);
             float varied = raw * Variance(a, rng, 0.10f);
-            var hit = RollHit(attacker, defender, rng);
-            if (hit == HitKind.Miss) return new AttackRoll { Damage = 0, Hit = HitKind.Miss };
+            var hit = RollHit(attacker, defender, rng, dodgeable, out bool dodged);
+            if (hit == HitKind.Miss) return new AttackRoll { Damage = 0, Hit = HitKind.Miss, Dodged = dodged };
             float typeMult = hit == HitKind.Critical ? CritMultiplier : 1f;
             float levelMult = (float)Math.Pow(DamageScalePerLevel, attacker.Level - defender.Level);
             int dmg = Math.Max(1, (int)Math.Floor(varied * typeMult * levelMult * multiplier));
@@ -144,8 +183,8 @@ namespace GridGame.Core.Rules
             float res = target.ResistanceMultiplier(type);
             raw *= res;
             float varied = raw * Variance(a, rng, 0.10f);
-            var hit = RollHit(caster, target, rng);
-            if (hit == HitKind.Miss) return new AttackRoll { Damage = 0, Hit = HitKind.Miss };
+            var hit = RollHit(caster, target, rng, true, out bool dodged);
+            if (hit == HitKind.Miss) return new AttackRoll { Damage = 0, Hit = HitKind.Miss, Dodged = dodged };
             float typeMult = hit == HitKind.Critical ? CritMultiplier : 1f;
             float levelMult = (float)Math.Pow(DamageScalePerLevel, caster.Level - target.Level);
             int dmg = res <= 0f ? 0 : Math.Max(1, (int)Math.Floor(varied * typeMult * levelMult));

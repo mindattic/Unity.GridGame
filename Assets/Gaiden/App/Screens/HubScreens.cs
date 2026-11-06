@@ -53,6 +53,7 @@ namespace GridGame.App
             if (i.BattleStartManaOrbs > 0) parts.Add($"+{i.BattleStartManaOrbs} orbs at battle start");
             if (i.BankCapacityBonus > 0) parts.Add($"+{i.BankCapacityBonus} orb slots");
             if (i.PincerDamageBonus > 0) parts.Add($"Pincer +{i.PincerDamageBonus:P0}");
+            if (i.EvasionBonus > 0) parts.Add($"Evasion +{i.EvasionBonus:0}"); // GG-T297
             if (i.RegenPerTurn > 0) parts.Add($"Regen {i.RegenPerTurn}/turn");
             if (i.StartsProtected) parts.Add("Starts battles Protected");
             if (i.GrantsOrbs > 0) parts.Add($"+{i.GrantsOrbs} orbs");
@@ -1472,7 +1473,7 @@ namespace GridGame.App
             }
             Fact(w, "beast-speed", "Speed", tier >= BestiaryKnowledge.Speed ? $"SPD {d.BaseStats.Speed:0}" : null);
             Fact(w, "beast-stats", "Stats", tier >= BestiaryKnowledge.Stats
-                ? $"HP {Formulas.MaxHp(d.BaseStats, 1)} at Lv 1  ·  " + Ui.StatLine(d.BaseStats).Replace("\n", "  ") : null);
+                ? $"HP {Formulas.MaxHp(d.BaseStats, 1)} at Lv 1  ·  " + Ui.StatLine(d.BaseStats).Replace("\n", "  ") + $"  ·  EVA {Formulas.Evasion(d.BaseStats):0}%" : null);
             Fact(w, "beast-elements", "Elements", tier >= BestiaryKnowledge.Elements ? BestiaryKnowledge.ElementLine(d) : null);
             Fact(w, "beast-abilities", "Abilities", tier >= BestiaryKnowledge.Abilities ? "" : null);
             if (tier >= BestiaryKnowledge.Abilities)

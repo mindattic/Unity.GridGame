@@ -857,3 +857,16 @@ Owner: "This is a difficulty question, and the higher the difficulty the greater
   - Old settings migrate: Easy → 5, a below-×1 Custom → the nearest level, everything else → 10.
   - Soaks fight at `GAIDEN_DIFFICULTY` (default 10); `polish.py --balance --difficulty N`.
 - *(Tests: `DifficultyTests`.)*
+
+## 2026-11-06 — Defenders evade: Evasion from AGI and Luck, dodge synergies (owner, GG-T297)
+
+Owner: characters can be built to benefit from dodging hits.
+
+- **Was:** the hit roll (§13.1.1) read only the attacker's stats; a defender had no evasion, and `OnDodge` fired only on the attacker's own miss.
+- **Now:** see BIBLE §13.1.0.
+  - Every unit has **Evasion** = `min(25, 0.2·AGI + 0.1·LCK)` + buff and gear `EvasionBonus`, capped at 40 points. It takes the top points off the attacker's hit band on the same single Rng draw, so a seed only plays out differently where Evasion bites. Typical values are 3–12, so base balance barely moves.
+  - **Pincer and supporter blows can't be dodged** (the pincer is the core payoff). Enemy melee swings and shots, counterstrikes and charged enemy spells can. Hero spells still never miss.
+  - A dodge emits `DodgedEvent` (a "Dodge!" float, a sidestep and a whoosh, POL-D4) and fires `OnDodge` for the defender. A charged spell's miss or dodge now fires `OnDodge` too.
+  - New data: `BuffDef.EvasionBonus` / `ItemDef.EvasionBonus` (validated), the `blurred` status (+15 for 2 turns), and three Reactives on `OnDodge`: Evasive Riposte (a [Counterstrike]), Catch Breath (heal 6%) and Blur (gain [Blurred]). Only the Duelist carries one (Evasive Riposte); wider assignment is GG-T302's.
+  - Shown: `EVA n%` on the InspectCard and the battle unit panel at the Bestiary Stats tier, and on the Bestiary's Stats fact; glossary [Evasion] and [Blurred]; the [Dodge] entry mentions Evasion.
+- *(Tests: `EvasionTests`.)*

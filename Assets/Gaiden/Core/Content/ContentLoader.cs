@@ -142,10 +142,17 @@ namespace GridGame.Core.Content
                     p.Add($"ability {a.Id}: Pushback {a.Pushback}s outside 0..{Battle.BattleConfig.PushbackMaxSeconds}s (GG-T286)");
                 ValidateTrigger(db, a, p);
             }
-            foreach (var b in db.Buffs.Values) NeedBuff(b.OnExpireApply, $"buff {b.Id}");
+            foreach (var b in db.Buffs.Values)
+            {
+                NeedBuff(b.OnExpireApply, $"buff {b.Id}");
+                if (!(b.EvasionBonus >= -Rules.Formulas.EvasionCap && b.EvasionBonus <= Rules.Formulas.EvasionCap))
+                    p.Add($"buff {b.Id}: EvasionBonus {b.EvasionBonus} outside -{Rules.Formulas.EvasionCap}..{Rules.Formulas.EvasionCap} (GG-T297)");
+            }
             foreach (var i in db.Items.Values)
             {
                 NeedAbility(i.OnUseAbility, $"item {i.Id}");
+                if (!(i.EvasionBonus >= 0f && i.EvasionBonus <= 20f))
+                    p.Add($"item {i.Id}: EvasionBonus {i.EvasionBonus} outside 0..20 (GG-T297)");
                 NeedBuff(i.CuresBuff, $"item {i.Id} cures");
                 NeedBuff(i.PincerApplyBuff, $"item {i.Id} pincer buff");
                 if (i.Type == ItemType.RecipeScroll)

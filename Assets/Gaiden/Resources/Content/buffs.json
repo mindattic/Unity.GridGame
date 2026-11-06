@@ -270,5 +270,25 @@
     "Letter": "E",
     "Color": "#FFB03A",
     "OutgoingDamageMultiplier": 1.3
+  },
+  {
+    "Id": "blurred",
+    "Name": "Blurred",
+    "Kind": "Buff",
+    "Unit": "Turns",
+    "Duration": 2,
+    "DamagePerTick": 0,
+    "Immobile": false,
+    "HaltsTimeline": false,
+    "BreaksOnDamage": false,
+    "BreaksOnMove": false,
+    "IncomingDamageMultiplier": 1.0,
+    "TimelineSpeedMultiplier": 1.0,
+    "AccuracyMultiplier": 1.0,
+    "BlocksSpells": false,
+    "OnExpireApply": null,
+    "Letter": "B",
+    "Color": "#9AD8F0",
+    "EvasionBonus": 15
   }
 ]

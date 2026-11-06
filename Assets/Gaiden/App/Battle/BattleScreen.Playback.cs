@@ -190,6 +190,7 @@ namespace GridGame.App
                 case BuffTickedEvent bt: RefreshUnit(bt.UnitId); return null;
                 case AnnounceEvent an: ShowBanner(an.Text); return Tween.Wait(Timing.Standard);
                 case TriggeredEvent tr: return TriggeredAnim(tr);
+                case DodgedEvent dg: return DodgeAnim(dg);
                 case TrapPlacedEvent tp: board.SyncTraps(State); App.Audio.Sfx("battle.trap"); return FloatText(tp.ById, "Snare!", Palette.Boss, 0.3f);
                 case TrapTriggeredEvent tt: board.SyncTraps(State); App.Audio.Sfx("battle.trap"); return FloatText(tt.UnitId, "Trap!", Palette.Boss, 0.25f);
                 case WeaponWornEvent _: return null;
@@ -1730,6 +1731,27 @@ namespace GridGame.App
             App.Audio.Sfx(sfx, tr.Kind == AbilityKind.Reactive ? 0.8f : 0.5f);
             string text = string.IsNullOrEmpty(tr.Callout) ? "!" : tr.Callout.EndsWith("!") ? tr.Callout : tr.Callout + "!";
             return FloatText(tr.UnitId, text, tr.Kind == AbilityKind.Reactive ? Palette.Gold : Palette.Info, tr.Kind == AbilityKind.Reactive ? 0.2f : 0.1f, tr.Kind == AbilityKind.Reactive ? 56 : 44);
+        }
+
+        /// <summary>Evasion slipped a blow (GG-T297, POL-D4): the defender sidesteps away from the attacker and back with
+        /// a whoosh while "Dodge!" floats up.</summary>
+        private IEnumerator DodgeAnim(DodgedEvent dg)
+        {
+            var t = State.UnitById(dg.UnitId);
+            var a = State.UnitById(dg.AttackerId);
+            App.Audio.Sfx("battle.whoosh", 0.8f, 1.2f);
+            if (t != null && board.Units.TryGetValue(t.Id, out var v) && !ReduceMotion)
+            {
+                Vector2 away = a != null ? (ViewCenter(t) - ViewCenter(a)).normalized : Vector2.right;
+                Vector2 side = new Vector2(-away.y, away.x); // step out of the line of the blow
+                float d = 26f * Fx + 6f;
+                App.StartCoroutine(Tween.Run(Timing.Quick, k =>
+                {
+                    float s = Mathf.Sin(k * Mathf.PI);
+                    v.Root.style.translate = new Translate(side.x * d * s, side.y * d * s);
+                }));
+            }
+            return FloatText(dg.UnitId, "Dodge!", Palette.Info, 0.3f, 64);
         }
 
         private IEnumerator FloatText(int unitId, string text, Color c, float hold, float size = 60)

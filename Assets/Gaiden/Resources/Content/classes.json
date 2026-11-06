@@ -5069,7 +5069,8 @@
       "duelist_riposte",
       "duelist_probingthrust",
       "duelist_guardstance",
-      "duelist_decisivecut"
+      "duelist_decisivecut",
+      "evasive_riposte"
     ],
     "DefaultLoadout": [
       "cleave",

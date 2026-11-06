@@ -325,20 +325,25 @@ namespace GridGame.Core.Battle
             if (buff != null) ApplyBuff(target, buff, buff.Duration);
         }
 
+        /// <summary>Evasion (GG-T297, §13.1.0): a pincer is the game's core payoff, so its blows, the supporters' and the
+        /// follow-ups riding them can't be dodged; melee swings, shots and counterstrikes can.</summary>
+        private static bool Dodgeable(BlowKind kind) => kind != BlowKind.Pincer && kind != BlowKind.Support;
+
         /// <summary>
         /// One weapon blow (a pincer strike, a supporter's, a counter, an enemy's melee swing or shot). The trigger engine
-        /// rides it (GG-T296): OnDodge on a miss; on a landing blow OnLandedHit for the striker (Lifesteal, Mana Siphon,
+        /// rides it (GG-T296): OnDodge on a miss or an Evasion dodge (a DodgedEvent stands in for the 0-damage miss); on a landing blow OnLandedHit for the striker (Lifesteal, Mana Siphon,
         /// a weapon's lifesteal), the class on-hit buff, then OnAttackedDirect for an adjacent victim (Counter Attack);
         /// a primary blow then fires OnAttack (Double Attack's follow-up).
         /// </summary>
         private void Strike(Unit attacker, Unit target, float mult, BlowKind kind, bool followUp = false)
         {
             Emit(new AttackEvent { AttackerId = attacker.Id, TargetId = target.Id, IsSupport = kind == BlowKind.Support, IsMelee = kind == BlowKind.Melee, IsRanged = kind == BlowKind.Ranged });
-            var roll = Formulas.Physical(attacker, target, S.Rng, mult * KitDamageMultiplier(attacker, target) * attacker.OutgoingDamageMultiplier);
+            var roll = Formulas.Physical(attacker, target, S.Rng, mult * KitDamageMultiplier(attacker, target) * attacker.OutgoingDamageMultiplier, Dodgeable(kind));
             if (!(roll.Hit != HitKind.Miss && PlateAbsorbs(target, attacker, roll.Damage)))
             {
                 int before = target.Hp;
-                Damage(target, roll.Damage, attacker, roll.Hit, DamageType.Physical);
+                if (roll.Dodged) Emit(new DodgedEvent { UnitId = target.Id, AttackerId = attacker.Id });
+                else Damage(target, roll.Damage, attacker, roll.Hit, DamageType.Physical);
                 if (roll.Hit == HitKind.Critical && attacker.IsHero) AddCharge(BattleConfig.CritCharge, attacker.Id, "critical");
                 if (roll.Hit == HitKind.Miss)
                 {
@@ -479,6 +484,7 @@ namespace GridGame.Core.Battle
                 if (armor != null)
                 {
                     hero.GearStats = hero.GearStats + armor.Stats * -piece.Mastery;
+                    hero.GearEvasion -= armor.EvasionBonus; // its Evasion goes with it (GG-T297)
                     foreach (var kv in armor.Resistances)
                     {
                         if (!hero.GearResist.TryGetValue(kv.Key, out var cur)) continue;

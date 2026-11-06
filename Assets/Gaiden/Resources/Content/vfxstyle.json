@@ -24,7 +24,8 @@
     { "Id": "blinded", "Core": "#262033", "Glow": "#595973", "Shape": "smoke", "Motion": "billow", "Cue": "status.debuff", "Count": 8, "Size": 50, "Reach": 60, "Time": "Emphasis" },
     { "Id": "protection", "Core": "#66CC73", "Glow": "#B3FFC4", "Shape": "rune", "Motion": "pulse", "Cue": "battle.cast", "Count": 6, "Size": 14, "Reach": 110, "Time": "Standard", "Ring": true }, { "Id": "ward", "Core": "#4FA3E0", "Glow": "#B3DCFF", "Shape": "rune", "Motion": "pulse", "Cue": "battle.cast", "Count": 6, "Size": 14, "Reach": 110, "Time": "Standard", "Ring": true },
     { "Id": "taunting", "Core": "#FF5A3C", "Glow": "#FF9973", "Shape": "mote", "Motion": "pulse", "Cue": "battle.taunt", "Count": 6, "Size": 14, "Reach": 300, "Time": "Emphasis", "LingerEvery": 1 },
-    { "Id": "empowered", "Core": "#FFB847", "Glow": "#FFE6B3", "Shape": "ember", "Motion": "rise", "Cue": "battle.cast", "Count": 12, "Size": 19, "Reach": 170, "Time": "Emphasis", "Swell": true, "LingerEvery": 1 }
+    { "Id": "empowered", "Core": "#FFB847", "Glow": "#FFE6B3", "Shape": "ember", "Motion": "rise", "Cue": "battle.cast", "Count": 12, "Size": 19, "Reach": 170, "Time": "Emphasis", "Swell": true, "LingerEvery": 1 },
+    { "Id": "blurred", "Core": "#9AD8F0", "Glow": "#E0F6FF", "Shape": "mote", "Motion": "drift", "Cue": "battle.whoosh", "Count": 8, "Size": 14, "Reach": 120, "Time": "Standard" }
   ],
   "Tiers": [
     { "Tier": "Minor", "Count": 0.75, "Size": 0.9, "Shake": 0, "HitStop": 0, "Prefab": null },

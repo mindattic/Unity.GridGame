@@ -306,7 +306,7 @@ namespace GridGame.App
             var head = Header(body, null, $"{u.Name}  Lv {u.Level}", u.IsHero ? u.Def.Role : u.IsNeutral ? "Neutral" : "Enemy",
                 u.IsHero ? Palette.Hero : u.IsNeutral ? Palette.Neutral : Palette.Enemy);
             Line(head, reveal ? $"HP {u.Hp}/{u.MaxHp}" : "HP ??? — defeat more to learn it", "t-caption");
-            if (reveal) Line(head, Ui.StatLine(u.Effective), "t-caption", Palette.TextDim);
+            if (reveal) Line(head, $"{Ui.StatLine(u.Effective)} · EVA {GridGame.Core.Rules.Formulas.Evasion(u):0}%", "t-caption", Palette.TextDim); // GG-T297
             else if (knowledge >= BestiaryKnowledge.Speed) Line(head, $"SPD {u.Effective.Speed:0}", "t-caption", Palette.TextDim);
             if (!u.IsHero && knowledge >= BestiaryKnowledge.Elements) Line(head, BestiaryKnowledge.ElementLine(u.Def), "t-caption", Palette.TextDim);
             if (!u.IsHero && !u.IsNeutral)

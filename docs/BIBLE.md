@@ -795,12 +795,12 @@ Added 2026-10-11 (owner direction). `BattleState.ManaCharge` (0–99) is the for
 | HP / MaxHP | life | `Formulas.MaxHp = floor(12 + 5·VIT + level)`; an enemy spawns with `× EnemyHpScale` (0.45, GG-T262) |
 | STR | physical offense; pushback; stagger push | `Formulas.Physical`, `Pushback`, `StaggerCasts` |
 | VIT | HP + physical defense | `MaxHp`, `Physical` |
-| AGI | pushback stun recovery; Steal; ½ into Speed from gear | `Pushback`, Steal roll |
+| AGI | Evasion; pushback stun recovery; Steal; ½ into Speed from gear | `Formulas.Evasion`, `Pushback`, Steal roll |
 | SPD | timeline rate; hit chance | `RateFor`, `Formulas.HitPercent` |
 | STA | reserved | — |
 | INT | enemy magic offense; cast time; threat weighting | `Formulas.Magic`, `CastTime`, `PickTarget` |
 | WIS | magic defense; cast time; cast poise | `Magic`, `CastTime`, `StaggerCasts` |
-| LCK | crit; hit; Steal; Clutch; damage variance tilt | `CritPercent`, `HitPercent`, Steal, Clutch |
+| LCK | crit; hit; Evasion; Steal; Clutch; damage variance tilt | `CritPercent`, `HitPercent`, `Evasion`, Steal, Clutch |
 
 Level stats: `Formulas.StatsAtLevel` = base + growth per level from 2 + milestone bonuses at their level, each stat floored. Spell damage with a non-zero base always does ≥ 1 unless the target is immune (resistance 0).
 
@@ -835,7 +835,7 @@ The battle HUD shows **5 slot buttons** for the **selected hero** (`BattleRunner
 **Amended 2026-11-06 (GG-T296, owner): Active, Passive, Reactive.** Skills, spells and items are the *Active* kind: you take them. Two more kinds never sit on the bar. A **Passive** just happens (Vampire's Kiss heals when you attack; Tough Hide always softens blows). A **Reactive** fires after something happens *to* you, usually on a chance ("when [attacked directly], a [slight] chance to [Counterstrike]"). Heroes and enemies use the same system, so a character can be built to benefit from being hit, dodging or being surrounded.
 
 - **Data:** `AbilityDef.Trigger` (`TriggerDef`): `On` (the event), `Chance` (0..1; 1 never touches the Rng; optional `ChancePerLuck`), event parameters `Count` (OnSurrounded), `Threshold` (OnLowHp) and `Status` (OnStatusGained), an optional `Condition` (owner HP below/above, has/lacks a status, adjacent foes ≥ n, the other unit's tag, the damage type), a list of `Effects`, and the guards `Cooldown` (own turns) and `OncePerAction`. `Callout` overrides the float text. Everything is checked by `ContentLoader.ValidateTrigger`.
-- **Events (`TriggerOn`):** `Always` (modifiers only), `OnAttack` (a primary weapon attack, hit or miss), `OnLandedHit`, `OnDamaged`, `OnAttackedDirect` (an adjacent foe's blow lands), `OnAttackedAny` (any foe's blow or ability lands), `OnDodge` (a foe's blow misses), `OnSurrounded` (at turn start), `OnStatusGained`, `OnLowHp` (a hit crosses the threshold), `OnAllyKO`, `OnKill`, `OnPincerAsAttacker`, `OnPincerAsSupporter`, `TurnStart`, `TurnEnd`, `ActionEnd`. A hero's turn starts and ends each time control returns to the party; an enemy's is its own turn.
+- **Events (`TriggerOn`):** `Always` (modifiers only), `OnAttack` (a primary weapon attack, hit or miss), `OnLandedHit`, `OnDamaged`, `OnAttackedDirect` (an adjacent foe's blow lands), `OnAttackedAny` (any foe's blow or ability lands), `OnDodge` (a foe's blow or charged spell misses or is slipped by Evasion, §13.1.0), `OnSurrounded` (at turn start), `OnStatusGained`, `OnLowHp` (a hit crosses the threshold), `OnAllyKO`, `OnKill`, `OnPincerAsAttacker`, `OnPincerAsSupporter`, `TurnStart`, `TurnEnd`, `ActionEnd`. A hero's turn starts and ends each time control returns to the party; an enemy's is its own turn.
 - **Effects (`TriggerEffectKind`):** `Heal` (fraction of max HP), `Lifesteal` and `Reflect` (fraction of the context's damage), `ApplyBuff`, `Counterstrike` (a blow at ×Amount on a foe in reach), `FollowUp` (strike the target again at ×Amount of the blow), `CastAbility` (an Active ability resolved instantly and free through the normal dispatcher), `Cleanse`, `ManaCharge` (heroes), `Pushback` (seconds, foes). The `Always` modifiers are `DamageMultiplier` (the owner's weapon blows), `ReductionMultiplier` (damage taken) and `Immunity` (statuses). `Who` (Self/Target/Attacker) overrides each effect's default target.
 - **Engine (`BattleRunner.Triggers.cs` + pure `Rules/Triggers.cs`):** `Triggers.Sources(unit)` lists a unit's passives in a fixed order: class kit, learned passives (`Unit.Passives` from `HeroSpec.Passives` from `HeroSave.Known`), enchants on intact armor, then the weapon's named lifesteal. The funnels fire it: `Damage` (OnDamaged, OnAttackedAny, OnLowHp), `Strike` (OnDodge, OnLandedHit, OnAttackedDirect, OnAttack), `Kill` (OnKill, OnAllyKO), `ApplyBuff` (OnStatusGained), pincer resolve, turn starts and ends, and the end of a command. Owners go in unit-id order, abilities in source order, and only a chance below 1 draws from the battle Rng. **A reaction never provokes a reaction:** a Reactive can't fire from inside another Reactive's effects, and no ability re-enters itself. A Passive such as Lifesteal still rides a counter blow.
 - **Presentation:** every firing emits `TriggeredEvent` ahead of its effects. The view floats the callout over the unit with a sound: a clang for Counterstrike/Reflect, a war cry for a free cast, a power-up otherwise (POL-D4). The InspectCard and the bestiary kit line show **Passive** or **Reactive** with a sentence generated from the data (`TriggerText.Describe`), keywords in [brackets].
@@ -1460,6 +1460,22 @@ Owner: "these new coordinates and zoom are kept in memory in the character's Thu
 
 All in `Core/Rules/Formulas.cs` (ported from the old `Formulas` with engine types removed).
 
+#### 13.1.0 Evasion (defender, GG-T297)
+
+*Added 2026-11-06 (owner: "characters can be built to benefit from dodging hits").* Every unit, hero or enemy, has **Evasion** in percentage points:
+
+```
+evasion = clamp( min(25, 0.2·AGI + 0.1·LCK) + Σ buff EvasionBonus + Σ gear EvasionBonus , 0, 40 )
+```
+
+A level-1 hero sits near 3.6 (AGI 12, LCK 12), a ninja near 5, a level-30 skirmisher near 9–12; buffs and gear lift it, never past 40. It takes the **top `evasion` points off the attacker's hit band** on the same single Rng draw (`roll ≤ crit% → Critical; ≤ hit% → Normal; else Miss`, then a would-be hit with `roll > hit% − evasion` is **dodged**), so a seed replays identically wherever Evasion doesn't bite. A dodge deals nothing, emits `DodgedEvent` (a "Dodge!" float, a sidestep and a whoosh) instead of the 0-damage Miss, and fires `OnDodge` for the defender.
+
+- **Dodgeable:** enemy melee swings and shots, counterstrikes (Counter Attack, Evasive Riposte) and charged enemy spells (`Formulas.Magic`, §13.1.5).
+- **Never dodged:** pincer blows, supporter blows and the follow-ups riding them (the pincer is the game's core payoff), and hero spells/skills, which already never miss (§13.1.2).
+- **Sources:** `BuffDef.EvasionBonus` (validated −40..40; `blurred` +15 for 2 turns) and `ItemDef.EvasionBonus` (validated 0..20, lost when an armor piece breaks).
+- **Dodge synergies** (Reactive rows in `abilities.json`, on `OnDodge`): **Evasive Riposte** (a [Counterstrike] at 0.5×; on the Duelist's kit), **Catch Breath** (heal 6% MaxHP, once per action), **Blur** (gain [Blurred], once per action). Wider class assignment is GG-T302's content pass.
+- **Shown:** the InspectCard and battle unit panel stat line (`EVA n%`) at the Bestiary Stats tier, and the Bestiary's Stats fact (from base stats); buff and item text name their bonus; the glossary has [Evasion] and [Blurred].
+
 #### 13.1.1 Physical (pincer, supporter, enemy melee)
 
 ```
@@ -1469,6 +1485,7 @@ raw  ×= defender physical resistance
 var   = raw × U(0.9, 1.1) × LCK tilt (0.99..1.01)
 hit%  = clamp(80 + 0.5·SPD + 0.2·LCK + 3·(attacker lv − defender lv), 5, 95) × Blind accuracy (×0.5)
 crit% = clamp(8 + 0.4·LCK, 0, 50)        roll ≤ crit% → Critical; ≤ hit% → Normal; else Miss
+dodge = a non-pincer, non-supporter would-be hit with roll > hit% − defender Evasion (§13.1.0)
 dmg   = max(1, floor(var × (crit ? 1.6 : 1) × 1.07^(Δlevel) × multiplier))
 dmg   = max(1, floor(dmg × incoming multiplier))     (immune if physical resistance ≤ 0)
 ```

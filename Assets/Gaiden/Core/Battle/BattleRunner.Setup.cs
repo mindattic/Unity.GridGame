@@ -98,6 +98,7 @@ namespace GridGame.Core.Battle
                 pendingStartOrbs += Math.Max(0, item.BattleStartManaOrbs);
                 pendingBankBonus += Math.Max(0, item.BankCapacityBonus);
                 u.PincerDamageBonus += item.PincerDamageBonus;
+                u.GearEvasion += item.EvasionBonus;
                 u.RegenPerTurn += item.RegenPerTurn;
                 if (item.StartsProtected && !startProtected.Contains(u.Id)) startProtected.Add(u.Id);
                 foreach (var kv in item.Resistances)

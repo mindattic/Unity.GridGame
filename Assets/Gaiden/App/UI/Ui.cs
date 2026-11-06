@@ -410,6 +410,7 @@ namespace GridGame.App
             if (d.Tempo < 0) parts.Add($"on a hero: party Tempo {d.Tempo} (foes act sooner)");
             if (d.Tempo > 0) parts.Add($"on a hero: party Tempo +{d.Tempo}");
             if (d.AccuracyMultiplier < 1f) parts.Add("attacks miss more");
+            if (d.EvasionBonus != 0f) parts.Add($"Evasion {(d.EvasionBonus > 0f ? "+" : "")}{d.EvasionBonus:0}"); // GG-T297
             if (d.BreaksOnDamage) parts.Add("ends when hit");
             if (d.BreaksOnMove) parts.Add("ends when moved");
             return parts.Count == 0 ? (d.Kind == BuffKind.Buff ? "beneficial" : "harmful") : string.Join(", ", parts);
