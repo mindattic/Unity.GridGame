@@ -12,6 +12,9 @@ namespace GridGame.Core.Battle
     /// </summary>
     internal sealed partial class BattleRunner
     {
+        /// <summary>GG-T307: the enemy whose own turn closed the pincer now resolving (null for hero pincers).</summary>
+        private Unit supportTurnOwner;
+
         /// <summary>
         /// Crit supporters act first (GG-T298): each lends the attacker its chain reaches +Magnitude crit chance for this
         /// pincer's blows (several stack, the total capped at <see cref="SupportDef.MaxSupportedCritPercent"/>).
@@ -81,7 +84,15 @@ namespace GridGame.Core.Battle
                     break;
                 case SupportEffect.Buff:
                     var buff = C.TryBuff(def.Buff);
-                    if (buff != null) foreach (var t in targets) ApplyBuff(t, buff, buff.Duration);
+                    if (buff != null)
+                        foreach (var t in targets)
+                        {
+                            // GG-T307: an enemy's turn buffs count down as its own turn ends, so a Turns buff lent to the
+                            // enemy whose turn this is gets one more turn — otherwise it would expire before anyone hits it.
+                            int dur = buff.Duration;
+                            if (t == supportTurnOwner && buff.Unit == DurationUnit.Turns) dur++;
+                            ApplyBuff(t, buff, dur);
+                        }
                     break;
                 case SupportEffect.Haste:
                     foreach (var t in targets) if (t.Alive) HastenSeconds(t, def.Magnitude, "support:" + sup.Id);

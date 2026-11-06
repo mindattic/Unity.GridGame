@@ -561,6 +561,14 @@
       "W": 1,
       "H": 1
     },
+    "Support": {
+      "Effect": "Status",
+      "Magnitude": 0.3,
+      "Target": "Attacker",
+      "Range": 1,
+      "Buff": "blinded",
+      "Label": "Screech"
+    },
     "BaseStats": {
       "Strength": 15,
       "Vitality": 12,
@@ -671,6 +679,13 @@
     "Footprint": {
       "W": 1,
       "H": 1
+    },
+    "Support": {
+      "Effect": "Heal",
+      "Magnitude": 0.08,
+      "Target": "Attacker",
+      "Range": 1,
+      "Label": "Blood Share"
     },
     "BaseStats": {
       "Strength": 15,
@@ -783,6 +798,14 @@
     "Footprint": {
       "W": 1,
       "H": 1
+    },
+    "Support": {
+      "Effect": "Status",
+      "Magnitude": 0.3,
+      "Target": "Attacker",
+      "Range": 1,
+      "Buff": "blinded",
+      "Label": "Screech"
     },
     "BaseStats": {
       "Strength": 15,
@@ -1576,6 +1599,13 @@
       "W": 1,
       "H": 1
     },
+    "Support": {
+      "Effect": "Buff",
+      "Target": "Chain",
+      "Range": 2,
+      "Buff": "empowered",
+      "Label": "Battle Cry"
+    },
     "BaseStats": {
       "Strength": 12,
       "Vitality": 12,
@@ -1689,6 +1719,13 @@
     "Footprint": {
       "W": 1,
       "H": 1
+    },
+    "Support": {
+      "Effect": "Buff",
+      "Target": "Attacker",
+      "Range": 1,
+      "Buff": "protection",
+      "Label": "Shield Wall"
     },
     "BaseStats": {
       "Strength": 17,
@@ -1809,6 +1846,13 @@
       "W": 1,
       "H": 1
     },
+    "Support": {
+      "Effect": "Buff",
+      "Target": "Attacker",
+      "Range": 1,
+      "Buff": "protection",
+      "Label": "Shield Wall"
+    },
     "BaseStats": {
       "Strength": 17,
       "Vitality": 18,
@@ -1927,6 +1971,13 @@
     "Footprint": {
       "W": 1,
       "H": 1
+    },
+    "Support": {
+      "Effect": "Buff",
+      "Target": "Attacker",
+      "Range": 1,
+      "Buff": "protection",
+      "Label": "Shield Wall"
     },
     "BaseStats": {
       "Strength": 17,
@@ -2047,6 +2098,13 @@
       "W": 1,
       "H": 1
     },
+    "Support": {
+      "Effect": "Buff",
+      "Target": "Attacker",
+      "Range": 1,
+      "Buff": "protection",
+      "Label": "Shield Wall"
+    },
     "BaseStats": {
       "Strength": 17,
       "Vitality": 18,
@@ -2165,6 +2223,13 @@
     "Footprint": {
       "W": 1,
       "H": 1
+    },
+    "Support": {
+      "Effect": "Buff",
+      "Target": "Attacker",
+      "Range": 1,
+      "Buff": "protection",
+      "Label": "Shield Wall"
     },
     "BaseStats": {
       "Strength": 17,
@@ -2285,6 +2350,13 @@
       "W": 1,
       "H": 1
     },
+    "Support": {
+      "Effect": "Buff",
+      "Target": "Attacker",
+      "Range": 1,
+      "Buff": "ward",
+      "Label": "Kiln Ward"
+    },
     "BaseStats": {
       "Strength": 17,
       "Vitality": 18,
@@ -2403,6 +2475,13 @@
     "Footprint": {
       "W": 1,
       "H": 1
+    },
+    "Support": {
+      "Effect": "Buff",
+      "Target": "Attacker",
+      "Range": 1,
+      "Buff": "ward",
+      "Label": "Kiln Ward"
     },
     "BaseStats": {
       "Strength": 17,
@@ -2926,6 +3005,14 @@
       "W": 1,
       "H": 1
     },
+    "Support": {
+      "Effect": "Status",
+      "Magnitude": 0.25,
+      "Target": "Attacker",
+      "Range": 1,
+      "Buff": "silenced",
+      "Label": "Signal Jam"
+    },
     "BaseStats": {
       "Strength": 14,
       "Vitality": 15,
@@ -3041,6 +3128,14 @@
     "Footprint": {
       "W": 1,
       "H": 1
+    },
+    "Support": {
+      "Effect": "Status",
+      "Magnitude": 0.25,
+      "Target": "Attacker",
+      "Range": 1,
+      "Buff": "silenced",
+      "Label": "Signal Jam"
     },
     "BaseStats": {
       "Strength": 14,
@@ -3158,6 +3253,14 @@
       "W": 1,
       "H": 1
     },
+    "Support": {
+      "Effect": "Status",
+      "Magnitude": 0.25,
+      "Target": "Attacker",
+      "Range": 1,
+      "Buff": "silenced",
+      "Label": "Signal Jam"
+    },
     "BaseStats": {
       "Strength": 14,
       "Vitality": 15,
@@ -3273,6 +3376,14 @@
     "Footprint": {
       "W": 1,
       "H": 1
+    },
+    "Support": {
+      "Effect": "Status",
+      "Magnitude": 0.25,
+      "Target": "Attacker",
+      "Range": 1,
+      "Buff": "silenced",
+      "Label": "Signal Jam"
     },
     "BaseStats": {
       "Strength": 14,
@@ -3390,6 +3501,14 @@
       "W": 1,
       "H": 1
     },
+    "Support": {
+      "Effect": "Status",
+      "Magnitude": 0.25,
+      "Target": "Attacker",
+      "Range": 1,
+      "Buff": "silenced",
+      "Label": "Signal Jam"
+    },
     "BaseStats": {
       "Strength": 14,
       "Vitality": 15,
@@ -3506,6 +3625,13 @@
     "Footprint": {
       "W": 2,
       "H": 2
+    },
+    "Support": {
+      "Effect": "Pushback",
+      "Magnitude": 1.0,
+      "Target": "Attacker",
+      "Range": 2,
+      "Label": "Boulder Toss"
     },
     "BaseStats": {
       "Strength": 12,
@@ -3633,6 +3759,13 @@
       "W": 1,
       "H": 1
     },
+    "Support": {
+      "Effect": "Pushback",
+      "Magnitude": 1.0,
+      "Target": "Attacker",
+      "Range": 2,
+      "Label": "Boulder Toss"
+    },
     "BaseStats": {
       "Strength": 12,
       "Vitality": 12,
@@ -3745,6 +3878,13 @@
       "W": 1,
       "H": 1
     },
+    "Support": {
+      "Effect": "Pushback",
+      "Magnitude": 1.0,
+      "Target": "Attacker",
+      "Range": 2,
+      "Label": "Boulder Toss"
+    },
     "BaseStats": {
       "Strength": 12,
       "Vitality": 12,
@@ -3855,6 +3995,13 @@
     "Footprint": {
       "W": 1,
       "H": 1
+    },
+    "Support": {
+      "Effect": "Pushback",
+      "Magnitude": 0.5,
+      "Target": "Attacker",
+      "Range": 1,
+      "Label": "Stomp"
     },
     "BaseStats": {
       "Strength": 12,
@@ -3967,6 +4114,13 @@
       "W": 1,
       "H": 1
     },
+    "Support": {
+      "Effect": "Pushback",
+      "Magnitude": 0.5,
+      "Target": "Attacker",
+      "Range": 1,
+      "Label": "Stomp"
+    },
     "BaseStats": {
       "Strength": 12,
       "Vitality": 12,
@@ -4077,6 +4231,13 @@
     "Footprint": {
       "W": 1,
       "H": 1
+    },
+    "Support": {
+      "Effect": "Pushback",
+      "Magnitude": 0.5,
+      "Target": "Attacker",
+      "Range": 1,
+      "Label": "Stomp"
     },
     "BaseStats": {
       "Strength": 12,
@@ -4464,6 +4625,14 @@
     "Footprint": {
       "W": 1,
       "H": 1
+    },
+    "Support": {
+      "Effect": "Status",
+      "Magnitude": 0.75,
+      "Target": "Attacker",
+      "Range": 2,
+      "Buff": "burning",
+      "Label": "Hellbrand"
     },
     "BaseStats": {
       "Strength": 12,
@@ -5526,6 +5695,14 @@
       "W": 1,
       "H": 1
     },
+    "Support": {
+      "Effect": "Status",
+      "Magnitude": 0.3,
+      "Target": "Attacker",
+      "Range": 1,
+      "Buff": "blinded",
+      "Label": "Flung Grit"
+    },
     "BaseStats": {
       "Strength": 15,
       "Vitality": 12,
@@ -5636,6 +5813,14 @@
     "Footprint": {
       "W": 1,
       "H": 1
+    },
+    "Support": {
+      "Effect": "Status",
+      "Magnitude": 0.4,
+      "Target": "Attacker",
+      "Range": 1,
+      "Buff": "poisoned",
+      "Label": "Toxic Skin"
     },
     "BaseStats": {
       "Strength": 15,
@@ -5748,6 +5933,13 @@
       "W": 1,
       "H": 1
     },
+    "Support": {
+      "Effect": "Pushback",
+      "Magnitude": 0.5,
+      "Target": "Attacker",
+      "Range": 1,
+      "Label": "Tongue Lash"
+    },
     "BaseStats": {
       "Strength": 15,
       "Vitality": 12,
@@ -5858,6 +6050,14 @@
     "Footprint": {
       "W": 1,
       "H": 1
+    },
+    "Support": {
+      "Effect": "Status",
+      "Magnitude": 0.4,
+      "Target": "Attacker",
+      "Range": 1,
+      "Buff": "poisoned",
+      "Label": "Toxic Skin"
     },
     "BaseStats": {
       "Strength": 15,
@@ -5970,6 +6170,13 @@
       "W": 1,
       "H": 1
     },
+    "Support": {
+      "Effect": "Pushback",
+      "Magnitude": 0.5,
+      "Target": "Attacker",
+      "Range": 1,
+      "Label": "Tongue Lash"
+    },
     "BaseStats": {
       "Strength": 15,
       "Vitality": 12,
@@ -6080,6 +6287,14 @@
     "Footprint": {
       "W": 1,
       "H": 1
+    },
+    "Support": {
+      "Effect": "Status",
+      "Magnitude": 0.35,
+      "Target": "Attacker",
+      "Range": 1,
+      "Buff": "blinded",
+      "Label": "Pocket Sand"
     },
     "BaseStats": {
       "Strength": 12,
@@ -6193,6 +6408,13 @@
       "W": 1,
       "H": 1
     },
+    "Support": {
+      "Effect": "Crit",
+      "Magnitude": 0.2,
+      "Target": "Attacker",
+      "Range": 1,
+      "Label": "Gang Up"
+    },
     "BaseStats": {
       "Strength": 12,
       "Vitality": 12,
@@ -6304,6 +6526,14 @@
     "Footprint": {
       "W": 1,
       "H": 1
+    },
+    "Support": {
+      "Effect": "Status",
+      "Magnitude": 0.35,
+      "Target": "Attacker",
+      "Range": 1,
+      "Buff": "blinded",
+      "Label": "Pocket Sand"
     },
     "BaseStats": {
       "Strength": 12,
@@ -6417,6 +6647,13 @@
       "W": 1,
       "H": 1
     },
+    "Support": {
+      "Effect": "Crit",
+      "Magnitude": 0.2,
+      "Target": "Attacker",
+      "Range": 1,
+      "Label": "Gang Up"
+    },
     "BaseStats": {
       "Strength": 12,
       "Vitality": 12,
@@ -6528,6 +6765,14 @@
     "Footprint": {
       "W": 1,
       "H": 1
+    },
+    "Support": {
+      "Effect": "Status",
+      "Magnitude": 0.35,
+      "Target": "Attacker",
+      "Range": 1,
+      "Buff": "blinded",
+      "Label": "Pocket Sand"
     },
     "BaseStats": {
       "Strength": 12,
@@ -6641,6 +6886,13 @@
       "W": 1,
       "H": 1
     },
+    "Support": {
+      "Effect": "Crit",
+      "Magnitude": 0.2,
+      "Target": "Attacker",
+      "Range": 1,
+      "Label": "Gang Up"
+    },
     "BaseStats": {
       "Strength": 12,
       "Vitality": 12,
@@ -6753,6 +7005,14 @@
       "W": 1,
       "H": 1
     },
+    "Support": {
+      "Effect": "Status",
+      "Magnitude": 0.35,
+      "Target": "Attacker",
+      "Range": 1,
+      "Buff": "blinded",
+      "Label": "Pocket Sand"
+    },
     "BaseStats": {
       "Strength": 12,
       "Vitality": 12,
@@ -6864,6 +7124,14 @@
       "W": 1,
       "H": 1
     },
+    "Support": {
+      "Effect": "Status",
+      "Magnitude": 0.4,
+      "Target": "Attacker",
+      "Range": 1,
+      "Buff": "slowed",
+      "Label": "Grave Chill"
+    },
     "BaseStats": {
       "Strength": 14,
       "Vitality": 15,
@@ -6974,6 +7242,13 @@
     "Footprint": {
       "W": 1,
       "H": 1
+    },
+    "Support": {
+      "Effect": "Crit",
+      "Magnitude": 0.2,
+      "Target": "Attacker",
+      "Range": 1,
+      "Label": "Cheap Shot"
     },
     "BaseStats": {
       "Strength": 12,
@@ -7222,6 +7497,13 @@
       "W": 1,
       "H": 1
     },
+    "Support": {
+      "Effect": "Cast",
+      "Magnitude": 0.5,
+      "Target": "Attacker",
+      "Range": 1,
+      "Label": "Hex Echo"
+    },
     "BaseStats": {
       "Strength": 12,
       "Vitality": 12,
@@ -7335,6 +7617,13 @@
       "W": 1,
       "H": 1
     },
+    "Support": {
+      "Effect": "Cast",
+      "Magnitude": 0.5,
+      "Target": "Attacker",
+      "Range": 1,
+      "Label": "Hex Echo"
+    },
     "BaseStats": {
       "Strength": 12,
       "Vitality": 12,
@@ -7447,6 +7736,13 @@
       "W": 1,
       "H": 1
     },
+    "Support": {
+      "Effect": "Cast",
+      "Magnitude": 0.5,
+      "Target": "Attacker",
+      "Range": 1,
+      "Label": "Hex Echo"
+    },
     "BaseStats": {
       "Strength": 12,
       "Vitality": 12,
@@ -7557,6 +7853,13 @@
     "Footprint": {
       "W": 1,
       "H": 1
+    },
+    "Support": {
+      "Effect": "Cast",
+      "Magnitude": 0.5,
+      "Target": "Attacker",
+      "Range": 1,
+      "Label": "Hex Echo"
     },
     "BaseStats": {
       "Strength": 12,
@@ -7809,6 +8112,14 @@
     "Footprint": {
       "W": 1,
       "H": 1
+    },
+    "Support": {
+      "Effect": "Status",
+      "Magnitude": 0.5,
+      "Target": "Attacker",
+      "Range": 1,
+      "Buff": "slowed",
+      "Label": "Rime Grip"
     },
     "BaseStats": {
       "Strength": 12,
@@ -8334,6 +8645,13 @@
       "W": 1,
       "H": 1
     },
+    "Support": {
+      "Effect": "Crit",
+      "Magnitude": 0.25,
+      "Target": "Attacker",
+      "Range": 1,
+      "Label": "Ambush"
+    },
     "BaseStats": {
       "Strength": 12,
       "Vitality": 12,
@@ -8446,6 +8764,13 @@
       "W": 1,
       "H": 1
     },
+    "Support": {
+      "Effect": "Crit",
+      "Magnitude": 0.25,
+      "Target": "Attacker",
+      "Range": 1,
+      "Label": "Ambush"
+    },
     "BaseStats": {
       "Strength": 12,
       "Vitality": 12,
@@ -8557,6 +8882,13 @@
     "Footprint": {
       "W": 1,
       "H": 1
+    },
+    "Support": {
+      "Effect": "Crit",
+      "Magnitude": 0.25,
+      "Target": "Attacker",
+      "Range": 1,
+      "Label": "Ambush"
     },
     "BaseStats": {
       "Strength": 12,
@@ -8804,6 +9136,13 @@
       "W": 1,
       "H": 1
     },
+    "Support": {
+      "Effect": "Haste",
+      "Magnitude": 0.75,
+      "Target": "Attacker",
+      "Range": 1,
+      "Label": "Puppet Strings"
+    },
     "BaseStats": {
       "Strength": 14,
       "Vitality": 15,
@@ -8914,6 +9253,14 @@
     "Footprint": {
       "W": 1,
       "H": 1
+    },
+    "Support": {
+      "Effect": "Status",
+      "Magnitude": 0.4,
+      "Target": "Attacker",
+      "Range": 1,
+      "Buff": "slowed",
+      "Label": "Bog Grip"
     },
     "BaseStats": {
       "Strength": 12,
@@ -9027,6 +9374,14 @@
       "W": 1,
       "H": 1
     },
+    "Support": {
+      "Effect": "Status",
+      "Magnitude": 0.4,
+      "Target": "Attacker",
+      "Range": 1,
+      "Buff": "slowed",
+      "Label": "Bog Grip"
+    },
     "BaseStats": {
       "Strength": 12,
       "Vitality": 12,
@@ -9138,6 +9493,14 @@
     "Footprint": {
       "W": 1,
       "H": 1
+    },
+    "Support": {
+      "Effect": "Status",
+      "Magnitude": 0.4,
+      "Target": "Attacker",
+      "Range": 1,
+      "Buff": "slowed",
+      "Label": "Bog Grip"
     },
     "BaseStats": {
       "Strength": 12,
@@ -9387,6 +9750,13 @@
       "W": 1,
       "H": 1
     },
+    "Support": {
+      "Effect": "Pushback",
+      "Magnitude": 0.75,
+      "Target": "Attacker",
+      "Range": 1,
+      "Label": "Piston Ram"
+    },
     "BaseStats": {
       "Strength": 10,
       "Vitality": 11,
@@ -9500,6 +9870,13 @@
       "W": 1,
       "H": 1
     },
+    "Support": {
+      "Effect": "Pushback",
+      "Magnitude": 0.75,
+      "Target": "Attacker",
+      "Range": 1,
+      "Label": "Piston Ram"
+    },
     "BaseStats": {
       "Strength": 10,
       "Vitality": 11,
@@ -9612,6 +9989,13 @@
     "Footprint": {
       "W": 1,
       "H": 1
+    },
+    "Support": {
+      "Effect": "Pushback",
+      "Magnitude": 0.75,
+      "Target": "Attacker",
+      "Range": 1,
+      "Label": "Piston Ram"
     },
     "BaseStats": {
       "Strength": 10,
@@ -9861,6 +10245,13 @@
     "Footprint": {
       "W": 1,
       "H": 1
+    },
+    "Support": {
+      "Effect": "Pushback",
+      "Magnitude": 1.0,
+      "Target": "Attacker",
+      "Range": 1,
+      "Label": "Landslide Shove"
     },
     "BaseStats": {
       "Strength": 15,
@@ -10113,6 +10504,14 @@
     "Footprint": {
       "W": 1,
       "H": 1
+    },
+    "Support": {
+      "Effect": "Status",
+      "Magnitude": 1.0,
+      "Target": "Attacker",
+      "Range": 2,
+      "Buff": "poisoned",
+      "Label": "Coil Venom"
     },
     "BaseStats": {
       "Strength": 10,
@@ -10499,6 +10898,13 @@
       "W": 1,
       "H": 1
     },
+    "Support": {
+      "Effect": "Pushback",
+      "Magnitude": 0.75,
+      "Target": "Attacker",
+      "Range": 1,
+      "Label": "Club Sweep"
+    },
     "BaseStats": {
       "Strength": 12,
       "Vitality": 12,
@@ -10611,6 +11017,13 @@
       "W": 1,
       "H": 1
     },
+    "Support": {
+      "Effect": "Pushback",
+      "Magnitude": 0.75,
+      "Target": "Attacker",
+      "Range": 1,
+      "Label": "Club Sweep"
+    },
     "BaseStats": {
       "Strength": 12,
       "Vitality": 12,
@@ -10722,6 +11135,13 @@
     "Footprint": {
       "W": 1,
       "H": 1
+    },
+    "Support": {
+      "Effect": "Pushback",
+      "Magnitude": 0.75,
+      "Target": "Attacker",
+      "Range": 1,
+      "Label": "Club Sweep"
     },
     "BaseStats": {
       "Strength": 12,
@@ -11247,6 +11667,14 @@
       "W": 1,
       "H": 1
     },
+    "Support": {
+      "Effect": "Status",
+      "Magnitude": 0.3,
+      "Target": "Attacker",
+      "Range": 1,
+      "Buff": "silenced",
+      "Label": "Wail"
+    },
     "BaseStats": {
       "Strength": 12,
       "Vitality": 12,
@@ -11628,6 +12056,13 @@
       "W": 1,
       "H": 1
     },
+    "Support": {
+      "Effect": "Crit",
+      "Magnitude": 0.25,
+      "Target": "Attacker",
+      "Range": 1,
+      "Label": "Overclock"
+    },
     "BaseStats": {
       "Strength": 10,
       "Vitality": 11,
@@ -11738,6 +12173,13 @@
     "Footprint": {
       "W": 1,
       "H": 1
+    },
+    "Support": {
+      "Effect": "Crit",
+      "Magnitude": 0.25,
+      "Target": "Attacker",
+      "Range": 1,
+      "Label": "Overclock"
     },
     "BaseStats": {
       "Strength": 10,
@@ -11850,6 +12292,13 @@
       "W": 1,
       "H": 1
     },
+    "Support": {
+      "Effect": "Crit",
+      "Magnitude": 0.25,
+      "Target": "Attacker",
+      "Range": 1,
+      "Label": "Overclock"
+    },
     "BaseStats": {
       "Strength": 10,
       "Vitality": 11,
@@ -11961,6 +12410,13 @@
       "W": 1,
       "H": 1
     },
+    "Support": {
+      "Effect": "Crit",
+      "Magnitude": 0.25,
+      "Target": "Attacker",
+      "Range": 1,
+      "Label": "Overclock"
+    },
     "BaseStats": {
       "Strength": 10,
       "Vitality": 11,
@@ -12071,6 +12527,13 @@
     "Footprint": {
       "W": 1,
       "H": 1
+    },
+    "Support": {
+      "Effect": "Crit",
+      "Magnitude": 0.25,
+      "Target": "Attacker",
+      "Range": 1,
+      "Label": "Overclock"
     },
     "BaseStats": {
       "Strength": 10,
@@ -12318,6 +12781,13 @@
     "Footprint": {
       "W": 1,
       "H": 1
+    },
+    "Support": {
+      "Effect": "Crit",
+      "Magnitude": 0.4,
+      "Target": "Attacker",
+      "Range": 2,
+      "Label": "Death Mark"
     },
     "BaseStats": {
       "Strength": 12,
@@ -13253,6 +13723,14 @@
       "W": 1,
       "H": 1
     },
+    "Support": {
+      "Effect": "Status",
+      "Magnitude": 0.4,
+      "Target": "Attacker",
+      "Range": 1,
+      "Buff": "blinded",
+      "Label": "Sandblast"
+    },
     "BaseStats": {
       "Strength": 15,
       "Vitality": 12,
@@ -13363,6 +13841,14 @@
     "Footprint": {
       "W": 1,
       "H": 1
+    },
+    "Support": {
+      "Effect": "Status",
+      "Magnitude": 0.4,
+      "Target": "Attacker",
+      "Range": 1,
+      "Buff": "poisoned",
+      "Label": "Venom Sting"
     },
     "BaseStats": {
       "Strength": 16,
@@ -13885,6 +14371,14 @@
       "W": 1,
       "H": 1
     },
+    "Support": {
+      "Effect": "Status",
+      "Magnitude": 0.35,
+      "Target": "Attacker",
+      "Range": 1,
+      "Buff": "poisoned",
+      "Label": "Rot Bite"
+    },
     "BaseStats": {
       "Strength": 14,
       "Vitality": 15,
@@ -13997,6 +14491,14 @@
       "W": 1,
       "H": 1
     },
+    "Support": {
+      "Effect": "Status",
+      "Magnitude": 0.35,
+      "Target": "Attacker",
+      "Range": 1,
+      "Buff": "poisoned",
+      "Label": "Rot Bite"
+    },
     "BaseStats": {
       "Strength": 14,
       "Vitality": 15,
@@ -14108,6 +14610,14 @@
     "Footprint": {
       "W": 1,
       "H": 1
+    },
+    "Support": {
+      "Effect": "Status",
+      "Magnitude": 0.35,
+      "Target": "Attacker",
+      "Range": 1,
+      "Buff": "poisoned",
+      "Label": "Rot Bite"
     },
     "BaseStats": {
       "Strength": 14,
@@ -14355,6 +14865,14 @@
       "W": 1,
       "H": 1
     },
+    "Support": {
+      "Effect": "Status",
+      "Magnitude": 0.35,
+      "Target": "Attacker",
+      "Range": 1,
+      "Buff": "slowed",
+      "Label": "Ooze"
+    },
     "BaseStats": {
       "Strength": 15,
       "Vitality": 12,
@@ -14461,6 +14979,14 @@
     "Footprint": {
       "W": 1,
       "H": 1
+    },
+    "Support": {
+      "Effect": "Status",
+      "Magnitude": 0.35,
+      "Target": "Attacker",
+      "Range": 1,
+      "Buff": "slowed",
+      "Label": "Ooze"
     },
     "BaseStats": {
       "Strength": 15,
@@ -14569,6 +15095,14 @@
       "W": 1,
       "H": 1
     },
+    "Support": {
+      "Effect": "Status",
+      "Magnitude": 0.35,
+      "Target": "Attacker",
+      "Range": 1,
+      "Buff": "slowed",
+      "Label": "Ooze"
+    },
     "BaseStats": {
       "Strength": 15,
       "Vitality": 12,
@@ -14675,6 +15209,14 @@
     "Footprint": {
       "W": 1,
       "H": 1
+    },
+    "Support": {
+      "Effect": "Status",
+      "Magnitude": 0.45,
+      "Target": "Attacker",
+      "Range": 1,
+      "Buff": "slowed",
+      "Label": "Ooze"
     },
     "BaseStats": {
       "Strength": 15,
@@ -14785,6 +15327,13 @@
     "Footprint": {
       "W": 1,
       "H": 1
+    },
+    "Support": {
+      "Effect": "Buff",
+      "Target": "Attacker",
+      "Range": 1,
+      "Buff": "protection",
+      "Label": "Close Ranks"
     },
     "BaseStats": {
       "Strength": 12,
@@ -14899,6 +15448,13 @@
       "W": 1,
       "H": 1
     },
+    "Support": {
+      "Effect": "Buff",
+      "Target": "Attacker",
+      "Range": 1,
+      "Buff": "protection",
+      "Label": "Close Ranks"
+    },
     "BaseStats": {
       "Strength": 12,
       "Vitality": 12,
@@ -15012,6 +15568,13 @@
       "W": 1,
       "H": 1
     },
+    "Support": {
+      "Effect": "Buff",
+      "Target": "Attacker",
+      "Range": 1,
+      "Buff": "empowered",
+      "Label": "Press the Attack"
+    },
     "BaseStats": {
       "Strength": 12,
       "Vitality": 12,
@@ -15124,6 +15687,13 @@
     "Footprint": {
       "W": 1,
       "H": 1
+    },
+    "Support": {
+      "Effect": "Buff",
+      "Target": "Attacker",
+      "Range": 1,
+      "Buff": "empowered",
+      "Label": "Press the Attack"
     },
     "BaseStats": {
       "Strength": 12,
@@ -15373,6 +15943,13 @@
       "W": 1,
       "H": 1
     },
+    "Support": {
+      "Effect": "Crit",
+      "Magnitude": 0.25,
+      "Target": "Attacker",
+      "Range": 1,
+      "Label": "Razor Rhythm"
+    },
     "BaseStats": {
       "Strength": 12,
       "Vitality": 12,
@@ -15483,6 +16060,13 @@
     "Footprint": {
       "W": 1,
       "H": 1
+    },
+    "Support": {
+      "Effect": "Crit",
+      "Magnitude": 0.25,
+      "Target": "Attacker",
+      "Range": 1,
+      "Label": "Razor Rhythm"
     },
     "BaseStats": {
       "Strength": 12,
@@ -15595,6 +16179,13 @@
       "W": 1,
       "H": 1
     },
+    "Support": {
+      "Effect": "Crit",
+      "Magnitude": 0.25,
+      "Target": "Attacker",
+      "Range": 1,
+      "Label": "Razor Rhythm"
+    },
     "BaseStats": {
       "Strength": 12,
       "Vitality": 12,
@@ -15706,6 +16297,13 @@
       "W": 1,
       "H": 1
     },
+    "Support": {
+      "Effect": "Crit",
+      "Magnitude": 0.25,
+      "Target": "Attacker",
+      "Range": 1,
+      "Label": "Razor Rhythm"
+    },
     "BaseStats": {
       "Strength": 12,
       "Vitality": 12,
@@ -15816,6 +16414,13 @@
     "Footprint": {
       "W": 1,
       "H": 1
+    },
+    "Support": {
+      "Effect": "Crit",
+      "Magnitude": 0.25,
+      "Target": "Attacker",
+      "Range": 1,
+      "Label": "Razor Rhythm"
     },
     "BaseStats": {
       "Strength": 12,
@@ -16198,6 +16803,13 @@
     "Footprint": {
       "W": 1,
       "H": 1
+    },
+    "Support": {
+      "Effect": "Heal",
+      "Magnitude": 0.12,
+      "Target": "Chain",
+      "Range": 2,
+      "Label": "Fen Mending"
     },
     "BaseStats": {
       "Strength": 12,
@@ -16584,6 +17196,14 @@
       "W": 1,
       "H": 1
     },
+    "Support": {
+      "Effect": "Status",
+      "Magnitude": 0.3,
+      "Target": "Attacker",
+      "Range": 1,
+      "Buff": "silenced",
+      "Label": "Short Circuit"
+    },
     "BaseStats": {
       "Strength": 10,
       "Vitality": 11,
@@ -16693,6 +17313,13 @@
       "W": 1,
       "H": 1
     },
+    "Support": {
+      "Effect": "Haste",
+      "Magnitude": 0.75,
+      "Target": "Attacker",
+      "Range": 1,
+      "Label": "Tinker Boost"
+    },
     "BaseStats": {
       "Strength": 10,
       "Vitality": 11,
@@ -16801,6 +17428,14 @@
     "Footprint": {
       "W": 1,
       "H": 1
+    },
+    "Support": {
+      "Effect": "Status",
+      "Magnitude": 0.3,
+      "Target": "Attacker",
+      "Range": 1,
+      "Buff": "silenced",
+      "Label": "Short Circuit"
     },
     "BaseStats": {
       "Strength": 10,
@@ -17045,6 +17680,13 @@
       "W": 1,
       "H": 1
     },
+    "Support": {
+      "Effect": "Heal",
+      "Magnitude": 0.12,
+      "Target": "Attacker",
+      "Range": 1,
+      "Label": "Battle Hymn"
+    },
     "BaseStats": {
       "Strength": 17,
       "Vitality": 18,
@@ -17157,6 +17799,12 @@
     "Footprint": {
       "W": 1,
       "H": 1
+    },
+    "Support": {
+      "Effect": "Cleanse",
+      "Target": "Chain",
+      "Range": 1,
+      "Label": "Purify"
     },
     "BaseStats": {
       "Strength": 17,
@@ -17271,6 +17919,13 @@
       "W": 1,
       "H": 1
     },
+    "Support": {
+      "Effect": "Heal",
+      "Magnitude": 0.12,
+      "Target": "Attacker",
+      "Range": 1,
+      "Label": "Battle Hymn"
+    },
     "BaseStats": {
       "Strength": 17,
       "Vitality": 18,
@@ -17383,6 +18038,12 @@
     "Footprint": {
       "W": 1,
       "H": 1
+    },
+    "Support": {
+      "Effect": "Cleanse",
+      "Target": "Chain",
+      "Range": 1,
+      "Label": "Purify"
     },
     "BaseStats": {
       "Strength": 17,
@@ -17497,6 +18158,13 @@
       "W": 1,
       "H": 1
     },
+    "Support": {
+      "Effect": "Heal",
+      "Magnitude": 0.12,
+      "Target": "Attacker",
+      "Range": 1,
+      "Label": "Battle Hymn"
+    },
     "BaseStats": {
       "Strength": 17,
       "Vitality": 18,
@@ -17609,6 +18277,12 @@
     "Footprint": {
       "W": 1,
       "H": 1
+    },
+    "Support": {
+      "Effect": "Cleanse",
+      "Target": "Chain",
+      "Range": 1,
+      "Label": "Purify"
     },
     "BaseStats": {
       "Strength": 17,
@@ -17994,6 +18668,14 @@
       "W": 1,
       "H": 1
     },
+    "Support": {
+      "Effect": "Status",
+      "Magnitude": 0.5,
+      "Target": "Attacker",
+      "Range": 1,
+      "Buff": "poisoned",
+      "Label": "Wart Venom"
+    },
     "BaseStats": {
       "Strength": 15,
       "Vitality": 12,
@@ -18105,6 +18787,13 @@
     "Footprint": {
       "W": 1,
       "H": 1
+    },
+    "Support": {
+      "Effect": "Buff",
+      "Target": "Attacker",
+      "Range": 1,
+      "Buff": "regen",
+      "Label": "Verdant Sap"
     },
     "BaseStats": {
       "Strength": 15,
@@ -18223,6 +18912,13 @@
       "W": 1,
       "H": 1
     },
+    "Support": {
+      "Effect": "Buff",
+      "Target": "Attacker",
+      "Range": 1,
+      "Buff": "regen",
+      "Label": "Verdant Sap"
+    },
     "BaseStats": {
       "Strength": 15,
       "Vitality": 12,
@@ -18339,6 +19035,13 @@
     "Footprint": {
       "W": 1,
       "H": 1
+    },
+    "Support": {
+      "Effect": "Buff",
+      "Target": "Attacker",
+      "Range": 1,
+      "Buff": "regen",
+      "Label": "Verdant Sap"
     },
     "BaseStats": {
       "Strength": 15,
@@ -18457,6 +19160,13 @@
       "W": 1,
       "H": 1
     },
+    "Support": {
+      "Effect": "Buff",
+      "Target": "Attacker",
+      "Range": 1,
+      "Buff": "regen",
+      "Label": "Verdant Sap"
+    },
     "BaseStats": {
       "Strength": 15,
       "Vitality": 12,
@@ -18573,6 +19283,13 @@
     "Footprint": {
       "W": 1,
       "H": 1
+    },
+    "Support": {
+      "Effect": "Buff",
+      "Target": "Attacker",
+      "Range": 1,
+      "Buff": "regen",
+      "Label": "Verdant Sap"
     },
     "BaseStats": {
       "Strength": 15,
@@ -18691,6 +19408,14 @@
       "W": 1,
       "H": 1
     },
+    "Support": {
+      "Effect": "Status",
+      "Magnitude": 0.4,
+      "Target": "Attacker",
+      "Range": 1,
+      "Buff": "slowed",
+      "Label": "Root Snare"
+    },
     "BaseStats": {
       "Strength": 15,
       "Vitality": 12,
@@ -18807,6 +19532,14 @@
       "W": 1,
       "H": 1
     },
+    "Support": {
+      "Effect": "Status",
+      "Magnitude": 0.3,
+      "Target": "Attacker",
+      "Range": 1,
+      "Buff": "slowed",
+      "Label": "Grave Grasp"
+    },
     "BaseStats": {
       "Strength": 14,
       "Vitality": 15,
@@ -18917,6 +19650,14 @@
     "Footprint": {
       "W": 1,
       "H": 1
+    },
+    "Support": {
+      "Effect": "Status",
+      "Magnitude": 0.3,
+      "Target": "Attacker",
+      "Range": 1,
+      "Buff": "slowed",
+      "Label": "Grave Grasp"
     },
     "BaseStats": {
       "Strength": 14,
@@ -19029,6 +19770,14 @@
       "W": 1,
       "H": 1
     },
+    "Support": {
+      "Effect": "Status",
+      "Magnitude": 0.3,
+      "Target": "Attacker",
+      "Range": 1,
+      "Buff": "slowed",
+      "Label": "Grave Grasp"
+    },
     "BaseStats": {
       "Strength": 14,
       "Vitality": 15,
@@ -19139,6 +19888,14 @@
     "Footprint": {
       "W": 1,
       "H": 1
+    },
+    "Support": {
+      "Effect": "Status",
+      "Magnitude": 0.3,
+      "Target": "Attacker",
+      "Range": 1,
+      "Buff": "slowed",
+      "Label": "Grave Grasp"
     },
     "BaseStats": {
       "Strength": 14,
@@ -19391,6 +20148,14 @@
       "W": 1,
       "H": 1
     },
+    "Support": {
+      "Effect": "Status",
+      "Magnitude": 0.3,
+      "Target": "Attacker",
+      "Range": 1,
+      "Buff": "blinded",
+      "Label": "Eye Peck"
+    },
     "BaseStats": {
       "Strength": 15,
       "Vitality": 12,
@@ -19640,6 +20405,13 @@
     "Footprint": {
       "W": 1,
       "H": 1
+    },
+    "Support": {
+      "Effect": "Crit",
+      "Magnitude": 0.3,
+      "Target": "Attacker",
+      "Range": 1,
+      "Label": "Blood Frenzy"
     },
     "BaseStats": {
       "Strength": 15,
@@ -20166,6 +20938,13 @@
       "W": 1,
       "H": 1
     },
+    "Support": {
+      "Effect": "Crit",
+      "Magnitude": 0.2,
+      "Target": "Attacker",
+      "Range": 1,
+      "Label": "Pack Instinct"
+    },
     "BaseStats": {
       "Strength": 15,
       "Vitality": 12,
@@ -20280,6 +21059,13 @@
     "Footprint": {
       "W": 1,
       "H": 1
+    },
+    "Support": {
+      "Effect": "Crit",
+      "Magnitude": 0.2,
+      "Target": "Attacker",
+      "Range": 1,
+      "Label": "Pack Instinct"
     },
     "BaseStats": {
       "Strength": 15,
@@ -20396,6 +21182,13 @@
       "W": 1,
       "H": 1
     },
+    "Support": {
+      "Effect": "Crit",
+      "Magnitude": 0.2,
+      "Target": "Attacker",
+      "Range": 1,
+      "Label": "Pack Instinct"
+    },
     "BaseStats": {
       "Strength": 15,
       "Vitality": 12,
@@ -20510,6 +21303,13 @@
     "Footprint": {
       "W": 1,
       "H": 1
+    },
+    "Support": {
+      "Effect": "Crit",
+      "Magnitude": 0.25,
+      "Target": "Attacker",
+      "Range": 1,
+      "Label": "Pack Instinct"
     },
     "BaseStats": {
       "Strength": 15,
@@ -20759,6 +21559,13 @@
       "W": 1,
       "H": 1
     },
+    "Support": {
+      "Effect": "Pushback",
+      "Magnitude": 0.5,
+      "Target": "Attacker",
+      "Range": 1,
+      "Label": "Snow Shove"
+    },
     "BaseStats": {
       "Strength": 15,
       "Vitality": 12,
@@ -20870,6 +21677,14 @@
     "Footprint": {
       "W": 1,
       "H": 1
+    },
+    "Support": {
+      "Effect": "Status",
+      "Magnitude": 0.25,
+      "Target": "Attacker",
+      "Range": 1,
+      "Buff": "slowed",
+      "Label": "Grave Chill"
     },
     "BaseStats": {
       "Strength": 0,
@@ -20994,6 +21809,13 @@
       "W": 1,
       "H": 1
     },
+    "Support": {
+      "Effect": "Pushback",
+      "Magnitude": 0.25,
+      "Target": "Attacker",
+      "Range": 1,
+      "Label": "Rattle"
+    },
     "BaseStats": {
       "Strength": 0,
       "Vitality": 5,
@@ -21117,6 +21939,14 @@
       "W": 1,
       "H": 1
     },
+    "Support": {
+      "Effect": "Status",
+      "Magnitude": 0.3,
+      "Target": "Attacker",
+      "Range": 1,
+      "Buff": "poisoned",
+      "Label": "Rot Miasma"
+    },
     "BaseStats": {
       "Strength": 0,
       "Vitality": 6,
@@ -21239,6 +22069,13 @@
     "Footprint": {
       "W": 1,
       "H": 1
+    },
+    "Support": {
+      "Effect": "Heal",
+      "Magnitude": 0.05,
+      "Target": "Attacker",
+      "Range": 1,
+      "Label": "Brood Bond"
     },
     "BaseStats": {
       "Strength": 0,
@@ -21706,6 +22543,13 @@
     "Portrait": "Hag03",
     "Thumbnail": { "Zoom": 2.3787, "X": 0.4977, "Y": 0.2102 },
     "Footprint": { "W": 1, "H": 1 },
+    "Support": {
+      "Effect": "Haste",
+      "Magnitude": 1.0,
+      "Target": "Party",
+      "Range": 2,
+      "Label": "Time Skip"
+    },
     "BaseStats": { "Strength": 10, "Vitality": 8, "Agility": 12, "Speed": 14, "Stamina": 8, "Intelligence": 15, "Wisdom": 13, "Luck": 12 },
     "Growth": { "Strength": 0.6, "Vitality": 0.7, "Agility": 0.7, "Speed": 0.7, "Stamina": 0.7, "Intelligence": 0.8, "Wisdom": 0.7, "Luck": 0.7 },
     "Milestones": [],

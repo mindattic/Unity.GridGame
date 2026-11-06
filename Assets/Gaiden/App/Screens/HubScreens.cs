@@ -1582,6 +1582,10 @@ namespace GridGame.App
             {
                 var kit = Ui.KitTraits(C, d);
                 if (kit.Length > 0) GlossaryText.Create(kit, "small gold", w).style.whiteSpace = WhiteSpace.Normal;
+                // What it does standing in a pincer chain (GG-T307, §1.2.3): every foe has its own support, read at this tier.
+                var sup = GlossaryText.Create(GridGame.Core.Rules.SupportText.Describe(C, d.Support, named: true), "small gold", w);
+                sup.name = "beast-support";
+                sup.style.whiteSpace = WhiteSpace.Normal;
                 // Its abilities as chips: hold one to read it whole (GG-T252).
                 var ids = d.Abilities.Concat(string.IsNullOrEmpty(d.ChargeAbility) ? Enumerable.Empty<string>() : new[] { d.ChargeAbility }).Distinct();
                 var chips = Ui.El("row", w);

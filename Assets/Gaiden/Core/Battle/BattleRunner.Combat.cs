@@ -154,6 +154,7 @@ namespace GridGame.Core.Battle
         private void ResolvePincers(Team team, Unit dropped, Unit mustInclude = null)
         {
             var pincers = PincerDetector.Detect(S, team, dropped);
+            supportTurnOwner = team == Team.Enemy ? mustInclude : null; // GG-T307: whose own turn this enemy pincer is
             int chain = 0;
             foreach (var p in pincers)
             {

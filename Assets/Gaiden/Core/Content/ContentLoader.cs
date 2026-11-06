@@ -342,6 +342,10 @@ namespace GridGame.Core.Content
                 case SupportEffect.Pushback:
                     if (!(m > 0f && m <= Battle.BattleConfig.PushbackMaxSeconds)) p.Add($"{w}: Pushback {m}s outside (0, {Battle.BattleConfig.PushbackMaxSeconds}]s");
                     break;
+                case SupportEffect.Mana:
+                    // GG-T307: the mana meter is the party's; an enemy supporter would charge nothing.
+                    if (c.Team != Team.Hero) p.Add($"{w}: a Mana support is hero-only (enemy {c.Id} would do nothing)");
+                    break;
             }
             if (db.GlossaryIndex.Count > 0)
                 foreach (var t in Glossary.Terms(Rules.SupportText.Describe(db, s)))

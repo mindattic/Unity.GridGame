@@ -11,10 +11,17 @@ namespace GridGame.Core.Rules
     /// </summary>
     public static class SupportText
     {
-        public static string Describe(ContentDb c, SupportDef d)
+        public static string Describe(ContentDb c, SupportDef d) => Describe(c, d, false);
+
+        /// <summary>
+        /// <paramref name="named"/> (GG-T307, the Bestiary and a foe's InspectCard) adds the support's own name:
+        /// "As a [Supporter] (reach 1), Tongue Lash: adds 0.5 s of [Pushback] to each trapped foe."
+        /// </summary>
+        public static string Describe(ContentDb c, SupportDef d, bool named)
         {
             d = d ?? SupportDef.Default;
-            return $"As a [Supporter] (reach {Math.Max(1, d.Range)}): {Body(c, d)}.";
+            string label = named && !string.IsNullOrEmpty(d.Label) ? ", " + d.Label : "";
+            return $"As a [Supporter] (reach {Math.Max(1, d.Range)}){label}: {Body(c, d)}.";
         }
 
         /// <summary>The action alone ("strikes each trapped foe at 50% power"), lower-case, no full stop.</summary>
@@ -60,7 +67,7 @@ namespace GridGame.Core.Rules
             switch (t)
             {
                 case SupportTarget.Chain: return "everyone on its chain";
-                case SupportTarget.Party: return "the whole party";
+                case SupportTarget.Party: return "all its allies"; // GG-T307: reads right for a foe's side too
                 case SupportTarget.Self: return "itself";
                 default: return "the attacker";
             }

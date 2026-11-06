@@ -861,6 +861,21 @@ Owner: "Each supporter gives some kind of passive or active effect when they are
   - The effects are plain `SupportDef` data, so enemy classes can carry them too (GG-T307).
 - *(Tests: `SupportEffectTests`.)*
 
+## 2026-11-06 — Every monster has its own support (owner, GG-T307)
+
+Owner: "Every monster needs support abilities."
+
+- **Was:** every enemy class had no `Support`, so an enemy in a Sentient pincer's chain only struck at 50 %.
+- **Now:** see BIBLE §1.2.3 (Enemy supports).
+  - All 115 enemy classes carry a named, flavour-fit `Support`, each matched to its family. The effects are Status (poison, blind, slow, silence, burn), Buff, Heal, Cleanse, Crit, Haste, Pushback, and Cast for the hags. None of them is a Strike.
+  - Bosses reach 2 and hit harder: Naga *Coil Venom*, the Cyclops bosses' *Boulder Toss*, Captain *Battle Cry*, Reaper *Death Mark*, Demon Lord *Hellbrand*, Chronomancer *Time Skip*.
+  - Enemy Pushback slips a trapped hero's pending cast, because heroes have no turn icon. Enemy Haste moves enemy icons left.
+  - A Turns buff lent to the enemy whose own turn closed the pincer gets one extra turn, so it is still up when the heroes act.
+  - Mana supports are hero-only, and the validator enforces it.
+  - A "Party" support now reads "all its allies".
+  - The Bestiary and a foe's InspectCard show the named support sentence at the abilities tier (10 defeats).
+- *(Tests: `EnemySupportTests`.)*
+
 ## 2026-11-06 — Tap a timeline icon to select its unit (GG-T288)
 
 - **Was:** timeline icons only answered a hold (the InspectCard); selecting a unit needed a board tap.
@@ -906,3 +921,16 @@ Owner: characters can be built to benefit from dodging hits.
   - Bounty rewards changed: Wolf Pack paid a Hi-Potion and now pays a Tome of Berserk; Cave Dweller paid Flame Oil and now pays a Tome of Tough Hide.
   - **Cap:** at most 2 learned passives (Tomes and skill-tree grants, not the class kit) are on, +1 at Lv 10 and at Lv 20. The Abilities screen's Passives tab switches them. Before this, every learned passive fought.
 - *(Tests: `PassiveRewardTests`.)*
+
+## 2026-11-06 — Signature passives for every hero class and most enemy families (owner, GG-T302)
+
+Owner: Active = you take it; Passive = it just happens; Reactive = after something happens to you. "You could design a character that benefits from being hit, or from dodging hits, or from being surrounded by enemies." Enemies use the same system.
+
+- **Was:** after GG-T296 the trigger engine shipped ten generic passives; only the Duelist (Evasive Riposte) had one in a hero kit, and many enemy families had none.
+- **Now:** see BIBLE §4.1.2.
+  - 44 new `abilities.json` Passive/Reactive rows. Every one of the 65 hero classes carries 1–2 (Vampire's Kiss, Shield Wall, Unbowed, Grudge, Guard Counter, the ninja edges, Mending Touch, Arcane Harvest, …), and 73 enemy classes gained 1–2 (Toxic Skin on frogs, Vengeance on templars/wolves/gangers, Mirror Plating on mecha armor, Poison Ward on the undead, two per boss).
+  - Stale text fixed: Guard Stance promised a counter it never made, so Guard Counter (a Reactive while [Warded]) is now on all five Guard Stance classes; the Training Rapier +3's 3% lifesteal passive was named "Riposte" and is now *Bloodied Point* (items.json + tools/weapons.py); Counter Attack's text names [attacked directly]; the Mirrorcurse skill-tree node said "reflect a curse" but the spell blinds.
+  - Glossary gains [Lifesteal], [Reflect], [mana charge], [Physical] and the alias "attacked directly"; `ContentLoader.Validate` now also checks the [terms] of every generated `TriggerText` sentence.
+  - Removed the unread `BattleConfig.RegeneratePercent`, `ThornsFraction`, `ManaSiphonCharge` and `EnemyLifestealFraction`; the rows' Amounts are the tuning (tests pin 0.25/0.25/5).
+  - *Balance (provisional, casual bot, difficulty 10, same seeds, 4 battles × 15 stages):* wins 60/60 → 60/60, party HP left on victories 90% → 87%, actions per battle 85.8 → 86.1; at 12 × 15 stages 180/180 → 180/180, HP left 89% → 90%, actions 88.9 → 88.1. Neutral within noise (the casual bot already wins every stage at the soak's levels, so the win band can't move).
+- *(Tests: `SignaturePassiveTests`.)*

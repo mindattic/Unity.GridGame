@@ -312,7 +312,8 @@ namespace GridGame.App
             // What it brings as a supporter (GG-T298, §1.2.3): every hero; a foe once its abilities are known.
             if (u.IsHero || knowledge >= BestiaryKnowledge.Abilities)
             {
-                var sup = GlossaryText.Create(SupportText.Describe(GameApp.I?.Content, PincerDetector.SupportOf(u)), "t-caption", body, false);
+                // GG-T307: every foe has its own named support, read at the Bestiary's abilities tier (10 defeats).
+                var sup = GlossaryText.Create(SupportText.Describe(GameApp.I?.Content, PincerDetector.SupportOf(u), named: !u.IsHero), "t-caption", body, false);
                 sup.name = "inspect-support";
                 sup.style.marginTop = Space.S8;
             }

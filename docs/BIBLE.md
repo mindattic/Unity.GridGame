@@ -476,7 +476,7 @@ Each supporter then performs its class's **`SupportDef`** (`classes.json` → `S
 | **Status** *(GG-T298)* | each trapped opponent gains `Buff` (a debuff: poison, burn, blind, slow, silence…) with that chance — one Rng draw per foe below 1, none at 1; immunities and wards still apply | chance 0..1 |
 | **Pushback** *(GG-T298)* | that many seconds of Pushback on every trapped opponent, **added to the pincer's own push** (hero pincers: `PincerPushbackSeconds` on a foe they hurt), so each foe is still pushed **once per action**, capped at `PushbackMaxSeconds` (2 s). Works for either team | seconds (≤ 2) |
 
-**Target** is **Attacker** (the attacker the chain reaches), **Chain** (every ally on the chain from the supporter to that attacker, both ends), **Party** (every living ally) or **Self**; Strike, Cast, Status and Pushback always hit the trapped line and Crit always goes to the attacker. A class with no `Support` — every enemy — uses the default: Strike at 50% from range 1, exactly the pre-amendment rule. Hero defaults by role: Strikers strike (range 1), Ranged strike from range 2, Healers heal (attacker, chain or party, range 2–3), Tanks guard/taunt/rally (range 2), Mages give mana or haste (range 2), Supports haste, buff, shield, regen, cleanse or give mana (range 2–3). Supporters still count as participants for the mana charge divisor ([§3.1.9](#319-mana-charge)). The pincer outline links each supporter to the unit its chain runs through (`PincerFormedEvent.SupporterLinks`), and each supporter's cut-in card and float text name its action. *(Tests: `Supporters_join_through_an_unbroken_chain_of_allies_within_their_range`, `A_gap_in_the_chain_breaks_support`, `A_healer_supporter_heals_the_attacker_it_is_chained_to`, `Every_hero_class_performs_its_own_support_action`.)*
+**Target** is **Attacker** (the attacker the chain reaches), **Chain** (every ally on the chain from the supporter to that attacker, both ends), **Party** (every living ally) or **Self**; Strike, Cast, Status and Pushback always hit the trapped line and Crit always goes to the attacker. A class with no `Support` uses the default: Strike at 50% from range 1, exactly the pre-amendment rule — since GG-T307 no shipped enemy relies on it ([Enemy supports](#enemy-supports-gg-t307) below). Hero defaults by role: Strikers strike (range 1), Ranged strike from range 2, Healers heal (attacker, chain or party, range 2–3), Tanks guard/taunt/rally (range 2), Mages give mana or haste (range 2), Supports haste, buff, shield, regen, cleanse or give mana (range 2–3). Supporters still count as participants for the mana charge divisor ([§3.1.9](#319-mana-charge)). The pincer outline links each supporter to the unit its chain runs through (`PincerFormedEvent.SupporterLinks`), and each supporter's cut-in card and float text name its action. *(Tests: `Supporters_join_through_an_unbroken_chain_of_allies_within_their_range`, `A_gap_in_the_chain_breaks_support`, `A_healer_supporter_heals_the_attacker_it_is_chained_to`, `Every_hero_class_performs_its_own_support_action`.)*
 
 **Amended 2026-11-06 (GG-T298, owner — "Each supporter gives some kind of passive or active effect when they are a supporter: a Cleric sends a heal to the attacker; a ninja might increase your crit %; a wizard might randomly cast a spell on enemies in the line — so some characters are just plain better for support because of their passive benefits."):** the four effects above join the list, and the 34 hero classes that only struck now each bring an archetype edge:
 
@@ -489,6 +489,40 @@ Each supporter then performs its class's **`SupportDef`** (`classes.json` → `S
 - The existing Haste supports convert to seconds: Courier 1.5 s, Operative 1.25 s, Drifter 1 s, Dervish 0.75 s (chain).
 
 `ContentLoader.Validate` checks each effect's range, that a Status names a known debuff, that a Cast class has a damaging spell in its kit, and that the generated sentence's [terms] are in the glossary. Every effect is plain `SupportDef` data, so an enemy class given a `Support` uses them unchanged (GG-T307).
+
+<a id="enemy-supports-gg-t307"></a>**Enemy supports. Amended 2026-11-06 (GG-T307, owner — "Every monster needs support abilities."):** every one of the 115 enemy classes carries its own named `Support`. None of them uses the default strike. A monster stands as a supporter whenever its chain reaches the attacker of a Sentient enemy pincer, and it does not need to be Sentient itself, because only the two attackers must be. A tamed monster with the Pincer keyword brings the same block. Bosses reach 2 and hit harder:
+
+| Family | Effect (Label) |
+|---|---|
+| Bats, vultures, flying monkey, sand maw | **Status** blinded 30–40 % (*Screech*, *Eye Peck*, *Flung Grit*, *Sandblast*); bat01 **Heal** 8 % (*Blood Share*) |
+| Wolves, werewolf | **Crit** +20–25 % (*Pack Instinct*), +30 % (*Blood Frenzy*) |
+| Frogs, toad, naga | **Status** poisoned 40–50 % (*Toxic Skin*, *Wart Venom*) or **Pushback** 0.5 s (*Tongue Lash*); Naga (boss) poisons every trapped hero, reach 2 (*Coil Venom*) |
+| Slimes, marsh shamblers, ice mauler, tree golem 06 | **Status** slowed 35–50 % (*Ooze*, *Bog Grip*, *Rime Grip*, *Root Snare*) |
+| Scorpion, skelepedes, corpse | **Status** poisoned 30–40 % (*Venom Sting*, *Rot Bite*, *Rot Miasma*) |
+| Soldiers, ceramic knights, captain | **Buff** protection (*Close Ranks*, *Shield Wall*), ward (*Kiln Ward*), empowered (*Press the Attack*); Captain empowers the whole chain, reach 2 (*Battle Cry*) |
+| Templars | **Heal** 12 % (*Battle Hymn*) or **Cleanse** the chain (*Purify*) |
+| Gangers, goblin thug, lurkers, steppin razors, prototypes | **Status** blinded 35 % (*Pocket Sand*) or **Crit** +20–25 % (*Gang Up*, *Cheap Shot*, *Ambush*, *Razor Rhythm*, *Overclock*) |
+| Oni, cyclopes, troll, mecha armor, yeti, bone pile | **Pushback** 0.5–0.75 s (*Club Sweep*, *Stomp*, *Piston Ram*, *Snow Shove*, *Rattle* 0.25 s); Cyclops bosses 1 s at reach 2 (*Boulder Toss*), Mountain Troll 1 s (*Landslide Shove*) |
+| Tech gremlins, cyber zombies, phantom | **Status** silenced 25–30 % (*Short Circuit*, *Signal Jam*, *Wail*); gremlin01 **Haste** 0.75 s (*Tinker Boost*) |
+| Mannequin | **Haste** its attacker 0.75 s (*Puppet Strings*) |
+| Undead, ghost, gravestone | **Status** slowed 25–40 % (*Grave Grasp*, *Grave Chill*) |
+| Tree golems | **Buff** regen (*Verdant Sap*) |
+| Hags | **Cast** their Miasma at 50 % (*Hex Echo*) |
+| Swamp Mistress | **Heal** the chain 12 %, reach 2 (*Fen Mending*) |
+| Reaper | **Crit** +40 %, reach 2 (*Death Mark*) |
+| Demon Lord | **Status** burning 75 %, reach 2 (*Hellbrand*) |
+| Chronomancer | **Haste** all its allies 1 s, reach 2 (*Time Skip*) |
+| Naga egg | **Heal** 5 % (*Brood Bond*) |
+
+How each effect resolves from the enemy side:
+
+- **Heal, Buff, Cleanse** land on enemy allies exactly as on heroes. A **Turns** buff lent to the enemy whose own turn closed the pincer gets one extra turn (`BattleRunner.supportTurnOwner`). An enemy's turn buffs tick down as its turn ends, so without that extra turn the buff would expire before any hero could hit it.
+- **Haste** moves enemy turn icons left by that many seconds, or rushes an enemy cast. It lends no party tempo, because tempo belongs to the heroes.
+- **Pushback** adds to the enemy pincer's own push, which is 0 s because only hero pincers carry `PincerPushbackSeconds`. A hero has no turn icon, so the push has nothing to delay on its turn. What it does hit is a pending hero **cast**: the cast slips by that many seconds, is never cancelled, is pushed once per action and is capped at 2 s.
+- **Status, Cast and Crit** hit the trapped heroes, or lend the enemy attacker crit, through the same code as the hero side.
+- **Mana** is hero-only. `ContentLoader.Validate` rejects a Mana support on any non-hero class.
+
+The Bestiary shows the named sentence at the abilities tier (10 defeats), for example "As a [Supporter] (reach 1), Tongue Lash: adds 0.5 s of [Pushback] to each trapped foe." A foe's InspectCard shows the same sentence once it reaches that tier. *(Tests: `EnemySupportTests`.)*
 
 *Presentation:* the supporter's cut-in card names the `Label`; its float and feed line add the effect ("Shadow Edge! +30% Crit", "Hex Echo! Fireball", "Venom Rain! Poisoned", "Shove! Pushback +0.5 s"), one sound per effect (POL-D4, reused ids: heal, orb, crit, status.debuff, whoosh, powerup, cast). `SupportText.Describe` renders the rule as one sentence with glossary [terms] — "As a [Supporter] (reach 1): gives the attacker +30% [Crit] chance on its pincer blows." — on the hero InspectCard (a foe's once its abilities are known), the hero page, the Abilities screen, the mercenary offers and the new-game party pick. *(Tests: `SupportEffectTests`, `Every_hero_class_performs_its_own_support_action`.)*
 
@@ -870,6 +904,33 @@ The battle HUD shows **5 slot buttons** for the **selected hero** (`BattleRunner
 
 A skill locks for `AbilityDef.CooldownTurns` after use: **Steal 3, Mug 2, Teleport 3**. Countdowns live per hero in `Unit.Cooldowns`. **Amended 2026-10-09:** they tick **once per committed action** at control return (the old "turn-cycle" = hero window is now one action). A cooling slot shows "CD n" and refuses ("Recharging"). *(Test: `Teleport_relocates_and_fires_pincer_then_goes_on_cooldown`.)*
 
+#### 4.1.2 Signature passives (GG-T302, added 2026-11-06)
+
+Owner: "You could design a character that benefits from being hit, or from dodging hits, or from being surrounded by enemies." Every hero class carries **one or two** Passive/Reactive rows in its `classes.json` `Abilities` (they never reach the bar, `MetaServices.IsHeroUsable`), and most enemy families carry 0–2 so fights read differently. All are `abilities.json` rows on the §4.1 engine; numbers stay modest.
+
+| Archetype | Classes | Signature (id) | Rule |
+|---|---|---|---|
+| Vampire | vampire | Vampire's Kiss (`vampires_kiss`), Blood Feast (`blood_feast`) | landed blow → [Lifesteal] 15%; a kill heals 10% |
+| Guard Stance duelists | duelist, fencer, ronin, sellsword, swordmaster | Guard Counter (`guard_counter`) | while [Warded] (Guard Stance's ward), every direct blow is answered with a [Counterstrike] ×0.6 |
+| Dodge fighters | duelist, swordmaster, dervish, martial artist (Evasive Riposte); fencer, chroma ninja, speedster, courier, hexstalker (Blur); thief, white ninja (Catch Breath) | GG-T297 rows | OnDodge synergies |
+| Shield tanks | knight, defender, paladin, jade knight | Shield Wall (`shield_wall`) | [surrounded] by 2+ at turn start → [Ward] |
+| Brawler tanks | myrmidon, tank, panda girl | Unbowed (`unbowed`) | [surrounded] by 2+ → [Empowered] |
+| Hit-builders | warchief, shieldmaiden, prizefighter | Grudge (`grudge`) | damaged → 20% [Empowered], rests 2 turns |
+| | fighter, defender, sellsword | Battle Hardened (`battle_hardened`) | attacked directly → 20% [Protection] |
+| | dark templar | Dark Retribution (`dark_retribution`) | attacked directly → 35% [Reflect] 30% |
+| Berserkers | barbarian (Berserk); bruiser, wild child (Blood Rage `blood_rage`); odachi, ronin (Grim Resolve `grim_resolve`) | | below 50% ×1.35; crossing 50% → [Empowered]; crossing 35% → heal 15% |
+| Ninjas / rogues | green ninja, slasher (Venom Edge); red ninja (Ember Edge); yellow ninja (Static Edge); blue ninja (Rime Edge 10%); black ninja (Shadow Edge); street fighter (Dirty Fighting 20%) | `*_edge`, `dirty_fighting` | landed blow → 15% status on the target |
+| Finishers | assassin, night hunter (Vanish → [Blurred]); striker, ripper, harbinger, hexsniper (Bloodlust → [Empowered]); raider (Blood Feast) | | on a kill |
+| Counter-punchers | pugilist (Counterpunch 20% ×0.6), lancer (Set Spear 25% ×0.75), basher (Rattle: 15% [Pushback] 0.5 s on a landed blow) | | |
+| Healers | cleric, sister, doctor, alchemist, white ninja, white witch (Mending Touch: after supporting a pincer, heal the backed attacker 5%); cleric, sister, sage (Vigil: an ally falls → [Regen]); monk (Inner Calm: 3% each turn start); alchemist (Poison Ward); white witch (Pure Spirit: can't be [Silenced]) | | |
+| Mages | black witch, red mage (Arcane Harvest: a kill → 10 [mana charge]); ritualist (Blood Price: damaged → 4, once per action); sage, tinkerer (Arcane Insight: supporting → 5); drifter (Chill Aura: 25% [Slow] the direct attacker) | | |
+| Engineers / rangers | machinist, operative (Shock Plating: 25% [Pushback] 0.75 s on the direct attacker); engineer, technician (Self-Repair: below half HP, 5% each turn start); hexwarden (Keep Away 35%, 1 s); blue lion (Vengeance) | | |
+
+**Enemies** (same rows, readable at the Bestiary's abilities tier): frogs, toad, Swamp Mistress — **Toxic Skin** (attacked directly → 35% [Poison] the attacker); gangers, wolves, templars, captain — **Vengeance** (an ally falls → [Empowered]); cyber zombies — Poison Ward + **Rotting Bite** (20% poison); undead, skelepedes, marsh shamblers — Poison Ward; ghost — **Ethereal** ([Physical] ×0.8) + Poison Ward; phantom — Ethereal; mecha armor — **Mirror Plating** (a landed attack → 50% [Reflect] 20%); slimes — **Gelatinous** (damaged → 25% [Protection]); hags — **Spiteful Hex** (25% [Blind] the direct attacker); lurkers — Evasive Riposte; tech gremlins — Shock Plating; flying monkey — Blur; goblin thug — Dirty Fighting; Demon Lord, oni — **Infernal Hide** (can't [Burn]); Ice Mauler, yeti — **Frostborn** (can't [Freeze]) + Chill Aura; vulture — **Carrion Feast** (an ally falls → heal 15%); reaper — Blood Feast. Bosses carry two: Cyclops 00–02 Tough Hide + Blood Rage, Naga **Serpent's Retort** (35% [Counterstrike] ×0.6) + Poison Ward, Chronomancer **Time Slip** (35% [Pushback] 1 s) + Steadfast, Demon Lord Lifesteal + Infernal Hide. Bats, soldiers, mannequin, ceramic knights, steppin' razors, prototypes, oni, troll, werewolf, tree golems and sand maw keep their GG-T296 rows.
+
+- **Text is honest:** every chance in a description uses its band word ([slight] ≤15%, [small] ≤27%, [fair] ≤42%, [good] ≤62%); `ContentLoader.Validate` also fails a `TriggerText` sentence whose [terms] miss the glossary (new entries [Lifesteal], [Reflect], [mana charge], [Physical]; "attacked directly" is an alias of [directly]). Guard Stance now says what it does (Ward, and Guard Counter while it holds); the Training Rapier +3 lifesteal passive is *Bloodied Point*, not "Riposte"; Counter Attack's text names [attacked directly]; Mirrorcurse's node says it blinds.
+- *(Tests: `SignaturePassiveTests`.)*
+
 ### 4.2 Per-hero loadouts
 
 The bar follows the selected hero. Its slots come from the hero's saved bar, `HeroSave.Bar` (5 entries: ability id, `"item:<id>"`, or null), edited on the Abilities screen ([§25.6](#256-abilities)). A new hero's bar is its class `DefaultLoadout` (`Progression.NewHero`), whose abilities become **Known** ([§25.6](#256-abilities)). **Amended 2026-10-09:** there is no separate `HeroLoadouts` preset layer or `CombatLoadouts` cache — the saved bar is the bar.
@@ -1167,7 +1228,7 @@ Enemy-only entries: `charge_fireball` (Fire), `charge_ice` (Ice), `charge_thunde
 | `thorns` | Reactive | OnAttackedAny → Reflect 25% of the damage |
 | `mana_siphon` | Passive | OnLandedHit → ManaCharge 5 |
 
-The three proficiency passives carry no trigger; they only gate equipment ([§24.2.1](#2421-proficiency-gating-gg-t52)). Every one now works for heroes and enemies alike: a hero who learns Tough Hide, Lifesteal or Double Attack from a skill tree gets it in battle. Before, those were enemy-only code paths, and learned passives never reached the battle. *(Tests: `TriggerEngineTests`, `Double_attack_passive_strikes_twice_and_counter_strikes_back`.)*
+**GG-T302** adds 44 more rows (hero signatures and enemy family passives, listed in [§4.1.2](#412-signature-passives-gg-t302-added-2026-11-06)). The three proficiency passives carry no trigger; they only gate equipment ([§24.2.1](#2421-proficiency-gating-gg-t52)). Every one now works for heroes and enemies alike: a hero who learns Tough Hide, Lifesteal or Double Attack from a skill tree gets it in battle. Before, those were enemy-only code paths, and learned passives never reached the battle. *(Tests: `TriggerEngineTests`, `Double_attack_passive_strikes_twice_and_counter_strikes_back`.)*
 
 **Notes (current truth, Amended 2026-10-09):**
 - **Mug** = Steal's roll + its row's `BaseDamage` 10 Physical, one hit per target (fixed 2026-10-09; `Mug_steals_and_hits_exactly_once_per_target`).
@@ -1498,7 +1559,7 @@ A level-1 hero sits near 3.6 (AGI 12, LCK 12), a ninja near 5, a level-30 skirmi
 - **Dodgeable:** enemy melee swings and shots, counterstrikes (Counter Attack, Evasive Riposte) and charged enemy spells (`Formulas.Magic`, §13.1.5).
 - **Never dodged:** pincer blows, supporter blows and the follow-ups riding them (the pincer is the game's core payoff), and hero spells/skills, which already never miss (§13.1.2).
 - **Sources:** `BuffDef.EvasionBonus` (validated −40..40; `blurred` +15 for 2 turns) and `ItemDef.EvasionBonus` (validated 0..20, lost when an armor piece breaks).
-- **Dodge synergies** (Reactive rows in `abilities.json`, on `OnDodge`): **Evasive Riposte** (a [Counterstrike] at 0.5×; on the Duelist's kit), **Catch Breath** (heal 6% MaxHP, once per action), **Blur** (gain [Blurred], once per action). Wider class assignment is GG-T302's content pass.
+- **Dodge synergies** (Reactive rows in `abilities.json`, on `OnDodge`): **Evasive Riposte** (a [Counterstrike] at 0.5×; on the Duelist's kit), **Catch Breath** (heal 6% MaxHP, once per action), **Blur** (gain [Blurred], once per action). **Amended 2026-11-06 (GG-T302):** carried by the duelist, swordmaster, dervish, martial artist and lurkers (Evasive Riposte), fencer, chroma ninja, speedster, courier, hexstalker and flying monkey (Blur), and thief and white ninja (Catch Breath); see [§4.1.2](#412-signature-passives-gg-t302-added-2026-11-06).
 - **Shown:** the InspectCard and battle unit panel stat line (`EVA n%`) at the Bestiary Stats tier, and the Bestiary's Stats fact (from base stats); buff and item text name their bonus; the glossary has [Evasion] and [Blurred].
 
 #### 13.1.1 Physical (pincer, supporter, enemy melee)
@@ -1693,7 +1754,7 @@ Generic, data-driven mechanics (`ClassDef`), so each family's kit is content, no
 | Trail | `Trail` (trap id) | the tile it steps off becomes that trap (max 3 per enemy, oldest removed) |
 | On-hit | `OnHitBuff`, `OnHitChance` | a landed attack (melee, ranged, pincer) may inflict the buff |
 | Death burst | `DeathBurst` | on death, damages every adjacent hero ("self-destructs!") |
-| Passives | `Abilities` | `lifesteal` (heals a quarter of the damage dealt, `BattleConfig.EnemyLifestealFraction`; it was half before GG-T282), `tough_hide` (physical blows land at 70%), `berserk` (+35% damage below half HP), `regenerate` (6% MaxHP at the end of its turn), `double_attack`, `counter_attack` |
+| Passives | `Abilities` | `lifesteal` (heals a quarter of the damage dealt, the row's `Lifesteal` Amount 0.25; it was half before GG-T282), `tough_hide` (physical blows land at 70%), `berserk` (+35% damage below half HP), `regenerate` (6% MaxHP at the end of its turn), `double_attack`, `counter_attack`; **GG-T302** adds signature rows per family ([§4.1.2](#412-signature-passives-gg-t302-added-2026-11-06)) |
 | Support charges | `ChargeAbility` with `Filter: AllyOnly` | Howl (allies in 2 tiles hasten 0.25u — only when another ally in range is already at a hero, GG-T123), Rally (allies gain Protection), Mend (heal the most wounded ally 30 — only when one is below 70%) |
 | Area charge | `ChargeAbility` with an area `Shape` | Poison Cloud: 3×3, 6 poison + Poisoned |
 | Traps | `Trap` | Poison Cloud (miasma), Shock Mine (10 lightning + Slowed), Caltrops (8), plus the trail traps Slime Trail / Mire (Slowed) and Quicksand (4 + Slowed) |
@@ -2478,7 +2539,7 @@ Alongside the six weapon-only elemental enchants (`enchants.json`, which turn a 
 | Riposte | `counter_attack` (the enemy kit) | an adjacent attacker is struck back at half strength | Master | 2 Arcane Dust + Shadow Essence + 2 Broken Blade, 150 G |
 | Mana Siphon | `mana_siphon` | every hit the wearer lands adds 5 mana charge | Master | 2 Arcane Dust + Spark Essence + 2 Goblin Ear, 150 G |
 
-- **Where it lives:** the enchant id is on the piece (`EquippedArmor.Enchant`), not a new item, so set membership, wear, repairs and Masterwork rolls are untouched. One enchant per piece — a new one replaces it. Unequipping keeps it on that copy (`WornGear.Enchant`; an enchanted copy is put back on first), and it goes into battle on `ArmorPieceSpec.Enchant` / `EquippedPiece.Enchant`. `BattleRunner.HasPassive` checks the class kit, then every intact enchanted piece the unit wears; a broken piece leaves `Unit.Gear`, taking its passive with it, and a piece that breaks for good loses the enchant. Warded buffs announce "Warded!". Tuning: `BattleConfig.RegeneratePercent`, `ThornsFraction`, `ManaSiphonCharge`.
+- **Where it lives:** the enchant id is on the piece (`EquippedArmor.Enchant`), not a new item, so set membership, wear, repairs and Masterwork rolls are untouched. One enchant per piece — a new one replaces it. Unequipping keeps it on that copy (`WornGear.Enchant`; an enchanted copy is put back on first), and it goes into battle on `ArmorPieceSpec.Enchant` / `EquippedPiece.Enchant`. `BattleRunner.HasPassive` checks the class kit, then every intact enchanted piece the unit wears; a broken piece leaves `Unit.Gear`, taking its passive with it, and a piece that breaks for good loses the enchant. Warded buffs announce "Warded!". Tuning: each passive's `abilities.json` trigger Amount (the old `BattleConfig.RegeneratePercent`/`ThornsFraction`/`ManaSiphonCharge`/`EnemyLifestealFraction` constants were removed in GG-T302, unread since GG-T296).
 - **Tier:** like her weapon enchants, armor enchant tiers unlock with the Alchemist's station level, and each enchant feeds it 15 XP. The Apprentice ones take Arcane Dust and Green Valley trophies only.
 - **The Enchantress joins after the first armor:** her join beat (`swamp_enchantress`) has the story trigger **`FirstArmor`** — it plays at the next launch once `onboard:first-armor` is set (§25.0.7). Its `Id` is a fallback theme (`swamp`), so a party that never forges armor still meets her at the Fens. She hands over an Arcane Dust on joining. The Camp row reads "Joins once you've forged your first armor" while she is away.
 - **Guided prompt:** `ArmorEnchanting.First` picks the first enchant: an unenchanted worn piece (set pieces first, so the guided first armor), and an open enchant whose materials are in the bag, else the fewest still to find, else file order. Her **Armor** tab (`EnchantressScreen`) lists worn pieces (`piece-<class>-<slot>`) and enchants (`aenchant-<id>`) and preselects both; her camp tip (`enchantress`, `CampTips.Resolve`) names the enchant, the passive, the hero and the piece and rings **Enchant** (`craft`); short of materials it rings the enchant row and says what to bring back. The **first enchant is free** of gold (`ArmorEnchanting.Gold`), and `onboard:first-enchant` ends the guidance. Test Mode and New Game+ saves skip it.
