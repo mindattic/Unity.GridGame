@@ -385,6 +385,7 @@ namespace GridGame.App
         public readonly VisualElement Root;
         public readonly VisualElement TileLayer;
         public readonly VisualElement MarkLayer;
+        public readonly VisualElement CueLayer;
         public readonly VisualElement UnitLayer;
         public readonly VisualElement FxLayer;
         public readonly Dictionary<int, UnitView> Units = new Dictionary<int, UnitView>();
@@ -413,6 +414,8 @@ namespace GridGame.App
             Trail.style.left = Trail.style.top = Trail.style.right = Trail.style.bottom = Space.S0;
             Root.Add(Trail);
             UnitLayer = Layer("units");
+            // Over the tokens, under the marks: the timeline's approach glow / next-actor and selection outlines (GG-T287).
+            CueLayer = Layer("cues");
             MarkLayer = Layer("marks");
             Lines = new LineLayer();
             Lines.style.position = Position.Absolute;
@@ -591,6 +594,43 @@ namespace GridGame.App
             var m = marks[c.X, c.Y];
             m.style.backgroundColor = color;
             m.style.opacity = alpha;
+        }
+
+        // ── Timeline cues (GG-T287): a unit whose icon nears the left edge glows on its tile in the icon's own colour, the
+        //    next actor's tile carries the same gold border its icon does. ──
+        private readonly Dictionary<int, VisualElement> cues = new Dictionary<int, VisualElement>();
+
+        private VisualElement NewCue(string name, float radius)
+        {
+            var c = new VisualElement { name = name, pickingMode = PickingMode.Ignore };
+            c.style.position = Position.Absolute;
+            c.style.borderTopLeftRadius = c.style.borderTopRightRadius = c.style.borderBottomLeftRadius = c.style.borderBottomRightRadius = radius;
+            CueLayer.Add(c);
+            return c;
+        }
+
+        private static void Frame(VisualElement c, Coord at, int w, int h, float inset, float border, Color borderColor)
+        {
+            c.style.left = at.X * Tile + inset; c.style.top = at.Y * Tile + inset;
+            c.style.width = w * Tile - 2f * inset; c.style.height = h * Tile - 2f * inset;
+            c.style.borderTopWidth = c.style.borderBottomWidth = c.style.borderLeftWidth = c.style.borderRightWidth = border;
+            c.style.borderTopColor = c.style.borderBottomColor = c.style.borderLeftColor = c.style.borderRightColor = borderColor;
+        }
+
+        /// <summary>Glow a unit's footprint: <paramref name="fill"/> tints the tile, <paramref name="border"/> rings it.</summary>
+        public void SetCue(int unitId, Coord at, int w, int h, Color fill, Color border, float borderWidth)
+        {
+            if (!cues.TryGetValue(unitId, out var c)) cues[unitId] = c = NewCue("cue-" + unitId, 18);
+            Frame(c, at, w, h, 6f, borderWidth, border);
+            c.style.backgroundColor = fill;
+            c.style.display = DisplayStyle.Flex;
+        }
+
+        /// <summary>Hides every unit cue not in <paramref name="keep"/>.</summary>
+        public void HideCues(ICollection<int> keep)
+        {
+            foreach (var kv in cues)
+                if (!keep.Contains(kv.Key)) kv.Value.style.display = DisplayStyle.None;
         }
 
         // ── Pickups (§13.3.1): a bobbing, glowing token on its tile; a ring shows how long until it fades ──

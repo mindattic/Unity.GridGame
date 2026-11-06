@@ -31,11 +31,7 @@ namespace GridGame.App
         // width (bible §26.3) so a wider phone centres the board and stretches the timeline instead of leaving a gap.
         private const float BoardTop = 450f;
         private static float BoardLeft => (GameApp.StageWidth - BoardView.Tile * BattleConfig.Cols) / 2f;
-        private const float TimelineLeft = 40f, TimelineY = 250f;
-        private static float TimelineWidth => GameApp.StageWidth - 230f;
-        private VisualElement timelineFrame;
-        /// <summary>The track line's y inside the timeline frame; every icon centres on it.</summary>
-        private const float TrackY = 50f;
+        // The timeline's geometry lives with it in BattleScreen.Timeline.cs (GG-T287).
 
         public BattleState State { get; private set; }
         private LocalSession session;
@@ -57,8 +53,6 @@ namespace GridGame.App
         private readonly string stageId;
         private readonly BattleSetup setupOverride;
         private BoardView board;
-        private VisualElement timelineBar, timelineIcons;
-        private readonly Dictionary<int, VisualElement> timelineIconViews = new Dictionary<int, VisualElement>();
         private readonly List<VisualElement> slotViews = new List<VisualElement>();
         private readonly List<VisualElement> orbViews = new List<VisualElement>();
         private VisualElement panel;
@@ -68,7 +62,7 @@ namespace GridGame.App
         private const float BannerViewportHeight = 90f;
         /// <summary>The banner row sits between the timeline and the board; the info panel starts under the mana row and
         /// stretches to the bottom, so it alone absorbs a taller stage (§26.3).</summary>
-        private const float BannerTop = 318f, InfoPanelTop = 2250f, TopBarHeight = 110f, TimelineFrameHeight = 100f;
+        private const float BannerTop = 318f, InfoPanelTop = 2250f, TopBarHeight = 110f;
         private Label banner, waveLabel, coinLabel, timerLabel;
         private VisualElement shake;
         private VisualElement boardHost;
@@ -278,7 +272,7 @@ namespace GridGame.App
             cutInLayer.style.left = -BoardLeft;
             cutInLayer.style.width = GameApp.StageWidth; cutInLayer.style.height = GameApp.StageHeight;
             feed.style.left = BoardLeft + 14;
-            timelineFrame.style.width = TimelineWidth;
+            LayoutTimelineFrame();
         }
 
         private void OnStageResized()
@@ -288,33 +282,6 @@ namespace GridGame.App
         }
 
         public override void OnShown() { GameApp.StageResized -= OnStageResized; GameApp.StageResized += OnStageResized; }
-
-        private void BuildTimeline(VisualElement root)
-        {
-            var frame = Ui.El("", root);
-            timelineFrame = frame;
-            frame.style.position = Position.Absolute;
-            frame.style.left = TimelineLeft; frame.style.top = TimelineY - TimelineFrameHeight / 2f; frame.style.height = TimelineFrameHeight;
-            timelineBar = Ui.El("", frame);
-            timelineBar.name = "timeline-track";
-            timelineBar.style.position = Position.Absolute;
-            timelineBar.style.left = Space.S0; timelineBar.style.right = Space.S0; timelineBar.style.top = TrackY - 3; timelineBar.style.height = Size.Track;
-            timelineBar.style.backgroundColor = Palette.Text.WithA(0.85f);
-            timelineBar.style.borderTopLeftRadius = timelineBar.style.borderTopRightRadius = timelineBar.style.borderBottomLeftRadius = timelineBar.style.borderBottomRightRadius = 3;
-            // GG-T286: no Zone. u = seconds until acting / BarSeconds, so the left edge is "acts now" (redesign: GG-T287).
-            var act = Ui.Text("ACT", "tiny warn shadow", frame);
-            act.style.position = Position.Absolute; act.style.left = -Space.S8; act.style.top = -Space.S24;
-            timelineIcons = Ui.El("", frame);
-            timelineIcons.style.position = Position.Absolute;
-            timelineIcons.style.left = timelineIcons.style.top = timelineIcons.style.right = timelineIcons.style.bottom = Space.S0;
-            timelineIcons.schedule.Execute(CycleCastRings).Every(1200);
-
-            var shield = Ui.Button("GUARD", () => { if (CanCommand()) Commit(new ShieldCommand()); }, "btn--icon", root);
-            shield.name = "shield";
-            shield.style.position = Position.Absolute;
-            shield.style.right = Space.S16; shield.style.top = TimelineY - 64; shield.style.width = shield.style.height = Size.Target;
-            shield.style.fontSize = 30;
-        }
 
         private void BuildAbilityBar(VisualElement root)
         {
@@ -446,155 +413,6 @@ namespace GridGame.App
                     case "empowered": return Palette.Buff;
                 }
             return new Color(0, 0, 0, 0);
-        }
-
-        private void SyncTimeline(Dictionary<int, float> uOverride)
-        {
-            var live = new HashSet<int>();
-            var at = new Dictionary<int, float>();
-            foreach (var e in State.Timeline)
-            {
-                if (e.Kind == TimelineKind.Cast) { at[e.Id] = Mathf.Clamp01(uOverride != null && uOverride.TryGetValue(e.Id, out var cu) ? cu : BattleEngine.BarU(State, e)); continue; } // casts live on the caster, not the line
-                live.Add(e.Id);
-                if (!timelineIconViews.TryGetValue(e.Id, out var icon))
-                {
-                    icon = MakeTimelineIcon(e);
-                    timelineIconViews[e.Id] = icon;
-                    timelineIcons.Add(icon);
-                }
-                at[e.Id] = Mathf.Clamp01(uOverride != null && uOverride.TryGetValue(e.Id, out var ou) ? ou : BattleEngine.BarU(State, e));
-            }
-            lastAt = at;
-            LayoutIcons(at);
-            MarkNextAttacker();
-            SyncTimelineStatus();
-            SyncCastRings(at);
-            foreach (var kv in timelineIconViews.ToList())
-                if (!live.Contains(kv.Key)) { kv.Value.RemoveFromHierarchy(); timelineIconViews.Remove(kv.Key); }
-        }
-
-        // Owner direction 2026-10-11: every timeline icon (turn or cast) should be the same size.
-        private const float TurnIcon = 84f, CastIcon = 84f;
-
-        private VisualElement MakeTimelineIcon(TimelineEntry e)
-        {
-            var owner = State.UnitById(e.OwnerId);
-            var icon = new VisualElement { name = "tl-" + e.Id, pickingMode = PickingMode.Ignore };
-            icon.style.position = Position.Absolute;
-            icon.style.flexShrink = 0;
-            if (e.Kind == TimelineKind.Turn)
-            {
-                icon.style.width = icon.style.height = TurnIcon;
-                icon.style.top = TrackY - TurnIcon / 2f; // centred on the line
-                SetBorder(icon, TurnIcon / 2f - 2f, 4, TurnRing(owner));
-                // Opaque disc so the track never shows through; overflow:hidden masks the art to the circle.
-                icon.style.backgroundColor = Palette.Ink;
-                icon.style.overflow = Overflow.Hidden;
-                // Heroes and enemies alike: the unit's portrait through its Thumbnail window (§12.1.1, GG-T221).
-                var sprite = new VisualElement { name = "tl-art", pickingMode = PickingMode.Ignore };
-                sprite.style.position = Position.Absolute;
-                sprite.style.left = sprite.style.top = sprite.style.right = sprite.style.bottom = Space.S4;
-                Ui.PortraitThumb(sprite, owner?.Def.Id);
-                icon.Add(sprite);
-            }
-            else
-            {
-                // A cast rides the same line, born at its cast time (castSeconds / BarSeconds) and reaching the left
-                // edge as it lands, so a quick spell visibly overtakes turn icons that started earlier.
-                var a = App.Content.TryAbility(e.AbilityId);
-                icon.style.width = icon.style.height = CastIcon;
-                icon.style.top = TrackY - CastIcon / 2f;
-                SetBorder(icon, CastIcon / 2f - 2f, 5, Art.SpellColor(e.AbilityId));
-                icon.style.backgroundColor = e.CasterTeam == Team.Hero ? new Color(0.08f, 0.14f, 0.36f, 1f) : new Color(0.3f, 0.06f, 0.1f, 1f);
-                icon.style.overflow = Overflow.Hidden;
-                var tex = Art.AbilityIcon(a);
-                if (tex != null) { icon.style.backgroundImage = new StyleBackground(tex); icon.style.backgroundSize = new BackgroundSize(BackgroundSizeType.Contain); }
-            }
-            AttachTimelineInspect(icon, e);
-            return icon;
-        }
-
-        private static readonly Color NextRing = Palette.Gold;
-
-        private static Color TurnRing(Unit owner) =>
-            owner != null && (owner.Def.HasTag("Boss") || owner.IsMultiTile) ? Palette.Boss : Palette.Enemy;
-
-        /// <summary>The enemy turn closest to the left edge (acting) gets a gold ring and a slight lift: "this one hits next".</summary>
-        private void MarkNextAttacker()
-        {
-            var next = State.Timeline.Where(e => e.Kind == TimelineKind.Turn && State.UnitById(e.OwnerId) is Unit o && !o.IsHero)
-                .OrderBy(e => BattleEngine.BarU(State, e)).ThenBy(e => e.Id).FirstOrDefault();
-            foreach (var e in State.Timeline)
-            {
-                if (e.Kind != TimelineKind.Turn || !timelineIconViews.TryGetValue(e.Id, out var icon)) continue;
-                bool isNext = next != null && e.Id == next.Id;
-                SetBorder(icon, TurnIcon / 2f - 2f, 4, isNext ? NextRing : TurnRing(State.UnitById(e.OwnerId)));
-                icon.style.scale = new Scale(isNext ? new Vector2(1.18f, 1.18f) : Vector2.one);
-                icon.EnableInClassList("tl-next", isNext);
-            }
-        }
-
-        /// <summary>
-        /// Every circle sits on the same centre line (owner direction 2026-10-10: never lift or bury one). Where circles
-        /// overlap they form a cluster, and each member gets its own beat on top: the front one rotates every 1.2 s.
-        /// </summary>
-        private void LayoutIcons(Dictionary<int, float> at)
-        {
-            var entries = State.Timeline.Where(e => e.Kind == TimelineKind.Turn && timelineIconViews.ContainsKey(e.Id))
-                .OrderBy(e => at[e.Id]).ThenBy(e => e.Id).ToList();
-            foreach (var e in entries)
-            {
-                var icon = timelineIconViews[e.Id];
-                icon.style.left = at[e.Id] * TimelineWidth - TurnIcon / 2f;
-                icon.style.top = TrackY - TurnIcon / 2f;
-            }
-            // Clusters of overlapping circles (sorted by position, chained while neighbours overlap).
-            var cluster = new List<TimelineEntry>();
-            void Flush()
-            {
-                if (cluster.Count == 0) return;
-                foreach (var e in cluster) timelineIconViews[e.Id].BringToFront();
-                if (cluster.Count > 1) timelineIconViews[cluster[castCycle % cluster.Count].Id].BringToFront();
-                cluster.Clear();
-            }
-            float lastX = float.NegativeInfinity;
-            foreach (var e in entries)
-            {
-                float x = at[e.Id] * TimelineWidth;
-                if (x - lastX >= TurnIcon * 0.85f) Flush();
-                cluster.Add(e);
-                lastX = x;
-            }
-            Flush();
-        }
-
-        /// <summary>Why an enemy isn't moving: a badge on its timeline circle for halting/immobilising effects and pushback stun.</summary>
-        private void SyncTimelineStatus()
-        {
-            foreach (var e in State.Timeline)
-            {
-                if (e.Kind != TimelineKind.Turn || !timelineIconViews.TryGetValue(e.Id, out var icon)) continue;
-                var owner = State.UnitById(e.OwnerId);
-                var badge = timelineIcons.Q<VisualElement>("tl-status-" + e.Id);
-                var status = owner == null ? null : StatusOf(owner, e);
-                var art = icon.Q("tl-art");
-                if (status == null) { badge?.RemoveFromHierarchy(); if (art != null) art.style.opacity = 1f; continue; }
-                if (badge != null && badge.viewDataKey != status.Value.icon) { badge.RemoveFromHierarchy(); badge = null; }
-                if (badge == null)
-                {
-                    badge = Ui.StatusPip(status.Value.icon, status.Value.letter, status.Value.color, 40, timelineIcons);
-                    badge.name = "tl-status-" + e.Id;
-                    badge.AddToClassList("tl-status");
-                    badge.style.position = Position.Absolute;
-                }
-                badge.style.left = icon.style.left.value.value + TurnIcon - 30f;
-                badge.style.top = icon.style.top.value.value + TurnIcon - 30f;
-                badge.BringToFront();
-                if (art != null) art.style.opacity = 0.55f; // dimmed: it isn't moving
-            }
-            foreach (var b in timelineIcons.Query<VisualElement>(className: "tl-status").ToList())
-                if (b.name != null && b.name.StartsWith("tl-status-") && !State.Timeline.Any(e => "tl-status-" + e.Id == b.name && State.UnitById(e.OwnerId) is Unit o && o.Alive && StatusOf(o, e) != null))
-                    b.RemoveFromHierarchy();
         }
 
         /// <summary>The effect that stops this unit's clock or turn, if any: buffs that halt/immobilise, else pushback stun.</summary>

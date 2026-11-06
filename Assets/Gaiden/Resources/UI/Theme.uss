@@ -21,6 +21,8 @@
     --color-guest: rgb(110, 240, 160);
     --color-neutral: rgb(255, 204, 94);
     --color-haste: rgb(89, 255, 224);
+    --color-cast-hero: rgb(38, 196, 230);
+    --color-cast-enemy: rgb(255, 140, 26);
     --color-el-physical: rgb(217, 224, 242);
     --color-el-fire: rgb(255, 115, 38);
     --color-el-ice: rgb(128, 217, 255);

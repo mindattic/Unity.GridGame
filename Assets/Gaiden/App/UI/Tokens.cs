@@ -34,6 +34,9 @@ namespace GridGame.App
         public static readonly Color Boss = new Color(0.86f, 0.4f, 1f);
         public static readonly Color Guest = new Color(0.43f, 0.94f, 0.63f);
         public static readonly Color Neutral = new Color(1f, 0.8f, 0.37f);
+        // Casts riding the timeline (GG-T287): never the red of an enemy turn, so a spell reads apart from a foe.
+        public static readonly Color CastHero = new Color(0.15f, 0.77f, 0.9f);
+        public static readonly Color CastEnemy = new Color(1f, 0.55f, 0.1f);
 
         // Statuses that aren't an element
         public static readonly Color Haste = new Color(0.35f, 1f, 0.88f);

@@ -30,6 +30,9 @@ namespace GridGame.App
             playing = true;
             playStarted = battleTime;
             chainCount = 0;
+            // A cast queued in this action is already in the final state; it joins the bar only when its beat plays.
+            unplayedCasts.Clear();
+            foreach (var ev in events) if (ev is CastQueuedEvent q) unplayedCasts.Add(q.EntryId);
             int i = 0;
             // The drag already showed the hero's walk live: the hero follows the finger and ApplyPreview slid every
             // displaced actor to where the whole walk leaves it. So the walk's own moves (the hero's steps, actors it
@@ -84,6 +87,8 @@ namespace GridGame.App
             }
             board.Lines.ClearLines();
             PruneGhosts();
+            unplayedCasts.Clear();
+            actingEntry = -1;
             pendingItemUser = -1; pendingItemId = null;
             // Before the safety-net snap: did playback leave every token where the state says it stands? A miss here
             // means a beat was skipped or played out of order (the snap below would hide it as a jump).
@@ -167,7 +172,7 @@ namespace GridGame.App
                 case TurnSkippedEvent sk: return FloatText(sk.UnitId, sk.Reason == "asleep" ? "Zzz…" : "…", new Color(0.7f, 0.8f, 1f), 0.35f);
 
                 case CastQueuedEvent cq: return CastQueuedAnim(cq);
-                case CastStaggeredEvent cs: return FloatText(cs.CasterId, cs.Resisted ? "Steady!" : "Stagger!", Palette.Gold, 0.25f);
+                case CastStaggeredEvent cs: return StaggerAnim(cs);
                 case CastCancelledEvent cc: castGhosts.Remove(cc.EntryId); SyncTimeline(null); board.Lines.ClearLines(); board.ClearMarks(); return FloatText(cc.CasterId, cc.Reason == "interrupted" ? "Interrupted!" : "Fizzled", new Color(1f, 0.6f, 0.3f), 0.35f);
                 case ClutchEvent cl: return ClutchAnim(cl);
                 case AbilityResolvedEvent ar: FlushTallies(); return AbilityAnim(ar);
@@ -1250,17 +1255,16 @@ namespace GridGame.App
 
         private IEnumerator TimelineAnim(TimelineAdvancedEvent ta)
         {
-            var starts = new Dictionary<int, float>();
-            foreach (var kv in timelineIconViews)
-                starts[kv.Key] = (kv.Value.resolvedStyle.left + kv.Value.resolvedStyle.width / 2f) / TimelineWidth;
-            // Create icons for entries that appeared, then glide everything to the snapshot.
-            foreach (var e in State.Timeline)
-                if (!timelineIconViews.ContainsKey(e.Id)) { var icon = MakeTimelineIcon(e); timelineIconViews[e.Id] = icon; timelineIcons.Add(icon); starts[e.Id] = ta.U.TryGetValue(e.Id, out var u0) ? u0 : BattleEngine.BarU(State, e); }
+            // The clock moves on: whoever just acted gives up the prominence slot. Every icon glides from where it is
+            // drawn (lastAt) to the snapshot; one that only now appears starts at its own snapshot u, so nothing is
+            // created and then torn down mid-glide (GG-T287).
+            actingEntry = -1;
+            var starts = lastAt != null ? new Dictionary<int, float>(lastAt) : new Dictionary<int, float>();
             float seconds = Mathf.Clamp(ta.Ticks / 40f, 0.18f, 0.45f);
             yield return Tween.Run(seconds, k =>
             {
                 var at = new Dictionary<int, float>();
-                foreach (var kv in ta.U) at[kv.Key] = Mathf.Lerp(starts.TryGetValue(kv.Key, out var v) ? v : castGhosts.TryGetValue(kv.Key, out var g) ? g.U : kv.Value, kv.Value, k);
+                foreach (var kv in ta.U) at[kv.Key] = Mathf.Lerp(starts.TryGetValue(kv.Key, out var v) ? v : kv.Value, kv.Value, k);
                 SyncTimeline(at); // lanes, overtakes, badges and cast rings follow the glide
             }, Tween.EaseInOut);
             SyncTimeline(ta.U);
@@ -1283,6 +1287,17 @@ namespace GridGame.App
             yield return FloatText(pb.UnitId, "Pushback!", Palette.Info, 0.12f, 46);
         }
 
+        /// <summary>A staggered cast slips right on the bar by its delay (GG-T287), with the knock's slide.</summary>
+        private IEnumerator StaggerAnim(CastStaggeredEvent cs)
+        {
+            if (!cs.Resisted && cs.DelayTicks > 0 && lastAt != null && lastAt.TryGetValue(cs.EntryId, out var from))
+            {
+                App.Audio.Sfx("battle.slide", 0.7f, 1.15f);
+                App.StartCoroutine(GlideOne(cs.EntryId, from, Mathf.Clamp01(from + CastSpanU(cs.DelayTicks)), 0.3f));
+            }
+            yield return FloatText(cs.CasterId, cs.Resisted ? "Steady!" : "Stagger!", Palette.Gold, 0.25f);
+        }
+
         private IEnumerator HastenAnim(HastenedEvent h)
         {
             if (timelineIconViews.ContainsKey(h.EntryId))
@@ -1296,13 +1311,15 @@ namespace GridGame.App
             if (u != null) Feed($"▶ {u.Name}'s turn", new Color(1f, 0.6f, 0.5f));
             App.Audio.Sfx("battle.turn", 0.7f);
             var entry = State.TurnEntryOf(ts.UnitId);
-            if (entry != null && timelineIconViews.TryGetValue(entry.Id, out var icon))
+            if (entry != null && timelineIconViews.ContainsKey(entry.Id))
             {
-                App.StartCoroutine(Tween.Pop(icon, 1.35f, 0.25f));
+                // It takes the prominence slot for its turn (GG-T287) while its bar icon starts the next lap at the far end.
+                actingEntry = entry.Id;
                 var reset = new Dictionary<int, float>();
                 foreach (var e in State.Timeline) reset[e.Id] = lastAt != null && lastAt.TryGetValue(e.Id, out var lu) ? lu : BattleEngine.BarU(State, e);
                 reset[entry.Id] = BattleEngine.BarU(State, entry); // acted: back to the far end of its lap (GG-T286)
                 SyncTimeline(reset);
+                if (!ReduceMotion) App.StartCoroutine(Tween.Pop(timelineSlot, 1.3f, Timing.Standard));
             }
             if (u != null && board.Units.TryGetValue(u.Id, out var v))
             {
@@ -1315,6 +1332,7 @@ namespace GridGame.App
 
         private IEnumerator CastQueuedAnim(CastQueuedEvent cq)
         {
+            unplayedCasts.Remove(cq.EntryId); // from this beat on the cast rides the bar, born at its cast time
             SyncTimeline(null);
             App.Audio.Sfx("battle.cast");
             var caster = State.UnitById(cq.CasterId);

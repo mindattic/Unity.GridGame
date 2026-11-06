@@ -180,7 +180,7 @@ namespace GridGame.App
 
         // ─────────────────────────────────────────────────────────────────────────
         // The held turn (GG-T188, §2.0): picking a hero up runs the timeline in real time. The turn lasts until the
-        // next enemy icon reaches ACT; then the hero is dropped where it is (forced drop) and that enemy acts.
+        // next enemy icon reaches the left edge; then the hero is dropped where it is (forced drop) and that enemy acts.
         // Core never ticks during the hold — the view plays the icons forward (BattleEngine.TimelineUAfter) and the
         // drop's MoveCommand carries the seconds held; the engine then runs the clock to the enemy's arrival.
         // ─────────────────────────────────────────────────────────────────────────
@@ -216,10 +216,10 @@ namespace GridGame.App
             holdDrain.Add(holdDrainFill);
             v.Root.Add(holdDrain);
 
-            // On the timeline: the stretch between the next enemy icon and ACT, and the seconds it stands for.
+            // On the timeline: the stretch between the left edge (acting) and the next enemy icon, and the seconds it stands for.
             holdLane = new VisualElement { name = "hold-lane", pickingMode = PickingMode.Ignore };
             holdLane.style.position = Position.Absolute;
-            holdLane.style.left = Space.S0; holdLane.style.top = TrackY - 7; holdLane.style.height = Size.Gauge;
+            holdLane.style.left = XOfU(0f); holdLane.style.top = TrackY - Size.Gauge / 2f; holdLane.style.height = Size.Gauge;
             holdLane.style.backgroundColor = Palette.Gold.WithA(0.55f);
             Round(holdLane, 7);
             timelineFrame.Insert(1, holdLane); // above the track, under the icons
@@ -227,7 +227,7 @@ namespace GridGame.App
             holdLabel.name = "hold-time";
             holdLabel.pickingMode = PickingMode.Ignore;
             holdLabel.style.position = Position.Absolute;
-            holdLabel.style.top = TrackY + 30;
+            holdLabel.style.top = TrackY + IconSpan / 2f - Space.S8;
             UpdateHold();
             holdTicker = timelineFrame.schedule.Execute(TickHold).Every(16);
         }
@@ -269,10 +269,11 @@ namespace GridGame.App
             holdLane.style.display = limited ? DisplayStyle.Flex : DisplayStyle.None;
             holdLabel.style.display = limited ? DisplayStyle.Flex : DisplayStyle.None;
             if (!limited) return;
-            holdLane.style.width = nextU * TimelineWidth; // the stretch between the left edge (acts) and the next enemy
+            float laneW = XOfU(nextU) - XOfU(0f);
+            holdLane.style.width = laneW; // the stretch between the left edge (acts) and the next enemy
             holdLane.style.backgroundColor = Color.Lerp(new Color(1f, 0.3f, 0.25f, 0.7f), Palette.Gold.WithA(0.55f), 1f - k);
             holdLabel.text = $"{Mathf.Max(0f, holdWindow - holdElapsed):0.0}s";
-            holdLabel.style.left = Mathf.Max(0f, nextU * TimelineWidth * 0.5f - 20f);
+            holdLabel.style.left = XOfU(0f) + Mathf.Max(0f, laneW * 0.5f - 30f);
         }
 
         private void EndHold()

@@ -19,8 +19,8 @@ namespace GridGame.App
             tempoLabel.name = "timeline-tempo";
             tempoLabel.pickingMode = PickingMode.Ignore;
             tempoLabel.style.position = Position.Absolute;
-            tempoLabel.style.left = Space.S0;
-            tempoLabel.style.top = -Space.S24;
+            tempoLabel.style.left = TrackX0 - IconSpan / 2f; // over the track's acting end, clear of the slot (GG-T287)
+            tempoLabel.style.top = Space.S0;
             Fonts.UseHeavy(tempoLabel);
         }
 

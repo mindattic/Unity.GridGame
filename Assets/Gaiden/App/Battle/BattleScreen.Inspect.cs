@@ -44,14 +44,17 @@ namespace GridGame.App
         private void AttachTimelineInspect(VisualElement icon, TimelineEntry e)
         {
             icon.pickingMode = PickingMode.Position;
-            InspectCard.Attach(icon, body =>
-            {
-                var owner = State.UnitById(e.OwnerId);
-                if (e.Kind == TimelineKind.Cast)
-                    return InspectCard.Ability(body, App.Content.TryAbility(e.AbilityId),
-                        owner == null ? "Lands when it reaches ACT." : $"{owner.Name}'s spell — lands when it reaches ACT. Hit {owner.Name} to push it back.");
-                return owner != null && InspectCard.Unit(body, State, owner, Knowledge(owner));
-            });
+            InspectCard.Attach(icon, body => BuildTimelineCard(body, e));
+        }
+
+        /// <summary>The hold card for a timeline entry (an icon or the prominence slot): a cast's ability, else its owner.</summary>
+        private bool BuildTimelineCard(VisualElement body, TimelineEntry e)
+        {
+            var owner = State.UnitById(e.OwnerId);
+            if (e.Kind == TimelineKind.Cast)
+                return InspectCard.Ability(body, App.Content.TryAbility(e.AbilityId),
+                    owner == null ? "Lands when it reaches the left edge." : $"{owner.Name}'s spell — lands when it reaches the left edge. Hit {owner.Name} to stagger it back.");
+            return owner != null && InspectCard.Unit(body, State, owner, Knowledge(owner));
         }
 
         private void AttachStatusInspect(VisualElement pip, BuffDef d, int remaining)
