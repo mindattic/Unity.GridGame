@@ -141,6 +141,10 @@ namespace GridGame.Core.Content
                 if (!(a.Pushback >= 0f) || a.Pushback > Battle.BattleConfig.PushbackMaxSeconds)
                     p.Add($"ability {a.Id}: Pushback {a.Pushback}s outside 0..{Battle.BattleConfig.PushbackMaxSeconds}s (GG-T286)");
                 ValidateTrigger(db, a, p);
+                // GG-T302: the generated "When [attacked directly]: ..." sentence only uses glossary terms.
+                if (a.Trigger != null && db.GlossaryIndex.Count > 0)
+                    foreach (var t in Glossary.Terms(Rules.TriggerText.Describe(db, a)))
+                        if (db.TryTerm(t) == null) p.Add($"ability {a.Id}: unknown glossary term [{t}] in its trigger sentence");
             }
             foreach (var b in db.Buffs.Values)
             {

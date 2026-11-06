@@ -202,9 +202,9 @@ namespace GridGame.Tests
             for (int maxHp = 1; maxHp <= 5000; maxHp++)
                 Assert.That(Triggers.FloorScaled(maxHp, regen), Is.EqualTo(System.Math.Max(1, maxHp * 6 / 100)), $"regenerate on {maxHp}");
             Assert.That(c.Ability("berserk").Trigger.Effects[0].Amount, Is.EqualTo(1.35f));
-            Assert.That(c.Ability("lifesteal").Trigger.Effects[0].Amount, Is.EqualTo(BattleConfig.EnemyLifestealFraction));
-            Assert.That(c.Ability("thorns").Trigger.Effects[0].Amount, Is.EqualTo(BattleConfig.ThornsFraction));
-            Assert.That(c.Ability("mana_siphon").Trigger.Effects[0].Amount, Is.EqualTo((float)BattleConfig.ManaSiphonCharge));
+            Assert.That(c.Ability("lifesteal").Trigger.Effects[0].Amount, Is.EqualTo(0.25f), "a quarter of the damage (GG-T282)");
+            Assert.That(c.Ability("thorns").Trigger.Effects[0].Amount, Is.EqualTo(0.25f));
+            Assert.That(c.Ability("mana_siphon").Trigger.Effects[0].Amount, Is.EqualTo(5f));
         }
 
         [Test]

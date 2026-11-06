@@ -71,7 +71,7 @@ namespace GridGame.Tests
             var hit = ev.OfType<DamagedEvent>().First(d => d.TargetId == k.Id && d.SourceId == w.Id && d.Amount > 0);
             var thorns = ev.OfType<DamagedEvent>().FirstOrDefault(d => d.TargetId == w.Id && d.Note == "Thorns");
             Assert.That(thorns, Is.Not.Null, "the wolf takes thorns damage");
-            Assert.That(thorns.Amount, Is.EqualTo(System.Math.Max(1, (int)System.Math.Round(hit.Amount * BattleConfig.ThornsFraction))));
+            Assert.That(thorns.Amount, Is.EqualTo(System.Math.Max(1, (int)System.Math.Round(hit.Amount * Real.Ability("thorns").Trigger.Effects[0].Amount))));
         }
 
         [Test]

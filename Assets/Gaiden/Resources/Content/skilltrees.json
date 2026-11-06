@@ -1419,7 +1419,7 @@
    {
     "Id": "hexmenders_capstone",
     "Name": "Mirrorcurse",
-    "Description": "Reflect a curse back onto the hand that cast it.",
+    "Description": "Brand a foe with a curse that dims its sight ([Blind]).",
     "Grants": "hexmenders_mirrorcurse",
     "Cost": 2,
     "RequiredPointsInTree": 6,

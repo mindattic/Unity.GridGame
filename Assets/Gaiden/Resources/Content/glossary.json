@@ -356,7 +356,8 @@
     "Aliases": [
       "direct",
       "in melee",
-      "melee"
+      "melee",
+      "attacked directly"
     ],
     "Text": "Struck in melee by a foe standing next to you (a pincer, supporter or melee hit), not by a spell or a shot from range."
   },
@@ -684,5 +685,35 @@
     "Text": "An enemy charge that Slows every hero and costs the party [tempo]. Interrupt it or cleanse the Slow.",
     "LinkKind": "Ability",
     "LinkId": "charge_temporal_drag"
+  },
+  {
+    "Id": "lifesteal",
+    "Term": "Lifesteal",
+    "Aliases": [
+      "Lifesteals"
+    ],
+    "Text": "Heals the attacker a share of the damage its blow deals."
+  },
+  {
+    "Id": "reflect",
+    "Term": "Reflect",
+    "Aliases": [
+      "Reflects",
+      "Reflected"
+    ],
+    "Text": "Sends a share of the damage it just took back at the attacker."
+  },
+  {
+    "Id": "mana_charge",
+    "Term": "mana charge",
+    "Text": "Fills the party's mana meter; every 100 is one orb for spells."
+  },
+  {
+    "Id": "physical",
+    "Term": "Physical",
+    "Aliases": [
+      "Physical damage"
+    ],
+    "Text": "Weapon damage: blades, fists, claws and arrows, as opposed to fire, ice and other magic."
   }
 ]

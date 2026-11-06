@@ -107,7 +107,9 @@
       "alchemist_transmute",
       "aegiswardens_preemptiveward",
       "aegiswardens_cleansingvigil",
-      "aegiswardens_sanctuaryrite"
+      "aegiswardens_sanctuaryrite",
+      "poison_ward",
+      "mending_touch"
     ],
     "DefaultLoadout": [
       "heal",
@@ -240,7 +242,8 @@
       "assassain_killingblow",
       "duelist_riposte_thrust",
       "duelist_exploit_opening",
-      "duelist_cut_the_casting_hand"
+      "duelist_cut_the_casting_hand",
+      "vanish"
     ],
     "DefaultLoadout": [
       "cleave",
@@ -375,7 +378,8 @@
       "barbarian_reckless",
       "berserker_wildswing",
       "berserker_skullrattle",
-      "berserker_lastmanswinging"
+      "berserker_lastmanswinging",
+      "berserk"
     ],
     "DefaultLoadout": [
       "cleave",
@@ -510,7 +514,8 @@
       "basher_skullcrack",
       "berserker_wildswing",
       "berserker_skullrattle",
-      "berserker_lastmanswinging"
+      "berserker_lastmanswinging",
+      "rattle"
     ],
     "DefaultLoadout": [
       "cleave",
@@ -1003,7 +1008,8 @@
       "blackninja_shadowfang",
       "shadowstep_fade_step",
       "shadowstep_smoke_veil",
-      "shadowstep_vanishing_cut"
+      "shadowstep_vanishing_cut",
+      "shadow_edge"
     ],
     "DefaultLoadout": [
       "cleave",
@@ -1143,7 +1149,8 @@
       "blackwitch_shadowbolt",
       "hexweaver_festeringmark",
       "hexweaver_curseoffate",
-      "hexweaver_bloodharvest"
+      "hexweaver_bloodharvest",
+      "arcane_harvest"
     ],
     "DefaultLoadout": [
       "poison",
@@ -1280,7 +1287,8 @@
       "bluelion_roar",
       "primalpack_challenge",
       "primalpack_rally",
-      "primalpack_denmother"
+      "primalpack_denmother",
+      "vengeance"
     ],
     "DefaultLoadout": [
       "regen",
@@ -1413,7 +1421,8 @@
       "blueninja_frostfang",
       "shadowstep_fade_step",
       "shadowstep_smoke_veil",
-      "shadowstep_vanishing_cut"
+      "shadowstep_vanishing_cut",
+      "rime_edge"
     ],
     "DefaultLoadout": [
       "cleave",
@@ -1548,7 +1557,8 @@
       "bruiser_haymaker",
       "berserker_wildswing",
       "berserker_skullrattle",
-      "berserker_lastmanswinging"
+      "berserker_lastmanswinging",
+      "blood_rage"
     ],
     "DefaultLoadout": [
       "cleave",
@@ -1682,7 +1692,8 @@
     ],
     "Resistances": {},
     "Abilities": [
-      "charge_rally"
+      "charge_rally",
+      "vengeance"
     ],
     "DefaultLoadout": [],
     "DropTable": "soldier",
@@ -2685,7 +2696,8 @@
       "chromaninja_prismfang",
       "shadowstep_fade_step",
       "shadowstep_smoke_veil",
-      "shadowstep_vanishing_cut"
+      "shadowstep_vanishing_cut",
+      "blur"
     ],
     "DefaultLoadout": [
       "cleave",
@@ -2823,7 +2835,9 @@
       "cleric_grace",
       "aegiswardens_preemptiveward",
       "aegiswardens_cleansingvigil",
-      "aegiswardens_sanctuaryrite"
+      "aegiswardens_sanctuaryrite",
+      "mending_touch",
+      "vigil"
     ],
     "DefaultLoadout": [
       "heal",
@@ -2957,7 +2971,8 @@
       "courier_relay",
       "tempoweave_shortcut",
       "tempoweave_stumble",
-      "tempoweave_swap"
+      "tempoweave_swap",
+      "blur"
     ],
     "DefaultLoadout": [
       "regen",
@@ -3090,7 +3105,10 @@
     "Resistances": {
       "Poison": 0.0
     },
-    "Abilities": [],
+    "Abilities": [
+      "poison_ward",
+      "rotting_bite"
+    ],
     "DefaultLoadout": [],
     "DropTable": "cyberzombie",
     "MoveRange": 1,
@@ -3214,7 +3232,10 @@
     "Resistances": {
       "Poison": 0.0
     },
-    "Abilities": [],
+    "Abilities": [
+      "poison_ward",
+      "rotting_bite"
+    ],
     "DefaultLoadout": [],
     "DropTable": "cyberzombie",
     "MoveRange": 1,
@@ -3338,7 +3359,10 @@
     "Resistances": {
       "Poison": 0.0
     },
-    "Abilities": [],
+    "Abilities": [
+      "poison_ward",
+      "rotting_bite"
+    ],
     "DefaultLoadout": [],
     "DropTable": "cyberzombie",
     "MoveRange": 1,
@@ -3462,7 +3486,10 @@
     "Resistances": {
       "Poison": 0.0
     },
-    "Abilities": [],
+    "Abilities": [
+      "poison_ward",
+      "rotting_bite"
+    ],
     "DefaultLoadout": [],
     "DropTable": "cyberzombie",
     "MoveRange": 1,
@@ -3586,7 +3613,10 @@
     "Resistances": {
       "Poison": 0.0
     },
-    "Abilities": [],
+    "Abilities": [
+      "poison_ward",
+      "rotting_bite"
+    ],
     "DefaultLoadout": [],
     "DropTable": "cyberzombie",
     "MoveRange": 1,
@@ -3710,7 +3740,8 @@
     "Resistances": {},
     "Abilities": [
       "enrage",
-      "tough_hide"
+      "tough_hide",
+      "blood_rage"
     ],
     "DefaultLoadout": [],
     "DropTable": "cyclops",
@@ -3842,7 +3873,8 @@
     ],
     "Resistances": {},
     "Abilities": [
-      "tough_hide"
+      "tough_hide",
+      "blood_rage"
     ],
     "DefaultLoadout": [],
     "DropTable": "cyclops",
@@ -3961,7 +3993,8 @@
     ],
     "Resistances": {},
     "Abilities": [
-      "tough_hide"
+      "tough_hide",
+      "blood_rage"
     ],
     "DefaultLoadout": [],
     "DropTable": "cyclops",
@@ -4435,7 +4468,8 @@
       "darktemplar_rite",
       "deathguard_mana_siphon",
       "deathguard_venomous_grip",
-      "deathguard_dark_communion"
+      "deathguard_dark_communion",
+      "dark_retribution"
     ],
     "DefaultLoadout": [
       "taunt",
@@ -4573,7 +4607,9 @@
       "aegisguard_sacred_challenge",
       "aegisguard_judgment_of_warding",
       "aegisguard_hands_of_mercy",
-      "shove"
+      "shove",
+      "shield_wall",
+      "battle_hardened"
     ],
     "DefaultLoadout": [
       "taunt",
@@ -4711,7 +4747,8 @@
     "Resistances": {},
     "Abilities": [
       "lifesteal",
-      "charge_fireball"
+      "charge_fireball",
+      "infernal_hide"
     ],
     "DefaultLoadout": [],
     "DropTable": "demonlord",
@@ -4832,7 +4869,8 @@
       "dervish_whirl",
       "tempoweave_shortcut",
       "tempoweave_stumble",
-      "tempoweave_swap"
+      "tempoweave_swap",
+      "evasive_riposte"
     ],
     "DefaultLoadout": [
       "regen",
@@ -4967,7 +5005,8 @@
       "doctor_triage",
       "aegiswardens_preemptiveward",
       "aegiswardens_cleansingvigil",
-      "aegiswardens_sanctuaryrite"
+      "aegiswardens_sanctuaryrite",
+      "mending_touch"
     ],
     "DefaultLoadout": [
       "heal",
@@ -5103,7 +5142,8 @@
       "fieldcaster_trapline",
       "fieldcaster_wardgrid",
       "fieldcaster_resupplydrone",
-      "disrupt"
+      "disrupt",
+      "chill_aura"
     ],
     "DefaultLoadout": [
       "frost",
@@ -5239,7 +5279,8 @@
       "duelist_probingthrust",
       "duelist_guardstance",
       "duelist_decisivecut",
-      "evasive_riposte"
+      "evasive_riposte",
+      "guard_counter"
     ],
     "DefaultLoadout": [
       "cleave",
@@ -5376,7 +5417,8 @@
       "engineer_overclock",
       "fieldeng_mine",
       "fieldeng_patch",
-      "fieldeng_overdrive"
+      "fieldeng_overdrive",
+      "self_repair"
     ],
     "DefaultLoadout": [
       "quicken",
@@ -5509,7 +5551,9 @@
       "fencer_fleche",
       "duelist_probingthrust",
       "duelist_guardstance",
-      "duelist_decisivecut"
+      "duelist_decisivecut",
+      "guard_counter",
+      "blur"
     ],
     "DefaultLoadout": [
       "cleave",
@@ -5644,7 +5688,8 @@
       "fighter_combo",
       "combobrawler_openingjab",
       "combobrawler_onetwoflurry",
-      "combobrawler_knockoutcombo"
+      "combobrawler_knockoutcombo",
+      "battle_hardened"
     ],
     "DefaultLoadout": [
       "cleave",
@@ -5778,7 +5823,9 @@
       }
     ],
     "Resistances": {},
-    "Abilities": [],
+    "Abilities": [
+      "blur"
+    ],
     "DefaultLoadout": [],
     "DropTable": "desertflyer",
     "MoveRange": 2,
@@ -5897,7 +5944,9 @@
       }
     ],
     "Resistances": {},
-    "Abilities": [],
+    "Abilities": [
+      "toxic_skin"
+    ],
     "DefaultLoadout": [],
     "DropTable": "frog",
     "MoveRange": 1,
@@ -6015,7 +6064,9 @@
       }
     ],
     "Resistances": {},
-    "Abilities": [],
+    "Abilities": [
+      "toxic_skin"
+    ],
     "DefaultLoadout": [],
     "DropTable": "frog",
     "MoveRange": 1,
@@ -6134,7 +6185,9 @@
       }
     ],
     "Resistances": {},
-    "Abilities": [],
+    "Abilities": [
+      "toxic_skin"
+    ],
     "DefaultLoadout": [],
     "DropTable": "frog",
     "MoveRange": 1,
@@ -6252,7 +6305,9 @@
       }
     ],
     "Resistances": {},
-    "Abilities": [],
+    "Abilities": [
+      "toxic_skin"
+    ],
     "DefaultLoadout": [],
     "DropTable": "frog",
     "MoveRange": 1,
@@ -6371,7 +6426,9 @@
       }
     ],
     "Resistances": {},
-    "Abilities": [],
+    "Abilities": [
+      "vengeance"
+    ],
     "DefaultLoadout": [],
     "DropTable": "ganger",
     "MoveRange": 2,
@@ -6490,7 +6547,9 @@
       }
     ],
     "Resistances": {},
-    "Abilities": [],
+    "Abilities": [
+      "vengeance"
+    ],
     "DefaultLoadout": [],
     "DropTable": "ganger",
     "MoveRange": 2,
@@ -6610,7 +6669,9 @@
       }
     ],
     "Resistances": {},
-    "Abilities": [],
+    "Abilities": [
+      "vengeance"
+    ],
     "DefaultLoadout": [],
     "DropTable": "ganger",
     "MoveRange": 2,
@@ -6729,7 +6790,9 @@
       }
     ],
     "Resistances": {},
-    "Abilities": [],
+    "Abilities": [
+      "vengeance"
+    ],
     "DefaultLoadout": [],
     "DropTable": "ganger",
     "MoveRange": 2,
@@ -6849,7 +6912,9 @@
       }
     ],
     "Resistances": {},
-    "Abilities": [],
+    "Abilities": [
+      "vengeance"
+    ],
     "DefaultLoadout": [],
     "DropTable": "ganger",
     "MoveRange": 2,
@@ -6968,7 +7033,9 @@
       }
     ],
     "Resistances": {},
-    "Abilities": [],
+    "Abilities": [
+      "vengeance"
+    ],
     "DefaultLoadout": [],
     "DropTable": "ganger",
     "MoveRange": 2,
@@ -7088,7 +7155,9 @@
       }
     ],
     "Resistances": {},
-    "Abilities": [],
+    "Abilities": [
+      "vengeance"
+    ],
     "DefaultLoadout": [],
     "DropTable": "ganger",
     "MoveRange": 2,
@@ -7207,7 +7276,10 @@
       }
     ],
     "Resistances": {},
-    "Abilities": [],
+    "Abilities": [
+      "ethereal",
+      "poison_ward"
+    ],
     "DefaultLoadout": [],
     "DropTable": "ghost",
     "MoveRange": 1,
@@ -7325,7 +7397,9 @@
       }
     ],
     "Resistances": {},
-    "Abilities": [],
+    "Abilities": [
+      "dirty_fighting"
+    ],
     "DefaultLoadout": [],
     "DropTable": "goblinthug00",
     "MoveRange": 1,
@@ -7444,7 +7518,8 @@
       "greenninja_venomfang",
       "shadowstep_fade_step",
       "shadowstep_smoke_veil",
-      "shadowstep_vanishing_cut"
+      "shadowstep_vanishing_cut",
+      "venom_edge"
     ],
     "DefaultLoadout": [
       "cleave",
@@ -7580,7 +7655,8 @@
     ],
     "Resistances": {},
     "Abilities": [
-      "charge_miasma"
+      "charge_miasma",
+      "spiteful_hex"
     ],
     "DefaultLoadout": [],
     "DropTable": "hag",
@@ -7700,7 +7776,8 @@
     ],
     "Resistances": {},
     "Abilities": [
-      "charge_miasma"
+      "charge_miasma",
+      "spiteful_hex"
     ],
     "DefaultLoadout": [],
     "DropTable": "hag",
@@ -7819,7 +7896,8 @@
     ],
     "Resistances": {},
     "Abilities": [
-      "charge_miasma"
+      "charge_miasma",
+      "spiteful_hex"
     ],
     "DefaultLoadout": [],
     "DropTable": "hag",
@@ -7937,7 +8015,8 @@
     ],
     "Resistances": {},
     "Abilities": [
-      "charge_miasma"
+      "charge_miasma",
+      "spiteful_hex"
     ],
     "DefaultLoadout": [],
     "DropTable": "hag",
@@ -8060,7 +8139,8 @@
       "spellblade_quickstrike",
       "spellblade_overchannel",
       "spellblade_followthrough",
-      "disrupt"
+      "disrupt",
+      "bloodlust"
     ],
     "DefaultLoadout": [
       "poison",
@@ -8197,7 +8277,9 @@
     ],
     "Resistances": {},
     "Abilities": [
-      "charge_ice"
+      "charge_ice",
+      "frostborn",
+      "chill_aura"
     ],
     "DefaultLoadout": [],
     "DropTable": "icemauler",
@@ -8318,7 +8400,9 @@
       "jadeknight_resolve",
       "deathguard_mana_siphon",
       "deathguard_venomous_grip",
-      "deathguard_dark_communion"
+      "deathguard_dark_communion",
+      "shield_wall",
+      "steadfast"
     ],
     "DefaultLoadout": [
       "taunt",
@@ -8456,7 +8540,8 @@
       "aegisguard_sacred_challenge",
       "aegisguard_judgment_of_warding",
       "aegisguard_hands_of_mercy",
-      "shove"
+      "shove",
+      "shield_wall"
     ],
     "DefaultLoadout": [
       "taunt",
@@ -8594,7 +8679,8 @@
       "skirmisher_blindside",
       "skirmisher_hitandrun",
       "skirmisher_runningriot",
-      "grappling_hook"
+      "grappling_hook",
+      "set_spear"
     ],
     "DefaultLoadout": [
       "cleave",
@@ -8727,7 +8813,9 @@
       }
     ],
     "Resistances": {},
-    "Abilities": [],
+    "Abilities": [
+      "evasive_riposte"
+    ],
     "DefaultLoadout": [],
     "DropTable": "lurker",
     "MoveRange": 2,
@@ -8846,7 +8934,9 @@
       }
     ],
     "Resistances": {},
-    "Abilities": [],
+    "Abilities": [
+      "evasive_riposte"
+    ],
     "DefaultLoadout": [],
     "DropTable": "lurker",
     "MoveRange": 2,
@@ -8965,7 +9055,9 @@
       }
     ],
     "Resistances": {},
-    "Abilities": [],
+    "Abilities": [
+      "evasive_riposte"
+    ],
     "DefaultLoadout": [],
     "DropTable": "lurker",
     "MoveRange": 2,
@@ -9088,7 +9180,8 @@
       "machinist_turret",
       "fieldeng_mine",
       "fieldeng_patch",
-      "fieldeng_overdrive"
+      "fieldeng_overdrive",
+      "shock_plating"
     ],
     "DefaultLoadout": [
       "quicken",
@@ -9338,7 +9431,8 @@
     ],
     "Resistances": {},
     "Abilities": [
-      "tough_hide"
+      "tough_hide",
+      "poison_ward"
     ],
     "DefaultLoadout": [],
     "DropTable": "marshshambler",
@@ -9458,7 +9552,8 @@
     ],
     "Resistances": {},
     "Abilities": [
-      "tough_hide"
+      "tough_hide",
+      "poison_ward"
     ],
     "DefaultLoadout": [],
     "DropTable": "marshshambler",
@@ -9578,7 +9673,8 @@
     ],
     "Resistances": {},
     "Abilities": [
-      "tough_hide"
+      "tough_hide",
+      "poison_ward"
     ],
     "DefaultLoadout": [],
     "DropTable": "marshshambler",
@@ -9699,7 +9795,8 @@
       "combobrawler_openingjab",
       "combobrawler_onetwoflurry",
       "combobrawler_knockoutcombo",
-      "meditate"
+      "meditate",
+      "evasive_riposte"
     ],
     "DefaultLoadout": [
       "cleave",
@@ -9834,7 +9931,8 @@
     "Resistances": {},
     "Abilities": [
       "tough_hide",
-      "charge_thunder"
+      "charge_thunder",
+      "mirror_plating"
     ],
     "DefaultLoadout": [],
     "DropTable": "mechaarmor",
@@ -9954,7 +10052,8 @@
     "Resistances": {},
     "Abilities": [
       "tough_hide",
-      "charge_thunder"
+      "charge_thunder",
+      "mirror_plating"
     ],
     "DefaultLoadout": [],
     "DropTable": "mechaarmor",
@@ -10074,7 +10173,8 @@
     "Resistances": {},
     "Abilities": [
       "tough_hide",
-      "charge_thunder"
+      "charge_thunder",
+      "mirror_plating"
     ],
     "DefaultLoadout": [],
     "DropTable": "mechaarmor",
@@ -10198,7 +10298,8 @@
       "skirmishmenders_guardiansrush",
       "skirmishmenders_flowingcurrent",
       "skirmishmenders_coveringwithdrawal",
-      "meditate"
+      "meditate",
+      "inner_calm"
     ],
     "DefaultLoadout": [
       "heal",
@@ -10451,7 +10552,8 @@
       "juggernaut_war_stomp",
       "juggernaut_unstoppable_momentum",
       "juggernaut_overrun",
-      "shove"
+      "shove",
+      "unbowed"
     ],
     "DefaultLoadout": [
       "taunt",
@@ -10588,7 +10690,10 @@
       }
     ],
     "Resistances": {},
-    "Abilities": [],
+    "Abilities": [
+      "serpents_retort",
+      "poison_ward"
+    ],
     "DefaultLoadout": [],
     "DropTable": "naga00",
     "MoveRange": 1,
@@ -10711,7 +10816,8 @@
       "nighthunter_nightstalk",
       "opportunist_exploit",
       "opportunist_chain_the_opening",
-      "opportunist_collect_the_debt"
+      "opportunist_collect_the_debt",
+      "vanish"
     ],
     "DefaultLoadout": [
       "cleave",
@@ -10847,7 +10953,8 @@
       "odachi_iaijutsu",
       "brawler_guard_break",
       "brawler_wide_cleave",
-      "brawler_second_wind"
+      "brawler_second_wind",
+      "grim_resolve"
     ],
     "DefaultLoadout": [
       "cleave",
@@ -10981,7 +11088,8 @@
     ],
     "Resistances": {},
     "Abilities": [
-      "berserk"
+      "berserk",
+      "infernal_hide"
     ],
     "DefaultLoadout": [],
     "DropTable": "oni",
@@ -11100,7 +11208,8 @@
     ],
     "Resistances": {},
     "Abilities": [
-      "berserk"
+      "berserk",
+      "infernal_hide"
     ],
     "DefaultLoadout": [],
     "DropTable": "oni",
@@ -11219,7 +11328,8 @@
     ],
     "Resistances": {},
     "Abilities": [
-      "berserk"
+      "berserk",
+      "infernal_hide"
     ],
     "DefaultLoadout": [],
     "DropTable": "oni",
@@ -11343,7 +11453,8 @@
       "fieldcaster_trapline",
       "fieldcaster_wardgrid",
       "fieldcaster_resupplydrone",
-      "disrupt"
+      "disrupt",
+      "shock_plating"
     ],
     "DefaultLoadout": [
       "poison",
@@ -11479,7 +11590,8 @@
       "paladin_bulwark",
       "aegisguard_sacred_challenge",
       "aegisguard_judgment_of_warding",
-      "aegisguard_hands_of_mercy"
+      "aegisguard_hands_of_mercy",
+      "shield_wall"
     ],
     "DefaultLoadout": [
       "taunt",
@@ -11616,7 +11728,8 @@
       "berserker_wildswing",
       "berserker_skullrattle",
       "berserker_lastmanswinging",
-      "grappling_hook"
+      "grappling_hook",
+      "unbowed"
     ],
     "DefaultLoadout": [
       "cleave",
@@ -11750,7 +11863,9 @@
       }
     ],
     "Resistances": {},
-    "Abilities": [],
+    "Abilities": [
+      "ethereal"
+    ],
     "DefaultLoadout": [],
     "DropTable": "phantom",
     "MoveRange": 2,
@@ -11870,7 +11985,8 @@
       "prizefighter_knockout",
       "combobrawler_openingjab",
       "combobrawler_onetwoflurry",
-      "combobrawler_knockoutcombo"
+      "combobrawler_knockoutcombo",
+      "grudge"
     ],
     "DefaultLoadout": [
       "cleave",
@@ -12005,7 +12121,8 @@
       "pugilist_jabcross",
       "combobrawler_openingjab",
       "combobrawler_onetwoflurry",
-      "combobrawler_knockoutcombo"
+      "combobrawler_knockoutcombo",
+      "counterpunch"
     ],
     "DefaultLoadout": [
       "cleave",
@@ -12731,7 +12848,8 @@
       "skirmisher_blindside",
       "skirmisher_hitandrun",
       "skirmisher_runningriot",
-      "grappling_hook"
+      "grappling_hook",
+      "blood_feast"
     ],
     "DefaultLoadout": [
       "cleave",
@@ -12865,7 +12983,8 @@
     ],
     "Resistances": {},
     "Abilities": [
-      "lifesteal"
+      "lifesteal",
+      "blood_feast"
     ],
     "DefaultLoadout": [],
     "DropTable": "reaper",
@@ -12989,7 +13108,8 @@
       "redmage_fury",
       "spellblade_quickstrike",
       "spellblade_overchannel",
-      "spellblade_followthrough"
+      "spellblade_followthrough",
+      "arcane_harvest"
     ],
     "DefaultLoadout": [
       "fireball",
@@ -13124,7 +13244,8 @@
       "redninja_flamefang",
       "shadowstep_fade_step",
       "shadowstep_smoke_veil",
-      "shadowstep_vanishing_cut"
+      "shadowstep_vanishing_cut",
+      "ember_edge"
     ],
     "DefaultLoadout": [
       "cleave",
@@ -13261,7 +13382,8 @@
       "ripper_rend",
       "opportunist_exploit",
       "opportunist_chain_the_opening",
-      "opportunist_collect_the_debt"
+      "opportunist_collect_the_debt",
+      "bloodlust"
     ],
     "DefaultLoadout": [
       "cleave",
@@ -13401,7 +13523,8 @@
       "ritualist_bloodrite",
       "hexweaver_festeringmark",
       "hexweaver_curseoffate",
-      "hexweaver_bloodharvest"
+      "hexweaver_bloodharvest",
+      "blood_price"
     ],
     "DefaultLoadout": [
       "poison",
@@ -13536,7 +13659,9 @@
       "ronin_masterless",
       "duelist_probingthrust",
       "duelist_guardstance",
-      "duelist_decisivecut"
+      "duelist_decisivecut",
+      "guard_counter",
+      "grim_resolve"
     ],
     "DefaultLoadout": [
       "cleave",
@@ -13678,7 +13803,9 @@
       "hexmenders_harmintohope",
       "hexmenders_mirrorcurse",
       "meditate",
-      "disrupt"
+      "disrupt",
+      "arcane_insight",
+      "vigil"
     ],
     "DefaultLoadout": [
       "heal",
@@ -14048,7 +14175,9 @@
       "sellsword_contract",
       "duelist_probingthrust",
       "duelist_guardstance",
-      "duelist_decisivecut"
+      "duelist_decisivecut",
+      "guard_counter",
+      "battle_hardened"
     ],
     "DefaultLoadout": [
       "cleave",
@@ -14183,7 +14312,8 @@
       "shieldmaiden_valkyrie",
       "warlord_battle_cry",
       "warlord_rally_point",
-      "warlord_marked_for_warband"
+      "warlord_marked_for_warband",
+      "grudge"
     ],
     "DefaultLoadout": [
       "taunt",
@@ -14323,7 +14453,9 @@
       "sister_benediction",
       "skirmishmenders_guardiansrush",
       "skirmishmenders_flowingcurrent",
-      "skirmishmenders_coveringwithdrawal"
+      "skirmishmenders_coveringwithdrawal",
+      "mending_touch",
+      "vigil"
     ],
     "DefaultLoadout": [
       "heal",
@@ -14454,7 +14586,9 @@
       }
     ],
     "Resistances": {},
-    "Abilities": [],
+    "Abilities": [
+      "poison_ward"
+    ],
     "DefaultLoadout": [],
     "DropTable": "skelepede",
     "MoveRange": 2,
@@ -14574,7 +14708,9 @@
       }
     ],
     "Resistances": {},
-    "Abilities": [],
+    "Abilities": [
+      "poison_ward"
+    ],
     "DefaultLoadout": [],
     "DropTable": "skelepede",
     "MoveRange": 2,
@@ -14694,7 +14830,9 @@
       }
     ],
     "Resistances": {},
-    "Abilities": [],
+    "Abilities": [
+      "poison_ward"
+    ],
     "DefaultLoadout": [],
     "DropTable": "skelepede",
     "MoveRange": 2,
@@ -14816,7 +14954,8 @@
       "slasher_flurry",
       "brawler_guard_break",
       "brawler_wide_cleave",
-      "brawler_second_wind"
+      "brawler_second_wind",
+      "venom_edge"
     ],
     "DefaultLoadout": [
       "cleave",
@@ -14948,7 +15087,9 @@
       }
     ],
     "Resistances": {},
-    "Abilities": [],
+    "Abilities": [
+      "gelatinous"
+    ],
     "DefaultLoadout": [],
     "DropTable": "slime",
     "MoveRange": 1,
@@ -15063,7 +15204,9 @@
       }
     ],
     "Resistances": {},
-    "Abilities": [],
+    "Abilities": [
+      "gelatinous"
+    ],
     "DefaultLoadout": [],
     "DropTable": "slime",
     "MoveRange": 1,
@@ -15178,7 +15321,9 @@
       }
     ],
     "Resistances": {},
-    "Abilities": [],
+    "Abilities": [
+      "gelatinous"
+    ],
     "DefaultLoadout": [],
     "DropTable": "slime",
     "MoveRange": 1,
@@ -15293,7 +15438,9 @@
       }
     ],
     "Resistances": {},
-    "Abilities": [],
+    "Abilities": [
+      "gelatinous"
+    ],
     "DefaultLoadout": [],
     "DropTable": "slime",
     "MoveRange": 1,
@@ -15892,7 +16039,8 @@
       "speedster_blitz",
       "skirmisher_blindside",
       "skirmisher_hitandrun",
-      "skirmisher_runningriot"
+      "skirmisher_runningriot",
+      "blur"
     ],
     "DefaultLoadout": [
       "cleave",
@@ -16617,7 +16765,8 @@
       "streetfighter_dirtytrick",
       "skirmisher_blindside",
       "skirmisher_hitandrun",
-      "skirmisher_runningriot"
+      "skirmisher_runningriot",
+      "dirty_fighting"
     ],
     "DefaultLoadout": [
       "cleave",
@@ -16752,7 +16901,8 @@
       "striker_finishingblow",
       "skirmisher_blindside",
       "skirmisher_hitandrun",
-      "skirmisher_runningriot"
+      "skirmisher_runningriot",
+      "bloodlust"
     ],
     "DefaultLoadout": [
       "cleave",
@@ -16887,7 +17037,8 @@
     ],
     "Resistances": {},
     "Abilities": [
-      "charge_mend"
+      "charge_mend",
+      "toxic_skin"
     ],
     "DefaultLoadout": [],
     "DropTable": "swampmistress",
@@ -17007,7 +17158,9 @@
       "swordmaster_perfectcut",
       "duelist_probingthrust",
       "duelist_guardstance",
-      "duelist_decisivecut"
+      "duelist_decisivecut",
+      "guard_counter",
+      "evasive_riposte"
     ],
     "DefaultLoadout": [
       "cleave",
@@ -17143,7 +17296,8 @@
       "juggernaut_war_stomp",
       "juggernaut_unstoppable_momentum",
       "juggernaut_overrun",
-      "shove"
+      "shove",
+      "unbowed"
     ],
     "DefaultLoadout": [
       "taunt",
@@ -17279,7 +17433,9 @@
       }
     ],
     "Resistances": {},
-    "Abilities": [],
+    "Abilities": [
+      "shock_plating"
+    ],
     "DefaultLoadout": [],
     "DropTable": "techgremlin",
     "MoveRange": 1,
@@ -17395,7 +17551,9 @@
       }
     ],
     "Resistances": {},
-    "Abilities": [],
+    "Abilities": [
+      "shock_plating"
+    ],
     "DefaultLoadout": [],
     "DropTable": "techgremlin",
     "MoveRange": 1,
@@ -17512,7 +17670,9 @@
       }
     ],
     "Resistances": {},
-    "Abilities": [],
+    "Abilities": [
+      "shock_plating"
+    ],
     "DefaultLoadout": [],
     "DropTable": "techgremlin",
     "MoveRange": 1,
@@ -17632,7 +17792,8 @@
       "technician_diagnostic",
       "fieldeng_mine",
       "fieldeng_patch",
-      "fieldeng_overdrive"
+      "fieldeng_overdrive",
+      "self_repair"
     ],
     "DefaultLoadout": [
       "quicken",
@@ -17764,7 +17925,8 @@
     "Resistances": {},
     "Abilities": [
       "tough_hide",
-      "charge_smite"
+      "charge_smite",
+      "vengeance"
     ],
     "DefaultLoadout": [],
     "DropTable": "templar",
@@ -17883,7 +18045,8 @@
     "Resistances": {},
     "Abilities": [
       "tough_hide",
-      "charge_smite"
+      "charge_smite",
+      "vengeance"
     ],
     "DefaultLoadout": [],
     "DropTable": "templar",
@@ -18003,7 +18166,8 @@
     "Resistances": {},
     "Abilities": [
       "tough_hide",
-      "charge_smite"
+      "charge_smite",
+      "vengeance"
     ],
     "DefaultLoadout": [],
     "DropTable": "templar",
@@ -18122,7 +18286,8 @@
     "Resistances": {},
     "Abilities": [
       "tough_hide",
-      "charge_smite"
+      "charge_smite",
+      "vengeance"
     ],
     "DefaultLoadout": [],
     "DropTable": "templar",
@@ -18242,7 +18407,8 @@
     "Resistances": {},
     "Abilities": [
       "tough_hide",
-      "charge_smite"
+      "charge_smite",
+      "vengeance"
     ],
     "DefaultLoadout": [],
     "DropTable": "templar",
@@ -18361,7 +18527,8 @@
     "Resistances": {},
     "Abilities": [
       "tough_hide",
-      "charge_smite"
+      "charge_smite",
+      "vengeance"
     ],
     "DefaultLoadout": [],
     "DropTable": "templar",
@@ -18482,7 +18649,8 @@
       "thief_snatch",
       "duelist_riposte_thrust",
       "duelist_exploit_opening",
-      "duelist_cut_the_casting_hand"
+      "duelist_cut_the_casting_hand",
+      "catch_breath"
     ],
     "DefaultLoadout": [
       "cleave",
@@ -18620,7 +18788,8 @@
       "tinkerer_juryrig",
       "fieldeng_mine",
       "fieldeng_patch",
-      "fieldeng_overdrive"
+      "fieldeng_overdrive",
+      "arcane_insight"
     ],
     "DefaultLoadout": [
       "quicken",
@@ -18751,7 +18920,9 @@
       }
     ],
     "Resistances": {},
-    "Abilities": [],
+    "Abilities": [
+      "toxic_skin"
+    ],
     "DefaultLoadout": [],
     "DropTable": "frog",
     "MoveRange": 1,
@@ -19616,7 +19787,8 @@
     ],
     "Resistances": {},
     "Abilities": [
-      "lifesteal"
+      "lifesteal",
+      "poison_ward"
     ],
     "DefaultLoadout": [],
     "DropTable": "undead",
@@ -19735,7 +19907,8 @@
     ],
     "Resistances": {},
     "Abilities": [
-      "lifesteal"
+      "lifesteal",
+      "poison_ward"
     ],
     "DefaultLoadout": [],
     "DropTable": "undead",
@@ -19854,7 +20027,8 @@
     ],
     "Resistances": {},
     "Abilities": [
-      "lifesteal"
+      "lifesteal",
+      "poison_ward"
     ],
     "DefaultLoadout": [],
     "DropTable": "undead",
@@ -19973,7 +20147,8 @@
     ],
     "Resistances": {},
     "Abilities": [
-      "lifesteal"
+      "lifesteal",
+      "poison_ward"
     ],
     "DefaultLoadout": [],
     "DropTable": "undead",
@@ -20096,7 +20271,9 @@
       "vampire_enervate",
       "attrition_bloodletting",
       "attrition_dreadaura",
-      "attrition_soulfeast"
+      "attrition_soulfeast",
+      "vampires_kiss",
+      "blood_feast"
     ],
     "DefaultLoadout": [
       "cleave",
@@ -20231,7 +20408,9 @@
       }
     ],
     "Resistances": {},
-    "Abilities": [],
+    "Abilities": [
+      "carrion_feast"
+    ],
     "DefaultLoadout": [],
     "DropTable": "desertflyer",
     "MoveRange": 2,
@@ -20349,7 +20528,8 @@
       "warchief_banner",
       "warlord_battle_cry",
       "warlord_rally_point",
-      "warlord_marked_for_warband"
+      "warlord_marked_for_warband",
+      "grudge"
     ],
     "DefaultLoadout": [
       "taunt",
@@ -20615,7 +20795,9 @@
       "skirmishmenders_guardiansrush",
       "skirmishmenders_flowingcurrent",
       "skirmishmenders_coveringwithdrawal",
-      "meditate"
+      "meditate",
+      "catch_breath",
+      "mending_touch"
     ],
     "DefaultLoadout": [
       "heal",
@@ -20752,7 +20934,9 @@
       "whitewitch_ward",
       "hexmenders_thornedhex",
       "hexmenders_harmintohope",
-      "hexmenders_mirrorcurse"
+      "hexmenders_mirrorcurse",
+      "pure_spirit",
+      "mending_touch"
     ],
     "DefaultLoadout": [
       "heal",
@@ -20886,7 +21070,8 @@
       "wildchild_howl",
       "primalpack_challenge",
       "primalpack_rally",
-      "primalpack_denmother"
+      "primalpack_denmother",
+      "blood_rage"
     ],
     "DefaultLoadout": [
       "regen",
@@ -21021,7 +21206,8 @@
     ],
     "Resistances": {},
     "Abilities": [
-      "charge_howl"
+      "charge_howl",
+      "vengeance"
     ],
     "DefaultLoadout": [],
     "DropTable": "wolf",
@@ -21143,7 +21329,8 @@
     ],
     "Resistances": {},
     "Abilities": [
-      "charge_howl"
+      "charge_howl",
+      "vengeance"
     ],
     "DefaultLoadout": [],
     "DropTable": "wolf",
@@ -21265,7 +21452,8 @@
     ],
     "Resistances": {},
     "Abilities": [
-      "charge_howl"
+      "charge_howl",
+      "vengeance"
     ],
     "DefaultLoadout": [],
     "DropTable": "wolf",
@@ -21387,7 +21575,8 @@
     ],
     "Resistances": {},
     "Abilities": [
-      "charge_howl"
+      "charge_howl",
+      "vengeance"
     ],
     "DefaultLoadout": [],
     "DropTable": "wolf",
@@ -21507,7 +21696,8 @@
       "yellowninja_shockfang",
       "shadowstep_fade_step",
       "shadowstep_smoke_veil",
-      "shadowstep_vanishing_cut"
+      "shadowstep_vanishing_cut",
+      "static_edge"
     ],
     "DefaultLoadout": [
       "cleave",
@@ -21641,7 +21831,10 @@
       }
     ],
     "Resistances": {},
-    "Abilities": [],
+    "Abilities": [
+      "frostborn",
+      "chill_aura"
+    ],
     "DefaultLoadout": [],
     "DropTable": "yeti",
     "MoveRange": 2,
@@ -22232,7 +22425,8 @@
       "skirmisher_covering_volley",
       "skirmisher_retreat_shot",
       "skirmisher_rapid_barrage",
-      "pinning_shot"
+      "pinning_shot",
+      "bloodlust"
     ],
     "DefaultLoadout": [
       "ranged_quickshot",
@@ -22367,7 +22561,8 @@
       "trapper_pitfall_volley",
       "trapper_snare_net",
       "grappling_hook",
-      "pinning_shot"
+      "pinning_shot",
+      "keep_away"
     ],
     "DefaultLoadout": [
       "ranged_quickshot",
@@ -22501,7 +22696,8 @@
       "skirmisher_covering_volley",
       "skirmisher_retreat_shot",
       "skirmisher_rapid_barrage",
-      "pinning_shot"
+      "pinning_shot",
+      "blur"
     ],
     "DefaultLoadout": [
       "ranged_quickshot",
@@ -22554,7 +22750,9 @@
     "Growth": { "Strength": 0.6, "Vitality": 0.7, "Agility": 0.7, "Speed": 0.7, "Stamina": 0.7, "Intelligence": 0.8, "Wisdom": 0.7, "Luck": 0.7 },
     "Milestones": [],
     "Resistances": {},
-    "Abilities": [ "charge_temporal_drag", "chrono_rewind" ],
+    "Abilities": [ "charge_temporal_drag", "chrono_rewind",
+      "time_slip",
+      "steadfast" ],
     "DefaultLoadout": [],
     "DropTable": "hag",
     "MoveRange": 1,

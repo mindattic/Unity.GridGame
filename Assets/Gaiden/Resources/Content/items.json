@@ -17056,7 +17056,7 @@
     "Resistances": {},
     "SoldByVendor": false,
     "Icon": null,
-    "PassiveName": "Riposte",
+    "PassiveName": "Bloodied Point",
     "PassiveDescription": "Heals the wielder 3% of damage dealt.",
     "LifestealFraction": 0.03
   },

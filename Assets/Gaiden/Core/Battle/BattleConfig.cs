@@ -164,24 +164,11 @@ namespace GridGame.Core.Battle
         public const int InterruptCharge = 25;
         public const int AmplifierCharge = 30;
 
-        // ── Armor enchant passives (GG-T179): granted by an intact enchanted armor piece ──────────────────────────
-        /// <summary>Regenerate: percent of MaxHP knit back (an enemy at the end of its turn, a hero each time control returns).</summary>
-        public const int RegeneratePercent = 6;
-        /// <summary>Thorns: share of a landed enemy hit reflected back at the attacker (min 1).</summary>
-        public const float ThornsFraction = 0.25f;
-        /// <summary>Mana Siphon: charge each landed hit by the wearer adds to the meter.</summary>
-        public const int ManaSiphonCharge = 5;
-
         /// <summary>Global weight on enemy physical strikes (difficulty knob; tuned with BalanceReport after the brains, §14.6).</summary>
         public const float EnemyStrikeMultiplier = 1.2f;
         /// <summary>Enemy MaxHP at spawn, as a share of the stat formula (GG-T262: waves ran a median 34 player actions
         /// against POL-G6's 6–20).</summary>
         public const float EnemyHpScale = 0.45f;
-        /// <summary>The `lifesteal` enemy passive heals this share of the damage its attack lands (GG-T282). It was a flat
-        /// half when enemies struck at 0.9 with full HP; after GG-T262 (strike 1.2, HP 0.45) half healed about three times
-        /// as much of the pool, and Veshker Ruins' undead out-healed whole parties (casual losses healed 75–85% of the
-        /// damage dealt to them). A quarter keeps the heal near its designed share of the pool.</summary>
-        public const float EnemyLifestealFraction = 0.25f;
         /// <summary>An Ambusher lies in wait for at most this many of its own turns, then comes out (GG-T262: a lone
         /// ambushing naga held Mireholt Fens II's last wave to a median 116 player actions).</summary>
         public const int AmbushPatienceTurns = 3;

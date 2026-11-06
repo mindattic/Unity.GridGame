@@ -649,7 +649,7 @@
  {
   "Id": "counter_attack",
   "Name": "Counter Attack",
-  "Description": "When attacked, automatically strikes back at the attacker.",
+  "Description": "When [attacked directly], it strikes back with a [Counterstrike].",
   "Kind": "Reactive",
   "Cost": 0,
   "CastTime": 0.0,
@@ -802,6 +802,1776 @@
    ],
    "OncePerAction": true,
    "Callout": "Blur!"
+  }
+ },
+ {
+  "Id": "vampires_kiss",
+  "Name": "Vampire's Kiss",
+  "Description": "Every blow that lands drinks deep: [Lifesteal] 15% of the damage.",
+  "Kind": "Passive",
+  "Cost": 0,
+  "CastTime": 0.0,
+  "CooldownTurns": 0,
+  "Shape": "Self",
+  "Radius": 0,
+  "Mode": "Auto",
+  "Filter": "Any",
+  "Motion": "None",
+  "DamageType": "Physical",
+  "BaseDamage": 0,
+  "BaseHeal": 0,
+  "ApplyBuff": null,
+  "ApplyBuffChance": 1.0,
+  "RemovesDebuffs": false,
+  "StealsMana": false,
+  "HastenU": 0.0,
+  "IsTeleport": false,
+  "Icon": null,
+  "CastVfx": null,
+  "ProjectileVfx": null,
+  "ImpactVfx": null,
+  "LingerVfx": null,
+  "Sfx": null,
+  "Trigger": {
+   "On": "OnLandedHit",
+   "Effects": [
+    {
+     "Kind": "Lifesteal",
+     "Amount": 0.15
+    }
+   ]
+  }
+ },
+ {
+  "Id": "blood_feast",
+  "Name": "Blood Feast",
+  "Description": "Felling a foe restores 10% of its HP.",
+  "Kind": "Passive",
+  "Cost": 0,
+  "CastTime": 0.0,
+  "CooldownTurns": 0,
+  "Shape": "Self",
+  "Radius": 0,
+  "Mode": "Auto",
+  "Filter": "Any",
+  "Motion": "None",
+  "DamageType": "Physical",
+  "BaseDamage": 0,
+  "BaseHeal": 0,
+  "ApplyBuff": null,
+  "ApplyBuffChance": 1.0,
+  "RemovesDebuffs": false,
+  "StealsMana": false,
+  "HastenU": 0.0,
+  "IsTeleport": false,
+  "Icon": null,
+  "CastVfx": null,
+  "ProjectileVfx": null,
+  "ImpactVfx": null,
+  "LingerVfx": null,
+  "Sfx": null,
+  "Trigger": {
+   "On": "OnKill",
+   "Effects": [
+    {
+     "Kind": "Heal",
+     "Amount": 0.1
+    }
+   ],
+   "Callout": "Feast!"
+  }
+ },
+ {
+  "Id": "guard_counter",
+  "Name": "Guard Counter",
+  "Description": "While [Warded] (Guard Stance), it answers every blow struck at it [directly] with a [Counterstrike].",
+  "Kind": "Reactive",
+  "Cost": 0,
+  "CastTime": 0.0,
+  "CooldownTurns": 0,
+  "Shape": "Self",
+  "Radius": 0,
+  "Mode": "Auto",
+  "Filter": "Any",
+  "Motion": "None",
+  "DamageType": "Physical",
+  "BaseDamage": 0,
+  "BaseHeal": 0,
+  "ApplyBuff": null,
+  "ApplyBuffChance": 1.0,
+  "RemovesDebuffs": false,
+  "StealsMana": false,
+  "HastenU": 0.0,
+  "IsTeleport": false,
+  "Icon": null,
+  "CastVfx": null,
+  "ProjectileVfx": null,
+  "ImpactVfx": null,
+  "LingerVfx": null,
+  "Sfx": null,
+  "Trigger": {
+   "On": "OnAttackedDirect",
+   "Condition": {
+    "HasStatus": "ward"
+   },
+   "Effects": [
+    {
+     "Kind": "Counterstrike",
+     "Amount": 0.6
+    }
+   ],
+   "Callout": "Riposte!"
+  }
+ },
+ {
+  "Id": "shield_wall",
+  "Name": "Shield Wall",
+  "Description": "When [surrounded] by 2 or more foes at the start of its turn, it braces behind its shield and gains [Ward].",
+  "Kind": "Passive",
+  "Cost": 0,
+  "CastTime": 0.0,
+  "CooldownTurns": 0,
+  "Shape": "Self",
+  "Radius": 0,
+  "Mode": "Auto",
+  "Filter": "Any",
+  "Motion": "None",
+  "DamageType": "Physical",
+  "BaseDamage": 0,
+  "BaseHeal": 0,
+  "ApplyBuff": null,
+  "ApplyBuffChance": 1.0,
+  "RemovesDebuffs": false,
+  "StealsMana": false,
+  "HastenU": 0.0,
+  "IsTeleport": false,
+  "Icon": null,
+  "CastVfx": null,
+  "ProjectileVfx": null,
+  "ImpactVfx": null,
+  "LingerVfx": null,
+  "Sfx": null,
+  "Trigger": {
+   "On": "OnSurrounded",
+   "Count": 2,
+   "Effects": [
+    {
+     "Kind": "ApplyBuff",
+     "Buff": "ward"
+    }
+   ],
+   "Callout": "Shield Wall!"
+  }
+ },
+ {
+  "Id": "unbowed",
+  "Name": "Unbowed",
+  "Description": "When [surrounded] by 2 or more foes at the start of its turn, it only fights harder: [Empowered].",
+  "Kind": "Passive",
+  "Cost": 0,
+  "CastTime": 0.0,
+  "CooldownTurns": 0,
+  "Shape": "Self",
+  "Radius": 0,
+  "Mode": "Auto",
+  "Filter": "Any",
+  "Motion": "None",
+  "DamageType": "Physical",
+  "BaseDamage": 0,
+  "BaseHeal": 0,
+  "ApplyBuff": null,
+  "ApplyBuffChance": 1.0,
+  "RemovesDebuffs": false,
+  "StealsMana": false,
+  "HastenU": 0.0,
+  "IsTeleport": false,
+  "Icon": null,
+  "CastVfx": null,
+  "ProjectileVfx": null,
+  "ImpactVfx": null,
+  "LingerVfx": null,
+  "Sfx": null,
+  "Trigger": {
+   "On": "OnSurrounded",
+   "Count": 2,
+   "Effects": [
+    {
+     "Kind": "ApplyBuff",
+     "Buff": "empowered"
+    }
+   ],
+   "Callout": "Unbowed!"
+  }
+ },
+ {
+  "Id": "grudge",
+  "Name": "Grudge",
+  "Description": "When it takes damage, a [small] chance it holds a grudge and turns [Empowered], then rests 2 turns.",
+  "Kind": "Reactive",
+  "Cost": 0,
+  "CastTime": 0.0,
+  "CooldownTurns": 0,
+  "Shape": "Self",
+  "Radius": 0,
+  "Mode": "Auto",
+  "Filter": "Any",
+  "Motion": "None",
+  "DamageType": "Physical",
+  "BaseDamage": 0,
+  "BaseHeal": 0,
+  "ApplyBuff": null,
+  "ApplyBuffChance": 1.0,
+  "RemovesDebuffs": false,
+  "StealsMana": false,
+  "HastenU": 0.0,
+  "IsTeleport": false,
+  "Icon": null,
+  "CastVfx": null,
+  "ProjectileVfx": null,
+  "ImpactVfx": null,
+  "LingerVfx": null,
+  "Sfx": null,
+  "Trigger": {
+   "On": "OnDamaged",
+   "Chance": 0.2,
+   "Effects": [
+    {
+     "Kind": "ApplyBuff",
+     "Buff": "empowered"
+    }
+   ],
+   "Cooldown": 2,
+   "Callout": "Grudge!"
+  }
+ },
+ {
+  "Id": "battle_hardened",
+  "Name": "Battle Hardened",
+  "Description": "When [attacked directly], a [small] chance it settles into its guard and gains [Protection].",
+  "Kind": "Reactive",
+  "Cost": 0,
+  "CastTime": 0.0,
+  "CooldownTurns": 0,
+  "Shape": "Self",
+  "Radius": 0,
+  "Mode": "Auto",
+  "Filter": "Any",
+  "Motion": "None",
+  "DamageType": "Physical",
+  "BaseDamage": 0,
+  "BaseHeal": 0,
+  "ApplyBuff": null,
+  "ApplyBuffChance": 1.0,
+  "RemovesDebuffs": false,
+  "StealsMana": false,
+  "HastenU": 0.0,
+  "IsTeleport": false,
+  "Icon": null,
+  "CastVfx": null,
+  "ProjectileVfx": null,
+  "ImpactVfx": null,
+  "LingerVfx": null,
+  "Sfx": null,
+  "Trigger": {
+   "On": "OnAttackedDirect",
+   "Chance": 0.2,
+   "Effects": [
+    {
+     "Kind": "ApplyBuff",
+     "Buff": "protection"
+    }
+   ],
+   "Callout": "Hardened!"
+  }
+ },
+ {
+  "Id": "dark_retribution",
+  "Name": "Dark Retribution",
+  "Description": "When [attacked directly], a [fair] chance to [Reflect] 30% of the damage back at the attacker.",
+  "Kind": "Reactive",
+  "Cost": 0,
+  "CastTime": 0.0,
+  "CooldownTurns": 0,
+  "Shape": "Self",
+  "Radius": 0,
+  "Mode": "Auto",
+  "Filter": "Any",
+  "Motion": "None",
+  "DamageType": "Physical",
+  "BaseDamage": 0,
+  "BaseHeal": 0,
+  "ApplyBuff": null,
+  "ApplyBuffChance": 1.0,
+  "RemovesDebuffs": false,
+  "StealsMana": false,
+  "HastenU": 0.0,
+  "IsTeleport": false,
+  "Icon": null,
+  "CastVfx": null,
+  "ProjectileVfx": null,
+  "ImpactVfx": null,
+  "LingerVfx": null,
+  "Sfx": null,
+  "Trigger": {
+   "On": "OnAttackedDirect",
+   "Chance": 0.35,
+   "Effects": [
+    {
+     "Kind": "Reflect",
+     "Amount": 0.3
+    }
+   ],
+   "Callout": "Retribution!"
+  }
+ },
+ {
+  "Id": "grim_resolve",
+  "Name": "Grim Resolve",
+  "Description": "When a hit drops it below 35% HP, it grits its teeth and recovers 15% of its HP.",
+  "Kind": "Reactive",
+  "Cost": 0,
+  "CastTime": 0.0,
+  "CooldownTurns": 0,
+  "Shape": "Self",
+  "Radius": 0,
+  "Mode": "Auto",
+  "Filter": "Any",
+  "Motion": "None",
+  "DamageType": "Physical",
+  "BaseDamage": 0,
+  "BaseHeal": 0,
+  "ApplyBuff": null,
+  "ApplyBuffChance": 1.0,
+  "RemovesDebuffs": false,
+  "StealsMana": false,
+  "HastenU": 0.0,
+  "IsTeleport": false,
+  "Icon": null,
+  "CastVfx": null,
+  "ProjectileVfx": null,
+  "ImpactVfx": null,
+  "LingerVfx": null,
+  "Sfx": null,
+  "Trigger": {
+   "On": "OnLowHp",
+   "Threshold": 0.35,
+   "Effects": [
+    {
+     "Kind": "Heal",
+     "Amount": 0.15
+    }
+   ],
+   "Callout": "Grim Resolve!"
+  }
+ },
+ {
+  "Id": "blood_rage",
+  "Name": "Blood Rage",
+  "Description": "When a hit drops it below half HP, it flies into a rage and turns [Empowered].",
+  "Kind": "Reactive",
+  "Cost": 0,
+  "CastTime": 0.0,
+  "CooldownTurns": 0,
+  "Shape": "Self",
+  "Radius": 0,
+  "Mode": "Auto",
+  "Filter": "Any",
+  "Motion": "None",
+  "DamageType": "Physical",
+  "BaseDamage": 0,
+  "BaseHeal": 0,
+  "ApplyBuff": null,
+  "ApplyBuffChance": 1.0,
+  "RemovesDebuffs": false,
+  "StealsMana": false,
+  "HastenU": 0.0,
+  "IsTeleport": false,
+  "Icon": null,
+  "CastVfx": null,
+  "ProjectileVfx": null,
+  "ImpactVfx": null,
+  "LingerVfx": null,
+  "Sfx": null,
+  "Trigger": {
+   "On": "OnLowHp",
+   "Threshold": 0.5,
+   "Effects": [
+    {
+     "Kind": "ApplyBuff",
+     "Buff": "empowered"
+    }
+   ],
+   "Callout": "Blood Rage!"
+  }
+ },
+ {
+  "Id": "venom_edge",
+  "Name": "Venom Edge",
+  "Description": "Its landed blows have a [slight] chance to [Poison] the target.",
+  "Kind": "Passive",
+  "Cost": 0,
+  "CastTime": 0.0,
+  "CooldownTurns": 0,
+  "Shape": "Self",
+  "Radius": 0,
+  "Mode": "Auto",
+  "Filter": "Any",
+  "Motion": "None",
+  "DamageType": "Physical",
+  "BaseDamage": 0,
+  "BaseHeal": 0,
+  "ApplyBuff": null,
+  "ApplyBuffChance": 1.0,
+  "RemovesDebuffs": false,
+  "StealsMana": false,
+  "HastenU": 0.0,
+  "IsTeleport": false,
+  "Icon": null,
+  "CastVfx": null,
+  "ProjectileVfx": null,
+  "ImpactVfx": null,
+  "LingerVfx": null,
+  "Sfx": null,
+  "Trigger": {
+   "On": "OnLandedHit",
+   "Chance": 0.15,
+   "Effects": [
+    {
+     "Kind": "ApplyBuff",
+     "Buff": "poisoned",
+     "Who": "Target"
+    }
+   ],
+   "Callout": "Venom!"
+  }
+ },
+ {
+  "Id": "ember_edge",
+  "Name": "Ember Edge",
+  "Description": "Its landed blows have a [slight] chance to [Burn] the target.",
+  "Kind": "Passive",
+  "Cost": 0,
+  "CastTime": 0.0,
+  "CooldownTurns": 0,
+  "Shape": "Self",
+  "Radius": 0,
+  "Mode": "Auto",
+  "Filter": "Any",
+  "Motion": "None",
+  "DamageType": "Physical",
+  "BaseDamage": 0,
+  "BaseHeal": 0,
+  "ApplyBuff": null,
+  "ApplyBuffChance": 1.0,
+  "RemovesDebuffs": false,
+  "StealsMana": false,
+  "HastenU": 0.0,
+  "IsTeleport": false,
+  "Icon": null,
+  "CastVfx": null,
+  "ProjectileVfx": null,
+  "ImpactVfx": null,
+  "LingerVfx": null,
+  "Sfx": null,
+  "Trigger": {
+   "On": "OnLandedHit",
+   "Chance": 0.15,
+   "Effects": [
+    {
+     "Kind": "ApplyBuff",
+     "Buff": "burning",
+     "Who": "Target"
+    }
+   ],
+   "Callout": "Ember!"
+  }
+ },
+ {
+  "Id": "static_edge",
+  "Name": "Static Edge",
+  "Description": "Its landed blows have a [slight] chance to [Slow] the target.",
+  "Kind": "Passive",
+  "Cost": 0,
+  "CastTime": 0.0,
+  "CooldownTurns": 0,
+  "Shape": "Self",
+  "Radius": 0,
+  "Mode": "Auto",
+  "Filter": "Any",
+  "Motion": "None",
+  "DamageType": "Physical",
+  "BaseDamage": 0,
+  "BaseHeal": 0,
+  "ApplyBuff": null,
+  "ApplyBuffChance": 1.0,
+  "RemovesDebuffs": false,
+  "StealsMana": false,
+  "HastenU": 0.0,
+  "IsTeleport": false,
+  "Icon": null,
+  "CastVfx": null,
+  "ProjectileVfx": null,
+  "ImpactVfx": null,
+  "LingerVfx": null,
+  "Sfx": null,
+  "Trigger": {
+   "On": "OnLandedHit",
+   "Chance": 0.15,
+   "Effects": [
+    {
+     "Kind": "ApplyBuff",
+     "Buff": "slowed",
+     "Who": "Target"
+    }
+   ],
+   "Callout": "Static!"
+  }
+ },
+ {
+  "Id": "rime_edge",
+  "Name": "Rime Edge",
+  "Description": "Its landed blows have a [slight] chance to [Freeze] the target.",
+  "Kind": "Passive",
+  "Cost": 0,
+  "CastTime": 0.0,
+  "CooldownTurns": 0,
+  "Shape": "Self",
+  "Radius": 0,
+  "Mode": "Auto",
+  "Filter": "Any",
+  "Motion": "None",
+  "DamageType": "Physical",
+  "BaseDamage": 0,
+  "BaseHeal": 0,
+  "ApplyBuff": null,
+  "ApplyBuffChance": 1.0,
+  "RemovesDebuffs": false,
+  "StealsMana": false,
+  "HastenU": 0.0,
+  "IsTeleport": false,
+  "Icon": null,
+  "CastVfx": null,
+  "ProjectileVfx": null,
+  "ImpactVfx": null,
+  "LingerVfx": null,
+  "Sfx": null,
+  "Trigger": {
+   "On": "OnLandedHit",
+   "Chance": 0.1,
+   "Effects": [
+    {
+     "Kind": "ApplyBuff",
+     "Buff": "frozen",
+     "Who": "Target"
+    }
+   ],
+   "Callout": "Rime!"
+  }
+ },
+ {
+  "Id": "shadow_edge",
+  "Name": "Shadow Edge",
+  "Description": "Its landed blows have a [slight] chance to [Blind] the target.",
+  "Kind": "Passive",
+  "Cost": 0,
+  "CastTime": 0.0,
+  "CooldownTurns": 0,
+  "Shape": "Self",
+  "Radius": 0,
+  "Mode": "Auto",
+  "Filter": "Any",
+  "Motion": "None",
+  "DamageType": "Physical",
+  "BaseDamage": 0,
+  "BaseHeal": 0,
+  "ApplyBuff": null,
+  "ApplyBuffChance": 1.0,
+  "RemovesDebuffs": false,
+  "StealsMana": false,
+  "HastenU": 0.0,
+  "IsTeleport": false,
+  "Icon": null,
+  "CastVfx": null,
+  "ProjectileVfx": null,
+  "ImpactVfx": null,
+  "LingerVfx": null,
+  "Sfx": null,
+  "Trigger": {
+   "On": "OnLandedHit",
+   "Chance": 0.15,
+   "Effects": [
+    {
+     "Kind": "ApplyBuff",
+     "Buff": "blinded",
+     "Who": "Target"
+    }
+   ],
+   "Callout": "Shadow!"
+  }
+ },
+ {
+  "Id": "dirty_fighting",
+  "Name": "Dirty Fighting",
+  "Description": "Its landed blows have a [small] chance to throw grit and [Blind] the target.",
+  "Kind": "Passive",
+  "Cost": 0,
+  "CastTime": 0.0,
+  "CooldownTurns": 0,
+  "Shape": "Self",
+  "Radius": 0,
+  "Mode": "Auto",
+  "Filter": "Any",
+  "Motion": "None",
+  "DamageType": "Physical",
+  "BaseDamage": 0,
+  "BaseHeal": 0,
+  "ApplyBuff": null,
+  "ApplyBuffChance": 1.0,
+  "RemovesDebuffs": false,
+  "StealsMana": false,
+  "HastenU": 0.0,
+  "IsTeleport": false,
+  "Icon": null,
+  "CastVfx": null,
+  "ProjectileVfx": null,
+  "ImpactVfx": null,
+  "LingerVfx": null,
+  "Sfx": null,
+  "Trigger": {
+   "On": "OnLandedHit",
+   "Chance": 0.2,
+   "Effects": [
+    {
+     "Kind": "ApplyBuff",
+     "Buff": "blinded",
+     "Who": "Target"
+    }
+   ],
+   "Callout": "Dirty Trick!"
+  }
+ },
+ {
+  "Id": "vanish",
+  "Name": "Vanish",
+  "Description": "Felling a foe lets it melt into the confusion: it turns [Blurred].",
+  "Kind": "Passive",
+  "Cost": 0,
+  "CastTime": 0.0,
+  "CooldownTurns": 0,
+  "Shape": "Self",
+  "Radius": 0,
+  "Mode": "Auto",
+  "Filter": "Any",
+  "Motion": "None",
+  "DamageType": "Physical",
+  "BaseDamage": 0,
+  "BaseHeal": 0,
+  "ApplyBuff": null,
+  "ApplyBuffChance": 1.0,
+  "RemovesDebuffs": false,
+  "StealsMana": false,
+  "HastenU": 0.0,
+  "IsTeleport": false,
+  "Icon": null,
+  "CastVfx": null,
+  "ProjectileVfx": null,
+  "ImpactVfx": null,
+  "LingerVfx": null,
+  "Sfx": null,
+  "Trigger": {
+   "On": "OnKill",
+   "Effects": [
+    {
+     "Kind": "ApplyBuff",
+     "Buff": "blurred"
+    }
+   ],
+   "Callout": "Vanish!"
+  }
+ },
+ {
+  "Id": "bloodlust",
+  "Name": "Bloodlust",
+  "Description": "Felling a foe stokes its bloodlust: it turns [Empowered].",
+  "Kind": "Passive",
+  "Cost": 0,
+  "CastTime": 0.0,
+  "CooldownTurns": 0,
+  "Shape": "Self",
+  "Radius": 0,
+  "Mode": "Auto",
+  "Filter": "Any",
+  "Motion": "None",
+  "DamageType": "Physical",
+  "BaseDamage": 0,
+  "BaseHeal": 0,
+  "ApplyBuff": null,
+  "ApplyBuffChance": 1.0,
+  "RemovesDebuffs": false,
+  "StealsMana": false,
+  "HastenU": 0.0,
+  "IsTeleport": false,
+  "Icon": null,
+  "CastVfx": null,
+  "ProjectileVfx": null,
+  "ImpactVfx": null,
+  "LingerVfx": null,
+  "Sfx": null,
+  "Trigger": {
+   "On": "OnKill",
+   "Effects": [
+    {
+     "Kind": "ApplyBuff",
+     "Buff": "empowered"
+    }
+   ],
+   "Callout": "Bloodlust!"
+  }
+ },
+ {
+  "Id": "counterpunch",
+  "Name": "Counterpunch",
+  "Description": "When [attacked directly], a [small] chance to slip the punch and answer with a [Counterstrike].",
+  "Kind": "Reactive",
+  "Cost": 0,
+  "CastTime": 0.0,
+  "CooldownTurns": 0,
+  "Shape": "Self",
+  "Radius": 0,
+  "Mode": "Auto",
+  "Filter": "Any",
+  "Motion": "None",
+  "DamageType": "Physical",
+  "BaseDamage": 0,
+  "BaseHeal": 0,
+  "ApplyBuff": null,
+  "ApplyBuffChance": 1.0,
+  "RemovesDebuffs": false,
+  "StealsMana": false,
+  "HastenU": 0.0,
+  "IsTeleport": false,
+  "Icon": null,
+  "CastVfx": null,
+  "ProjectileVfx": null,
+  "ImpactVfx": null,
+  "LingerVfx": null,
+  "Sfx": null,
+  "Trigger": {
+   "On": "OnAttackedDirect",
+   "Chance": 0.2,
+   "Effects": [
+    {
+     "Kind": "Counterstrike",
+     "Amount": 0.6
+    }
+   ],
+   "Callout": "Counterpunch!"
+  }
+ },
+ {
+  "Id": "set_spear",
+  "Name": "Set Spear",
+  "Description": "When [attacked directly], a [small] chance its braced spear meets the attacker with a [Counterstrike].",
+  "Kind": "Reactive",
+  "Cost": 0,
+  "CastTime": 0.0,
+  "CooldownTurns": 0,
+  "Shape": "Self",
+  "Radius": 0,
+  "Mode": "Auto",
+  "Filter": "Any",
+  "Motion": "None",
+  "DamageType": "Physical",
+  "BaseDamage": 0,
+  "BaseHeal": 0,
+  "ApplyBuff": null,
+  "ApplyBuffChance": 1.0,
+  "RemovesDebuffs": false,
+  "StealsMana": false,
+  "HastenU": 0.0,
+  "IsTeleport": false,
+  "Icon": null,
+  "CastVfx": null,
+  "ProjectileVfx": null,
+  "ImpactVfx": null,
+  "LingerVfx": null,
+  "Sfx": null,
+  "Trigger": {
+   "On": "OnAttackedDirect",
+   "Chance": 0.25,
+   "Effects": [
+    {
+     "Kind": "Counterstrike",
+     "Amount": 0.75
+    }
+   ],
+   "Callout": "Set Spear!"
+  }
+ },
+ {
+  "Id": "rattle",
+  "Name": "Rattle",
+  "Description": "Its landed blows have a [slight] chance to rattle the target and give it [Pushback].",
+  "Kind": "Passive",
+  "Cost": 0,
+  "CastTime": 0.0,
+  "CooldownTurns": 0,
+  "Shape": "Self",
+  "Radius": 0,
+  "Mode": "Auto",
+  "Filter": "Any",
+  "Motion": "None",
+  "DamageType": "Physical",
+  "BaseDamage": 0,
+  "BaseHeal": 0,
+  "ApplyBuff": null,
+  "ApplyBuffChance": 1.0,
+  "RemovesDebuffs": false,
+  "StealsMana": false,
+  "HastenU": 0.0,
+  "IsTeleport": false,
+  "Icon": null,
+  "CastVfx": null,
+  "ProjectileVfx": null,
+  "ImpactVfx": null,
+  "LingerVfx": null,
+  "Sfx": null,
+  "Trigger": {
+   "On": "OnLandedHit",
+   "Chance": 0.15,
+   "Effects": [
+    {
+     "Kind": "Pushback",
+     "Amount": 0.5,
+     "Who": "Target"
+    }
+   ],
+   "Callout": "Rattled!"
+  }
+ },
+ {
+  "Id": "mending_touch",
+  "Name": "Mending Touch",
+  "Description": "After it backs a [pincer] as a [Supporter], it mends the attacker it backed for 5% of their HP.",
+  "Kind": "Passive",
+  "Cost": 0,
+  "CastTime": 0.0,
+  "CooldownTurns": 0,
+  "Shape": "Self",
+  "Radius": 0,
+  "Mode": "Auto",
+  "Filter": "Any",
+  "Motion": "None",
+  "DamageType": "Physical",
+  "BaseDamage": 0,
+  "BaseHeal": 0,
+  "ApplyBuff": null,
+  "ApplyBuffChance": 1.0,
+  "RemovesDebuffs": false,
+  "StealsMana": false,
+  "HastenU": 0.0,
+  "IsTeleport": false,
+  "Icon": null,
+  "CastVfx": null,
+  "ProjectileVfx": null,
+  "ImpactVfx": null,
+  "LingerVfx": null,
+  "Sfx": null,
+  "Trigger": {
+   "On": "OnPincerAsSupporter",
+   "Effects": [
+    {
+     "Kind": "Heal",
+     "Amount": 0.05,
+     "Who": "Target"
+    }
+   ],
+   "Callout": "Mend!"
+  }
+ },
+ {
+  "Id": "inner_calm",
+  "Name": "Inner Calm",
+  "Description": "At the start of each of its turns, its calm restores 3% of its HP.",
+  "Kind": "Passive",
+  "Cost": 0,
+  "CastTime": 0.0,
+  "CooldownTurns": 0,
+  "Shape": "Self",
+  "Radius": 0,
+  "Mode": "Auto",
+  "Filter": "Any",
+  "Motion": "None",
+  "DamageType": "Physical",
+  "BaseDamage": 0,
+  "BaseHeal": 0,
+  "ApplyBuff": null,
+  "ApplyBuffChance": 1.0,
+  "RemovesDebuffs": false,
+  "StealsMana": false,
+  "HastenU": 0.0,
+  "IsTeleport": false,
+  "Icon": null,
+  "CastVfx": null,
+  "ProjectileVfx": null,
+  "ImpactVfx": null,
+  "LingerVfx": null,
+  "Sfx": null,
+  "Trigger": {
+   "On": "TurnStart",
+   "Effects": [
+    {
+     "Kind": "Heal",
+     "Amount": 0.03
+    }
+   ],
+   "Callout": "Calm"
+  }
+ },
+ {
+  "Id": "vigil",
+  "Name": "Vigil",
+  "Description": "When an ally falls, it keeps vigil and gains [Regen].",
+  "Kind": "Reactive",
+  "Cost": 0,
+  "CastTime": 0.0,
+  "CooldownTurns": 0,
+  "Shape": "Self",
+  "Radius": 0,
+  "Mode": "Auto",
+  "Filter": "Any",
+  "Motion": "None",
+  "DamageType": "Physical",
+  "BaseDamage": 0,
+  "BaseHeal": 0,
+  "ApplyBuff": null,
+  "ApplyBuffChance": 1.0,
+  "RemovesDebuffs": false,
+  "StealsMana": false,
+  "HastenU": 0.0,
+  "IsTeleport": false,
+  "Icon": null,
+  "CastVfx": null,
+  "ProjectileVfx": null,
+  "ImpactVfx": null,
+  "LingerVfx": null,
+  "Sfx": null,
+  "Trigger": {
+   "On": "OnAllyKO",
+   "Effects": [
+    {
+     "Kind": "ApplyBuff",
+     "Buff": "regen"
+    }
+   ],
+   "Callout": "Vigil!"
+  }
+ },
+ {
+  "Id": "arcane_harvest",
+  "Name": "Arcane Harvest",
+  "Description": "Felling a foe adds 10 [mana charge] to the party's meter.",
+  "Kind": "Passive",
+  "Cost": 0,
+  "CastTime": 0.0,
+  "CooldownTurns": 0,
+  "Shape": "Self",
+  "Radius": 0,
+  "Mode": "Auto",
+  "Filter": "Any",
+  "Motion": "None",
+  "DamageType": "Physical",
+  "BaseDamage": 0,
+  "BaseHeal": 0,
+  "ApplyBuff": null,
+  "ApplyBuffChance": 1.0,
+  "RemovesDebuffs": false,
+  "StealsMana": false,
+  "HastenU": 0.0,
+  "IsTeleport": false,
+  "Icon": null,
+  "CastVfx": null,
+  "ProjectileVfx": null,
+  "ImpactVfx": null,
+  "LingerVfx": null,
+  "Sfx": null,
+  "Trigger": {
+   "On": "OnKill",
+   "Effects": [
+    {
+     "Kind": "ManaCharge",
+     "Amount": 10
+    }
+   ],
+   "Callout": "Harvest!"
+  }
+ },
+ {
+  "Id": "blood_price",
+  "Name": "Blood Price",
+  "Description": "When it takes damage, its pain feeds the rite: 4 [mana charge], once per action.",
+  "Kind": "Reactive",
+  "Cost": 0,
+  "CastTime": 0.0,
+  "CooldownTurns": 0,
+  "Shape": "Self",
+  "Radius": 0,
+  "Mode": "Auto",
+  "Filter": "Any",
+  "Motion": "None",
+  "DamageType": "Physical",
+  "BaseDamage": 0,
+  "BaseHeal": 0,
+  "ApplyBuff": null,
+  "ApplyBuffChance": 1.0,
+  "RemovesDebuffs": false,
+  "StealsMana": false,
+  "HastenU": 0.0,
+  "IsTeleport": false,
+  "Icon": null,
+  "CastVfx": null,
+  "ProjectileVfx": null,
+  "ImpactVfx": null,
+  "LingerVfx": null,
+  "Sfx": null,
+  "Trigger": {
+   "On": "OnDamaged",
+   "Effects": [
+    {
+     "Kind": "ManaCharge",
+     "Amount": 4
+    }
+   ],
+   "OncePerAction": true,
+   "Callout": "Blood Price!"
+  }
+ },
+ {
+  "Id": "arcane_insight",
+  "Name": "Arcane Insight",
+  "Description": "After it backs a [pincer] as a [Supporter], it adds 5 [mana charge].",
+  "Kind": "Passive",
+  "Cost": 0,
+  "CastTime": 0.0,
+  "CooldownTurns": 0,
+  "Shape": "Self",
+  "Radius": 0,
+  "Mode": "Auto",
+  "Filter": "Any",
+  "Motion": "None",
+  "DamageType": "Physical",
+  "BaseDamage": 0,
+  "BaseHeal": 0,
+  "ApplyBuff": null,
+  "ApplyBuffChance": 1.0,
+  "RemovesDebuffs": false,
+  "StealsMana": false,
+  "HastenU": 0.0,
+  "IsTeleport": false,
+  "Icon": null,
+  "CastVfx": null,
+  "ProjectileVfx": null,
+  "ImpactVfx": null,
+  "LingerVfx": null,
+  "Sfx": null,
+  "Trigger": {
+   "On": "OnPincerAsSupporter",
+   "Effects": [
+    {
+     "Kind": "ManaCharge",
+     "Amount": 5
+    }
+   ],
+   "Callout": "Insight!"
+  }
+ },
+ {
+  "Id": "pure_spirit",
+  "Name": "Pure Spirit",
+  "Description": "Its voice can't be stilled: it can't be [Silenced].",
+  "Kind": "Passive",
+  "Cost": 0,
+  "CastTime": 0.0,
+  "CooldownTurns": 0,
+  "Shape": "Self",
+  "Radius": 0,
+  "Mode": "Auto",
+  "Filter": "Any",
+  "Motion": "None",
+  "DamageType": "Physical",
+  "BaseDamage": 0,
+  "BaseHeal": 0,
+  "ApplyBuff": null,
+  "ApplyBuffChance": 1.0,
+  "RemovesDebuffs": false,
+  "StealsMana": false,
+  "HastenU": 0.0,
+  "IsTeleport": false,
+  "Icon": null,
+  "CastVfx": null,
+  "ProjectileVfx": null,
+  "ImpactVfx": null,
+  "LingerVfx": null,
+  "Sfx": null,
+  "Trigger": {
+   "On": "Always",
+   "Effects": [
+    {
+     "Kind": "Immunity",
+     "Statuses": [
+      "silenced"
+     ]
+    }
+   ]
+  }
+ },
+ {
+  "Id": "chill_aura",
+  "Name": "Chill Aura",
+  "Description": "When [attacked directly], a [small] chance its chill [Slows] the attacker.",
+  "Kind": "Reactive",
+  "Cost": 0,
+  "CastTime": 0.0,
+  "CooldownTurns": 0,
+  "Shape": "Self",
+  "Radius": 0,
+  "Mode": "Auto",
+  "Filter": "Any",
+  "Motion": "None",
+  "DamageType": "Physical",
+  "BaseDamage": 0,
+  "BaseHeal": 0,
+  "ApplyBuff": null,
+  "ApplyBuffChance": 1.0,
+  "RemovesDebuffs": false,
+  "StealsMana": false,
+  "HastenU": 0.0,
+  "IsTeleport": false,
+  "Icon": null,
+  "CastVfx": null,
+  "ProjectileVfx": null,
+  "ImpactVfx": null,
+  "LingerVfx": null,
+  "Sfx": null,
+  "Trigger": {
+   "On": "OnAttackedDirect",
+   "Chance": 0.25,
+   "Effects": [
+    {
+     "Kind": "ApplyBuff",
+     "Buff": "slowed",
+     "Who": "Attacker"
+    }
+   ],
+   "Callout": "Chill!"
+  }
+ },
+ {
+  "Id": "shock_plating",
+  "Name": "Shock Plating",
+  "Description": "When [attacked directly], a [small] chance a jolt gives the attacker [Pushback].",
+  "Kind": "Reactive",
+  "Cost": 0,
+  "CastTime": 0.0,
+  "CooldownTurns": 0,
+  "Shape": "Self",
+  "Radius": 0,
+  "Mode": "Auto",
+  "Filter": "Any",
+  "Motion": "None",
+  "DamageType": "Physical",
+  "BaseDamage": 0,
+  "BaseHeal": 0,
+  "ApplyBuff": null,
+  "ApplyBuffChance": 1.0,
+  "RemovesDebuffs": false,
+  "StealsMana": false,
+  "HastenU": 0.0,
+  "IsTeleport": false,
+  "Icon": null,
+  "CastVfx": null,
+  "ProjectileVfx": null,
+  "ImpactVfx": null,
+  "LingerVfx": null,
+  "Sfx": null,
+  "Trigger": {
+   "On": "OnAttackedDirect",
+   "Chance": 0.25,
+   "Effects": [
+    {
+     "Kind": "Pushback",
+     "Amount": 0.75,
+     "Who": "Attacker"
+    }
+   ],
+   "Callout": "Zap!"
+  }
+ },
+ {
+  "Id": "keep_away",
+  "Name": "Keep Away",
+  "Description": "When [attacked directly], a [fair] chance to shove the attacker off balance: [Pushback].",
+  "Kind": "Reactive",
+  "Cost": 0,
+  "CastTime": 0.0,
+  "CooldownTurns": 0,
+  "Shape": "Self",
+  "Radius": 0,
+  "Mode": "Auto",
+  "Filter": "Any",
+  "Motion": "None",
+  "DamageType": "Physical",
+  "BaseDamage": 0,
+  "BaseHeal": 0,
+  "ApplyBuff": null,
+  "ApplyBuffChance": 1.0,
+  "RemovesDebuffs": false,
+  "StealsMana": false,
+  "HastenU": 0.0,
+  "IsTeleport": false,
+  "Icon": null,
+  "CastVfx": null,
+  "ProjectileVfx": null,
+  "ImpactVfx": null,
+  "LingerVfx": null,
+  "Sfx": null,
+  "Trigger": {
+   "On": "OnAttackedDirect",
+   "Chance": 0.35,
+   "Effects": [
+    {
+     "Kind": "Pushback",
+     "Amount": 1.0,
+     "Who": "Attacker"
+    }
+   ],
+   "Callout": "Keep Away!"
+  }
+ },
+ {
+  "Id": "self_repair",
+  "Name": "Self-Repair",
+  "Description": "At the start of its turn, while below half HP, it patches itself up for 5% of its HP.",
+  "Kind": "Passive",
+  "Cost": 0,
+  "CastTime": 0.0,
+  "CooldownTurns": 0,
+  "Shape": "Self",
+  "Radius": 0,
+  "Mode": "Auto",
+  "Filter": "Any",
+  "Motion": "None",
+  "DamageType": "Physical",
+  "BaseDamage": 0,
+  "BaseHeal": 0,
+  "ApplyBuff": null,
+  "ApplyBuffChance": 1.0,
+  "RemovesDebuffs": false,
+  "StealsMana": false,
+  "HastenU": 0.0,
+  "IsTeleport": false,
+  "Icon": null,
+  "CastVfx": null,
+  "ProjectileVfx": null,
+  "ImpactVfx": null,
+  "LingerVfx": null,
+  "Sfx": null,
+  "Trigger": {
+   "On": "TurnStart",
+   "Condition": {
+    "SelfHpBelow": 0.5
+   },
+   "Effects": [
+    {
+     "Kind": "Heal",
+     "Amount": 0.05
+    }
+   ],
+   "Callout": "Repair"
+  }
+ },
+ {
+  "Id": "vengeance",
+  "Name": "Vengeance",
+  "Description": "When an ally falls, it swears vengeance and turns [Empowered].",
+  "Kind": "Reactive",
+  "Cost": 0,
+  "CastTime": 0.0,
+  "CooldownTurns": 0,
+  "Shape": "Self",
+  "Radius": 0,
+  "Mode": "Auto",
+  "Filter": "Any",
+  "Motion": "None",
+  "DamageType": "Physical",
+  "BaseDamage": 0,
+  "BaseHeal": 0,
+  "ApplyBuff": null,
+  "ApplyBuffChance": 1.0,
+  "RemovesDebuffs": false,
+  "StealsMana": false,
+  "HastenU": 0.0,
+  "IsTeleport": false,
+  "Icon": null,
+  "CastVfx": null,
+  "ProjectileVfx": null,
+  "ImpactVfx": null,
+  "LingerVfx": null,
+  "Sfx": null,
+  "Trigger": {
+   "On": "OnAllyKO",
+   "Effects": [
+    {
+     "Kind": "ApplyBuff",
+     "Buff": "empowered"
+    }
+   ],
+   "Callout": "Vengeance!"
+  }
+ },
+ {
+  "Id": "toxic_skin",
+  "Name": "Toxic Skin",
+  "Description": "When [attacked directly], a [fair] chance its slick skin [Poisons] the attacker.",
+  "Kind": "Reactive",
+  "Cost": 0,
+  "CastTime": 0.0,
+  "CooldownTurns": 0,
+  "Shape": "Self",
+  "Radius": 0,
+  "Mode": "Auto",
+  "Filter": "Any",
+  "Motion": "None",
+  "DamageType": "Physical",
+  "BaseDamage": 0,
+  "BaseHeal": 0,
+  "ApplyBuff": null,
+  "ApplyBuffChance": 1.0,
+  "RemovesDebuffs": false,
+  "StealsMana": false,
+  "HastenU": 0.0,
+  "IsTeleport": false,
+  "Icon": null,
+  "CastVfx": null,
+  "ProjectileVfx": null,
+  "ImpactVfx": null,
+  "LingerVfx": null,
+  "Sfx": null,
+  "Trigger": {
+   "On": "OnAttackedDirect",
+   "Chance": 0.35,
+   "Effects": [
+    {
+     "Kind": "ApplyBuff",
+     "Buff": "poisoned",
+     "Who": "Attacker"
+    }
+   ],
+   "Callout": "Toxic Skin!"
+  }
+ },
+ {
+  "Id": "infernal_hide",
+  "Name": "Infernal Hide",
+  "Description": "Born of fire: it can't be [Burned].",
+  "Kind": "Passive",
+  "Cost": 0,
+  "CastTime": 0.0,
+  "CooldownTurns": 0,
+  "Shape": "Self",
+  "Radius": 0,
+  "Mode": "Auto",
+  "Filter": "Any",
+  "Motion": "None",
+  "DamageType": "Physical",
+  "BaseDamage": 0,
+  "BaseHeal": 0,
+  "ApplyBuff": null,
+  "ApplyBuffChance": 1.0,
+  "RemovesDebuffs": false,
+  "StealsMana": false,
+  "HastenU": 0.0,
+  "IsTeleport": false,
+  "Icon": null,
+  "CastVfx": null,
+  "ProjectileVfx": null,
+  "ImpactVfx": null,
+  "LingerVfx": null,
+  "Sfx": null,
+  "Trigger": {
+   "On": "Always",
+   "Effects": [
+    {
+     "Kind": "Immunity",
+     "Statuses": [
+      "burning"
+     ]
+    }
+   ]
+  }
+ },
+ {
+  "Id": "frostborn",
+  "Name": "Frostborn",
+  "Description": "Born of ice: it can't be [Frozen].",
+  "Kind": "Passive",
+  "Cost": 0,
+  "CastTime": 0.0,
+  "CooldownTurns": 0,
+  "Shape": "Self",
+  "Radius": 0,
+  "Mode": "Auto",
+  "Filter": "Any",
+  "Motion": "None",
+  "DamageType": "Physical",
+  "BaseDamage": 0,
+  "BaseHeal": 0,
+  "ApplyBuff": null,
+  "ApplyBuffChance": 1.0,
+  "RemovesDebuffs": false,
+  "StealsMana": false,
+  "HastenU": 0.0,
+  "IsTeleport": false,
+  "Icon": null,
+  "CastVfx": null,
+  "ProjectileVfx": null,
+  "ImpactVfx": null,
+  "LingerVfx": null,
+  "Sfx": null,
+  "Trigger": {
+   "On": "Always",
+   "Effects": [
+    {
+     "Kind": "Immunity",
+     "Statuses": [
+      "frozen"
+     ]
+    }
+   ]
+  }
+ },
+ {
+  "Id": "ethereal",
+  "Name": "Ethereal",
+  "Description": "Only half in this world: [Physical] blows land at 80%.",
+  "Kind": "Passive",
+  "Cost": 0,
+  "CastTime": 0.0,
+  "CooldownTurns": 0,
+  "Shape": "Self",
+  "Radius": 0,
+  "Mode": "Auto",
+  "Filter": "Any",
+  "Motion": "None",
+  "DamageType": "Physical",
+  "BaseDamage": 0,
+  "BaseHeal": 0,
+  "ApplyBuff": null,
+  "ApplyBuffChance": 1.0,
+  "RemovesDebuffs": false,
+  "StealsMana": false,
+  "HastenU": 0.0,
+  "IsTeleport": false,
+  "Icon": null,
+  "CastVfx": null,
+  "ProjectileVfx": null,
+  "ImpactVfx": null,
+  "LingerVfx": null,
+  "Sfx": null,
+  "Trigger": {
+   "On": "Always",
+   "Condition": {
+    "DamageType": "Physical"
+   },
+   "Effects": [
+    {
+     "Kind": "ReductionMultiplier",
+     "Amount": 0.8
+    }
+   ]
+  }
+ },
+ {
+  "Id": "mirror_plating",
+  "Name": "Mirror Plating",
+  "Description": "When a foe's attack lands on it, a [good] chance its plating [Reflects] 20% of the damage back.",
+  "Kind": "Reactive",
+  "Cost": 0,
+  "CastTime": 0.0,
+  "CooldownTurns": 0,
+  "Shape": "Self",
+  "Radius": 0,
+  "Mode": "Auto",
+  "Filter": "Any",
+  "Motion": "None",
+  "DamageType": "Physical",
+  "BaseDamage": 0,
+  "BaseHeal": 0,
+  "ApplyBuff": null,
+  "ApplyBuffChance": 1.0,
+  "RemovesDebuffs": false,
+  "StealsMana": false,
+  "HastenU": 0.0,
+  "IsTeleport": false,
+  "Icon": null,
+  "CastVfx": null,
+  "ProjectileVfx": null,
+  "ImpactVfx": null,
+  "LingerVfx": null,
+  "Sfx": null,
+  "Trigger": {
+   "On": "OnAttackedAny",
+   "Chance": 0.5,
+   "Effects": [
+    {
+     "Kind": "Reflect",
+     "Amount": 0.2
+    }
+   ],
+   "Callout": "Reflect!"
+  }
+ },
+ {
+  "Id": "serpents_retort",
+  "Name": "Serpent's Retort",
+  "Description": "When [attacked directly], a [fair] chance to lash back with a [Counterstrike].",
+  "Kind": "Reactive",
+  "Cost": 0,
+  "CastTime": 0.0,
+  "CooldownTurns": 0,
+  "Shape": "Self",
+  "Radius": 0,
+  "Mode": "Auto",
+  "Filter": "Any",
+  "Motion": "None",
+  "DamageType": "Physical",
+  "BaseDamage": 0,
+  "BaseHeal": 0,
+  "ApplyBuff": null,
+  "ApplyBuffChance": 1.0,
+  "RemovesDebuffs": false,
+  "StealsMana": false,
+  "HastenU": 0.0,
+  "IsTeleport": false,
+  "Icon": null,
+  "CastVfx": null,
+  "ProjectileVfx": null,
+  "ImpactVfx": null,
+  "LingerVfx": null,
+  "Sfx": null,
+  "Trigger": {
+   "On": "OnAttackedDirect",
+   "Chance": 0.35,
+   "Effects": [
+    {
+     "Kind": "Counterstrike",
+     "Amount": 0.6
+    }
+   ],
+   "Callout": "Retort!"
+  }
+ },
+ {
+  "Id": "gelatinous",
+  "Name": "Gelatinous",
+  "Description": "When it takes damage, a [small] chance its jelly firms up and gains [Protection].",
+  "Kind": "Reactive",
+  "Cost": 0,
+  "CastTime": 0.0,
+  "CooldownTurns": 0,
+  "Shape": "Self",
+  "Radius": 0,
+  "Mode": "Auto",
+  "Filter": "Any",
+  "Motion": "None",
+  "DamageType": "Physical",
+  "BaseDamage": 0,
+  "BaseHeal": 0,
+  "ApplyBuff": null,
+  "ApplyBuffChance": 1.0,
+  "RemovesDebuffs": false,
+  "StealsMana": false,
+  "HastenU": 0.0,
+  "IsTeleport": false,
+  "Icon": null,
+  "CastVfx": null,
+  "ProjectileVfx": null,
+  "ImpactVfx": null,
+  "LingerVfx": null,
+  "Sfx": null,
+  "Trigger": {
+   "On": "OnDamaged",
+   "Chance": 0.25,
+   "Effects": [
+    {
+     "Kind": "ApplyBuff",
+     "Buff": "protection"
+    }
+   ],
+   "OncePerAction": true,
+   "Callout": "Jiggle!"
+  }
+ },
+ {
+  "Id": "carrion_feast",
+  "Name": "Carrion Feast",
+  "Description": "When an ally falls, it feeds on the fallen and recovers 15% of its HP.",
+  "Kind": "Reactive",
+  "Cost": 0,
+  "CastTime": 0.0,
+  "CooldownTurns": 0,
+  "Shape": "Self",
+  "Radius": 0,
+  "Mode": "Auto",
+  "Filter": "Any",
+  "Motion": "None",
+  "DamageType": "Physical",
+  "BaseDamage": 0,
+  "BaseHeal": 0,
+  "ApplyBuff": null,
+  "ApplyBuffChance": 1.0,
+  "RemovesDebuffs": false,
+  "StealsMana": false,
+  "HastenU": 0.0,
+  "IsTeleport": false,
+  "Icon": null,
+  "CastVfx": null,
+  "ProjectileVfx": null,
+  "ImpactVfx": null,
+  "LingerVfx": null,
+  "Sfx": null,
+  "Trigger": {
+   "On": "OnAllyKO",
+   "Effects": [
+    {
+     "Kind": "Heal",
+     "Amount": 0.15
+    }
+   ],
+   "Callout": "Carrion!"
+  }
+ },
+ {
+  "Id": "rotting_bite",
+  "Name": "Rotting Bite",
+  "Description": "Its landed blows have a [small] chance to [Poison] the target with grave rot.",
+  "Kind": "Passive",
+  "Cost": 0,
+  "CastTime": 0.0,
+  "CooldownTurns": 0,
+  "Shape": "Self",
+  "Radius": 0,
+  "Mode": "Auto",
+  "Filter": "Any",
+  "Motion": "None",
+  "DamageType": "Physical",
+  "BaseDamage": 0,
+  "BaseHeal": 0,
+  "ApplyBuff": null,
+  "ApplyBuffChance": 1.0,
+  "RemovesDebuffs": false,
+  "StealsMana": false,
+  "HastenU": 0.0,
+  "IsTeleport": false,
+  "Icon": null,
+  "CastVfx": null,
+  "ProjectileVfx": null,
+  "ImpactVfx": null,
+  "LingerVfx": null,
+  "Sfx": null,
+  "Trigger": {
+   "On": "OnLandedHit",
+   "Chance": 0.2,
+   "Effects": [
+    {
+     "Kind": "ApplyBuff",
+     "Buff": "poisoned",
+     "Who": "Target"
+    }
+   ],
+   "Callout": "Rot!"
+  }
+ },
+ {
+  "Id": "spiteful_hex",
+  "Name": "Spiteful Hex",
+  "Description": "When [attacked directly], a [small] chance to hex the attacker with [Blind].",
+  "Kind": "Reactive",
+  "Cost": 0,
+  "CastTime": 0.0,
+  "CooldownTurns": 0,
+  "Shape": "Self",
+  "Radius": 0,
+  "Mode": "Auto",
+  "Filter": "Any",
+  "Motion": "None",
+  "DamageType": "Physical",
+  "BaseDamage": 0,
+  "BaseHeal": 0,
+  "ApplyBuff": null,
+  "ApplyBuffChance": 1.0,
+  "RemovesDebuffs": false,
+  "StealsMana": false,
+  "HastenU": 0.0,
+  "IsTeleport": false,
+  "Icon": null,
+  "CastVfx": null,
+  "ProjectileVfx": null,
+  "ImpactVfx": null,
+  "LingerVfx": null,
+  "Sfx": null,
+  "Trigger": {
+   "On": "OnAttackedDirect",
+   "Chance": 0.25,
+   "Effects": [
+    {
+     "Kind": "ApplyBuff",
+     "Buff": "blinded",
+     "Who": "Attacker"
+    }
+   ],
+   "Callout": "Hexed!"
+  }
+ },
+ {
+  "Id": "time_slip",
+  "Name": "Time Slip",
+  "Description": "When [attacked directly], a [fair] chance to slip the attacker's next turn back in time: [Pushback].",
+  "Kind": "Reactive",
+  "Cost": 0,
+  "CastTime": 0.0,
+  "CooldownTurns": 0,
+  "Shape": "Self",
+  "Radius": 0,
+  "Mode": "Auto",
+  "Filter": "Any",
+  "Motion": "None",
+  "DamageType": "Physical",
+  "BaseDamage": 0,
+  "BaseHeal": 0,
+  "ApplyBuff": null,
+  "ApplyBuffChance": 1.0,
+  "RemovesDebuffs": false,
+  "StealsMana": false,
+  "HastenU": 0.0,
+  "IsTeleport": false,
+  "Icon": null,
+  "CastVfx": null,
+  "ProjectileVfx": null,
+  "ImpactVfx": null,
+  "LingerVfx": null,
+  "Sfx": null,
+  "Trigger": {
+   "On": "OnAttackedDirect",
+   "Chance": 0.35,
+   "Effects": [
+    {
+     "Kind": "Pushback",
+     "Amount": 1.0,
+     "Who": "Attacker"
+    }
+   ],
+   "Callout": "Time Slip!"
   }
  },
  {
@@ -4663,7 +6433,7 @@
  {
   "Id": "duelist_guardstance",
   "Name": "Guard Stance",
-  "Description": "Settle into a textbook guard: the next blow against you is turned aside, leaving the attacker open to a [Counterstrike].",
+  "Description": "Settle into a textbook guard: [Ward] softens the blows against you, and while it holds you answer each one struck [directly] with a [Counterstrike] (Guard Counter).",
   "Kind": "Skill",
   "Cost": 0,
   "CastTime": 0.0,

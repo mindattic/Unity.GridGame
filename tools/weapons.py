@@ -80,7 +80,7 @@ W = [
 
     # ── Martial: fighters' weapons (Strikers, Tanks, Ranged) ──
     ("spear_militia", "Militia Spear", "Spear", "Martial", "Common", "Tank", "STR2 VIT2 STA1", "", "Shield Wall|guard|0.07", "shop", "iron", "The town watch's spear: long, plain, reliable."),
-    ("rapier_training", "Training Rapier", "Rapier", "Martial", "Common", "Striker", "AGI3 SPD2", "", "Riposte|steal|0.03", "shop", "steel", "A blunted practice blade, still quick enough."),
+    ("rapier_training", "Training Rapier", "Rapier", "Martial", "Common", "Striker", "AGI3 SPD2", "", "Bloodied Point|steal|0.03", "shop", "steel", "A blunted practice blade, still quick enough."),
     ("hatchet_hand", "Hand Axe", "Hatchet", "Martial", "Common", "Striker", "STR4 LCK1", "", "Hewing Blow|buff|slowed|0.15", "shop", "wood", "A woodcutter's hatchet turned to war."),
     ("crossbow_light", "Light Crossbow", "Crossbow", "Martial", "Common", "Ranged", "AGI3 LCK1 STR1", "", "Bolt Through|buff|slowed|0.15", "shop", "wood", "A hand-cranked crossbow; anyone can aim it."),
     ("flail_scrap", "Scrap-Iron Flail", "Flail", "Martial", "Common", "Striker", "STR3 LCK2", "", "Wild Swing|steal|0.03", "forge:mat_goblin_scrap_iron*3,mat_iron_ore*1", "rust", "Goblin scrap on a chain: unpredictable at both ends."),
