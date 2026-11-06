@@ -2034,9 +2034,9 @@ Campaign (`campaign.json`): Green Valley, Sandsea Reaches, Mireholt Fens, Frostm
 | Bounty | Target | Kills | Reward |
 |---|---|---|---|
 | Slime Culling | slime00 | 5 | 200 G + Healing Potion |
-| Wolf Pack | wolf00 | 3 | 300 G + Hi-Potion |
+| Wolf Pack | wolf00 | 3 | 300 G + Tome of Berserk (GG-T301; was a Hi-Potion) |
 | Restless Dead | undead00 | 4 | 400 G + Holy Water |
-| Cave Dweller | cyclops00 | 2 | 500 G + Flame Oil + 1 SP each |
+| Cave Dweller | cyclops00 | 2 | 500 G + Tome of Tough Hide (GG-T301; was Flame Oil) + 1 SP each |
 | The Vampire Lord | vampire | 1 | 2000 G + Revival Charm + 2 SP each |
 
 ### 22.11 Side quests (added 2026-11-05, owner direction, GG-T237)
@@ -2054,13 +2054,13 @@ Owner: "optional quests and bounty board … make it a complete experience." Opt
 |---|---|---|---|---|
 | Wolves at the Wells | Innkeeper | Green Valley · GV I | Defeat 5 Wolf | 250 G + Hi-Potion |
 | A Taste in the Water | Merchant | Green Valley · GV I | Bring 3 Frog Gland | 300 G + 2 Mana Potion |
-| Travel Light | Party | Green Valley · GV II | Clear GV III with ≤ 3 heroes | 200 G + 1 SP each |
-| Grown, Not Forged | Blacksmith | Sandsea · SR I | Bring 4 Gremlin Cog | 350 G + follow-up talk |
+| Travel Light | Party | Green Valley · GV II | Clear GV III with ≤ 3 heroes | 200 G + Tome of Steadfast + 1 SP each |
+| Grown, Not Forged | Blacksmith | Sandsea · SR I | Bring 4 Gremlin Cog | 350 G + Tome of Mana Siphon + follow-up talk |
 | Antivenom | Alchemist | Sandsea · SR II | Defeat 4 Scorpion | 300 G + 2 Hi-Potion |
 | The Hag's Hand | Alchemist (after Antivenom) | Mireholt · MF I | Bring 3 Hag Claw | 400 G + Revival Charm |
 | Hold the Ward | Enchantress | Mireholt · MF II | Clear MF III, nobody falls | Hi-Ether + 1 SP each |
 | Furs for the Long Cold | Innkeeper | Frostmaw · FC I | Bring 3 Yeti Fur | 500 G + 2 Tent |
-| Cold Iron | Blacksmith | Frostmaw · FC II | Defeat 3 Ice Mauler | 600 G + 1 SP each |
+| Cold Iron | Blacksmith | Frostmaw · FC II | Defeat 3 Ice Mauler | 600 G + Tome of Counter Attack + 1 SP each |
 | The City That Stopped | Party | Veshker · VR I | Defeat 5 Ghost | 700 G + 3 Holy Water + 1 SP each |
 
 *(Tests: `QuestTests` — content valid and spread over the five biomes, an orphan quest rejected, offer gated on the unlock stage and started by the conversation, "Not now" kept in the journal, Defeat counts victories only and pays once, ClearStage's party-size and nobody-falls terms, Bring takes only the asked count and a reward flag opens the follow-up, old saves migrate.)*
@@ -2247,7 +2247,7 @@ One thing it does best plus a secondary cope; lopsided stats; colors shape the b
 
 ### 24.1 Item types
 
-`Equipment` (weapon, armor, relic), `Consumable`, `CraftingMaterial`, `QuestItem` (never sold). Gold is not an item.
+`Equipment` (weapon, armor, relic), `Consumable`, `CraftingMaterial`, `QuestItem` (never sold). Gold is not an item. **Added 2026-11-06 (GG-T301):** `RecipeScroll` (§24.6.2), `Tome` (teaches one Passive/Reactive, `TeachesAbility`) and `Chest` (rolls a droptables.json row when opened, `OpensTable`); see [§25.6.4](#2564-learnable-passive-rewards-tomes-and-chests-gg-t301).
 
 #### 24.1.1 Rarity tiers
 
@@ -2663,6 +2663,24 @@ Skill points (§15.1) are now spent on §25.6.1's tree nodes. `Meta.Talents` (`A
 - **Respec at the Inn** — `Talents.Respec` costs `100 + 50 × level` gold. It refunds every point the hero spent on nodes, forgets those nodes' grants and clears them off the battle bar. Known-state abilities (the starting kit and anything gold-Learned) stay. It needs the Innkeeper (§25.0.1) and an open Inn (`Expeditions.InnOpen`), and does nothing when no points have been spent. It's offered from Camp's **Inn: Respec** row (`RespecScreen`, id `respec`: every roster hero with points spent and its price) and from the Respec button on the Talents screen.
 
 GG-T78's pannable/zoomable canvas is still a separate follow-up; this graph scrolls vertically. *(Tests: `TalentTests`. Harness: `talents` and `respec` are in `tools/harness.py sweep`.)*
+
+### 25.6.4 Learnable-passive rewards: Tomes and Chests (GG-T301)
+
+Owner: heroes get passive/reactive abilities from class kits, skill-tree nodes, gear/enchants, **and quest completion, bounties, campaign progress, random chests and battle-finish loot**. One reward type carries all five: the **Tome**.
+
+- **Tome** (`ItemType.Tome`, `ItemDef.TeachesAbility`): teaches one Passive or Reactive that has a `Trigger` (a battle passive) to a hero the player picks. `Tomes.Teach` uses up one Tome and adds the ability to `HeroSave.Known`; `BattleFactory.SpecFor` then sends it into battle (GG-T296's path). A hero that already knows it, or has it in its class kit, can't read it. `AbilityDef.LearnableBy` (hero class ids and/or Roles) restricts who may learn it; empty = any hero (all ten shipped passives). Ten Tomes ship, one per battle passive: Counter Attack, Thorns, Tough Hide, Regenerate, Poison Ward, Steadfast, Berserk, Mana Siphon (Uncommon/Rare), Lifesteal and Double Attack (Epic).
+- **Sources.** Every source grants the Tome as an ordinary item, so the reward tables are plain data and a new signature passive (GG-T302) is one items.json row plus a reference:
+  - **Quests** (`RewardItem`): Travel Light → Steadfast, Grown, Not Forged → Mana Siphon, Cold Iron → Counter Attack (§22.11).
+  - **Bounties** (`RewardItem`): Wolf Pack → Berserk, Cave Dweller → Tough Hide (§22.4).
+  - **Campaign milestones** (`ThemeDef.MilestoneReward`, campaign.json): paid once, the first time a theme's last stage is won (`Milestones.Pay` in `BattleFactory.Commit`, guarded by `SaveData.Milestones`, kept through New Game+). Green Valley → Regenerate, Sandsea Reaches → Thorns, Mireholt Fens → Poison Ward, Frostmaw Caverns → Lifesteal, Veshker Ruins → Double Attack; each postgame theme → a Gilded Chest. The results screen shows "*Theme* cleared! · Milestone: …".
+  - **Battle-finish loot** (droptables.json): boss families carry a Tome (Vampire Lord Lifesteal 35 %, Cyclops Tough Hide, Mecha Armor Steadfast, Swamp Mistress Poison Ward, Demon Lord Berserk 20 %, Mountain Troll Regenerate 10 %) and a 20 % Iron Chest.
+  - **Random chests** (`ItemType.Chest`, `ItemDef.OpensTable`): every enemy family's table has a 1.5 % Wooden Chest. A chest is loot like any other, so the difficulty dial's drop multiplier (§22.9, GG-T309) scales it. Opening one (`Chests.Open`) rolls its own droptables.json row (`chest_wooden` / `chest_iron` / `chest_gilded`): each entry rolls its chance, coins roll CoinsMin..CoinsMax, and if nothing rolled it gives the likeliest entry, so a chest is never empty. Rolls are seeded by `SaveData.ChestsOpened`, so a save replays its chests. Wooden: potions, ore, 6 % each of the four defensive Tomes. Iron: potions, Ether, dust, 10–12 % each of six Tomes. Gilded: X-Potion, Revival Charm, 20–25 % each of six Tomes.
+  - Dialogue `GrantItem` can grant a Tome too (no beat does yet; the story is on hold).
+- **Validation** (`RewardCatalog.Validate`, part of `ContentLoader.Validate`): a Tome needs `TeachesAbility` naming a Passive/Reactive with a Trigger; a Chest needs `OpensTable` naming a non-empty table that holds no chest; only Tomes and Chests may set those fields; every drop entry needs 0 < Chance ≤ 1 and 1 ≤ Min ≤ Max; `LearnableBy` names hero classes or Roles, on Passive/Reactive abilities only; a milestone names a real item. Quests and bounties already check their reward item.
+- **Passive slots** (`PassiveLoadout`): class-kit passives are innate, always on and never take a slot. Every other battle passive a hero knows (Tomes and skill-tree grants) is *learned*. At most **2** are on; a 3rd opens at **Lv 10** and a 4th at **Lv 20**. Until the player picks, the first ones learned are on, so old saves and tree grants keep working. Once they switch one (`HeroSave.PassivesChosen`, `HeroSave.ActivePassives`), the list is theirs, and a newly learned passive goes straight on if a slot is free. Meta-only passives (the proficiencies) never count. Respec drops forgotten grants from the list. *Why a cap:* with every Tome on one hero, Lifesteal + Double Attack + Berserk + Counter Attack would make one unkillable build. The cap makes each Tome a choice, and the choice is one switch, which suits a short session.
+- **Screens:** the results screen lists a looted Tome with its generated rule sentence (`TriggerText.Describe`, terms tappable through GlossaryText) and a **Teach to…** row of hero buttons (party first; a hero who can't learn it is greyed). A looted Chest has **Open** in place, and its haul is revealed beneath it (Tomes with their own Teach row). The quest hand-in card and the bounty board (after **Claim**) offer the same Teach row, and a posted contract that pays a Tome shows what it teaches. The Items bag (All and Items tabs) shows a Tome's sentence with Teach to…, and a Chest's **Open**. **Abilities → Passives** (a 4th tab) lists the hero's learned passives with **On/Off** ("Learned passives on: 1/2 · another slot at Lv 10"), the class passives marked Innate, and any Tome in the bag this hero could **Read**. Teaching plays `battle.powerup`; opening a chest plays `battle.pickup`.
+- **Bots:** `CampRoutine` opens every chest and reads each Tome to the first party hero with a free slot.
+- *(Tests: `PassiveRewardTests`.)*
 
 ### 25.7 Shared Camp utilities
 

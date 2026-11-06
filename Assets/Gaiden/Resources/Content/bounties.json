@@ -13,7 +13,7 @@
     "TargetClass": "wolf00",
     "Kills": 3,
     "RewardGold": 300,
-    "RewardItem": "hi_potion"
+    "RewardItem": "tome_berserk"
   },
   {
     "Id": "bounty_restless_dead",
@@ -29,7 +29,7 @@
     "TargetClass": "cyclops00",
     "Kills": 2,
     "RewardGold": 500,
-    "RewardItem": "flame_oil",
+    "RewardItem": "tome_tough_hide",
     "RewardSkillPoints": 1
   },
   {

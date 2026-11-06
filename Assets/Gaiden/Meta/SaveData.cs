@@ -68,6 +68,10 @@ namespace GridGame.Meta
         /// <summary>Advances once per finished battle; seeds the Merchant's "Used / Bargain" shelf so it
         /// turns over on every return to camp but replays identically from the same save (GG-T38).</summary>
         public int BargainRotation;
+        /// <summary>Chests opened so far (GG-T301): seeds each chest's roll, so a save replays its chests identically.</summary>
+        public int ChestsOpened;
+        /// <summary>Themes whose campaign milestone reward has been paid (GG-T301, <see cref="ThemeDef.MilestoneReward"/>).</summary>
+        public HashSet<string> Milestones = new HashSet<string>();
         public bool TutorialDone;
         /// <summary>Camp stations whose first-use tip has been shown (GG-T173, <see cref="CampTips"/>).</summary>
         public HashSet<string> SeenCampTips = new HashSet<string>();
@@ -137,6 +141,11 @@ namespace GridGame.Meta
         /// <summary>Skill-tree nodes bought with points, as "treeId/nodeId" (§25.6.3, GG-T53, <see cref="Talents"/>);
         /// the Inn's Respec clears it and refunds their cost. An older save simply has none.</summary>
         public List<string> TreeNodes = new List<string>();
+        /// <summary>Learned passives the player has switched on (GG-T301, <see cref="PassiveLoadout"/>), read only once
+        /// <see cref="PassivesChosen"/> is set; until then the first <see cref="PassiveLoadout.Slots"/> learned are on.</summary>
+        public List<string> ActivePassives = new List<string>();
+        /// <summary>The player has picked which learned passives are on (GG-T301). An older save has not.</summary>
+        public bool PassivesChosen;
 
         public string WeaponId;
         public int WeaponDurability;

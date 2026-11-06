@@ -51,6 +51,24 @@
         "Chance": 0.006,
         "Min": 1,
         "Max": 1
+      },
+      {
+        "Item": "chest_wooden",
+        "Chance": 0.015,
+        "Min": 1,
+        "Max": 1
+      },
+      {
+        "Item": "chest_iron",
+        "Chance": 0.2,
+        "Min": 1,
+        "Max": 1
+      },
+      {
+        "Item": "tome_regenerate",
+        "Chance": 0.1,
+        "Min": 1,
+        "Max": 1
       }
     ]
   },
@@ -136,6 +154,24 @@
         "Chance": 0.006,
         "Min": 1,
         "Max": 1
+      },
+      {
+        "Item": "chest_wooden",
+        "Chance": 0.015,
+        "Min": 1,
+        "Max": 1
+      },
+      {
+        "Item": "chest_iron",
+        "Chance": 0.2,
+        "Min": 1,
+        "Max": 1
+      },
+      {
+        "Item": "tome_berserk",
+        "Chance": 0.2,
+        "Min": 1,
+        "Max": 1
       }
     ]
   },
@@ -203,6 +239,12 @@
         "Chance": 0.03,
         "Min": 1,
         "Max": 1
+      },
+      {
+        "Item": "chest_wooden",
+        "Chance": 0.015,
+        "Min": 1,
+        "Max": 1
       }
     ]
   },
@@ -256,6 +298,12 @@
       {
         "Item": "eq_ring_thorn",
         "Chance": 0.05,
+        "Min": 1,
+        "Max": 1
+      },
+      {
+        "Item": "chest_wooden",
+        "Chance": 0.015,
         "Min": 1,
         "Max": 1
       }
@@ -329,6 +377,24 @@
       {
         "Item": "eq_ring_titan",
         "Chance": 0.006,
+        "Min": 1,
+        "Max": 1
+      },
+      {
+        "Item": "chest_wooden",
+        "Chance": 0.015,
+        "Min": 1,
+        "Max": 1
+      },
+      {
+        "Item": "chest_iron",
+        "Chance": 0.2,
+        "Min": 1,
+        "Max": 1
+      },
+      {
+        "Item": "tome_tough_hide",
+        "Chance": 0.2,
         "Min": 1,
         "Max": 1
       }
@@ -410,6 +476,12 @@
         "Chance": 0.05,
         "Min": 1,
         "Max": 1
+      },
+      {
+        "Item": "chest_wooden",
+        "Chance": 0.015,
+        "Min": 1,
+        "Max": 1
       }
     ]
   },
@@ -463,6 +535,12 @@
       {
         "Item": "eq_earring_coral",
         "Chance": 0.05,
+        "Min": 1,
+        "Max": 1
+      },
+      {
+        "Item": "chest_wooden",
+        "Chance": 0.015,
         "Min": 1,
         "Max": 1
       }
@@ -532,6 +610,12 @@
         "Chance": 0.015,
         "Min": 1,
         "Max": 1
+      },
+      {
+        "Item": "chest_wooden",
+        "Chance": 0.015,
+        "Min": 1,
+        "Max": 1
       }
     ]
   },
@@ -575,6 +659,12 @@
         "Chance": 0.015,
         "Min": 1,
         "Max": 1
+      },
+      {
+        "Item": "chest_wooden",
+        "Chance": 0.015,
+        "Min": 1,
+        "Max": 1
       }
     ]
   },
@@ -610,6 +700,12 @@
       {
         "Item": "eq_earring_dew",
         "Chance": 0.03,
+        "Min": 1,
+        "Max": 1
+      },
+      {
+        "Item": "chest_wooden",
+        "Chance": 0.015,
         "Min": 1,
         "Max": 1
       }
@@ -659,6 +755,12 @@
       {
         "Item": "eq_earring_hunter",
         "Chance": 0.03,
+        "Min": 1,
+        "Max": 1
+      },
+      {
+        "Item": "chest_wooden",
+        "Chance": 0.015,
         "Min": 1,
         "Max": 1
       }
@@ -716,6 +818,12 @@
         "Chance": 0.05,
         "Min": 1,
         "Max": 1
+      },
+      {
+        "Item": "chest_wooden",
+        "Chance": 0.015,
+        "Min": 1,
+        "Max": 1
       }
     ]
   },
@@ -771,6 +879,12 @@
         "Chance": 0.03,
         "Min": 1,
         "Max": 1
+      },
+      {
+        "Item": "chest_wooden",
+        "Chance": 0.015,
+        "Min": 1,
+        "Max": 1
       }
     ]
   },
@@ -808,6 +922,12 @@
         "Chance": 0.03,
         "Min": 1,
         "Max": 1
+      },
+      {
+        "Item": "chest_wooden",
+        "Chance": 0.015,
+        "Min": 1,
+        "Max": 1
       }
     ]
   },
@@ -843,6 +963,12 @@
       {
         "Item": "eq_ring_sentinel",
         "Chance": 0.03,
+        "Min": 1,
+        "Max": 1
+      },
+      {
+        "Item": "chest_wooden",
+        "Chance": 0.015,
         "Min": 1,
         "Max": 1
       }
@@ -888,6 +1014,12 @@
         "Chance": 0.03,
         "Min": 1,
         "Max": 1
+      },
+      {
+        "Item": "chest_wooden",
+        "Chance": 0.015,
+        "Min": 1,
+        "Max": 1
       }
     ]
   },
@@ -929,6 +1061,12 @@
       {
         "Item": "eq_earring_fang",
         "Chance": 0.05,
+        "Min": 1,
+        "Max": 1
+      },
+      {
+        "Item": "chest_wooden",
+        "Chance": 0.015,
         "Min": 1,
         "Max": 1
       }
@@ -974,6 +1112,12 @@
         "Chance": 0.03,
         "Min": 1,
         "Max": 1
+      },
+      {
+        "Item": "chest_wooden",
+        "Chance": 0.015,
+        "Min": 1,
+        "Max": 1
       }
     ]
   },
@@ -1017,6 +1161,12 @@
         "Chance": 0.05,
         "Min": 1,
         "Max": 1
+      },
+      {
+        "Item": "chest_wooden",
+        "Chance": 0.015,
+        "Min": 1,
+        "Max": 1
       }
     ]
   },
@@ -1058,6 +1208,12 @@
       {
         "Item": "eq_ring_runelord",
         "Chance": 0.006,
+        "Min": 1,
+        "Max": 1
+      },
+      {
+        "Item": "chest_wooden",
+        "Chance": 0.015,
         "Min": 1,
         "Max": 1
       }
@@ -1115,6 +1271,12 @@
         "Chance": 0.05,
         "Min": 1,
         "Max": 1
+      },
+      {
+        "Item": "chest_wooden",
+        "Chance": 0.015,
+        "Min": 1,
+        "Max": 1
       }
     ]
   },
@@ -1168,6 +1330,24 @@
       {
         "Item": "eq_earring_thunder",
         "Chance": 0.015,
+        "Min": 1,
+        "Max": 1
+      },
+      {
+        "Item": "chest_wooden",
+        "Chance": 0.015,
+        "Min": 1,
+        "Max": 1
+      },
+      {
+        "Item": "chest_iron",
+        "Chance": 0.2,
+        "Min": 1,
+        "Max": 1
+      },
+      {
+        "Item": "tome_steadfast",
+        "Chance": 0.2,
         "Min": 1,
         "Max": 1
       }
@@ -1225,6 +1405,12 @@
         "Chance": 0.03,
         "Min": 1,
         "Max": 1
+      },
+      {
+        "Item": "chest_wooden",
+        "Chance": 0.015,
+        "Min": 1,
+        "Max": 1
       }
     ]
   },
@@ -1266,6 +1452,12 @@
       {
         "Item": "eq_amulet_mossheart",
         "Chance": 0.03,
+        "Min": 1,
+        "Max": 1
+      },
+      {
+        "Item": "chest_wooden",
+        "Chance": 0.015,
         "Min": 1,
         "Max": 1
       }
@@ -1323,6 +1515,12 @@
         "Chance": 0.03,
         "Min": 1,
         "Max": 1
+      },
+      {
+        "Item": "chest_wooden",
+        "Chance": 0.015,
+        "Min": 1,
+        "Max": 1
       }
     ]
   },
@@ -1372,6 +1570,24 @@
         "Chance": 0.006,
         "Min": 1,
         "Max": 1
+      },
+      {
+        "Item": "chest_wooden",
+        "Chance": 0.015,
+        "Min": 1,
+        "Max": 1
+      },
+      {
+        "Item": "chest_iron",
+        "Chance": 0.2,
+        "Min": 1,
+        "Max": 1
+      },
+      {
+        "Item": "tome_poison_ward",
+        "Chance": 0.2,
+        "Min": 1,
+        "Max": 1
       }
     ]
   },
@@ -1413,6 +1629,12 @@
       {
         "Item": "eq_earring_ash",
         "Chance": 0.05,
+        "Min": 1,
+        "Max": 1
+      },
+      {
+        "Item": "chest_wooden",
+        "Chance": 0.015,
         "Min": 1,
         "Max": 1
       }
@@ -1476,6 +1698,12 @@
         "Chance": 0.03,
         "Min": 1,
         "Max": 1
+      },
+      {
+        "Item": "chest_wooden",
+        "Chance": 0.015,
+        "Min": 1,
+        "Max": 1
       }
     ]
   },
@@ -1529,6 +1757,12 @@
       {
         "Item": "eq_earring_ward",
         "Chance": 0.03,
+        "Min": 1,
+        "Max": 1
+      },
+      {
+        "Item": "chest_wooden",
+        "Chance": 0.015,
         "Min": 1,
         "Max": 1
       }
@@ -1604,6 +1838,12 @@
         "Chance": 0.006,
         "Min": 1,
         "Max": 1
+      },
+      {
+        "Item": "chest_wooden",
+        "Chance": 0.015,
+        "Min": 1,
+        "Max": 1
       }
     ]
   },
@@ -1651,6 +1891,12 @@
       {
         "Item": "eq_ring_frost",
         "Chance": 0.05,
+        "Min": 1,
+        "Max": 1
+      },
+      {
+        "Item": "chest_wooden",
+        "Chance": 0.015,
         "Min": 1,
         "Max": 1
       }
@@ -1720,6 +1966,12 @@
         "Chance": 0.015,
         "Min": 1,
         "Max": 1
+      },
+      {
+        "Item": "chest_wooden",
+        "Chance": 0.015,
+        "Min": 1,
+        "Max": 1
       }
     ]
   },
@@ -1769,6 +2021,12 @@
         "Chance": 0.015,
         "Min": 1,
         "Max": 1
+      },
+      {
+        "Item": "chest_wooden",
+        "Chance": 0.015,
+        "Min": 1,
+        "Max": 1
       }
     ]
   },
@@ -1810,6 +2068,12 @@
       {
         "Item": "eq_ring_chrono",
         "Chance": 0.03,
+        "Min": 1,
+        "Max": 1
+      },
+      {
+        "Item": "chest_wooden",
+        "Chance": 0.015,
         "Min": 1,
         "Max": 1
       }
@@ -1870,6 +2134,12 @@
       },
       {
         "Item": "eq_earring_ghostlight",
+        "Chance": 0.015,
+        "Min": 1,
+        "Max": 1
+      },
+      {
+        "Item": "chest_wooden",
         "Chance": 0.015,
         "Min": 1,
         "Max": 1
@@ -1946,6 +2216,12 @@
         "Chance": 0.006,
         "Min": 1,
         "Max": 1
+      },
+      {
+        "Item": "chest_wooden",
+        "Chance": 0.015,
+        "Min": 1,
+        "Max": 1
       }
     ]
   },
@@ -2005,6 +2281,195 @@
       {
         "Item": "eq_ring_eclipse",
         "Chance": 0.006,
+        "Min": 1,
+        "Max": 1
+      },
+      {
+        "Item": "chest_wooden",
+        "Chance": 0.015,
+        "Min": 1,
+        "Max": 1
+      },
+      {
+        "Item": "chest_iron",
+        "Chance": 0.2,
+        "Min": 1,
+        "Max": 1
+      },
+      {
+        "Item": "tome_lifesteal",
+        "Chance": 0.35,
+        "Min": 1,
+        "Max": 1
+      }
+    ]
+  },
+  {
+    "Id": "chest_wooden",
+    "CoinsMin": 40,
+    "CoinsMax": 120,
+    "Entries": [
+      {
+        "Item": "healing_potion_basic",
+        "Chance": 0.6,
+        "Min": 1,
+        "Max": 2
+      },
+      {
+        "Item": "hi_potion",
+        "Chance": 0.4,
+        "Min": 1,
+        "Max": 1
+      },
+      {
+        "Item": "mana_potion_basic",
+        "Chance": 0.4,
+        "Min": 1,
+        "Max": 1
+      },
+      {
+        "Item": "mat_iron_ore",
+        "Chance": 0.4,
+        "Min": 1,
+        "Max": 3
+      },
+      {
+        "Item": "tome_tough_hide",
+        "Chance": 0.06,
+        "Min": 1,
+        "Max": 1
+      },
+      {
+        "Item": "tome_regenerate",
+        "Chance": 0.06,
+        "Min": 1,
+        "Max": 1
+      },
+      {
+        "Item": "tome_poison_ward",
+        "Chance": 0.06,
+        "Min": 1,
+        "Max": 1
+      },
+      {
+        "Item": "tome_steadfast",
+        "Chance": 0.06,
+        "Min": 1,
+        "Max": 1
+      }
+    ]
+  },
+  {
+    "Id": "chest_iron",
+    "CoinsMin": 120,
+    "CoinsMax": 300,
+    "Entries": [
+      {
+        "Item": "hi_potion",
+        "Chance": 0.6,
+        "Min": 1,
+        "Max": 2
+      },
+      {
+        "Item": "ether",
+        "Chance": 0.4,
+        "Min": 1,
+        "Max": 1
+      },
+      {
+        "Item": "mat_arcane_dust",
+        "Chance": 0.4,
+        "Min": 1,
+        "Max": 3
+      },
+      {
+        "Item": "tome_counter_attack",
+        "Chance": 0.12,
+        "Min": 1,
+        "Max": 1
+      },
+      {
+        "Item": "tome_thorns",
+        "Chance": 0.12,
+        "Min": 1,
+        "Max": 1
+      },
+      {
+        "Item": "tome_mana_siphon",
+        "Chance": 0.12,
+        "Min": 1,
+        "Max": 1
+      },
+      {
+        "Item": "tome_berserk",
+        "Chance": 0.12,
+        "Min": 1,
+        "Max": 1
+      },
+      {
+        "Item": "tome_tough_hide",
+        "Chance": 0.1,
+        "Min": 1,
+        "Max": 1
+      },
+      {
+        "Item": "tome_regenerate",
+        "Chance": 0.1,
+        "Min": 1,
+        "Max": 1
+      }
+    ]
+  },
+  {
+    "Id": "chest_gilded",
+    "CoinsMin": 300,
+    "CoinsMax": 700,
+    "Entries": [
+      {
+        "Item": "x_potion",
+        "Chance": 0.5,
+        "Min": 1,
+        "Max": 1
+      },
+      {
+        "Item": "revival_charm",
+        "Chance": 0.3,
+        "Min": 1,
+        "Max": 1
+      },
+      {
+        "Item": "tome_double_attack",
+        "Chance": 0.25,
+        "Min": 1,
+        "Max": 1
+      },
+      {
+        "Item": "tome_lifesteal",
+        "Chance": 0.25,
+        "Min": 1,
+        "Max": 1
+      },
+      {
+        "Item": "tome_counter_attack",
+        "Chance": 0.2,
+        "Min": 1,
+        "Max": 1
+      },
+      {
+        "Item": "tome_thorns",
+        "Chance": 0.2,
+        "Min": 1,
+        "Max": 1
+      },
+      {
+        "Item": "tome_berserk",
+        "Chance": 0.2,
+        "Min": 1,
+        "Max": 1
+      },
+      {
+        "Item": "tome_mana_siphon",
+        "Chance": 0.2,
         "Min": 1,
         "Max": 1
       }

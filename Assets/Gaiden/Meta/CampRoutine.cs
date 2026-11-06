@@ -79,6 +79,9 @@ namespace GridGame.Meta
             // Bounty Board (GG-T87): cash in a finished contract, drop one whose target no longer appears
             // anywhere ahead, then take the one whose target shows up soonest on the road ahead.
             ManageBounty(c, s, Note);
+            // GG-T301: open chests from the road, then read every Tome to a party hero with a free passive slot.
+            foreach (var r in Chests.OpenAll(c, s)) Note(r);
+            foreach (var r in Tomes.AutoTeach(c, s)) Note(r);
 
             // Spend banked skill points on tree nodes (GG-T54) — home tree first — before filling the bar, so a
             // freshly granted ability can take a dead slot on this same visit.

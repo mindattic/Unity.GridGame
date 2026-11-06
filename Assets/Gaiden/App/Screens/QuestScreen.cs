@@ -99,6 +99,7 @@ namespace GridGame.App
             if (!string.IsNullOrEmpty(q.TurnIn)) Ui.Text($"\"{q.TurnIn}\"", "small", w).style.whiteSpace = WhiteSpace.Normal;
             Ui.Text($"— {q.Giver}", "tiny dim", w);
             Ui.Text("Received: " + Quests.RewardText(C, q), "small gold", w).style.whiteSpace = WhiteSpace.Normal;
+            if (C.TryItem(q.RewardItem) is ItemDef tome && tome.Type == ItemType.Tome) TomeUi.Offer(w, tome); // GG-T301
             w.schedule.Execute(() => w.RemoveFromClassList("is-hidden")).ExecuteLater(30);
         }
     }

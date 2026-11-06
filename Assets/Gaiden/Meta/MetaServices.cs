@@ -286,6 +286,9 @@ namespace GridGame.Meta
         /// <summary>Loot past an item's stack limit is sold on the spot (inventory policy, US-245).</summary>
         public int AutoSold;
         public bool CampaignComplete;
+        /// <summary>Campaign milestone (GG-T301): the theme whose first full clear this was, and the reward it paid (also in <see cref="Items"/>).</summary>
+        public string Milestone;
+        public string MilestoneItem;
         // Expedition (§22.5)
         public string ExpeditionName;
         public int ExpeditionStep;      // battles won so far on this expedition
@@ -488,8 +491,8 @@ namespace GridGame.Meta
             foreach (var id in h.Jewelry.Values) if (id != null) spec.EquippedItemIds.Add(id);
             spec.Bar = new List<string>(h.Bar);
             // GG-T296: learned passives/reactives (skill-tree grants like Last Bastion's Counter Attack) fight with the hero.
-            foreach (var id in h.Known)
-                if (c.TryAbility(id) is AbilityDef a && (a.Kind == AbilityKind.Passive || a.Kind == AbilityKind.Reactive)) spec.Passives.Add(id);
+            // GG-T301: only the ones switched on, up to the hero's passive slots (PassiveLoadout); class-kit ones are innate.
+            spec.Passives.AddRange(PassiveLoadout.Active(c, h));
             return spec;
         }
 
@@ -595,6 +598,7 @@ namespace GridGame.Meta
                 }
                 rep.BountyProgress = Bounties.RecordKills(c, s, r.Kills);
                 rep.QuestProgress = Quests.RecordBattle(c, s, battle);
+                Milestones.Pay(c, s, rep, battle.Stage.Id); // a theme's first full clear teaches (GG-T301)
             }
             else if (rep.Escaped)
             {

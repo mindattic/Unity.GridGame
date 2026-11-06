@@ -62,6 +62,8 @@ namespace GridGame.App
                     Ui.MenuRow($"Difficulty {report.Difficulty}", "rewards " + GridGame.Core.Battle.DifficultyTable.RewardLabel(report.Difficulty), null, list).name = "results-difficulty";
                 if (report.Items.Count == 0) Ui.Text("No items dropped.", "small dim", list);
                 RevealItems(report.Items, c, list);
+                if (report.Milestone != null) // GG-T301: a theme's first full clear
+                    Ui.MenuRow($"{report.Milestone} cleared!", "Milestone: " + (c.TryItem(report.MilestoneItem)?.Name ?? report.MilestoneItem), null, list).name = "results-milestone";
                 if (report.UnlockedStage != null) Ui.MenuRow("New stage unlocked", report.UnlockedStage, null, list).Q<Label>("value").AddToClassList("gold");
                 if (report.NewSlots > 0) Ui.MenuRow("Ability slot unlocked!", $"+{report.NewSlots}", null, list).Q<Label>("label").AddToClassList("good");
                 if (report.BountyProgress != null) Ui.MenuRow("Bounty", report.BountyProgress, null, list);
@@ -205,8 +207,36 @@ namespace GridGame.App
                 if (it == null) continue;
                 var row = ItemUi.Row(it, $"×{kv.Value}", null, list);
                 row.style.opacity = 0f;
-                reveals.Add(App.StartCoroutine(RevealRow(row, i++ * 0.08f)));
+                reveals.Add(App.StartCoroutine(RevealRow(row, i * 0.08f)));
+                // GG-T301: a looted Tome offers "Teach to…" right here; a Chest can be opened on the spot.
+                VisualElement extra = null;
+                if (it.Type == ItemType.Tome) extra = TomeUi.Offer(list, it);
+                else if (it.Type == ItemType.Chest) extra = ChestBlock(it, c, list);
+                if (extra != null)
+                {
+                    extra.style.opacity = 0f;
+                    reveals.Add(App.StartCoroutine(RevealRow(extra, i * 0.08f + 0.04f)));
+                }
+                i++;
             }
+        }
+
+        /// <summary>A looted chest's Open button; what comes out is listed beneath it (Tomes with their own Teach row).</summary>
+        private VisualElement ChestBlock(ItemDef chest, ContentDb c, VisualElement list)
+        {
+            var box = Ui.El("col", list);
+            box.style.marginLeft = Space.S16; box.style.marginBottom = Space.S8;
+            var row = Ui.El("row", box);
+            TomeUi.OpenButton(row, chest, (r, haul) =>
+            {
+                if (!r.Ok || haul == null) return;
+                box.Clear();
+                var inner = Ui.El("col", box);
+                if (haul.Gold > 0) Ui.MenuRow("Gold", "+" + Ui.Gold(haul.Gold), null, inner).Q<Label>("value").AddToClassList("gold");
+                RevealItems(haul.Items, c, inner);
+                if (App.Save.Count(chest.Id) > 0) ChestBlock(chest, c, box);
+            });
+            return box;
         }
 
         private IEnumerator RevealRow(VisualElement row, float delay)

@@ -181,7 +181,9 @@ namespace GridGame.Core.Content
 
     public enum DurationUnit { Turns, Ticks }
 
-    public enum ItemType { Equipment, Consumable, CraftingMaterial, QuestItem, RecipeScroll }
+    /// <summary>Tome (GG-T301): teaches <see cref="ItemDef.TeachesAbility"/>, a Passive or Reactive, to a chosen hero.
+    /// Chest (GG-T301): opened from the bag, it rolls <see cref="ItemDef.OpensTable"/> (a droptables.json row).</summary>
+    public enum ItemType { Equipment, Consumable, CraftingMaterial, QuestItem, RecipeScroll, Tome, Chest }
 
     public enum ItemRarity { Junk, Common, Uncommon, Rare, Epic, Legendary }
 
@@ -517,6 +519,9 @@ namespace GridGame.Core.Content
         /// <summary>Passive/Reactive only (GG-T296): when and how it fires (§4.1). Null on Active abilities and on
         /// meta-only passives (the proficiency unlocks).</summary>
         public TriggerDef Trigger;
+        /// <summary>Passive/Reactive only (GG-T301): who a Tome may teach it to, as hero class ids and/or Roles
+        /// (Tank/Healer/Mage/Striker/Support/Ranged). Empty = any hero.</summary>
+        public List<string> LearnableBy = new List<string>();
     }
 
     public sealed class BuffDef
@@ -603,6 +608,10 @@ namespace GridGame.Core.Content
         public bool StartsProtected;
         /// <summary>RecipeScroll only (§24.6.2, GG-T36): the recipe this item teaches when read at the Items screen.</summary>
         public string TeachesRecipe;
+        /// <summary>Tome only (GG-T301): the Passive or Reactive ability it teaches the hero it's read to.</summary>
+        public string TeachesAbility;
+        /// <summary>Chest only (GG-T301): the droptables.json row rolled when it's opened.</summary>
+        public string OpensTable;
         /// <summary>Named upgrade passive (§24.6.1, GG-T47): flavor name of a weapon's fully-upgraded (Master-tier,
         /// "+3") named passive, shown on the Equip compare panel. A weapon whose base already carries an on-hit or
         /// lifesteal trait (GG-T181) names that trait here on every step, and its "+3" passive is the same mechanic,
@@ -796,6 +805,9 @@ namespace GridGame.Core.Content
         public string Name;
         public string Crawl;
         public List<string> Stages = new List<string>();
+        /// <summary>Campaign milestone (GG-T301): an item granted once, the first time the theme's last stage is won
+        /// (a Tome, so a story beat can teach a passive). Null = none.</summary>
+        public string MilestoneReward;
     }
 
     public sealed class CampaignDef

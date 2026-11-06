@@ -13,6 +13,7 @@
   "Themes": [
     {
       "Id": "greenvalley",
+      "MilestoneReward": "tome_regenerate",
       "Name": "Green Valley",
       "Crawl": "The town is the Longmother's back. Nobody alive remembers her hatching, and nobody can say how long the streets above her have been nailed down to old carapace plate -- only that she has never once stood still long enough for anyone to ask. Standing ground goes bad. Somewhere under the world a blight is souring the earth, and it only ever catches up with what holds still.\n\nGreen Valley is the last green ground on the old road, and it's already going: the wells have a taste to them, and the frogs that used to keep to the marsh edge are coming up onto dry land in numbers nobody's seen. This isn't an attack. It's the first proof that staying was never actually safe here -- it just hadn't caught up yet.\n\nEvery footfall breaks ground that's been undisturbed, sometimes for centuries, and whatever's been growing down there -- part rot, part something stranger, metal fused to bone that shouldn't move and does -- comes up through the crack before the town's even finished passing overhead. That's the vanguard crews' work: drop at the footfall, clear what the step disturbed, salvage what it turned up, before she walks on. Gear grown from her own molted plate, not mined; the pincer copied from watching her brood hunt; every action taken on her clock, not yours.\n\nLately the orbs flicker and the wards don't always catch where the ground's worst -- nobody's cast a clean spell within a day's walk of a bad well in a month. That's why the caravan is leaning harder on what can be built and burned than on what has to be summoned. It isn't superstition. It's logistics.",
       "Stages": [
@@ -23,6 +24,7 @@
     },
     {
       "Id": "desert",
+      "MilestoneReward": "tome_thorns",
       "Name": "Sandsea Reaches",
       "Crawl": "Sandsea Reaches is country the Longmother has crossed before, maybe more than once -- wagon ruts run under the dunes that aren't hers, old and half-swallowed. The sand keeps what it takes: goblin clans who dug in here generations back are still down there, and her footfalls are turning their old works back up into daylight, diggers and all.\n\nThe heat and the thirst are the obvious danger. The quieter one is what the crew pulls out of the ground between skirmishes -- the first clean proof that the blight isn't just rot with a smell. It has a shape now: joints that shouldn't bend, plating that grew instead of being forged, creatures half built and half born that were neither, a season ago.\n\nSpellcraft frays worse out here than it did in the valley -- a caster's orb can gutter mid-word in exactly the stretch of sand where the ground is sickest, as if the blight and the old magic can't stand to share the same air. The Alchemist's brews don't care what the air is doing. That's the whole of her argument for coming along.",
       "Stages": [
@@ -33,6 +35,7 @@
     },
     {
       "Id": "swamp",
+      "MilestoneReward": "tome_poison_ward",
       "Name": "Mireholt Fens",
       "Crawl": "Mireholt Fens is wet, low ground, and the blight doesn't dry out and blow off here the way it does elsewhere -- it pools, the way water does, which is why so much trouble sits in so small a stretch of road. Hags and swamp-things aren't passing through; they've made a rotting home of exactly the low ground the Longmother has to cross, and they are not glad to have her overhead.\n\nThis is the leg of the route where the crew can finally say it out loud: the work is getting harder faster than the road is getting easier. Every fen is worse than the last fen.\n\nIt's also where the lights first answered the dark -- someone out here already knew how to bind a working tight enough to survive the interference the wetter ground throws at it, rather than cast one loose and hope. Runes sewn into steel hold their shape where a spoken spell comes apart. The caravan needed that, whether or not it knew it yet.",
       "Stages": [
@@ -43,6 +46,7 @@
     },
     {
       "Id": "cave",
+      "MilestoneReward": "tome_lifesteal",
       "Name": "Frostmaw Caverns",
       "Crawl": "The road climbs out of the fens into Frostmaw, and for once the danger underfoot isn't what the Longmother's own feet stirred up -- it's what was already waiting, down where the mineral veins run that have fed the caravan's mana casks since before anyone currently walking remembers tapping them.\n\nCold keeps things slow, the blight included, which means whatever's down here has had the one thing nothing else on the route has had: time to grow old, untouched, instead of being swept along with everything else the footfalls disturb.\n\nHere the crew finds the first thing that was unmistakably built, not merely grown or buried -- machined edges, a purpose to the shape of it that no animal or ruin accounts for. That's the turning point. Whatever is wearing the blight this far along the road didn't just happen to it. Something made it this way, on purpose, a long time before the Longmother ever walked this close.",
       "Stages": [
@@ -53,6 +57,7 @@
     },
     {
       "Id": "cityruins",
+      "MilestoneReward": "tome_double_attack",
       "Name": "Veshker Ruins",
       "Crawl": "Veshker Ruins is a dead city -- stone instead of carapace, built by people who tried to do what the town does without ever learning to walk. They dug in, raised walls, and told themselves that walls built well enough were the same as never standing still. They failed the way every grounded thing on this road eventually fails.\n\nExcept here, something never let the failure finish. The Vampire Lord was the city's ruler once, and when the blight came for him the way it comes for everything that stops, he found a way to keep \"stopped\" going long after it should have killed him. He isn't trying to outrun the blight anymore. He's past that. He wants the Longmother to stop, too -- so that he can finally be still on ground that won't rot out from under him.\n\nThis is the climax of the road so far: not another step ahead of something chasing, but a straight refusal to make the mistake this whole city already made.",
       "Stages": [
@@ -63,6 +68,7 @@
     },
     {
       "Id": "greenvalley2",
+      "MilestoneReward": "chest_gilded",
       "Name": "Green Valley, Deeper In",
       "Crawl": "The Vampire Lord's fall didn't end the march, and it didn't cure anything -- the blight doesn't go anywhere just because its best host finally did. It only cleared one knot out of the road ahead.\n\nThe Longmother can't double back the way she came; ground she's already woken stays bad long after she's past it, so her route has never been a straight line so much as a long curl, carrying her back, again and again, through the same kinds of country rather than the same ground. This is that curl closing on green country again -- deeper than the old road ever ran, country the valley's own maps never reached.\n\nIt looks like home. It isn't. The wells here never had travelers to warn them, and whatever's been working on this ground has had longer, undisturbed, to get good at it.",
       "Stages": [
@@ -72,6 +78,7 @@
     },
     {
       "Id": "desert2",
+      "MilestoneReward": "chest_gilded",
       "Name": "Sandsea Reaches, Further Out",
       "Crawl": "Further out than the Reaches the crew already crossed, the dunes keep going, and so does the blight's handiwork -- what was a rare, unsettling find back at the oasis is common country out here. Half-grown, half-built things aren't the exception on this stretch of sand. They're what's expected.\n\nIt's the clearest evidence yet that whatever wears the blight well enough -- tagged, in the caravan's own blunt shorthand, a Demon Lord, as if it were one title and not a condition -- isn't one throne the crew is marching toward. It's a shape the blight keeps finding again, out here, wherever the host is strong enough to hold it.",
       "Stages": [
@@ -81,6 +88,7 @@
     },
     {
       "Id": "swamp2",
+      "MilestoneReward": "chest_gilded",
       "Name": "Mireholt Fens, Past the Mire",
       "Crawl": "Past the mire the crew already fought through, the fen only gets wetter, and the blight that pools here has had longer to settle than anywhere else on the route. The crew isn't the only vanguard working this ground, either -- wreckage further in carries markings that aren't the caravan's, and the people who left it are either still down here or didn't get the chance to leave.\n\nWhoever they were, they weren't chasing glory. Out past the mire, nobody comes this far who still has somewhere better to be.",
       "Stages": [
@@ -90,6 +98,7 @@
     },
     {
       "Id": "cave2",
+      "MilestoneReward": "chest_gilded",
       "Name": "Frostmaw Caverns, Lower Depths",
       "Crawl": "Lower than the veins the caravan has mined for a generation, the caves keep going, following the same seams down toward wherever the thing the crew found earlier -- built, not grown, not buried by accident -- was built. The mana ore gets thinner and stranger the deeper the crew follows it, half-crystal and half-something-else, and less and less of it burns clean.\n\nIt's the sharpest the choice has ever felt: spend what little reliable fuel the depths still give up, or trust a casting in ground this far gone. Most of the crew doesn't trust it anymore.",
       "Stages": [
@@ -99,6 +108,7 @@
     },
     {
       "Id": "cityruins2",
+      "MilestoneReward": "chest_gilded",
       "Name": "Veshker Ruins, Inner Wards",
       "Crawl": "Past the wards the Vampire Lord held, deeper into Veshker than the fight that ended him ever reached, the ruins keep going -- older construction under the newer, and under that, older still. Whoever built the city's failed foundations wasn't the first to try keeping ground still here, either.\n\nThe road doesn't end at a dead king's throne. It just goes on being the only question the caravan has ever actually been chasing: not how to beat what's down here, but what, at the bottom of all of it, the blight actually is. Nobody in the crew has an answer yet. That's as far as the road has carried them so far.",
       "Stages": [

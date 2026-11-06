@@ -896,3 +896,13 @@ Owner: characters can be built to benefit from dodging hits.
   - New data: `BuffDef.EvasionBonus` / `ItemDef.EvasionBonus` (validated), the `blurred` status (+15 for 2 turns), and three Reactives on `OnDodge`: Evasive Riposte (a [Counterstrike]), Catch Breath (heal 6%) and Blur (gain [Blurred]). Only the Duelist carries one (Evasive Riposte); wider assignment is GG-T302's.
   - Shown: `EVA n%` on the InspectCard and the battle unit panel at the Bestiary Stats tier, and on the Bestiary's Stats fact; glossary [Evasion] and [Blurred]; the [Dodge] entry mentions Evasion.
 - *(Tests: `EvasionTests`.)*
+
+## 2026-11-06 — Passives as rewards: Tomes, chests, milestones and a passive cap (owner, GG-T301)
+
+- **Was:** a hero could only gain a Passive or Reactive from its class kit, a skill-tree node or an armor enchant, and every learned one fought. Quests, bounties and drops paid gold and consumables. There were no chests and no campaign milestone rewards.
+- **Now (owner):** see BIBLE §25.6.4, §22.4, §22.11, §24.1.
+  - A **Tome** item teaches one battle passive to a hero the player picks. Quests (3), bounties (2), each theme's first full clear, boss drop tables and chests grant them as ordinary items.
+  - **Chests** are items that drop from every enemy family (1.5 % Wooden; bosses 20 % Iron) and open into their own drop table. Postgame themes' milestones are Gilded Chests.
+  - Bounty rewards changed: Wolf Pack paid a Hi-Potion and now pays a Tome of Berserk; Cave Dweller paid Flame Oil and now pays a Tome of Tough Hide.
+  - **Cap:** at most 2 learned passives (Tomes and skill-tree grants, not the class kit) are on, +1 at Lv 10 and at Lv 20. The Abilities screen's Passives tab switches them. Before this, every learned passive fought.
+- *(Tests: `PassiveRewardTests`.)*

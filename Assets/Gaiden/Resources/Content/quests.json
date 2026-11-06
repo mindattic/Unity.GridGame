@@ -18,14 +18,14 @@
     "Summary": "A small crew moves faster than the blight can follow. Prove it: clear Green Valley III with three heroes or fewer in the fight.",
     "TurnIn": "Three of us, one valley, nobody carried. The Longmother doesn't need an army on her back. She needs people who keep moving.",
     "Objective": { "Kind": "ClearStage", "Id": "greenvalley-03", "MaxHeroes": 3 },
-    "RewardGold": 200, "RewardSkillPoints": 1
+    "RewardGold": 200, "RewardItem": "tome_steadfast", "RewardSkillPoints": 1
   },
   {
     "Id": "q_grown_not_forged", "Name": "Grown, Not Forged", "Giver": "Blacksmith", "Theme": "desert", "Unlock": "desert-01",
     "Summary": "The gremlins' cogs have teeth no file ever cut. The blacksmith wants four of them on the bench to see how the blight learned to make a gear.",
     "TurnIn": "Look at the grain -- it runs round the teeth like a tree ring. Nobody made this. It grew. I need to sit down.",
     "Objective": { "Kind": "Bring", "Id": "mat_gremlin_cog", "Count": 4 },
-    "RewardGold": 350, "RewardFlag": "quest:smith_cogs"
+    "RewardGold": 350, "RewardItem": "tome_mana_siphon", "RewardFlag": "quest:smith_cogs"
   },
   {
     "Id": "q_antivenom", "Name": "Antivenom", "Giver": "Alchemist", "Theme": "desert", "Unlock": "desert-02",
@@ -60,7 +60,7 @@
     "Summary": "The ice maulers carry cores that never warm, whatever the forge does. Break three of them and bring the smith a story worth hammering.",
     "TurnIn": "Three down, and the cores still cold in my hand. Whatever's under Frostmaw has had a long time to get good at this.",
     "Objective": { "Kind": "Defeat", "Id": "icemauler", "Count": 3 },
-    "RewardGold": 600, "RewardSkillPoints": 1
+    "RewardGold": 600, "RewardItem": "tome_counter_attack", "RewardSkillPoints": 1
   },
   {
     "Id": "q_city_that_stopped", "Name": "The City That Stopped", "Giver": "Party", "Theme": "cityruins", "Unlock": "cityruins-01",

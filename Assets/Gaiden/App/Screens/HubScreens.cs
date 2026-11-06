@@ -20,6 +20,8 @@ namespace GridGame.App
                 case ItemType.Consumable: return "Item";
                 case ItemType.CraftingMaterial: return "Material";
                 case ItemType.RecipeScroll: return "Recipe Scroll";
+                case ItemType.Tome: return "Tome";
+                case ItemType.Chest: return "Chest";
                 default: return "Key Item";
             }
         }
@@ -35,7 +37,7 @@ namespace GridGame.App
                 case ItemType.Equipment: return i.Slot == EquipmentSlot.Weapon ? "†" : Array.IndexOf(BattleEngine.ArmorSlots, i.Slot) >= 0 ? "◆" : "✧";
                 case ItemType.Consumable: return "✚";
                 case ItemType.CraftingMaterial: return "◈";
-                case ItemType.RecipeScroll: return "❖";
+                case ItemType.RecipeScroll: case ItemType.Tome: return "❖";
                 default: return "✦";
             }
         }
@@ -93,6 +95,12 @@ namespace GridGame.App
             d.style.whiteSpace = WhiteSpace.Normal;
             var st = StatsText(i);
             if (st.Length > 0) { var l = GlossaryText.Create(st, "small gold", w); l.style.whiteSpace = WhiteSpace.Normal; l.style.marginTop = Space.S8; }
+            // GG-T301: a Tome names the passive it teaches as its generated rule sentence.
+            if (RewardCatalog.TaughtBy(c, i) is AbilityDef taught)
+            {
+                var t = GlossaryText.Create(TomeUi.Sentence(c, taught), "small gold", w);
+                t.style.whiteSpace = WhiteSpace.Normal; t.style.marginTop = Space.S8;
+            }
             var set = c?.TryArmorSetOf(i.Id);
             if (set != null)
             {
@@ -143,7 +151,7 @@ namespace GridGame.App
             w.style.flexGrow = 1; w.style.marginTop = Space.S0;
             var list = Ui.List(w);
             var items = S.Inventory.Where(kv => kv.Value > 0).Select(kv => (item: C.TryItem(kv.Key), n: kv.Value)).Where(x => x.item != null)
-                .Where(x => tab == 0 || (tab == 1 && x.item.Type == ItemType.Consumable) || (tab == 2 && x.item.Type == ItemType.Equipment) || (tab == 3 && x.item.Type == ItemType.CraftingMaterial))
+                .Where(x => tab == 0 || (tab == 1 && (x.item.Type == ItemType.Consumable || x.item.Type == ItemType.Tome || x.item.Type == ItemType.Chest)) || (tab == 2 && x.item.Type == ItemType.Equipment) || (tab == 3 && x.item.Type == ItemType.CraftingMaterial))
                 .OrderBy(x => x.item.Type).ThenByDescending(x => x.item.Rarity).ThenBy(x => x.item.Name).ToList();
             // Broken gear fragments (GG-T41): shown alongside gear, but can't be equipped or repaired — salvage only.
             var broken = (tab == 0 || tab == 2)
@@ -193,6 +201,20 @@ namespace GridGame.App
                 var learnRow = Ui.El("row", detail);
                 learnRow.style.marginTop = Space.S8;
                 Ui.Button("Learn recipe", () => { selected = it; Done(RecipeDiscovery.Learn(C, S, it.Id)); }, "btn--small btn--primary", learnRow);
+                return;
+            }
+            // GG-T301: read a Tome to a hero, or open a Chest.
+            if (it != null && it.Type == ItemType.Tome)
+            {
+                var teach = TomeUi.Offer(detail, it, r => { if (r.Ok) { selected = S.Count(it.Id) > 0 ? it : null; Refresh(); } }, false);
+                teach.style.marginTop = Space.S8; teach.style.marginLeft = Space.S0;
+                return;
+            }
+            if (it != null && it.Type == ItemType.Chest)
+            {
+                var openRow = Ui.El("row", detail);
+                openRow.style.marginTop = Space.S8;
+                TomeUi.OpenButton(openRow, it, (r, haul) => { selected = r.Ok && haul != null ? C.TryItem(haul.Items.Keys.FirstOrDefault(k => C.TryItem(k)?.Type == ItemType.Tome) ?? it.Id) : it; if (selected != null && S.Count(selected.Id) <= 0) selected = null; Refresh(); });
                 return;
             }
             if (!Camp.UsableAtCamp(it)) return;
@@ -544,10 +566,11 @@ namespace GridGame.App
             right.name = "bar-move-right";
             Ui.SetEnabled(right, slot + 1 < unlocked);
 
-            Ui.Tabs(new[] { "Known", "Items", "Learn" }, tab, i => { tab = i; Refresh(); }, body);
+            Ui.Tabs(new[] { "Known", "Items", "Learn", "Passives" }, tab, i => { tab = i; Refresh(); }, body);
             var w = Ui.Window(null, body);
             w.style.flexGrow = 1; w.style.marginTop = Space.S0;
             var list = Ui.List(w).contentContainer;
+            if (tab == PassivesTab) { Passives(h, list); return; }
             if (slot < unlocked && h.Bar[slot] != null) Ui.MenuRow("Clear slot", "", () => Done(Abilities.Assign(C, S, h, slot, null)), list);
             if (tab == 0)
             {
@@ -572,7 +595,7 @@ namespace GridGame.App
                     ItemUi.Row(item, weapon ? "swap in battle" : $"×{S.Count(item.Id)}", () => Done(Abilities.Assign(C, S, h, slot, (weapon ? "weapon:" : "item:") + item.Id)), list, slot < unlocked);
                 }
             }
-            else
+            else if (tab == 2)
             {
                 if (plan != null && plan.Hero == h) GuidedLesson(plan, list);
                 foreach (var a in Abilities.Learnable(C, h))
@@ -585,6 +608,67 @@ namespace GridGame.App
                     Describe(a, list);
                 }
             }
+        }
+
+        private const int PassivesTab = 3;
+
+        /// <summary>The Passives tab (GG-T301, §25.6.4): learned passives (Tomes, skill-tree grants) with an On/Off switch,
+        /// at most <see cref="PassiveLoadout.Slots"/> on; the class kit's innate ones, always on; and any Tome in the bag
+        /// this hero could read.</summary>
+        private void Passives(HeroSave h, VisualElement list)
+        {
+            var learned = PassiveLoadout.Learned(C, h);
+            var on = PassiveLoadout.Active(C, h);
+            int slots = PassiveLoadout.Slots(h), next = PassiveLoadout.NextSlotLevel(h);
+            var head = Ui.Text($"Learned passives on: {on.Count}/{slots}" + (next > 0 ? $"   ·   another slot at Lv {next}" : ""), "small gold", list);
+            head.name = "passive-slots";
+            Ui.Text("Tap one to switch it on or off. Tomes come from quests, bounties, chests, theme clears and rare drops.", "tiny dim", list).style.whiteSpace = WhiteSpace.Normal;
+            if (learned.Count == 0) Ui.Text("No learned passives yet.", "small dim", list);
+            foreach (var a in learned)
+            {
+                var ab = a;
+                bool active = on.Contains(a.Id);
+                var row = Ui.MenuRow(a.Name, active ? "On" : "Off", () => Done(PassiveLoadout.Toggle(C, h, ab.Id)), list, Art.AbilityIcon(a));
+                row.name = "passive-" + a.Id;
+                row.Q<Label>("value").AddToClassList(active ? "good" : "dim");
+                InspectCard.Attach(row, b => InspectCard.Ability(b, ab));
+                Sentence(a, list);
+            }
+            var innate = PassiveLoadout.Innate(C, h);
+            if (innate.Count > 0)
+            {
+                Ui.Text("Class passives — always on", "small gold", list).style.marginTop = Space.S16;
+                foreach (var a in innate)
+                {
+                    var ab = a;
+                    var row = Ui.MenuRow(a.Name, "Innate", null, list, Art.AbilityIcon(a));
+                    InspectCard.Attach(row, b => InspectCard.Ability(b, ab));
+                    Sentence(a, list);
+                }
+            }
+            var tomes = S.Inventory.Where(kv => kv.Value > 0).Select(kv => C.TryItem(kv.Key))
+                .Where(i => i != null && i.Type == ItemType.Tome && Tomes.WhyNot(C, S, i.Id, h.ClassId) == null).ToList();
+            if (tomes.Count > 0) Ui.Text("Tomes in the bag", "small gold", list).style.marginTop = Space.S16;
+            foreach (var t in tomes)
+            {
+                var tome = t;
+                var row = ItemUi.Row(t, "Read", () =>
+                {
+                    var r = Tomes.Teach(C, S, tome.Id, h.ClassId);
+                    App.Toast(r.Message, 2.4f);
+                    App.Audio.Sfx(r.Ok ? "battle.powerup" : "ui.error");
+                    if (r.Ok) App.Persist();
+                    Refresh();
+                }, list);
+                row.name = "read-" + t.Id;
+                TomeUi.Preview(list, t);
+            }
+        }
+
+        private void Sentence(AbilityDef a, VisualElement list)
+        {
+            var d = GlossaryText.Create(TriggerText.Describe(C, a), "tiny dim", list);
+            d.style.whiteSpace = WhiteSpace.Normal; d.style.marginLeft = Space.S64; d.style.marginBottom = Space.S8;
         }
 
         /// <summary>The guided first skill (GG-T180, §25.0.9) heads the Learn tab: what it does, that it's free and which bar
@@ -1321,9 +1405,17 @@ namespace GridGame.App
     {
         public override string Id => "bounties";
         protected override string Title => "Bounties";
+        /// <summary>The Tome a just-claimed contract paid (GG-T301), offered for teaching at the top of the board.</summary>
+        private string claimedTome;
 
         protected override void BuildBody(VisualElement body)
         {
+            if (C.TryItem(claimedTome) is ItemDef paid && S.Count(paid.Id) > 0)
+            {
+                var tw = Ui.Window($"Reward: {paid.Name}", body);
+                tw.name = "bounty-tome";
+                TomeUi.Offer(tw, paid, r => { if (r.Ok) claimedTome = null; });
+            }
             var act = Bounties.Active(C, S);
             if (act != null)
             {
@@ -1331,7 +1423,11 @@ namespace GridGame.App
                 Ui.Text($"{act.Name}: defeat {act.Kills} {C.TryClass(act.TargetClass)?.Name}", "small", a);
                 Ui.Text($"Progress {S.Bounty.Progress}/{act.Kills}", "h2 gold", a);
                 var row = Ui.El("row", a);
-                var claim = Ui.Button("Claim", () => Done(Bounties.Claim(C, S)), "btn--primary", row);
+                var claim = Ui.Button("Claim", () =>
+                {
+                    claimedTome = C.TryItem(act.RewardItem)?.Type == ItemType.Tome ? act.RewardItem : null;
+                    Done(Bounties.Claim(C, S));
+                }, "btn--primary", row);
                 claim.name = "bounty-claim";
                 Ui.SetEnabled(claim, Bounties.IsComplete(C, S));
                 Ui.Button("Abandon", () => Confirm.Show("Abandon this bounty?", "Abandon", () => Done(Bounties.Abandon(S))), "btn--danger", row);
@@ -1349,6 +1445,7 @@ namespace GridGame.App
                 var col = Ui.El("col grow", card);
                 Ui.Text(b.Name, "h2", col);
                 Ui.Text($"Defeat {b.Kills}× {target?.Name}.  Reward {Ui.Gold(b.RewardGold)}{(reward != null ? " + " + reward.Name : "")}{(Bounties.SkillPointsPaid(b) > 0 ? $" + {Bounties.SkillPointsPaid(b)} SP each" : "")}", "tiny dim", col).style.whiteSpace = WhiteSpace.Normal;
+                TomeUi.Preview(col, reward); // GG-T301: what a Tome reward teaches
                 var btn = Ui.Button(S.Bounty.ActiveId == b.Id ? "Active" : "Accept", () => Done(Bounties.Accept(C, S, bounty.Id)), "btn--small", card);
                 btn.name = "bounty-" + b.Id;
                 Ui.SetEnabled(btn, S.Bounty.ActiveId == null);

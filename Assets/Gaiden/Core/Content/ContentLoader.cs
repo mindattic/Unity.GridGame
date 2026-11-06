@@ -303,6 +303,7 @@ namespace GridGame.Core.Content
             EncounterCatalog.Validate(db, p);
             MercenaryContent.Validate(db, p);
             QuestCatalog.Validate(db, p);
+            RewardCatalog.Validate(db, p); // Tomes, Chests, campaign milestones (GG-T301)
             VfxStyleSheet.Validate(db, p);
             VfxCatalog.Validate(db, p);
             p.AddRange(GridGame.Core.Battle.DifficultyTable.Problems()); // the 1..10 dial (GG-T309)

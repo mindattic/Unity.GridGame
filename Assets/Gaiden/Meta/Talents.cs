@@ -220,7 +220,7 @@ namespace GridGame.Meta
             h.SkillPoints -= cost;
             if (h.TreeNodes == null) h.TreeNodes = new List<string>();
             h.TreeNodes.Add(Key(t, n));
-            if (!string.IsNullOrEmpty(n.Grants) && !h.Known.Contains(n.Grants)) h.Known.Add(n.Grants);
+            if (!string.IsNullOrEmpty(n.Grants) && !h.Known.Contains(n.Grants)) { h.Known.Add(n.Grants); PassiveLoadout.OnLearned(c, h, n.Grants); }
             var a = c.TryAbility(n.Grants);
             return Result.Success($"Learned {a?.Name ?? n.Name ?? n.Id}");
         }
@@ -254,6 +254,7 @@ namespace GridGame.Meta
                     if (Bought(h, t, n) && !string.IsNullOrEmpty(n.Grants)) forget.Add(n.Grants);
             h.TreeNodes.Clear();
             h.Known.RemoveAll(forget.Contains);
+            h.ActivePassives?.RemoveAll(forget.Contains); // GG-T301
             for (int i = 0; i < h.Bar.Count; i++)
                 if (h.Bar[i] != null && forget.Contains(h.Bar[i])) h.Bar[i] = null;
             h.SkillPoints += refund;
