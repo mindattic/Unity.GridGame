@@ -483,10 +483,10 @@ namespace GridGame.Core.Battle
         }
 
         /// <summary>
-        /// Applies damage, handles Sleep-break, threat, pushback (hero→enemy in Zone), cast stagger and death.
-        /// <paramref name="source"/> null = environmental (DOT, trap): no pushback, no stagger.
+        /// Applies damage, handles Sleep-break, threat, cast stagger and death. A plain hit never pushes back (GG-T286).
+        /// <paramref name="source"/> null = environmental (DOT, trap): no stagger.
         /// </summary>
-        private void Damage(Unit target, int amount, Unit source, HitKind hit, DamageType type, string note = null, bool canPush = true)
+        private void Damage(Unit target, int amount, Unit source, HitKind hit, DamageType type, string note = null)
         {
             if (!target.Alive) return;
             if (hit != HitKind.Miss && amount > 0 && IsArmored(target)) { amount = 0; note = "Armored!"; }
@@ -511,7 +511,6 @@ namespace GridGame.Core.Battle
             if (target.Hp <= 0) { Kill(target, source); ResolveDeathBursts(); return; }
             if (source == null || hit == HitKind.Miss) return;
 
-            if (canPush && source.IsHero && target.Team == Team.Enemy) Pushback(target, source);
             StaggerCasts(target, source);
         }
 
@@ -532,7 +531,7 @@ namespace GridGame.Core.Battle
                 var victims = new List<Unit>();
                 foreach (var h in S.Living(Team.Hero)) if (u.IsAdjacentTo(h)) victims.Add(h);
                 Emit(new AbilityResolvedEvent { CasterId = u.Id, AbilityId = "death_burst", Anchor = u.Pos });
-                foreach (var h in victims) if (h.Alive) Damage(h, u.Def.DeathBurst, null, HitKind.Normal, DamageType.Fire, "Blast", canPush: false);
+                foreach (var h in victims) if (h.Alive) Damage(h, u.Def.DeathBurst, null, HitKind.Normal, DamageType.Fire, "Blast");
             }
             bursting = false;
         }

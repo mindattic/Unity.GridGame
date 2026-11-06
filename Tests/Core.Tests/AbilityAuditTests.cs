@@ -115,9 +115,9 @@ namespace GridGame.Tests
         }
 
         [Test]
-        public void Delay_slides_the_foes_turn_icon_back()
+        public void Pushback_keyword_slides_the_foes_turn_icon_back()
         {
-            var (s, k) = WithSkill(new AbilityDef { Id = "hinder", DelayU = 0.3f, Shape = TargetShape.SingleActor, Mode = TargetMode.PickActor, Filter = TargetFilter.EnemyOnly }, Stage(("tank", 2, 0)));
+            var (s, k) = WithSkill(new AbilityDef { Id = "hinder", Pushback = 2f, Shape = TargetShape.SingleActor, Mode = TargetMode.PickActor, Filter = TargetFilter.EnemyOnly }, Stage(("tank", 2, 0)));
             var foe = Foe(s);
             var turn = s.TurnEntryOf(foe.Id);
             turn.Ip = BattleConfig.BarLength / 2;
@@ -169,7 +169,7 @@ namespace GridGame.Tests
             Assert.That(c.Ability("disengage").StepBack, Is.GreaterThan(0));
             Assert.That(c.Ability("fencer_fleche").SwapsPlaces, Is.True);
             Assert.That(c.Ability("undertow").Pull, Is.GreaterThan(0));
-            Assert.That(c.Ability("stasis").DelayU, Is.GreaterThan(0f));
+            Assert.That(c.Ability("stasis").Pushback, Is.GreaterThan(0f));
             Assert.That(c.Ability("shadowstep_fade_step").IsTeleport, Is.True);
         }
     }

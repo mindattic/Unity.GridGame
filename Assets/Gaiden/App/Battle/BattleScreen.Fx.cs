@@ -21,11 +21,15 @@ namespace GridGame.App
         // ── Cast ghosts: a hero cast queues and lands inside one action, so the final state no longer holds it during
         //    playback. Playback keeps its own record from CastQueued to the resolve, so the bar/ring/chip and the channel
         //    aura follow the timeline glide. ──
-        private sealed class CastGhost { public int EntryId, CasterId, TargetUnitId; public string AbilityId; public Coord TargetTile; public float U; }
+        private sealed class CastGhost { public int EntryId, CasterId, TargetUnitId; public string AbilityId; public Coord TargetTile; public float U, Span; }
+
+        /// <summary>Bar width (u) a cast of <paramref name="ticks"/> spans: it is born at castSeconds / BarSeconds (GG-T286).</summary>
+        private static float CastSpanU(int ticks) =>
+            Mathf.Clamp01(ticks / (BattleConfig.TicksPerSecond * BattleConfig.BarSeconds));
         private readonly Dictionary<int, CastGhost> castGhosts = new Dictionary<int, CastGhost>();
 
         private void AddGhost(CastQueuedEvent cq) =>
-            castGhosts[cq.EntryId] = new CastGhost { EntryId = cq.EntryId, CasterId = cq.CasterId, AbilityId = cq.AbilityId, TargetUnitId = cq.TargetUnitId, TargetTile = cq.TargetTile, U = 0f };
+            castGhosts[cq.EntryId] = new CastGhost { EntryId = cq.EntryId, CasterId = cq.CasterId, AbilityId = cq.AbilityId, TargetUnitId = cq.TargetUnitId, TargetTile = cq.TargetTile, U = CastSpanU(cq.Ticks), Span = CastSpanU(cq.Ticks) };
 
         private void EndGhost(int casterId, string abilityId)
         {

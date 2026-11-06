@@ -29,11 +29,11 @@ namespace GridGame.Tests
         {
             var db = Mini();
             var (s, knight, mage, tank) = Setup(db);
-            float before = BattleEngine.UPerTick(s, s.TurnEntryOf(tank.Id));
+            float before = BattleEngine.SecondsUntilAct(s, s.TurnEntryOf(tank.Id));
             Quicken(s, knight, mage);
             Assert.That(s.NetTempo, Is.EqualTo(2), "Quicken (0.3 u) is two tempo points");
             Assert.That(BattleEngine.EnemyTempoMultiplier(s), Is.EqualTo(0.64f).Within(1e-3));
-            Assert.That(BattleEngine.UPerTick(s, s.TurnEntryOf(tank.Id)), Is.LessThan(before));
+            Assert.That(BattleEngine.SecondsUntilAct(s, s.TurnEntryOf(tank.Id)), Is.GreaterThan(before));
         }
 
         [Test]

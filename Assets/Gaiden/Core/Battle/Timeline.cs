@@ -7,9 +7,10 @@ namespace GridGame.Core.Battle
     public enum TimelineKind { Turn, Cast }
 
     /// <summary>
-    /// One icon on the shared timeline. Turn icons (above the line) load from IP 0 to BarLength;
-    /// cast icons (below the line) count their remaining ticks down to 0. Both resolve on the
-    /// same clock — whichever arrives first resolves first (bible §2.4 / §2.6).
+    /// One icon on the shared timeline. Turn icons load from IP 0 to BarLength at one linear rate; cast icons count
+    /// their remaining ticks down to 0. Both resolve on the same clock — whichever arrives first resolves first
+    /// (bible §2.4 / §2.6). Where an icon is drawn is the seconds until it acts
+    /// (<see cref="BattleEngine.SecondsUntilAct"/>, <see cref="BattleEngine.BarU"/>: 0 = the left edge, acting now).
     /// </summary>
     public sealed class TimelineEntry
     {
@@ -32,13 +33,6 @@ namespace GridGame.Core.Battle
         public bool IsCharge;
         public ChargeShape ChargeShape;
         public List<Coord> LineTiles;
-
-        /// <summary>Normalized position on the shared u-axis (0 = spawn/left, 1 = trigger/right).</summary>
-        public float U => Kind == TimelineKind.Turn
-            ? Math.Max(0f, Math.Min(1f, Ip / (float)BattleConfig.BarLength))
-            : Math.Max(0f, 1f - RemainingTicks / (float)Math.Max(1, TotalCastTicks + AccumulatedDelayTicks)); // 0 at cast start, 1 = lands
-
-        public bool InZone => Kind == TimelineKind.Turn && Ip >= BattleConfig.ZoneStart;
 
         public TimelineEntry Clone()
         {

@@ -1255,7 +1255,7 @@ namespace GridGame.App
                 starts[kv.Key] = (kv.Value.resolvedStyle.left + kv.Value.resolvedStyle.width / 2f) / TimelineWidth;
             // Create icons for entries that appeared, then glide everything to the snapshot.
             foreach (var e in State.Timeline)
-                if (!timelineIconViews.ContainsKey(e.Id)) { var icon = MakeTimelineIcon(e); timelineIconViews[e.Id] = icon; timelineIcons.Add(icon); starts[e.Id] = ta.U.TryGetValue(e.Id, out var u0) ? u0 : e.U; }
+                if (!timelineIconViews.ContainsKey(e.Id)) { var icon = MakeTimelineIcon(e); timelineIconViews[e.Id] = icon; timelineIcons.Add(icon); starts[e.Id] = ta.U.TryGetValue(e.Id, out var u0) ? u0 : BattleEngine.BarU(State, e); }
             float seconds = Mathf.Clamp(ta.Ticks / 40f, 0.18f, 0.45f);
             yield return Tween.Run(seconds, k =>
             {
@@ -1270,7 +1270,7 @@ namespace GridGame.App
         private IEnumerator GlideOne(int entryId, float fromU, float toU, float seconds)
         {
             var hold = new Dictionary<int, float>();
-            foreach (var e in State.Timeline) hold[e.Id] = lastAt != null && lastAt.TryGetValue(e.Id, out var u) ? u : e.U;
+            foreach (var e in State.Timeline) hold[e.Id] = lastAt != null && lastAt.TryGetValue(e.Id, out var u) ? u : BattleEngine.BarU(State, e);
             yield return Tween.Run(seconds, k => { hold[entryId] = Mathf.Lerp(fromU, toU, Tween.EaseOut(k)); SyncTimeline(hold); });
         }
 
@@ -1300,8 +1300,8 @@ namespace GridGame.App
             {
                 App.StartCoroutine(Tween.Pop(icon, 1.35f, 0.25f));
                 var reset = new Dictionary<int, float>();
-                foreach (var e in State.Timeline) reset[e.Id] = lastAt != null && lastAt.TryGetValue(e.Id, out var lu) ? lu : e.U;
-                reset[entry.Id] = 0f;
+                foreach (var e in State.Timeline) reset[e.Id] = lastAt != null && lastAt.TryGetValue(e.Id, out var lu) ? lu : BattleEngine.BarU(State, e);
+                reset[entry.Id] = BattleEngine.BarU(State, entry); // acted: back to the far end of its lap (GG-T286)
                 SyncTimeline(reset);
             }
             if (u != null && board.Units.TryGetValue(u.Id, out var v))

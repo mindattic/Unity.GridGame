@@ -1126,6 +1126,7 @@
   "LingerVfx": null,
   "Sfx": null,
   "Knockback": 2,
+  "Pushback": 0.75,
   "AdjacentOnly": true
  },
  {
@@ -1361,6 +1362,7 @@
   "LingerVfx": null,
   "Sfx": null,
   "Knockback": 1,
+  "Pushback": 0.5,
   "AdjacentOnly": true
  },
  {
@@ -1421,6 +1423,7 @@
   "LingerVfx": null,
   "Sfx": null,
   "Knockback": 2,
+  "Pushback": 0.75,
   "AdjacentOnly": true
  },
  {
@@ -2597,6 +2600,7 @@
   "LingerVfx": null,
   "Sfx": null,
   "Knockback": 1,
+  "Pushback": 0.5,
   "AdjacentOnly": true
  },
  {
@@ -2628,7 +2632,7 @@
   "LingerVfx": null,
   "Sfx": null,
   "AdjacentOnly": true,
-  "DelayU": 0.15
+  "Pushback": 1.0
  },
  {
   "Id": "fencer_fleche",
@@ -2779,6 +2783,7 @@
   "LingerVfx": null,
   "Sfx": null,
   "Knockback": 2,
+  "Pushback": 0.75,
   "AdjacentOnly": true
  },
  {
@@ -3199,6 +3204,7 @@
   "LingerVfx": null,
   "Sfx": null,
   "Knockback": 1,
+  "Pushback": 0.5,
   "AdjacentOnly": true
  },
  {
@@ -3258,7 +3264,8 @@
   "ImpactVfx": "PuffyExplosion",
   "LingerVfx": null,
   "Sfx": null,
-  "Knockback": 3
+  "Knockback": 3,
+  "Pushback": 1.0
  },
  {
   "Id": "warlord_battle_cry",
@@ -3725,6 +3732,7 @@
   "LingerVfx": null,
   "Sfx": null,
   "Knockback": 2,
+  "Pushback": 0.75,
   "AdjacentOnly": true
  },
  {
@@ -4398,7 +4406,8 @@
   "ImpactVfx": "PuffyExplosion",
   "LingerVfx": null,
   "Sfx": null,
-  "Knockback": 1
+  "Knockback": 1,
+  "Pushback": 0.5
  },
  {
   "Id": "duelist_probingthrust",
@@ -4577,7 +4586,8 @@
   "ImpactVfx": "PuffyExplosion",
   "LingerVfx": null,
   "Sfx": null,
-  "Knockback": 1
+  "Knockback": 1,
+  "Pushback": 0.5
  },
  {
   "Id": "combobrawler_openingjab",
@@ -4668,6 +4678,7 @@
   "LingerVfx": "GoldSparkle",
   "Sfx": null,
   "Knockback": 1,
+  "Pushback": 0.5,
   "AdjacentOnly": true
  },
  {
@@ -5055,6 +5066,7 @@
   "LingerVfx": null,
   "Sfx": null,
   "Knockback": 1,
+  "Pushback": 0.5,
   "AdjacentOnly": true
  },
  {
@@ -5086,6 +5098,7 @@
   "LingerVfx": null,
   "Sfx": null,
   "Knockback": 1,
+  "Pushback": 0.5,
   "AdjacentOnly": true
  },
  {
@@ -5858,7 +5871,7 @@
   "ImpactVfx": "LightningStrike",
   "LingerVfx": null,
   "Sfx": null,
-  "DelayU": 0.1
+  "Pushback": 0.75
  },
  {
   "Id": "skirmisher_retreat_shot",
@@ -6009,7 +6022,7 @@
  {
   "Id": "hinder",
   "Name": "Hinder",
-  "Description": "Wraps a foe in heavy, sticky time: its turn icon slides back a third of the bar. No damage.",
+  "Description": "Wraps a foe in heavy, sticky time: it acts 2 seconds later, wherever its icon sits. No damage.",
   "Kind": "Spell",
   "Cost": 2,
   "CastTime": 1.0,
@@ -6034,7 +6047,7 @@
   "ImpactVfx": "IcyWind",
   "LingerVfx": null,
   "Sfx": null,
-  "DelayU": 0.3
+  "Pushback": 2.0
  },
  {
   "Id": "stasis",
@@ -6064,7 +6077,7 @@
   "ImpactVfx": "IcyWind",
   "LingerVfx": null,
   "Sfx": null,
-  "DelayU": 0.12
+  "Pushback": 0.75
  },
  {
   "Id": "haste_field",
@@ -6301,7 +6314,8 @@
   "LingerVfx": null,
   "Sfx": null,
   "AdjacentOnly": true,
-  "Knockback": 2
+  "Knockback": 2,
+  "Pushback": 0.75
  },
  {
   "Id": "disrupt",
@@ -6331,7 +6345,7 @@
   "ImpactVfx": "IcyWind",
   "LingerVfx": null,
   "Sfx": null,
-  "DelayU": 0.15
+  "Pushback": 1.0
  },
  {
   "Id": "pinning_shot",
@@ -6361,7 +6375,7 @@
   "ImpactVfx": "WindStep",
   "LingerVfx": null,
   "Sfx": null,
-  "DelayU": 0.2
+  "Pushback": 1.25
  },
  {
   "Id": "charge_temporal_drag",

@@ -317,9 +317,10 @@ namespace GridGame.Core.Content
         public int Knockback;
         /// <summary>The pick must be cardinally adjacent to the caster (melee skills).</summary>
         public bool AdjacentOnly;
-        /// <summary>Timeline (GG-T183): each target's turn icon slides back this fraction of the bar; a held cast slips
-        /// by the same amount (it is never cancelled by it). The inverse of <see cref="HastenU"/>.</summary>
-        public float DelayU;
+        /// <summary>The Pushback keyword (§2.3, GG-T286), in seconds: each foe it reaches acts this much later, wherever its
+        /// icon sits on the bar (a held cast slips instead; never cancelled). Capped per action at
+        /// <see cref="Battle.BattleConfig.PushbackMaxSeconds"/>, one push per foe per action. Plain hits never push.</summary>
+        public float Pushback;
         /// <summary>Movement (GG-T183): each target is dragged up to this many tiles straight toward the caster, stopping
         /// beside it or at the first thing in the way. Bosses and snakes don't budge.</summary>
         public int Pull;

@@ -185,7 +185,7 @@ namespace GridGame.Core.Bot
                             if (pv.Positions.TryGetValue(att.Id, out var ap) && SideFacing(o, ap)) score -= 4f;
                     }
                     var e = s.TurnEntryOf(o.Id);
-                    if (e != null && e.InZone) score += 4f;
+                    if (e != null && BattleEngine.SecondsUntilAct(s, e) <= BattleConfig.PushbackMaxSeconds + 1f) score += 4f; // the pincer pushes a foe about to act (GG-T286)
                     if (o.HpFraction < 0.4f) score += 3f;
                     if (ChargesTempoDrain(s, o)) score += 6f; // GG-T275: staggering a Temporal Drag keeps the party's tempo
                 }
@@ -311,8 +311,8 @@ namespace GridGame.Core.Bot
                     if (curse != null && !t.HasBuff(curse.Id)) score += DebuffValue(curse) * Math.Max(0.25f, a.ApplyBuffChance);
                     if (a.StealsMana) score += s.Bank.IsFull ? 0f : 3f;
                     if (a.HastenU > 0) score -= 5f;
-                    if (a.DelayU > 0f) score += 3f; // GG-T183: shoving a foe back on the timeline buys the party a turn
-                    if ((a.BaseDamage > 0 || a.DelayU > 0f) && ChargesTempoDrain(s, t)) score += 5f; // GG-T275: stagger a Temporal Drag
+                    if (a.Pushback > 0f) score += 3f; // GG-T183: shoving a foe back on the timeline buys the party a turn
+                    if ((a.BaseDamage > 0 || a.Pushback > 0f) && ChargesTempoDrain(s, t)) score += 5f; // GG-T275: stagger a Temporal Drag
                     if (a.BaseHeal > 0 && a.Filter == TargetFilter.EnemyOnly) score += Math.Min(caster.MaxHp - caster.Hp, a.BaseHeal) * 0.3f; // drain
                     if (a.Knockback > 0)
                     {

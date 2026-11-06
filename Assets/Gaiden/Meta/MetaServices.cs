@@ -1996,7 +1996,7 @@ namespace GridGame.Meta
             if (a.SwapsPlaces) k.Add("swap");
             if (a.StepBack > 0) k.Add("stepback");
             if (a.HastenU > 0f) k.Add("hasten");
-            if (a.DelayU > 0f) k.Add("delay");
+            if (a.Pushback > 0f) k.Add("pushback");
             return string.Join("|", k);
         }
 
@@ -2004,7 +2004,7 @@ namespace GridGame.Meta
         public static bool HasEffect(AbilityDef a) =>
             a.BaseDamage > 0 || a.BaseHeal > 0 || a.ApplyBuff != null || a.RemovesDebuffs || a.RemovesBuff != null || a.StealsMana ||
             a.GrantsOrbs > 0 || a.Revives || a.Escape || a.IsTeleport || a.Knockback > 0 || a.Pull > 0 || a.SwapsPlaces ||
-            a.StepBack > 0 || a.HastenU > 0f || a.DelayU > 0f;
+            a.StepBack > 0 || a.HastenU > 0f || a.Pushback > 0f;
 
         public static Result Learn(ContentDb c, SaveData s, HeroSave h, string abilityId)
         {

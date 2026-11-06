@@ -230,6 +230,11 @@ namespace GridGame.Core.Battle
             foreach (var sup in supporters)
                 if (sup.Alive && !S.IsOver) PerformSupport(p, sup, team);
 
+            // The pincer attack carries Pushback (GG-T286): every trapped foe a hero pincer landed a blow on acts later.
+            if (team == Team.Hero)
+                foreach (var o in p.Opponents)
+                    if (o.Alive && o.Hp < hpBefore[o]) Pushback(o, BattleConfig.PincerPushbackSeconds);
+
             if (team == Team.Hero)
             {
                 // Mana charge (§3.1.9): the share of enemy HP this pincer took, divided by how many heroes it took to do
@@ -330,7 +335,7 @@ namespace GridGame.Core.Battle
         {
             if (reflecting || amount <= 0 || source == null || !source.Alive || !target.IsHero || source.Team != Team.Enemy || !HasPassive(target, "thorns")) return;
             reflecting = true;
-            Damage(source, Math.Max(1, (int)Math.Round(amount * BattleConfig.ThornsFraction)), target, HitKind.Normal, DamageType.Physical, "Thorns", canPush: false);
+            Damage(source, Math.Max(1, (int)Math.Round(amount * BattleConfig.ThornsFraction)), target, HitKind.Normal, DamageType.Physical, "Thorns");
             reflecting = false;
         }
 
@@ -458,7 +463,7 @@ namespace GridGame.Core.Battle
                 if (!S.Walkable(next))
                 {
                     Announce("Slam!", t.Id);
-                    Damage(t, BattleConfig.KnockbackSlamDamage + baseDamage, caster, HitKind.Normal, DamageType.Physical, "Slam!", canPush: false);
+                    Damage(t, BattleConfig.KnockbackSlamDamage + baseDamage, caster, HitKind.Normal, DamageType.Physical, "Slam!");
                     return;
                 }
                 var other = S.UnitAt(next);
@@ -466,15 +471,15 @@ namespace GridGame.Core.Battle
                 {
                     Announce("Crash!", t.Id);
                     int crash = BattleConfig.KnockbackCrashDamage + baseDamage / 2;
-                    Damage(t, crash, caster, HitKind.Normal, DamageType.Physical, "Crash!", canPush: false);
-                    if (other.Alive && other.Team != caster.Team && !other.IsNeutral) Damage(other, crash, caster, HitKind.Normal, DamageType.Physical, "Crash!", canPush: false);
+                    Damage(t, crash, caster, HitKind.Normal, DamageType.Physical, "Crash!");
+                    if (other.Alive && other.Team != caster.Team && !other.IsNeutral) Damage(other, crash, caster, HitKind.Normal, DamageType.Physical, "Crash!");
                     return;
                 }
                 if (S.MovableAt(next) is MovableTile mv)
                 {
                     var beyond = next + dir;
                     // A pickup beyond blocks the amplifier like a wall (two items never share a tile, §1.1.3, GG-T129).
-                    if (!S.FreeToEnter(beyond) || PickupBlocksMovable(beyond) || !MoveMovable(mv, beyond, t)) { Damage(t, BattleConfig.KnockbackCrashDamage, caster, HitKind.Normal, DamageType.Physical, "Crash!", canPush: false); return; }
+                    if (!S.FreeToEnter(beyond) || PickupBlocksMovable(beyond) || !MoveMovable(mv, beyond, t)) { Damage(t, BattleConfig.KnockbackCrashDamage, caster, HitKind.Normal, DamageType.Physical, "Crash!"); return; }
                 }
                 var from = t.Pos;
                 if (!Relocate(t, next)) return;
@@ -566,22 +571,35 @@ namespace GridGame.Core.Battle
         // Timeline reactions to hits (§2.3, §13.4)
         // ─────────────────────────────────────────────────────────────────────────────
 
-        private void Pushback(Unit enemy, Unit attacker)
+        /// <summary>
+        /// Pushback (§2.3, GG-T286): only an ability/item carrying the Pushback keyword, or a pincer, calls this — plain
+        /// hits never push. It works anywhere on the bar: the target's turn icon acts <paramref name="seconds"/> later
+        /// (capped at <see cref="BattleConfig.PushbackMaxSeconds"/>) — IP lost at its current rate, and whatever IP 0
+        /// can't absorb stands it still for the rest. A target holding a cast has the cast slip instead (never cancelled).
+        /// One push per target per action, so a chained pincer or a multi-hit doesn't stack it.
+        /// </summary>
+        private void Pushback(Unit target, float seconds)
         {
-            if (!pushedThisAction.Add(enemy.Id)) return; // one push per enemy per action — a chained pincer shouldn't stack it
-            var entry = S.TurnEntryOf(enemy.Id);
-            if (entry == null || !entry.InZone) return;
-            float zoneWidth = BattleConfig.BarLength - BattleConfig.ZoneStart;
-            float frac = (entry.Ip - BattleConfig.ZoneStart) / zoneWidth;
-            float strMult = 1f + (attacker.Effective.Strength - 10f) / 40f;
-            if (strMult < 0.5f) strMult = 0.5f;
-            float push = BattleConfig.PushbackBaseU * (0.5f + frac) * strMult;
-            if (push > BattleConfig.PushbackMaxU) push = BattleConfig.PushbackMaxU;
-            float from = entry.U;
-            entry.Ip = Math.Max(0, entry.Ip - (int)Math.Round(push * BattleConfig.BarLength));
-            float agiMult = 1f + enemy.Effective.Agility / 50f;
-            entry.StunTicks = Math.Max(1, (int)Math.Round(BattleConfig.BaseStunTicks / agiMult));
-            Emit(new PushedBackEvent { UnitId = enemy.Id, FromU = from, ToU = entry.U, StunTicks = entry.StunTicks });
+            if (!(seconds > 0f) || !target.Alive) return;
+            if (!pushedThisAction.Add(target.Id)) return;
+            int ticks = Math.Max(1, Formulas.SecondsToTicks(Math.Min(seconds, BattleConfig.PushbackMaxSeconds)));
+            var entry = S.TurnEntryOf(target.Id);
+            if (entry != null)
+            {
+                float from = BattleEngine.BarU(S, entry);
+                int rate = BattleEngine.TurnRatePerTick(S, target);
+                int ip = entry.Ip - ticks * rate;
+                if (ip < 0) { entry.StunTicks += (-ip + rate - 1) / rate; ip = 0; }
+                entry.Ip = ip;
+                Emit(new PushedBackEvent { UnitId = target.Id, FromU = from, ToU = BattleEngine.BarU(S, entry), StunTicks = entry.StunTicks });
+                return;
+            }
+            var cast = S.CastEntryOf(target.Id);
+            if (cast != null)
+            {
+                cast.RemainingTicks += ticks;
+                Emit(new CastStaggeredEvent { EntryId = cast.Id, CasterId = target.Id, DelayTicks = ticks });
+            }
         }
 
         /// <summary>Cast-stagger interrupt: Clutch (hero only) → WIS shrug → delay; cancel once delay ≥ cast time.</summary>

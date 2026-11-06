@@ -219,7 +219,7 @@ namespace GridGame.App
             // On the timeline: the stretch between the next enemy icon and ACT, and the seconds it stands for.
             holdLane = new VisualElement { name = "hold-lane", pickingMode = PickingMode.Ignore };
             holdLane.style.position = Position.Absolute;
-            holdLane.style.right = Space.S0; holdLane.style.top = TrackY - 7; holdLane.style.height = Size.Gauge;
+            holdLane.style.left = Space.S0; holdLane.style.top = TrackY - 7; holdLane.style.height = Size.Gauge;
             holdLane.style.backgroundColor = Palette.Gold.WithA(0.55f);
             Round(holdLane, 7);
             timelineFrame.Insert(1, holdLane); // above the track, under the icons
@@ -261,18 +261,18 @@ namespace GridGame.App
             SyncTimeline(at);
             holdDrainFill.style.width = Length.Percent((1f - k) * 100f);
             holdDrainFill.style.backgroundColor = Color.Lerp(HoldEmpty, HoldFull, 1f - k);
-            float nextU = -1f;
+            float nextU = 2f; // GG-T286: u is seconds-to-act over BarSeconds, so the next enemy is the lowest u (left = acts)
             foreach (var e in State.Timeline)
                 if (e.Kind == TimelineKind.Turn && State.UnitById(e.OwnerId) is Unit o && !o.IsHero && !o.IsTimelineHalted && at.TryGetValue(e.Id, out var u))
-                    nextU = Mathf.Max(nextU, u);
-            bool limited = holdWindow > 0f && nextU >= 0f;
+                    nextU = Mathf.Min(nextU, u);
+            bool limited = holdWindow > 0f && nextU <= 1f;
             holdLane.style.display = limited ? DisplayStyle.Flex : DisplayStyle.None;
             holdLabel.style.display = limited ? DisplayStyle.Flex : DisplayStyle.None;
             if (!limited) return;
-            holdLane.style.left = nextU * TimelineWidth;
+            holdLane.style.width = nextU * TimelineWidth; // the stretch between the left edge (acts) and the next enemy
             holdLane.style.backgroundColor = Color.Lerp(new Color(1f, 0.3f, 0.25f, 0.7f), Palette.Gold.WithA(0.55f), 1f - k);
             holdLabel.text = $"{Mathf.Max(0f, holdWindow - holdElapsed):0.0}s";
-            holdLabel.style.left = Mathf.Max(0f, nextU * TimelineWidth - 20f);
+            holdLabel.style.left = Mathf.Max(0f, nextU * TimelineWidth * 0.5f - 20f);
         }
 
         private void EndHold()

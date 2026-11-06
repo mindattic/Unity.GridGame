@@ -29,20 +29,9 @@ namespace GridGame.Core.Battle
         {
             if (ticksSinceReport <= 0) return;
             var e = new TimelineAdvancedEvent { Ticks = ticksSinceReport };
-            foreach (var t in S.Timeline) e.U[t.Id] = t.U;
+            foreach (var t in S.Timeline) e.U[t.Id] = BattleEngine.BarU(S, t);
             Emit(e);
             ticksSinceReport = 0;
-        }
-
-        private int ZoneRatePerTick => Math.Max(1, (BattleConfig.BarLength - BattleConfig.ZoneStart) / BattleConfig.ZoneCrossingTicks);
-
-        private int RateFor(Unit owner, TimelineEntry e)
-        {
-            float mult = BattleEngine.TimelineScale(S, owner);
-            float rate = e.Ip >= BattleConfig.ZoneStart
-                ? ZoneRatePerTick
-                : owner.Effective.Speed * BattleConfig.OpenRatePerSpeed;
-            return Math.Max(1, (int)Math.Round(rate * mult));
         }
 
         private void Tick(out bool enemyTurnResolved)
@@ -62,7 +51,7 @@ namespace GridGame.Core.Battle
                 {
                     if (owner.IsTimelineHalted) continue;
                     if (e.StunTicks > 0) { e.StunTicks--; continue; }
-                    if (e.Ip < BattleConfig.BarLength) e.Ip = Math.Min(BattleConfig.BarLength, e.Ip + RateFor(owner, e));
+                    if (e.Ip < BattleConfig.BarLength) e.Ip = Math.Min(BattleConfig.BarLength, e.Ip + BattleEngine.TurnRatePerTick(S, owner)); // one linear rate, no Zone (GG-T286)
                 }
                 else
                 {

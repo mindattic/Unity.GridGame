@@ -50,11 +50,11 @@ namespace GridGame.Tests
             Assert.That(BattleEngine.TurnTicks(s), Is.EqualTo(1));
             Assert.That(BattleEngine.TurnWindowSeconds(s), Is.EqualTo(BattleConfig.MinTurnSeconds).Within(1e-4));
 
-            // The held timeline: the next icon reaches ACT exactly at the end of the turn, never before.
+            // The held timeline: the next icon reaches the left edge (u 0, acts) exactly at the end of the turn, never before.
             int t = BattleEngine.TurnTicks(s);
             var wolfEntry = s.TurnEntryOf(wolf.Id);
-            Assert.That(BattleEngine.TimelineUAfter(s, t - 1)[wolfEntry.Id], Is.LessThan(1f));
-            Assert.That(BattleEngine.TimelineUAfter(s, t)[wolfEntry.Id], Is.EqualTo(1f));
+            Assert.That(BattleEngine.TimelineUAfter(s, t - 1)[wolfEntry.Id], Is.GreaterThan(0f));
+            Assert.That(BattleEngine.TimelineUAfter(s, t)[wolfEntry.Id], Is.EqualTo(0f));
 
             // Nothing can arrive (every enemy Frozen): no limit on the hold.
             foreach (var e in s.LivingList(Team.Enemy)) e.Buffs.Add(new BuffInstance { Def = db.Buffs["frozen"], Remaining = 1 });
@@ -179,7 +179,7 @@ namespace GridGame.Tests
         }
 
         [Test]
-        public void Pincer_on_in_zone_enemy_pushes_its_icon_back()
+        public void Pincer_pushes_its_foe_back_near_the_left_edge()
         {
             var db = Mini();
             var (s, _) = Battle(db, Stage(("tank", 2, 3)), ("knight", 1, 3), ("cleric", 3, 4));
@@ -187,19 +187,22 @@ namespace GridGame.Tests
             var entry = s.TurnEntryOf(tank.Id);
             entry.Ip = 920;
             var ev = BattleEngine.Apply(s, new MoveCommand { HeroId = Hero(s, "cleric").Id, Path = P((3, 3)) });
-            var push = ev.OfType<PushedBackEvent>().First();
-            Assert.That(push.ToU < push.FromU, Is.True);
-            Assert.That(push.StunTicks > 0, Is.True);
+            var push = ev.OfType<PushedBackEvent>().Single();
+            Assert.That(push.ToU > push.FromU, Is.True); // further right = acts later (GG-T286)
         }
 
         [Test]
-        public void Pincer_outside_zone_has_no_pushback()
+        public void Pincer_pushback_works_far_from_the_left_edge_too()
         {
             var db = Mini();
+            db.Classes["tank"].BaseStats.Speed = 10; // a 6.3 s lap: on the drawn bar even from IP 0
             var (s, _) = Battle(db, Stage(("tank", 2, 3)), ("knight", 1, 3), ("cleric", 3, 4));
-            s.TurnEntryOf(s.Units.Single(u => u.Def.Id == "tank").Id).Ip = 100;
+            var tank = s.Units.Single(u => u.Def.Id == "tank");
+            s.TurnEntryOf(tank.Id).Ip = 0; // just acted: no IP left to lose, so it stands still for the push instead
             var ev = BattleEngine.Apply(s, new MoveCommand { HeroId = Hero(s, "cleric").Id, Path = P((3, 3)) });
-            Assert.That(ev.OfType<PushedBackEvent>(), Is.Empty);
+            var push = ev.OfType<PushedBackEvent>().Single(p => p.UnitId == tank.Id);
+            Assert.That(push.ToU - push.FromU, Is.EqualTo(BattleConfig.PincerPushbackSeconds / BattleConfig.BarSeconds).Within(1e-4));
+            Assert.That(push.StunTicks, Is.EqualTo(Formulas.SecondsToTicks(BattleConfig.PincerPushbackSeconds)));
         }
 
         [Test]
@@ -363,10 +366,10 @@ namespace GridGame.Tests
             m.Bar[0] = new AbilitySlot { AbilityId = "quicken" };
             s.Bank.Add(1);
             var tank = s.Units.Single(u => u.Def.Id == "tank");
-            s.TurnEntryOf(tank.Id).Ip = 0;
+            s.TurnEntryOf(tank.Id).Ip = 850; // Speed 1: 75 ticks out, on the drawn bar
             var ev = BattleEngine.Apply(s, new UseSlotCommand { HeroId = m.Id, Slot = 0, Target = tank.Pos });
             var h = ev.OfType<HastenedEvent>().Single();
-            Assert.That(h.ToU - h.FromU, Is.EqualTo(0.3f).Within(1e-2));
+            Assert.That(h.ToU, Is.LessThan(h.FromU)); // toward the left edge (GG-T286)
         }
 
         [Test]

@@ -112,38 +112,52 @@ namespace GridGame.Core.Battle
             return SlotStatus.Ready;
         }
 
-        /// <summary>
-        /// Clock ticks until this enemy's turn icon reaches the trigger, assuming no pushback/hasten
-        /// (stun and the shared Zone crawl included). -1 when it has no icon or is halted (Frozen).
-        /// </summary>
-        public static int TicksUntilTurn(BattleState s, int unitId)
-        {
-            var u = s.UnitById(unitId);
-            var e = s.TurnEntryOf(unitId);
-            if (u == null || e == null || !u.Alive) return -1;
-            if (u.IsTimelineHalted) return -1;
-            int ip = e.Ip, ticks = e.StunTicks;
-            float mult = TimelineScale(s, u);
-            int zoneRate = System.Math.Max(1, (BattleConfig.BarLength - BattleConfig.ZoneStart) / BattleConfig.ZoneCrossingTicks);
-            for (int guard = 0; guard < 10000 && ip < BattleConfig.BarLength; guard++)
-            {
-                float rate = ip >= BattleConfig.ZoneStart ? zoneRate : u.Effective.Speed * BattleConfig.OpenRatePerSpeed;
-                ip += System.Math.Max(1, (int)System.Math.Round(rate * mult));
-                ticks++;
-            }
-            return ticks;
-        }
+        // ── The one timeline model (GG-T286, Resonance-style): every icon moves at one linear rate; where it is drawn is
+        //    the seconds until it acts. No Zone, no crawl. ──
 
-        /// <summary>How far along the shared u-axis an icon moves per tick right now (0 when halted/stunned) — the view uses it to decide who overtakes whom.</summary>
-        public static float UPerTick(BattleState s, TimelineEntry e)
+        /// <summary>IP a turn icon gains per tick right now: Speed × <see cref="BattleConfig.IpPerTickPerSpeed"/> × tempo × status
+        /// (never under 1). Halting (Frozen) is not applied here — the clock simply skips a halted icon.</summary>
+        public static int TurnRatePerTick(BattleState s, Unit u) =>
+            System.Math.Max(1, (int)System.Math.Round(u.Effective.Speed * BattleConfig.IpPerTickPerSpeed * TimelineScale(s, u)));
+
+        /// <summary>
+        /// Clock ticks until this icon acts (a turn reaches the end of its load, a cast lands) at today's rates — stun
+        /// included, no future pushback/haste/buff change assumed. -1 when it never will: its owner is gone, or (unless
+        /// <paramref name="ignoreHalt"/>) halted by Frozen.
+        /// </summary>
+        public static int TicksUntilAct(BattleState s, TimelineEntry e, bool ignoreHalt = false)
         {
             var u = s.UnitById(e.OwnerId);
-            if (u == null || !u.Alive || u.IsTimelineHalted) return 0f;
-            if (e.Kind == TimelineKind.Cast) return 1f / System.Math.Max(1, e.TotalCastTicks + e.AccumulatedDelayTicks);
-            if (e.StunTicks > 0) return 0f;
-            int zoneRate = System.Math.Max(1, (BattleConfig.BarLength - BattleConfig.ZoneStart) / BattleConfig.ZoneCrossingTicks);
-            float rate = e.Ip >= BattleConfig.ZoneStart ? zoneRate : u.Effective.Speed * BattleConfig.OpenRatePerSpeed;
-            return System.Math.Max(1, (int)System.Math.Round(rate * TimelineScale(s, u))) / (float)BattleConfig.BarLength;
+            if (u == null || !u.Alive) return -1;
+            if (!ignoreHalt && u.IsTimelineHalted) return -1;
+            if (e.Kind == TimelineKind.Cast) return System.Math.Max(0, e.RemainingTicks);
+            int left = System.Math.Max(0, BattleConfig.BarLength - e.Ip);
+            int rate = TurnRatePerTick(s, u);
+            return System.Math.Max(0, e.StunTicks) + (left + rate - 1) / rate;
+        }
+
+        /// <summary>Seconds until this icon (turn or cast) acts at today's rates; +∞ when it never will (gone/Frozen).</summary>
+        public static float SecondsUntilAct(BattleState s, TimelineEntry e)
+        {
+            int t = TicksUntilAct(s, e);
+            return t < 0 ? float.PositiveInfinity : t / (float)BattleConfig.TicksPerSecond;
+        }
+
+        /// <summary>
+        /// Where the icon sits on the drawn bar: clamp01(secondsUntilAct / <see cref="BattleConfig.BarSeconds"/>). 0 = the
+        /// LEFT edge (acting now); a cast is born at castSeconds / BarSeconds. A Frozen icon holds where it was; a gone one
+        /// sits at the right end.
+        /// </summary>
+        public static float BarU(BattleState s, TimelineEntry e) => UForTicks(TicksUntilAct(s, e, ignoreHalt: true));
+
+        private static float UForTicks(int ticks) =>
+            ticks < 0 ? 1f : System.Math.Max(0f, System.Math.Min(1f, ticks / (BattleConfig.TicksPerSecond * BattleConfig.BarSeconds)));
+
+        /// <summary>Clock ticks until this unit's turn icon acts (see <see cref="TicksUntilAct"/>); -1 with no icon or Frozen.</summary>
+        public static int TicksUntilTurn(BattleState s, int unitId)
+        {
+            var e = s.TurnEntryOf(unitId);
+            return e == null ? -1 : TicksUntilAct(s, e);
         }
 
         /// <summary>Enemy turn-icon rate factor from the party's net tempo (GG-T268, §2.11): TempoStep^−net, clamped.</summary>
@@ -173,23 +187,12 @@ namespace GridGame.Core.Battle
             {
                 if (e.Kind != TimelineKind.Turn || e.OwnerId == unitId) continue;
                 var o = s.UnitById(e.OwnerId);
-                if (o == null || !o.Alive || o.IsTimelineHalted) continue;
-                int ip = e.Ip, stun = e.StunTicks;
-                for (int tick = 1; tick < t; tick++)
-                {
-                    if (stun > 0) { stun--; continue; }
-                    ip += IpPerTick(s, o, ip);
-                    if (ip >= BattleConfig.BarLength) { earlier.Add(tick); ip = 0; }
-                }
+                int first = TicksUntilAct(s, e);
+                if (o == null || first < 0) continue;
+                int lap = (BattleConfig.BarLength + TurnRatePerTick(s, o) - 1) / TurnRatePerTick(s, o); // re-loads from IP 0
+                for (int tick = first; tick < t; tick += lap) if (tick >= 1) earlier.Add(tick);
             }
             return earlier.Count;
-        }
-
-        private static int IpPerTick(BattleState s, Unit u, int ip)
-        {
-            int zoneRate = System.Math.Max(1, (BattleConfig.BarLength - BattleConfig.ZoneStart) / BattleConfig.ZoneCrossingTicks);
-            float rate = ip >= BattleConfig.ZoneStart ? zoneRate : u.Effective.Speed * BattleConfig.OpenRatePerSpeed;
-            return System.Math.Max(1, (int)System.Math.Round(rate * TimelineScale(s, u)));
         }
 
         // ── The held turn (GG-T188, §2.0) ─────────────────────────────────────────────────────────────
@@ -270,9 +273,9 @@ namespace GridGame.Core.Battle
         }
 
         /// <summary>
-        /// Where every timeline icon would sit <paramref name="ticks"/> into the held turn (u by entry id), for the view
-        /// to run the bar in real time while a hero is held. Turn icons stop at ACT; nothing resolves (the hold always
-        /// ends at or before the first arrival).
+        /// Where every timeline icon would sit on the bar (<see cref="BarU"/>, 0 = left/acting) <paramref name="ticks"/>
+        /// into the held turn, by entry id, for the view to run the bar in real time while a hero is held. Icons stop at
+        /// the left edge; a Frozen icon holds; nothing resolves (the hold always ends at or before the first arrival).
         /// </summary>
         public static Dictionary<int, float> TimelineUAfter(BattleState s, int ticks)
         {
@@ -280,20 +283,9 @@ namespace GridGame.Core.Battle
             foreach (var e in s.Timeline)
             {
                 var o = s.UnitById(e.OwnerId);
-                bool halted = o == null || !o.Alive || o.IsTimelineHalted;
-                if (e.Kind == TimelineKind.Cast)
-                {
-                    int rem = halted ? e.RemainingTicks : System.Math.Max(0, e.RemainingTicks - ticks);
-                    at[e.Id] = System.Math.Max(0f, System.Math.Min(1f, 1f - rem / (float)System.Math.Max(1, e.TotalCastTicks + e.AccumulatedDelayTicks)));
-                    continue;
-                }
-                int ip = e.Ip, stun = e.StunTicks;
-                for (int i = 0; i < ticks && !halted && ip < BattleConfig.BarLength; i++)
-                {
-                    if (stun > 0) { stun--; continue; }
-                    ip = System.Math.Min(BattleConfig.BarLength, ip + IpPerTick(s, o, ip));
-                }
-                at[e.Id] = ip / (float)BattleConfig.BarLength;
+                int left = TicksUntilAct(s, e, ignoreHalt: true);
+                if (left >= 0 && !o.IsTimelineHalted) left = System.Math.Max(0, left - System.Math.Max(0, ticks));
+                at[e.Id] = UForTicks(left);
             }
             return at;
         }

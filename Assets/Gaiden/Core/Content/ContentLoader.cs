@@ -134,7 +134,12 @@ namespace GridGame.Core.Content
                 NeedClass(c.LaysEgg, $"class {c.Id} egg");
                 foreach (var ph in c.BossPhases) NeedAbility(ph.OnEnterAbility, $"class {c.Id} boss phase");
             }
-            foreach (var a in db.Abilities.Values) { NeedBuff(a.ApplyBuff, $"ability {a.Id}"); NeedBuff(a.RemovesBuff, $"ability {a.Id} removes"); }
+            foreach (var a in db.Abilities.Values)
+            {
+                NeedBuff(a.ApplyBuff, $"ability {a.Id}"); NeedBuff(a.RemovesBuff, $"ability {a.Id} removes");
+                if (!(a.Pushback >= 0f) || a.Pushback > Battle.BattleConfig.PushbackMaxSeconds)
+                    p.Add($"ability {a.Id}: Pushback {a.Pushback}s outside 0..{Battle.BattleConfig.PushbackMaxSeconds}s (GG-T286)");
+            }
             foreach (var b in db.Buffs.Values) NeedBuff(b.OnExpireApply, $"buff {b.Id}");
             foreach (var i in db.Items.Values)
             {

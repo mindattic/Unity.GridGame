@@ -20,13 +20,15 @@ namespace GridGame.Core.Battle
 
         // ── Timeline ────────────────────────────────────────────────────────────────
         public const int TicksPerSecond = 10;
-        public const int BarLength = 1000;                 // u = ip / BarLength
-        public const float ZoneU = 0.35f;                  // Prepare/Pushback Zone width
-        public const int ZoneStart = (int)(BarLength * (1f - ZoneU)); // 650
-        /// <summary>Open-track IP per tick per point of Speed (Speed 10 → 16 IP/tick → 4 s to the Zone).</summary>
-        public const float OpenRatePerSpeed = 1.6f;
-        /// <summary>Shared Zone crawl: every icon crosses the Zone in ZoneCrossingTicks regardless of Speed.</summary>
-        public const int ZoneCrossingTicks = 30;
+        public const int BarLength = 1000;                 // a turn icon loads IP 0 → BarLength, then acts
+        /// <summary>IP per tick per point of Speed, the one linear rate (GG-T286: no Zone crawl). Speed 10 → 16 IP/tick
+        /// → a full lap in 6.3 s. Tempo and buffs (Slowed, Hasted, Frozen) scale it (<see cref="BattleEngine.TimelineScale"/>).</summary>
+        public const float IpPerTickPerSpeed = 1.6f;
+        /// <summary>
+        /// Seconds the drawn bar spans (GG-T286, Resonance-style): an icon sits at u = secondsUntilAct / BarSeconds, so
+        /// u = 0 is the LEFT edge (acting now) and anything further off than BarSeconds waits at the right end.
+        /// </summary>
+        public static float BarSeconds = 10f;
         /// <summary>Reference pace (Speed 10) used to draw cast icons on the shared u-axis.</summary>
         public const float ReferencePacePerTick = 16f;
         /// <summary>
@@ -60,11 +62,12 @@ namespace GridGame.Core.Battle
         /// <summary>Max random head-start IP for icons at wave spawn (staggered entry).</summary>
         public const int SpawnStaggerIp = 250;
 
-        // ── Pushback (§2.3 / §2.7, owner direction 2026-10-11: monsters almost never reached ACT — a pincer's
-        //    hits could each re-trigger pushback on the same in-zone target, repeatedly erasing its progress) ──
-        public const float PushbackBaseU = 0.07f;
-        public const float PushbackMaxU = 0.15f;
-        public const int BaseStunTicks = 4;
+        // ── Pushback (§2.3, GG-T286): only an ability/item carrying the Pushback keyword (seconds) moves an icon, anywhere
+        //    on the bar; plain hits never push. One push per foe per action, capped. ──
+        /// <summary>Seconds a pincer shoves back every foe it lands a blow on (the pincer attack carries the keyword).</summary>
+        public static float PincerPushbackSeconds = 1f;
+        /// <summary>Cap on one push, whatever its source.</summary>
+        public static float PushbackMaxSeconds = 2f;
 
         // ── Buffs (§8.3) ────────────────────────────────────────────────────────────
         public const int BuffTickInterval = 10;            // one tick-unit step per 1.0 s of timeline

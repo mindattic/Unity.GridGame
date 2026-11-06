@@ -156,7 +156,7 @@ namespace GridGame.Tests
         // ── Timeline ────────────────────────────────────────────────────────────
 
         [Test] // US-043
-        public void Open_track_rate_scales_with_speed_and_the_zone_is_a_shared_crawl()
+        public void Timeline_rate_is_linear_in_speed_with_no_zone_crawl()
         {
             var db = Mini();
             var (s, _) = Battle(db, Stage(("wolf", 0, 0)), ("knight", 5, 7), ("cleric", 4, 7));
@@ -164,14 +164,14 @@ namespace GridGame.Tests
             var e = s.TurnEntryOf(wolf.Id);
             e.Ip = 0;
             int speed10 = BattleEngine.TicksUntilTurn(s, wolf.Id);
-            Assert.That(speed10, Is.EqualTo((int)Math.Ceiling(650 / 16.0) + (int)Math.Ceiling(350 / 11.0)));
+            Assert.That(speed10, Is.EqualTo((int)Math.Ceiling(1000 / 16.0))); // one rate the whole way (GG-T286)
             wolf.LevelStats.Speed = 20;
             int speed20 = BattleEngine.TicksUntilTurn(s, wolf.Id);
             Assert.That(speed20 < speed10, Is.True);
-            e.Ip = BattleConfig.ZoneStart;
-            int zoneSlow = BattleEngine.TicksUntilTurn(s, wolf.Id);
+            e.Ip = 650; // where the old Zone began: Speed still matters there
+            int fastLate = BattleEngine.TicksUntilTurn(s, wolf.Id);
             wolf.LevelStats.Speed = 5;
-            Assert.That(BattleEngine.TicksUntilTurn(s, wolf.Id), Is.EqualTo(zoneSlow)); // Zone crawl ignores Speed
+            Assert.That(BattleEngine.TicksUntilTurn(s, wolf.Id), Is.GreaterThan(fastLate));
         }
 
         [Test] // US-057
@@ -189,22 +189,24 @@ namespace GridGame.Tests
         }
 
         [Test] // US-047
-        public void Pushback_grows_with_depth_and_strength()
+        public void Pincer_pushback_is_the_same_seconds_anywhere_on_the_bar_whatever_the_strength()
         {
             float Push(int ip, float str)
             {
                 var db = Mini();
                 db.Classes["knight"].BaseStats.Strength = str;
                 db.Classes["cleric"].BaseStats.Strength = str;
+                db.Classes["tank"].BaseStats.Speed = 10; // a bar-length lap, so neither end clamps
                 var (s, _) = Battle(db, Stage(("tank", 2, 3)), ("knight", 1, 3), ("cleric", 3, 4));
                 s.TurnEntryOf(Enemy(s, "tank").Id).Ip = ip;
                 var ev = BattleEngine.Apply(s, new MoveCommand { HeroId = Hero(s, "cleric").Id, Path = P((3, 3)) });
                 var p = ev.OfType<PushedBackEvent>().FirstOrDefault();
-                return p == null ? 0f : p.FromU - p.ToU;
+                return p == null ? 0f : p.ToU - p.FromU; // pushed right: acts later
             }
-            Assert.That(Push(990, 20) > Push(700, 20), Is.True);
-            Assert.That(Push(990, 40) > Push(990, 10), Is.True);
-            Assert.That(Push(990, 400) <= BattleConfig.PushbackMaxU + 0.001f, Is.True);
+            float expected = BattleConfig.PincerPushbackSeconds / BattleConfig.BarSeconds;
+            Assert.That(Push(990, 20), Is.EqualTo(expected).Within(1e-4));
+            Assert.That(Push(300, 20), Is.EqualTo(expected).Within(1e-4)); // far from the left edge too (GG-T286)
+            Assert.That(Push(990, 40), Is.EqualTo(expected).Within(1e-4)); // STR no longer scales it
         }
 
         [Test] // US-049

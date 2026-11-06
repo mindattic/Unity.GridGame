@@ -244,7 +244,7 @@ namespace GridGame.App
                 int turns = a.TempoTurns > 0 ? a.TempoTurns : BattleConfig.DefaultTempoTurns;
                 facts.Add($"On an ally: Tempo +{pts} for {turns} turns (every foe's icon slows; stacks). On a foe: hastens its icon");
             }
-            if (a.DelayU > 0) facts.Add("Pushes back on the timeline");
+            if (a.Pushback > 0) facts.Add($"Pushback {a.Pushback:0.##}s: the foe acts later");
             if (a.RemovesDebuffs) facts.Add("Cleanses debuffs");
             if (a.GrantsOrbs > 0) facts.Add($"Grants {a.GrantsOrbs} orbs");
             var factBox = Ui.El("col", body);

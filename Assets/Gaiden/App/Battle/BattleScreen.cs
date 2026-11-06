@@ -57,7 +57,7 @@ namespace GridGame.App
         private readonly string stageId;
         private readonly BattleSetup setupOverride;
         private BoardView board;
-        private VisualElement timelineBar, timelineIcons, zone;
+        private VisualElement timelineBar, timelineIcons;
         private readonly Dictionary<int, VisualElement> timelineIconViews = new Dictionary<int, VisualElement>();
         private readonly List<VisualElement> slotViews = new List<VisualElement>();
         private readonly List<VisualElement> orbViews = new List<VisualElement>();
@@ -301,14 +301,9 @@ namespace GridGame.App
             timelineBar.style.left = Space.S0; timelineBar.style.right = Space.S0; timelineBar.style.top = TrackY - 3; timelineBar.style.height = Size.Track;
             timelineBar.style.backgroundColor = Palette.Text.WithA(0.85f);
             timelineBar.style.borderTopLeftRadius = timelineBar.style.borderTopRightRadius = timelineBar.style.borderBottomLeftRadius = timelineBar.style.borderBottomRightRadius = 3;
-            zone = Ui.El("", frame);
-            zone.style.position = Position.Absolute;
-            zone.style.left = Length.Percent((1f - BattleConfig.ZoneU) * 100f); zone.style.right = Space.S0;
-            zone.style.top = Space.S8; zone.style.bottom = Space.S8;
-            zone.style.backgroundColor = new Color(1f, 0.55f, 0.2f, 0.18f);
-            zone.style.borderLeftWidth = 4; zone.style.borderLeftColor = new Color(1f, 0.6f, 0.25f, 0.9f);
+            // GG-T286: no Zone. u = seconds until acting / BarSeconds, so the left edge is "acts now" (redesign: GG-T287).
             var act = Ui.Text("ACT", "tiny warn shadow", frame);
-            act.style.position = Position.Absolute; act.style.right = -Space.S8; act.style.top = -Space.S24;
+            act.style.position = Position.Absolute; act.style.left = -Space.S8; act.style.top = -Space.S24;
             timelineIcons = Ui.El("", frame);
             timelineIcons.style.position = Position.Absolute;
             timelineIcons.style.left = timelineIcons.style.top = timelineIcons.style.right = timelineIcons.style.bottom = Space.S0;
@@ -459,7 +454,7 @@ namespace GridGame.App
             var at = new Dictionary<int, float>();
             foreach (var e in State.Timeline)
             {
-                if (e.Kind == TimelineKind.Cast) { at[e.Id] = Mathf.Clamp01(uOverride != null && uOverride.TryGetValue(e.Id, out var cu) ? cu : e.U); continue; } // casts live on the caster, not the line
+                if (e.Kind == TimelineKind.Cast) { at[e.Id] = Mathf.Clamp01(uOverride != null && uOverride.TryGetValue(e.Id, out var cu) ? cu : BattleEngine.BarU(State, e)); continue; } // casts live on the caster, not the line
                 live.Add(e.Id);
                 if (!timelineIconViews.TryGetValue(e.Id, out var icon))
                 {
@@ -467,7 +462,7 @@ namespace GridGame.App
                     timelineIconViews[e.Id] = icon;
                     timelineIcons.Add(icon);
                 }
-                at[e.Id] = Mathf.Clamp01(uOverride != null && uOverride.TryGetValue(e.Id, out var ou) ? ou : e.U);
+                at[e.Id] = Mathf.Clamp01(uOverride != null && uOverride.TryGetValue(e.Id, out var ou) ? ou : BattleEngine.BarU(State, e));
             }
             lastAt = at;
             LayoutIcons(at);
@@ -504,8 +499,8 @@ namespace GridGame.App
             }
             else
             {
-                // A cast rides the same line, from 0 (cast start) to 1 (lands) over its own cast time, so a quick
-                // spell visibly overtakes turn icons that started earlier.
+                // A cast rides the same line, born at its cast time (castSeconds / BarSeconds) and reaching the left
+                // edge as it lands, so a quick spell visibly overtakes turn icons that started earlier.
                 var a = App.Content.TryAbility(e.AbilityId);
                 icon.style.width = icon.style.height = CastIcon;
                 icon.style.top = TrackY - CastIcon / 2f;
@@ -524,11 +519,11 @@ namespace GridGame.App
         private static Color TurnRing(Unit owner) =>
             owner != null && (owner.Def.HasTag("Boss") || owner.IsMultiTile) ? Palette.Boss : Palette.Enemy;
 
-        /// <summary>The enemy turn closest to ACT gets a gold ring and a slight lift: "this one hits next".</summary>
+        /// <summary>The enemy turn closest to the left edge (acting) gets a gold ring and a slight lift: "this one hits next".</summary>
         private void MarkNextAttacker()
         {
             var next = State.Timeline.Where(e => e.Kind == TimelineKind.Turn && State.UnitById(e.OwnerId) is Unit o && !o.IsHero)
-                .OrderByDescending(e => e.U).FirstOrDefault();
+                .OrderBy(e => BattleEngine.BarU(State, e)).ThenBy(e => e.Id).FirstOrDefault();
             foreach (var e in State.Timeline)
             {
                 if (e.Kind != TimelineKind.Turn || !timelineIconViews.TryGetValue(e.Id, out var icon)) continue;
@@ -626,9 +621,10 @@ namespace GridGame.App
         {
             var casting = new Dictionary<int, List<(Color color, float left)>>();
             var targeted = new Dictionary<int, List<(Color color, AbilityDef a)>>();
-            var rides = State.Timeline.Where(e => e.Kind == TimelineKind.Cast).Select(e => (e.Id, e.OwnerId, e.AbilityId, e.TargetUnitId, e.TargetTile, e.U)).ToList();
+            var rides = State.Timeline.Where(e => e.Kind == TimelineKind.Cast)
+                .Select(e => (e.Id, e.OwnerId, e.AbilityId, e.TargetUnitId, e.TargetTile, U: BattleEngine.BarU(State, e), Span: CastSpanU(e.TotalCastTicks + e.AccumulatedDelayTicks))).ToList();
             foreach (var g in castGhosts.Values)
-                if (rides.All(r => r.Id != g.EntryId)) rides.Add((g.EntryId, g.CasterId, g.AbilityId, g.TargetUnitId, g.TargetTile, g.U));
+                if (rides.All(r => r.Id != g.EntryId)) rides.Add((g.EntryId, g.CasterId, g.AbilityId, g.TargetUnitId, g.TargetTile, g.U, g.Span));
             foreach (var e in rides)
             {
                 var color = Art.SpellColor(e.AbilityId);
@@ -636,7 +632,7 @@ namespace GridGame.App
                 float u = at != null && at.TryGetValue(e.Id, out var x) ? x : e.U;
                 if (castGhosts.TryGetValue(e.Id, out var ghost)) ghost.U = u;
                 if (!casting.TryGetValue(e.OwnerId, out var cl)) casting[e.OwnerId] = cl = new List<(Color, float)>();
-                cl.Add((color, 1f - u));
+                cl.Add((color, Mathf.Clamp01(u / Mathf.Max(0.0001f, e.Span)))); // the share of the cast still to run
                 int target = e.TargetUnitId;
                 if (State.UnitById(target) is not Unit tu || !tu.Alive) target = State.UnitAt(e.TargetTile)?.Id ?? -1;
                 if (target < 0) continue;

@@ -267,7 +267,7 @@ namespace GridGame.Core.Battle
                 }
 
                 if (a.HastenU > 0f && t.Alive) Hasten(t, a.HastenU, a.Id, a.TempoTurns);
-                if (a.DelayU > 0f && t.Alive) Delay(t, a.DelayU);
+                if (a.Pushback > 0f && t.Alive && !friend) Pushback(t, a.Pushback); // the Pushback keyword (GG-T286)
 
                 var buff = C.TryBuff(a.ApplyBuff);
                 if (buff != null && buff.Kind == BuffKind.Buff && !friend)
@@ -283,26 +283,6 @@ namespace GridGame.Core.Battle
             }
 
             if (a.StepBack > 0 && caster.Alive && !S.IsOver) StepAway(caster, a.StepBack);
-        }
-
-        /// <summary>Delay (GG-T183, the inverse of <see cref="Hasten"/>): slide a turn icon back, or make a held cast slip.</summary>
-        private void Delay(Unit t, float amountU)
-        {
-            var turn = S.TurnEntryOf(t.Id);
-            if (turn != null)
-            {
-                float from = turn.U;
-                turn.Ip = Math.Max(0, turn.Ip - (int)Math.Round(amountU * BattleConfig.BarLength));
-                Emit(new PushedBackEvent { UnitId = t.Id, FromU = from, ToU = turn.U, StunTicks = turn.StunTicks });
-                return;
-            }
-            var cast = S.CastEntryOf(t.Id);
-            if (cast != null)
-            {
-                int ticks = Math.Max(1, (int)Math.Round(amountU * BattleConfig.BarLength / BattleConfig.ReferencePacePerTick));
-                cast.RemainingTicks += ticks;
-                Emit(new CastStaggeredEvent { EntryId = cast.Id, CasterId = t.Id, DelayTicks = ticks });
-            }
         }
 
         /// <summary>Movers an ability may shove about: one-tile, living, not a snake segment or remains.</summary>
@@ -446,19 +426,19 @@ namespace GridGame.Core.Battle
             var turn = S.TurnEntryOf(t.Id);
             if (turn != null)
             {
-                float from = turn.U;
+                float from = BattleEngine.BarU(S, turn);
                 turn.StunTicks = 0;
                 turn.Ip = Math.Min(BattleConfig.BarLength, turn.Ip + (int)Math.Round(amountU * BattleConfig.BarLength));
-                Emit(new HastenedEvent { EntryId = turn.Id, UnitId = t.Id, FromU = from, ToU = turn.U });
+                Emit(new HastenedEvent { EntryId = turn.Id, UnitId = t.Id, FromU = from, ToU = BattleEngine.BarU(S, turn) });
                 return;
             }
             var cast = S.CastEntryOf(t.Id);
             if (cast != null)
             {
-                float from = cast.U;
+                float from = BattleEngine.BarU(S, cast);
                 int ticks = (int)Math.Round(amountU * BattleConfig.BarLength / BattleConfig.ReferencePacePerTick);
                 cast.RemainingTicks = Math.Max(0, cast.RemainingTicks - ticks);
-                Emit(new HastenedEvent { EntryId = cast.Id, UnitId = t.Id, FromU = from, ToU = cast.U });
+                Emit(new HastenedEvent { EntryId = cast.Id, UnitId = t.Id, FromU = from, ToU = BattleEngine.BarU(S, cast) });
             }
         }
 
