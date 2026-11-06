@@ -27,19 +27,50 @@ namespace GridGame.Core.Bot
         /// </summary>
         public float SkillLevel = 100f;
 
+        /// <summary>
+        /// GG-T292: the smart bot reads the bar (§2). It weighs a pending hero cast against the foes that act before it
+        /// lands, so it pushes back or Slows a foe to let the cast fire first, prices a planned cast by the blows that land
+        /// before it, values a pincer by the turn its pushback costs a foe about to act, sets up the next pincer, and
+        /// Guards rather than shuffling when nothing worth a turn is on offer. Off for the casual bot (an unthinking
+        /// player): on by default only for a bot with no randomness.
+        /// </summary>
+        public bool TimelineAware;
+        /// <summary>A/B knob for balance soaks: a TimelineAware bot that still plans the board but ignores the bar.</summary>
+        public bool IgnoreBar;
+        private bool ReadsBar => TimelineAware && !IgnoreBar;
+
+        /// <summary>Smart bot: where each hero last moved from, so it never shuttles a hero back and forth (GG-T292).</summary>
+        private readonly Dictionary<int, Coord> cameFrom = new Dictionary<int, Coord>();
+        /// <summary>Smart bot: actions in a row that took no enemy HP (a stall), and the enemy HP total last seen.</summary>
+        private int stalled;
+        private int lastEnemyHp = -1;
+
         public HeroBot(int seed, float randomness = 0f)
         {
             rng = new Rng(seed);
             Randomness = randomness;
+            TimelineAware = randomness <= 0f;
         }
 
         /// <summary>The best drag on offer (hints and automation teach moving, so they ask for a move specifically).</summary>
         public MoveCommand BestMove(BattleState s) => Decide(s, movesOnly: true) as MoveCommand;
 
-        public BattleCommand Decide(BattleState s) => Decide(s, false);
+        public BattleCommand Decide(BattleState s)
+        {
+            var cmd = Decide(s, false);
+            if (cmd is MoveCommand m && s.UnitById(m.HeroId) is Unit mover) cameFrom[m.HeroId] = mover.Pos;
+            return cmd;
+        }
 
         private BattleCommand Decide(BattleState s, bool movesOnly)
         {
+            if (TimelineAware)
+            {
+                int hp = 0;
+                foreach (var e in s.LivingList(Team.Enemy)) hp += e.Hp;
+                stalled = lastEnemyHp >= 0 && hp >= lastEnemyHp ? stalled + 1 : 0;
+                lastEnemyHp = hp;
+            }
             // A recruitable whose every term is met (GG-T132) is worth more than any swing: talk it round first.
             if (!movesOnly && Recruitment.ReadyTalk(s) is TalkCommand talk) return talk;
             var heroes = s.LivingList(Team.Hero);
@@ -68,7 +99,7 @@ namespace GridGame.Core.Bot
                             if (pv.StepsTaken.Count == 0) continue;
                             float score = ScoreMove(s, pv, h);
                             if (!pincerAvailable && HasRealPincer(s, pv)) pincerAvailable = true;
-                            float push = lone ? 0f : DisplacementScore(s, pv, h);
+                            float push = lone ? 0f : DisplacementScore(s, pv, h, TimelineAware);
                             if (push > 0f) displacement.Add((candidates.Count, push));
                             float held = full.Count > maxSteps ? window : pv.StepsTaken.Count * BattleConfig.BotSecondsPerStep;
                             if (window > 0f) held = Math.Min(held, window);
@@ -114,6 +145,7 @@ namespace GridGame.Core.Bot
             }
             // A lone hero (GG-T123, §22.10) can't pincer: with no damage, pickup or heal worth taking it guards rather
             // than wandering — foes no longer flee a lone hero (EnemyPlanner.LoneHero), so they come to its bar.
+            if (!movesOnly && ReadsBar && !lone && best < GuardValue(s)) return new ShieldCommand();
             if (!movesOnly && best < BattleConfig.BotGuardBelowScore && (lone || rng.Chance(BattleConfig.BotGuardChance))) return new ShieldCommand();
             if (SkillLevel < 99.9f) return SkillWeightedPick(candidates, best);
             return bestList[rng.Range(0, bestList.Count)];
@@ -186,6 +218,8 @@ namespace GridGame.Core.Bot
                     }
                     var e = s.TurnEntryOf(o.Id);
                     if (e != null && BattleEngine.SecondsUntilAct(s, e) <= BattleConfig.PushbackMaxSeconds + 1f) score += 4f; // the pincer pushes a foe about to act (GG-T286)
+                    if (ReadsBar) // GG-T292: what the pincer's pushback buys on the bar, if the foe lives through it
+                        score += (o.HpFraction < 0.4f ? 0.5f : 1f) * PushValue(s, o, Formulas.SecondsToTicks(Math.Min(BattleConfig.PincerPushbackSeconds, BattleConfig.PushbackMaxSeconds)));
                     if (o.HpFraction < 0.4f) score += 3f;
                     if (ChargesTempoDrain(s, o)) score += 6f; // GG-T275: staggering a Temporal Drag keeps the party's tempo
                 }
@@ -214,6 +248,20 @@ namespace GridGame.Core.Bot
                     if (d == 1 && hero.HpFraction < 0.35f) score -= 3f;
                     score += (lone ? 0.15f : 0.05f) * (8 - Math.Min(8, d)); // a lone hero closes in to bring its bar to bear
                 }
+                if (TimelineAware && pv.Pincers.Count == 0)
+                {
+                    // GG-T292: no pincer now — stand where an ally can close one next turn, never shuttle back, and
+                    // close in harder the longer the party has gone without drawing blood.
+                    if (!lone) score += SetupValue(s, pv, hero, at);
+                    if (cameFrom.TryGetValue(hero.Id, out var back) && back == at) score -= 10f;
+                    if (stalled >= 4)
+                    {
+                        int nearest = 99;
+                        foreach (var e in s.LivingList(Team.Enemy))
+                            if (!e.IsCorpse && pv.Positions.TryGetValue(e.Id, out var ep)) nearest = Math.Min(nearest, Math.Abs(ep.X - at.X) + Math.Abs(ep.Y - at.Y));
+                        score += 0.4f * (8 - Math.Min(8, nearest));
+                    }
+                }
             }
             return score + rng.NextFloat() * 0.01f;
         }
@@ -232,19 +280,19 @@ namespace GridGame.Core.Bot
         /// displaces it). Each repositioned unit is worth a solid bonus, more when it ends somewhere that sets up
         /// a pincer next turn: a displaced ally beside a foe, or a displaced foe beside a hero.
         /// </summary>
-        private static float DisplacementScore(BattleState s, MovePreview pv, Unit mover)
+        private static float DisplacementScore(BattleState s, MovePreview pv, Unit mover, bool onlySetups = false)
         {
             float score = 0f;
             foreach (var u in s.Units)
             {
                 if (!u.Alive || u.IsCorpse || u.IsNeutral || u.Id == mover.Id) continue; // shuffling a neutral sets nothing up
                 if (!pv.Positions.TryGetValue(u.Id, out var to) || to == u.Pos) continue;
-                score += 6f;
+                if (!onlySetups) score += 6f; // GG-T292: the smart bot pays only for a shove that sets a pincer up (no shuffling loops)
                 var other = u.Team == Team.Hero ? Team.Enemy : Team.Hero;
                 foreach (var v in s.LivingList(other))
                 {
                     if (v.IsCorpse || !pv.Positions.TryGetValue(v.Id, out var vp)) continue;
-                    if (Math.Abs(vp.X - to.X) + Math.Abs(vp.Y - to.Y) == 1) { score += 3f; break; }
+                    if (Math.Abs(vp.X - to.X) + Math.Abs(vp.Y - to.Y) == 1) { score += onlySetups ? 5f : 3f; break; }
                 }
             }
             return score;
@@ -283,6 +331,7 @@ namespace GridGame.Core.Bot
             var targets = TargetResolver.Collect(s, a, caster, anchor);
             float score = 0f;
             bool close = FightIsClose(s);
+            int castTicks = a.Kind == AbilityKind.Spell && a.CastTime > 0f ? Formulas.SecondsToTicks(Formulas.CastTime(a.CastTime, caster.Effective)) : 0;
             // GG-T266: a beneficial buff on a foe-targeting ability lands on the caster, once per cast.
             var selfGift = a.Filter == TargetFilter.EnemyOnly ? s.Content.TryBuff(a.ApplyBuff) : null;
             if (selfGift != null && selfGift.Kind == BuffKind.Buff && targets.Count > 0 && !caster.HasBuff(selfGift.Id))
@@ -302,16 +351,29 @@ namespace GridGame.Core.Bot
                 if (t.Team != caster.Team && !t.IsNeutral)
                 {
                     if (BattleEngine.IsArmored(s, t)) continue;
+                    bool kills = false;
                     if (a.BaseDamage > 0)
                     {
                         int dmg = (int)Math.Round(Formulas.SpellDamage(a, t, false) * Formulas.CasterPower(a, caster) * caster.OutgoingDamageMultiplier);
                         score += Math.Min(t.Hp, dmg) * 0.6f + (t.Hp <= dmg ? 8f : 0f);
+                        kills = t.Hp <= dmg;
                     }
                     var curse = s.Content.TryBuff(a.ApplyBuff);
                     if (curse != null && !t.HasBuff(curse.Id)) score += DebuffValue(curse) * Math.Max(0.25f, a.ApplyBuffChance);
                     if (a.StealsMana) score += s.Bank.IsFull ? 0f : 3f;
                     if (a.HastenU > 0) score -= 5f;
-                    if (a.Pushback > 0f) score += 3f; // GG-T183: shoving a foe back on the timeline buys the party a turn
+                    if (!ReadsBar) { if (a.Pushback > 0f) score += 3f; } // GG-T183: shoving a foe back on the timeline buys the party a turn
+                    else if (!kills)
+                    {
+                        // GG-T292: the smart bot prices a push or a Slow by what it buys on the bar: a pending cast that now
+                        // lands first, a threatening foe's blow postponed, a charge staggered. A cast-time spell only buys
+                        // it if it lands before the foe acts.
+                        int act = EnemyActTicks(s, t);
+                        float landsFirst = castTicks == 0 || (act >= 0 && act >= castTicks) ? 1f : 0.3f;
+                        if (a.Pushback > 0f) score += landsFirst * (1f + PushValue(s, t, Formulas.SecondsToTicks(Math.Min(a.Pushback, BattleConfig.PushbackMaxSeconds))));
+                        if (curse != null && curse.TimelineSpeedMultiplier < 1f && !t.HasBuff(curse.Id))
+                            score += landsFirst * Math.Max(0.25f, a.ApplyBuffChance) * SlowValue(s, t, curse.TimelineSpeedMultiplier);
+                    }
                     if ((a.BaseDamage > 0 || a.Pushback > 0f) && ChargesTempoDrain(s, t)) score += 5f; // GG-T275: stagger a Temporal Drag
                     if (a.BaseHeal > 0 && a.Filter == TargetFilter.EnemyOnly) score += Math.Min(caster.MaxHp - caster.Hp, a.BaseHeal) * 0.3f; // drain
                     if (a.Knockback > 0)
@@ -364,9 +426,155 @@ namespace GridGame.Core.Bot
             // A lone hero's bar is its only way to hurt anything (no pincers with one hero): spend mana and items on
             // damage freely rather than hoarding them for a pincer that can never come (GG-T123).
             bool lone = EnemyPlanner.LoneHero(s) && score > 0f && a.BaseDamage > 0;
+            if (ReadsBar && castTicks > 0 && score > 0f) score -= LatePenalty(s, a, targets, castTicks);
             if (a.Kind == AbilityKind.Spell) score -= a.Cost * OrbPenalty(s, lone);
             if (a.Kind == AbilityKind.Item) score -= lone ? 1f : 4f;
             return score;
+        }
+
+        // ── GG-T292: reading the bar (the smart bot) ────────────────────────────────────────────────────────────
+
+        /// <summary>Clock ticks until this foe next acts: its charge landing if it holds one, else its turn icon; -1 never.</summary>
+        internal static int EnemyActTicks(BattleState s, Unit f)
+        {
+            var e = s.CastEntryOf(f.Id) ?? s.TurnEntryOf(f.Id);
+            return e == null ? -1 : BattleEngine.TicksUntilAct(s, e);
+        }
+
+        /// <summary>Can this foe's next action hurt a hero: a charge in hand, or a hero within its move plus reach.</summary>
+        internal static bool Threatens(BattleState s, Unit f, Unit hero = null)
+        {
+            if (f.IsCorpse || f.IsNeutral) return false;
+            if (s.CastEntryOf(f.Id) != null && hero == null) return true;
+            int reach = Math.Max(0, f.Def.MoveRange) + Math.Max(1, f.Def.AttackRange);
+            foreach (var h in s.LivingList(Team.Hero))
+                if ((hero == null || h == hero) && f.DistanceTo(h) <= reach) return true;
+            return false;
+        }
+
+        /// <summary>
+        /// What delaying foe <paramref name="f"/> by <paramref name="ticks"/> buys: every pending hero cast that it acted
+        /// before and now acts after (worth what that cast does to or against it), the next blow of a threatening foe
+        /// postponed, a charge staggered.
+        /// </summary>
+        internal static float PushValue(BattleState s, Unit f, int ticks)
+        {
+            int before = EnemyActTicks(s, f);
+            if (before < 0 || ticks <= 0) return 0f;
+            float v = LandsFirstValue(s, f, before, before + ticks);
+            if (s.CastEntryOf(f.Id) != null) v += 2f;
+            else if (Threatens(s, f) && before == BattleEngine.TurnTicks(s)) v += 1.5f;
+            return v;
+        }
+
+        /// <summary>The same for a Slow (turn-icon rate × <paramref name="mult"/>): a charge isn't slowed, and a stun isn't.</summary>
+        internal static float SlowValue(BattleState s, Unit f, float mult)
+        {
+            var e = s.TurnEntryOf(f.Id);
+            if (e == null || s.CastEntryOf(f.Id) != null || !(mult < 1f)) return 0f;
+            int before = BattleEngine.TicksUntilAct(s, e);
+            if (before < 0) return 0f;
+            int rate = BattleEngine.TurnRatePerTick(s, f);
+            int slowRate = Math.Max(1, (int)Math.Round(rate * mult));
+            int left = Math.Max(0, BattleConfig.BarLength - e.Ip);
+            int after = Math.Max(0, e.StunTicks) + (left + slowRate - 1) / slowRate;
+            // A Slow lasts its turns, so the lap after is slowed too: a threatening foe loses most of a turn over the fight.
+            return LandsFirstValue(s, f, before, after) + (Threatens(s, f) ? 2f : 0.5f);
+        }
+
+        /// <summary>Hero casts in flight that foe <paramref name="f"/> acted before (before ticks) and acts after (after ticks).</summary>
+        private static float LandsFirstValue(BattleState s, Unit f, int before, int after)
+        {
+            float v = 0f;
+            foreach (var c in s.Timeline)
+            {
+                if (c.Kind != TimelineKind.Cast || c.CasterTeam != Team.Hero) continue;
+                int r = BattleEngine.TicksUntilAct(s, c);
+                if (r < 0 || before >= r || after < r) continue; // a cast wins a tie (casts resolve first)
+                v += CastStake(s, c, f);
+            }
+            return v;
+        }
+
+        /// <summary>What a pending hero cast landing before foe <paramref name="f"/> acts is worth.</summary>
+        private static float CastStake(BattleState s, TimelineEntry c, Unit f)
+        {
+            var a = s.Content.TryAbility(c.AbilityId);
+            var caster = s.UnitById(c.OwnerId);
+            if (a == null || caster == null) return 0f;
+            float v = 0f;
+            foreach (var t in TargetResolver.Collect(s, a, caster, c.TargetTile))
+            {
+                if (t == f && a.BaseDamage > 0)
+                {
+                    int dmg = (int)Math.Round(Formulas.SpellDamage(a, t, false) * Formulas.CasterPower(a, caster) * caster.OutgoingDamageMultiplier);
+                    v += dmg >= t.Hp ? 12f : 2f; // a kill before it acts erases its turn
+                }
+                else if (t == f && a.ApplyBuff != null) v += 3f; // the debuff is on before it acts
+                else if (t.Team == Team.Hero && a.BaseHeal > 0 && t.HpFraction < 0.6f && Threatens(s, f, t)) v += 4f + 8f * (1f - t.HpFraction);
+                else if (t.Team == Team.Hero && a.ApplyBuff != null && Threatens(s, f, t)) v += 1.5f;
+            }
+            if (a.Revives) v += 3f;
+            return Math.Min(15f, v);
+        }
+
+        /// <summary>A planned cast's exposure: the threatening blows that land before it does.</summary>
+        private static float LatePenalty(BattleState s, AbilityDef a, List<Unit> targets, int castTicks)
+        {
+            float p = 0f;
+            foreach (var f in s.LivingList(Team.Enemy))
+            {
+                int act = EnemyActTicks(s, f);
+                if (act < 0 || act >= castTicks) continue;
+                foreach (var t in targets)
+                {
+                    if (t == f && a.BaseDamage > 0) p += 1.5f; // it gets its turn first
+                    else if (t.Team == Team.Hero && a.BaseHeal > 0 && t.HpFraction < 0.5f && Threatens(s, f, t)) p += 3f; // the heal may come too late
+                }
+            }
+            return p;
+        }
+
+        /// <summary>
+        /// GG-T292: a move with no pincer that ends beside a foe whose far side is open, with another hero able to reach
+        /// it next turn, sets up a pincer.
+        /// </summary>
+        private static float SetupValue(BattleState s, MovePreview pv, Unit mover, Coord at)
+        {
+            int reach = BattleEngine.MaxDragSteps(s);
+            if (reach == int.MaxValue) reach = 99;
+            float best = 0f;
+            foreach (var e in s.LivingList(Team.Enemy))
+            {
+                if (e.IsCorpse || e.W != 1 || e.H != 1 || BattleEngine.IsArmored(s, e)) continue;
+                if (!pv.Positions.TryGetValue(e.Id, out var ep)) continue;
+                int dx = ep.X - at.X, dy = ep.Y - at.Y;
+                if (Math.Abs(dx) + Math.Abs(dy) != 1) continue;
+                var far = new Coord(ep.X + dx, ep.Y + dy);
+                if (!s.Walkable(far) || s.MovableAt(far) != null) continue;
+                bool taken = false;
+                foreach (var kv in pv.Positions) if (kv.Value == far && s.UnitById(kv.Key) is Unit u && u.Alive) { taken = true; break; }
+                if (taken) continue;
+                foreach (var h in s.LivingList(Team.Hero))
+                {
+                    if (h.Id == mover.Id || !pv.Positions.TryGetValue(h.Id, out var hp)) continue;
+                    if (Math.Abs(hp.X - far.X) + Math.Abs(hp.Y - far.Y) <= reach) { best = Math.Max(best, e.HpFraction < 0.4f ? 4f : 3f); break; }
+                }
+            }
+            return best;
+        }
+
+        /// <summary>
+        /// GG-T292: what Guarding is worth now — the 15% guard on every hero when a threatening foe acts next, plus the
+        /// mana its unspent turn banks. Never while the party has stalled (Guarding must not stall a fight further).
+        /// </summary>
+        private float GuardValue(BattleState s)
+        {
+            if (stalled >= 3) return float.NegativeInfinity;
+            float v = BattleEngine.GuardCharge(s) / 25f; // 40 charge (the cap) ≈ 1.6
+            foreach (var f in s.LivingList(Team.Enemy))
+                if (EnemyActTicks(s, f) == BattleEngine.TurnTicks(s) && Threatens(s, f)) { v += 1f; break; }
+            return v;
         }
 
         /// <summary>GG-T246: what one orb is worth keeping. A filling bank makes hoarding pointless (every orb minted into

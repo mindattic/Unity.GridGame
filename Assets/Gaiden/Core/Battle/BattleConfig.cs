@@ -22,8 +22,9 @@ namespace GridGame.Core.Battle
         public const int TicksPerSecond = 10;
         public const int BarLength = 1000;                 // a turn icon loads IP 0 → BarLength, then acts
         /// <summary>IP per tick per point of Speed, the one linear rate (GG-T286: no Zone crawl). Speed 10 → 16 IP/tick
-        /// → a full lap in 6.3 s. Tempo and buffs (Slowed, Hasted, Frozen) scale it (<see cref="BattleEngine.TimelineScale"/>).</summary>
-        public const float IpPerTickPerSpeed = 1.6f;
+        /// → a full lap in 6.3 s. Tempo and buffs (Slowed, Hasted, Frozen) scale it (<see cref="BattleEngine.TimelineScale"/>). Static, not const, so a
+        /// balance soak can sweep it (GAIDEN_TUNE, GG-T292).</summary>
+        public static float IpPerTickPerSpeed = 1.6f;
         /// <summary>
         /// Seconds the drawn bar spans (GG-T286, Resonance-style): an icon sits at u = secondsUntilAct / BarSeconds, so
         /// u = 0 is the LEFT edge (acting now) and anything further off than BarSeconds waits at the right end.
