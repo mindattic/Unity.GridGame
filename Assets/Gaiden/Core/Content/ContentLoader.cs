@@ -311,8 +311,8 @@ namespace GridGame.Core.Content
             VfxStyleSheet.Validate(db, p);
             VfxCatalog.Validate(db, p);
             p.AddRange(GridGame.Core.Battle.DifficultyTable.Problems()); // the 1..10 dial (GG-T309)
-            return p;
             Glossary.Validate(db, p);
+            return p;
         }
 
         /// <summary>GG-T298 (§1.2.3): the widened support effects stay in their sane ranges, and the generated "As a
