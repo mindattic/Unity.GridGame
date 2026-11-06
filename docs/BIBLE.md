@@ -626,7 +626,7 @@ Turns and casts share the one axis, so a cast is a racer like any turn: it is bo
 
 - Time is integer **ticks**, `BattleConfig.TicksPerSecond` = 10. A turn icon still loads `BarLength` = 1000 IP internally, but it is **drawn** at its seconds until acting (`u = secondsUntilAct / BarSeconds`, GG-T286).
 - **Looking is free.** Nothing moves while you inspect, select or pick a target.
-- **Picking up a hero starts the turn.** The timeline then runs in real time: the player's turn is the time from pickup until the **next enemy icon reaches the left edge** (acts) — `BattleEngine.TurnTicks` (the soonest `TicksUntilTurn`, no future pushback assumed), shown as `TurnWindowSeconds` = ticks ÷ 10 real seconds. ~~max(`MinTurnSeconds` 2 s, …) (the floor slowed the playback on a very short turn)~~ — **GG-T311:** no floor; a gap too short for a drag can't start one (below).
+- **Picking up a hero starts the turn.** The timeline then runs in real time: the player's turn is the time from pickup until the **next enemy icon reaches the left edge** (acts) — `BattleEngine.TurnTicks` (the soonest `TicksUntilTurn`, no future pushback assumed), shown as `TurnWindowSeconds` = max(`MinTurnSeconds` 2 s, ticks ÷ 10) real seconds (the floor slows the playback on a very short turn so it stays a playable drag).
 - **Forced drop.** When the window runs out the hero is dropped **where it is** — the path walked so far is the move — and that enemy acts. `MoveCommand.HeldSeconds` carries the seconds held; at or past the window (`BattleEngine.IsTimeUp`) the drop is forced (`TurnTimeUpEvent`) and the turn ends **even if the hero never left its tile**.
 - ~~**Dropping earlier ends the turn early.** Every accepted command ends the player's turn: the clock runs until an enemy turn resolves.~~ **Amended 2026-11-06 (owner, GG-T308): the window is the party's, and every hero acts once in it.** Owner: "Pushing an enemy back gives you more time to move your selected hero — slide through heroes and enemies alike and create more alignments … The pushback happens after the drop (the hero acts) or as the result of an Ability, Item or Spell, all three of which consume that hero's turn."
   - **The window** is the time until the next enemy (or enemy charge's owner) reaches the left of the bar — `BattleEngine.TurnTicks`, the same gold hold lane and seconds readout. It is a **budget shared by the party**.
@@ -636,20 +636,8 @@ Turns and casts share the one axis, so a cast is a racer like any turn: it is bo
   - **When the window ends:** if the time runs out during an action, that enemy acts there and then (the rest of that action's cost is not carried over); when **every** able hero has acted, the clock runs on to the next enemy turn — leftover time is **not** banked (only Guard banks it); Guard gives the rest of the window up ([§2.5](#25-auto-skip--shield)). After the enemy turn a **new window** begins and every hero may act again (`PlayerControlEvent.NewWindow`). Clearing a wave also opens a fresh window (no advance); with no enemy icon able to arrive (none left, all Frozen) a spent window is the fixed `ActionTicks` = 20 ticks.
   - **Turn boundaries are windows.** Mid-window control returns with `PlayerControlEvent { NewWindow = false }` and nothing else; hero buffs and skill cooldowns, Frozen on foes, tempo effects, pickups, corpses, the Amplifier roll, Regenerate and the TurnStart/TurnEnd triggers all count **windows** (party turns), not hero actions. ActionEnd triggers still fire after each hero's action.
   - **Seen:** a hero that has acted greys out with a ✓ on its token until the window ends (`UnitView.SetActed`, eased); mid-window the selection moves to a hero who can still act and a banner says "N heroes can still act · 2.3s left"; the next enemy keeps its gold ring; the hold lane shows what is left of the window.
-- **Amended 2026-11-06 (owner, GG-T311): minimum action time — heroes go first, but only act in a gap wide enough.** Owner: "Heroes go first in the round, but unless they can get in a pincer between the intervals between enemies hitting left they have to sacrifice their turn, and that could lead to several enemy attacks in a row before a window wide enough for the player to act becomes available."
-  - **The gap** is the window as it stands: seconds until the next enemy turn icon reaches the left edge (`BattleEngine.TurnTicks`; an enemy charge landing does not end it).
-  - **An action starts only if the gap is at least its minimum** (`BattleEngine.MinActionSeconds`, `ActionFits`, compared in whole ticks rounded up — `NeedTicks`): a **drag** needs `DragPickupSeconds` **0.5 s** + `DragSecondsPerTile` **0.35 s** × one tile = **0.85 s** (`MinDragSeconds`; the human drag model is `DragSeconds(tiles)` = 0.5 + 0.35 × tiles); an **Ability, Item, Spell or Talk** needs its use time, `HeroActionSeconds` **1 s**. Too short: `CanMove` is false, the slot reads `SlotStatus.TooLittleTime`, Talk is unavailable, and the engine refuses the command with "Too little time" at no cost.
-  - **A drag spends at least its minimum** (`CommandTicks` = max(held share, 0.85 s), never more than the window): a flick is still a pickup and a step. During the drag real time is spent as before, and the forced drop still applies.
-  - **Forced sacrifice.** When heroes are left to act but no action of theirs fits (`BattleEngine.TooLittleTime`), the party can only **Guard**: it gives the sliver up, the enemy acts, and the next gap opens. If that one is too short as well, the party Guards again — a tight cluster of foes is several enemy attacks in a row. The forced Guard **keeps Guard's Protection on every hero and banks the time left as mana charge** (`GuardChargeFor`, so a 0.3 s sliver is 3 charge): it softens the blow without replacing an action.
-  - **Rally** (`BattleState.Rally`): a forced Guard — or a Guard that gives up a whole window shorter than `RallyGapSeconds` **2 s** (no hero acted in it) — slows every enemy icon one tempo step (×0.8, stacking to `RallyMaxStacks` **3** ≈ ×0.51, within the tempo clamp), and the next hero action resets it (a new wave too). Without it, foes whose turns all fall closer together than an action (three wolves lapping in 2 s) would lock the party out for ever; with it, "several enemy attacks in a row" always end in a window. The banner adds "Rally N: foes slowed".
-  - **Heroes act first.** A wave's enemy turn icons are held back at spawn so none reaches the left edge sooner than `OpeningWindowSeconds` = **3 s** (`BattleRunner.OpenPartyWindow`; a foe too fast for that starts from the beginning of the bar, a full lap) — the party always opens the battle and every wave.
-  - **Opening gaps.** Clusters are the danger; a pincer's pushback, a Pushback keyword or a Slow on the foe at the front of a cluster opens a gap behind it (pushing the *second* foe of a tight pair before the first acts turns the next gap from a forced Guard into a window).
-  - **Seen:** the bar draws the current gap as a soft lane from the left edge to the next enemy icon with its seconds — **green** "move or skill", **amber** "move only", **red** "Guard" (`BattleScreen.SyncGap`); with no room, a banner says "Too little time — Guard (0.4s gap, a move needs 0.85s)" and GUARD is lit gold (`SyncGuardCall`); a slot reads "Too little time — needs 1.0s". Automation `/state` carries `too_little_time`.
-  - **Bots model a human** (`HeroBot.ThinkSeconds`: smart **0.4 s**, casual **1.0 s** of hesitation while holding; a hop of `QuickDragTiles` 2 or fewer thinks half as long): a bot drag holds think + `DragSeconds(tiles)` (`MaxDragSteps(s, think)` tiles fit; a longer path is a forced drop), so a gap shorter than think + pickup + a tile offers it no drag; it never acts in a gap too short and Guards when forced; the smart bot still prices pushback/Slow by the hero actions the gap they open makes room for.
-  - **Tuning (GG-T311):** `IpPerTickPerSpeed` 1.6 → **3.2** (Speed 10 laps in 3.2 s) and the difficulty dial gains an `EnemySpeed` column ([§22.9](#229-difficulty-settings-scaffolding-added-2026-10-11-owner-direction)). Per-stage 8 soak (15 stages), smart / casual wins: difficulty 10 **100% / 100% → 72% / 42%** (greenvalley 83/41, desert 70/58, swamp 62/20, cave 79/45, cityruins 66/41; no stage unwinnable for the smart bot), difficulty 5 100/100 → 98/89, difficulty 1 100/100 → 100/99.
-  *(Tests: GG-T311 `MinActionTimeTests` — `Heroes_act_first_in_every_wave`, `An_action_is_refused_when_the_gap_is_shorter_than_its_minimum`, `Two_enemies_close_together_force_two_sacrifices_in_a_row`, `Pushback_opens_a_gap_that_then_allows_an_action`, `Bots_never_act_in_a_gap_too_short_and_replay_identically`.)*
 - **The view, not Core, runs the held clock.** Core never ticks during a hold; `BattleEngine.TimelineUAfter(ticks)` gives the view where every icon would be, so the icons glide left in real time. The remaining time shows twice: a gold **lane** from the left end of the track to the next enemy icon (reddening as it runs out; GG-T286), and a **drain bar** under the held hero (green → red). A paused battle stops the hold.
-- **Bot driver.** `HeroBot` drags ~~at `BotSecondsPerStep` = 0.25 s a tile~~ like a human (GG-T311): think time + 0.5 s pickup + 0.35 s a tile; a path longer than `MaxDragSteps` is cut where the time runs out (a forced drop), and every bot move carries its `HeldSeconds`. Since GG-T308 it is asked once per hero action, so it plays several actions a window; the smart bot also weighs the window as a budget (`TimeBalance`: a pushback on the foe that ends the window is worth the extra hero actions it makes room for — `ActionWorth` 4 each — and a long drag or a forced drop costs the actions it denies), prefers a setup an ally still to act can close this window, and counts a stall per window. The soak (`Bots_play_every_stage_without_breaking_invariants`) reports average turn length and forced drops per stage.
+- **Bot driver.** `HeroBot` drags at `BotSecondsPerStep` = 0.25 s a tile: a path longer than `MaxDragSteps` (window ÷ 0.25) is cut where the time runs out (a forced drop), and every bot move carries its `HeldSeconds`. Since GG-T308 it is asked once per hero action, so it plays several actions a window; the smart bot also weighs the window as a budget (`TimeBalance`: a pushback on the foe that ends the window is worth the extra hero actions it makes room for — `ActionWorth` 4 each — and a long drag or a forced drop costs the actions it denies), prefers a setup an ally still to act can close this window, and counts a stall per window. The soak (`Bots_play_every_stage_without_breaking_invariants`) reports average turn length and forced drops per stage.
 - Refused commands and no-op drags (let go early without moving) cost **nothing** (no ticks, `ActionsTaken` unchanged).
 - **Cancelling a drag** (*added 2026-11-05, GG-T252*): releasing the held hero **off the board**, or back on **its own tile with nothing shoved** (the shove preview is empty), is a cancel — no command, no clock, `ui.cancel` and "Move cancelled" (`BattleScreen.DropCancels`/`CancelDrag`). A walk that returns home after shoving someone still commits (shoving is a tactic, GG-T190). A forced drop (the window ran out) is never cancelled.
 - Each tick: every turn icon advances (or burns a stun tick), every cast icon counts down, tick-unit buffs accumulate ([§8.3](#83-ticking)), then arrivals resolve ([§2.4](#24-turn-order--arrival-order)).
@@ -661,7 +649,7 @@ Turns and casts share the one axis, so a cast is a racer like any turn: it is bo
 ### 2.1 Speed and pace
 
 **Amended 2026-11-06 (owner, GG-T286): one linear rate, the whole way.** ~~Open track at Speed × 1.6 IP/tick, then a shared 30-tick Zone crawl.~~
-- A turn icon gains `round(Speed × IpPerTickPerSpeed × tempo × status)` IP per tick (`BattleEngine.TurnRatePerTick`), `IpPerTickPerSpeed` = **3.2** (GG-T311; was 1.6), times the difficulty dial's `EnemySpeed` for enemies, minimum 1 IP/tick: Speed 10 → 32 IP/tick → a full lap in ~32 ticks (3.2 s). Speed matters from IP 0 to the left edge; nothing equalizes the last stretch.
+- A turn icon gains `round(Speed × IpPerTickPerSpeed × tempo × status)` IP per tick (`BattleEngine.TurnRatePerTick`), `IpPerTickPerSpeed` = **1.6**, minimum 1 IP/tick: Speed 10 → 16 IP/tick → a full lap in ~63 ticks (6.3 s). Speed matters from IP 0 to the left edge; nothing equalizes the last stretch.
 - **tempo** is the party tempo — hero Haste slows every foe, Slow on the party speeds them ([§2.11](#211-party-tempo-gg-t268)); **status** is the owner's own buffs (Slowed ×0.5; Frozen halts it entirely, `Unit.IsTimelineHalted`) — `BattleEngine.TimelineScale`. Slow, Haste and Frozen change only the **rate**, never the icon's place: a Slowed foe simply drifts left more slowly, so a cast or a faster foe behind it can **overtake** it. (A Hasten/Quicken landing *on an enemy* is the one exception: it jumps the icon forward, [§2.7.1](#271-hasten--quicken--the-inverse).)
 - A cast icon counts its remaining ticks down one per tick; its `secondsUntilAct` is those ticks ÷ 10.
 - `Speed` is the unit's effective SPD: level SPD + gear SPD + ½ gear AGI ([§3.2](#32-hp-and-stats)).
@@ -2199,28 +2187,28 @@ superseded) are gone.
   reward column strictly rising, and level 10's enemy side exactly 1.0 / offset 0. **Level 10 is the designed game**:
   every balance number in this bible is tuned at 10, and lowering the dial only ever softens it.
 
-  | Level | Name | Enemy HP | Enemy damage | Enemy Lv | Enemy speed (GG-T311) | Rewards (gold, XP, drop chance) |
-  |---|---|---|---|---|---|---|
-  | 1 | Gentle | ×0.55 | ×0.60 | −2 | ×0.60 | ×0.6 |
-  | 2 | Gentle | ×0.60 | ×0.65 | −2 | ×0.65 | ×0.7 |
-  | 3 | Easy | ×0.65 | ×0.70 | −1 | ×0.70 | ×0.8 |
-  | 4 | Easy | ×0.70 | ×0.75 | −1 | ×0.75 | ×0.9 |
-  | 5 | Moderate | ×0.75 | ×0.80 | −1 | ×0.80 | ×1.0 |
-  | 6 | Moderate | ×0.80 | ×0.85 | 0 | ×0.85 | ×1.1 |
-  | 7 | Hard | ×0.85 | ×0.90 | 0 | ×0.90 | ×1.2 |
-  | 8 | Hard | ×0.90 | ×0.93 | 0 | ×0.93 | ×1.3 |
-  | 9 | Very hard | ×0.95 | ×0.97 | 0 | ×0.97 | ×1.4 |
-  | 10 | Intended | ×1.00 | ×1.00 | 0 | ×1.00 | ×1.5 |
+  | Level | Name | Enemy HP | Enemy damage | Enemy Lv | Rewards (gold, XP, drop chance) |
+  |---|---|---|---|---|---|
+  | 1 | Gentle | ×0.55 | ×0.60 | −2 | ×0.6 |
+  | 2 | Gentle | ×0.60 | ×0.65 | −2 | ×0.7 |
+  | 3 | Easy | ×0.65 | ×0.70 | −1 | ×0.8 |
+  | 4 | Easy | ×0.70 | ×0.75 | −1 | ×0.9 |
+  | 5 | Moderate | ×0.75 | ×0.80 | −1 | ×1.0 |
+  | 6 | Moderate | ×0.80 | ×0.85 | 0 | ×1.1 |
+  | 7 | Hard | ×0.85 | ×0.90 | 0 | ×1.2 |
+  | 8 | Hard | ×0.90 | ×0.93 | 0 | ×1.3 |
+  | 9 | Very hard | ×0.95 | ×0.97 | 0 | ×1.4 |
+  | 10 | Intended | ×1.00 | ×1.00 | 0 | ×1.5 |
 
 - **What it scales.** Enemy MaxHP and armor plates at spawn (on top of `BattleConfig.EnemyHpScale`); the damage an
-  enemy's blow deals a hero (after the hero's own reductions start, min 1); every enemy's turn-icon pace (`EnemySpeed`, GG-T311: slower foes leave wider gaps for the party, §2.0); every non-test enemy spawn level
+  enemy's blow deals a hero (after the hero's own reductions start, min 1); every non-test enemy spawn level
   (`EnemyLevelOffset`, never below 1, which also lowers that foe's stats and XP); and per kill the coins, the XP and
   every drop-table entry's chance (capped at 100%), after New Game+'s coin bonus. Test stages (`StageDef.IsTest`) keep
   the enemy side unscaled. Level 0 (`DifficultyTable.Neutral`) is the raw rules with no scaling at all — what a
   hand-built `BattleSetup` (the rules tests) gets.
 - **Shown to the player.** Settings → **Difficulty**: − / the level / + (132-px targets) and one line underneath from
   `DifficultyTable.Describe`, e.g. "Intended: the designed fight. Rewards ×1.5." or "Gentle: foes 55% HP, 60% damage,
-  60% speed, -2 Lv. Rewards ×0.6." The results screen names the dial under Experience ("Difficulty 10 — rewards ×1.5";
+  -2 Lv. Rewards ×0.6." The results screen names the dial under Experience ("Difficulty 10 — rewards ×1.5";
   `BattleReport.Difficulty`).
 - **Migration.** A settings.json from before the dial holds the old preset: **Easy → 5**; **Custom** with enemy HP and
   damage averaging below ×1 → the level whose enemy side is nearest that average; **Normal, Hard, Custom at ×1 or more,

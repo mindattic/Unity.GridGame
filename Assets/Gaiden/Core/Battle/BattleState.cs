@@ -246,10 +246,6 @@ namespace GridGame.Core.Battle
         public BattleResults Results = new BattleResults();
         /// <summary>Signed party tempo effects (GG-T268, §2.11): hero haste adds, Slow on heroes subtracts; they stack.</summary>
         public List<TempoEffect> Tempo = new List<TempoEffect>();
-        /// <summary>GG-T311 (§2.0): Guards in a row that gave a whole window up (no hero acted in it). Each slows every enemy
-        /// icon by one tempo step (<see cref="BattleEngine.EnemyTempoMultiplier"/>), capped at BattleConfig.RallyMaxStacks,
-        /// so a lock of too-short gaps always opens; the next hero action resets it.</summary>
-        public int Rally;
 
         public int NetTempo
         {
