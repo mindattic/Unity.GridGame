@@ -64,7 +64,9 @@ namespace GridGame.Core.Bot
 
         private BattleCommand Decide(BattleState s, bool movesOnly)
         {
-            if (TimelineAware)
+            // GG-T308: a stall is counted per window (the party now takes several actions in one).
+            bool freshWindow = !s.Units.Exists(u => u.IsHero && u.Alive && u.ActedThisWindow);
+            if (TimelineAware && freshWindow)
             {
                 int hp = 0;
                 foreach (var e in s.LivingList(Team.Enemy)) hp += e.Hp;
@@ -97,12 +99,13 @@ namespace GridGame.Core.Bot
                             var path = full.Count > maxSteps ? full.GetRange(0, maxSteps) : full;
                             var pv = BattleEngine.PreviewMove(s, h.Id, path);
                             if (pv.StepsTaken.Count == 0) continue;
+                            float held = full.Count > maxSteps ? window : pv.StepsTaken.Count * BattleConfig.BotSecondsPerStep;
+                            if (window > 0f) held = Math.Min(held, window);
                             float score = ScoreMove(s, pv, h);
+                            if (ReadsBar) score += MoveTimeValue(s, pv, h, held);
                             if (!pincerAvailable && HasRealPincer(s, pv)) pincerAvailable = true;
                             float push = lone ? 0f : DisplacementScore(s, pv, h, TimelineAware);
                             if (push > 0f) displacement.Add((candidates.Count, push));
-                            float held = full.Count > maxSteps ? window : pv.StepsTaken.Count * BattleConfig.BotSecondsPerStep;
-                            if (window > 0f) held = Math.Min(held, window);
                             candidates.Add((new MoveCommand { HeroId = h.Id, Path = new List<Coord>(pv.StepsTaken), HeldSeconds = held }, score));
                         }
                     }
@@ -427,6 +430,7 @@ namespace GridGame.Core.Bot
             // damage freely rather than hoarding them for a pincer that can never come (GG-T123).
             bool lone = EnemyPlanner.LoneHero(s) && score > 0f && a.BaseDamage > 0;
             if (ReadsBar && castTicks > 0 && score > 0f) score -= LatePenalty(s, a, targets, castTicks);
+            if (ReadsBar && score > 0f) score += AbilityTimeValue(s, caster, a, targets);
             if (a.Kind == AbilityKind.Spell) score -= a.Cost * OrbPenalty(s, lone);
             if (a.Kind == AbilityKind.Item) score -= lone ? 1f : 4f;
             return score;
@@ -535,6 +539,89 @@ namespace GridGame.Core.Bot
             return p;
         }
 
+        // ── GG-T308: the party's window is a shared budget ─────────────────────────────────────────────────────
+
+        /// <summary>What one more hero action in this window is worth to the smart bot (in score points).</summary>
+        private const float ActionWorth = 4f;
+
+        /// <summary>Heroes other than <paramref name="actor"/> who may still act in this window.</summary>
+        private static int OthersLeft(BattleState s, int actor)
+        {
+            int n = 0;
+            foreach (var h in BattleEngine.HeroesLeftToAct(s)) if (h.Id != actor) n++;
+            return n;
+        }
+
+        /// <summary>
+        /// Clock ticks the window gains when the foes in <paramref name="pushed"/> act <paramref name="ticks"/> later: the
+        /// window is the soonest enemy turn, so it grows only while a pushed foe was (one of) the next to act.
+        /// </summary>
+        internal static int WindowGainTicks(BattleState s, ICollection<int> pushed, int ticks)
+        {
+            int before = BattleEngine.TurnTicks(s);
+            if (before < 0 || ticks <= 0 || pushed.Count == 0) return 0;
+            int after = int.MaxValue;
+            foreach (var e in s.Timeline)
+            {
+                if (e.Kind != TimelineKind.Turn) continue;
+                var o = s.UnitById(e.OwnerId);
+                if (o == null || o.IsHero) continue;
+                int t = BattleEngine.TicksUntilTurn(s, o.Id);
+                if (t <= 0) continue;
+                if (pushed.Contains(o.Id)) t += ticks;
+                after = Math.Min(after, t);
+            }
+            return after == int.MaxValue ? 0 : Math.Max(0, after - before);
+        }
+
+        /// <summary>
+        /// The window against the heroes still to act: seconds bought (a pushback on the next foe to act) are worth the
+        /// actions they make room for, and spending the window (a long drag, a forced drop) costs the actions it denies.
+        /// </summary>
+        private static float TimeBalance(BattleState s, int actor, int spendTicks, int gainTicks)
+        {
+            int others = OthersLeft(s, actor);
+            int window = BattleEngine.TurnTicks(s);
+            if (others == 0 || window < 0) return 0f;
+            int need = Math.Max(1, Formulas.SecondsToTicks(BattleConfig.HeroActionSeconds));
+            int room = Math.Min(others, Math.Max(0, window - spendTicks) / need);
+            int roomAfter = Math.Min(others, Math.Max(0, window + gainTicks - spendTicks) / need);
+            return ActionWorth * (roomAfter - room) - 0.5f * ActionWorth * (others - room);
+        }
+
+        /// <summary>A drag spends its hold; a hero pincer pushes every foe it strikes PincerPushbackSeconds back.</summary>
+        private static float MoveTimeValue(BattleState s, MovePreview pv, Unit hero, float held)
+        {
+            var pushed = new HashSet<int>();
+            foreach (var p in pv.Pincers) foreach (var o in p.Opponents) if (o.Alive && !o.IsCorpse) pushed.Add(o.Id);
+            int gain = WindowGainTicks(s, pushed, Formulas.SecondsToTicks(Math.Min(BattleConfig.PincerPushbackSeconds, BattleConfig.PushbackMaxSeconds)));
+            return TimeBalance(s, hero.Id, BattleEngine.HoldTicks(s, held), gain);
+        }
+
+        /// <summary>An ability spends HeroActionSeconds; an instant Pushback, or a sure instant Slow, on the next foe buys time.</summary>
+        private static float AbilityTimeValue(BattleState s, Unit caster, AbilityDef a, List<Unit> targets)
+        {
+            var pushed = new HashSet<int>();
+            int push = 0;
+            bool instant = a.Kind != AbilityKind.Spell || a.CastTime <= 0f;
+            if (instant && a.Pushback > 0f)
+            {
+                push = Formulas.SecondsToTicks(Math.Min(a.Pushback, BattleConfig.PushbackMaxSeconds));
+                foreach (var t in targets) if (t.Team == Team.Enemy && !t.IsCorpse) pushed.Add(t.Id);
+            }
+            var slow = s.Content.TryBuff(a.ApplyBuff);
+            if (instant && push == 0 && slow != null && slow.TimelineSpeedMultiplier > 0f && slow.TimelineSpeedMultiplier < 1f && a.ApplyBuffChance >= 0.99f)
+                foreach (var t in targets)
+                {
+                    int left = t.Team == Team.Enemy && !t.HasBuff(slow.Id) ? BattleEngine.TicksUntilTurn(s, t.Id) : -1;
+                    if (left <= 0) continue;
+                    pushed.Add(t.Id); // a Slow stretches the foe's remaining ticks by 1/mult − 1
+                    push = Math.Max(push, (int)(left * (1f / slow.TimelineSpeedMultiplier - 1f)));
+                }
+            int gain = WindowGainTicks(s, pushed, push);
+            return TimeBalance(s, caster.Id, BattleEngine.CommandTicks(s, new UseSlotCommand { HeroId = caster.Id }), gain);
+        }
+
         /// <summary>
         /// GG-T292: a move with no pincer that ends beside a foe whose far side is open, with another hero able to reach
         /// it next turn, sets up a pincer.
@@ -558,7 +645,8 @@ namespace GridGame.Core.Bot
                 foreach (var h in s.LivingList(Team.Hero))
                 {
                     if (h.Id == mover.Id || !pv.Positions.TryGetValue(h.Id, out var hp)) continue;
-                    if (Math.Abs(hp.X - far.X) + Math.Abs(hp.Y - far.Y) <= reach) { best = Math.Max(best, e.HpFraction < 0.4f ? 4f : 3f); break; }
+                    // GG-T308: an ally still to act this window can close it before the foes move.
+                    if (Math.Abs(hp.X - far.X) + Math.Abs(hp.Y - far.Y) <= reach) { best = Math.Max(best, (e.HpFraction < 0.4f ? 4f : 3f) + (h.ActedThisWindow ? 0f : 2f)); break; }
                 }
             }
             return best;

@@ -33,10 +33,15 @@ namespace GridGame.Core.Battle
         /// <summary>Reference pace (Speed 10) used to draw cast icons on the shared u-axis.</summary>
         public const float ReferencePacePerTick = 16f;
         /// <summary>
-        /// Clock a committed action spends when no enemy turn icon can arrive at all (none left, all Frozen, a wave
-        /// still waiting on reinforcements). Otherwise a turn always runs to the next enemy arrival (GG-T188, §2.0).
+        /// Clock a spent window takes when no enemy turn icon can arrive at all (none left, all Frozen, a wave still
+        /// waiting on reinforcements). Otherwise a window always runs to the next enemy arrival (GG-T188/GG-T308, §2.0).
         /// </summary>
         public const int ActionTicks = 20;
+        /// <summary>
+        /// GG-T308 (§2.0): game seconds an Ability, Item, Spell or Talk spends from the party's window (a drag spends the
+        /// time it was held instead), so an instant action still costs budget. A spell's cast time rides the bar separately.
+        /// </summary>
+        public static float HeroActionSeconds = 1f;
 
         // ── Party tempo (GG-T268, §2.11): hero haste slows enemy icons, Slow on heroes speeds them ─────────
         /// <summary>Each net tempo point scales every enemy turn icon's rate by this factor (+1 → ×0.8, −1 → ×1.25).</summary>

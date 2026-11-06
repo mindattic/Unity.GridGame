@@ -4,7 +4,7 @@ using GridGame.Core.Rules;
 
 namespace GridGame.Core.Battle
 {
-    public enum SlotStatus { Ready, Empty, Locked, Unaffordable, OutOfCharges, Cooldown, Silenced, CastCapReached, CannotAct, NoTargets }
+    public enum SlotStatus { Ready, Empty, Locked, Unaffordable, OutOfCharges, Cooldown, Silenced, CastCapReached, CannotAct, NoTargets, Acted }
 
     public sealed class MovePreview
     {
@@ -83,7 +83,47 @@ namespace GridGame.Core.Battle
         public static bool CanMove(BattleState s, int heroId)
         {
             var h = s.UnitById(heroId);
-            return s.Phase == BattlePhase.PlayerInput && h != null && h.Alive && h.IsHero && !h.IsImmobile;
+            return s.Phase == BattlePhase.PlayerInput && h != null && h.Alive && h.IsHero && !h.IsImmobile && !h.ActedThisWindow;
+        }
+
+        // ── The party's window (GG-T308, §2.0) ────────────────────────────────────────────────────────
+
+        /// <summary>Living, able heroes (not Immobile) who have not acted yet in this window. Empty = the window is spent.</summary>
+        public static List<Unit> HeroesLeftToAct(BattleState s)
+        {
+            var list = new List<Unit>();
+            foreach (var u in s.Units)
+                if (u.Alive && u.IsHero && u.OnBoard && !u.IsImmobile && !u.ActedThisWindow) list.Add(u);
+            return list;
+        }
+
+        /// <summary>
+        /// Clock ticks a hero command spends from the window: a drag the share of the window it was held (the view plays
+        /// the bar at the same rate; a forced drop spends all of it; never under 1 tick), an Ability/Item/Spell/Talk the
+        /// fixed <see cref="BattleConfig.HeroActionSeconds"/>. Guard spends the rest of the window instead (0 here).
+        /// </summary>
+        public static int CommandTicks(BattleState s, BattleCommand cmd)
+        {
+            switch (cmd)
+            {
+                case MoveCommand m: return HoldTicks(s, m.HeldSeconds);
+                case UseSlotCommand _:
+                case TalkCommand _:
+                    return System.Math.Max(1, Formulas.SecondsToTicks(BattleConfig.HeroActionSeconds));
+                default: return 0;
+            }
+        }
+
+        /// <summary>Clock ticks a hold of <paramref name="heldSeconds"/> real seconds stands for (see <see cref="CommandTicks"/>).</summary>
+        public static int HoldTicks(BattleState s, float heldSeconds)
+        {
+            if (!(heldSeconds > 0f)) return 1;
+            int turn = TurnTicks(s);
+            if (turn < 0) return System.Math.Max(1, (int)System.Math.Round(heldSeconds * BattleConfig.TicksPerSecond));
+            if (IsTimeUp(s, heldSeconds)) return turn;
+            float w = TurnWindowSeconds(s);
+            int t = (int)System.Math.Floor(heldSeconds / w * turn + 0.0001f);
+            return System.Math.Max(1, System.Math.Min(turn, t));
         }
 
         public static SlotStatus GetSlotStatus(BattleState s, int heroId, int slot)
@@ -94,6 +134,7 @@ namespace GridGame.Core.Battle
             if (slot >= h.UnlockedSlots) return SlotStatus.Locked;
             if (slot >= h.Bar.Count || h.Bar[slot].IsEmpty) return SlotStatus.Empty;
             if (h.IsImmobile) return SlotStatus.CannotAct;
+            if (h.ActedThisWindow) return SlotStatus.Acted; // GG-T308: one action per hero per window
             var sl = h.Bar[slot];
             if (sl.IsWeapon) return SlotStatus.Ready;
             if (sl.IsItem)
@@ -199,8 +240,8 @@ namespace GridGame.Core.Battle
         // ── The held turn (GG-T188, §2.0) ─────────────────────────────────────────────────────────────
 
         /// <summary>
-        /// Length of the player's turn in clock ticks: until the next enemy turn icon reaches ACT (no pushback/hasten
-        /// assumed). -1 when no enemy icon can arrive (none left, or every one halted) — the hold then has no limit.
+        /// What is left of the party's window in clock ticks: until the next enemy turn icon reaches the left edge (no
+        /// pushback/hasten assumed). Each hero action spends some of it and a Pushback or Slow lengthens it (GG-T308). -1 when no enemy icon can arrive (none left, or every one halted) — the hold then has no limit.
         /// </summary>
         public static int TurnTicks(BattleState s)
         {

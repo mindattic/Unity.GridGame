@@ -96,6 +96,21 @@ namespace GridGame.Tests
 
         public static List<Coord> P(params (int x, int y)[] steps) => steps.Select(t => new Coord(t.x, t.y)).ToList();
 
+        /// <summary>
+        /// GG-T308: applies <paramref name="cmd"/> as the party's last action of its window — every other hero counts as
+        /// having acted — so the clock runs on to the next enemy turn, as one command did before the shared window. For
+        /// tests about what happens over enemy turns, not about the window itself.
+        /// </summary>
+        public static List<BattleEvent> Turn(BattleState s, BattleCommand cmd)
+        {
+            int actor = BattleEngine.CommandHeroId(cmd);
+            foreach (var u in s.Units) if (u.IsHero && u.Id != actor) u.ActedThisWindow = true;
+            var ev = BattleEngine.Apply(s, cmd);
+            if (!ev.Exists(e => e is PlayerControlEvent pc && pc.NewWindow) && !s.IsOver)
+                foreach (var u in s.Units) if (u.IsHero && u.Id != actor) u.ActedThisWindow = false; // refused: nothing spent
+            return ev;
+        }
+
         /// <summary>Invariants on one command's event stream (GG-T98): every pincer's formation-time geometry is a legal
         /// line — a single tile thick across its axis, except where a 2×2 foe widens it — and its snapshots line up with its ids.</summary>
         public static void AssertEventInvariants(List<BattleEvent> events)

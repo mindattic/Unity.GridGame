@@ -32,7 +32,7 @@ namespace GridGame.Tests
             s.TurnEntryOf(darter.Id).Ip = 999; // its turn arrives inside this very command
             var knight = Hero(s, "knight");
 
-            var ev = BattleEngine.Apply(s, new MoveCommand { HeroId = knight.Id, Path = P((0, 0)) });
+            var ev = Turn(s, new MoveCommand { HeroId = knight.Id, Path = P((0, 0)) });
 
             var p = ev.OfType<PincerFormedEvent>().Single();
             int at = ev.IndexOf(p);

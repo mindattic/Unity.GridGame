@@ -238,10 +238,10 @@ namespace GridGame.Tests
             m.Bar[0] = new AbilitySlot { AbilityId = "frost" };
             s.Bank.Add(2);
             var tank = Enemy(s, "tank");
-            BattleEngine.Apply(s, new UseSlotCommand { HeroId = m.Id, Slot = 0, Target = new Coord(2, 2) });
+            Turn(s, new UseSlotCommand { HeroId = m.Id, Slot = 0, Target = new Coord(2, 2) });
             Assert.That(tank.HasBuff("frozen"), Is.True, "still frozen after the casting action");
             int ip = s.TurnEntryOf(tank.Id).Ip;
-            BattleEngine.Apply(s, new MoveCommand { HeroId = Hero(s, "knight").Id, Path = P((5, 6)) });
+            Turn(s, new MoveCommand { HeroId = Hero(s, "knight").Id, Path = P((5, 6)) });
             Assert.That(s.TurnEntryOf(tank.Id).Ip, Is.EqualTo(ip)); // halted for the whole next action
             Assert.That(tank.HasBuff("frozen"), Is.False);
             Assert.That(tank.HasBuff("wet"), Is.True);
@@ -258,7 +258,10 @@ namespace GridGame.Tests
             k.Bar[0] = new AbilitySlot { ItemId = "potion", Charges = 3, MaxCharges = 9 };
             var first = BattleEngine.Apply(s, new MoveCommand { HeroId = k.Id, Path = P((5, 6)), TimeLeftSeconds = 2.6f });
             Assert.That(first.Any(e => e is TurnStartedEvent), Is.False);
-            var second = BattleEngine.Apply(s, new UseSlotCommand { HeroId = k.Id, Slot = 0, Target = k.Pos });
+            // GG-T308: the knight's drop spent a tick of the window; the cleric, last to act, ends it with a potion.
+            var c = Hero(s, "cleric");
+            c.Bar[0] = new AbilitySlot { ItemId = "potion", Charges = 3, MaxCharges = 9 };
+            var second = BattleEngine.Apply(s, new UseSlotCommand { HeroId = c.Id, Slot = 0, Target = c.Pos });
             Assert.That(second.Any(e => e is TurnStartedEvent), Is.True);
             Assert.That(second.OfType<OrbMintedEvent>().Count(o => o.Reason == "time bank"), Is.EqualTo(2));
         }

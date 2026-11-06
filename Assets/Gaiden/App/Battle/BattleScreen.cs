@@ -358,6 +358,7 @@ namespace GridGame.App
                 v.SetHp(u.Hp, u.MaxHp);
                 v.SetBuffs(u, Colorblind, State.TurnEntryOf(u.Id)?.StunTicks > 0);
                 v.SetPlate(u.Facing, u.PlateHp, u.PlateMax);
+                v.SetActed(u.IsHero && u.ActedThisWindow); // GG-T308: acted this window
                 if (u.IsHero)
                 {
                     var weaponDef = u.WeaponId != null ? App.Content.TryItem(u.WeaponId) : null;
@@ -876,6 +877,7 @@ namespace GridGame.App
                 case SlotStatus.CastCapReached: return "Too many spells!";
                 case SlotStatus.Locked: return "Unlocks as you progress";
                 case SlotStatus.CannotAct: return "Can't act";
+                case SlotStatus.Acted: return "Already acted this turn";
                 default: return "Empty slot";
             }
         }

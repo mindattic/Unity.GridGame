@@ -206,7 +206,7 @@ namespace GridGame.App
                 case WaveClearedEvent wc: FlushTallies(); ShowBanner("Wave cleared!"); return Tween.Wait(Timing.Emphasis);
                 case BattleEndedEvent be: lastEnded = be; ShowBanner(be.Victory ? "VICTORY!" : be.Escaped ? "ESCAPED" : "DEFEAT"); App.Audio.Sfx(be.Victory ? "battle.victory" : be.Escaped ? "battle.dash" : "battle.defeat"); return Tween.Wait(Timing.Cinematic);
                 case RevivedEvent rv: return ReviveAnim(rv);
-                case PlayerControlEvent _: FlushTallies(); ShowBanner(""); SyncAll(); return null;
+                case PlayerControlEvent pc: FlushTallies(); ShowBanner(""); SyncAll(); WindowContinues(pc.NewWindow); return null;
                 case TileConflictEvent tc:
                     // The engine's last-resort net fired (GG-T97): a root-cause bug. Loud in every build's log; in a
                     // dev build also on screen, and counted in /state so the harness fails on it.

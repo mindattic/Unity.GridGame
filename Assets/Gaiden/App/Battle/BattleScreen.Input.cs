@@ -40,7 +40,7 @@ namespace GridGame.App
             if (unit != null && unit.IsHero)
             {
                 SelectHero(unit.Id);
-                if (!BattleEngine.CanMove(State, unit.Id)) { ShowBanner($"{unit.Name} can't move"); return; }
+                if (!BattleEngine.CanMove(State, unit.Id)) { ShowBanner(unit.ActedThisWindow ? $"{unit.Name} has acted this turn" : $"{unit.Name} can't move"); return; }
                 pressing = true;
                 dragHeroId = unit.Id;
                 pressPos = evt.localPosition;
@@ -179,11 +179,29 @@ namespace GridGame.App
         }
 
         // ─────────────────────────────────────────────────────────────────────────
-        // The held turn (GG-T188, §2.0): picking a hero up runs the timeline in real time. The turn lasts until the
-        // next enemy icon reaches the left edge; then the hero is dropped where it is (forced drop) and that enemy acts.
-        // Core never ticks during the hold — the view plays the icons forward (BattleEngine.TimelineUAfter) and the
-        // drop's MoveCommand carries the seconds held; the engine then runs the clock to the enemy's arrival.
+        // The held turn (GG-T188, §2.0): picking a hero up runs the timeline in real time. The party's window lasts until
+        // the next enemy icon reaches the left edge; a hold that runs it out is dropped where it is (forced drop) and that
+        // enemy acts. Core never ticks during the hold — the view plays the icons forward (BattleEngine.TimelineUAfter)
+        // and the drop's MoveCommand carries the seconds held; the engine spends that share of the window (GG-T308), and
+        // the heroes who haven't acted yet go on with whatever is left.
         // ─────────────────────────────────────────────────────────────────────────
+
+        /// <summary>
+        /// GG-T308: control came back. Mid-window the selection moves on to a hero who can still act, and a banner says
+        /// who is left and how long the window still runs; a new window just lets everyone act again.
+        /// </summary>
+        private void WindowContinues(bool newWindow)
+        {
+            if (newWindow || State.IsOver) return;
+            var left = BattleEngine.HeroesLeftToAct(State);
+            if (left.Count == 0) return;
+            var sel = State.UnitById(SelectedHeroId);
+            if (sel == null || !sel.Alive || sel.ActedThisWindow) SelectHero(left[0].Id);
+            float w = BattleEngine.TurnTicks(State) / (float)BattleConfig.TicksPerSecond;
+            string who = left.Count == 1 ? left[0].Name : $"{left.Count} heroes";
+            ShowBanner(w > 0f ? $"{who} can still act · {w:0.0}s left" : $"{who} can still act");
+            App.Audio.Sfx("ui.select", 0.5f);
+        }
 
         private float holdElapsed, holdWindow = -1f, holdLastTime;
         private int holdTurnTicks = -1;

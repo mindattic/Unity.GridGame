@@ -114,7 +114,7 @@ namespace GridGame.Tests
             var k = Hero(s, "knight");
             Assert.That(k.HasBuff("protection"), Is.True);
             k.Hp = 10;
-            var ev = BattleEngine.Apply(s, new MoveCommand { HeroId = Hero(s, "cleric").Id, Path = P((3, 3)) });
+            var ev = Turn(s, new MoveCommand { HeroId = Hero(s, "cleric").Id, Path = P((3, 3)) });
             Assert.That(ev.Any(e => e is HealedEvent h && h.TargetId == k.Id && h.Amount == 5), Is.True);
             Assert.That(k.PincerDamageBonus, Is.EqualTo(1f));
         }

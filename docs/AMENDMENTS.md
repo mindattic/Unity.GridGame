@@ -791,6 +791,19 @@ Owner: "gaining mana is too generous since I see the whole bar filled almost in 
   - **Cast stagger** (the interrupt path, §13.4) is separate and unchanged.
 - *(Tests: `A_plain_hit_never_pushes`, `The_Pushback_keyword_pushes_its_seconds_anywhere_on_the_bar`, `One_push_is_capped`, `Validate_rejects_a_pushback_past_the_cap`, `Pincer_pushback_is_the_same_seconds_anywhere_on_the_bar_whatever_the_strength`.)*
 
+## 2026-11-06 — The window is the party's: every hero acts once before the next enemy (owner, GG-T308)
+
+Owner: "Pushing an enemy back gives you more time to move your selected hero … The pushback happens after the drop (the hero acts) or as the result of an Ability, Item or Spell, all three of which consume that hero's turn."
+
+- **Was (GG-T188):** every committed command ran the clock until one enemy turn resolved, so each hero action was exactly one enemy turn and Pushback/Slow never bought an action (the GG-T292 balance pass found reading the bar barely mattered).
+- **Now:** see BIBLE §2.0, §2.5.
+  - The time until the next enemy reaches the left of the bar is a **window shared by the party**; each able hero acts **once** in it (`Unit.ActedThisWindow`).
+  - A drag spends the share of the window it was held; an Ability, Item or Spell spends `HeroActionSeconds` = 1 s. Pushback/Slow landed by the action lengthens the window first, so it buys the heroes still to act more time.
+  - Control returns to the party while time is left and someone hasn't acted (`PlayerControlEvent.NewWindow` false). The enemy acts when the time runs out; when everyone has acted the clock runs on to it (leftover time is not banked); Guard gives the rest up and banks it.
+  - Party turns (buff/cooldown/tempo/pickup/corpse counts, TurnStart/TurnEnd triggers) are windows, not hero actions.
+  - The smart bot plans each window as a budget (pushback on the next actor is worth the hero actions it makes room for); the casual bot stays naive.
+- *(Tests: `HeroWindowTests`.)*
+
 ## 2026-11-06 — Only Sentient enemies pincer (GG-T289, GG-T294)
 
 - **Was:** any enemy tagged `Humanoid` could be a pincer attacker (`Unit.IsHumanoid`), so body shape decided it.

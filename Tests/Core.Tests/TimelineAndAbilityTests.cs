@@ -15,7 +15,7 @@ namespace GridGame.Tests
             var h = Hero(s, cls);
             var t = new Coord(h.Pos.X, h.Pos.Y == 7 ? 6 : h.Pos.Y + 1);
             if (s.UnitAt(t) != null) t = new Coord(h.Pos.X, h.Pos.Y - 1);
-            BattleEngine.Apply(s, new MoveCommand { HeroId = h.Id, Path = new() { t } });
+            Turn(s, new MoveCommand { HeroId = h.Id, Path = new() { t } });
         }
 
         [Test]
@@ -104,7 +104,7 @@ namespace GridGame.Tests
                 long c0 = s.Clock;
                 var k = Hero(s, "knight");
                 var t = new Coord(k.Pos.X, k.Pos.Y == 7 ? 6 : 7);
-                var ev = BattleEngine.Apply(s, new MoveCommand { HeroId = k.Id, Path = new() { t }, HeldSeconds = 0.3f });
+                var ev = Turn(s, new MoveCommand { HeroId = k.Id, Path = new() { t }, HeldSeconds = 0.3f });
                 Assert.That(ev.OfType<TurnTimeUpEvent>(), Is.Empty);
                 Assert.That(s.Clock, Is.EqualTo(c0 + ticks), $"turn {turn}");
                 Assert.That(ev.OfType<TurnStartedEvent>().First().UnitId, Is.EqualTo(next.Id), $"turn {turn}");
@@ -300,10 +300,10 @@ namespace GridGame.Tests
             m.Bar[0] = new AbilitySlot { AbilityId = "frost" };
             s.Bank.Add(2);
             var tank = s.Units.Single(u => u.Def.Id == "tank");
-            var ev = BattleEngine.Apply(s, new UseSlotCommand { HeroId = m.Id, Slot = 0, Target = new Coord(2, 2) });
+            var ev = Turn(s, new UseSlotCommand { HeroId = m.Id, Slot = 0, Target = new Coord(2, 2) });
             Assert.That(ev.Any(e => e is BuffAppliedEvent b && b.BuffId == "frozen"), Is.True);
             // Frozen survives the action that applied it and thaws into Wet at the next turn boundary.
-            ev = BattleEngine.Apply(s, new MoveCommand { HeroId = Hero(s, "knight").Id, Path = P((5, 6)) });
+            ev = Turn(s, new MoveCommand { HeroId = Hero(s, "knight").Id, Path = P((5, 6)) });
             Assert.That(ev.Any(e => e is BuffRemovedEvent r && r.BuffId == "frozen"), Is.True);
             Assert.That(tank.HasBuff("wet"), Is.True);
         }
@@ -318,7 +318,7 @@ namespace GridGame.Tests
             var tank = s.Units.Single(u => u.Def.Id == "tank");
             tank.Buffs.Add(new BuffInstance { Def = db.Buffs["wet"], Remaining = 6 });
             m.Bar[0] = new AbilitySlot { AbilityId = "bolt" };
-            var ev = BattleEngine.Apply(s, new UseSlotCommand { HeroId = m.Id, Slot = 0, Target = new Coord(2, 2) });
+            var ev = Turn(s, new UseSlotCommand { HeroId = m.Id, Slot = 0, Target = new Coord(2, 2) });
             int shock = (int)System.Math.Round(21 * Formulas.CasterPower(db.Abilities["bolt"], m)); // 14 × 1.5 wet, × INT power
             Assert.That(ev.Any(e => e is DamagedEvent d && d.Amount == shock), Is.True);
 
@@ -326,7 +326,7 @@ namespace GridGame.Tests
             s.Bank.Add(2);
             tank.Buffs.RemoveAll(b => b.Def.Id == "wet");
             tank.Buffs.Add(new BuffInstance { Def = db.Buffs["wet"], Remaining = 6 });
-            ev = BattleEngine.Apply(s, new UseSlotCommand { HeroId = m.Id, Slot = 1, Target = tank.Pos });
+            ev = Turn(s, new UseSlotCommand { HeroId = m.Id, Slot = 1, Target = tank.Pos });
             Assert.That(ev.Any(e => e is BuffRemovedEvent r && r.Reason == "steam"), Is.True);
         }
 
@@ -351,7 +351,7 @@ namespace GridGame.Tests
             var (s, _) = Battle(db, Stage(("tank", 2, 0)), ("knight", 1, 0), ("mage", 5, 7));
             var m = Hero(s, "mage");
             m.Bar[0] = new AbilitySlot { AbilityId = "teleport" };
-            var ev = BattleEngine.Apply(s, new UseSlotCommand { HeroId = m.Id, Slot = 0, Target = new Coord(3, 0) });
+            var ev = Turn(s, new UseSlotCommand { HeroId = m.Id, Slot = 0, Target = new Coord(3, 0) });
             Assert.That(ev.Any(e => e is TeleportedEvent), Is.True);
             Assert.That(ev.Any(e => e is PincerFormedEvent), Is.True);
             Assert.That(BattleEngine.GetSlotStatus(s, m.Id, 0), Is.EqualTo(SlotStatus.Cooldown));
@@ -415,7 +415,7 @@ namespace GridGame.Tests
             var cleric = Hero(s, "cleric");
             var all = new System.Collections.Generic.List<BattleEvent>();
             for (int i = 0; i < 4; i++)
-                all.AddRange(BattleEngine.Apply(s, new MoveCommand { HeroId = cleric.Id, Path = cleric.Pos.Y == 4 ? P((3, 3)) : P((3, 4)) }));
+                all.AddRange(Turn(s, new MoveCommand { HeroId = cleric.Id, Path = cleric.Pos.Y == 4 ? P((3, 3)) : P((3, 4)) }));
             Assert.That(all.Any(e => e is WeaponWornEvent), Is.True);
             Assert.That(all.Any(e => e is WeaponShatteredEvent), Is.True);
             Assert.That(Hero(s, "knight").WeaponId, Is.Null);
@@ -432,7 +432,7 @@ namespace GridGame.Tests
             var s = BattleEngine.Create(db, setup, new());
             var cleric = Hero(s, "cleric");
             for (int i = 0; i < 4; i++)
-                BattleEngine.Apply(s, new MoveCommand { HeroId = cleric.Id, Path = cleric.Pos.Y == 4 ? P((3, 3)) : P((3, 4)) });
+                Turn(s, new MoveCommand { HeroId = cleric.Id, Path = cleric.Pos.Y == 4 ? P((3, 3)) : P((3, 4)) });
             Assert.That(s.Results.BrokenWeapons.TryGetValue("knight", out var broken), Is.True);
             Assert.That(broken, Does.Contain("sword"));
         }
@@ -453,12 +453,12 @@ namespace GridGame.Tests
 
             var all = new System.Collections.Generic.List<BattleEvent>();
             for (int i = 0; i < 4; i++)
-                all.AddRange(BattleEngine.Apply(s, new MoveCommand { HeroId = cleric.Id, Path = cleric.Pos.Y == 4 ? P((3, 3)) : P((3, 4)) }));
+                all.AddRange(Turn(s, new MoveCommand { HeroId = cleric.Id, Path = cleric.Pos.Y == 4 ? P((3, 3)) : P((3, 4)) }));
             Assert.That(all.Any(e => e is WeaponShatteredEvent), Is.True);
             Assert.That(knight.WeaponId, Is.Null);
             Assert.That(knight.Bar[0].WeaponId, Is.EqualTo("dagger")); // backup still stowed, waiting for the knight's own next action
 
-            var ev = BattleEngine.Apply(s, new MoveCommand { HeroId = knight.Id, Path = P((0, 3)) });
+            var ev = Turn(s, new MoveCommand { HeroId = knight.Id, Path = P((0, 3)) });
             Assert.That(ev.Any(e => e is WeaponSwappedEvent w && w.ToWeapon == "dagger" && w.FromWeapon == null), Is.True);
             Assert.That(knight.WeaponId, Is.EqualTo("dagger"));
             Assert.That(knight.Bar[0].IsEmpty, Is.True);

@@ -126,7 +126,7 @@ namespace GridGame.Tests
                     var rec = new BattleRecorder(s, setup, source, opening);
                     var bot = new HeroBot(seed, casual ? 0.5f : 0f) { IgnoreBar = Environment.GetEnvironmentVariable("GAIDEN_BOT_BAR") == "off" };
                     int refused = 0;
-                    for (int i = 0; i < 900 && !s.IsOver; i++)
+                    for (int i = 0; i < 3000 && !s.IsOver; i++) // GG-T308: a command is one hero action now, several a window
                     {
                         var ev = rec.Apply(s, bot.Decide(s));
                         refused = ev.Exists(e => e is PlayerControlEvent || e is BattleEndedEvent) ? 0 : refused + 1;

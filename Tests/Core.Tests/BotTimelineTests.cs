@@ -51,6 +51,9 @@ namespace GridGame.Tests
             Assert.That(use.Target, Is.EqualTo(wolf.Pos));
 
             var ev = BattleEngine.Apply(s, cmd);
+            // GG-T308: the skill spends 1 s of the window and the mage may still act, so the bolt may land on the party's
+            // next command; Guard hands the rest of the window over.
+            if (!ev.Any(e => e is AbilityResolvedEvent r && r.AbilityId == "bolt") && !s.IsOver) ev.AddRange(BattleEngine.Apply(s, new ShieldCommand()));
             int landed = ev.FindIndex(e => e is AbilityResolvedEvent r && r.AbilityId == "bolt");
             Assert.That(landed, Is.GreaterThanOrEqualTo(0), "the bolt landed");
             Assert.That(wolf.Alive, Is.False, "the bolt killed the wolf");

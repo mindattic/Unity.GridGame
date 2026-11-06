@@ -953,8 +953,10 @@ namespace GridGame.App.Automation
                         armor = u.Gear.ToDictionary(kv => kv.Key.ToString(), kv => new { item = kv.Value.ItemId, durability = kv.Value.Durability }),
                         buffs = u.Buffs.Select(x => x.Def.Id + ":" + x.Remaining).ToList(),
                         acts_in = u.IsHero ? -1 : BattleEngine.ActionsUntilTurn(s, u.Id),
+                        acted = u.IsHero && u.ActedThisWindow, // GG-T308: acted in this window
                         bar = u.IsHero ? Enumerable.Range(0, u.Bar.Count).Select(i => (u.Bar[i].AbilityId ?? u.Bar[i].ItemId ?? "-") + "=" + BattleEngine.GetSlotStatus(s, u.Id, i)).ToList() : null,
                     }).ToList(),
+                    window_seconds = BattleEngine.TurnTicks(s) / (float)BattleConfig.TicksPerSecond, to_act = BattleEngine.HeroesLeftToAct(s).Select(h => h.Id).ToList(), // GG-T308
                     timeline = s.Timeline.Select(e => new { e.Id, kind = e.Kind.ToString(), owner = e.OwnerId, u = Math.Round(BattleEngine.BarU(s, e), 3), e.AbilityId }).ToList(),
                     pickups = s.Pickups.Select(p => new { p.Id, kind = p.PickupId, x = p.At.X, y = p.At.Y, left = p.ActionsLeft }).ToList(), // GG-T228
                     results = new { s.Results.Coins, s.Results.Xp, s.Results.ActionsTaken },

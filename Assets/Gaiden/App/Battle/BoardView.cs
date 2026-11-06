@@ -251,6 +251,43 @@ namespace GridGame.App
         private readonly List<(string icon, string letter, Color color, float frac)> statuses = new List<(string, string, Color, float)>();
         private int statusBeat;
 
+        private Label actedBadge;
+        private bool acted;
+
+        /// <summary>
+        /// GG-T308 (§2.0): a hero that has acted in this window greys out and wears a check in its lower-left corner until
+        /// the window ends (the next enemy turn, or a new wave); it can't be picked up again until then.
+        /// </summary>
+        public void SetActed(bool on)
+        {
+            if (on == acted) return;
+            acted = on;
+            if (actedBadge == null)
+            {
+                actedBadge = new Label("✓") { name = "acted-" + Id, pickingMode = PickingMode.Ignore };
+                actedBadge.AddToClassList("shadow");
+                actedBadge.style.position = Position.Absolute;
+                actedBadge.style.left = Space.S8; actedBadge.style.bottom = Size.HpBar + Space.S8;
+                actedBadge.style.width = actedBadge.style.height = Size.Pip;
+                actedBadge.style.unityTextAlign = TextAnchor.MiddleCenter;
+                actedBadge.style.fontSize = 26;
+                actedBadge.style.color = Palette.Text;
+                actedBadge.style.backgroundColor = Palette.Ink.WithA(0.85f);
+                actedBadge.style.borderTopLeftRadius = actedBadge.style.borderTopRightRadius =
+                    actedBadge.style.borderBottomLeftRadius = actedBadge.style.borderBottomRightRadius = Size.Pip / 2f;
+                Root.Add(actedBadge);
+                // Fades in and out rather than snapping (GG-LAW-5).
+                var ease = new List<TimeValue> { new TimeValue(0.3f, TimeUnit.Second) };
+                Frame.style.transitionProperty = new List<StylePropertyName> { "opacity" };
+                Frame.style.transitionDuration = ease;
+                Art.style.transitionProperty = new List<StylePropertyName> { "-unity-background-image-tint-color" };
+                Art.style.transitionDuration = ease;
+            }
+            actedBadge.style.display = on ? DisplayStyle.Flex : DisplayStyle.None;
+            Art.style.unityBackgroundImageTintColor = on ? new Color(0.5f, 0.5f, 0.55f) : Color.white;
+            Frame.style.opacity = on ? 0.7f : 1f;
+        }
+
         /// <summary>
         /// One status slot per unit (owner direction 2026-10-10): it flashes through every buff, debuff and stun on
         /// the 1.2 s beat; the selected unit's card explains each one.

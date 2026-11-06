@@ -260,7 +260,10 @@ namespace GridGame.Core.Battle
 
     public sealed class PlayerControlEvent : BattleEvent
     {
-        public override string ToString() => "PlayerControl";
+        /// <summary>GG-T308 (§2.0): true when a new window begins (an enemy acted, a wave began, the window was spent) and
+        /// every hero may act again; false when control returns mid-window to the heroes who haven't acted yet.</summary>
+        public bool NewWindow = true;
+        public override string ToString() => NewWindow ? "PlayerControl" : "PlayerControl (same window)";
     }
 
     public sealed class CastQueuedEvent : BattleEvent

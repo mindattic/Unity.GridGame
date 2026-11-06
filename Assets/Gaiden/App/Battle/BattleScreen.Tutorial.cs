@@ -55,7 +55,7 @@ namespace GridGame.App
                 Example = "Example: a slime sits above the gap beside your hero. Step into the gap, then up through the slime: it drops into the gap, between your heroes.",
                 Done = (b, c, e) => ShovedIntoPincer(e) },
             new Lesson { Title = "The hold timer", Patience = 3,
-                Text = "Picking a hero up starts the clock: the bar under it drains until the next enemy reaches the left edge, then the hero drops where it is. Changed your mind? Drop it back on its own tile, or off the board, to cancel — no time spent.",
+                Text = "Picking a hero up starts the clock: the bar under it drains until the next enemy reaches the left edge, then the hero drops where it is. Each hero acts once before that enemy does, sharing the time — what one hero leaves, the next can use, and pushing the enemy back buys more. Changed your mind? Drop it back on its own tile, or off the board, to cancel — no time spent.",
                 Example = "Example: lift a hero, then drag it off the board and let go.",
                 Done = (b, c, e) => c is MoveCommand },
             new Lesson { Title = "Mana",

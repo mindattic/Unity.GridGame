@@ -378,7 +378,7 @@ namespace GridGame.Tests
             Assert.That(At(s, 5, 5), Is.Null);
             Assert.That(s.PendingSpawns, Has.Exactly(1).Items);
             var c = Hero(s, "cleric");
-            BattleEngine.Apply(s, new MoveCommand { HeroId = c.Id, Path = P((2, 0)) });
+            Turn(s, new MoveCommand { HeroId = c.Id, Path = P((2, 0)) }); // GG-T308: the window runs on to the next enemy turn
             var wolf = At(s, 5, 5);
             Assert.That(wolf, Is.Not.Null);
             Assert.That(wolf.Def.Id, Is.EqualTo("wolf"));
@@ -397,7 +397,7 @@ namespace GridGame.Tests
             stage.Waves.Add(wave);
             var (s, _) = Battle(db, stage, ("knight", 0, 0), ("cleric", 2, 1));
             var c = Hero(s, "cleric");
-            var ev = BattleEngine.Apply(s, new MoveCommand { HeroId = c.Id, Path = P((2, 0)) });
+            var ev = Turn(s, new MoveCommand { HeroId = c.Id, Path = P((2, 0)) }); // GG-T308: the window runs on to the next enemy turn
             var arrivals = ev.OfType<ReinforcementsArrivedEvent>().ToList();
             Assert.That(arrivals, Has.Exactly(1).Items);
             Assert.That(arrivals[0].Spawned.Count, Is.EqualTo(2));

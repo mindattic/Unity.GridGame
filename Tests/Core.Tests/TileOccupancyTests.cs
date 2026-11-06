@@ -505,14 +505,14 @@ namespace GridGame.Tests
             var (s, k) = Bash(db, Stage(("tank", 2, 3)));
             var tank = Enemy(s, "tank");
             var p = Drop(s, 2, 2);
-            var ev = BattleEngine.Apply(s, new UseSlotCommand { HeroId = k.Id, Slot = 0, Target = tank.Pos });
+            var ev = Turn(s, new UseSlotCommand { HeroId = k.Id, Slot = 0, Target = tank.Pos });
             AssertBoardClean(s);
             AssertNobodyOnAPickup(s);
             Assert.That(ev.OfType<PickupMovedEvent>().Any(m => m.From == new Coord(2, 2)), Is.True);
             Assert.That(s.Pickups, Does.Contain(p));
             // The knight walks onto it: a hero collects.
             var to = p.At;
-            ev = BattleEngine.Apply(s, new MoveCommand { HeroId = k.Id, Path = P((to.X, to.Y)) });
+            ev = Turn(s, new MoveCommand { HeroId = k.Id, Path = P((to.X, to.Y)) });
             Assert.That(ev.OfType<PickupCollectedEvent>().Any(c => c.UnitId == k.Id), Is.True);
             Assert.That(s.Pickups, Does.Not.Contain(p));
         }

@@ -7,22 +7,44 @@ namespace GridGame.Core.Battle
         private const int MaxShieldTicks = 2000;
         private int ticksSinceReport;
 
-        /// <summary>Runs the shared clock forward <paramref name="ticks"/> ticks, resolving every arrival in order.</summary>
-        private void AdvanceClock(int ticks)
+        /// <summary>GG-T308: an enemy turn resolved (or the window was spent) during this command — the party's window is over.</summary>
+        private bool windowOver;
+
+        /// <summary>Runs the shared clock forward <paramref name="ticks"/> ticks, resolving every arrival in order;
+        /// <paramref name="stopAtEnemyTurn"/> ends the advance at the first enemy turn (or a new wave) — the window is over.</summary>
+        private void AdvanceClock(int ticks, bool stopAtEnemyTurn = false)
         {
-            for (int i = 0; i < ticks && !S.IsOver; i++) Tick(out _);
+            int wave = S.Wave;
+            for (int i = 0; i < ticks && !S.IsOver; i++)
+            {
+                Tick(out bool turnResolved);
+                if (turnResolved) windowOver = true;
+                if (stopAtEnemyTurn && (turnResolved || S.Wave != wave)) break;
+            }
             ReportAdvance();
         }
 
-        /// <summary>Shield: run the clock until an enemy turn has resolved (or nothing can ever arrive).</summary>
+        /// <summary>Run the clock until an enemy turn has resolved (or nothing can ever arrive).</summary>
         private void AdvanceUntilEnemyTurn()
         {
+            int wave = S.Wave;
             for (int i = 0; i < MaxShieldTicks && !S.IsOver; i++)
             {
                 Tick(out bool turnResolved);
-                if (turnResolved) break;
+                if (turnResolved) { windowOver = true; break; }
+                if (S.Wave != wave) break;
             }
             ReportAdvance();
+        }
+
+        /// <summary>
+        /// GG-T308 (§2.0): the party's window is spent (every hero acted, or Guard gave it up) — the clock runs on to the
+        /// next enemy turn; with no enemy icon able to arrive at all, the window is the fixed ActionTicks instead.
+        /// </summary>
+        private void SpendWindow()
+        {
+            if (BattleEngine.TurnTicks(S) > 0) AdvanceUntilEnemyTurn();
+            else { AdvanceClock(BattleConfig.ActionTicks, stopAtEnemyTurn: true); windowOver = true; }
         }
 
         private void ReportAdvance()

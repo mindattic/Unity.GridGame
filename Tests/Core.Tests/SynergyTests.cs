@@ -36,7 +36,7 @@ namespace GridGame.Tests
             Assert.That(EnemyPlanner.PickTarget(s, gob), Is.SameAs(mage));
 
             knight.Bar[0] = new AbilitySlot { AbilityId = "taunt" };
-            var ev = BattleEngine.Apply(s, new UseSlotCommand { HeroId = knight.Id, Slot = 0 });
+            var ev = Turn(s, new UseSlotCommand { HeroId = knight.Id, Slot = 0 });
             Assert.That(ev.Any(e => e is BuffAppliedEvent b && b.BuffId == "taunting" && b.UnitId == knight.Id), Is.True);
             Assert.That(knight.IsTaunting, Is.True);
             Assert.That(EnemyPlanner.PickTarget(s, gob), Is.SameAs(knight));
@@ -135,9 +135,9 @@ namespace GridGame.Tests
             var (s, _) = Battle(db, Stage(("tank", 0, 0)), ("knight", 3, 6), ("cleric", 5, 7));
             s.Pickups.Add(new Pickup { Id = 1, PickupId = "pk", At = new Coord(0, 5), ActionsLeft = 2 });
             var k = Hero(s, "knight");
-            BattleEngine.Apply(s, new MoveCommand { HeroId = k.Id, Path = P((2, 6)) });
+            Turn(s, new MoveCommand { HeroId = k.Id, Path = P((2, 6)) });
             Assert.That(s.Pickups, Has.Exactly(1).Items);
-            var ev = BattleEngine.Apply(s, new MoveCommand { HeroId = k.Id, Path = P((3, 6)) });
+            var ev = Turn(s, new MoveCommand { HeroId = k.Id, Path = P((3, 6)) });
             Assert.That(ev.Any(e => e is PickupExpiredEvent), Is.True);
             Assert.That(s.Pickups, Is.Empty);
         }

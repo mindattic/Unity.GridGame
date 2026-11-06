@@ -46,9 +46,18 @@ namespace GridGame.Core.Battle
             // GG-LAW-13: the authority refuses a command for a hero another seat owns (single-player: everyone is seat 0).
             if (!BattleEngine.IsAuthorized(S, cmd)) { Emit(new AbilityRefusedEvent { CasterId = BattleEngine.CommandHeroId(cmd), Reason = "Not your hero" }); return; }
 
+            // GG-T308 (§2.0): each hero acts once per window.
+            if (S.UnitById(BattleEngine.CommandHeroId(cmd)) is Unit done && done.IsHero && done.ActedThisWindow)
+            {
+                Emit(new AbilityRefusedEvent { CasterId = done.Id, Reason = "Already acted" });
+                return;
+            }
             pushedThisAction.Clear();
             firedThisAction.Clear();
             int waveBefore = S.Wave;
+            // GG-T308 (§2.0): what this hero's action spends of the party's window, measured before it resolves (a drag's
+            // hold is a share of the window as it stood at pickup).
+            int spend = BattleEngine.CommandTicks(S, cmd);
             bool acted;
             switch (cmd)
             {
@@ -69,16 +78,23 @@ namespace GridGame.Core.Battle
                 Fire(TriggerOn.ActionEnd, actor, new TriggerContext());
                 CheckEnd();
             }
-            // GG-T188 (§2.0): every committed action ends the player's turn — the clock runs on until the next enemy
-            // turn icon reaches ACT and that enemy acts. Clearing a wave hands the fresh wave's first turn to the player;
-            // with no enemy icon able to arrive at all, a turn spends the fixed ActionTicks instead.
+            // GG-T308 (§2.0): the window — the time until the next enemy reaches the left of the bar — is the party's
+            // budget, and each able hero acts once in it. A hero's action spends its time (CommandTicks); a Pushback or
+            // Slow it landed has already lengthened the window. Control comes back to the party while time is left and
+            // someone hasn't acted; when the time runs out the enemy acts, when everyone has acted the clock runs on to
+            // the next enemy turn, and Guard gives the rest of the window up. Clearing a wave opens a fresh window.
+            windowOver = false;
             if (!S.IsOver && S.Wave == waveBefore)
             {
-                if (BattleEngine.TurnTicks(S) > 0) AdvanceUntilEnemyTurn();
-                else AdvanceClock(BattleConfig.ActionTicks);
+                if (S.UnitById(BattleEngine.CommandHeroId(cmd)) is Unit hero && hero.IsHero) hero.ActedThisWindow = true;
+                if (!(cmd is ShieldCommand)) AdvanceClock(spend, stopAtEnemyTurn: true);
+                bool spent = cmd is ShieldCommand || BattleEngine.HeroesLeftToAct(S).Count == 0;
+                if (!S.IsOver && S.Wave == waveBefore && !windowOver && spent) SpendWindow();
             }
             if (!S.IsOver) CheckEnd();
-            if (!S.IsOver) ReturnControl();
+            bool newWindow = windowOver || S.Wave != waveBefore;
+            if (newWindow) foreach (var u in S.Units) u.ActedThisWindow = false;
+            if (!S.IsOver) ReturnControl(newWindow);
             EnforceTileInvariant(cmd.GetType().Name);
             S.Results.TicksElapsed = (int)S.Clock;
         }
@@ -385,8 +401,11 @@ namespace GridGame.Core.Battle
             }
         }
 
-        private void ReturnControl()
+        /// <param name="newWindow">GG-T308: false when control returns mid-window (heroes still to act): no turn
+        /// boundary — buffs, cooldowns, tempo, pickups and corpses count party turns, which are windows.</param>
+        private void ReturnControl(bool newWindow = true)
         {
+            if (!newWindow) { Emit(new PlayerControlEvent { NewWindow = false }); return; }
             AgePickups();
             AgeCorpses();
             MaybeSpawnAmplifier();

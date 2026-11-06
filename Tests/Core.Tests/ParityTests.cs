@@ -365,7 +365,7 @@ namespace GridGame.Tests
             var tank = Enemy(s, "tank");
             tank.Buffs.Add(new BuffInstance { Def = db.Buffs["burning"], Remaining = 5 });
             var all = new List<BattleEvent>();
-            for (int i = 0; i < 4; i++) all.AddRange(BattleEngine.Apply(s, new MoveCommand { HeroId = Hero(s, "knight").Id, Path = Hero(s, "knight").Pos.Y == 7 ? P((5, 6)) : P((5, 7)) }));
+            for (int i = 0; i < 4; i++) all.AddRange(Turn(s, new MoveCommand { HeroId = Hero(s, "knight").Id, Path = Hero(s, "knight").Pos.Y == 7 ? P((5, 6)) : P((5, 7)) }));
             var ticks = all.OfType<DamagedEvent>().Where(d => d.TargetId == tank.Id && d.Note == "Burning").ToList();
             Assert.That(ticks.Count, Is.EqualTo(5));
             foreach (var d in ticks) Assert.That(d.Amount, Is.EqualTo(4));
@@ -381,7 +381,7 @@ namespace GridGame.Tests
             var tank = Enemy(s, "tank");
             tank.Buffs.Add(new BuffInstance { Def = db.Buffs["poisoned"], Remaining = 6 });
             var all = new List<BattleEvent>();
-            for (int i = 0; i < 4; i++) all.AddRange(BattleEngine.Apply(s, new MoveCommand { HeroId = Hero(s, "knight").Id, Path = Hero(s, "knight").Pos.Y == 7 ? P((5, 6)) : P((5, 7)) }));
+            for (int i = 0; i < 4; i++) all.AddRange(Turn(s, new MoveCommand { HeroId = Hero(s, "knight").Id, Path = Hero(s, "knight").Pos.Y == 7 ? P((5, 6)) : P((5, 7)) }));
             Assert.That(all.OfType<DamagedEvent>().Count(d => d.TargetId == tank.Id && d.Amount == 3), Is.EqualTo(6));
             Assert.That(tank.HasBuff("poisoned"), Is.False);
         }

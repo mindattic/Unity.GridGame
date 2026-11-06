@@ -139,6 +139,8 @@ namespace GridGame.Core.Battle
         public int RisesInTurns;
         /// <summary>A guest ally (§25.11), hero-team and player-controlled for this battle only.</summary>
         public bool IsGuest;
+        /// <summary>GG-T308 (§2.0): this hero has already acted in the current window (each hero acts once per window).</summary>
+        public bool ActedThisWindow;
         /// <summary>A neutral recruitable's terms (§25.11.1, GG-T132); kept after it joins. Null for everyone else.</summary>
         public RecruitableDef Recruitable;
         /// <summary>What heroes have done for a recruitable so far: "healed", "healed:&lt;class&gt;", "pincer", "pincer:&lt;class&gt;".</summary>
