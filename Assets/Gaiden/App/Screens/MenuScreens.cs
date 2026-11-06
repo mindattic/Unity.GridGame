@@ -48,6 +48,7 @@ namespace GridGame.App
             Body.style.paddingLeft = Body.style.paddingRight = Space.S8;
             Body.style.paddingBottom = Space.S32;
             BuildBody(Body);
+            Typography.Watch(Body);
             UpdateGold();
             CampTipOverlay.ShowIfPending(this, TipStation);
         }
