@@ -597,8 +597,9 @@ namespace GridGame.App
         }
 
         // ── Timeline cues (GG-T287): a unit whose icon nears the left edge glows on its tile in the icon's own colour, the
-        //    next actor's tile carries the same gold border its icon does. ──
+        //    next actor's tile carries the same gold border its icon does, and the selected unit gets a white outline. ──
         private readonly Dictionary<int, VisualElement> cues = new Dictionary<int, VisualElement>();
+        private VisualElement selectionCue;
 
         private VisualElement NewCue(string name, float radius)
         {
@@ -624,6 +625,15 @@ namespace GridGame.App
             Frame(c, at, w, h, 6f, borderWidth, border);
             c.style.backgroundColor = fill;
             c.style.display = DisplayStyle.Flex;
+        }
+
+        /// <summary>The selection outline (GG-T288; null hides it), on the tile edge outside the approach cue.</summary>
+        public void SetSelection(Coord? at, int w, int h, Color c)
+        {
+            if (selectionCue == null) selectionCue = NewCue("cue-selected", 12);
+            if (!at.HasValue) { selectionCue.style.display = DisplayStyle.None; return; }
+            Frame(selectionCue, at.Value, w, h, 0f, 5f, c);
+            selectionCue.style.display = DisplayStyle.Flex;
         }
 
         /// <summary>Hides every unit cue not in <paramref name="keep"/>.</summary>

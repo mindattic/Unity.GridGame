@@ -121,6 +121,7 @@ namespace GridGame.App
             var socket = DiamondPart(timelineSlot, "tl-socket", SlotSide + 12f, SlotSpan);
             socket.style.backgroundColor = Palette.Ink.WithA(0.7f);
             SetBorder(socket, 8f, 3f, Palette.Gold.WithA(0.9f));
+            SelectionRing(timelineSlot, SlotSide + 26f, SlotSpan);
             slotFrame = DiamondPart(timelineSlot, "tl-frame", SlotSide, SlotSpan);
             slotFrame.style.backgroundColor = Palette.Ink;
             slotFrame.style.overflow = Overflow.Hidden;
@@ -134,6 +135,36 @@ namespace GridGame.App
             slotTime.style.unityTextAlign = TextAnchor.MiddleCenter;
             Fonts.UseHeavy(slotTime);
             InspectCard.Attach(timelineSlot, body => drawn.TryGetValue(slotEntry, out var e) && BuildTimelineCard(body, e));
+            timelineSlot.RegisterCallback<ClickEvent>(_ => { if (drawn.TryGetValue(slotEntry, out var e)) OnTimelineTap(e.OwnerId); });
+        }
+
+        /// <summary>The white selection ring behind a diamond (GG-T288), shown while its owner is the selected unit.</summary>
+        private static void SelectionRing(VisualElement host, float side, float span)
+        {
+            var ring = DiamondPart(host, "tl-sel", side, span);
+            SetBorder(ring, 6f, 4f, Palette.White);
+            ring.style.display = DisplayStyle.None;
+        }
+
+        /// <summary>The unit the panel shows: an inspected foe (or ally) if any, else the selected hero.</summary>
+        private int SelectedUnitId =>
+            panelUnitId >= 0 && State.UnitById(panelUnitId) is Unit pu && pu.Alive ? panelUnitId : SelectedHeroId;
+
+        /// <summary>
+        /// GG-T288: tapping a timeline icon (or the prominence slot) selects its owner exactly as tapping it on the board
+        /// does: a hero becomes the selected hero, a foe fills the info panel (gated by what the Bestiary knows). Pre-move
+        /// only: never mid-drag, mid-playback or while aiming a slot.
+        /// </summary>
+        private void OnTimelineTap(int unitId)
+        {
+            if (!CanCommand() || TargetingSlot >= 0) return;
+            var u = State.UnitById(unitId);
+            if (u == null || !u.Alive) return;
+            ClearHint();
+            if (u.IsHero) SelectHero(u.Id);
+            else { panelUnitId = u.Id; SyncPanel(); }
+            App.Audio.Sfx("ui.click");
+            if (!ReduceMotion && board.Units.TryGetValue(u.Id, out var v) && !v.Dead) App.StartCoroutine(Tween.Pop(v.Root, 1.08f, Timing.Quick));
         }
 
         /// <summary>Re-applies the stage-width-dependent x positions (build and resize).</summary>
@@ -220,12 +251,14 @@ namespace GridGame.App
             icon.style.width = icon.style.height = IconSpan;
             icon.style.top = TrackY - IconSpan / 2f; // centred on the line
             Halo(icon, IconSpan);
+            SelectionRing(icon, IconSide + 16f, IconSpan);
             var frame = DiamondPart(icon, "tl-frame", IconSide, IconSpan);
             frame.style.backgroundColor = Palette.Ink; // opaque, so the track never shows through
             frame.style.overflow = Overflow.Hidden;
             SetBorder(frame, 5f, IconBorder, EntryColor(e));
             SetDiamondArt(frame, IconSide, IconBorder, e);
             AttachTimelineInspect(icon, e);
+            icon.RegisterCallback<ClickEvent>(_ => OnTimelineTap(e.OwnerId)); // GG-T288: a tap selects, a hold reads
             return icon;
         }
 
@@ -442,6 +475,17 @@ namespace GridGame.App
                 cueKeep.Add(kv.Key);
             }
             board.HideCues(cueKeep);
+            // Selection cross-highlight (GG-T288): the selected unit's icons and its tile share a white outline.
+            int sel = SelectedUnitId;
+            foreach (var kv in timelineIconViews)
+            {
+                var ring = kv.Value.Q("tl-sel");
+                if (ring != null) ring.style.display = drawn.TryGetValue(kv.Key, out var de) && de.OwnerId == sel ? DisplayStyle.Flex : DisplayStyle.None;
+            }
+            var slotRing = timelineSlot?.Q("tl-sel");
+            if (slotRing != null) slotRing.style.display = drawn.TryGetValue(slotEntry, out var sde) && sde.OwnerId == sel ? DisplayStyle.Flex : DisplayStyle.None;
+            if (!dragging && board.Units.TryGetValue(sel, out var sv) && !sv.Dead) board.SetSelection(sv.Tile, sv.W, sv.H, Palette.White);
+            else board.SetSelection(null, 1, 1, Palette.White);
             if (slotHalo != null)
             {
                 // The slot glows in its occupant's colour as it closes in, fully while it acts; an empty socket stays dim gold.
