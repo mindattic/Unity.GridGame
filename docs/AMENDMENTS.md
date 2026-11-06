@@ -946,3 +946,14 @@ Owner: a Monster Tamer tames an enemy monster so it fights for you on its own, l
   - Domesticated monsters are roster members with an enemy class (`HeroSave.Domesticated`): no gear, skills, Tomes or skill tree, half XP, level cap 30, one per class.
   - Choices made here (the owner may revise them): a **full bond stops the tame's countdown** (otherwise a monster could rarely still be tamed at the end with a full bond). The explicit eligibility rule is followed literally, so mindless undead, cyber-zombies, tree golems, slimes and the ghost are tameable as well as beasts. The Dog Whistle is shop-only for now (adding it to drop tables would shift every seeded loot roll).
 - *(Tests: `TamingTests`.)*
+
+## 2026-11-06 — Minimum action time: heroes act only in a gap wide enough, else they Guard (owner, GG-T311)
+
+Owner: "Heroes go first in the round, but unless they can get in a pincer between the intervals between enemies hitting left they have to sacrifice their turn, and that could lead to several enemy attacks in a row before a window wide enough for the player to act becomes available." After GG-T308 both bots won every battle: every gap, however short, still gave the party an action (a 0.1 s gap played back as a 2 s drag).
+
+- A hero action starts only if the gap to the next enemy turn is at least its minimum: a drag 0.85 s (`DragPickupSeconds` 0.5 + `DragSecondsPerTile` 0.35 × a tile), an Ability/Item/Spell/Talk `HeroActionSeconds` 1 s. The `MinTurnSeconds` 2 s floor is gone; a drag spends at least its minimum.
+- No action fits → the party can only Guard (forced sacrifice): Protection on every hero and the sliver banked as mana charge, then the enemy acts; clustered foes mean several enemy turns in a row.
+- Every wave opens on the party (`OpeningWindowSeconds` 3 s, or a full lap for a foe too fast for that).
+- Rally: each forced Guard slows every enemy icon a tempo step (stacking to 5, ≈ ×0.33, outside the tempo clamp) until the next hero action — so a lock of too-short gaps always opens (found by the Crucible soak: foes lapping so fast that every gap was under 0.85 s held the party out for 6000 commands). The bots hurry (no think time) after 2 Guards in a row, so a window a human could use never locks a bot out either.
+- Bots drag on the human model plus think time (smart 0.4 s, casual 1 s); `BotSecondsPerStep` 0.25 s/tile is gone.
+- `IpPerTickPerSpeed` 1.6 → 4.2 and the difficulty dial gains an `EnemySpeed` column (×0.60 at 1 … ×1.00 at 10). Soak (per-stage 8): difficulty 10 smart/casual 100/100% → 79/33%, 5 → 99/85%, 1 → 100/98%. Bots drag on think + 0.5 s + 0.35 s a tile (a hop of 1–2 tiles thinks half as long). The campaign pacing report now requires only the camp-managing greedy bot to finish.

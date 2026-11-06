@@ -17,7 +17,7 @@ namespace GridGame.Meta
     public static class EndlessEncounter
     {
         /// <summary>Action cap for a headless replay — a 5-wave encounter resolves well inside it.</summary>
-        public const int DefaultMaxActions = 900;
+        public const int DefaultMaxActions = 3000; // GG-T308/GG-T311: a command is one hero action or a forced Guard (was 900)
 
         /// <summary>
         /// Removes every synthetic endless stage from <paramref name="db"/> (the GG-T23 rule: a throwaway stage

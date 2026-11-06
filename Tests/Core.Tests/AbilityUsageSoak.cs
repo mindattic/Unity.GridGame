@@ -125,6 +125,9 @@ namespace GridGame.Tests
                     var s = BattleEngine.Create(c, setup, opening);
                     var rec = new BattleRecorder(s, setup, source, opening);
                     var bot = new HeroBot(seed, casual ? 0.5f : 0f) { IgnoreBar = Environment.GetEnvironmentVariable("GAIDEN_BOT_BAR") == "off" };
+                    // GG-T311: GAIDEN_BOT_THINK=<seconds> and GAIDEN_BOT_QUICK=<factor> sweep the bot's human drag model.
+                    if (float.TryParse(Environment.GetEnvironmentVariable("GAIDEN_BOT_THINK"), System.Globalization.NumberStyles.Float, System.Globalization.CultureInfo.InvariantCulture, out var think)) bot.ThinkSeconds = think;
+                    if (float.TryParse(Environment.GetEnvironmentVariable("GAIDEN_BOT_QUICK"), System.Globalization.NumberStyles.Float, System.Globalization.CultureInfo.InvariantCulture, out var quick)) bot.QuickThinkFactor = quick;
                     int refused = 0;
                     for (int i = 0; i < 3000 && !s.IsOver; i++) // GG-T308: a command is one hero action now, several a window
                     {

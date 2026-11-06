@@ -17,6 +17,9 @@ namespace GridGame.Core.Battle
         public float EnemyDamage = 1f;
         /// <summary>Added to every non-test enemy spawn level (never below 1).</summary>
         public int EnemyLevelOffset;
+        /// <summary>GG-T311: enemy turn-icon pace (the timeline). Slower foes leave wider gaps between their turns, so
+        /// the party gets to act more often between them (§2.0 minimum action time).</summary>
+        public float EnemySpeed = 1f;
         /// <summary>Coins every kill pays.</summary>
         public float RewardGold = 1f;
         /// <summary>XP every kill pays.</summary>
@@ -44,21 +47,20 @@ namespace GridGame.Core.Battle
         /// <summary>Monotonic in every column: enemies never get weaker and rewards never shrink as the level rises.</summary>
         public static readonly DifficultyRow[] Rows =
         {
-            Row(1,  "Gentle",    0.55f, 0.60f, -2, 0.6f),
-            Row(2,  "Gentle",    0.60f, 0.65f, -2, 0.7f),
-            Row(3,  "Easy",      0.65f, 0.70f, -1, 0.8f),
-            Row(4,  "Easy",      0.70f, 0.75f, -1, 0.9f),
-            Row(5,  "Moderate",  0.75f, 0.80f, -1, 1.0f),
-            Row(6,  "Moderate",  0.80f, 0.85f,  0, 1.1f),
-            Row(7,  "Hard",      0.85f, 0.90f,  0, 1.2f),
-            Row(8,  "Hard",      0.90f, 0.93f,  0, 1.3f),
-            Row(9,  "Very hard", 0.95f, 0.97f,  0, 1.4f),
-            Row(10, "Intended",  1.00f, 1.00f,  0, 1.5f),
-        };
+            Row(1,  "Gentle",    0.55f, 0.60f, -2, 0.6f, 0.60f),
+            Row(2,  "Gentle",    0.60f, 0.65f, -2, 0.7f, 0.65f),
+            Row(3,  "Easy",      0.65f, 0.70f, -1, 0.8f, 0.70f),
+            Row(4,  "Easy",      0.70f, 0.75f, -1, 0.9f, 0.75f),
+            Row(5,  "Moderate",  0.75f, 0.80f, -1, 1.0f, 0.80f),
+            Row(6,  "Moderate",  0.80f, 0.85f,  0, 1.1f, 0.85f),
+            Row(7,  "Hard",      0.85f, 0.90f,  0, 1.2f, 0.90f),
+            Row(8,  "Hard",      0.90f, 0.93f,  0, 1.3f, 0.93f),
+            Row(9,  "Very hard", 0.95f, 0.97f,  0, 1.4f, 0.97f),
+            Row(10, "Intended",  1.00f, 1.00f,  0, 1.5f, 1.00f),        };
 
-        private static DifficultyRow Row(int level, string name, float hp, float dmg, int lvl, float reward) => new DifficultyRow
+        private static DifficultyRow Row(int level, string name, float hp, float dmg, int lvl, float reward, float speed) => new DifficultyRow
         {
-            Level = level, Name = name, EnemyHp = hp, EnemyDamage = dmg, EnemyLevelOffset = lvl,
+            Level = level, Name = name, EnemyHp = hp, EnemyDamage = dmg, EnemyLevelOffset = lvl, EnemySpeed = speed,
             RewardGold = reward, RewardXp = reward, DropChance = reward,
         };
 
@@ -76,7 +78,7 @@ namespace GridGame.Core.Battle
         {
             var r = At(Clamp(level));
             string foes = r.Level == Max ? "the designed fight"
-                : $"foes {Pct(r.EnemyHp)} HP, {Pct(r.EnemyDamage)} damage" + (r.EnemyLevelOffset != 0 ? $", {r.EnemyLevelOffset} Lv" : "");
+                : $"foes {Pct(r.EnemyHp)} HP, {Pct(r.EnemyDamage)} damage, {Pct(r.EnemySpeed)} speed" + (r.EnemyLevelOffset != 0 ? $", {r.EnemyLevelOffset} Lv" : "");
             return $"{r.Name}: {foes}. Rewards {RewardLabel(r.Level)}.";
         }
 
@@ -92,12 +94,12 @@ namespace GridGame.Core.Battle
             {
                 var r = Rows[i];
                 if (r.Level != i + 1) p.Add($"difficulty: row {i} is level {r.Level}, expected {i + 1}");
-                if (r.EnemyHp <= 0f || r.EnemyDamage <= 0f || r.RewardGold <= 0f || r.RewardXp <= 0f || r.DropChance <= 0f)
+                if (r.EnemyHp <= 0f || r.EnemyDamage <= 0f || r.EnemySpeed <= 0f || r.RewardGold <= 0f || r.RewardXp <= 0f || r.DropChance <= 0f)
                     p.Add($"difficulty {r.Level}: multipliers must be positive");
                 if (string.IsNullOrEmpty(r.Name)) p.Add($"difficulty {r.Level}: no name");
                 if (i == 0) continue;
                 var q = Rows[i - 1];
-                if (r.EnemyHp < q.EnemyHp || r.EnemyDamage < q.EnemyDamage || r.EnemyLevelOffset < q.EnemyLevelOffset)
+                if (r.EnemyHp < q.EnemyHp || r.EnemyDamage < q.EnemyDamage || r.EnemyLevelOffset < q.EnemyLevelOffset || r.EnemySpeed < q.EnemySpeed)
                     p.Add($"difficulty {r.Level}: an enemy column falls below level {q.Level}'s");
                 if (r.RewardGold <= q.RewardGold || r.RewardXp <= q.RewardXp || r.DropChance <= q.DropChance)
                     p.Add($"difficulty {r.Level}: a reward column doesn't rise above level {q.Level}'s");
@@ -105,7 +107,7 @@ namespace GridGame.Core.Battle
             if (Rows.Length == Max)
             {
                 var top = Rows[Max - 1];
-                if (top.EnemyHp != 1f || top.EnemyDamage != 1f || top.EnemyLevelOffset != 0)
+                if (top.EnemyHp != 1f || top.EnemyDamage != 1f || top.EnemyLevelOffset != 0 || top.EnemySpeed != 1f)
                     p.Add("difficulty 10: the enemy side must be exactly as designed (1.0, offset 0)");
             }
             return p;

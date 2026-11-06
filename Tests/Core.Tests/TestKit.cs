@@ -111,6 +111,19 @@ namespace GridGame.Tests
             return ev;
         }
 
+        /// <summary>
+        /// GG-T311: puts <paramref name="u"/>'s turn icon as close to the left edge as a hero action still fits in front
+        /// of (the longer of a minimum drag and a skill's use time) — the old "Ip = 999, it acts at the end of this
+        /// action", now that a gap shorter than an action refuses it. A skill then runs the window out exactly.
+        /// </summary>
+        public static void ActsAfterAction(BattleState s, Unit u)
+        {
+            var e = s.TurnEntryOf(u.Id);
+            e.StunTicks = 0;
+            int need = BattleEngine.NeedTicks(Math.Max(BattleConfig.HeroActionSeconds, BattleEngine.MinDragSeconds));
+            e.Ip = Math.Max(0, BattleConfig.BarLength - BattleEngine.TurnRatePerTick(s, u) * need);
+        }
+
         /// <summary>Invariants on one command's event stream (GG-T98): every pincer's formation-time geometry is a legal
         /// line — a single tile thick across its axis, except where a 2×2 foe widens it — and its snapshots line up with its ids.</summary>
         public static void AssertEventInvariants(List<BattleEvent> events)

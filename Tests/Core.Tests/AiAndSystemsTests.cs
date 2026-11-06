@@ -120,9 +120,9 @@ namespace GridGame.Tests
         {
             var db = Mini();
             var (s, _) = Battle(db, Stage(("wolf", 0, 0)), ("knight", 5, 7), ("cleric", 4, 7));
-            s.TurnEntryOf(Enemy(s, "wolf").Id).Ip = 999;
+            s.TurnEntryOf(Enemy(s, "wolf").Id).Ip = BattleConfig.BarLength - BattleEngine.TurnRatePerTick(s, Enemy(s, "wolf")) * 10; // GG-T311: a 1 s gap, room for a drag
             var k = Hero(s, "knight");
-            var ev = BattleEngine.Apply(s, new MoveCommand { HeroId = k.Id, Path = P((5, 6)), TimeLeftSeconds = 3.9f });
+            var ev = Turn(s, new MoveCommand { HeroId = k.Id, Path = P((5, 6)), TimeLeftSeconds = 3.9f });
             Assert.That(ev.OfType<OrbMintedEvent>().Count(o => o.Reason == "time bank"), Is.EqualTo(3));
         }
 
@@ -253,12 +253,12 @@ namespace GridGame.Tests
             var db = Mini();
             var (s, _) = Battle(db, Stage(("wolf", 0, 0)), ("knight", 5, 7), ("cleric", 4, 7));
             // The wolf's turn lands inside the SECOND action: 770 + 20 ticks of zone crawl ≈ 990 after the first.
-            s.TurnEntryOf(Enemy(s, "wolf").Id).Ip = 770;
+            s.TurnEntryOf(Enemy(s, "wolf").Id).Ip = BattleConfig.BarLength - BattleEngine.TurnRatePerTick(s, Enemy(s, "wolf")) * 25; // GG-T311: 2.5 s, room for a drag and a potion
             var k = Hero(s, "knight");
             k.Bar[0] = new AbilitySlot { ItemId = "potion", Charges = 3, MaxCharges = 9 };
             var first = BattleEngine.Apply(s, new MoveCommand { HeroId = k.Id, Path = P((5, 6)), TimeLeftSeconds = 2.6f });
             Assert.That(first.Any(e => e is TurnStartedEvent), Is.False);
-            // GG-T308: the knight's drop spent a tick of the window; the cleric, last to act, ends it with a potion.
+            // GG-T308/GG-T311: the knight's drop spent its minimum (pickup + a tile) of the window; the cleric, last to act, ends it with a potion.
             var c = Hero(s, "cleric");
             c.Bar[0] = new AbilitySlot { ItemId = "potion", Charges = 3, MaxCharges = 9 };
             var second = BattleEngine.Apply(s, new UseSlotCommand { HeroId = c.Id, Slot = 0, Target = c.Pos });
@@ -355,6 +355,7 @@ namespace GridGame.Tests
             for (int i = 0; i < 4; i++)
             {
                 s.Bank.Add(2);
+                m.ActedThisWindow = false; // GG-T308: one cast a window — this test is about stacking, not the window
                 BattleEngine.Apply(s, new UseSlotCommand { HeroId = m.Id, Slot = 0, Target = tank.Pos });
             }
             Assert.That(tank.Buffs.Count(b => b.Def.Id == "burning"), Is.EqualTo(3));

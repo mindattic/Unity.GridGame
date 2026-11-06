@@ -45,7 +45,7 @@ namespace GridGame.Tests
                     if (manageCamp) CampRoutine.Run(c, s);
                     else if (CampNpcs.Joined(s, CampNpcs.Innkeeper) && Inn.Cost(c, s) > 0 && Inn.Cost(c, s) <= s.Gold) Inn.Rest(c, s);
                     var setup = BattleFactory.Build(c, s, stage.Id, battleSeed++, BotDifficulty.FromEnv()); // GG-T309
-                    var st = BotRunner.Play(c, setup, new HeroBot(battleSeed, randomness), 900); // the first battle is a 20-wave gauntlet
+                    var st = BotRunner.Play(c, setup, new HeroBot(battleSeed, randomness), 3000); // the first battle is a 20-wave gauntlet; GG-T311: forced Guards count
                     if (!rows.TryGetValue(stage.Id, out var row)) rows[stage.Id] = row = new Row();
                     row.Runs++;
                     row.Actions += st.Results.ActionsTaken;
@@ -105,7 +105,9 @@ namespace GridGame.Tests
             foreach (var kv in total)
                 sb.AppendLine($"{kv.Key,-22} {100 * kv.Value.Wins / kv.Value.Runs,4}%   {kv.Value.Actions / (float)kv.Value.Runs,7:F1}   {kv.Value.HpPct / kv.Value.Runs,6}%");
             TestContext.Out.WriteLine(sb.ToString());
-            if (randomness == 0f) Assert.That(finishedRuns >= 1, Is.True, "a greedy bot should be able to finish the campaign");
+            // GG-T311: at the designed difficulty a party that never spends its gear, gold or skill points no longer
+            // finishes (gaps too short to act in cost it turns); a managed camp still must.
+            if (randomness == 0f && manageCamp) Assert.That(finishedRuns >= 1, Is.True, "a greedy bot that manages its camp should be able to finish the campaign");
             // GG-T87: the camp routine must actually drive the Bounty Board and (given an open slot) the
             // Summon Circle as part of organic progression, not just leave them untouched.
             // (Only a run that finishes is guaranteed to pass a contract's last target — a bot that stalls early may not.)

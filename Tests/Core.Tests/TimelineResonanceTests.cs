@@ -38,7 +38,7 @@ namespace GridGame.Tests
         {
             var (s, _) = Battle(Db(), Stage(("wolf", 0, 0)), ("knight", 5, 7), ("mage", 4, 7));
             var turn = s.TurnEntryOf(Wolf(s).Id);
-            turn.Ip = 1000 - 16 * 30; // Speed 10 = 16 IP/tick: 30 ticks out
+            turn.Ip = 1000 - BattleEngine.TurnRatePerTick(s, Wolf(s)) * 30; // 30 ticks out at the wolf's rate
             Assert.That(BattleEngine.SecondsUntilAct(s, turn), Is.EqualTo(3f).Within(1e-4));
             Assert.That(BattleEngine.BarU(s, turn), Is.EqualTo(3f / BattleConfig.BarSeconds).Within(1e-4));
             turn.Ip = BattleConfig.BarLength;
@@ -75,7 +75,7 @@ namespace GridGame.Tests
             {
                 var (s, _) = Battle(Db(), Stage(("wolf", 2, 0)), ("knight", 5, 7), ("mage", 4, 7));
                 var wolf = Wolf(s);
-                s.TurnEntryOf(wolf.Id).Ip = 1000 - 16 * 35; // acts in 3.5 s
+                s.TurnEntryOf(wolf.Id).Ip = 1000 - BattleEngine.TurnRatePerTick(s, wolf) * 35; // acts in 3.5 s
                 s.Timeline.Add(new TimelineEntry { Id = 700, Kind = TimelineKind.Cast, OwnerId = Hero(s, "mage").Id, CasterTeam = Team.Hero, AbilityId = "zap", RemainingTicks = 40, TotalCastTicks = 40, TargetUnitId = wolf.Id, TargetTile = wolf.Pos });
                 if (slow) wolf.Buffs.Add(new BuffInstance { Def = s.Content.Buffs["slowed"], Remaining = 2 });
                 var turnEntry = s.TurnEntryOf(wolf.Id);
@@ -95,7 +95,7 @@ namespace GridGame.Tests
         public void A_plain_hit_never_pushes()
         {
             var (s, _) = Battle(Db(), Stage(("tank", 2, 3)), ("knight", 2, 4), ("cleric", 5, 7));
-            s.TurnEntryOf(s.Units.Single(u => u.Def.Id == "tank").Id).Ip = 990; // about to act: the old Zone's sweet spot
+            ActsAfterAction(s, s.Units.Single(u => u.Def.Id == "tank")); // about to act: the old Zone's sweet spot (GG-T311: a skill still fits)
             var ev = UseSkill(s, Hero(s, "knight"), "jab", s.Units.Single(u => u.Def.Id == "tank"));
             Assert.That(ev.OfType<DamagedEvent>().Any(d => d.Amount > 0 || d.Hit != HitKind.Miss), Is.True);
             Assert.That(ev.OfType<PushedBackEvent>(), Is.Empty);
@@ -104,13 +104,16 @@ namespace GridGame.Tests
         [Test]
         public void The_Pushback_keyword_pushes_its_seconds_anywhere_on_the_bar()
         {
-            foreach (int ip in new[] { 990, 400, 0 })
+            // GG-T311: ticks until it acts — a skill's use time (as close as an action fits), mid-bar, and a full lap from IP 0;
+            // a Speed 5 tank laps slowly enough that a 1.5 s push never clamps at the far end.
+            foreach (int ticksOut in new[] { 10, 20, -1 })
             {
                 var db = Db();
-                db.Classes["tank"].BaseStats.Speed = 10;
+                db.Classes["tank"].BaseStats.Speed = 5;
                 var (s, _) = Battle(db, Stage(("tank", 2, 3)), ("knight", 2, 4), ("cleric", 5, 7));
                 var tank = s.Units.Single(u => u.Def.Id == "tank");
-                s.TurnEntryOf(tank.Id).Ip = ip;
+                s.TurnEntryOf(tank.Id).Ip = ticksOut < 0 ? 0 : BattleConfig.BarLength - BattleEngine.TurnRatePerTick(s, tank) * ticksOut;
+                int ip = s.TurnEntryOf(tank.Id).Ip;
                 var push = UseSkill(s, Hero(s, "knight"), "shove_time", tank).OfType<PushedBackEvent>().Single();
                 Assert.That(push.ToU - push.FromU, Is.EqualTo(1.5f / BattleConfig.BarSeconds).Within(1e-4), "ip " + ip);
             }
@@ -120,10 +123,10 @@ namespace GridGame.Tests
         public void One_push_is_capped()
         {
             var db = Db();
-            db.Classes["tank"].BaseStats.Speed = 10;
+            db.Classes["tank"].BaseStats.Speed = 5; // GG-T311: slow enough that a 2 s push from a skill's use time out doesn't clamp
             var (s, _) = Battle(db, Stage(("tank", 2, 3)), ("knight", 2, 4), ("cleric", 5, 7));
             var tank = s.Units.Single(u => u.Def.Id == "tank");
-            s.TurnEntryOf(tank.Id).Ip = 990;
+            ActsAfterAction(s, tank);
             var push = UseSkill(s, Hero(s, "knight"), "big_shove", tank).OfType<PushedBackEvent>().Single();
             Assert.That(push.ToU - push.FromU, Is.EqualTo(BattleConfig.PushbackMaxSeconds / BattleConfig.BarSeconds).Within(1e-4));
         }
@@ -141,8 +144,9 @@ namespace GridGame.Tests
         public void Guard_still_banks_the_time_left_to_the_next_arrival()
         {
             var (s, _) = Battle(Db(), Stage(("wolf", 0, 0)), ("knight", 5, 7), ("cleric", 4, 7));
-            s.TurnEntryOf(Wolf(s).Id).Ip = 0; // a full linear lap: ceil(1000 / 16) ticks
-            float window = (int)System.Math.Ceiling(1000 / 16.0) / (float)BattleConfig.TicksPerSecond;
+            s.TurnEntryOf(Wolf(s).Id).Ip = 0; // a full linear lap: ceil(1000 / rate) ticks
+            int rate = BattleEngine.TurnRatePerTick(s, Wolf(s));
+            float window = (BattleConfig.BarLength + rate - 1) / rate / (float)BattleConfig.TicksPerSecond;
             Assert.That(BattleEngine.TurnWindowSeconds(s), Is.EqualTo(window).Within(1e-4));
             Assert.That(BattleEngine.GuardCharge(s, 1f), Is.EqualTo(BattleEngine.GuardChargeFor(window - 1f)));
         }

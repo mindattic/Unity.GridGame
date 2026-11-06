@@ -221,9 +221,9 @@ namespace GridGame.Tests
             Assert.That(s.CastEntryOf(mage.Id), Is.Not.Null);
             // Meanwhile the knight walks onto the landing tile.
             var knight = Hero(s, "knight");
-            BattleEngine.Apply(s, new MoveCommand { HeroId = knight.Id, Path = P((4, 6), (4, 5), (4, 4), (4, 3), (3, 3)) });
+            // GG-T311: the knight is the window's last hero, so the clock may run on far enough for the warp to land now.
+            List<BattleEvent> ev = BattleEngine.Apply(s, new MoveCommand { HeroId = knight.Id, Path = P((4, 6), (4, 5), (4, 4), (4, 3), (3, 3)) });
             Assert.That(knight.Pos, Is.EqualTo(new Coord(3, 3)));
-            List<BattleEvent> ev = new List<BattleEvent>();
             for (int i = 0; i < 200 && s.CastEntryOf(mage.Id) != null && !s.IsOver; i++) ev = BattleEngine.Apply(s, new ShieldCommand());
             Assert.That(s.CastEntryOf(mage.Id), Is.Null, "the warp resolved");
             Assert.That(ev.OfType<AnnounceEvent>().Any(a => a.Text == "Blocked"), Is.True);

@@ -52,12 +52,19 @@ namespace GridGame.Core.Battle
                 Emit(new AbilityRefusedEvent { CasterId = done.Id, Reason = "Already acted" });
                 return;
             }
+            // GG-T311 (§2.0): an action starts only in a gap at least as long as it takes; with none, the party Guards.
+            if (S.UnitById(BattleEngine.CommandHeroId(cmd)) is Unit doer && doer.IsHero && !BattleEngine.ActionFits(S, BattleEngine.MinActionSeconds(cmd)))
+            {
+                Emit(new AbilityRefusedEvent { CasterId = doer.Id, Reason = "Too little time" });
+                return;
+            }
             pushedThisAction.Clear();
             firedThisAction.Clear();
             int waveBefore = S.Wave;
             // GG-T308 (§2.0): what this hero's action spends of the party's window, measured before it resolves (a drag's
             // hold is a share of the window as it stood at pickup).
             int spend = BattleEngine.CommandTicks(S, cmd);
+            bool forcedGuard = cmd is ShieldCommand && BattleEngine.TooLittleTime(S); // GG-T311: a sacrifice, not a choice
             bool acted;
             switch (cmd)
             {
@@ -68,6 +75,10 @@ namespace GridGame.Core.Battle
                 default: acted = false; break;
             }
             if (!acted) return;
+            // GG-T311 (§2.0): a forced Guard (no action fitted the gap) rallies the party — enemy icons slow a tempo step,
+            // stacking to RallyMaxStacks — so a run of too-short gaps always opens; any hero action resets it.
+            if (forcedGuard) S.Rally = Math.Min(BattleConfig.RallyMaxStacks, S.Rally + 1);
+            else if (S.UnitById(BattleEngine.CommandHeroId(cmd)) is Unit rallied && rallied.IsHero) S.Rally = 0;
             CheckTilesStrict(cmd.GetType().Name);
 
             S.Results.ActionsTaken++;

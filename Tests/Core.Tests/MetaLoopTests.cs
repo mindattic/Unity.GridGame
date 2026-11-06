@@ -75,8 +75,8 @@ namespace GridGame.Tests
             {
                 var stage = stages[System.Math.Min(i, stages.Count - 1)];
                 if (!Progression.IsStageUnlocked(s, stages.IndexOf(stage))) break;
-                var setup = BattleFactory.Build(c, s, stage.Id, 100 + i);
-                var st = BotRunner.Play(c, setup, new HeroBot(i), 900); // the first battle is a 20-wave gauntlet
+                var setup = BattleFactory.Build(c, s, stage.Id, 100 + i, 1); // GG-T311: the meta loop, not balance — fought on the Gentle dial
+                var st = BotRunner.Play(c, setup, new HeroBot(i), 3000); // the first battle is a 20-wave gauntlet; GG-T311: forced Guards count
                 var rep = BattleFactory.Commit(c, s, st);
                 if (rep.Victory) victories++;
                 TestContext.Out.WriteLine($"{stage.Id}: {(rep.Victory ? "WIN" : "LOSS")} gold+{rep.Gold} xp+{rep.XpEach} items {string.Join(",", rep.Items.Select(kv => kv.Key + "x" + kv.Value))} lvls {string.Join(",", rep.LevelUps)}");

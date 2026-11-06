@@ -27,9 +27,9 @@ namespace GridGame.Tests
         public void Guard_banks_only_the_turn_time_not_yet_used()
         {
             var (s, _) = Battle(Mini(), Stage(("wolf", 0, 0)), ("knight", 5, 7), ("cleric", 4, 7));
-            Wolf(s).SetIp(s, 999); // the wolf is a tick from ACT: the turn is the MinTurnSeconds window
+            Wolf(s).SetIp(s, 999); // the wolf is a tick from ACT: GG-T311, the window is that 0.1 s (no real-time floor)
             float w = BattleEngine.TurnWindowSeconds(s);
-            Assert.That(w, Is.EqualTo(BattleConfig.MinTurnSeconds).Within(1e-4));
+            Assert.That(w, Is.EqualTo(0.1f).Within(1e-4));
             Assert.That(BattleEngine.GuardCharge(s), Is.EqualTo(BattleEngine.GuardChargeFor(w)));
             Assert.That(BattleEngine.GuardCharge(s, w / 2f), Is.EqualTo(BattleEngine.GuardChargeFor(w / 2f)));
             Assert.That(BattleEngine.GuardCharge(s, w), Is.EqualTo(0));

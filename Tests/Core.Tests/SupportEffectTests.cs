@@ -153,8 +153,8 @@ namespace GridGame.Tests
 
         private static float PushDelta(SupportDef support)
         {
-            var (s, ev) = Pincer(support, tweak: db => db.Classes["tank"].BaseStats.Speed = 30,
-                before: st => st.TurnEntryOf(Tank(st).Id).Ip = BattleConfig.BarLength - 1); // about to act: no clamp at the bar's end
+            var (s, ev) = Pincer(support, tweak: db => db.Classes["tank"].BaseStats.Speed = 5, // GG-T311: slow, so a push from a drag's minimum out never clamps
+                before: st => ActsAfterAction(st, Tank(st))); // about to act (a drag still fits, GG-T311): no clamp at the bar's end
             var pushes = ev.OfType<PushedBackEvent>().Where(p => p.UnitId == Tank(s).Id).ToList();
             Assert.That(pushes.Count, Is.EqualTo(1), "one push per foe per action");
             return pushes[0].ToU - pushes[0].FromU;

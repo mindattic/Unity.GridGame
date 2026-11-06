@@ -29,7 +29,7 @@ namespace GridGame.Tests
             };
             var (s, _) = Battle(db, Stage(("darter", 1, 0)), ("knight", 0, 1), ("cleric", 2, 0));
             var darter = s.Units.Single(u => u.Def.Id == "darter");
-            s.TurnEntryOf(darter.Id).Ip = 999; // its turn arrives inside this very command
+            ActsAfterAction(s, darter); // its turn arrives inside this very command (GG-T311: as close as a drag fits)
             var knight = Hero(s, "knight");
 
             var ev = Turn(s, new MoveCommand { HeroId = knight.Id, Path = P((0, 0)) });

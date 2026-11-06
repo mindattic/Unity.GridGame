@@ -276,8 +276,27 @@ namespace GridGame.Core.Battle
                 if (def.SnakeSegments > 0) GrowSnake(u, def.SnakeSegments, started.Spawned);
             }
             foreach (var id in started.Spawned) if (S.UnitById(id) is Unit su) started.SpawnedAt.Add(UnitFootprint.Of(su));
+            OpenPartyWindow();
             Emit(started);
             AnnounceRuleBreaks(started.Spawned);
+        }
+
+        /// <summary>
+        /// GG-T311 (§2.0): heroes go first in the round. A fresh wave's enemy turn icons are held back so none reaches the
+        /// left edge sooner than <see cref="BattleConfig.OpeningWindowSeconds"/> (a fast foe's random head start is
+        /// trimmed, at most to the start of the bar — a foe too fast for that gets one full lap; its spread against the others is
+        /// otherwise kept), so the party's first window is a real one.
+        /// </summary>
+        private void OpenPartyWindow()
+        {
+            int need = BattleEngine.NeedTicks(BattleConfig.OpeningWindowSeconds);
+            S.Rally = 0;
+            foreach (var e in S.Timeline)
+            {
+                if (e.Kind != TimelineKind.Turn || !(S.UnitById(e.OwnerId) is Unit u) || u.IsHero || !u.Alive) continue;
+                int maxIp = BattleConfig.BarLength - BattleEngine.TurnRatePerTick(S, u) * need;
+                if (e.Ip > maxIp) e.Ip = Math.Max(0, maxIp);
+            }
         }
 
         /// <summary>Resolves any delayed reinforcements (§14.8) for the current wave whose trigger tick has arrived.</summary>

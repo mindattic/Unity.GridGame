@@ -21,10 +21,11 @@ namespace GridGame.Core.Battle
         // ── Timeline ────────────────────────────────────────────────────────────────
         public const int TicksPerSecond = 10;
         public const int BarLength = 1000;                 // a turn icon loads IP 0 → BarLength, then acts
-        /// <summary>IP per tick per point of Speed, the one linear rate (GG-T286: no Zone crawl). Speed 10 → 16 IP/tick
-        /// → a full lap in 6.3 s. Tempo and buffs (Slowed, Hasted, Frozen) scale it (<see cref="BattleEngine.TimelineScale"/>). Static, not const, so a
+        /// <summary>IP per tick per point of Speed, the one linear rate (GG-T286: no Zone crawl). Speed 10 → 42 IP/tick
+        /// → a full lap in 2.4 s (GG-T311: 1.6 → 4.2 — with the minimum action time a tight cluster of foes now costs the
+        /// party its turns; the difficulty dial's EnemySpeed column slows it below level 10). Tempo and buffs (Slowed, Hasted, Frozen) scale it (<see cref="BattleEngine.TimelineScale"/>). Static, not const, so a
         /// balance soak can sweep it (GAIDEN_TUNE, GG-T292).</summary>
-        public static float IpPerTickPerSpeed = 1.6f;
+        public static float IpPerTickPerSpeed = 4.2f;
         /// <summary>
         /// Seconds the drawn bar spans (GG-T286, Resonance-style): an icon sits at u = secondsUntilAct / BarSeconds, so
         /// u = 0 is the LEFT edge (acting now) and anything further off than BarSeconds waits at the right end.
@@ -43,6 +44,20 @@ namespace GridGame.Core.Battle
         /// </summary>
         public static float HeroActionSeconds = 1f;
 
+        // ── Minimum action time (GG-T311, §2.0): a hero action can only start in a gap at least as long as it takes ──
+        /// <summary>Seconds a drag costs before the hero has moved at all: picking it up (part of every drag's minimum).</summary>
+        public static float DragPickupSeconds = 0.5f;
+        /// <summary>Seconds a drag costs per tile walked. The shortest drag that does anything is pickup + one tile: a gap
+        /// shorter than that can't start a drag (and every drag spends at least that much of the window).</summary>
+        public static float DragSecondsPerTile = 0.35f;
+        /// <summary>The party opens every wave: no enemy turn icon reaches the left edge sooner than this after the wave
+        /// spawns (a fast foe's head start is trimmed), so the heroes always act first (GG-T311).</summary>
+        public static float OpeningWindowSeconds = 3f;
+        /// <summary>GG-T311: most rally stacks — forced Guards in a row (no action fitted the gap), each one tempo step slower for
+        /// every enemy icon (×0.8, ×0.64, ×0.51, ×0.41, ×0.33, outside the tempo clamp) — so even foes whose turns all fall too close together leave a gap
+        /// wide enough to act in after a few sacrifices. The next hero action resets it.</summary>
+        public static int RallyMaxStacks = 5;
+
         // ── Party tempo (GG-T268, §2.11): hero haste slows enemy icons, Slow on heroes speeds them ─────────
         /// <summary>Each net tempo point scales every enemy turn icon's rate by this factor (+1 → ×0.8, −1 → ×1.25).</summary>
         public static float TempoStep = 1.25f;
@@ -55,12 +70,9 @@ namespace GridGame.Core.Battle
         public static int DefaultTempoTurns = 2;
 
         // ── Held turn (GG-T188, §2.0): picking up a hero runs the timeline in real time ──────────────────
-        /// <summary>Shortest real-time window a held turn gets, however close the next enemy icon is to ACT: the
-        /// timeline then plays back slower than 1 tick per 0.1 s so a 1-tick turn is still a readable, playable drag.</summary>
-        public const float MinTurnSeconds = 2f;
-        /// <summary>How long the bot driver takes per dragged tile: a path longer than its turn window is cut short
-        /// where the time runs out (forced drop), exactly like a human's.</summary>
-        public const float BotSecondsPerStep = 0.25f;
+        // GG-T311: no real-time floor any more (MinTurnSeconds 2 s let a 0.1 s gap play as a 2 s drag) — a hold runs at
+        // 1 tick per 0.1 s, and a gap too short for any action is a forced Guard instead. The bot driver's drag time is
+        // the human model DragPickupSeconds + DragSecondsPerTile × tiles (+ its think time, HeroBot.ThinkSeconds).
         /// <summary>Bot driver (GG-T191): a best move scoring under this is not worth a turn; the bot may Guard instead.</summary>
         public const float BotGuardBelowScore = 0.5f;
         /// <summary>Bot driver (GG-T191): chance of Guarding on such a turn (a lone hero always does).</summary>

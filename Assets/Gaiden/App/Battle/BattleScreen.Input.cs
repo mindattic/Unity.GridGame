@@ -41,7 +41,12 @@ namespace GridGame.App
             if (unit != null && unit.IsHero)
             {
                 SelectHero(unit.Id);
-                if (!BattleEngine.CanMove(State, unit.Id)) { ShowBanner(unit.ActedThisWindow ? $"{unit.Name} has acted this turn" : $"{unit.Name} can't move"); return; }
+                if (!BattleEngine.CanMove(State, unit.Id))
+                {
+                    if (!unit.ActedThisWindow && !unit.IsImmobile && !BattleEngine.ActionFits(State, BattleEngine.MinDragSeconds)) { TooLittleTimeCue(); return; } // GG-T311
+                    ShowBanner(unit.ActedThisWindow ? $"{unit.Name} has acted this turn" : $"{unit.Name} can't move");
+                    return;
+                }
                 pressing = true;
                 dragHeroId = unit.Id;
                 pressPos = evt.localPosition;
@@ -193,7 +198,10 @@ namespace GridGame.App
         /// </summary>
         private void WindowContinues(bool newWindow)
         {
-            if (newWindow || State.IsOver) return;
+            SyncGuardCall();
+            if (State.IsOver) return;
+            if (BattleEngine.TooLittleTime(State)) { TooLittleTimeCue(); return; } // GG-T311: the gap fits no action
+            if (newWindow) return;
             var left = BattleEngine.HeroesLeftToAct(State);
             if (left.Count == 0) return;
             var sel = State.UnitById(SelectedHeroId);
@@ -202,6 +210,33 @@ namespace GridGame.App
             string who = left.Count == 1 ? left[0].Name : $"{left.Count} heroes";
             ShowBanner(w > 0f ? $"{who} can still act · {w:0.0}s left" : $"{who} can still act");
             App.Audio.Sfx("ui.select", 0.5f);
+        }
+
+        /// <summary>
+        /// GG-T311 (§2.0): the gap until the next enemy reaches the left is shorter than any hero's action (a minimum drag,
+        /// a skill's use time) — say so plainly with the gap's seconds; GUARD is the lit choice (<see cref="SyncGuardCall"/>).
+        /// </summary>
+        private void TooLittleTimeCue()
+        {
+            float gap = BattleEngine.TurnTicks(State) / (float)BattleConfig.TicksPerSecond;
+            string rally = State.Rally > 0 ? $" · Rally {State.Rally}: foes slowed" : "";
+            ShowBanner($"Too little time — Guard ({gap:0.0}s gap, a move needs {BattleEngine.MinDragSeconds:0.0#}s){rally}");
+            App.Audio.Sfx("ui.error", 0.5f);
+            SyncGuardCall();
+        }
+
+        /// <summary>GG-T311: GUARD glows gold while it is the party's only choice (a gap too short for any action).</summary>
+        private void SyncGuardCall()
+        {
+            var guard = guardButton;
+            if (guard == null || State == null) return;
+            bool forced = BattleEngine.TooLittleTime(State);
+            guard.EnableInClassList("guard--forced", forced);
+            guard.style.borderTopColor = guard.style.borderBottomColor = guard.style.borderLeftColor = guard.style.borderRightColor =
+                forced ? new StyleColor(Palette.Gold) : new StyleColor(StyleKeyword.Null);
+            guard.style.borderTopWidth = guard.style.borderBottomWidth = guard.style.borderLeftWidth = guard.style.borderRightWidth =
+                forced ? new StyleFloat(4f) : new StyleFloat(StyleKeyword.Null);
+            guard.style.backgroundColor = forced ? new StyleColor(Palette.Gold.WithA(0.35f)) : new StyleColor(StyleKeyword.Null);
         }
 
         private float holdElapsed, holdWindow = -1f, holdLastTime;

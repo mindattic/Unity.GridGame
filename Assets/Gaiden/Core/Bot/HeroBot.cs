@@ -45,11 +45,29 @@ namespace GridGame.Core.Bot
         private int stalled;
         private int lastEnemyHp = -1;
 
+        /// <summary>
+        /// GG-T311: seconds the bot hesitates with a hero held before it moves (route planning), on top of the human drag
+        /// model (<see cref="BattleEngine.DragSeconds"/>). The smart bot 0.4 s, the casual bot a full second.
+        /// </summary>
+        public float ThinkSeconds;
+        public const float SmartThinkSeconds = 0.4f, CasualThinkSeconds = 1f;
+        /// <summary>GG-T311: a hop of this many tiles or fewer takes only <see cref="QuickThinkFactor"/> of the think time.</summary>
+        public const int QuickDragTiles = 2;
+        public const float DefaultQuickThinkFactor = 0.5f;
+        public float QuickThinkFactor = DefaultQuickThinkFactor;
+        /// <summary>GG-T311: after this many windows in a row in which it had nothing it could do in time (no candidate at
+        /// all, not a choice to Guard) the bot hurries (no think time) — a player locked out of a window they could use
+        /// eventually just moves.</summary>
+        public const int HurryAfterLockouts = 2;
+        private int lockouts;
+        private bool lockedOut;
+
         public HeroBot(int seed, float randomness = 0f)
         {
             rng = new Rng(seed);
             Randomness = randomness;
             TimelineAware = randomness <= 0f;
+            ThinkSeconds = TimelineAware ? SmartThinkSeconds : CasualThinkSeconds;
         }
 
         /// <summary>The best drag on offer (hints and automation teach moving, so they ask for a move specifically).</summary>
@@ -59,11 +77,13 @@ namespace GridGame.Core.Bot
         {
             var cmd = Decide(s, false);
             if (cmd is MoveCommand m && s.UnitById(m.HeroId) is Unit mover) cameFrom[m.HeroId] = mover.Pos;
+            lockouts = lockedOut ? lockouts + 1 : cmd is ShieldCommand ? lockouts : 0;
             return cmd;
         }
 
         private BattleCommand Decide(BattleState s, bool movesOnly)
         {
+            if (!movesOnly) lockedOut = false;
             // GG-T308: a stall is counted per window (the party now takes several actions in one).
             bool freshWindow = !s.Units.Exists(u => u.IsHero && u.Alive && u.ActedThisWindow);
             if (TimelineAware && freshWindow)
@@ -75,21 +95,29 @@ namespace GridGame.Core.Bot
             }
             // A recruitable whose every term is met (GG-T132) is worth more than any swing: talk it round first.
             if (!movesOnly && Recruitment.ReadyTalk(s) is TalkCommand talk) return talk;
+            // GG-T311: no hero's action fits the gap — the party has to give the window up.
+            if (BattleEngine.TooLittleTime(s)) return movesOnly ? null : new ShieldCommand();
             var heroes = s.LivingList(Team.Hero);
             bool lone = EnemyPlanner.LoneHero(s);
             var candidates = new List<(BattleCommand cmd, float score)>();
             // GG-T66: displacement bonus per move candidate (index into candidates), applied only when no pincer is on offer.
             var displacement = new List<(int index, float bonus)>();
             bool pincerAvailable = false;
-            // GG-T188 (§2.0): picking a hero up starts the clock; a drag takes BotSecondsPerStep a tile, so a path longer
-            // than the turn window is cut where the time runs out — the hero is dropped there (forced drop).
+            // GG-T188/GG-T311 (§2.0): picking a hero up starts the clock and the bot drags like a human — its think time,
+            // the pickup, then DragSecondsPerTile a tile — so a path longer than the window is cut where the time runs out
+            // (forced drop), and a gap too short for pickup + think + one tile offers no drag at all.
+            // A short hop (QuickDragTiles or fewer) is half the deliberation, so a ~1 s gap still fits one.
             float window = BattleEngine.TurnWindowSeconds(s);
-            int maxSteps = BattleEngine.MaxDragSteps(s);
+            float thinkNow = lockouts >= HurryAfterLockouts ? 0f : ThinkSeconds;
+            int fullSteps = BattleEngine.MaxDragSteps(s, thinkNow);
+            int quickSteps = Math.Min(QuickDragTiles, BattleEngine.MaxDragSteps(s, thinkNow * QuickThinkFactor));
+            int maxSteps = Math.Max(fullSteps, quickSteps);
 
             foreach (var h in heroes)
             {
-                if (!BattleEngine.CanMove(s, h.Id) || maxSteps <= 0) continue;
-                for (int y = 0; y < BattleConfig.Rows; y++)
+                // GG-T311: a gap too short to drag in still leaves this hero's bar (no `continue` past the slots).
+                bool canDrag = BattleEngine.CanMove(s, h.Id) && maxSteps > 0;
+                for (int y = 0; canDrag && y < BattleConfig.Rows; y++)
                     for (int x = 0; x < BattleConfig.Cols; x++)
                     {
                         var dest = new Coord(x, y);
@@ -99,7 +127,9 @@ namespace GridGame.Core.Bot
                             var path = full.Count > maxSteps ? full.GetRange(0, maxSteps) : full;
                             var pv = BattleEngine.PreviewMove(s, h.Id, path);
                             if (pv.StepsTaken.Count == 0) continue;
-                            float held = full.Count > maxSteps ? window : pv.StepsTaken.Count * BattleConfig.BotSecondsPerStep;
+                            int walked = pv.StepsTaken.Count;
+                            float think = walked <= quickSteps && full.Count <= quickSteps ? thinkNow * QuickThinkFactor : thinkNow;
+                            float held = full.Count > maxSteps ? window : think + BattleEngine.DragSeconds(walked);
                             if (window > 0f) held = Math.Min(held, window);
                             float score = ScoreMove(s, pv, h);
                             if (ReadsBar) score += MoveTimeValue(s, pv, h, held);
@@ -136,6 +166,7 @@ namespace GridGame.Core.Bot
                 foreach (var (index, bonus) in displacement)
                     candidates[index] = (candidates[index].cmd, candidates[index].score + bonus);
 
+            lockedOut = candidates.Count == 0 && !movesOnly;
             if (candidates.Count == 0) return movesOnly ? null : new ShieldCommand();
             if (Randomness > 0f && rng.Chance(Randomness)) return candidates[rng.Range(0, candidates.Count)].cmd;
 
@@ -583,7 +614,8 @@ namespace GridGame.Core.Bot
             int others = OthersLeft(s, actor);
             int window = BattleEngine.TurnTicks(s);
             if (others == 0 || window < 0) return 0f;
-            int need = Math.Max(1, Formulas.SecondsToTicks(BattleConfig.HeroActionSeconds));
+            // GG-T311: another hero needs at least its cheapest action's time (a minimum drag or a skill's use time).
+            int need = BattleEngine.NeedTicks(Math.Min(BattleEngine.MinDragSeconds, BattleConfig.HeroActionSeconds));
             int room = Math.Min(others, Math.Max(0, window - spendTicks) / need);
             int roomAfter = Math.Min(others, Math.Max(0, window + gainTicks - spendTicks) / need);
             return ActionWorth * (roomAfter - room) - 0.5f * ActionWorth * (others - room);
@@ -595,7 +627,7 @@ namespace GridGame.Core.Bot
             var pushed = new HashSet<int>();
             foreach (var p in pv.Pincers) foreach (var o in p.Opponents) if (o.Alive && !o.IsCorpse) pushed.Add(o.Id);
             int gain = WindowGainTicks(s, pushed, Formulas.SecondsToTicks(Math.Min(BattleConfig.PincerPushbackSeconds, BattleConfig.PushbackMaxSeconds)));
-            return TimeBalance(s, hero.Id, BattleEngine.HoldTicks(s, held), gain);
+            return TimeBalance(s, hero.Id, BattleEngine.CommandTicks(s, new MoveCommand { HeroId = hero.Id, HeldSeconds = held }), gain);
         }
 
         /// <summary>An ability spends HeroActionSeconds; an instant Pushback, or a sure instant Slow, on the next foe buys time.</summary>

@@ -4,7 +4,7 @@ using GridGame.Core.Rules;
 
 namespace GridGame.Core.Battle
 {
-    public enum SlotStatus { Ready, Empty, Locked, Unaffordable, OutOfCharges, Cooldown, Silenced, CastCapReached, CannotAct, NoTargets, Acted }
+    public enum SlotStatus { Ready, Empty, Locked, Unaffordable, OutOfCharges, Cooldown, Silenced, CastCapReached, CannotAct, NoTargets, Acted, TooLittleTime }
 
     public sealed class MovePreview
     {
@@ -83,7 +83,57 @@ namespace GridGame.Core.Battle
         public static bool CanMove(BattleState s, int heroId)
         {
             var h = s.UnitById(heroId);
-            return s.Phase == BattlePhase.PlayerInput && h != null && h.Alive && h.IsCommandable && !h.IsImmobile && !h.ActedThisWindow;
+            return s.Phase == BattlePhase.PlayerInput && h != null && h.Alive && h.IsCommandable && !h.IsImmobile && !h.ActedThisWindow
+                && ActionFits(s, MinDragSeconds); // GG-T311: no drag starts in a gap too short for one
+        }
+
+        // ── Minimum action time (GG-T311, §2.0) ──────────────────────────────────────────────────────
+        // Owner: "Heroes go first in the round, but unless they can get in a pincer between the intervals between enemies
+        // hitting left they have to sacrifice their turn, and that could lead to several enemy attacks in a row before a
+        // window wide enough for the player to act becomes available."
+
+        /// <summary>Clock ticks <paramref name="seconds"/> of action needs (rounded up, at least 1).</summary>
+        public static int NeedTicks(float seconds) =>
+            System.Math.Max(1, (int)System.Math.Ceiling(seconds * BattleConfig.TicksPerSecond - 0.001f));
+
+        /// <summary>The shortest drag that does anything: pick the hero up and walk one tile.</summary>
+        public static float MinDragSeconds => DragSeconds(1);
+
+        /// <summary>The human drag model: <see cref="BattleConfig.DragPickupSeconds"/> + <see cref="BattleConfig.DragSecondsPerTile"/> × tiles.</summary>
+        public static float DragSeconds(int tiles) =>
+            BattleConfig.DragPickupSeconds + BattleConfig.DragSecondsPerTile * System.Math.Max(1, tiles);
+
+        /// <summary>The least time a command needs from the gap before it may start: a drag the minimum drag, an
+        /// Ability/Item/Spell/Talk its use time (<see cref="BattleConfig.HeroActionSeconds"/>); Guard nothing.</summary>
+        public static float MinActionSeconds(BattleCommand cmd)
+        {
+            switch (cmd)
+            {
+                case MoveCommand _: return MinDragSeconds;
+                case UseSlotCommand _:
+                case TalkCommand _: return BattleConfig.HeroActionSeconds;
+                default: return 0f;
+            }
+        }
+
+        /// <summary>Does an action of <paramref name="seconds"/> fit in the gap (the time until the next enemy reaches the
+        /// left of the bar)? Always, when no enemy icon can arrive.</summary>
+        public static bool ActionFits(BattleState s, float seconds)
+        {
+            if (!(seconds > 0f)) return true;
+            int gap = TurnTicks(s);
+            return gap < 0 || gap >= NeedTicks(seconds);
+        }
+
+        /// <summary>
+        /// GG-T311: heroes are left to act but the gap is too short for any of their actions (the cheapest is a minimum
+        /// drag or a skill's use time) — the party can only Guard, giving the window up, and the enemy acts.
+        /// </summary>
+        public static bool TooLittleTime(BattleState s)
+        {
+            if (s.Phase != BattlePhase.PlayerInput || TurnTicks(s) < 0) return false;
+            if (HeroesLeftToAct(s).Count == 0) return false;
+            return !ActionFits(s, System.Math.Min(MinDragSeconds, BattleConfig.HeroActionSeconds));
         }
 
         // ── The party's window (GG-T308, §2.0) ────────────────────────────────────────────────────────
@@ -106,7 +156,12 @@ namespace GridGame.Core.Battle
         {
             switch (cmd)
             {
-                case MoveCommand m: return HoldTicks(s, m.HeldSeconds);
+                case MoveCommand m: // GG-T311: never less than the minimum drag (pickup + a tile), never more than the window
+                {
+                    int t = System.Math.Max(HoldTicks(s, m.HeldSeconds), NeedTicks(MinDragSeconds));
+                    int turn = TurnTicks(s);
+                    return turn > 0 ? System.Math.Min(turn, t) : t;
+                }
                 case UseSlotCommand _:
                 case TalkCommand _:
                     return System.Math.Max(1, Formulas.SecondsToTicks(BattleConfig.HeroActionSeconds));
@@ -135,6 +190,7 @@ namespace GridGame.Core.Battle
             if (slot >= h.Bar.Count || h.Bar[slot].IsEmpty) return SlotStatus.Empty;
             if (h.IsImmobile || h.IsIndependent) return SlotStatus.CannotAct; // a tamed ally acts on its own (GG-T303)
             if (h.ActedThisWindow) return SlotStatus.Acted; // GG-T308: one action per hero per window
+            if (!ActionFits(s, BattleConfig.HeroActionSeconds)) return SlotStatus.TooLittleTime; // GG-T311
             var sl = h.Bar[slot];
             if (sl.IsWeapon) return SlotStatus.Ready;
             if (sl.IsItem)
@@ -160,7 +216,11 @@ namespace GridGame.Core.Battle
         /// <summary>IP a turn icon gains per tick right now: Speed × <see cref="BattleConfig.IpPerTickPerSpeed"/> × tempo × status
         /// (never under 1). Halting (Frozen) is not applied here — the clock simply skips a halted icon.</summary>
         public static int TurnRatePerTick(BattleState s, Unit u) =>
-            System.Math.Max(1, (int)System.Math.Round(u.Effective.Speed * BattleConfig.IpPerTickPerSpeed * TimelineScale(s, u)));
+            System.Math.Max(1, (int)System.Math.Round(u.Effective.Speed * BattleConfig.IpPerTickPerSpeed * TimelineScale(s, u) * DialSpeed(s, u)));
+
+        /// <summary>GG-T311: the difficulty dial's enemy pace (1.0 at level 10, on test stages and for anyone not an enemy).</summary>
+        private static float DialSpeed(BattleState s, Unit u) =>
+            u.Team != Team.Enemy || s.Stage == null || s.Stage.IsTest ? 1f : DifficultyTable.At(s.Difficulty).EnemySpeed;
 
         /// <summary>
         /// Clock ticks until this icon acts (a turn reaches the end of its load, a cast lands) at today's rates — stun
@@ -205,10 +265,13 @@ namespace GridGame.Core.Battle
         /// <summary>Enemy turn-icon rate factor from the party's net tempo (GG-T268, §2.11): TempoStep^−net, clamped.</summary>
         public static float EnemyTempoMultiplier(BattleState s)
         {
+            // GG-T311: the party's rally (forced Guards in a row) slows foes a further tempo step each, outside the tempo
+            // clamp, so even a lock at the slowest tempo still opens.
+            float rally = s.Rally > 0 ? (float)System.Math.Pow(BattleConfig.TempoStep, -s.Rally) : 1f;
             int net = s.NetTempo;
-            if (net == 0) return 1f;
+            if (net == 0) return rally;
             float m = (float)System.Math.Pow(BattleConfig.TempoStep, -net);
-            return System.Math.Max(BattleConfig.TempoMinMultiplier, System.Math.Min(BattleConfig.TempoMaxMultiplier, m));
+            return rally * System.Math.Max(BattleConfig.TempoMinMultiplier, System.Math.Min(BattleConfig.TempoMaxMultiplier, m));
         }
 
         /// <summary>A unit's turn-icon rate factor: its own buffs, times the party tempo for anyone not on the hero team.</summary>
@@ -257,13 +320,13 @@ namespace GridGame.Core.Battle
             return best;
         }
 
-        /// <summary>Real seconds a held hero has before the forced drop: the turn's ticks at TicksPerSecond, never under
-        /// MinTurnSeconds. -1 = unlimited (no enemy icon can arrive).</summary>
+        /// <summary>Real seconds a held hero has before the forced drop: the gap's ticks at TicksPerSecond (GG-T311: no
+        /// floor — a gap too short to drag in can't start a drag at all). -1 = unlimited (no enemy icon can arrive).</summary>
         public static float TurnWindowSeconds(BattleState s)
         {
             int t = TurnTicks(s);
             if (t < 0) return -1f;
-            return System.Math.Max(BattleConfig.MinTurnSeconds, t / (float)BattleConfig.TicksPerSecond);
+            return t / (float)BattleConfig.TicksPerSecond;
         }
 
         /// <summary>
@@ -306,12 +369,15 @@ namespace GridGame.Core.Battle
             return w > 0f && heldSeconds >= w - 0.001f;
         }
 
-        /// <summary>How many tiles a bot drag covers before its turn window runs out (int.MaxValue when unlimited).</summary>
-        public static int MaxDragSteps(BattleState s)
+        /// <summary>How many tiles a drag by the human model (<see cref="DragSeconds"/>, plus <paramref name="thinkSeconds"/>
+        /// of hesitation while held) covers before the window runs out; int.MaxValue when unlimited, 0 when not even one.</summary>
+        public static int MaxDragSteps(BattleState s, float thinkSeconds = 0f)
         {
             float w = TurnWindowSeconds(s);
             if (w < 0f) return int.MaxValue;
-            return (int)System.Math.Floor(w / BattleConfig.BotSecondsPerStep + 0.0001f);
+            float left = w - BattleConfig.DragPickupSeconds - System.Math.Max(0f, thinkSeconds);
+            if (left <= 0f || BattleConfig.DragSecondsPerTile <= 0f) return left > 0f ? int.MaxValue : 0;
+            return System.Math.Max(0, (int)System.Math.Floor(left / BattleConfig.DragSecondsPerTile + 0.0001f));
         }
 
         /// <summary>

@@ -27,7 +27,7 @@ namespace GridGame.Tests
         private static Unit Wolf(BattleState s) => s.Units.First(u => u.Def.Id == "wolf" && u.Alive);
 
         /// <summary>Puts the wolf <paramref name="ticks"/> clock ticks from acting (Speed 10 = 16 IP a tick).</summary>
-        private static void WolfIn(BattleState s, int ticks) => s.TurnEntryOf(Wolf(s).Id).Ip = BattleConfig.BarLength - 16 * ticks;
+        private static void WolfIn(BattleState s, int ticks) => s.TurnEntryOf(Wolf(s).Id).Ip = BattleConfig.BarLength - BattleEngine.TurnRatePerTick(s, Wolf(s)) * ticks;
 
         /// <summary>A one-tile drag held for <paramref name="held"/> real seconds.</summary>
         private static List<BattleEvent> Step(BattleState s, Unit h, float held)
@@ -54,11 +54,11 @@ namespace GridGame.Tests
             var k = Hero(s, "knight");
             var c = Hero(s, "cleric");
 
-            var first = Step(s, k, 0.5f); // a sixth of the window: 5 ticks
+            var first = Step(s, k, 1f); // a third of the window: 10 ticks
             Assert.That(first.OfType<TurnStartedEvent>(), Is.Empty, "the wolf hasn't reached the left edge yet");
             Assert.That(SameWindow(first), Is.True);
-            Assert.That(s.Clock, Is.EqualTo(c0 + 5));
-            Assert.That(BattleEngine.TurnTicks(s), Is.EqualTo(25), "the rest of the window is the cleric's");
+            Assert.That(s.Clock, Is.EqualTo(c0 + 10));
+            Assert.That(BattleEngine.TurnTicks(s), Is.EqualTo(20), "the rest of the window is the cleric's");
             Assert.That(k.ActedThisWindow, Is.True);
             Assert.That(BattleEngine.CanMove(s, k.Id), Is.False);
             Assert.That(BattleEngine.CanMove(s, c.Id), Is.True);
@@ -77,23 +77,23 @@ namespace GridGame.Tests
         [Test]
         public void Pushback_by_one_hero_lets_another_act_before_the_enemy()
         {
-            // A plain skill spends HeroActionSeconds (1 s) of a 0.8 s window: the wolf acts before the cleric can.
+            // A plain skill spends HeroActionSeconds (1 s) of a 1 s window: the wolf acts before the cleric can.
             var (plain, _) = Battle(Db(), Stage(("wolf", 2, 0)), ("knight", 5, 7), ("cleric", 3, 7));
-            WolfIn(plain, 8);
+            WolfIn(plain, 10);
             var jab = Use(plain, Hero(plain, "knight"), "jab", Wolf(plain));
             Assert.That(jab.OfType<TurnStartedEvent>().Any(e => e.UnitId == Wolf(plain).Id), Is.True);
             Assert.That(jab.Last() is PlayerControlEvent pj && pj.NewWindow, Is.True);
 
-            // The same skill with 1.5 s of Pushback: the window grows to 2.3 s, the skill spends 1 s, the cleric moves first.
+            // The same skill with 1.5 s of Pushback: the window grows to 2.5 s, the skill spends 1 s, the cleric moves first.
             var (s, _) = Battle(Db(), Stage(("wolf", 2, 0)), ("knight", 5, 7), ("cleric", 3, 7));
-            WolfIn(s, 8);
+            WolfIn(s, 10);
             var shove = Use(s, Hero(s, "knight"), "shove_time", Wolf(s));
             Assert.That(shove.OfType<PushedBackEvent>().Any(), Is.True);
             Assert.That(shove.OfType<TurnStartedEvent>(), Is.Empty, "the push bought the party time");
             Assert.That(SameWindow(shove), Is.True);
-            Assert.That(BattleEngine.TurnTicks(s), Is.EqualTo(8 + 15 - 10));
+            Assert.That(BattleEngine.TurnTicks(s), Is.InRange(10 + 15 - 10, 10 + 15 - 10 + 1)); // a push past IP 0 rounds its stun up a tick
             var c = Hero(s, "cleric");
-            var move = Step(s, c, 0.2f);
+            var move = Step(s, c, 0.9f);
             Assert.That(move.OfType<AbilityRefusedEvent>(), Is.Empty);
             int wolfTurn = move.FindIndex(e => e is TurnStartedEvent t && t.UnitId == Wolf(s).Id);
             int cleric = move.FindIndex(e => e is ActionBeganEvent a && a.ActorId == c.Id);
@@ -128,9 +128,9 @@ namespace GridGame.Tests
             var (s, _) = Battle(Db(), Stage(("wolf", 0, 0)), ("knight", 5, 7), ("cleric", 3, 7), ("mage", 1, 7));
             WolfIn(s, 30);
             s.ManaCharge = 0;
-            Step(s, Hero(s, "knight"), 0.5f); // 5 of 30 ticks spent: 2.5 s left
-            Assert.That(BattleEngine.GuardCharge(s), Is.EqualTo(BattleEngine.GuardChargeFor(2.5f)));
-            int expected = BattleEngine.DampedCharge(s, BattleEngine.GuardChargeFor(2.5f));
+            Step(s, Hero(s, "knight"), 1f); // 10 of 30 ticks spent: 2 s left
+            Assert.That(BattleEngine.GuardCharge(s), Is.EqualTo(BattleEngine.GuardChargeFor(2f)));
+            int expected = BattleEngine.DampedCharge(s, BattleEngine.GuardChargeFor(2f));
 
             var ev = BattleEngine.Apply(s, new ShieldCommand());
             Assert.That(ev.OfType<ManaChargedEvent>().Single(c => c.Reason == "guard").Amount, Is.EqualTo(expected));
@@ -170,10 +170,12 @@ namespace GridGame.Tests
             Assert.That(BattleEngine.CommandTicks(s, new UseSlotCommand()), Is.EqualTo((int)System.Math.Round(BattleConfig.HeroActionSeconds * BattleConfig.TicksPerSecond)));
             Assert.That(BattleEngine.CommandTicks(s, new ShieldCommand()), Is.EqualTo(0));
 
-            // A short window plays back at the 2 s floor: a hold is still the same share of it.
+            // GG-T311: no real-time floor — a 0.4 s gap is 0.4 s of hold; a drag never spends less than pickup + a tile.
             WolfIn(s, 4);
-            Assert.That(BattleEngine.TurnWindowSeconds(s), Is.EqualTo(BattleConfig.MinTurnSeconds).Within(1e-4));
-            Assert.That(BattleEngine.HoldTicks(s, 1f), Is.EqualTo(2));
+            Assert.That(BattleEngine.TurnWindowSeconds(s), Is.EqualTo(0.4f).Within(1e-4));
+            Assert.That(BattleEngine.HoldTicks(s, 0.2f), Is.EqualTo(2));
+            WolfIn(s, 30);
+            Assert.That(BattleEngine.CommandTicks(s, new MoveCommand { HeldSeconds = 0.1f }), Is.EqualTo(BattleEngine.NeedTicks(BattleEngine.MinDragSeconds)));
         }
 
         [Test]

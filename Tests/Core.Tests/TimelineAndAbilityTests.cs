@@ -23,6 +23,7 @@ namespace GridGame.Tests
         {
             var db = Mini();
             var (s, _) = Battle(db, Stage(("wolf", 0, 0)), ("knight", 5, 7), ("cleric", 4, 7));
+            s.Timeline[0].Ip = 100; // GG-T311: off IP 0, where a lap at the faster bar would land it again after it acts
             long c0 = s.Clock;
             int ip0 = s.Timeline[0].Ip;
             int turn = BattleEngine.TurnTicks(s);
@@ -43,12 +44,13 @@ namespace GridGame.Tests
             var tank = s.Units.Single(u => u.Def.Id == "tank");
             int expected = System.Math.Min(BattleEngine.TicksUntilTurn(s, wolf.Id), BattleEngine.TicksUntilTurn(s, tank.Id));
             Assert.That(BattleEngine.TurnTicks(s), Is.EqualTo(expected));
-            Assert.That(BattleEngine.TurnWindowSeconds(s), Is.EqualTo(System.Math.Max(BattleConfig.MinTurnSeconds, expected / (float)BattleConfig.TicksPerSecond)).Within(1e-4));
+            Assert.That(BattleEngine.TurnWindowSeconds(s), Is.EqualTo(expected / (float)BattleConfig.TicksPerSecond).Within(1e-4));
 
-            // A short turn still gets the minimum real-time window.
+            // GG-T311: a short gap is just that short (no real-time floor) — too short to start any action in.
             s.TurnEntryOf(wolf.Id).Ip = BattleConfig.BarLength - 1;
             Assert.That(BattleEngine.TurnTicks(s), Is.EqualTo(1));
-            Assert.That(BattleEngine.TurnWindowSeconds(s), Is.EqualTo(BattleConfig.MinTurnSeconds).Within(1e-4));
+            Assert.That(BattleEngine.TurnWindowSeconds(s), Is.EqualTo(0.1f).Within(1e-4));
+            Assert.That(BattleEngine.TooLittleTime(s), Is.True);
 
             // The held timeline: the next icon reaches the left edge (u 0, acts) exactly at the end of the turn, never before.
             int t = BattleEngine.TurnTicks(s);
@@ -131,17 +133,22 @@ namespace GridGame.Tests
         {
             var db = Mini();
             var (s, _) = Battle(db, Stage(("wolf", 0, 0)), ("knight", 5, 7), ("cleric", 4, 7));
-            s.TurnEntryOf(s.Units.Single(u => u.Def.Id == "wolf").Id).Ip = BattleConfig.BarLength - 1; // a 1-tick turn
+            s.TurnEntryOf(s.Units.Single(u => u.Def.Id == "wolf").Id).Ip = BattleConfig.BarLength - BattleEngine.TurnRatePerTick(s, s.Units.Single(u => u.Def.Id == "wolf")) * 20; // a 2 s gap
             float window = BattleEngine.TurnWindowSeconds(s);
             int maxSteps = BattleEngine.MaxDragSteps(s);
-            Assert.That(maxSteps, Is.EqualTo((int)(BattleConfig.MinTurnSeconds / BattleConfig.BotSecondsPerStep)));
+            // GG-T311: the human drag model — pickup, then DragSecondsPerTile a tile.
+            Assert.That(maxSteps, Is.EqualTo((int)System.Math.Floor((window - BattleConfig.DragPickupSeconds) / BattleConfig.DragSecondsPerTile + 1e-4)));
             var bot = new GridGame.Core.Bot.HeroBot(3);
+            Assert.That(BattleEngine.MaxDragSteps(s, bot.ThinkSeconds), Is.LessThan(maxSteps), "the bot's think time costs tiles");
             for (int i = 0; i < 4 && !s.IsOver; i++)
             {
                 var cmd = bot.Decide(s);
                 if (cmd is MoveCommand m)
                 {
-                    Assert.That(m.Path.Count, Is.LessThanOrEqualTo(BattleEngine.MaxDragSteps(s)));
+                    Assert.That(m.Path.Count, Is.LessThanOrEqualTo(BattleEngine.MaxDragSteps(s, bot.ThinkSeconds)));
+                    bool modelled = m.HeldSeconds >= BattleEngine.DragSeconds(m.Path.Count) - 1e-4f; // pickup + tiles at least (think time on top, less for a short hop or a hurried bot)
+                    bool forced = System.Math.Abs(m.HeldSeconds - BattleEngine.TurnWindowSeconds(s)) < 1e-4f;
+                    Assert.That(modelled || forced, Is.True, $"a bot drag takes human time ({m.HeldSeconds}s for {m.Path.Count} tiles)");
                     Assert.That(m.HeldSeconds, Is.GreaterThan(0f));
                     if (BattleEngine.TurnWindowSeconds(s) > 0f) Assert.That(m.HeldSeconds, Is.LessThanOrEqualTo(BattleEngine.TurnWindowSeconds(s) + 1e-4f));
                 }

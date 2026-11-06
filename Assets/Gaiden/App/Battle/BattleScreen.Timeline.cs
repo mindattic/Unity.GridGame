@@ -91,6 +91,8 @@ namespace GridGame.App
                 delimiters.Add((d, side, s));
             }
 
+            BuildGapLane(frame);
+
             timelineIcons = Ui.El("", frame);
             timelineIcons.name = "timeline-icons";
             timelineIcons.pickingMode = PickingMode.Ignore;
@@ -103,10 +105,62 @@ namespace GridGame.App
 
             var shield = Ui.Button("GUARD", () => { if (CanCommand()) Commit(new ShieldCommand()); }, "btn--icon", root);
             shield.name = "shield";
+            guardButton = shield;
             shield.style.position = Position.Absolute;
             shield.style.right = Fit.Edge; shield.style.top = TimelineY - Size.Target / 2f; shield.style.width = shield.style.height = Size.Target;
             shield.style.fontSize = 30;
             LayoutTimelineFrame();
+        }
+
+        // ── The gap (GG-T311, §2.0): the stretch between the left edge and the next enemy icon is the party's time ──
+        private VisualElement gapLane;
+        private Label gapLabel;
+        private Button guardButton;
+        private static readonly Color GapRoomy = new Color(0.35f, 0.85f, 0.45f), GapTight = new Color(1f, 0.72f, 0.2f), GapNone = new Color(1f, 0.3f, 0.25f);
+
+        private void BuildGapLane(VisualElement frame)
+        {
+            gapLane = new VisualElement { name = "tl-gap", pickingMode = PickingMode.Ignore };
+            gapLane.style.position = Position.Absolute;
+            gapLane.style.top = TrackY - Size.Gauge / 2f; gapLane.style.height = Size.Gauge;
+            gapLane.style.borderTopLeftRadius = gapLane.style.borderTopRightRadius = gapLane.style.borderBottomLeftRadius = gapLane.style.borderBottomRightRadius = 7;
+            gapLane.style.display = DisplayStyle.None;
+            frame.Add(gapLane); // above the track, under the icons
+            gapLabel = Ui.Text("", "tiny shadow", frame);
+            gapLabel.name = "tl-gap-time";
+            gapLabel.pickingMode = PickingMode.Ignore;
+            gapLabel.style.position = Position.Absolute;
+            gapLabel.style.top = TrackY + IconSpan / 2f - Space.S8;
+            gapLabel.style.display = DisplayStyle.None;
+            Fonts.UseHeavy(gapLabel);
+        }
+
+        /// <summary>
+        /// Draws the current gap — the seconds until the next enemy turn icon reaches the left edge — as a soft lane from
+        /// the left edge to that icon: green when a skill fits (and so a drag), amber when only a drag does, red when
+        /// nothing does and the party must Guard. Hidden while a hero is held (the hold lane takes over) or with no limit.
+        /// </summary>
+        private void SyncGap(Dictionary<int, float> at, bool overridden)
+        {
+            if (gapLane == null || State == null) return;
+            float nextU = 2f;
+            foreach (var e in drawn.Values)
+                if (e.Kind == TimelineKind.Turn && State.UnitById(e.OwnerId) is Unit o && !o.IsHero && !o.IsTimelineHalted && at.TryGetValue(e.Id, out var u) && u > 0f)
+                    nextU = Mathf.Min(nextU, u);
+            int ticks = BattleEngine.TurnTicks(State);
+            bool show = !overridden && holdLane == null && ticks > 0 && nextU <= 1f && !State.IsOver && State.Phase == BattlePhase.PlayerInput;
+            gapLane.style.display = gapLabel.style.display = show ? DisplayStyle.Flex : DisplayStyle.None;
+            if (!show) return;
+            float secs = ticks / (float)BattleConfig.TicksPerSecond;
+            bool skill = BattleEngine.ActionFits(State, BattleConfig.HeroActionSeconds), drag = BattleEngine.ActionFits(State, BattleEngine.MinDragSeconds);
+            var c = skill && drag ? GapRoomy : (skill || drag) ? GapTight : GapNone;
+            float w = Mathf.Max(6f, XOfU(nextU) - XOfU(0f));
+            gapLane.style.left = XOfU(0f);
+            gapLane.style.width = w;
+            gapLane.style.backgroundColor = c.WithA(0.45f);
+            gapLabel.text = $"{secs:0.0}s · " + (skill && drag ? "move or skill" : drag ? "move only" : skill ? "skill only" : "Guard");
+            gapLabel.style.color = c;
+            gapLabel.style.left = XOfU(0f) + Mathf.Max(0f, w * 0.5f - 60f);
         }
 
         /// <summary>The prominence slot: a gold socket holding a large diamond of the next (or acting) actor, its seconds under it.</summary>
@@ -301,6 +355,8 @@ namespace GridGame.App
                 if (!drawn.ContainsKey(kv.Key)) { kv.Value.RemoveFromHierarchy(); timelineIconViews.Remove(kv.Key); }
             lastAt = at;
             LayoutIcons(at);
+            SyncGap(at, uOverride != null);
+            SyncGuardCall();
             MarkNextAttacker(at);
             SyncTimelineStatus();
             SyncCastRings(at);

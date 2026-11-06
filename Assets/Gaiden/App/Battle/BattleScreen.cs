@@ -879,6 +879,7 @@ namespace GridGame.App
                 case SlotStatus.Locked: return "Unlocks as you progress";
                 case SlotStatus.CannotAct: return "Can't act";
                 case SlotStatus.Acted: return "Already acted this turn";
+                case SlotStatus.TooLittleTime: return $"Too little time — needs {BattleConfig.HeroActionSeconds:0.0}s"; // GG-T311
                 default: return "Empty slot";
             }
         }

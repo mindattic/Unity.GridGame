@@ -164,7 +164,7 @@ namespace GridGame.Tests
             var e = s.TurnEntryOf(wolf.Id);
             e.Ip = 0;
             int speed10 = BattleEngine.TicksUntilTurn(s, wolf.Id);
-            Assert.That(speed10, Is.EqualTo((int)Math.Ceiling(1000 / 16.0))); // one rate the whole way (GG-T286)
+            Assert.That(speed10, Is.EqualTo((int)Math.Ceiling(1000.0 / BattleEngine.TurnRatePerTick(s, wolf)))); // one rate the whole way (GG-T286)
             wolf.LevelStats.Speed = 20;
             int speed20 = BattleEngine.TicksUntilTurn(s, wolf.Id);
             Assert.That(speed20 < speed10, Is.True);
@@ -191,22 +191,23 @@ namespace GridGame.Tests
         [Test] // US-047
         public void Pincer_pushback_is_the_same_seconds_anywhere_on_the_bar_whatever_the_strength()
         {
-            float Push(int ip, float str)
+            float Push(int ticksOut, float str)
             {
                 var db = Mini();
                 db.Classes["knight"].BaseStats.Strength = str;
                 db.Classes["cleric"].BaseStats.Strength = str;
-                db.Classes["tank"].BaseStats.Speed = 10; // a bar-length lap, so neither end clamps
+                db.Classes["tank"].BaseStats.Speed = 5; // a slow lap, so neither end clamps (GG-T311: at the faster bar)
                 var (s, _) = Battle(db, Stage(("tank", 2, 3)), ("knight", 1, 3), ("cleric", 3, 4));
-                s.TurnEntryOf(Enemy(s, "tank").Id).Ip = ip;
+                s.TurnEntryOf(Enemy(s, "tank").Id).Ip = BattleConfig.BarLength - BattleEngine.TurnRatePerTick(s, Enemy(s, "tank")) * ticksOut;
                 var ev = BattleEngine.Apply(s, new MoveCommand { HeroId = Hero(s, "cleric").Id, Path = P((3, 3)) });
                 var p = ev.OfType<PushedBackEvent>().FirstOrDefault();
                 return p == null ? 0f : p.ToU - p.FromU; // pushed right: acts later
             }
             float expected = BattleConfig.PincerPushbackSeconds / BattleConfig.BarSeconds;
-            Assert.That(Push(990, 20), Is.EqualTo(expected).Within(1e-4));
-            Assert.That(Push(300, 20), Is.EqualTo(expected).Within(1e-4)); // far from the left edge too (GG-T286)
-            Assert.That(Push(990, 40), Is.EqualTo(expected).Within(1e-4)); // STR no longer scales it
+            // GG-T311: "about to act" is 1 s out (a closer foe leaves no room to drag).
+            Assert.That(Push(10, 20), Is.EqualTo(expected).Within(1e-4));
+            Assert.That(Push(25, 20), Is.EqualTo(expected).Within(1e-4)); // far from the left edge too (GG-T286)
+            Assert.That(Push(10, 40), Is.EqualTo(expected).Within(1e-4)); // STR no longer scales it
         }
 
         [Test] // US-049
@@ -289,6 +290,7 @@ namespace GridGame.Tests
             db.Classes["knight"].BaseStats.Strength = 400;
             db.Classes["cleric"].BaseStats.Strength = 400;
             db.Classes["witch"].BaseStats.Vitality = 4000;
+            db.Classes["witch"].BaseStats.Speed = 5; // GG-T311: a Speed 30 witch laps faster than a drag fits; this is about the stagger
             var (s, _) = Battle(db, Stage(("witch", 2, 0)), ("knight", 1, 0), ("cleric", 3, 1));
             var witch = Enemy(s, "witch");
             s.Timeline.Add(new TimelineEntry { Id = 600, Kind = TimelineKind.Cast, OwnerId = witch.Id, CasterTeam = Team.Enemy, AbilityId = "charge_bolt", IsCharge = true, RemainingTicks = 25, TotalCastTicks = 25, TargetUnitId = Hero(s, "knight").Id });
@@ -348,10 +350,10 @@ namespace GridGame.Tests
             s.Bank.Add(4);
             // An action runs the clock until the next enemy turn (GG-T188); the Speed-1 tank would take ~350
             // ticks to arrive and Burning would expire inside the first cast, so its turn is put on the next tick.
-            s.TurnEntryOf(tank.Id).Ip = 999;
+            ActsAfterAction(s, tank); // GG-T311: as close as a cast still fits
             BattleEngine.Apply(s, new UseSlotCommand { HeroId = m.Id, Slot = 0, Target = tank.Pos });
             var first = tank.Buffs.First(b => b.Def.Id == "burning").Remaining;
-            s.TurnEntryOf(tank.Id).Ip = 999;
+            ActsAfterAction(s, tank);
             BattleEngine.Apply(s, new UseSlotCommand { HeroId = m.Id, Slot = 0, Target = tank.Pos });
             Assert.That(tank.Buffs.Where(b => b.Def.Id == "burning"), Has.Exactly(1).Items);
             Assert.That(tank.Buffs.First(b => b.Def.Id == "burning").Remaining >= first, Is.True);
@@ -674,8 +676,8 @@ namespace GridGame.Tests
         {
             var c = Real;
             var save = Progression.NewGame(c, "Stack");
-            var setup = BattleFactory.Build(c, save, c.CampaignStages()[1].Id, 5);
-            var st = GridGame.Core.Bot.BotRunner.Play(c, setup, new GridGame.Core.Bot.HeroBot(2), 300);
+            var setup = BattleFactory.Build(c, save, c.CampaignStages()[1].Id, 5, 1); // GG-T311: about loot, so on the Gentle dial
+            var st = GridGame.Core.Bot.BotRunner.Play(c, setup, new GridGame.Core.Bot.HeroBot(2), 3000);
             Assert.That(st.Phase, Is.EqualTo(BattlePhase.Victory));
             var item = st.Results.Items.Keys.FirstOrDefault();
             if (item == null) return;
@@ -741,8 +743,8 @@ namespace GridGame.Tests
         {
             var c = Real;
             var save = Progression.NewGame(c, "Best");
-            var setup = BattleFactory.Build(c, save, c.CampaignStages()[1].Id, 9); // a short battle (the first is a 20-wave gauntlet)
-            var st = GridGame.Core.Bot.BotRunner.Play(c, setup, new GridGame.Core.Bot.HeroBot(1), 300);
+            var setup = BattleFactory.Build(c, save, c.CampaignStages()[1].Id, 9, 1); // a short battle (the first is a 20-wave gauntlet); GG-T311: Gentle dial
+            var st = GridGame.Core.Bot.BotRunner.Play(c, setup, new GridGame.Core.Bot.HeroBot(1), 3000); // GG-T308/GG-T311: a command is one hero action or a forced Guard
             Assert.That(st.Phase, Is.EqualTo(BattlePhase.Victory));
             BattleFactory.Commit(c, save, st);
             foreach (var kv in st.Results.Kills)
