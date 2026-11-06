@@ -769,3 +769,58 @@ Owner: "gaining mana is too generous since I see the whole bar filled almost in 
 - **Was:** `BattleFactory.Build` copied the whole inventory into every hero's spec, and a slot's stack split only within that hero. Owning 5 X-Potions put a full stack of 5 on every hero's bar, 25 full heals a battle, and the overdraw clamped to 0 afterwards, so it was free. Casual-bot victories ended with 60–75% of the party's HP left (POL-G1 wants 20–60%), on a median 15 potions.
 - **Now:** one shared pool, drawn in party order; 5 owned is 5 charges across the party (`SharedInventoryTests`). A fresh game is unchanged (5 heroes × a stack of 5).
 - **Measurement note:** the balance soak starts every battle from a fresh save, so it still carries 25 potions and its HP-left numbers don't move; a soak that carries a campaign's dwindling bag is the next instrument fix for POL-G1.
+
+## 2026-11-06 — One timeline, no Zone: icons flow left and act at the edge (GG-T286, GG-T287)
+
+- **Was:** enemy turn icons loaded left→right to ACT at the right end, at Speed × 1.6 IP/tick on the open track and then a shared 30-tick crawl through the rightmost 35% "Pushback Zone". Casts were shown only as a ring around the caster (the bible's summary still said "below the line", a contradiction).
+- **Now (owner, inspired by Final Fantasy Resonance):** see BIBLE §2, §2.1, §2.6.
+  - **One bar, one rate.** Every icon moves left at Speed × 1.6 IP/tick × tempo × status and acts when it reaches the left edge. It is drawn at `secondsUntilAct / BarSeconds` (`BattleConfig.BarSeconds` = 10 s). `ZoneStart`, `ZoneU` and the crawl are gone.
+  - **Casts race turns.** A cast is born at `castSeconds / BarSeconds` on the same axis; ties go casts first, then the lower entry id. Slow, party Haste and Frozen change only the rate, so a Slowed foe can be overtaken by a cast.
+  - **Diamonds (GG-T287).** One track with a small diamond every second and a larger one every 5 s. Every icon is a diamond-masked portrait (turns) or ability icon (casts). Borders: enemy red, boss purple, hero cast teal (`Palette.CastHero`), enemy charge amber (`Palette.CastEnemy`), the next actor gold (with a gold border on its tile). A large **prominence diamond** at the far left shows the next actor and its seconds ("NOW" while it acts). Inside `ApproachSeconds` (3 s) an icon and its owner's tile glow together in the icon's colour. GUARD sits at the right end.
+  - **Guard is unchanged:** Protection, bank the unused seconds as orb mana, then the next actor reaches the left edge.
+- *(Tests: `TimelineResonanceTests`, `Timeline_rate_is_linear_in_speed_with_no_zone_crawl`.)*
+
+## 2026-11-06 — Pushback is a keyword in seconds (GG-T286)
+
+- **Was:** every hero hit on an enemy in the Zone pushed its icon back by a depth × STR formula (`PushbackBaseU` 0.07, `PushbackMaxU` 0.15 after the 2026-10-11 tuning) and stunned it by AGI; `DelayU` was a separate bar-fraction field.
+- **Now (owner, inspired by Final Fantasy Resonance):** see BIBLE §2.3, §2.7, §6.7.
+  - **Only the keyword pushes.** `AbilityDef.Pushback` (seconds, was `DelayU`) on abilities and items; plain hits never push.
+  - **A hero pincer pushes** every foe it damages `PincerPushbackSeconds` = 1 s.
+  - **Anywhere on the bar,** capped at `PushbackMaxSeconds` = 2 s (validated at load), one push per foe per action. A held cast slips instead and is never cancelled by it.
+  - **Content:** knockback and disruption skills carry 0.5–1.25 s; Hinder 2 s.
+  - **Cast stagger** (the interrupt path, §13.4) is separate and unchanged.
+- *(Tests: `A_plain_hit_never_pushes`, `The_Pushback_keyword_pushes_its_seconds_anywhere_on_the_bar`, `One_push_is_capped`, `Validate_rejects_a_pushback_past_the_cap`, `Pincer_pushback_is_the_same_seconds_anywhere_on_the_bar_whatever_the_strength`.)*
+
+## 2026-11-06 — Only Sentient enemies pincer (GG-T289, GG-T294)
+
+- **Was:** any enemy tagged `Humanoid` could be a pincer attacker (`Unit.IsHumanoid`), so body shape decided it.
+- **Now (owner):** see BIBLE GG-LAW-2, §1.2, §1.3.
+  - Heroes always pincer. An enemy pincers only if tagged **Sentient**: it has a society or plans ahead, however rudimentary (soldiers, mecha and robots, goblins, orcs, frog folk). Intelligent undead such as vampires and mummies qualify too.
+  - Beasts, slimes, yetis, scorpions and mindless undead never pincer. It's about sentience, not undeath. GG-T289 first barred every undead; GG-T294 lifts that so the rule is sentience alone.
+  - `Unit.CanPincer` drives pincer detection, the enemy turn's pincer, pincer-seeking and `Auto` Threat targeting.
+- *(Tests: `PincerEligibilityTests`.)*
+
+## 2026-11-06 — Bestiary knowledge is earned by defeats; Scan is retired (GG-T290)
+
+- **Was:** the Scan spell revealed a class's HP and stats and marked it Scanned; the Bestiary showed stats only after a scan.
+- **Now (owner):** see BIBLE §25.11, §15.3, §9.
+  - `BestiaryKnowledge.Tier` from defeats alone. Seen: name, description, lore, drops. 1 defeat: Speed. 3: HP and base stats. 6: elemental weaknesses and resistances. 10: abilities, brain and targeting.
+  - Locked rows read "???" with "Defeat N more to learn …". The battle actor panel and the inspect card use the same tier.
+  - Scan is gone. Save migration drops it from Known and the bar, and kits swapped it (healers → Quicken, supports → Silence, tanks → Cleave). An old `Scanned` entry keeps at least the stats tier.
+- *(Tests: `BestiaryKnowledgeTests`.)*
+
+## 2026-11-06 — Party cap six (GG-T291)
+
+- **Was:** `MaxPartySize` 5; the Frostmaw Caverns and Veshker Ruins recruits both waited in reserve.
+- **Now (owner: "two attackers and two supporters for each attacker"):** see BIBLE §25.14, §25.17.
+  - `MaxPartySize` = 6 and the start stays 3. The story recruits fill slot 4 after Green Valley I, slot 5 at Sandsea Reaches and slot 6 at Frostmaw Caverns; the Veshker Ruins healer waits in reserve.
+  - Six heroes spawn in rows 6–7 on every campaign stage and share one bag. Camp shows six in its two-column grid.
+- *(Tests: `PartyCapTests`, `StoryRecruitTests`.)*
+
+## 2026-11-06 — Tap a timeline icon to select its unit (GG-T288)
+
+- **Was:** timeline icons only answered a hold (the InspectCard); selecting a unit needed a board tap.
+- **Now (owner, inspired by Final Fantasy Resonance):** see BIBLE §2.6, §9.
+  - Before a move, a tap on any timeline icon or on the prominence diamond selects its owner, exactly like a board tap.
+  - The selected unit gets a white ring on each of its diamonds and a white outline on its tile (`BoardView.SetSelection`).
+  - A hold still opens the InspectCard. Both stay gated by the Bestiary knowledge tier.

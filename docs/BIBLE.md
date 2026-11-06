@@ -27,9 +27,9 @@ The feel target: *Terra Battle pincers + Grandia II timeline + Final Fantasy cam
 
 - **Position is the only weapon.** Damage is dealt by the *pincer* a new position completes, never by the move itself. Every drop asks "does this finish the line?" ([§1.2](#12-pincer-attacks))
 - **The slide.** Dragging a hero onto an occupied tile displaces that actor — friend or foe — into the tile you just left. Set up flanks, eject allies, feed enemies into kill zones. ([§1.1](#11-sliding-and-displacement))
-- **The Timeline runs while you hold a hero.** Enemy icons load left→right. The clock stands still while you look; picking up a hero starts it in real time, and your turn lasts until the next enemy icon reaches ACT — then the hero drops where it is and that enemy acts (dropping earlier ends the turn early). Hit a foe whose icon sits in the rightmost **Pushback Zone** and its turn is shoved back. ([§2](#2-the-timeline), GG-T188)
+- **The Timeline runs while you hold a hero.** Every icon flows **right→left** along one bar of seconds and acts when it reaches the left edge, where a large diamond shows who acts next (**Amended 2026-11-06**, GG-T286/GG-T287, Final Fantasy Resonance–style: no Zone). The clock stands still while you look; picking up a hero starts it in real time, and your turn lasts until the next enemy icon reaches the left edge — then the hero drops where it is and that enemy acts (dropping earlier ends the turn early). A pincer pushes every foe it hits **1 s** back, and abilities with the **Pushback** keyword push up to 2 s, anywhere on the bar. ([§2](#2-the-timeline), GG-T188)
 - **Shared, visible mana.** A 12-orb `ManaBank` of generic orbs is the whole party's spell budget; pincers, crits, steals and enemy-cast interrupts refill it. ([§3.1](#31-mana-the-orb-economy))
-- **Casts ride the Timeline.** A spell with a cast time rides the same axis as a small icon below the line and fires when it arrives; every hit on the caster staggers it, enough stagger cancels it, and a rare LCK Clutch lets a dying healer let off one last miracle. ([§13.4](#134-the-interrupt-path))
+- **Casts ride the Timeline.** A spell with a cast time is a diamond on the same bar as the turns, born at its cast time, and fires when it reaches the left edge; every hit on the caster staggers it, enough stagger cancels it, and a rare LCK Clutch lets a dying healer let off one last miracle. ([§13.4](#134-the-interrupt-path))
 - **Beyond the battlefield.** Five themed campaigns of hand-built stages with a skippable story crawl per theme, a Final Fantasy–style **Camp** menu (merchant, blacksmith, alchemist, inn, abilities, party, summon circle, bounties, bestiary), weapon durability with shatter rebound. **Amended 2026-10-19 (GG-T120):** the caravan story has landed — the town rides a titan, "the Longmother," who can never stop walking because standing ground sours into a biomechanical blight; crawl text, NPC/hero join scenes and party banter are real narrative, not lorem ipsum. ([§22](#22-the-macro-loop), [§25](#25-the-camp-merged-hub), [§27](#27-story-crawl-no-dialog))
 
 Target pacing: a battle is 15–40 committed actions (~2–5 minutes), a stage ~3–4 min, a session 20–30 min. ([§0.3](#03-session-shape-target-pacing))
@@ -112,7 +112,7 @@ GridGame Gaiden is **NOT**:
     - foe debuffs by what the BuffDef does (halt/immobile, slow, vulnerability, blind, silence, weakness, damage over time)
     - ally buffs by damage-up, damage-taken-down on an exposed ally, regen on a hurt one, haste
     - knockback (more when it peels a foe off a hurt hero), pull, swap, step-back when hurt and engaged
-    - revive with someone down, ethers only into a bank with room, a first scan per class, single-buff cures
+    - revive with someone down, ethers only into a bank with room, single-buff cures (the first-scan-per-class score went with Scan, GG-T290)
 
     A clean pincer stays the strongest move, so abilities win only on real value. Measured with `AbilityUsageSoak` + `records.py --abilities` (§22.6, `docs/research/AbilityUsage.md`).
 - `CampRoutine.Run` (Meta) + `MetaHeuristics` (Core/Bot/MetaBot.cs) — "what a sensible player does at Camp" (repair, rest, claim/accept bounties, recruit into an open party slot, forge/equip better gear, learn a spell, fill empty slots, restock potions) through the same services the screens call; drives the campaign balance simulation.
@@ -124,7 +124,7 @@ GridGame Gaiden is **NOT**:
 | File | Holds |
 |---|---|
 | `classes.json` | 172 `ClassDef`s — stats, growth, milestones, tags, resistances, learnable abilities, default loadout, drop table, move range, XP reward, boss phases, charge ability/shape, trap, snake segments, footprint, lore/card text, portrait crop |
-| `abilities.json` | 25 `AbilityDef`s — cost letters, cast time, cooldown, shape/radius/mode/filter, motion, damage type/base, heal, buff + chance, cleanse, steal, hasten, teleport, scan, VFX/SFX keys |
+| `abilities.json` | 25 `AbilityDef`s — cost letters, cast time, cooldown, shape/radius/mode/filter, motion, damage type/base, heal, buff + chance, cleanse, steal, hasten, Pushback (seconds), teleport, VFX/SFX keys (Scan retired, GG-T290) |
 | `buffs.json` | 10 `BuffDef`s — kind, unit (Turns/Ticks), duration, DOT, immobile, halts timeline, breaks on damage/move, incoming-damage / timeline-speed / accuracy multipliers, blocks spells, expire chain, letter, color |
 | `items.json` | 231 `ItemDef`s (155 equipment, 55 materials, 18 consumables, 3 recipe scrolls; GG-T45 added `mat_pure_slime_gel` + Greater Healing Potion/Antidote) — type, rarity, slot, cost, stack, durability, healing/damage, stats, battle-start orbs, on-use ability, orb grants, cures, revive, escape, camp-only, bonus-vs-tag, resistances, vendor flag |
 | `recipes.json` | 142 `RecipeDef`s — station (Forge / Alchemy / Enchant), inputs, gold, optional base item, result; some Alchemy recipes also carry a potency variant ([§24.6.4](#2464-reagent-potency-gg-t45-owner-direction)) |
@@ -139,7 +139,7 @@ GridGame Gaiden is **NOT**:
 
 ### 4.5 The command → event contract
 
-A **command** (`Core/Battle/Commands.cs`) is a player decision: `MoveCommand` (hero id + path of cardinal steps + drag-timer seconds left), `UseSlotCommand` (hero, slot, target tile) or `ShieldCommand`. `BattleEngine.Apply` resolves it synchronously and returns an ordered list of `BattleEvent`s (`Core/Battle/BattleEvents.cs`: `Stepped`, `Displaced`, `PincerFormed`, `Attack`, `Damaged`, `Healed`, `Died`, `Loot`, `OrbMinted`, `OrbsSpent`, `TimelineAdvanced`, `PushedBack`, `Hastened`, `TurnStarted`, `TurnSkipped`, `CastQueued`, `CastStaggered`, `CastCancelled`, `Clutch`, `AbilityResolved`, `AbilityRefused`, `ItemUsed`, `BuffApplied/Ticked/Removed`, `Announce`, `Scanned`, `TrapPlaced/Triggered`, `WeaponWorn/Shattered`, `BossPhase`, `WaveStarted/Cleared`, `Revived`, `BattleEnded`, `PlayerControl`). The simulation has already finished when the view sees them; the view only plays them back (`BattleScreen.Play` in `App/Battle/BattleScreen.Playback.cs`, the event player). A refused command emits `AbilityRefusedEvent` and changes nothing — no clock, no cost. The same seed + content + command list always reproduces the same event list.
+A **command** (`Core/Battle/Commands.cs`) is a player decision: `MoveCommand` (hero id + path of cardinal steps + drag-timer seconds left), `UseSlotCommand` (hero, slot, target tile) or `ShieldCommand`. `BattleEngine.Apply` resolves it synchronously and returns an ordered list of `BattleEvent`s (`Core/Battle/BattleEvents.cs`: `Stepped`, `Displaced`, `PincerFormed`, `Attack`, `Damaged`, `Healed`, `Died`, `Loot`, `OrbMinted`, `OrbsSpent`, `TimelineAdvanced`, `PushedBack`, `Hastened`, `TurnStarted`, `TurnSkipped`, `CastQueued`, `CastStaggered`, `CastCancelled`, `Clutch`, `AbilityResolved`, `AbilityRefused`, `ItemUsed`, `BuffApplied/Ticked/Removed`, `Announce`, `TrapPlaced/Triggered`, `WeaponWorn/Shattered`, `BossPhase`, `WaveStarted/Cleared`, `Revived`, `BattleEnded`, `PlayerControl`). The simulation has already finished when the view sees them; the view only plays them back (`BattleScreen.Play` in `App/Battle/BattleScreen.Playback.cs`, the event player). A refused command emits `AbilityRefusedEvent` and changes nothing — no clock, no cost. The same seed + content + command list always reproduces the same event list.
 
 ## 5. The Laws {#GG-§5}
 
@@ -151,7 +151,7 @@ Project-specific laws:
 Sliding a hero through or onto an enemy is **not** an attack. Damage flows ONLY through pincers ([§1.2](#12-pincer-attacks)), enemy attacks, abilities/items ([§6](#6-the-spell-dispatcher)) and environmental sources (DOT, traps, weapon shatter). *(Source: `BattleRunner.WalkPath`; test `Movement_never_deals_damage`.)*
 
 ### {#GG-LAW-2} A pincer is two allies flanking an unbroken, ally-free line
-Same row OR column, every tile strictly between them covered by opponents — no gaps, no allies, at least one opponent. No diagonal pincers. A 2×2 boss covering several line tiles counts as one opponent. *(Source: `PincerDetector.TryPair`.)*
+Same row OR column, every tile strictly between them covered by opponents — no gaps, no allies, at least one opponent. No diagonal pincers. A 2×2 boss covering several line tiles counts as one opponent. **Amended 2026-11-06 (owner, GG-T289/GG-T294):** the two allies must be **pincer-eligible** (`Unit.CanPincer`): heroes always; an enemy only if it is **Sentient** — it has a society or plans ahead, however rudimentary. Beasts, slimes, yetis, scorpions and mindless undead never pincer; it is about sentience, not undeath ([§1.3](#13-sentient-restriction)). *(Source: `PincerDetector.TryPair`.)*
 
 ### {#GG-LAW-3} ~~Code is the source of truth; the `.unity` is the print-out~~ — RETIRED
 **Amended 2026-10-09:** there are no scene builders, no `BuilderAutoRebuild`, no `BuilderDriftChecker`. The one scene is an empty shell; `GameApp` builds everything at runtime. Superseded by [GG-LAW-9](#GG-LAW-9).
@@ -211,7 +211,7 @@ How Gaiden meets it (audit 2026-11-02, GG-T192): **commands** — `MoveCommand` 
 **Proven working** (evidence per story in [`USER_STORIES.md`](USER_STORIES.md)):
 
 - ✅ Board rules: slide/displacement, edge stop, no-op drag cancel, pincer geometry, chains, supporters, 2×2 immovable + width pincer, waves, victory/defeat (`BoardRulesTests`).
-- ✅ Act-advanced timeline: clock only on committed actions, enemy turns on arrival, Zone pushback, Quicken, Shield, Frozen halt (`TimelineAndAbilityTests`).
+- ✅ Act-advanced timeline: clock only on committed actions, enemy turns on arrival, Pushback keyword (no Zone since GG-T286), Quicken, Shield, Frozen halt (`TimelineAndAbilityTests`, `TimelineResonanceTests`).
 - ✅ Mana: shared capped bank of generic orbs, pincer mint, supporter mint, crit bonus orb, overflow.
 - ✅ Every hero ability, enemy charge, recipe and class resolves through the real engine (`CatalogTests`).
 - ✅ Determinism and bot soak across all content (`ContentAndSoakTests`).
@@ -253,11 +253,13 @@ A story is ✅ only when 1–7 hold; otherwise 🟡/⬜ ([GG-LAW-12](#GG-LAW-12)
 - **Supporter** — an ally connected to a pincer attacker by an unbroken cardinal chain of allies, within its class's support range; performs its class's **support action** (strike the trapped line at 50%, heal, buff, haste, mana, cleanse…). ([§1.2.3](#123-supporters))
 - **Support action** (`SupportDef`) — a class's effect as a supporter: Effect, Magnitude, Target (Attacker / Chain / Party / Self), Range along the chain. Enemies and classes without one strike at 50% from beside the attacker. ([§1.2.3](#123-supporters))
 - **Action** — one committed command (move, slot use, shield); it ends the player's turn: the clock runs to the next enemy arrival (`BattleConfig.ActionTicks` = 20 ticks only when no enemy icon can arrive). ([§2.0](#20-the-held-turn), GG-T188)
-- **Held turn** — the real-time window from picking a hero up until the next enemy icon reaches ACT; when it runs out the hero is dropped where it is (forced drop). ([§2.0](#20-the-held-turn))
-- **Tick / IP** — the clock unit (10 per second); turn icons hold Initiative Points 0..1000 (`u = IP/1000`).
-- **Pushback Zone** — the rightmost 35% of the bar (IP ≥ 650); hitting an enemy there shoves its icon back and stuns it. ([§2.3](#23-pushback-the-interrupt-by-hitting-mechanic))
-- **Hasten / Quicken** — the inverse: slide an icon forward toward the trigger. ([§2.7.1](#271-hasten--quicken--the-inverse))
-- **Cast icon** — a spell with a cast time rides the timeline below the line and resolves when its remaining ticks reach 0. ([§2.6](#26-one-timeline-two-lanes--turn-icons-above-cast-icons-below))
+- **Held turn** — the real-time window from picking a hero up until the next enemy icon reaches the left edge; when it runs out the hero is dropped where it is (forced drop). ([§2.0](#20-the-held-turn))
+- **Tick / IP** — the clock unit (10 per second); turn icons load Initiative Points 0..1000 internally, but every icon is drawn at `u = secondsUntilAct / BarSeconds` (10 s; 0 = the left edge, acting now). ([§2](#2-the-timeline))
+- ~~**Pushback Zone**~~ — retired 2026-11-06 (GG-T286). **Pushback** — an ability/item keyword in seconds (and 1 s on every foe a hero pincer hits): the foe acts that much later, anywhere on the bar, at most 2 s and once per action. ([§2.3](#23-pushback-a-keyword-in-seconds))
+- **Hasten / Quicken** — the inverse: slide an icon forward toward the left edge. ([§2.7.1](#271-hasten--quicken--the-inverse))
+- **Cast icon** — a spell with a cast time is a diamond on the same bar as the turns, born at `castSeconds / BarSeconds`, and resolves when it reaches the left edge. ([§2.6](#26-one-track-diamond-icons-the-prominence-diamond))
+- **Prominence diamond** — the large diamond at the timeline's left end showing who acts next, with its seconds ("NOW" while acting). ([§2.6](#26-one-track-diamond-icons-the-prominence-diamond))
+- **Sentient** — the enemy tag for a foe with a society or that plans ahead; only Sentient enemies (and every hero) may be pincer attackers. ([§1.3](#13-sentient-restriction))
 - **Clutch** — rare LCK interrupt outcome on hero casts: the hit is shrugged and the cast resolves on the spot. ([§13.4](#134-the-interrupt-path))
 - **ManaBank / orb** — shared 12-orb pool of identical orbs; any orbs pay any spell. ([§3.1](#31-mana-the-orb-economy))
 - **Drag timer** — optional Terra Battle–style 4 s limit per drag (Settings). ([§2.9](#29-drag-timer-optional))
@@ -421,7 +423,7 @@ A refused write moves nothing (release) or throws (`BattleEngine.StrictTiles`). 
 
 ### 1.2 Pincer attacks
 
-A pincer is **two allies in the same row OR column, with every tile between them covered by opponents** — no gaps, no allies in the line, at least one opponent ([GG-LAW-2](#GG-LAW-2)).
+A pincer is **two allies in the same row OR column, with every tile between them covered by opponents** — no gaps, no allies in the line, at least one opponent ([GG-LAW-2](#GG-LAW-2)). **Amended 2026-11-06 (owner, GG-T289/GG-T294):** both allies must be pincer-eligible — every hero, and only **Sentient** enemies ([§1.3](#13-sentient-restriction)); a trapped hero line flanked by two wolves is just two melee neighbours.
 
 ```
 Valid horizontal pincer (3 enemies):     Valid vertical (2 enemies):
@@ -455,7 +457,7 @@ The scan (`PincerDetector.Detect`) is **board-wide** — every valid pair resolv
 
 ~~**Amended 2026-10-09:** any living ally cardinally adjacent to a pincer attacker is a supporter and strikes every trapped opponent at 50%.~~
 
-**Amended 2026-10-21 (GG-T187, owner — "Terra Battle's best idea"): every class gets a support action.** A living ally (other than the partner) **connected to a pincer attacker by an uninterrupted cardinal chain of allies** is a supporter when its distance along that chain (1 = touching the attacker) is within its class's support **Range** (`PincerDetector.FindSupporters`, a breadth-first walk over allies only). Any empty tile, foe or obstacle **breaks the chain**; every ally is a link whatever its own range, so a striker standing beside the attacker carries a healer two tiles back. There is no line-of-sight/axis requirement. Supporters of both attackers are merged and de-duplicated; one reached from both sides supports attacker A. Supporters need not be Humanoid.
+**Amended 2026-10-21 (GG-T187, owner — "Terra Battle's best idea"): every class gets a support action.** A living ally (other than the partner) **connected to a pincer attacker by an uninterrupted cardinal chain of allies** is a supporter when its distance along that chain (1 = touching the attacker) is within its class's support **Range** (`PincerDetector.FindSupporters`, a breadth-first walk over allies only). Any empty tile, foe or obstacle **breaks the chain**; every ally is a link whatever its own range, so a striker standing beside the attacker carries a healer two tiles back. There is no line-of-sight/axis requirement. Supporters of both attackers are merged and de-duplicated; one reached from both sides supports attacker A. Supporters need not be pincer-eligible (an enemy supporter need not be Sentient, [§1.3](#13-sentient-restriction)).
 
 Each supporter then performs its class's **`SupportDef`** (`classes.json` → `Support`: `Effect`, `Magnitude`, `Target`, `Range`, optional `Buff` and cut-in `Label`) — `BattleRunner.PerformSupport`, announced by a `SupportActionEvent`:
 
@@ -506,9 +508,13 @@ Current layering (verified against both fixes, `BattleScreen.cs`'s board-build c
 
 No change was needed in `PincerDetector`/`PincerGeometry`/`BoardView.GroupRect`: the shape rule they enforce (one tile thick, widened only by a multi-tile opponent) is correct and tested; the ~2×3 box this ticket reported was these two now-fixed view bugs.
 
-### 1.3 Humanoid restriction
+<a id="13-humanoid-restriction"></a>
 
-Only **Humanoid** actors can be pincer attackers. Heroes are always Humanoid (`Unit.IsHumanoid`); enemies need the `Humanoid` tag (71 of 110 enemy classes). Multi-tile actors are never attackers. Humanoid 1×1 enemies **seek** pincers (+50 move score, [§14.1.2](#1412-score-weight-cheat-sheet)) and, **Amended 2026-10-09**, **resolve** them on their turn: after moving, if the enemy is one end of an enemy-team pincer, every such pincer resolves against the trapped heroes (no orbs are minted for enemies); otherwise it melees ([§14.1](#141-enemy-planning)).
+### 1.3 Sentient restriction
+
+**Amended 2026-11-06 (owner, GG-T289, refined by GG-T294): a pincer takes a society, not a body shape.** ~~Only **Humanoid** actors can be pincer attackers (`Unit.IsHumanoid`; enemies need the `Humanoid` tag).~~ Heroes are always pincer-eligible. An enemy is eligible only if its class is tagged **`Sentient`** (`Unit.CanPincer`): it has a society or plans ahead, however rudimentary — soldiers, templars, captains, mecha and robots, goblins, gremlins, orcs and trolls, frog folk, hags, naga, and **intelligent undead** such as vampires and mummies. **Beasts, slimes, yetis, scorpions, tree golems, remains and mindless undead** (the shambling undead, cyber-zombies, skelepedes) never pincer. It is about sentience, not undeath (owner 2026-11-06). `CanPincer` replaces `IsHumanoid` everywhere it was read: `PincerDetector`, the enemy turn's pincer resolve, `EnemyPlanner`'s pincer-seeking and its Threat-vs-Closest `Auto` targeting, and the Bestiary's targeting label. *(Tests: `PincerEligibilityTests` — `Sentient_enemies_pincer_a_hero_line`, `Enemies_without_a_society_never_pincer`, `A_frog_closes_the_pincer_on_its_own_turn`, `A_yeti_flanking_a_hero_only_melees`, `Heroes_always_pincer`, `Real_content_tags_society_not_body`.)*
+
+Multi-tile actors are never attackers. Sentient 1×1 enemies **seek** pincers (+50 move score, [§14.1.2](#1412-score-weight-cheat-sheet)) and, **Amended 2026-10-09**, **resolve** them on their turn: after moving, if the enemy is one end of an enemy-team pincer, every such pincer resolves against the trapped heroes (no orbs are minted for enemies); otherwise it melees ([§14.1](#141-enemy-planning)).
 
 ### 1.4 A full action, end-to-end (worked example)
 
@@ -523,8 +529,8 @@ Step 0:   col: 0  1  2   3   4   5          Step 1 (Knight drags west one tile):
 2. `DoMove` commits; `ResolvePincers` finds C(2,3) — g(3,3) — K(4,3): one opponent, valid.
 3. The Knight (the dropped hero, attacker A) strikes, then the Cleric; no supporters.
 4. Two orbs mint, one per attacker.
-5. If the goblin's icon was in the Zone, each landing hit pushes it back and stuns it ([§2.3](#23-pushback-the-interrupt-by-hitting-mechanic)).
-6. The clock runs until the next enemy icon reaches 1000 and that enemy takes its turn (GG-T188, [§2.0](#20-the-held-turn)); any cast that reaches 0 on the way resolves.
+5. The pincer carries Pushback: the goblin it hit acts 1 s later, wherever its icon was ([§2.3](#23-pushback-a-keyword-in-seconds), **amended 2026-11-06**, GG-T286).
+6. The clock runs until the next enemy icon reaches the left edge and that enemy takes its turn (GG-T188, [§2.0](#20-the-held-turn)); any cast that reaches 0 on the way resolves.
 7. Control returns: hero turn-unit buffs and skill cooldowns tick, enemy Frozen ticks, `PlayerControlEvent`.
 
 That is the full beat: **drag → slide cascade → pincer → strikes → orbs → pushback → clock → enemy turns/casts → control returns.** *(Test: `Worked_example_1_4_slide_then_pincer`.)*
@@ -543,16 +549,18 @@ Enemies may occupy a rectangle (`ClassDef.Footprint`, e.g. `cyclops00` = 2×2); 
 
 ## 2. The Timeline
 
-A horizontal bar under the top HUD. Enemy turn icons load left→right from IP 0 to the trigger at IP 1000; cast icons count down to 0 on the same u-axis.
+**Amended 2026-11-06 (owner, GG-T286/GG-T287, inspired by Final Fantasy Resonance): one bar, no Zone, icons flow LEFT.** A horizontal track under the top HUD. Every icon (enemy turns and every cast, hero or enemy) moves left at its own steady rate, and **reaching the left edge is acting**. Where an icon sits is simply how long until it acts: `u = secondsUntilAct / BarSeconds` (`BattleEngine.SecondsUntilAct`, `BattleEngine.BarU`), with `BattleConfig.BarSeconds` = **10 s**; anything further off than 10 s waits at the right end. There is no ACT zone, no Pushback Zone and no crawl: the old `ZoneStart`/`ZoneU`/`ZoneCrossingTicks` are gone.
 
 ```
-u = 0.0 (IP 0)                         u = 0.65 (IP 650)             u = 1.0 (IP 1000)
-   ┃═════════════════════════════════════║════════════════════════════╣ ACT
-   ┃   "Open Track" (65%)                ║   Pushback Zone (35%)      ║
-   ┃   icons advance at Speed × 1.6 IP/t ║   every icon crawls at the ║
-   ┃                                     ║   same rate (30-tick cross)║
-   ┃═════════════════════════════════════║════════════════════════════╣
+ prominence     u = secondsUntilAct / BarSeconds (BarSeconds = 10 s)
+  diamond   0 s  1    2    3    4    5    6    7    8    9    10 s
+   ◆◆◆      ◆━━━◇━━━━◇━━━━◇━━━━◇━━━━◆━━━━◇━━━━◇━━━━◇━━━━◇━━━━◆     [GUARD]
+  ◆next◆    ◇ = 1 s delimiter, ◆ = 5 s delimiter (no Zone, no ACT)
+   ◆◆◆      ◀── every icon (turn or cast) moves left at
+ "NOW"/2.4s     Speed × 1.6 IP/tick × tempo × status; at 0 s it acts
 ```
+
+Turns and casts share the one axis, so a cast is a racer like any turn: it is born at `castSeconds / BarSeconds` and acts when it reaches the left edge. *(Tests: `TimelineResonanceTests` — `An_icon_sits_at_its_seconds_until_acting_over_the_bar`, `A_cast_is_born_at_its_cast_time_on_the_bar`, `Slow_on_an_enemy_lets_an_in_flight_cast_overtake_it`.)*
 
 <a id="20-the-act-advanced-clock"></a>
 
@@ -560,12 +568,12 @@ u = 0.0 (IP 0)                         u = 0.65 (IP 650)             u = 1.0 (IP
 
 **Amended 2026-10-09 (owner decision):** the clock is **act-advanced**. **Amended again 2026-10-21 (owner, GG-T188 — reverses the act-advanced clock's "an action is 2.0 s"):** the timeline **runs while a hero is held**.
 
-- Time is integer **ticks**, `BattleConfig.TicksPerSecond` = 10. The bar is `BarLength` = 1000 IP; `u = IP / 1000`.
+- Time is integer **ticks**, `BattleConfig.TicksPerSecond` = 10. A turn icon still loads `BarLength` = 1000 IP internally, but it is **drawn** at its seconds until acting (`u = secondsUntilAct / BarSeconds`, GG-T286).
 - **Looking is free.** Nothing moves while you inspect, select or pick a target.
-- **Picking up a hero starts the turn.** The timeline then runs in real time: the player's turn is the time from pickup until the **next enemy icon reaches ACT** — `BattleEngine.TurnTicks` (the soonest `TicksUntilTurn`, no future pushback assumed), shown as `TurnWindowSeconds` = max(`MinTurnSeconds` 2 s, ticks ÷ 10) real seconds (the floor slows the playback on a very short turn so it stays a playable drag).
+- **Picking up a hero starts the turn.** The timeline then runs in real time: the player's turn is the time from pickup until the **next enemy icon reaches the left edge** (acts) — `BattleEngine.TurnTicks` (the soonest `TicksUntilTurn`, no future pushback assumed), shown as `TurnWindowSeconds` = max(`MinTurnSeconds` 2 s, ticks ÷ 10) real seconds (the floor slows the playback on a very short turn so it stays a playable drag).
 - **Forced drop.** When the window runs out the hero is dropped **where it is** — the path walked so far is the move — and that enemy acts. `MoveCommand.HeldSeconds` carries the seconds held; at or past the window (`BattleEngine.IsTimeUp`) the drop is forced (`TurnTimeUpEvent`) and the turn ends **even if the hero never left its tile**.
 - **Dropping earlier ends the turn early.** Every accepted command (move, slot use, Guard) ends the player's turn: inside `BattleEngine.Apply` the clock runs (`AdvanceUntilEnemyTurn`) until an enemy turn resolves — the next arrival acts. Two exceptions: an action that clears a wave hands the fresh wave's first turn to the player (no advance), and when no enemy icon can arrive at all (none left, all Frozen) a turn spends the fixed `ActionTicks` = 20 ticks instead.
-- **The view, not Core, runs the held clock.** Core never ticks during a hold; `BattleEngine.TimelineUAfter(ticks)` gives the view where every icon would be, so the icons glide right in real time. The remaining time shows twice: a gold **lane** from the next icon to the right edge with the seconds left under it, and a **drain bar** under the held hero (green → red). A paused battle stops the hold.
+- **The view, not Core, runs the held clock.** Core never ticks during a hold; `BattleEngine.TimelineUAfter(ticks)` gives the view where every icon would be, so the icons glide left in real time. The remaining time shows twice: a gold **lane** from the left end of the track to the next enemy icon (reddening as it runs out; GG-T286), and a **drain bar** under the held hero (green → red). A paused battle stops the hold.
 - **Bot driver.** `HeroBot` drags at `BotSecondsPerStep` = 0.25 s a tile: a path longer than `MaxDragSteps` (window ÷ 0.25) is cut where the time runs out (a forced drop), and every bot move carries its `HeldSeconds`. The soak (`Bots_play_every_stage_without_breaking_invariants`) reports average turn length and forced drops per stage.
 - Refused commands and no-op drags (let go early without moving) cost **nothing** (no ticks, `ActionsTaken` unchanged).
 - **Cancelling a drag** (*added 2026-11-05, GG-T252*): releasing the held hero **off the board**, or back on **its own tile with nothing shoved** (the shove preview is empty), is a cancel — no command, no clock, `ui.cancel` and "Move cancelled" (`BattleScreen.DropCancels`/`CancelDrag`). A walk that returns home after shoving someone still commits (shoving is a tactic, GG-T190). A forced drop (the window ran out) is never cancelled.
@@ -577,39 +585,39 @@ u = 0.0 (IP 0)                         u = 0.65 (IP 650)             u = 1.0 (IP
 
 ### 2.1 Speed and pace
 
-- **Open track** (IP < `ZoneStart` = 650): an icon gains `round(Speed × OpenRatePerSpeed)` IP per tick, `OpenRatePerSpeed` = 1.6 (Speed 10 → 16 IP/tick → ~41 ticks ≈ 2 actions to reach the Zone).
-- **Zone** (IP ≥ 650, the rightmost `ZoneU` = **35%**): every icon crawls at the same `(1000 − 650) / ZoneCrossingTicks` = 11 IP/tick (`ZoneCrossingTicks` = 30, so ~32 ticks ≈ 1.6 actions to cross), regardless of stats — a uniform coordination window.
-- Rates are multiplied by `Unit.TimelineSpeedMultiplier` (Slowed ×0.5), minimum 1 IP/tick.
+**Amended 2026-11-06 (owner, GG-T286): one linear rate, the whole way.** ~~Open track at Speed × 1.6 IP/tick, then a shared 30-tick Zone crawl.~~
+- A turn icon gains `round(Speed × IpPerTickPerSpeed × tempo × status)` IP per tick (`BattleEngine.TurnRatePerTick`), `IpPerTickPerSpeed` = **1.6**, minimum 1 IP/tick: Speed 10 → 16 IP/tick → a full lap in ~63 ticks (6.3 s). Speed matters from IP 0 to the left edge; nothing equalizes the last stretch.
+- **tempo** is the party tempo — hero Haste slows every foe, Slow on the party speeds them ([§2.11](#211-party-tempo-gg-t268)); **status** is the owner's own buffs (Slowed ×0.5; Frozen halts it entirely, `Unit.IsTimelineHalted`) — `BattleEngine.TimelineScale`. Slow, Haste and Frozen change only the **rate**, never the icon's place: a Slowed foe simply drifts left more slowly, so a cast or a faster foe behind it can **overtake** it. (A Hasten/Quicken landing *on an enemy* is the one exception: it jumps the icon forward, [§2.7.1](#271-hasten--quicken--the-inverse).)
+- A cast icon counts its remaining ticks down one per tick; its `secondsUntilAct` is those ticks ÷ 10.
 - `Speed` is the unit's effective SPD: level SPD + gear SPD + ½ gear AGI ([§3.2](#32-hp-and-stats)).
-- A Speed-10 enemy starting at IP 0 acts after ~73 ticks — during your 4th action. **Amended 2026-10-09:** the old ZoneU range 0.25–0.35 is fixed at 0.35.
+- *(Tests: `Timeline_rate_is_linear_in_speed_with_no_zone_crawl`, `Slow_on_an_enemy_lets_an_in_flight_cast_overtake_it`.)*
 
 ### 2.2 Icon state
 
-**Amended 2026-10-09:** the old per-icon modes (`Queued / Approaching / PushedBack / Stunned / Resolving`) collapse to data on `TimelineEntry`: `Ip` (turn icons, ≥ 1000 = arrived), `StunTicks` (ticks it will not advance; set by pushback, cleared by Hasten), `RemainingTicks` (cast icons, 0 = arrived) and `AccumulatedDelayTicks` (stagger, [§13.4](#134-the-interrupt-path)). An owner with a **timeline-halting** buff (Frozen) advances neither its turn icon nor its cast icon (`Unit.IsTimelineHalted`).
+**Amended 2026-10-09:** the old per-icon modes (`Queued / Approaching / PushedBack / Stunned / Resolving`) collapse to data on `TimelineEntry`: `Ip` (turn icons, ≥ 1000 = arrived), `StunTicks` (ticks it will not advance; since GG-T286 only the part of a Pushback that IP 0 can't absorb, cleared by Hasten), `RemainingTicks` (cast icons, 0 = arrived) and `AccumulatedDelayTicks` (stagger, [§13.4](#134-the-interrupt-path)). An owner with a **timeline-halting** buff (Frozen) advances neither its turn icon nor its cast icon (`Unit.IsTimelineHalted`).
 
-### 2.3 Pushback (the "interrupt by hitting" mechanic)
+### 2.3 Pushback (a keyword, in seconds)
 
-When a **hero** damages an **enemy** whose turn icon is in the Zone (`BattleRunner.Pushback`, called from `Damage` for every non-miss hit with a hero source — pincer strikes, supporter strikes, spells, Mug, damage items):
-- **Damage is always applied**; pushback only moves the icon.
-- `frac = (IP − 650) / 350` (how deep in the Zone).
-- `strMult = max(0.5, 1 + (attacker STR − 10) / 40)`.
-- `push = min(PushbackMaxU 0.15, PushbackBaseU 0.07 × (0.5 + frac) × strMult)` (in u); IP drops by `round(push × 1000)`, floored at 0.
-- `StunTicks = max(1, round(BaseStunTicks 4 / (1 + target AGI / 50)))`.
-- Environmental damage (DOT, traps, shatter) never pushes. Every landing hit re-checks, so a second hit on an icon already pushed out of the Zone does nothing — but a big pincer's supporters each land their own hit, so one busy commit can still re-trigger pushback several times on the same target before it finally drops below the Zone.
+**Amended 2026-11-06 (owner, GG-T286, inspired by Final Fantasy Resonance): Pushback is a keyword, not a property of every hit.** ~~Any hero hit on an enemy in the Pushback Zone shoved its icon back by a depth × STR formula (`PushbackBaseU`/`PushbackMaxU`, 2026-10-11 tuning) and stunned it by AGI.~~ The Zone, the STR/AGI formula and the AGI stun are gone.
+- **Only the keyword pushes.** An ability or item carrying `Pushback` (`AbilityDef.Pushback`, seconds) pushes each foe it reaches; **plain hits never push** — pincer strikes aside (below), supporter strikes, spells without the keyword, Mug, damage items, DOT, traps and shatter move no icon.
+- **A hero pincer carries it.** Every trapped foe a hero pincer lands a blow on is pushed `BattleConfig.PincerPushbackSeconds` = **1 s** (once, after the supporters act). Enemy pincers push nothing.
+- **Anywhere on the bar.** The foe acts that many seconds later wherever its icon sits (`BattleRunner.Pushback`): it loses `ticks × its current rate` IP; whatever IP 0 can't absorb (an icon that just acted) becomes stun ticks, so the delay is always the full amount.
+- **Capped and once.** One push is at most `PushbackMaxSeconds` = **2 s** (`ContentLoader.Validate` rejects a larger keyword), and a foe is pushed **at most once per action**, so a chained pincer or a multi-hit skill doesn't stack it.
+- **A held cast slips instead.** A target with no turn icon but a cast in flight has the cast's remaining ticks raised by the same amount (`CastStaggeredEvent`); Pushback never cancels a cast.
+- **Content:** the knockback and disruption skills carry 0.5–1.25 s (Shield Bash, Shove, Bamboo Slam, Juggernaut Charge, Covering Volley, Stasis 0.75; War Stomp, Haymaker, Phalanx Strike, Guard Break, Wide Cleave 0.5; Riposte, Overrun, Disrupt 1; Pinning Shot 1.25) and the Hinder spell the full 2 s. The old `DelayU` field is this keyword now ([§6.7](#67-movement-timeline-and-drain-gg-t183)).
+- **Cast stagger is separate and unchanged** ([§13.4](#134-the-interrupt-path)): any landing hit on a caster still staggers (and can cancel) its cast.
 
-**Amended 2026-10-09:** the old floor "newU ≥ 0.55" is gone; the cap is 0.40 u. *(Tests: `Pincer_on_in_zone_enemy_pushes_its_icon_back`, `Pincer_outside_zone_has_no_pushback`.)*
-
-**Amended 2026-10-11 (owner: "the pushback on monsters needs to be less; they almost never get to take a turn"):** `PushbackBaseU` 0.18→0.07 and `PushbackMaxU` 0.40→0.15 (both ~60% weaker), `BaseStunTicks` 8→4. A single large party could otherwise re-trigger pushback on the same in-Zone enemy several times in one pincer (once per attacker/supporter hit) before it fell out of the Zone, effectively denying it a turn for most of a battle — this is a magnitude tuning, not a rule change; the mechanic and its relative ordering (deeper in the Zone / higher STR pushes harder) are unchanged.
+*(Tests: `Pincer_pushes_its_foe_back_near_the_left_edge`, `Pincer_pushback_works_far_from_the_left_edge_too`, `Pincer_pushback_is_the_same_seconds_anywhere_on_the_bar_whatever_the_strength`, `TimelineResonanceTests` — `A_plain_hit_never_pushes`, `The_Pushback_keyword_pushes_its_seconds_anywhere_on_the_bar`, `One_push_is_capped`, `Validate_rejects_a_pushback_past_the_cap`.)*
 
 ### 2.4 Turn order = arrival order
 
-Icons advance independently. Within a tick, arrivals resolve one at a time: **cast icons before turn icons, then lower entry id first** (`BattleRunner.Earlier`). **Amended 2026-10-09** (explicit tie rule). A resolving turn resets that icon to IP 0. Pushback, Hasten, Slowed and Frozen reorder icons only by changing IP/rate.
+Icons advance independently. Within a tick, arrivals resolve one at a time: **cast icons before turn icons, then lower entry id first** (`BattleRunner.Earlier`). **Amended 2026-10-09** (explicit tie rule). A resolving turn resets that icon to IP 0. Pushback, Hasten, Slowed and Frozen reorder icons only by changing IP/rate. **Amended 2026-11-06 (GG-T286):** turns and casts race on the one axis (`secondsUntilAct`), so the order on screen, left to right, *is* the order they act in; ties at the left edge still go casts first, then the lower entry id.
 
 ### 2.5 Auto-skip / Shield
 
-The **GUARD** button (right of the timeline) issues `ShieldCommand`:
+**Unchanged by GG-T286/GG-T287** except where it sits: the **GUARD** button (the right end of the timeline, on the right gutter) issues `ShieldCommand`:
 - Applies **Protection** (`buffs.json` `protection`: incoming damage ×0.85, 1 Turn) to every hero.
-- Runs the clock until **one enemy turn has resolved** (cap 2000 ticks), then returns control — Protection expires at that control return, so it covers exactly the skipped stretch.
+- Runs the clock until **one enemy turn has resolved** — the next actor reaches the left edge (cap 2000 ticks), then returns control — Protection expires at that control return, so it covers exactly the skipped stretch.
 - Counts as an action; clears the pending time bank.
 
 **Amended 2026-10-09:** it never auto-presses (there is no real-time window to run out). *(Test: `Shield_protects_heroes_and_skips_to_next_enemy_turn`.)*
@@ -621,34 +629,41 @@ The **GUARD** button (right of the timeline) issues `ShieldCommand`:
 - Protection is kept as Guard's defensive effect. The drag-timer time bank ([§3.1.8](#318-time-banked-orbs)) is fed only by moves; Guard still clears any pending drag remainder, so the two never stack.
 - The HUD shows it as the filling bubble plus a "Guard · Mana +N · Xs banked" billboard.
 
-*(Tests: `GuardBankTests` — conversion maths, time-left proportionality, overflow at 12 orbs, Guard ending the turn after banking.)*
+*(Tests: `GuardBankTests` — conversion maths, time-left proportionality, overflow at 12 orbs, Guard ending the turn after banking; `Guard_still_banks_the_time_left_to_the_next_arrival`.)*
 
-### 2.6 One timeline, two lanes — turn icons above, cast icons below
+<a id="26-one-timeline-two-lanes--turn-icons-above-cast-icons-below"></a>
 
-**Amended 2026-10-10 (owner requests): one line, every icon on it.** The track is a thin 6 px line; every icon is centred on it.
-- **Enemy turn icons (84 px circles):** an opaque dark disc (the line never shows through) masking the enemy's **portrait framed by its class Thumbnail** (§12.1.1; the old pixel-art sprites were deleted 2026-11-03, GG-T224); red ring, bosses purple. The turn closest to ACT — **the next attacker** — gets a gold ring and a 1.18× lift. A unit that isn't moving (Frozen, Asleep, pushback stun) shows a **status badge** on its circle and its sprite dims; the same debuff shows as a pip on its tile (stun as a gold "!"). There are no turn-number badges on the board — the timeline is the turn order.
-- **Casts are not on the timeline (amended again 2026-10-10, owner: "instead of putting casting time on the timeline have it show on the caster").** A pending cast traces a **radial countdown around its caster's frame** (`CastRing`, clockwise from top-centre; the lit length is the time left, `1 − u` with `u = 1 − Remaining / (Total + stagger delay)`) in the spell's own colour (`Art.SpellColor`: golden-ratio hue per ability, so every spell differs). Its **target** carries a chip with the spell's icon (or initial) in that colour. A unit casting — or targeted by — several spells cycles through them every 1.2 s. Banners name caster, spell, target and landing time ("Witch charges Ice on Paladin — lands in 3s"; "Paladin: Fireball → Slime").
-- **Overlaps (amended 2026-10-10, owner: "all enemies on the timeline share the same center alignment … let each one have its own beat of being on top"):** circles never leave the centre line. Overlapping circles form a cluster and take turns on top, one per 1.2 s beat (`LayoutIcons`), so a fast enemy passing a slow one reads as the two trading places.
+### 2.6 One track, diamond icons, the prominence diamond
+
+**Amended 2026-11-06 (owner, GG-T287, inspired by Final Fantasy Resonance): the timeline is redrawn as one track of diamonds flowing left** (`BattleScreen.Timeline.cs`). ~~Enemy turn circles on a line with the next attacker nearest ACT on the right; casts shown only as a ring around the caster (2026-10-10, "casts are not on the timeline").~~
+- **One track, no labels.** A thin line from the prominence diamond (left) to the GUARD button (right), with a **small diamond delimiter every second** and a **larger one every 5 s** across the `BarSeconds` = 10 s span. No Zone overlay, no "ACT".
+- **Every icon is a diamond.** A 45° bordered square whose content is clipped to the diamond (overflow hidden, stencil-masked when rotated) around a counter-rotated image: an enemy **portrait** for a turn, the **ability icon** for a cast. Nothing shows outside the diamond.
+- **Borders say whose it is:** enemy turn **red**, boss **purple**, hero cast **teal** (`Palette.CastHero`), enemy charge **amber** (`Palette.CastEnemy`). The **next actor** rings **gold** with a lift on the bar, and its board tile gets a gold border too.
+- **Casts ride the bar** (fixes the old line-32 split between "below the line" and "not on the timeline"): every cast in flight, hero or enemy (in-playback cast ghosts included), is a diamond on the same track, born at `castSeconds / BarSeconds`; it joins the bar only when its `CastQueuedEvent` beat plays, and a stagger or a Pushback visibly slips it right. The caster's radial `CastRing`, the target's spell chip and the "lands in 3s" banners stay.
+- **The prominence diamond.** A large diamond at the far left (the left gutter) shows **whoever acts next** — a portrait for a turn, the ability icon for a cast — with its seconds left under it ("2.4s"), and **"NOW"** while that actor is acting. A new actor taking the slot plays a whoosh.
+- **Approach glow.** Inside `ApproachSeconds` = **3 s** of acting, an icon's halo **and its owner's tile** (the caster's tile for a cast; `BoardView` cue layer) pulse together in the icon's own colour, ramping to full at 0 s, so icon and unit read as one; the glow starts with a channel cue. A halted (Frozen) icon doesn't glow.
+- **Overlaps:** icons stay centred on the track; overlapping diamonds form a cluster and take turns on top, one per 1.2 s beat (`LayoutIcons`). A unit that isn't moving (Frozen, Asleep, stunned) shows a status badge and dims; the same debuff is a pip on its tile.
+- **GUARD** sits at the right end; the hold lane ([§2.0](#20-the-held-turn)) and the tempo readout ([§2.11](#211-party-tempo-gg-t268)) anchor to the track's left end.
 - **Spell VFX (owner direction):** every spell plays one readable arc (`SpellVfx`): the caster *draws energy* (motes spiral in, its frame glows in the spell colour), a *cast burst* ring, then a mote per target *curves to the space above it*, from where the element impact plays — lightning strikes down from that point, flames burst, frost rings, heals sparkle.
-- Icons that would overlap step into extra lanes (`BattleScreen.StaggerIcons`).
+- **Tap to select, hold to read** (*added 2026-11-06, owner, GG-T288*): before a move — no drag, playback or aiming under way — a **tap** on any timeline icon or on the prominence diamond selects its owner exactly as tapping it on the board does (a hero becomes the selected hero, a foe fills the actor panel). The selected unit is cross-highlighted: a **white ring** on every one of its diamonds (turn, cast, the prominence slot) and a **white outline** on its board tile (`BoardView.SetSelection`). A **hold** still opens the InspectCard ([§9](#9-the-hud)). What either shows is gated by the Bestiary knowledge tier ([§25.11](#2511-bestiary)).
 
-**Shared clock — casts fire "off-turn" by design.** Both lanes advance on the same ticks; whatever arrives first resolves. Lifecycle: up to **4** hero casts may load at once (`MaxHeroCastsInFlight`; enemy charges don't count) — a fifth cast-time spell is refused before any orbs are spent; orbs are spent at cast start; the icon spawns with `ticks = SecondsToTicks(Formulas.CastTime(base, caster))`; on arrival it resolves (`ResolveCast`) and is removed. A spell with `CastTime` 0 resolves immediately.
+**Shared clock — casts fire "off-turn" by design.** Turns and casts advance on the same ticks; whatever arrives first resolves. Lifecycle: up to **4** hero casts may load at once (`MaxHeroCastsInFlight`; enemy charges don't count) — a fifth cast-time spell is refused before any orbs are spent; orbs are spent at cast start; the icon spawns with `ticks = SecondsToTicks(Formulas.CastTime(base, caster))`; on arrival it resolves (`ResolveCast`) and is removed. A spell with `CastTime` 0 resolves immediately.
 
 **Amended 2026-10-09:** every hero spell in `abilities.json` has base `CastTime` 1.5 s; after WIS+INT scaling (12–15 ticks for the starting heroes) it normally resolves **inside the same action's 20-tick advance**, unless an enemy turn earlier in that advance staggers it into later actions. *(Tests: `Cast_time_spell_rides_timeline_then_resolves`, `Fifth_hero_cast_is_refused_by_cast_cap`.)*
 
 ### 2.7 Worked example: pushback math
 
-A goblin (AGI 8) sits at IP 920 (u 0.92). A Knight with STR 18 lands a pincer hit.
+**Amended 2026-11-06 (GG-T286):** ~~the depth × STR example (IP 920, STR 18 → 0.275 u plus a 7-tick AGI stun)~~ is replaced.
+
+A goblin (Speed 10 → 16 IP/tick) sits at IP 920: 80 IP to go → 5 ticks → **0.5 s** from acting (u 0.05, nearly at the left edge). Two heroes pincer it.
 
 ```
-frac      = (920 − 650) / 350           = 0.771
-strMult   = max(0.5, 1 + (18 − 10)/40)  = 1.20
-push      = min(0.40, 0.18 × (0.5 + 0.771) × 1.20) = 0.275 u
-new IP    = 920 − round(274.6)          = 645   (u 0.645 — just outside the Zone)
-stun      = max(1, round(8 / (1 + 8/50))) = round(6.9) = 7 ticks (0.7 s)
+push      = PincerPushbackSeconds              = 1 s = 10 ticks
+IP lost   = 10 ticks × 16 IP/tick              = 160
+new IP    = 920 − 160                          = 760   (240 IP to go = 15 ticks = 1.5 s, u 0.15)
 ```
 
-Net: one deep-Zone hit buys 275 IP (~1.2 actions at Speed 10, since it now re-crosses the Zone) plus 7 frozen ticks. A hit at the Zone edge (IP 650) buys 108 IP; a hit outside buys nothing.
+Net: the pincer bought exactly 1 s, the same at IP 920 or IP 100 and whatever the attackers' STR. A goblin that has just acted (IP 0) can't lose IP, so it stands still for those 10 ticks instead (`StunTicks` 10). A Shield Bash (`Pushback` 0.75) in the same action adds nothing: one push per foe per action.
 
 #### 2.7.1 Hasten / Quicken — the inverse
 
@@ -663,9 +678,9 @@ Net: one deep-Zone hit buys 275 IP (~1.2 actions at Speed 10, since it now re-cr
 |---|---|
 | Wave start (incl. battle start) | each enemy's turn icon at a random **IP 0–250** (`SpawnStaggerIp`) — **Amended 2026-10-09** (replaces u=0 + queue delay) |
 | Snake segments | no icon (the head owns the chain's turn) |
-| Hero spell with cast time | cast icon below the line |
-| Enemy charge | cast icon below the line (2.5 s = 25 ticks, not stat-scaled) |
-| Pushback / Hasten | existing icon's IP changes |
+| Hero spell with cast time | teal cast diamond on the bar at `castSeconds / BarSeconds` (GG-T286/GG-T287) |
+| Enemy charge | amber cast diamond on the bar at its charge's `CastTime` (default `DefaultChargeCastSeconds` 2.5 s → u 0.25; not stat-scaled) |
+| Pushback / Hasten | existing icon's IP changes (a held cast's remaining ticks) |
 
 ### 2.9 Drag timer (optional)
 
@@ -689,7 +704,7 @@ Owner 2026-11-05: hero haste "slows enemy motion down the timeline, thus you are
 
 ### 2.10 Countdown badge
 
-**Amended 2026-10-09 (new, Terra Battle–style):** every enemy shows a number on its tile — `BattleEngine.ActionsUntilTurn` = `(TicksUntilTurn − 1) / 20`: the actions you get before it acts (**0** = it acts during your next action, drawn red). **Amended 2026-10-21 (GG-T188):** a turn now ends at each enemy arrival, so the number counts the distinct arrival ticks of the *other* enemies (each re-loading from IP 0) before this one's — the turns you get before it acts (**0** = it acts at the end of your next turn). `TicksUntilTurn` simulates its icon with stun and the Zone crawl but no future pushback/hasten; Frozen enemies show no number. The actor panel says "Acts in N moves", "Acts after your next move!", "Frozen in time" or "Charging X!".
+**Amended 2026-10-09 (new, Terra Battle–style):** every enemy shows a number on its tile — `BattleEngine.ActionsUntilTurn` = `(TicksUntilTurn − 1) / 20`: the actions you get before it acts (**0** = it acts during your next action, drawn red). **Amended 2026-10-21 (GG-T188):** a turn now ends at each enemy arrival, so the number counts the distinct arrival ticks of the *other* enemies (each re-loading from IP 0) before this one's — the turns you get before it acts (**0** = it acts at the end of your next turn). `TicksUntilTurn` simulates its icon with stun at its one linear rate (no Zone crawl since GG-T286) but no future pushback/hasten; Frozen enemies show no number. The actor panel says "Acts in N moves", "Acts after your next move!", "Frozen in time" or "Charging X!".
 
 ---
 
@@ -979,21 +994,21 @@ Invariant: while the event player is busy (`BattleScreen.Busy`) no command can b
 2. **Escape** → `BattlePhase.Escaped`, done. **Revive** → revive first fallen hero, done. **GrantsOrbs** → mint orbs, done.
 3. Collect targets; emit `AbilityResolvedEvent` (anchor, tiles, targets). No targets → "Missed!".
 4. Per living target, in order:
-   1. **Scan** → `ScannedEvent` (stats, HP), mark the class Scanned + Seen.
+   1. ~~**Scan** → `ScannedEvent` (stats, HP), mark the class Scanned + Seen.~~ Retired 2026-11-06 (owner, GG-T290): Bestiary knowledge is earned by defeats ([§25.11](#2511-bestiary)); `IsScan` and `ScannedEvent` are gone.
    2. **Cleanse** (`RemovesDebuffs`: all debuffs) / **cure** (`RemovesBuff`: one id).
    3. **Fire × Frozen / Wet**: a damaging Fire hit force-expires Frozen (its chain applies Wet), then strips Wet ("Steam!").
    4. **Steal** (`StealsMana`) roll → random orb or "Missed!"; **Mug** adds a fixed physical hit (`MugDamage` 10 × physical resistance × incoming multiplier).
    5. **Damage** (`BaseDamage > 0`) → `Formulas.SpellDamage` (Lightning on Wet ×1.5, note "Shock!"), × `BonusMultiplier` vs `BonusVsTag`; then **Lightning blind roll** 30% → Blinded.
    6. **Knockback** (`Knockback`, [§6.6](#66-knockback-added-2026-10-10-owner-direction)), then **Pull** (`Pull`) and **Swap** (`SwapsPlaces`) ([§6.7](#67-movement-timeline-and-drain-gg-t183)).
    7. **Heal** (`BaseHeal`). **Amended 2026-10-22 (GG-T183):** a heal only ever lands on the caster's side. On a foe it is a **drain** when the ability's filter is `EnemyOnly` (the caster is mended instead), and nothing when the filter is `Any`; and an ability that both harms and heals never harms a friend (before this, Soul Feast, Collect the Debt, Bloodletting and Blood Harvest healed the foe they hit, and Harm into Hope scorched allies and mended enemies).
-   8. **Hasten** (`HastenU`), then **Delay** (`DelayU`).
+   8. **Hasten** (`HastenU`), then **Pushback** (`Pushback` seconds, foes only; was `DelayU` before GG-T286, [§2.3](#23-pushback-a-keyword-in-seconds)).
    9. **Buff** (`ApplyBuff`, chance `ApplyBuffChance`): Sleep on a Warm target lasts ×1.5 (ceil). **Amended 2026-11-05 (GG-T266):** a *beneficial* buff (`BuffKind.Buff`) never lands on a foe: on a foe-targeting ability it is the **caster's own**, granted once per cast however many foes are caught (War Stomp and Battle Cry make the caster taunt, Opening Jab empowers the caster's next strike; before this, all three buffed the enemies they hit). *(Test: `A_beneficial_buff_on_a_foe_targeting_ability_lands_on_the_caster_not_the_foe`.)*
 5. **Step back** (`StepBack`): the caster backs away from the nearest foe.
 6. Battle-end check.
 
 **Amended 2026-10-22 (GG-T183):** a teleport with `HastenU` (Fade Step) also hastens the caster when it lands.
 
-`Damage()` is the single damage choke-point: armor (snake), Sleep-break, HP, threat, death + loot, then (hero source, non-miss) pushback and cast stagger ([§13](#13-combat-resolution)).
+`Damage()` is the single damage choke-point: armor (snake), Sleep-break, HP, threat, death + loot, then (non-miss, with a source) cast stagger ([§13](#13-combat-resolution)). **Amended 2026-11-06 (GG-T286):** `Damage()` no longer pushes; only the Pushback keyword and a hero pincer do ([§2.3](#23-pushback-a-keyword-in-seconds)).
 
 ### 6.1 Projectile motions
 
@@ -1024,7 +1039,7 @@ Invariant: while the event player is busy (`BattleScreen.Busy`) no command can b
 
 Earlier note (2026-10-09, superseded): **Amended 2026-10-09:** there are no particle prefabs, no `VisualEffectLibrary` and no Addressables. Feedback today is code-drawn in UI Toolkit: tile marks colored by damage type, the projectile dot, floating text, shakes, pops, glows and a full-screen flash for Clutch. The `CastVfx / ProjectileVfx / ImpactVfx / LingerVfx` keys remain in `abilities.json` for a future pass.
 
-**Amended 2026-10-13:** damage and buff-tagged spells still read their look from `DamageType`/the applied buff id (`ElementBurst`, `StatusBurst`) — already rich and per-type (Fire/Ice/Lightning/Poison/Holy/Dark each have a bespoke burst, and poisoned/burning/frozen/sleep/slowed/silenced/blinded/taunting/empowered/protection/regen each have a bespoke take-hold animation). What used to fall through to one generic purple ring — Scan, pure cleanse/dispel (`RemovesDebuffs`/`RemovesBuff`), and hasten-only spells (no damage, no heal, no buff) — now get their own bespoke gold bursts (`ScanBurst`/`CleanseBurst`/`HastenBurst`, `BattleScreen.Playback.cs`) and read gold during the cast wind-up too (`CastColor`). The named `CastVfx/ProjectileVfx/ImpactVfx/LingerVfx` strings on individual abilities (e.g. distinguishing Fireball from Meteor) are still not read by any code — still ⬜ for a future pass, still code-drawn UI Toolkit if it happens, never particle prefabs (law #3).
+**Amended 2026-10-13:** damage and buff-tagged spells still read their look from `DamageType`/the applied buff id (`ElementBurst`, `StatusBurst`) — already rich and per-type (Fire/Ice/Lightning/Poison/Holy/Dark each have a bespoke burst, and poisoned/burning/frozen/sleep/slowed/silenced/blinded/taunting/empowered/protection/regen each have a bespoke take-hold animation). What used to fall through to one generic purple ring — Scan (retired 2026-11-06, GG-T290, with its `ScanBurst`), pure cleanse/dispel (`RemovesDebuffs`/`RemovesBuff`), and hasten-only spells (no damage, no heal, no buff) — now get their own bespoke gold bursts (`ScanBurst`/`CleanseBurst`/`HastenBurst`, `BattleScreen.Playback.cs`) and read gold during the cast wind-up too (`CastColor`). The named `CastVfx/ProjectileVfx/ImpactVfx/LingerVfx` strings on individual abilities (e.g. distinguishing Fireball from Meteor) are still not read by any code — still ⬜ for a future pass, still code-drawn UI Toolkit if it happens, never particle prefabs (law #3).
 
 **Amended 2026-10-19 — death-portrait dissolve restored (owner: "the only way to see the complete artwork of these enemies... a quintessential reward for killing an enemy", GG-T96):** on `DiedEvent` the board token vanishes at once and a fresh single image of the unit's **full, uncropped portrait** (`Art.Portrait`, the same in-memory texture the token was framing through its Thumbnail ([§12.1.1](#1211-thumbnails-are-a-window-onto-the-portrait-added-2026-11-03-owner-direction-gg-t220)), shown whole, and no frame, HP bar, pips, glow or any other part of the `UnitView`) appears on the board's fx layer (below floating numbers and the coin burst, above every token, mark and line), centred on the fallen unit's footprint (2×2 bosses on their whole footprint) and nudged back inside the board at its edges so the whole art reads. It is sized to fit a box of (2 + footprint) tiles, starts at 196/255 opacity and, frame-rate independently and scaled by Battle speed, jitters up to ±1/12 tile around its start point, shrinks as ×0.99 per 60 fps frame and fades 0.6/s until gone (≈1.3 s), exactly GridGame2026's `PortraitManager.Dissolve` + `Portrait3DInstance.DissolveRoutine`. It is non-blocking: playback waits only a 0.12 s beat, so the loot burst and the next kill in a chain play while it dissolves, and several deaths each get their own. Every dying unit gets one (corpses show the fallen class's art; units with no portrait skip it). The death sfx and the "★ X is defeated" feed line are unchanged. Reduce Motion drops the jitter; the shrink and fade still play. (`BattleScreen.Playback.cs` `DeathAnim`/`DeathDissolve`.)
 
@@ -1070,9 +1085,9 @@ Added 2026-10-22 so abilities can differ in more than damage and status ([§7.1]
 | `Pull` (tiles) | movement | The target is dragged toward the caster one tile at a time along the longer axis. It stops beside the caster, or before any unit, block, movable or board edge. A hero dragged onto a trap springs it. | `DisplacedEvent` per tile |
 | `SwapsPlaces` | movement | The caster and the target trade tiles. Both are one-tile units, so the board stays one actor per tile ([§1.1.3](#113-one-actor-per-tile--the-occupancy-guarantee-added-2026-10-19-owner-direction-gg-t97)). A hero moved onto a trap springs it. | two `DisplacedEvent`s |
 | `StepBack` (tiles) | movement | After every target resolves, the caster backs straight away from the nearest foe onto free, trap-free tiles. | `DisplacedEvent` per tile |
-| `DelayU` (bar fraction) | timeline | The inverse of Hasten ([§2.7.1](#271-hasten--quicken--the-inverse)): the target's turn icon slides back by `DelayU × BarLength` (to no less than 0). A target that is holding a cast has the cast slip by the same amount in ticks instead. That counts as a stagger, but it never cancels the cast. | `PushedBackEvent` / `CastStaggeredEvent` |
+| `Pushback` (seconds) | timeline | **Amended 2026-11-06 (GG-T286; was `DelayU`, a bar fraction):** the Pushback keyword ([§2.3](#23-pushback-a-keyword-in-seconds)). Each foe it reaches acts that many seconds later, wherever its icon sits; at most `PushbackMaxSeconds` 2 s (validated at load) and one push per foe per action. A target holding a cast has the cast slip by the same seconds instead; it never cancels the cast. Never lands on a friend. | `PushedBackEvent` / `CastStaggeredEvent` |
 
-2×2 bosses, snake segments and remains don't budge ("Won't budge"). None of the moves is a hero step, so none of them forms a pincer: movement never deals damage ([GG-LAW-1](#GG-LAW-1)). *(Tests: `AbilityAuditTests`: `Pull_reels_a_foe_in_toward_the_caster`, `Pull_stops_beside_the_caster`, `Swap_trades_tiles_with_the_target`, `Step_back_puts_distance_between_the_caster_and_the_nearest_foe`, `Delay_slides_the_foes_turn_icon_back`, `A_heal_aimed_at_a_foe_drains_into_the_caster`, `Harm_and_heal_in_one_burst_hurts_only_foes_and_mends_only_friends`.)*
+2×2 bosses, snake segments and remains don't budge ("Won't budge"). None of the moves is a hero step, so none of them forms a pincer: movement never deals damage ([GG-LAW-1](#GG-LAW-1)). *(Tests: `AbilityAuditTests`: `Pull_reels_a_foe_in_toward_the_caster`, `Pull_stops_beside_the_caster`, `Swap_trades_tiles_with_the_target`, `Step_back_puts_distance_between_the_caster_and_the_nearest_foe`, `Pushback_keyword_slides_the_foes_turn_icon_back`, `A_heal_aimed_at_a_foe_drains_into_the_caster`, `Harm_and_heal_in_one_burst_hurts_only_foes_and_mends_only_friends`.)*
 
 ## 7. The Spell Catalog
 
@@ -1083,7 +1098,7 @@ All entries in `abilities.json`. Every spell has base cast time **1.5 s** (scale
 | **Heal** | 1 | SingleActor / PickActor / AllyOnly | None | +25 HP | spot heal |
 | **Mass Heal** | 2 | AllAllies / Auto / AllyOnly | None | +12 HP each | emergency top-up (cost 1 → 2, GG-T247: a party-wide heal for one orb) |
 | **Antidote** | 1 | SingleActor / PickActor / AllyOnly | None | removes all debuffs | cleanse |
-| **Scan** | 1 | SingleActor / PickActor / EnemyOnly | Straight | reveals HP + stats; bestiary Scanned | recon |
+| ~~**Scan**~~ | — | — | — | **Retired 2026-11-06 (owner, GG-T290):** Bestiary knowledge comes from defeats ([§25.11](#2511-bestiary)). Save migration drops Scan from every hero's Known list and bar; in class kits healers got Quicken instead, supports Silence, tanks Cleave | — |
 | **Fireball** | 2 | SingleActor / PickActor / EnemyOnly | Twist | 18 Fire + Burning | burst + DOT |
 | **Frost** | 2 | Square(1) / PickTile / EnemyOnly | Bezier | 10 Ice + Frozen | AoE control |
 | **Bolt** | 3 | Row / PickActor / EnemyOnly | Strike | 14 Lightning (×1.5 Wet), 30% Blind | row clear |
@@ -1263,15 +1278,16 @@ Source (spell, item, charge, trap, expire chain, Shield) → `ApplyBuff` (refres
 
 **Amended 2026-10-09:** the battle HUD is built in code by `BattleScreen.Build` on the 1170×2532 design stage (absolute design-pixel layout; the old `HudLayout` row constants are gone).
 
-**Hold to read** (*added 2026-11-05, GG-T252, POL-D1 recognition over recall*): holding anything for `InspectCard.HoldSeconds` (0.45 s) opens one floating **InspectCard** (`App/UI/InspectCard.cs`) anchored above the finger (below when there's no room), clamped inside the stage and safe area, eased in over `Timing.Quick` with `ui.select`; releasing anywhere closes it, and the press that opened it never also acts. It works on: ability-bar slots (kind, cost pips, cooldown, reach, damage/heal, buff and its chance, movement effects, description, and why it can't be used now), units on the board (level, HP or ??? until scanned, stats, when it acts, a charging foe's **whole spell**, its brain, plate, every status), status pips in the actor panel, **timeline icons** (turn icons → the unit; cast icons → the spell and how to push it back), and in menus: the Abilities screen's bar cells and Known/Learn rows, every `ItemUi.Row` (shop, equip, items — the full item detail), talent nodes, and the Bestiary's ability chips. The ability bar's five slots share the stage width with even 16-px gutters (they grow on a wide stage instead of the gaps).
+**Hold to read** (*added 2026-11-05, GG-T252, POL-D1 recognition over recall*): holding anything for `InspectCard.HoldSeconds` (0.45 s) opens one floating **InspectCard** (`App/UI/InspectCard.cs`) anchored above the finger (below when there's no room), clamped inside the stage and safe area, eased in over `Timing.Quick` with `ui.select`; releasing anywhere closes it, and the press that opened it never also acts. It works on: ability-bar slots (kind, cost pips, cooldown, reach, damage/heal, buff and its chance, movement effects, description, and why it can't be used now), units on the board (level, HP and stats or ??? until the Bestiary knows them — `BestiaryKnowledge.Tier`, GG-T290, [§25.11](#2511-bestiary) — when it acts, a charging foe's **whole spell**, its brain, plate, every status), status pips in the actor panel, **timeline icons** and the prominence diamond (turn icons → the unit; cast icons → the spell and how to push it back; a *tap* instead selects the owner, GG-T288, [§2.6](#26-one-track-diamond-icons-the-prominence-diamond)), and in menus: the Abilities screen's bar cells and Known/Learn rows, every `ItemUi.Row` (shop, equip, items — the full item detail), talent nodes, and the Bestiary's ability chips. The ability bar's five slots share the stage width with even 16-px gutters (they grow on a wide stage instead of the gaps).
 
 ```
 ┌─────────────────────────────────────┐ y=30
 │ [II]     Stage name · Wave n/m   N G│  pause · title/wave · coins this battle
 ├─────────────────────────────────────┤ y=150
-│ ─ enemy portraits ──────────────    │  turn icons above the line
-│ ━━━━━━━━━━━━━━━━━━━[Zone 35%] ACT  [GUARD]
-│ ─ cast icons ───────────────────    │  casts below the line
+│  ◆◆                                 │  prominence diamond: next actor,
+│ ◆NOW◆◀━◆━·━◇━·━·━◆━·━·━◇━·━◆ [GUARD]│  "NOW"/seconds · one 10 s track,
+│  ◆◆   ◀ diamonds flow left (acts)   │  ◆ every 1 s (big every 5 s);
+│                                     │  turns + casts on the same bar
 ├─────────────────────────────────────┤ y=368
 │        Action banner          3.2   │  banner · drag-timer seconds
 ├─────────────────────────────────────┤ y=450
@@ -1283,7 +1299,7 @@ Source (spell, item, charge, trap, expire chain, Shield) → `ApplyBuff` (refres
 │ ● ● ● ● ● ● ● ● ○ ○ ○ ○             │  12 mana orbs with letters
 ├─────────────────────────────────────┤ y=2250
 │ Actor panel: portrait · name · Lv · │  selected hero, or tapped enemy
-│ HP (??? until scanned) · stats ·    │
+│ HP/stats (??? until known) ·        │
 │ "Acts in N moves" · buffs           │
 └─────────────────────────────────────┘
 ```
@@ -1297,7 +1313,7 @@ Source (spell, item, charge, trap, expire chain, Shield) → `ApplyBuff` (refres
 - **Action cut-ins (amended 2026-10-11, owner: "portrait slides … should be action packed just like the board that twists and zooms, and have supporters pop in and out to show their participation bonus"):** every portrait arrives on a feathered team-colour band (bright core, racing light streaks) as a head-and-shoulders bust in a tilted white window, twisting in from an oversized tilt with a flash and an impact shake, then whipping out; the board camera punches toward the action and settles. Spells dim the stage behind the caster's cut-in and print the spell name; chained links pop both attackers with "CHAIN ×n"; each **supporter pops in at the moment it strikes** tagged "SUPPORT" and pops back out. The first-link sweep opens on a white flash with a harder push-in and twist.
 - **Pincer close-up cut-in** (ported from GridGame2026's portrait slide-in, US-145/US-333): on the first pincer of an action, both attackers' portraits sweep past in lanes flanking the attacked line on the old slide curve (fast in → slight overshoot → drift back → fast out, ~1.14 s at ×1), in one of four entry patterns (counter sweep, mirrored, same-side chase, staggered one-two), with Perlin hand-held sway and a slow push-in. The world dims and the board "camera" pushes in 8.5 % on the pincer with its own sway, then settles back over 0.3 s. Chained links keep the quick beat. Off with Settings → "Pincer close-ups" or Reduce motion (`BattleScreen.PincerCutIn`).
 - **Floating text** over units: damage (crit bigger + shake), heals, "Steam!", "Stagger!", "Steady!", "Interrupted!", "CLUTCH!", "SHATTER!", "Snare!", "Trap!", "Zzz…", "Revived!".
-- **Actor panel**: enemy HP and stats show only if the class has been Scanned (this battle or ever); while targeting it shows the ability card ([§4.5](#45-slot-visual-states)).
+- **Actor panel**: ~~enemy HP and stats show only if the class has been Scanned (this battle or ever)~~ **Amended 2026-11-06 (owner, GG-T290):** what it shows of an enemy follows the Bestiary knowledge tier (`BestiaryKnowledge.Tier`, [§25.11](#2511-bestiary)) — Speed after 1 defeat, HP and stats after 3, weaknesses after 6, abilities and brain after 10; anything not yet known reads "???". It fills from a board tap or, since GG-T288, a tap on the unit's timeline icon ([§2.6](#26-one-track-diamond-icons-the-prominence-diamond)). While targeting it shows the ability card ([§4.5](#45-slot-visual-states)).
 - **Guided first battle (amended 2026-10-11, owner: "a full tutorial with explanations and examples, the first battle needs 5 waves of increasing difficulty"):** Green Valley I has **five waves** — slime; two slimes; bat + level-2 slime; level-2 wolf + goblin thug; level-2 wolf + goblin + slime — and ten lessons, each an explanation plus a worked example: Moving, Pincers, Mana, Chains, Spells (with the confirm step and charge bar), The timeline, Roles & Taunt, Pickups, Interrupting, Ready. **Amended 2026-11-05 (GG-T252, POL-D7):** four more — Hold to read (done the moment a card opens), The hold timer (and cancelling a drag), Buffs & debuffs, Armor plates — fifteen in all with Shoving (GG-T190). A lesson completes when the player does it (or after a few actions, or Next); lessons that need particular foes wait for their wave ("Next lesson arrives in wave N"); moving lessons light up a demo move; Spells and Taunt select the hero and pulse the slot. Skip ends it for good (`SaveData.TutorialDone`).
 - **First-battles hint** — **Amended 2026-10-09 (new):** until the third campaign stage is cleared (`HighestClearedStage < 2`), after 5 s of idle input (not on Auto, not targeting) the board shows the move `HeroBot` would make — the hero glows, its path is drawn to a glowing tile, banner "Hint: drag X to the glowing tile" — or "Tip: trap an enemy between two heroes" when no pincer is available. Any input clears it.
 - Tile highlights and pincer lines draw **over** the units so previews stay readable.
@@ -1515,7 +1531,7 @@ Order per hit:
 4. **Charge**: if not already casting, `PlanCast` → queue a charge and end the turn.
 5. **Trap**: a trap-layer with no hero adjacent rolls `LayChance` (0.45) to arm a free, trap-free cardinal tile, ending the turn.
 6. **Move** up to `MoveRange` steps (all content: 1), re-planning each step with `PlanStep`; a multi-tile step shoves heroes ([§1.5](#15-multi-tile-actors-22-bosses)); a snake head drags its chain.
-7. **Attack**: a Humanoid 1×1 enemy that is now an end of an enemy pincer resolves those pincers ("X pincers!"); otherwise it melees the adjacent hero its **targeting personality** picks (below). No adjacent hero → no attack.
+7. **Attack**: a Sentient 1×1 enemy (`Unit.CanPincer`, [§1.3](#13-sentient-restriction); was Humanoid before GG-T289) that is now an end of an enemy pincer resolves those pincers ("X pincers!"); otherwise it melees the adjacent hero its **targeting personality** picks (below). No adjacent hero → no attack.
 8. End of turn: its non-halting turn buffs tick; battle-end check.
 
 **Targeting personalities (amended 2026-10-10, owner direction: "smarter enemies attack the weakest, dumb enemies the closest").** `ClassDef.Targeting` drives movement (`PlanStep`), melee choice, ranged choice and charge targets (`EnemyPlanner.PickFrom`); ties fall back to distance, then HP, then id:
@@ -1528,9 +1544,9 @@ Order per hit:
 | Squishy | lowest VIT (then MaxHP) | gangers, steppin' razors, scorpion, goblin thug |
 | Erratic | a different hero each turn (hash of clock + id; no RNG draw) | bats, flying monkey, ghost |
 
-`Auto` (unset) derives Weakest for INT ≥ 14, Threat for Humanoids, else Closest. The enemy card shows it ("Hunts the weakest hero").
+`Auto` (unset) derives Weakest for INT ≥ 14, Threat for Sentient enemies (Humanoids before GG-T289), else Closest. The enemy card shows it ("Hunts the weakest hero").
 
-**Speed tiers (amended 2026-10-10):** enemy Speed is 18 (swift: bats, wolves, flyers, werewolf, steppin' razors, phantom), 15 (quick), 11 (steady) or 8 (slow: slimes, undead, zombies, golems, mannequin, ghost). Open-track rate scales with Speed and the Zone is a shared crawl, so a fast enemy can overtake a slow one during the windup but not inside the Zone.
+**Speed tiers (amended 2026-10-10):** enemy Speed is 18 (swift: bats, wolves, flyers, werewolf, steppin' razors, phantom), 15 (quick), 11 (steady) or 8 (slow: slimes, undead, zombies, golems, mannequin, ghost). ~~Open-track rate scales with Speed and the Zone is a shared crawl.~~ **Amended 2026-11-06 (GG-T286):** the rate scales with Speed the whole way, so a fast enemy can overtake a slow one anywhere on the bar.
 
 `EnemyPlanner` is pure: it reads state (temporarily moving the enemy's `Pos` to score a candidate, then restoring it) and never commits.
 
@@ -1545,7 +1561,7 @@ PlanStep(state, enemy)
                 not wounded & adjacent to target here      +2
                 1×1 & would be sandwiched by two heroes    −100
                 c == stay                                  −0.5
-                not wounded & Humanoid 1×1 & forms pincer  +50
+                not wounded & Sentient 1×1 & forms pincer  +50
                 not wounded & becomes ally-pincer supporter +25
   return argmax(score)
 ```
@@ -1560,7 +1576,7 @@ The −100 sandwich avoidance (two heroes directly on opposite sides) outweighs 
 | Adjacent to target | +2 | dropped when wounded |
 | Sandwiched by heroes | −100 | immediate neighbors on one axis; 1×1 only |
 | Stay put | −0.5 | mild advance bias |
-| Forms own Humanoid pincer | +50 | Humanoid 1×1, not wounded |
+| Forms own pincer | +50 | Sentient 1×1 (`CanPincer`, GG-T289), not wounded |
 | Supports an ally's pincer | +25 | any enemy, not wounded |
 | Threat (target choice) | −(DamageDealt / max) × INT × 0.8 | smart enemies hunt the top damage-dealer |
 | Wounded retreat | below `RetreatHpThreshold` 0.30 | flees; flank-avoid still applies; never against a lone hero (GG-T123, [§22.10](#2210-the-crucible)) |
@@ -1576,9 +1592,9 @@ Added 2026-10-11 (owner: "a tank should be able to taunt enemies"). While any he
 | Archetype | Lean | Tags | Behavior today |
 |---|---|---|---|
 | Rusher | high SPD, low VIT | Beast | loads fast; closes and melees |
-| Bruiser | STR + VIT | Humanoid | slow, tough; best pincer target |
-| Flanker | mid STR, AGI | Humanoid | seeks own pincers (+50), supports (+25) |
-| Ranged | AGI, INT | Humanoid | ⬜ Not yet built: keep-distance behavior and ranged attacks |
+| Bruiser | STR + VIT | Sentient | slow, tough; best pincer target |
+| Flanker | mid STR, AGI | Sentient | seeks own pincers (+50), supports (+25) |
+| Ranged | AGI, INT | Sentient | ⬜ Not yet built: keep-distance behavior and ranged attacks |
 | Caster | INT, low VIT | Magic (+ affinity) | charges when no hero is adjacent; `icemauler` (`charge_ice`) is the live caster (cave-02, cave-03) |
 | Beast | varies | Beast | never pincers; rushes |
 | Mechanical | VIT, immunities | — | 🟡 resistances supported; no class authors them yet |
@@ -1624,7 +1640,7 @@ Owner: "some undead enemies should spawn a solid grave stone like in Darkest Dun
 - `ClassDef.Remains` names the marker an enemy leaves: hooded **undead → Gravestone**, **skelepedes → Bone Pile**. On death (after its loot), the remains spawn on the same tile as an enemy unit tagged `Remains` (`RemainsLeftEvent`).
 - Remains are **solid** (can't be dragged through or knocked back), never move or attack, are immune to status effects, give no loot or XP and never appear in the bestiary. They have their own slow timeline icon (Speed 5) — the countdown to resurrection.
 - **Destroy them** (pincer or spell) and the undead is laid to rest for good. A wave is not cleared while remains stand.
-- **Leave them** and when their icon reaches ACT the undead **rises again** on that tile at half HP and drops nothing a second time (`RoseAgainEvent`); kill it again and it leaves fresh remains.
+- **Leave them** and when their icon reaches the left edge the undead **rises again** on that tile at half HP and drops nothing a second time (`RoseAgainEvent`); kill it again and it leaves fresh remains.
 - **Amended 2026-11-05 (GG-T261):** remains rise on their **third** turn (`BattleConfig.RemainsTurnsToRise` 3; the first two only announce "stirs… N"), with **25 %** of the slain owner's MaxHP (`RemainsHpFraction`), and a snake's body segments leave none (one marker per creature). Found in the battle records: since GG-T188 every action runs the clock to the next enemy turn (§2.0), so a marker left by the last foe standing rose **inside the killing action** (median 0 player actions between remains and rising), and at the owner's own level a gravestone had ~110 HP — the casual bot won 0 of 6 on every Frostmaw Caverns and Veshker Ruins stage and on Green Valley III. See AMENDMENTS 2026-11-05.
 - Art: procedurally drawn gravestone and bone pile (ImageMagick).
 - *(Tests: `A_slain_undead_leaves_solid_remains_that_block_the_wave_from_clearing`, `Remains_left_alone_raise_their_owner_at_half_hp_without_loot`, `Remains_are_solid_and_real_undead_leave_them`.)*
@@ -1718,10 +1734,10 @@ SaveData                       (Meta/SaveData.cs; one per slot)
 ├─ HighestClearedStage (campaign index, −1 = none), ClearedStages{}, SeenCrawls{}, LastStage
 ├─ Roster[]  HeroSave: ClassId, TotalXp, Hp (0 = full), Known[], Bar[5], SkillPoints,
 │                       WeaponId/Durability/Repairs, ArmorId/Durability/Repairs, Relics[3]
-├─ Party[]   class ids of the active squad (≤ 4)
+├─ Party[]   class ids of the active squad (≤ 6, `Progression.MaxPartySize`, GG-T291)
 ├─ Inventory { itemId → count }, Recruits
 ├─ Bounty    ActiveId, Progress, Claimed{}
-├─ Bestiary  { classId → Seen, Scanned, Defeated }
+├─ Bestiary  { classId → Seen, Defeated (+ legacy Scanned) }  knowledge tier = BestiaryKnowledge.Tier
 └─ (Settings moved to the profile's settings.json, §15.4 — an old slot's Settings block is ignored on load)
 ```
 
@@ -1748,7 +1764,7 @@ Level is **derived** from `TotalXp` (`Formulas.LevelFromTotalXp`, `XpToNext(L) =
 ### 15.3 Ability bar and Bestiary
 
 - `HeroSave.Known` lists learned ability ids; `HeroSave.Bar` the five bar entries. The battle reads the bar through `BattleFactory.SpecFor`. *(Tests: `Save_round_trips_through_json`, `Full_loop_battle_commit_then_every_vendor`.)*
-- Bestiary: **Seen** for every class spawned or scanned, **Scanned** for Scan targets — recorded at commit even on defeat; **Defeated** counts kills on victory.
+- Bestiary: **Seen** for every class spawned — recorded at commit even on defeat; **Defeated** counts kills on victory. **Amended 2026-11-06 (owner, GG-T290):** ~~**Scanned** for Scan targets~~ — Scan is retired; what the party knows of a class is `BestiaryKnowledge.Tier(entry)` (Meta, `SaveData.cs`), read from `Defeated` alone: Seen → name, description, lore and drops; **1** defeat → Speed; **3** → HP and base stats; **6** → elemental weaknesses and resistances; **10** → abilities, brain and targeting (`DefeatsForSpeed/Stats/Elements/Abilities`). An old save's `Scanned` flag is kept and counts as at least the stats tier. *(Tests: `BestiaryKnowledgeTests`.)*
 
 ### 15.4 Player profiles
 
@@ -1835,7 +1851,7 @@ persistentDataPath/Profiles/
 
 ## 18. Glossary
 
-The L0 [§9 Glossary](#GG-§9) is canonical; additional terms: **Armored** (snake member taking 0 while a later member lives) · **Escape** (Smoke Bomb exit; wounds kept) · **Control return** (end of an action: hero buffs/cooldowns and enemy Frozen tick) · **Interrupt outcomes** (*Clutch* → resolve now, *Shrug* → no delay, *Stagger* → delay accumulates, *Cancel* → delay ≥ cast time, orbs lost) · **Passive** (always-on class ability: Double Attack, Counter Attack) · **Humanoid** (may be a pincer attacker; heroes always) · **Coins** (gold picked up in battle, banked on victory) · **Materials** (crafting inputs) · targeting axes **Shape / Mode / Filter** ([§5](#5-targeting)).
+The L0 [§9 Glossary](#GG-§9) is canonical; additional terms: **Armored** (snake member taking 0 while a later member lives) · **Escape** (Smoke Bomb exit; wounds kept) · **Control return** (end of an action: hero buffs/cooldowns and enemy Frozen tick) · **Interrupt outcomes** (*Clutch* → resolve now, *Shrug* → no delay, *Stagger* → delay accumulates, *Cancel* → delay ≥ cast time, orbs lost) · **Passive** (always-on class ability: Double Attack, Counter Attack) · **Sentient** (an enemy with a society or that plans ahead — may be a pincer attacker; heroes always; replaced Humanoid 2026-11-06, GG-T289) · **Coins** (gold picked up in battle, banked on victory) · **Materials** (crafting inputs) · targeting axes **Shape / Mode / Filter** ([§5](#5-targeting)).
 
 ---
 
@@ -1865,7 +1881,7 @@ Learn price: 120 + 80 × 2 orbs = 280 G. What you don't touch: the dispatcher, t
 
 ## 20. How to Add a New Enemy — Checklist
 
-1. Add a `ClassDef` to `classes.json` with `Team: "Enemy"`, `Tags` (`Humanoid` if it may pincer), `BaseStats`, `Growth`, `Resistances`, `XpReward`, `MoveRange`, optional `DropTable`, `ChargeAbility`/`ChargeShape`, `Trap`, `BossPhases`, `Footprint`, `SnakeSegments`, `Lore`.
+1. Add a `ClassDef` to `classes.json` with `Team: "Enemy"`, `Tags` (`Sentient` if it has a society or plans ahead and so may pincer — vampires and mummies yes, mindless undead and beasts no, GG-T289/GG-T294), `BaseStats`, `Growth`, `Resistances`, `XpReward`, `MoveRange`, optional `DropTable`, `ChargeAbility`/`ChargeShape`, `Trap`, `BossPhases`, `Footprint`, `SnakeSegments`, `Lore`.
 2. Add `Resources/Portraits/<id>.png` (or run `tools/import_art.py`) and give the class a `Thumbnail`: frame it in Thumbnail Studio (`tools/thumbnail-studio.ps1`, [§12.1.1](#1211-thumbnails-are-a-window-onto-the-portrait-added-2026-11-03-owner-direction-gg-t220)); there is no separate thumb image.
 3. Put it in a `stages.json` wave; optionally add a `droptables.json` table.
 4. `pwsh tools/test.ps1` — validation, catalog and soak include it automatically. The Bestiary lists it (silhouette until seen).
@@ -1912,7 +1928,7 @@ PostBattle — gold, items, unlocks, bounty ════════════
 | PostBattle → Camp / Battle | already saved | screens rebuild from `App.Save` |
 
 **Commit rules** (`BattleFactory.Commit`) — **Amended 2026-10-09** where marked, **Amended 2026-10-11** (Retreat) where marked:
-- Always: deduct consumed items; record Seen/Scanned.
+- Always: deduct consumed items; record Seen (Scanned retired 2026-11-06, GG-T290).
 - **Victory**: gold += coins (also `LifetimeCoins`); add item drops; add kills to Bestiary; **every party hero — alive or fallen — gains the battle's full XP total** (not split, *Amended*); HP: level-up → full, survivor keeps wounds, fallen → 1 HP; weapon durability written back (a shattered weapon is removed); stage marked cleared, `HighestClearedStage` raised, next stage named as unlocked; bounty kills recorded.
 - **Defeat**: nothing gained but hard-won XP (below); party HP reset to full.
 - **Retreat** (*Amended* — no longer a Defeat): keeps hard-won XP plus `BattleConfig.RetreatKeepFraction` (50%) of the battle's gold and item counts so far, floored; party HP reset to full, same as Defeat.
@@ -2056,7 +2072,7 @@ A quick, endless survival battle fought from camp **inside a normal saved campai
 - **One battle, many waves.** A run is one generated `StageDef` (`crucible-<seed>`, registered in the in-memory `ContentDb` only, earlier runs' stages pruned) of `Crucible.MaxWaves` (50) waves, fought by the ordinary `BattleEngine` wave loop — no new battle loop. Because it is one battle, **wounds, mana and consumables carry wave to wave** and there is no camp in between. Effectively endless: levels climb every wave, so the party falls (or leaves) long before wave 50; clearing all 50 would be a victory, committed the same way.
 - **Escalation.** Wave *i* (0-based) spawns at **`PartyLevel + i × LevelStep`** (`LevelStep` 1; `PartyLevel` = the active party's rounded mean level), with `2 + i/3` foes capped at 5. The levels are authored per spawn, so `BattleFactory.Build` gives a Crucible stage `RecommendedLevel` 1 and no New Game+ step — neither the campaign curve nor NG+ lifts them further.
 - **Encounter groups** (*added 2026-10-22, GG-T184*). Each wave is one of that family's **authored groups** from `encounters.json` (its mix on its formation tiles), the largest that fits the wave's foe count; no group repeats in a run until every same-size group of its family has had its turn (`EncounterCatalog.Pick`). A family with no group that size tops up with random foes of the family. The endless generator (`EncounterGenerator`, GG-T55) builds its waves the same way.
-- **Families.** Each wave is **one enemy family** (`ClassDef.DropTable`, house convention), never the same family twice in a row, cycling through a fresh shuffle of every family the save knows: enemies it has **met** (Bestiary seen/scanned/defeated) or that fight in **the campaign so far** (cleared stages plus the next one). Bosses (`BossPhases`/`Boss` tag) and multi-tile foes stay in their own stages. So the drops are the mats this save is already crafting with. The arena (background, music, blocks) is one of the campaign-so-far stages.
+- **Families.** Each wave is **one enemy family** (`ClassDef.DropTable`, house convention), never the same family twice in a row, cycling through a fresh shuffle of every family the save knows: enemies it has **met** (Bestiary seen or defeated; legacy scanned) or that fight in **the campaign so far** (cleared stages plus the next one). Bosses (`BossPhases`/`Boss` tag) and multi-tile foes stay in their own stages. So the drops are the mats this save is already crafting with. The arena (background, music, blocks) is one of the campaign-so-far stages.
 - **Seeded and deterministic.** `Crucible.SeedFor(save)` mixes the save's creation time with `CrucibleSave.Runs`: the same save replays the same gauntlet (and the same battle RNG) until it fights it, and each run after is new. `Crucible.Generate(content, save, seed)` is pure.
 - **Leaving.** The pause menu's Retreat row becomes **Leave the Crucible (keep all)**, confirmed with the wave count; a Smoke Bomb escape counts the same.
 - **Rewards — the exception to [§22.2](#222-failure-path-detail).** Unlike any other non-victory end, a Crucible wipe or retreat **keeps all the gold, drops and XP earned so far** (that is the point of the mode), then restores the party to full HP like a defeat. Commit rules in [§22.1](#221-per-transition-state-contract); AMENDMENTS 2026-10-19.
@@ -2576,7 +2592,22 @@ Owner: "they stay for a negotiated amount of battles at a price; whether you use
 
 ### 25.11 Bestiary
 
-`BestiaryScreen`: a grid of every enemy class's thumb (darkened silhouette until Seen), "Seen n/110"; the detail shows name, Defeated count, lore and its family's drops (rarity-colored item names, highest chance first) once **Seen**, then base stats only once Scanned (added 2026-10-15, GG-T43).
+`BestiaryScreen`: a grid of every enemy class's thumb (darkened silhouette until Seen), "Seen n/110"; the detail shows name, Defeated count, lore and its family's drops (rarity-colored item names, highest chance first) once **Seen** (added 2026-10-15, GG-T43). ~~Then base stats only once Scanned.~~
+
+**Amended 2026-11-06 (owner, GG-T290): knowledge is earned by defeats only; Scan is retired.** Each tier is `BestiaryKnowledge.Tier` (`Meta/SaveData.cs`), from the class's `Defeated` count:
+
+| Tier | Needs | Reveals |
+|---|---|---|
+| Seen | spawned once | name, description, lore, drops |
+| Speed | **1** defeat | SPD |
+| Stats | **3** defeats | HP at Lv 1 and every base stat |
+| Elements | **6** defeats | elemental weaknesses and resistances ("Immune to Poison · weak to Fire (×1.5)", `ElementLine`) |
+| Abilities | **10** defeats | its abilities (as chips — hold one to read it), kit traits, brain and targeting personality |
+
+- A locked row reads **"???"**, and a hint under the detail names the next one: **"Defeat N more to learn …"** (its speed / its HP and stats / its weaknesses / its abilities; `BestiaryKnowledge.Hint`).
+- **One rule everywhere:** the battle actor panel ([§9](#9-the-hud)) and the hold-to-inspect card read the same tier, so a foe shows in battle exactly what the Bestiary knows.
+- **Scan is gone:** the ability, `IsScan`, `ScannedEvent`, the battle report's scanned list, the bot's scan score and its VFX. Save migration drops Scan from every hero's Known list and bar; class kits swapped it out (healers → Quicken, supports → Silence, tanks → Cleave). An old entry marked `Scanned` keeps at least the Stats tier.
+- *(Tests: `BestiaryKnowledgeTests` — `Tier_follows_the_defeat_thresholds`, `Thresholds_are_the_named_constants`, `DefeatsToNext_counts_down_to_each_tier_and_stops_at_the_last`, `An_old_scanned_entry_keeps_at_least_the_stats_tier`, `Element_line_reads_the_class_multipliers`, `Migration_drops_the_retired_scan_from_known_and_the_bar`, `No_content_references_scan`.)*
 
 ---
 
@@ -2640,9 +2671,13 @@ The caravan is the party's moving base — its wagons are the Longmother's own s
 Each wagon has a crew member (`Crew`, `CrewRole` in `caravan.json`), shown on its Caravan card ("Crew: Brannoc, cask-keeper"): Brannoc the cask-keeper (Mana Casks), Sister Ilsabet the wagon medic (Medic Wagon), Old Hask the wagon farrier (Armory Wagon), Penny Tallow the purser (Strongbox), Wren and Dace the outriders (Scouts), Lio the rune apprentice (Enchanter's Wagon) and Osk the quartermaster (Quartermaster's Ledger). They are not Camp NPCs (§25.0.1): they have no station, no Talk and no join scene.
 
 **Barks:** each crew member has a few one-line `Barks`. The Caravan screen's header and, once the Caravan station is open (`CampUnlocks.CaravanOpen`), a small "Around the wagons" window under Camp's gold/time panel each show one line with its speaker (`CaravanUpgrades.Bark(c, s, turn)`). The line changes every time the screen rebuilds. Lines come from the crews whose wagon this save has upgraded, or from every crew before the first upgrade. A bark is **flavor text, not dialogue** (§27): no portrait scene, no branching, no choices, no effects, no flags, nothing to tap. It is not an overworld either (§28).
-### 25.14 The party of five (added 2026-10-11, owner: "add a fourth and fifth hero onto the team … a 5 player team seems about right for max")
+<a id="2514-the-party-of-five-added-2026-10-11-owner-add-a-fourth-and-fifth-hero-onto-the-team--a-5-player-team-seems-about-right-for-max"></a>
+
+### 25.14 The party of six — was five (added 2026-10-11, owner: "add a fourth and fifth hero onto the team … a 5 player team seems about right for max")
 
 `MaxPartySize` = **5**; a new game's five are picked on `CharacterSelectScreen` (§25.15) rather than fixed. **Amended 2026-10-19 (owner, GG-T118):** the cap stays 5 but a new game starts with **three**; the other two join at story beats ([§25.17](#2517-small-start-story-recruits-gg-t118)). Recruits and rescued guests wait in reserve when the party is full. Camp shows the five in a two-column grid; class blurbs render their [keywords] as highlights.
+
+**Amended 2026-11-06 (owner, GG-T291): the cap is six — "two attackers and two supporters for each attacker."** `Progression.MaxPartySize` = **6** (`StartingPartySize` stays **3**): one pincer's two attackers, each with two supporters chained to it ([§1.2.3](#123-supporters)). The slots fill at the existing story beats ([§25.17](#2517-small-start-story-recruits-gg-t118)): the 4th after Green Valley I, the 5th at Sandsea Reaches, the 6th at Frostmaw Caverns; the Veshker Ruins healer (and any later recruit or rescued guest) waits in reserve. Six heroes spawn on the stage's `DefaultHeroStarts` in rows 6–7, below the enemy band, on every campaign stage, and share one item bag ([§24](#24-equipment-items-materials-currency), GG-T285). Camp shows six in its two-column grid (three rows); the Items "use on" row wraps a party of six into equal thirds. *(Tests: `PartyCapTests` — `The_cap_is_six_and_the_start_stays_three`, `A_seventh_hero_waits_in_reserve`, `Six_heroes_spawn_on_free_tiles_below_the_enemy_band_on_every_campaign_stage`, `Six_heroes_share_one_bag`; `StoryRecruitTests`.)*
 
 ### 25.15 Character select (added 2026-10-11, owner: "unlock all character and select a random cross section of heros, make character selection like a fighting came where you have a grid at the bottom then you select a tile then the full artwork appears on top and you lock in that character")
 
@@ -2654,11 +2689,11 @@ Player hero drags only (never AI — enemies/bots use the separate `StepEnemy`/`
 
 ### 25.17 Small start, story recruits (GG-T118)
 
-Owner 2026-10-19: "New Game picks a small party (2-3 heroes) instead of 5; further heroes join at story beats through dialogue." The party cap stays **5** (§25.14).
+Owner 2026-10-19: "New Game picks a small party (2-3 heroes) instead of 5; further heroes join at story beats through dialogue." The party cap stays **5** (§25.14). **Amended 2026-11-06 (owner, GG-T291):** the cap is **6**, so the Frostmaw Caverns Knight now fills the sixth slot instead of waiting in reserve; only the Veshker Ruins healer (Sage) goes to the reserve.
 
 - **Start:** `Progression.StartingPartySize` = **3**. Character select locks in three (§25.15); the 2-arg `Progression.NewGame` (automation, tests, Test Mode) uses `StartingRoster` = Paladin, Barbarian, Cleric (Tank, Striker, Healer). `-demo` auto-picks three.
 - **Story recruits:** a dialogue effect `JoinHero` (§27.1) — `Id` (preferred class) and/or `Role`. `Summon.StoryPick` resolves it so it **always brings someone new**: the named class if the player doesn't have it, else the first unowned hero of that `Role`, else one of a role the roster lacks (Healer, Tank, Mage, Support, Striker, Ranged), else anyone unowned (none left → no-op). The fallbacks skip the Summon Circle's pool and every stage guest, so those stay worth having; name order makes it deterministic, and the dialogue's `"$recruit"` speaker is bound to the same pick when it opens, so the hero who speaks is the hero who joins. The recruit arrives free at the roster's average experience (`Summon.Join`, like a Summon Circle recruit) and takes an open party slot, else waits in reserve. Separate from `RecruitHero`, which hires exactly one class and does nothing if it's owned.
-- **The beats (`dialogues.json`, real narrative as of GG-T120):** after Green Valley I (before the next launch) — a Mage (Red Mage); at the start of Sandsea Reaches — a Support (Engineer), making five; at the start of Frostmaw Caverns — a Tank (Knight); at the start of Veshker Ruins — a Healer (Sage); the last two go to the reserve when the party is full. Every path through each beat ends in the join (the join is on the last node, not a choice). They sit on top of the guest allies (§25.11) and the Summon Circle (§25.10).
+- **The beats (`dialogues.json`, real narrative as of GG-T120):** after Green Valley I (before the next launch) — a Mage (Red Mage); at the start of Sandsea Reaches — a Support (Engineer), making five; at the start of Frostmaw Caverns — a Tank (Knight), making six (GG-T291); at the start of Veshker Ruins — a Healer (Sage), who goes to the reserve because the party is full (before GG-T291 the last two did). Every path through each beat ends in the join (the join is on the last node, not a choice). They sit on top of the guest allies (§25.11) and the Summon Circle (§25.10).
 - **Nobody is lost for good:** nothing in the dialogue vocabulary removes a hero.
 - **Bots:** Test Mode and the balance sim never show story, but play every pending beat headlessly before a stage (`DialogueRunner.PlayPendingBeatsHeadless`, first choice) so the recruits still join; the Test Mode cycle line reports them as `story: …`.
 - **Balance (`BalanceReport.Campaign_pacing_table`, 4 seeds, up to 4 attempts a stage):** the default rows now start with the trio and play story beats. Greedy finishes 4/4 (as before); greedy+camp 3/4 (was 2/4); Green Valley II onward plays like the five-hero start because the fourth hero arrives before it and the fifth at Sandsea Reaches. The only early stage the trio found harder was Green Valley I for the casual bot (30% of attempts vs 66% with five), so it was lightened (§22.7) and is now 80% with 61% HP left. The table keeps a `greedy+camp trio no-story` row (GG-T87's trio-start: no story recruits, so the Summon Circle step always has a slot to fill) and a `greedy five-start (pre-GG-T118)` row as the yardstick.
