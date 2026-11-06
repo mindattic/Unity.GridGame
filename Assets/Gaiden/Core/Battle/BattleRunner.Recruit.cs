@@ -64,7 +64,7 @@ namespace GridGame.Core.Battle
         {
             var hero = S.UnitById(t.HeroId);
             var target = S.UnitById(t.TargetId);
-            if (hero == null || !hero.Alive || !hero.IsHero) return Refuse(null, "No such hero");
+            if (hero == null || !hero.Alive || !hero.IsCommandable) return Refuse(null, "No such hero");
             if (!Recruitment.IsRecruitable(target)) return Refuse(hero, "Nobody to talk to");
             if (!hero.IsAdjacentTo(target)) return Refuse(hero, "Too far to talk");
             if (hero.IsImmobile) return Refuse(hero, "Can't act");

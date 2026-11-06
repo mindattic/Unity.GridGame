@@ -182,14 +182,14 @@ namespace GridGame.Meta
             BattleFactory.GrantItems(c, s, rep, r.Items);
             foreach (var kv in r.Kills) BattleFactory.Entry(s, kv.Key).Defeated += kv.Value;
 
-            var heroes = battle.Units.Where(u => u.IsHero && !u.IsGuest).ToList();
+            var heroes = battle.Units.Where(u => u.IsHero && !u.IsGuest && !u.IsWildTamed).ToList();
             rep.XpEach = heroes.Count > 0 ? r.Xp : 0;
             foreach (var u in heroes)
             {
                 var h = s.Hero(u.Def.Id);
                 if (h == null) continue;
                 int before = Progression.Level(h);
-                h.TotalXp += rep.XpEach;
+                h.TotalXp += Domestication.XpFor(h, rep.XpEach);
                 int after = Progression.Level(h);
                 if (after > before) rep.LevelUps.Add((h.ClassId, before, after));
                 h.SkillPoints += Formulas.SkillPointsForLevelUp(before, after);

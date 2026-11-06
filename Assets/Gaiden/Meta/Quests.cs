@@ -79,7 +79,7 @@ namespace GridGame.Meta
         {
             var notes = new List<string>();
             if (battle == null || battle.Phase != BattlePhase.Victory) return notes;
-            var own = battle.Units.Where(u => u.IsHero && !u.IsGuest).ToList();
+            var own = battle.Units.Where(u => u.IsHero && !u.IsGuest && !u.IsWildTamed).ToList();
             foreach (var q in c.QuestOrder)
             {
                 if (!s.Quests.Active.TryGetValue(q.Id, out var have) || IsReady(c, s, q)) continue;

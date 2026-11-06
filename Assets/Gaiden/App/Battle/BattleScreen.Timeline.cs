@@ -161,7 +161,7 @@ namespace GridGame.App
             var u = State.UnitById(unitId);
             if (u == null || !u.Alive) return;
             ClearHint();
-            if (u.IsHero) SelectHero(u.Id);
+            if (u.IsCommandable) SelectHero(u.Id);
             else { panelUnitId = u.Id; SyncPanel(); }
             App.Audio.Sfx("ui.click");
             if (!ReduceMotion && board.Units.TryGetValue(u.Id, out var v) && !v.Dead) App.StartCoroutine(Tween.Pop(v.Root, 1.08f, Timing.Quick));
@@ -237,7 +237,8 @@ namespace GridGame.App
         }
 
         private static Color TurnRing(Unit owner) =>
-            owner != null && (owner.Def.HasTag("Boss") || owner.IsMultiTile) ? Palette.Boss : Palette.Enemy;
+            owner != null && owner.IsIndependent ? Palette.Tamed // a tamed/domesticated ally's own icon (GG-T303)
+            : owner != null && (owner.Def.HasTag("Boss") || owner.IsMultiTile) ? Palette.Boss : Palette.Enemy;
 
         /// <summary>An icon's own colour: enemy red, boss purple, hero cast teal, enemy charge amber.</summary>
         private Color EntryColor(TimelineEntry e) =>

@@ -155,6 +155,10 @@ namespace GridGame.App
                 case RecruitableAppearedEvent rap: return RecruitableAppearedAnim(rap);
                 case RecruitOfferedEvent rof: return RecruitOfferedAnim(rof);
                 case RecruitJoinedEvent rj: return RecruitJoinedAnim(rj);
+                case TamedEvent te: return TamedAnim(te); // GG-T303
+                case TameFailedEvent tf: return TameFailedAnim(tf);
+                case BondGrewEvent bg: return BondAnim(bg);
+                case TameEndedEvent tx: return TameEndedAnim(tx);
                 case RoseAgainEvent ra: return RiseAnim(ra);
                 case AmplifierSpawnedEvent asp: return AmpSpawnAnim(asp);
                 case AmplifierMovedEvent am: return AmpMoveAnim(am);

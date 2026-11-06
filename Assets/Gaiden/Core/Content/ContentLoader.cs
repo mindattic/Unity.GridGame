@@ -133,6 +133,7 @@ namespace GridGame.Core.Content
                 NeedBuff(c.OnHitBuff, $"class {c.Id} on-hit buff");
                 NeedClass(c.Remains, $"class {c.Id} remains");
                 NeedClass(c.LaysEgg, $"class {c.Id} egg");
+                if (c.TameBond < 0) p.Add($"class {c.Id}: TameBond can't be negative (GG-T303)");
                 foreach (var ph in c.BossPhases) NeedAbility(ph.OnEnterAbility, $"class {c.Id} boss phase");
             }
             foreach (var a in db.Abilities.Values)
@@ -141,6 +142,15 @@ namespace GridGame.Core.Content
                 if (!(a.Pushback >= 0f) || a.Pushback > Battle.BattleConfig.PushbackMaxSeconds)
                     p.Add($"ability {a.Id}: Pushback {a.Pushback}s outside 0..{Battle.BattleConfig.PushbackMaxSeconds}s (GG-T286)");
                 ValidateTrigger(db, a, p);
+                // GG-T303: a Tame is a picked single foe from a Skill or a consumable, with a sane chance and a duration.
+                if (a.Tame != 0f)
+                {
+                    if (!(a.Tame > 0f && a.Tame <= 1f)) p.Add($"ability {a.Id}: Tame {a.Tame} outside (0, 1]");
+                    if (a.TameTurns < 1) p.Add($"ability {a.Id}: a Tame needs TameTurns >= 1");
+                    if (a.Kind != AbilityKind.Skill && a.Kind != AbilityKind.Item) p.Add($"ability {a.Id}: a Tame is a Skill or an Item ability");
+                    if (a.Shape != TargetShape.SingleActor || a.Mode != TargetMode.PickActor || a.Filter != TargetFilter.EnemyOnly)
+                        p.Add($"ability {a.Id}: a Tame picks one foe (SingleActor, PickActor, EnemyOnly)");
+                }
                 // GG-T302: the generated "When [attacked directly]: ..." sentence only uses glossary terms.
                 if (a.Trigger != null && db.GlossaryIndex.Count > 0)
                     foreach (var t in Glossary.Terms(Rules.TriggerText.Describe(db, a)))

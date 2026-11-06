@@ -300,6 +300,7 @@
 .unit-keyline--boss { border-color: var(--color-boss); }
 .unit-keyline--guest { border-color: var(--color-guest); }
 .unit-keyline--neutral { border-color: var(--color-neutral); }
+.unit-keyline--tamed { border-color: rgb(194, 235, 71); } /* Palette.Tamed: a tamed/domesticated monster (GG-T303) */
 
 /* ── Orb pips (generic mana) ──────────────────────────────────────────── */
 .pip { width: 34px; height: 34px; border-radius: 17px; margin: 0 var(--space-4); border-width: 2px; border-color: rgba(255,255,255,0.8); font-size: var(--type-badge); -unity-text-align: middle-center; color: var(--color-ink); }

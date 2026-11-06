@@ -34,7 +34,8 @@ namespace GridGame.Core.Battle
                 // free tile in the party's half, then anywhere; a board with no free tile at all (only possible on a
                 // stage walled with blocks) seats the hero out of the battle rather than stacking it on someone (GG-T97).
                 if (!S.FreeForSpawn(start.Value)) start = RandomFreeTile(1, 1, 4, BattleConfig.Rows - 1) ?? RandomFreeTile(1, 1, 0, BattleConfig.Rows - 1);
-                SpawnHero(spec, start, setup.UnlockedSlots);
+                var hero = SpawnHero(spec, start, setup.UnlockedSlots);
+                if (spec.Domesticated) Domesticate(hero); // a domesticated monster fights on its own AI (GG-T303)
                 i++;
             }
             if (pendingBankBonus > 0) S.Bank = new ManaBank(ManaBank.DefaultCapacity + System.Math.Min(BattleConfig.MaxBankCapacityBonus, pendingBankBonus));

@@ -358,6 +358,12 @@ namespace GridGame.App
 
         public static Color RoleColor(string role) => Palette.Role(role);
 
+        /// <summary>The badge a domesticated monster wears in place of a hero role (GG-T303).</summary>
+        public const string TamedRole = "Tamed";
+
+        /// <summary>The badge for a roster member: its class's Role, or <see cref="TamedRole"/> for a domesticated monster.</summary>
+        public static string RoleOf(GridGame.Meta.HeroSave h, ClassDef def) => h != null && h.Domesticated ? TamedRole : def?.Role;
+
         /// <summary>What each role brings to the party (§25.13), one line.</summary>
         public static string RoleBlurb(string role)
         {
@@ -369,6 +375,7 @@ namespace GridGame.App
                 case "Striker": return "Pincer damage, Cleave and War Cry. Grows with STR.";
                 case "Support": return "Bends the timeline: Quicken allies, Slow foes, rally the party.";
                 case "Ranged": return "Precision shots from distance — never needs to be adjacent to strike.";
+                case TamedRole: return "A tamed monster: fights on its own with the Pincer keyword. No gear or skills; grows slowly.";
                 default: return "";
             }
         }

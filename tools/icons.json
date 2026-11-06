@@ -1135,6 +1135,22 @@
   "pinning_shot": [
    "lorc/thrown-spear",
    "steel"
+  ],
+  "tame": [
+   "lorc/wolf-head",
+   "moss"
+  ],
+  "dog_whistle_call": [
+   "lorc/wolf-howl",
+   "silver"
+  ],
+  "pack_leader": [
+   "lorc/wolf-head",
+   "gold"
+  ],
+  "beast_sense": [
+   "skoll/fangs",
+   "leather"
   ]
  },
  "item": {
@@ -2045,6 +2061,10 @@
   "eq_earring_oracle": [
    "delapouite/drop-earrings",
    "arcane"
+  ],
+  "dog_whistle": [
+   "lorc/wolf-howl",
+   "silver"
   ]
  },
  "ui": {

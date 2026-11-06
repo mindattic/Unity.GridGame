@@ -934,3 +934,26 @@ Owner: Active = you take it; Passive = it just happens; Reactive = after somethi
   - Removed the unread `BattleConfig.RegeneratePercent`, `ThornsFraction`, `ManaSiphonCharge` and `EnemyLifestealFraction`; the rows' Amounts are the tuning (tests pin 0.25/0.25/5).
   - *Balance (provisional, casual bot, difficulty 10, same seeds, 4 battles × 15 stages):* wins 60/60 → 60/60, party HP left on victories 90% → 87%, actions per battle 85.8 → 86.1; at 12 × 15 stages 180/180 → 180/180, HP left 89% → 90%, actions 88.9 → 88.1. Neutral within noise (the casual bot already wins every stage at the soak's levels, so the win band can't move).
 - *(Tests: `SignaturePassiveTests`.)*
+
+## 2026-11-06 — Taming: the Monster Tamer, the Dog Whistle, bond and domestication (owner, GG-T303)
+
+Owner: a Monster Tamer tames an enemy monster so it fights for you on its own, like Umaro in FF VI. Only non-Sentient beasts, never bosses. Tamed, it gains the Pincer keyword. A full bond at victory lets it join for good, with limited growth.
+
+- **Was:** only heroes and Sentient enemies could pincer; every hero-team unit was player-commanded; the roster held only hero classes.
+- **Now:** see BIBLE §25.11.3 and §1.3.
+  - `Unit.CanPincer` adds the **Pincer** keyword (tamed or domesticated, or a class tagged `Pincer`).
+  - A hero-team unit can be **independent** (tamed or domesticated): never commanded, it acts on its own turn icon with a simple charge-the-nearest-foe AI that walks through friend and foe. Its turn doesn't end the party's window, and it alone doesn't prevent a defeat.
+  - Domesticated monsters are roster members with an enemy class (`HeroSave.Domesticated`): no gear, skills, Tomes or skill tree, half XP, level cap 30, one per class.
+  - Choices made here (the owner may revise them): a **full bond stops the tame's countdown** (otherwise a monster could rarely still be tamed at the end with a full bond). The explicit eligibility rule is followed literally, so mindless undead, cyber-zombies, tree golems, slimes and the ghost are tameable as well as beasts. The Dog Whistle is shop-only for now (adding it to drop tables would shift every seeded loot roll).
+- *(Tests: `TamingTests`.)*
+
+## 2026-11-06 — Minimum action time: heroes act only in a gap wide enough, else they Guard (owner, GG-T311)
+
+Owner: "Heroes go first in the round, but unless they can get in a pincer between the intervals between enemies hitting left they have to sacrifice their turn, and that could lead to several enemy attacks in a row before a window wide enough for the player to act becomes available." After GG-T308 both bots won every battle: every gap, however short, still gave the party an action (a 0.1 s gap played back as a 2 s drag).
+
+- A hero action starts only if the gap to the next enemy turn is at least its minimum: a drag 0.85 s (`DragPickupSeconds` 0.5 + `DragSecondsPerTile` 0.35 × a tile), an Ability/Item/Spell/Talk `HeroActionSeconds` 1 s. The `MinTurnSeconds` 2 s floor is gone; a drag spends at least its minimum.
+- No action fits → the party can only Guard (forced sacrifice): Protection on every hero and the sliver banked as mana charge, then the enemy acts; clustered foes mean several enemy turns in a row.
+- Every wave opens on the party (`OpeningWindowSeconds` 3 s, or a full lap for a foe too fast for that).
+- Rally: a forced Guard, or a Guard giving up a whole window under 2 s, slows every enemy icon a tempo step (stacking to 3, ≈ ×0.51) until the next hero action — so a lock of too-short gaps always opens (found by the Crucible soak: three wolves lapping in 2 s held the party out for 6000 commands).
+- Bots drag on the human model plus think time (smart 0.4 s, casual 1 s); `BotSecondsPerStep` 0.25 s/tile is gone.
+- `IpPerTickPerSpeed` 1.6 → 3.2 and the difficulty dial gains an `EnemySpeed` column (×0.60 at 1 … ×1.00 at 10). Soak (per-stage 8): difficulty 10 smart/casual 100/100% → 72/42%, 5 → 98/89%, 1 → 100/99%.

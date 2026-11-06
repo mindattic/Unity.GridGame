@@ -20563,6 +20563,7 @@
   },
   {
     "Id": "werewolf00",
+    "TameBond": 6,
     "Name": "Werewolf",
     "Team": "Enemy",
     "Tags": [
@@ -21730,6 +21731,7 @@
   },
   {
     "Id": "yeti",
+    "TameBond": 6,
     "Name": "Yeti",
     "Team": "Enemy",
     "Tags": [
@@ -22767,5 +22769,135 @@
     "Trap": null,
     "SnakeSegments": 0,
     "Brain": "Kiter"
+  },
+  {
+    "Id": "monstertamer",
+    "Name": "Monster Tamer",
+    "Team": "Hero",
+    "Tags": [
+      "Humanoid"
+    ],
+    "Description": "A beast handler who turns wild monsters to the party's side instead of killing them.",
+    "Lore": "Grew up among the pack; every snarl is a word she understands.",
+    "Card": "Wild monsters turn [Tamed] and fight for you.",
+    "Portrait": "WildChild",
+    "Thumbnail": {
+      "Zoom": 1.6016,
+      "X": 0.4497,
+      "Y": 0.1843
+    },
+    "Footprint": {
+      "W": 1,
+      "H": 1
+    },
+    "BaseStats": {
+      "Strength": 11,
+      "Vitality": 12,
+      "Agility": 12,
+      "Speed": 12,
+      "Stamina": 12,
+      "Intelligence": 10,
+      "Wisdom": 15,
+      "Luck": 15
+    },
+    "Growth": {
+      "Strength": 0.6,
+      "Vitality": 0.7,
+      "Agility": 0.7,
+      "Speed": 0.7,
+      "Stamina": 0.7,
+      "Intelligence": 0.5,
+      "Wisdom": 0.9,
+      "Luck": 0.9
+    },
+    "Milestones": [
+      {
+        "Level": 5,
+        "Growth": {
+          "Strength": 0.24,
+          "Vitality": 0.24,
+          "Agility": 0.24,
+          "Speed": 0.24,
+          "Stamina": 0.24,
+          "Intelligence": 0.24,
+          "Wisdom": 0.24,
+          "Luck": 0.24
+        }
+      },
+      {
+        "Level": 10,
+        "Growth": {
+          "Strength": 0.32,
+          "Vitality": 0.32,
+          "Agility": 0.32,
+          "Speed": 0.32,
+          "Stamina": 0.32,
+          "Intelligence": 0.32,
+          "Wisdom": 0.32,
+          "Luck": 0.32
+        }
+      },
+      {
+        "Level": 20,
+        "Growth": {
+          "Strength": 0.42,
+          "Vitality": 0.42,
+          "Agility": 0.42,
+          "Speed": 0.42,
+          "Stamina": 0.42,
+          "Intelligence": 0.42,
+          "Wisdom": 0.42,
+          "Luck": 0.42
+        }
+      },
+      {
+        "Level": 40,
+        "Growth": {
+          "Strength": 0.56,
+          "Vitality": 0.56,
+          "Agility": 0.56,
+          "Speed": 0.56,
+          "Stamina": 0.56,
+          "Intelligence": 0.56,
+          "Wisdom": 0.56,
+          "Luck": 0.56
+        }
+      }
+    ],
+    "Resistances": {},
+    "Abilities": [
+      "tame",
+      "wildchild_howl",
+      "primalpack_challenge",
+      "regen",
+      "quicken",
+      "antidote",
+      "pack_leader",
+      "beast_sense"
+    ],
+    "DefaultLoadout": [
+      "tame",
+      "wildchild_howl",
+      "item:x_potion",
+      "regen",
+      "primalpack_challenge"
+    ],
+    "DropTable": null,
+    "MoveRange": 1,
+    "XpReward": 10,
+    "BossPhases": [],
+    "ChargeAbility": null,
+    "ChargeShape": "Single",
+    "Trap": null,
+    "SnakeSegments": 0,
+    "Role": "Support",
+    "Support": {
+      "Effect": "Pushback",
+      "Magnitude": 0.5,
+      "Target": "Attacker",
+      "Range": 1,
+      "Label": "Whip Crack"
+    },
+    "HomeTree": "alchemist"
   }
 ]

@@ -83,7 +83,7 @@ namespace GridGame.Core.Battle
         public static bool CanMove(BattleState s, int heroId)
         {
             var h = s.UnitById(heroId);
-            return s.Phase == BattlePhase.PlayerInput && h != null && h.Alive && h.IsHero && !h.IsImmobile && !h.ActedThisWindow;
+            return s.Phase == BattlePhase.PlayerInput && h != null && h.Alive && h.IsCommandable && !h.IsImmobile && !h.ActedThisWindow;
         }
 
         // ── The party's window (GG-T308, §2.0) ────────────────────────────────────────────────────────
@@ -93,7 +93,7 @@ namespace GridGame.Core.Battle
         {
             var list = new List<Unit>();
             foreach (var u in s.Units)
-                if (u.Alive && u.IsHero && u.OnBoard && !u.IsImmobile && !u.ActedThisWindow) list.Add(u);
+                if (u.Alive && u.IsCommandable && u.OnBoard && !u.IsImmobile && !u.ActedThisWindow) list.Add(u);
             return list;
         }
 
@@ -133,7 +133,7 @@ namespace GridGame.Core.Battle
             if (slot < 0 || slot >= BattleRunner.MaxSlots) return SlotStatus.Empty;
             if (slot >= h.UnlockedSlots) return SlotStatus.Locked;
             if (slot >= h.Bar.Count || h.Bar[slot].IsEmpty) return SlotStatus.Empty;
-            if (h.IsImmobile) return SlotStatus.CannotAct;
+            if (h.IsImmobile || h.IsIndependent) return SlotStatus.CannotAct; // a tamed ally acts on its own (GG-T303)
             if (h.ActedThisWindow) return SlotStatus.Acted; // GG-T308: one action per hero per window
             var sl = h.Bar[slot];
             if (sl.IsWeapon) return SlotStatus.Ready;

@@ -88,6 +88,8 @@ namespace GridGame.Core.Rules
                 return false;
             }
             if (a.AdjacentOnly && (occ == null || !caster.IsAdjacentTo(occ))) return false;
+            // A tame (GG-T303) only ever picks a tameable monster: never a Sentient foe, a boss or remains.
+            if (a.Tame > 0f && a.Mode == TargetMode.PickActor && !Taming.Tameable(occ)) return false;
             if (a.Mode == TargetMode.PickActor) return occ != null && Passes(a.Filter, caster, occ);
             // PickTile: any in-bounds tile whose shape catches at least one valid unit.
             return Collect(s, a, caster, target).Count > 0;

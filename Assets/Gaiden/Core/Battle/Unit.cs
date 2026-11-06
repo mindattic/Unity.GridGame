@@ -116,6 +116,8 @@ namespace GridGame.Core.Battle
 
         public bool Alive => Hp > 0 && OnBoard;
         public bool IsHero => Team == Team.Hero;
+        /// <summary>A hero the player commands (drags, bar, the window): every hero-team unit except an <see cref="IsIndependent"/> one.</summary>
+        public bool IsCommandable => Team == Team.Hero && !IsIndependent;
         public bool IsMultiTile => W > 1 || H > 1;
         /// <summary>A grave marker left by an undead (§14.5): solid, never acts except to raise its owner.</summary>
         public bool IsRemains => Def != null && Def.HasTag("Remains");
@@ -151,8 +153,27 @@ namespace GridGame.Core.Battle
         public bool IsSnakeSegment => SnakeHeadId >= 0 && SnakeIndex > 0;
         public bool IsSnakeMember => SnakeHeadId >= 0;
         public string Name => Def.Name;
-        /// <summary>Pincer eligibility (bible §1.2, GG-LAW-2): heroes always; enemies only with a society (tag Sentient, GG-T289).</summary>
-        public bool CanPincer => Team == Team.Hero || Def.HasTag("Sentient");
+        /// <summary>Pincer eligibility (bible §1.2, GG-LAW-2): heroes always; enemies only with a society (tag Sentient, GG-T289);
+        /// anything carrying the Pincer keyword (a tamed or domesticated monster, or a class tagged Pincer — GG-T303).</summary>
+        public bool CanPincer => Team == Team.Hero || Def.HasTag("Sentient") || HasPincerKeyword;
+
+        // ── Taming (§25.11.3, GG-T303) ──
+        /// <summary>A wild monster tamed this battle: hero team, acting on its own AI against the party's foes.</summary>
+        public bool Tamed;
+        /// <summary>Own turns left before a tame wears off (ignored once <see cref="Bonded"/>).</summary>
+        public int TameTurnsLeft;
+        /// <summary>Bond earned this battle (one per own turn fought while tamed) and what this monster needs to want to join.</summary>
+        public int Bond, BondNeeded;
+        /// <summary>The bond is full: the tame no longer wears off, and standing at a victory it asks to join (GG-T303).</summary>
+        public bool Bonded => Tamed && BondNeeded > 0 && Bond >= BondNeeded;
+        /// <summary>A domesticated monster from the roster (HeroSave.Domesticated): always the party's, still on its own AI.</summary>
+        public bool Domesticated;
+        /// <summary>A hero-team unit the player never commands: it keeps its own timeline icon and acts on its own turn (Umaro, FF VI).</summary>
+        public bool IsIndependent => Team == Team.Hero && (Tamed || Domesticated);
+        /// <summary>The Pincer keyword (GG-T303): tamed and domesticated monsters may end or support a pincer though not Sentient.</summary>
+        public bool HasPincerKeyword => Tamed || Domesticated || (Def != null && Def.HasTag("Pincer"));
+        /// <summary>A wild monster fighting for the party only for this battle (not a roster member).</summary>
+        public bool IsWildTamed => Tamed && !Domesticated;
         public bool IsRanged => Def.AttackRange > 1;
 
         public Stats Effective

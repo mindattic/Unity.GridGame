@@ -80,7 +80,7 @@ namespace GridGame.Core.Battle
 
             Coord anchor = a.Mode == TargetMode.Auto ? TargetResolver.AutoAnchor(hero) : cmd.Target;
             if (a.Mode != TargetMode.Auto && !TargetResolver.IsValidPick(S, a, hero, anchor)) return Refuse(hero, "No target");
-            if (a.Revives && !S.Units.Exists(u => u.IsHero && !u.Alive && u.Hp <= 0)) return Refuse(hero, "Nobody to revive");
+            if (a.Revives && !S.Units.Exists(u => u.IsHero && !u.Alive && u.Hp <= 0 && !u.IsWildTamed)) return Refuse(hero, "Nobody to revive");
             if (a.Revives && ReviveSpot(hero) == null) return Refuse(hero, "No room!");
             if (!a.IsTeleport && !a.Revives && !a.Escape && a.GrantsOrbs <= 0 && TargetResolver.Collect(S, a, hero, anchor).Count == 0 && a.Mode == TargetMode.Auto)
                 return Refuse(hero, "No target");
@@ -280,6 +280,8 @@ namespace GridGame.Core.Battle
                     if (buff.Id == "sleep" && t.HasBuff("warm")) dur = (int)Math.Ceiling(dur * BattleConfig.SleepWhenWarmMultiplier);
                     ApplyBuff(t, buff, dur);
                 }
+
+                if (a.Tame > 0f && t.Alive && !friend) TryTame(caster, t, a); // the Tame effect (GG-T303), last: it changes sides
             }
 
             if (a.StepBack > 0 && caster.Alive && !S.IsOver) StepAway(caster, a.StepBack);
@@ -407,12 +409,13 @@ namespace GridGame.Core.Battle
 
         private void Revive(Unit user, int hp)
         {
-            var fallen = S.Units.Find(u => u.IsHero && !u.Alive && u.Hp <= 0);
+            var fallen = S.Units.Find(u => u.IsHero && !u.Alive && u.Hp <= 0 && !u.IsWildTamed); // a wild tamed beast stays down (GG-T303)
             if (fallen == null) { Announce("Nobody to revive"); return; }
             var spot = ReviveSpot(user);
             if (spot == null || !Relocate(fallen, spot.Value)) { Announce("No room!"); return; }
             fallen.OnBoard = true;
             fallen.Hp = Math.Min(fallen.MaxHp, Math.Max(1, hp));
+            if (fallen.IsIndependent) EnsureTurnEntry(fallen); // a domesticated monster gets its turn icon back (GG-T303)
             Emit(new RevivedEvent { UnitId = fallen.Id, At = fallen.Pos, Hp = fallen.Hp });
         }
 
@@ -420,7 +423,7 @@ namespace GridGame.Core.Battle
         /// party's tempo (§2.11, GG-T268), which slows every enemy icon: heroes have no turn icons under the held turn.</summary>
         private void Hasten(Unit t, float amountU, string source = null, int turns = 0)
         {
-            if (t.IsHero)
+            if (t.IsCommandable) // a tamed ally has its own icon: it is hastened like any icon, not via party tempo (GG-T303)
                 AddTempo(source ?? "haste", Math.Max(1, (int)Math.Round(amountU / BattleConfig.HastenUPerTempo)),
                     turns > 0 ? turns : BattleConfig.DefaultTempoTurns);
             var turn = S.TurnEntryOf(t.Id);

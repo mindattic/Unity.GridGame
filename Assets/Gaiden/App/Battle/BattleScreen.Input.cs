@@ -37,6 +37,7 @@ namespace GridGame.App
             }
 
             if (unit != null) BeginBoardInspect(unit);
+            if (unit != null && unit.IsIndependent) { panelUnitId = unit.Id; SyncPanel(); ShowBanner($"{unit.Name} is tamed: it fights on its own"); return; } // GG-T303
             if (unit != null && unit.IsHero)
             {
                 SelectHero(unit.Id);

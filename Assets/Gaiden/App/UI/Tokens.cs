@@ -35,6 +35,8 @@ namespace GridGame.App
         public static readonly Color Enemy = new Color(0.92f, 0.27f, 0.29f);
         public static readonly Color Boss = new Color(0.86f, 0.4f, 1f);
         public static readonly Color Guest = new Color(0.43f, 0.94f, 0.63f);
+        /// <summary>A tamed or domesticated monster fighting for the party on its own (GG-T303): its board keyline and turn icon.</summary>
+        public static readonly Color Tamed = new Color(0.76f, 0.92f, 0.28f);
         public static readonly Color Neutral = new Color(1f, 0.8f, 0.37f);
         // Casts riding the timeline (GG-T287): never the red of an enemy turn, so a spell reads apart from a foe.
         public static readonly Color CastHero = new Color(0.15f, 0.77f, 0.9f);
@@ -74,6 +76,7 @@ namespace GridGame.App
                 case "Striker": return new Color(1f, 0.66f, 0.25f);
                 case "Support": return new Color(0.35f, 0.85f, 0.85f);
                 case "Ranged": return new Color(0.68f, 0.85f, 0.35f);
+                case Ui.TamedRole: return Tamed; // a domesticated monster's badge (GG-T303)
                 default: return new Color(0.8f, 0.8f, 0.85f);
             }
         }

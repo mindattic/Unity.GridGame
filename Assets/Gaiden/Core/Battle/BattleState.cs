@@ -35,6 +35,8 @@ namespace GridGame.Core.Battle
         /// <summary>Passive/Reactive ability ids the hero knows beyond its class kit — skill-tree grants, rewards (GG-T296).
         /// The meta layer fills it from <c>HeroSave.Known</c>; the battle's trigger engine reads it.</summary>
         public List<string> Passives = new List<string>();
+        /// <summary>A domesticated monster (GG-T303): fights for the party on its own AI with its own timeline icon.</summary>
+        public bool Domesticated;
     }
 
     /// <summary>One equipped armor piece carried from the save into a battle (§24.2, GG-T89).</summary>
@@ -244,6 +246,10 @@ namespace GridGame.Core.Battle
         public BattleResults Results = new BattleResults();
         /// <summary>Signed party tempo effects (GG-T268, §2.11): hero haste adds, Slow on heroes subtracts; they stack.</summary>
         public List<TempoEffect> Tempo = new List<TempoEffect>();
+        /// <summary>GG-T311 (§2.0): Guards in a row that gave a whole window up (no hero acted in it). Each slows every enemy
+        /// icon by one tempo step (<see cref="BattleEngine.EnemyTempoMultiplier"/>), capped at BattleConfig.RallyMaxStacks,
+        /// so a lock of too-short gaps always opens; the next hero action resets it.</summary>
+        public int Rally;
 
         public int NetTempo
         {

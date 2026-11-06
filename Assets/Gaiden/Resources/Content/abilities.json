@@ -8427,5 +8427,107 @@
   "LingerVfx": null,
   "Intensity": "Minor",
   "Sfx": null
+ },
+ {
+  "Id": "tame",
+  "Name": "Tame",
+  "Description": "Calms a wild monster and turns it [Tamed] for 4 of its turns: likelier the more it is hurt. Never a [Sentient] foe or a boss.",
+  "Kind": "Skill",
+  "Cost": 0,
+  "CastTime": 0.0,
+  "CooldownTurns": 2,
+  "Shape": "SingleActor",
+  "Radius": 0,
+  "Mode": "PickActor",
+  "Filter": "EnemyOnly",
+  "Motion": "None",
+  "DamageType": "Physical",
+  "BaseDamage": 0,
+  "BaseHeal": 0,
+  "ApplyBuff": null,
+  "ApplyBuffChance": 1.0,
+  "RemovesDebuffs": false,
+  "StealsMana": false,
+  "HastenU": 0.0,
+  "IsTeleport": false,
+  "Icon": null,
+  "CastVfx": "BuffLife",
+  "ProjectileVfx": null,
+  "ImpactVfx": "HealAura",
+  "LingerVfx": null,
+  "Sfx": null,
+  "Tame": 0.6,
+  "TameTurns": 4,
+  "Intensity": "Minor"
+ },
+ {
+  "Id": "dog_whistle_call",
+  "Name": "Dog Whistle",
+  "Description": "A shrill call that may turn a wild monster [Tamed] for 2 of its turns. Never a [Sentient] foe or a boss.",
+  "Kind": "Item",
+  "Cost": 0,
+  "CastTime": 0.0,
+  "CooldownTurns": 0,
+  "Shape": "SingleActor",
+  "Radius": 0,
+  "Mode": "PickActor",
+  "Filter": "EnemyOnly",
+  "Motion": "None",
+  "DamageType": "Physical",
+  "BaseDamage": 0,
+  "BaseHeal": 0,
+  "ApplyBuff": null,
+  "ApplyBuffChance": 1.0,
+  "RemovesDebuffs": false,
+  "StealsMana": false,
+  "HastenU": 0.0,
+  "IsTeleport": false,
+  "Icon": null,
+  "CastVfx": null,
+  "ProjectileVfx": null,
+  "ImpactVfx": "HealAura",
+  "LingerVfx": null,
+  "Sfx": null,
+  "Tame": 0.35,
+  "TameTurns": 2,
+  "Intensity": "Minor"
+ },
+ {
+  "Id": "pack_leader",
+  "Name": "Pack Leader",
+  "Description": "After it backs a [pincer] as a [Supporter], it has a [fair] chance to turn the attacker it backed [Empowered].",
+  "Kind": "Passive",
+  "Trigger": {
+   "On": "OnPincerAsSupporter",
+   "Chance": 0.35,
+   "Effects": [
+    {
+     "Kind": "ApplyBuff",
+     "Buff": "empowered",
+     "Who": "Target"
+    }
+   ],
+   "Callout": "Pack Leader!"
+  }
+ },
+ {
+  "Id": "beast_sense",
+  "Name": "Beast Sense",
+  "Description": "When a beast attacks it [directly], it stares the beast down: [Pushback] 1 s.",
+  "Kind": "Reactive",
+  "Trigger": {
+   "On": "OnAttackedDirect",
+   "Condition": {
+    "OtherTag": "Beast"
+   },
+   "Effects": [
+    {
+     "Kind": "Pushback",
+     "Amount": 1.0,
+     "Who": "Attacker"
+    }
+   ],
+   "Callout": "Stare down!"
+  }
  }
 ]

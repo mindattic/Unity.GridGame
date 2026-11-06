@@ -1626,6 +1626,26 @@
     ]
   },
   {
+    "Id": "talk_quiz_monstertamer",
+    "Title": "Advice",
+    "Trigger": { "Kind": "Talk", "Id": "monstertamer" },
+    "Speakers": [
+      { "Id": "hero", "Class": "$with" }
+    ],
+    "Nodes": [
+      {
+        "Id": "ask", "Speaker": "hero", "Text": "A wolf that fights beside us today could bite us tomorrow. How do I keep it with us?",
+        "Choices": [
+          { "Label": "Chain it up and drag it along.", "Next": "wrong" },
+          { "Label": "Fight beside it until it trusts you. A full bond keeps it for good.", "Next": "right", "Effects": [ { "Type": "GrantSkillPoint", "Id": "$with" } ] },
+          { "Label": "Keep it hungry so it stays loyal.", "Next": "wrong" }
+        ]
+      },
+      { "Id": "right", "Speaker": "hero", "Text": "Trust first, then the pack. I'll stay close and let it watch me fight." },
+      { "Id": "wrong", "Speaker": "hero", "Text": "That breaks a beast. It doesn't bond one." }
+    ]
+  },
+  {
     "Id": "talk_quiz_courier",
     "Title": "Advice",
     "Trigger": { "Kind": "Talk", "Id": "courier" },

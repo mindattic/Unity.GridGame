@@ -411,6 +411,8 @@ namespace GridGame.Core.Battle
             MaybeSpawnAmplifier();
             foreach (var h in S.LivingList(Team.Hero))
             {
+                // An independent ally (GG-T303) counts its own turns like an enemy: only a halting buff ticks here.
+                if (h.IsIndependent) { TickTurnBuffs(h, true); continue; }
                 if (h.RegenPerTurn > 0 && h.Hp < h.MaxHp) Heal(h, h.RegenPerTurn, h);
                 // TurnEnd passives (GG-T296): a hero's turn ends each time control returns (Regenerate knits 6%).
                 if (h.Alive) Fire(TriggerOn.TurnEnd, h, new TriggerContext());
@@ -426,7 +428,7 @@ namespace GridGame.Core.Battle
             TickTempo();
             // The party's new turn begins: hero trigger cooldowns tick, TurnStart and OnSurrounded fire (GG-T296).
             foreach (var h in S.LivingList(Team.Hero))
-                if (!S.IsOver && h.Alive) TriggersTurnStart(h);
+                if (!S.IsOver && h.Alive && !h.IsIndependent) TriggersTurnStart(h);
             if (S.IsOver) return;
             Emit(new PlayerControlEvent());
         }
@@ -443,7 +445,8 @@ namespace GridGame.Core.Battle
             foreach (var u in S.Units)
             {
                 if (!u.Alive) continue;
-                if (u.Team == Team.Hero) heroesAlive = true; else if (u.Team == Team.Enemy && !u.IsCorpse) enemiesAlive = true; // bodies (and neutrals, GG-T132) don't hold up a wave
+                // A tamed or domesticated monster alone doesn't keep the party in the fight (GG-T303).
+                if (u.Team == Team.Hero) { if (!u.IsIndependent) heroesAlive = true; } else if (u.Team == Team.Enemy && !u.IsCorpse) enemiesAlive = true; // bodies (and neutrals, GG-T132) don't hold up a wave
             }
             if (!heroesAlive)
             {
@@ -767,7 +770,7 @@ namespace GridGame.Core.Battle
             }
             u.Buffs.Add(new BuffInstance { Def = def, Remaining = duration, Fresh = true });
             Emit(new BuffAppliedEvent { UnitId = u.Id, BuffId = def.Id, Duration = duration });
-            if (u.IsHero && def.Tempo != 0)
+            if (u.IsCommandable && def.Tempo != 0)
                 AddTempo("buff:" + def.Id, def.Tempo, def.Unit == DurationUnit.Turns ? duration : BattleConfig.DefaultTempoTurns);
             Fire(TriggerOn.OnStatusGained, u, new TriggerContext { Status = def.Id });
         }

@@ -447,6 +447,9 @@ namespace GridGame.Core.Content
         /// Defaults to Medium — the only weight actually gated is Heavy, reserved for the Tank archetype
         /// (Guardian) by default; every other class earns it through Heavy Armor Proficiency.</summary>
         public ArmorWeight ArmorProficiency = ArmorWeight.Medium;
+        /// <summary>Bond a tamed monster of this class needs before it asks to join (§25.11.3, GG-T303); 0 = derived from its
+        /// level (<c>Taming.BondFor</c>). Rarer, stronger monsters author more.</summary>
+        public int TameBond;
 
         public bool HasTag(string tag) => Tags != null && Tags.Contains(tag);
     }
@@ -522,6 +525,13 @@ namespace GridGame.Core.Content
         /// <summary>Passive/Reactive only (GG-T301): who a Tome may teach it to, as hero class ids and/or Roles
         /// (Tank/Healer/Mage/Striker/Support/Ranged). Empty = any hero.</summary>
         public List<string> LearnableBy = new List<string>();
+        /// <summary>The Tame effect (§25.11.3, GG-T303): base chance (0..1) to turn a tameable foe — a non-Sentient, non-boss
+        /// monster — to the party's side for <see cref="TameTurns"/> of its own turns. 0 = not a tame. Any Skill or Item
+        /// ability may carry it (the Monster Tamer's Tame, the Dog Whistle); <c>Taming.Chance</c> scales it by the foe's
+        /// HP left, the level gap and the user's Luck/Wisdom.</summary>
+        public float Tame;
+        /// <summary>Own turns a successful <see cref="Tame"/> lasts before the monster breaks free (a full bond keeps it).</summary>
+        public int TameTurns;
     }
 
     public sealed class BuffDef

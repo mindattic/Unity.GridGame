@@ -40606,5 +40606,35 @@
     "SoldByVendor": false,
     "Icon": null,
     "OpensTable": "chest_gilded"
+  },
+  {
+    "Id": "dog_whistle",
+    "Name": "Dog Whistle",
+    "Description": "Use in battle on a wild monster: it may turn [Tamed] for 2 of its turns. Never works on a [Sentient] foe or a boss.",
+    "Type": "Consumable",
+    "Rarity": "Uncommon",
+    "Slot": "None",
+    "WeaponType": null,
+    "BaseCost": 150,
+    "SellValue": -1,
+    "MaxStack": 3,
+    "Durability": 0,
+    "BaseHealing": 0,
+    "BaseDamage": 0,
+    "Stats": {
+      "Strength": 0,
+      "Vitality": 0,
+      "Agility": 0,
+      "Speed": 0,
+      "Stamina": 0,
+      "Intelligence": 0,
+      "Wisdom": 0,
+      "Luck": 0
+    },
+    "BattleStartManaOrbs": 0,
+    "OnUseAbility": "dog_whistle_call",
+    "Resistances": {},
+    "SoldByVendor": true,
+    "Icon": null
   }
 ]

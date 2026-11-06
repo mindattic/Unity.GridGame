@@ -303,8 +303,8 @@ namespace GridGame.App
         {
             bool reveal = knowledge >= BestiaryKnowledge.Stats;
             if (u == null) return false;
-            var head = Header(body, null, $"{u.Name}  Lv {u.Level}", u.IsHero ? u.Def.Role : u.IsNeutral ? "Neutral" : "Enemy",
-                u.IsHero ? Palette.Hero : u.IsNeutral ? Palette.Neutral : Palette.Enemy);
+            var head = Header(body, null, $"{u.Name}  Lv {u.Level}", u.IsIndependent ? (u.Domesticated ? "Tamed ally" : "Tamed") : u.IsHero ? u.Def.Role : u.IsNeutral ? "Neutral" : "Enemy",
+                u.IsIndependent ? Palette.Tamed : u.IsHero ? Palette.Hero : u.IsNeutral ? Palette.Neutral : Palette.Enemy);
             Line(head, reveal ? $"HP {u.Hp}/{u.MaxHp}" : "HP ??? — defeat more to learn it", "t-caption");
             if (reveal) Line(head, $"{Ui.StatLine(u.Effective)} · EVA {GridGame.Core.Rules.Formulas.Evasion(u):0}%", "t-caption", Palette.TextDim); // GG-T297
             else if (knowledge >= BestiaryKnowledge.Speed) Line(head, $"SPD {u.Effective.Speed:0}", "t-caption", Palette.TextDim);
@@ -317,6 +317,7 @@ namespace GridGame.App
                 sup.name = "inspect-support";
                 sup.style.marginTop = Space.S8;
             }
+            if (u.IsIndependent) TameSection(body, u); // GG-T303: who it is now, and its bond
             if (!u.IsHero && !u.IsNeutral)
             {
                 var cast = s.CastEntryOf(u.Id);
@@ -350,6 +351,30 @@ namespace GridGame.App
                 t.style.flexShrink = 1;
             }
             return true;
+        }
+
+        /// <summary>A tamed monster's bond meter (GG-T303): bond so far out of what it needs, the turns its tame has left,
+        /// and what a full bond means. A domesticated monster just says it is the party's for good.</summary>
+        private static void TameSection(VisualElement body, Unit u)
+        {
+            var box = Ui.El("col", body);
+            box.name = "inspect-bond";
+            box.style.marginTop = Space.S16;
+            if (u.Domesticated)
+            {
+                GlossaryText.Create("Yours for good: fights on its own and carries the [Pincer] keyword.", "t-caption", box, false);
+                return;
+            }
+            var row = Ui.El("row", box);
+            row.style.alignItems = Align.Center;
+            var label = Line(row, $"Bond {u.Bond}/{u.BondNeeded}", "t-body", Palette.Tamed);
+            label.style.marginRight = Space.S16;
+            var g = Ui.Gauge(u.BondNeeded <= 0 ? 0f : Mathf.Clamp01(u.Bond / (float)u.BondNeeded), row, 220);
+            g.name = "inspect-bond-gauge";
+            string note = u.Bonded ? "Bond full: it stays for this battle and asks to join you at victory."
+                : $"[Tamed] for {u.TameTurnsLeft} more of its turns. Each turn it fights for you fills its bond.";
+            var t = GlossaryText.Create(note, "t-caption", box, false);
+            t.style.marginTop = Space.S8;
         }
 
         /// <summary>"[name]" when the glossary knows the name (a status), so it reads as a term; else the bare name.</summary>

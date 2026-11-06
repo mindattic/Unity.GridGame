@@ -102,7 +102,9 @@ namespace GridGame.Core.Battle
                 {
                     next.Ip = 0;
                     var owner = S.UnitById(next.OwnerId);
-                    if (owner != null && owner.Alive) { RunEnemyTurn(owner); RuleBreakAfterTurn(owner); enemyTurnResolved = true; CheckTilesStrict("turn of " + owner); }
+                    // A tamed or domesticated monster (GG-T303) acts on its own icon but doesn't end the party's window.
+                    if (owner != null && owner.Alive && owner.IsIndependent) { RunAllyTurn(owner); CheckTilesStrict("ally turn of " + owner); }
+                    else if (owner != null && owner.Alive) { RunEnemyTurn(owner); RuleBreakAfterTurn(owner); enemyTurnResolved = true; CheckTilesStrict("turn of " + owner); }
                 }
             }
         }

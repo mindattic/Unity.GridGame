@@ -715,5 +715,23 @@
       "Physical damage"
     ],
     "Text": "Weapon damage: blades, fists, claws and arrows, as opposed to fire, ice and other magic."
+  },
+  {
+    "Id": "tamed",
+    "Term": "Tamed",
+    "Aliases": [
+      "Tame",
+      "Tames",
+      "Taming"
+    ],
+    "Text": "A wild monster fighting for you on its own: it keeps its own turn icon, attacks your foes, carries the [Pincer] keyword and grows its bond each turn. A full bond keeps it for the battle; standing at victory, it asks to join."
+  },
+  {
+    "Id": "beast",
+    "Term": "Beast",
+    "Aliases": [
+      "Beasts"
+    ],
+    "Text": "A wild animal monster: wolves, bats, the yeti. Beasts have no society, so they never make a [pincer] on their own, but a Monster Tamer can turn one [Tamed]."
   }
 ]

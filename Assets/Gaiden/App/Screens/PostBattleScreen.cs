@@ -71,6 +71,7 @@ namespace GridGame.App
                 if (report.AutoSold > 0) Ui.MenuRow("Bag full — sold extras", $"{report.AutoSold} items", null, list);
                 foreach (var g in report.GuestsJoined)
                     Ui.MenuRow(report.Rescued && g == report.Captive ? $"{c.Class(g).Name} is freed and joins the caravan!" : $"{c.Class(g).Name} joins the caravan!", "New hero", null, list).Q<Label>("label").AddToClassList("good");
+                foreach (var offer in report.TameOffers) TameOfferBlock(offer, c, list); // GG-T303
                 if (report.CampaignComplete) Ui.MenuRow("Campaign complete!", "New Game+ unlocked at camp", null, list).Q<Label>("label").AddToClassList("gold");
                 if (report.ExpeditionComplete)
                 {
@@ -237,6 +238,46 @@ namespace GridGame.App
                 if (App.Save.Count(chest.Id) > 0) ChestBlock(chest, c, box);
             });
             return box;
+        }
+
+        /// <summary>A fully bonded tamed monster asks to join (GG-T303): Accept takes it into the party (or the reserve when
+        /// the party is full) as a domesticated monster; Decline lets it go back to the wild.</summary>
+        private void TameOfferBlock(Domestication.Offer offer, ContentDb c, VisualElement list)
+        {
+            var def = c.TryClass(offer.ClassId);
+            if (def == null) return;
+            var box = Ui.El("row", list);
+            box.name = "tame-offer-" + offer.ClassId;
+            box.style.alignItems = Align.Center;
+            box.style.marginTop = Space.S8; box.style.marginBottom = Space.S8;
+            Ui.Thumb(def.Id, box, 96).style.marginRight = Space.S16;
+            var text = Ui.El("col", box);
+            text.style.flexGrow = 1; text.style.flexShrink = 1;
+            var head = Ui.Text($"{def.Name} wants to join you!", "h2 good", text);
+            head.style.whiteSpace = WhiteSpace.Normal;
+            var sub = Ui.Text($"Lv {offer.Level} - fights on its own with the Pincer keyword. No gear or skills; grows slowly (max Lv {Domestication.LevelCap}).", "tiny dim", text);
+            sub.style.whiteSpace = WhiteSpace.Normal;
+            var buttons = Ui.El("row", text);
+            buttons.style.marginTop = Space.S8;
+            void Settle(string msg, bool good)
+            {
+                buttons.Clear();
+                Ui.Text(msg, good ? "small good" : "small dim", buttons).style.whiteSpace = WhiteSpace.Normal;
+            }
+            Ui.Button("Accept", () =>
+            {
+                var r = Domestication.Accept(c, App.Save, offer);
+                App.Audio.Sfx(r.Ok ? "battle.victory" : "ui.error", r.Ok ? 0.6f : 1f);
+                if (r.Ok) App.Persist();
+                Settle(r.Message, r.Ok);
+            }, "btn--primary", buttons).name = "tame-accept";
+            Ui.Button("Decline", () =>
+            {
+                App.Audio.Sfx("ui.cancel");
+                Settle($"{def.Name} slips back into the wild.", false);
+            }, null, buttons).name = "tame-decline";
+            box.style.opacity = 0f;
+            reveals.Add(App.StartCoroutine(RevealRow(box, 0.2f)));
         }
 
         private IEnumerator RevealRow(VisualElement row, float delay)

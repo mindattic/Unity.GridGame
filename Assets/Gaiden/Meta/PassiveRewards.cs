@@ -93,6 +93,7 @@ namespace GridGame.Meta
             var h = s.Hero(heroId);
             var cls = c.TryClass(heroId);
             if (h == null || cls == null) return "No such hero";
+            if (h.Domesticated) return "A tamed monster can't read"; // GG-T303
             if (PassiveLoadout.IsInnate(c, h, a.Id) || h.Known.Contains(a.Id)) return "Already knows it";
             if (!RewardCatalog.AllowedFor(a, cls)) return $"Only {string.Join("/", a.LearnableBy)} can learn it";
             return null;

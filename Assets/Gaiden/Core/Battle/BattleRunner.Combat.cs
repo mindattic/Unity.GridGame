@@ -17,6 +17,7 @@ namespace GridGame.Core.Battle
             if (hero == null || !hero.Alive || !hero.IsHero) { Emit(new AbilityRefusedEvent { CasterId = m.HeroId, Reason = "No such hero" }); return false; }
             AutoEquipBackupWeapon(hero);
             if (hero.IsImmobile) { Emit(new AbilityRefusedEvent { CasterId = hero.Id, Reason = "Can't move" }); return false; }
+            if (hero.IsIndependent) { Emit(new AbilityRefusedEvent { CasterId = hero.Id, Reason = "Acts on its own" }); return false; } // GG-T303
 
             var before = SnapshotPositions();
             int trapsBefore = S.Traps.Count, pickupsBefore = S.Pickups.Count;

@@ -227,7 +227,7 @@ namespace GridGame.App
 
             ApplyStageLayout();
             foreach (var u in State.Units) if (u.Alive) board.Add(u);
-            SelectedHeroId = State.Units.FirstOrDefault(u => u.IsHero && u.Alive)?.Id ?? -1;
+            SelectedHeroId = State.Units.FirstOrDefault(u => u.IsCommandable && u.Alive)?.Id ?? -1;
             if (firstBuild && setupOverride == null && !InCrucible && App.Save != null && !App.Save.TutorialDone && App.Save.HighestClearedStage < 0 && !CommandLine.Has("-autobattle") && !DemoMode.Active && !TestMode.Active) TutorialStep = 0;
             SyncAll();
             if (!firstBuild) return;
@@ -616,7 +616,8 @@ namespace GridGame.App
             var col = Ui.El("col grow", row);
             var top = Ui.El("row", col);
             Ui.Text(u.Name, "h2 grow", top);
-            if (u.IsHero && !string.IsNullOrEmpty(u.Def.Role)) Ui.RoleBadge(u.Def.Role, top, 26);
+            if (u.IsIndependent) Ui.RoleBadge(Ui.TamedRole, top, 26); // GG-T303
+            else if (u.IsHero && !string.IsNullOrEmpty(u.Def.Role)) Ui.RoleBadge(u.Def.Role, top, 26);
             Ui.Text($"Lv {u.Level}", "h2 gold", top);
             // What the Bestiary has learned from defeating its class gates the numbers (§25.11, GG-T290).
             int know = Knowledge(u);

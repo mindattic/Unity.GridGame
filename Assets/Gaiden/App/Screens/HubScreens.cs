@@ -294,8 +294,8 @@ namespace GridGame.App
             int hp = h.Hp > 0 ? Math.Min(h.Hp, u.MaxHp) : u.MaxHp;
             var roleRow = Ui.El("row", stats);
             roleRow.style.marginBottom = Space.S8;
-            Ui.RoleBadge(def.Role, roleRow, 30).style.marginLeft = Space.S0;
-            var blurb = Ui.Text(Ui.RoleBlurb(def.Role), "tiny dim", roleRow);
+            Ui.RoleBadge(Ui.RoleOf(h, def), roleRow, 30).style.marginLeft = Space.S0;
+            var blurb = Ui.Text(Ui.RoleBlurb(Ui.RoleOf(h, def)), "tiny dim", roleRow);
             blurb.style.whiteSpace = WhiteSpace.Normal; blurb.style.flexShrink = 1;
             var support = GlossaryText.Create(GridGame.Core.Rules.SupportText.Describe(C, def.Support), "tiny gold", stats); // GG-T298
             support.name = "hero-support"; support.style.whiteSpace = WhiteSpace.Normal; support.style.marginBottom = Space.S8;
@@ -757,7 +757,7 @@ namespace GridGame.App
                 var col = Ui.El("col grow", card);
                 var nameRow = Ui.El("row", col);
                 Ui.Text(C.Class(h.ClassId).Name, "h2", nameRow);
-                Ui.RoleBadge(C.Class(h.ClassId).Role, nameRow);
+                Ui.RoleBadge(Ui.RoleOf(h, C.Class(h.ClassId)), nameRow);
                 MercenaryCamp.Tag(S, h.ClassId, nameRow);
                 Ui.Text($"Lv {u.Level}   HP {u.MaxHp}   {(active ? "<color=#78EC96>Active</color>" : "Reserve")}", "small", col);
                 GlossaryText.Create(C.Class(h.ClassId).Card ?? "", "tiny dim", col).style.whiteSpace = WhiteSpace.Normal;

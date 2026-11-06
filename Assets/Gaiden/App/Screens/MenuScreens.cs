@@ -485,7 +485,7 @@ namespace GridGame.App
                 var name = Ui.Text(c.Class(id).Name, "small", top);
                 Fonts.UseHeavy(name);
                 Ui.Marquee(name);
-                Ui.RoleBadge(c.Class(id).Role, top, TypeScale.Caption).style.marginLeft = Space.S4;
+                Ui.RoleBadge(Ui.RoleOf(h, c.Class(id)), top, TypeScale.Caption).style.marginLeft = Space.S4;
                 Ui.Text($"Lv {u.Level}", "small gold", top);
                 int hp = h.Hp > 0 ? Math.Min(h.Hp, u.MaxHp) : u.MaxHp;
                 Ui.Gauge(hp / (float)u.MaxHp, info, 300).style.marginTop = Space.S8;

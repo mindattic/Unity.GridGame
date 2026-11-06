@@ -300,6 +300,9 @@ namespace GridGame.Meta
         public string NextStageId;
         // Guests (§25.11)
         public List<string> GuestsJoined = new List<string>();
+        /// <summary>Tamed monsters standing at this victory with a full bond (GG-T303): each asks to join — the results
+        /// screen offers <see cref="Domestication.Accept"/> or a decline.</summary>
+        public List<Domestication.Offer> TameOffers = new List<Domestication.Offer>();
         /// <summary>Guests down at battle's end — not lost, they'll be met again (GG-T114).</summary>
         public List<string> GuestsFell = new List<string>();
         /// <summary>Guests lost for good — only ever filled with <see cref="Permadeath"/> on (never in the normal game).</summary>
@@ -493,6 +496,7 @@ namespace GridGame.Meta
             // GG-T296: learned passives/reactives (skill-tree grants like Last Bastion's Counter Attack) fight with the hero.
             // GG-T301: only the ones switched on, up to the hero's passive slots (PassiveLoadout); class-kit ones are innate.
             spec.Passives.AddRange(PassiveLoadout.Active(c, h));
+            spec.Domesticated = h.Domesticated; // fights on its own AI (GG-T303)
             return spec;
         }
 
@@ -567,14 +571,14 @@ namespace GridGame.Meta
                 GrantItems(c, s, rep, r.Items);
                 foreach (var kv in r.Kills) Entry(s, kv.Key).Defeated += kv.Value;
 
-                var heroes = battle.Units.Where(u => u.IsHero).ToList();
+                var heroes = battle.Units.Where(u => u.IsHero && !u.IsWildTamed).ToList(); // a wild tamed beast isn't yours (GG-T303)
                 rep.XpEach = heroes.Count > 0 ? r.Xp : 0;
                 foreach (var u in heroes)
                 {
                     var h = s.Hero(u.Def.Id);
                     if (h == null) continue;
                     int before = Progression.Level(h);
-                    h.TotalXp += rep.XpEach;
+                    h.TotalXp += Domestication.XpFor(h, rep.XpEach);
                     int after = Progression.Level(h);
                     if (after > before) rep.LevelUps.Add((h.ClassId, before, after));
                     h.SkillPoints += Formulas.SkillPointsForLevelUp(before, after);
@@ -599,11 +603,12 @@ namespace GridGame.Meta
                 rep.BountyProgress = Bounties.RecordKills(c, s, r.Kills);
                 rep.QuestProgress = Quests.RecordBattle(c, s, battle);
                 Milestones.Pay(c, s, rep, battle.Stage.Id); // a theme's first full clear teaches (GG-T301)
+                rep.TameOffers.AddRange(Domestication.Offers(c, s, battle)); // a fully bonded tamed monster asks to join (GG-T303)
             }
             else if (rep.Escaped)
             {
                 // Escaping keeps wounds (no defeat reset) and grants nothing.
-                foreach (var u in battle.Units.Where(u => u.IsHero))
+                foreach (var u in battle.Units.Where(u => u.IsHero && !u.IsWildTamed))
                 {
                     var h = s.Hero(u.Def.Id);
                     if (h != null) h.Hp = u.Alive ? (u.Hp >= u.MaxHp ? 0 : u.Hp) : 1;
@@ -732,14 +737,14 @@ namespace GridGame.Meta
         /// end, so each retry of a long gauntlet leaves the party stronger. Shared by Defeat and Retreat.</summary>
         private static void GrantHardWonXp(SaveData s, BattleState battle, BattleResults r, BattleReport rep)
         {
-            var heroes = battle.Units.Where(u => u.IsHero && !u.IsGuest).ToList();
+            var heroes = battle.Units.Where(u => u.IsHero && !u.IsGuest && !u.IsWildTamed).ToList();
             rep.XpEach = heroes.Count > 0 ? r.Xp : 0;
             foreach (var u in heroes)
             {
                 var h = s.Hero(u.Def.Id);
                 if (h == null || rep.XpEach <= 0) continue;
                 int before = Progression.Level(h);
-                h.TotalXp += rep.XpEach;
+                h.TotalXp += Domestication.XpFor(h, rep.XpEach);
                 int after = Progression.Level(h);
                 if (after > before) rep.LevelUps.Add((h.ClassId, before, after));
                 h.SkillPoints += Formulas.SkillPointsForLevelUp(before, after);
@@ -1844,6 +1849,7 @@ namespace GridGame.Meta
         public static Result Equip(ContentDb c, SaveData s, HeroSave h, EquipmentSlot slot, string itemId)
         {
             var item = c.TryItem(itemId);
+            if (h != null && h.Domesticated) return Result.Fail("A tamed monster wears no gear"); // GG-T303
             if (!Fits(item, slot)) return Result.Fail("That doesn't go there");
             var gate = ProficiencyGate(c, h, item);
             if (gate != null) return Result.Fail($"Not proficient — needs {gate}");
@@ -1945,6 +1951,7 @@ namespace GridGame.Meta
         {
             var def = c.TryClass(h.ClassId);
             var set = new List<AbilityDef>();
+            if (h.Domesticated) return set; // a tamed monster fights with its own instincts, never a trainer's skills (GG-T303)
             if (def != null)
                 foreach (var id in def.Abilities)
                 {
@@ -2005,6 +2012,7 @@ namespace GridGame.Meta
             if (a.RemovesDebuffs) k.Add("cleanse");
             if (a.RemovesBuff != null) k.Add("cure:" + a.RemovesBuff);
             if (a.StealsMana) k.Add("steal");
+            if (a.Tame > 0f) k.Add("tame"); // GG-T303
             if (a.GrantsOrbs > 0) k.Add("orbs");
             if (a.Revives) k.Add("revive");
             if (a.Escape) k.Add("escape");
@@ -2023,7 +2031,7 @@ namespace GridGame.Meta
         public static bool HasEffect(AbilityDef a) =>
             a.BaseDamage > 0 || a.BaseHeal > 0 || a.ApplyBuff != null || a.RemovesDebuffs || a.RemovesBuff != null || a.StealsMana ||
             a.GrantsOrbs > 0 || a.Revives || a.Escape || a.IsTeleport || a.Knockback > 0 || a.Pull > 0 || a.SwapsPlaces ||
-            a.StepBack > 0 || a.HastenU > 0f || a.Pushback > 0f;
+            a.StepBack > 0 || a.HastenU > 0f || a.Pushback > 0f || a.Tame > 0f; // GG-T303: a Tame turns a monster
 
         public static Result Learn(ContentDb c, SaveData s, HeroSave h, string abilityId)
         {
@@ -2061,6 +2069,7 @@ namespace GridGame.Meta
         public static Result Assign(ContentDb c, SaveData s, HeroSave h, int slot, string entry)
         {
             if (slot < 0 || slot >= Progression.MaxBarSlots) return Result.Fail("No such slot");
+            if (h != null && h.Domesticated && entry != null) return Result.Fail("A tamed monster fights on instinct"); // GG-T303: no bar
             if (slot >= Progression.UnlockedSlots(s)) return Result.Fail("Slot locked");
             if (entry != null)
             {

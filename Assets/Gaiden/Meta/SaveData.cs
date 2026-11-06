@@ -146,6 +146,9 @@ namespace GridGame.Meta
         public List<string> ActivePassives = new List<string>();
         /// <summary>The player has picked which learned passives are on (GG-T301). An older save has not.</summary>
         public bool PassivesChosen;
+        /// <summary>A domesticated monster (GG-T303, <see cref="Domestication"/>): <see cref="ClassId"/> is an enemy class. It
+        /// fights on its own AI, wears no gear, has no skill tree, and grows slowly up to <see cref="Domestication.LevelCap"/>.</summary>
+        public bool Domesticated;
 
         public string WeaponId;
         public int WeaponDurability;
