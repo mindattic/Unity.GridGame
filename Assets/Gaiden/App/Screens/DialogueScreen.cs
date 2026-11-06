@@ -307,7 +307,7 @@ namespace GridGame.App
                 line = run.Transcript[shownLines++];
                 Speak(line);
             }
-            if (talking != before && before >= 0) App.Audio.Sfx("slide", 0.45f);
+            if (talking != before && before >= 0) App.Audio.Sfx("battle.slide", 0.45f);
             ShowLine(line);
         }
 

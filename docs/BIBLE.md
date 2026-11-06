@@ -573,7 +573,7 @@ u = 0.0 (IP 0)                         u = 0.65 (IP 650)             u = 1.0 (IP
 - After the advance, **control returns** (`ReturnControl`): hero turn-unit buffs and skill cooldowns tick, enemy timeline-halting buffs (Frozen) tick — skipping the boundary of the action that applied them — and `PlayerControlEvent`. The pending time bank is kept until the next enemy turn mints it.
 - **Only enemies have turn icons.** **Amended 2026-10-09:** heroes have no icons; any living, mobile hero may act on any action. (The old bible drew hero portraits above the line.)
 
-*(Tests: `Clock_only_advances_on_committed_actions`, `Unaffordable_or_silenced_spell_is_refused_without_cost`, `Enemy_acts_when_its_icon_reaches_the_trigger`.)*
+*(Tests: `Clock_only_advances_on_committed_actions`, `Unaffordable_or_silenced_spell_is_refused_without_cost`, `Enemy_acts_when_its_icon_reaches_the_trigger`, `Turn_length_is_the_time_until_the_next_enemy_icon_reaches_act`, `Forced_drop_ends_the_turn_where_the_hero_stands`, `Early_drop_ends_the_turn_and_the_next_enemy_acts_on_arrival`, `Countdown_badge_counts_turns_not_ticks`, `Bot_drags_fit_inside_the_turn_window`.)*
 
 ### 2.1 Speed and pace
 
@@ -867,11 +867,11 @@ Added 2026-10-11 (owner: "confirmation screens when deciding to cast a spell"). 
 - A pick ability: tap the slot → legal anchors glow gold → tap a tile → the pick **locks**: its area and every unit it would touch glow (red harmful / green helpful / blue teleport), the banner asks "Poison on Wolf? Confirm below", and the actor panel becomes the **confirm card** (icon, name, cost pips, timing, "On Wolf", **Cast/Use/Go** and **Cancel**). Tapping another legal tile re-aims; tapping the same tile again confirms.
 - An Auto ability (Taunt, War Cry, Mass Heal …) goes straight to the confirm card.
 - Nothing is spent until Confirm (`BattleScreen.ConfirmPending`, chime `ui.confirm`); Cancel / slot re-tap / Back play `ui.cancel`.
+- **Outcome preview** (*added 2026-11-05, GG-T252, POL-D1*): the confirm card lists up to three touched units with their damage (red) or heal (green) **range**, **KO** chance, statuses and their chance, and the orbs the action would mint. The numbers come from `OutcomePreviewer.Preview` (Core, pure): it runs the command on six `BattleState.Clone`s, the first with the battle's own dice and the rest re-seeded, and reads only the actor's resolution window (until the next enemy turn starts; reopened when the actor's own charged cast resolves). The real battle and its RNG are never touched (`OutcomePreviewTests`). The confirm column is 28% of the card (≥ 264 px), not a fixed 330.
 - Autoplay and the setting turned off commit on the pick, as before.
 
 ### 4.5 Slot visual states
 
-- **Outcome preview** (*added 2026-11-05, GG-T252, POL-D1*): the confirm card lists up to three touched units with their damage (red) or heal (green) **range**, **KO** chance, statuses and their chance, and the orbs the action would mint. The numbers come from `OutcomePreviewer.Preview` (Core, pure): it runs the command on six `BattleState.Clone`s, the first with the battle's own dice and the rest re-seeded, and reads only the actor's resolution window (until the next enemy turn starts; reopened when the actor's own charged cast resolves). The real battle and its RNG are never touched (`OutcomePreviewTests`). The confirm column is 28% of the card (≥ 264 px), not a fixed 330.
 `GetSlotStatus` (in precedence order) and how `BattleScreen.SyncBar` draws it:
 
 | Status | When | Visual |
@@ -947,11 +947,11 @@ Filters: EnemyOnly = other team; AllyOnly = caster's team **including the caster
 - **Auto** (Self, All*, Steal/Mug's Cross around the caster) → commits immediately with the caster's tile as anchor; refused "No target" if nothing would be hit.
 - **PickActor / PickTile** → `BattleEngine.ValidTargets` marks every legal anchor gold; pressing a tile previews its area (red if harmful, green if helpful, blue for Teleport); releasing on a legal tile commits `UseSlotCommand`. Legal anchors (`TargetResolver.IsValidPick`): PickActor = an occupied tile whose unit passes the filter; PickTile = any tile whose shape catches ≥ 1 valid unit; EmptyOnly = an empty, trap-free tile.
 - No legal anchor → banner "No valid target", nothing spent.
+- **Drag preview numbers** (*added 2026-11-05, GG-T252*): while a held hero's path makes a pincer, every foe it would hit wears a small tag with the damage range and KO chance (`OutcomePreviewer`, three samples per step), cleared on drop or cancel.
 
 ### 5.3 Special targeting flows
 
 - **Teleport** (`IsTeleport`): EmptyOnly PickTile → the caster moves there (`TeleportedEvent`), triggers any trap, then a board-wide hero pincer scan resolves. Cooldown 3.
-- **Drag preview numbers** (*added 2026-11-05, GG-T252*): while a held hero's path makes a pincer, every foe it would hit wears a small tag with the damage range and KO chance (`OutcomePreviewer`, three samples per step), cleared on drop or cancel.
 - **Revive / Escape / orb items** resolve on the user without a pick ([§4.3](#43-item-stacks-and-effects)).
 
 ### 5.4 Targeting session lifecycle
@@ -1263,12 +1263,12 @@ Source (spell, item, charge, trap, expire chain, Shield) → `ApplyBuff` (refres
 
 **Amended 2026-10-09:** the battle HUD is built in code by `BattleScreen.Build` on the 1170×2532 design stage (absolute design-pixel layout; the old `HudLayout` row constants are gone).
 
+**Hold to read** (*added 2026-11-05, GG-T252, POL-D1 recognition over recall*): holding anything for `InspectCard.HoldSeconds` (0.45 s) opens one floating **InspectCard** (`App/UI/InspectCard.cs`) anchored above the finger (below when there's no room), clamped inside the stage and safe area, eased in over `Timing.Quick` with `ui.select`; releasing anywhere closes it, and the press that opened it never also acts. It works on: ability-bar slots (kind, cost pips, cooldown, reach, damage/heal, buff and its chance, movement effects, description, and why it can't be used now), units on the board (level, HP or ??? until scanned, stats, when it acts, a charging foe's **whole spell**, its brain, plate, every status), status pips in the actor panel, **timeline icons** (turn icons → the unit; cast icons → the spell and how to push it back), and in menus: the Abilities screen's bar cells and Known/Learn rows, every `ItemUi.Row` (shop, equip, items — the full item detail), talent nodes, and the Bestiary's ability chips. The ability bar's five slots share the stage width with even 16-px gutters (they grow on a wide stage instead of the gaps).
+
 ```
 ┌─────────────────────────────────────┐ y=30
 │ [II]     Stage name · Wave n/m   N G│  pause · title/wave · coins this battle
 ├─────────────────────────────────────┤ y=150
-**Hold to read** (*added 2026-11-05, GG-T252, POL-D1 recognition over recall*): holding anything for `InspectCard.HoldSeconds` (0.45 s) opens one floating **InspectCard** (`App/UI/InspectCard.cs`) anchored above the finger (below when there's no room), clamped inside the stage and safe area, eased in over `Timing.Quick` with `ui.select`; releasing anywhere closes it, and the press that opened it never also acts. It works on: ability-bar slots (kind, cost pips, cooldown, reach, damage/heal, buff and its chance, movement effects, description, and why it can't be used now), units on the board (level, HP or ??? until scanned, stats, when it acts, a charging foe's **whole spell**, its brain, plate, every status), status pips in the actor panel, **timeline icons** (turn icons → the unit; cast icons → the spell and how to push it back), and in menus: the Abilities screen's bar cells and Known/Learn rows, every `ItemUi.Row` (shop, equip, items — the full item detail), talent nodes, and the Bestiary's ability chips. The ability bar's five slots share the stage width with even 16-px gutters (they grow on a wide stage instead of the gaps).
-
 │ ─ enemy portraits ──────────────    │  turn icons above the line
 │ ━━━━━━━━━━━━━━━━━━━[Zone 35%] ACT  [GUARD]
 │ ─ cast icons ───────────────────    │  casts below the line
@@ -2630,8 +2630,16 @@ The caravan is the party's moving base — its wagons are the Longmother's own s
 | Armory Wagon | 350 / 800 / 1500 | repairs −20 / −35 / −50 % (`Repair.Cost(c, s, …)`) |
 | Strongbox | 500 / 1200 | expedition completion bonus +25 / +50 % |
 | Scouts | 300 | Adventure lists each battle's foes |
+| Enchanter's Wagon | 700 / 1600 | armor enchants −20 / −40 % gold (`ArmorEnchanting.Gold(c, s, e)`; never below 1; the guided first rune stays free) — GG-T75 |
+| Quartermaster's Ledger | 450 / 1100 | salvage (bag, equipped and Broken) returns +25 / +50 % of each material, rounded half up (`CaravanUpgrades.LedgerYield`) — GG-T75 |
 
 *(Test: `Caravan_upgrades_cost_gold_and_change_how_expeditions_play`.)*
+
+#### 25.12.1 The caravan crew and their barks (GG-T75, added 2026-11-02, owner direction 2026-10-16)
+
+Each wagon has a crew member (`Crew`, `CrewRole` in `caravan.json`), shown on its Caravan card ("Crew: Brannoc, cask-keeper"): Brannoc the cask-keeper (Mana Casks), Sister Ilsabet the wagon medic (Medic Wagon), Old Hask the wagon farrier (Armory Wagon), Penny Tallow the purser (Strongbox), Wren and Dace the outriders (Scouts), Lio the rune apprentice (Enchanter's Wagon) and Osk the quartermaster (Quartermaster's Ledger). They are not Camp NPCs (§25.0.1): they have no station, no Talk and no join scene.
+
+**Barks:** each crew member has a few one-line `Barks`. The Caravan screen's header and, once the Caravan station is open (`CampUnlocks.CaravanOpen`), a small "Around the wagons" window under Camp's gold/time panel each show one line with its speaker (`CaravanUpgrades.Bark(c, s, turn)`). The line changes every time the screen rebuilds. Lines come from the crews whose wagon this save has upgraded, or from every crew before the first upgrade. A bark is **flavor text, not dialogue** (§27): no portrait scene, no branching, no choices, no effects, no flags, nothing to tap. It is not an overworld either (§28).
 ### 25.14 The party of five (added 2026-10-11, owner: "add a fourth and fifth hero onto the team … a 5 player team seems about right for max")
 
 `MaxPartySize` = **5**; a new game's five are picked on `CharacterSelectScreen` (§25.15) rather than fixed. **Amended 2026-10-19 (owner, GG-T118):** the cap stays 5 but a new game starts with **three**; the other two join at story beats ([§25.17](#2517-small-start-story-recruits-gg-t118)). Recruits and rescued guests wait in reserve when the party is full. Camp shows the five in a two-column grid; class blurbs render their [keywords] as highlights.
@@ -2653,16 +2661,8 @@ Owner 2026-10-19: "New Game picks a small party (2-3 heroes) instead of 5; furth
 - **The beats (`dialogues.json`, real narrative as of GG-T120):** after Green Valley I (before the next launch) — a Mage (Red Mage); at the start of Sandsea Reaches — a Support (Engineer), making five; at the start of Frostmaw Caverns — a Tank (Knight); at the start of Veshker Ruins — a Healer (Sage); the last two go to the reserve when the party is full. Every path through each beat ends in the join (the join is on the last node, not a choice). They sit on top of the guest allies (§25.11) and the Summon Circle (§25.10).
 - **Nobody is lost for good:** nothing in the dialogue vocabulary removes a hero.
 - **Bots:** Test Mode and the balance sim never show story, but play every pending beat headlessly before a stage (`DialogueRunner.PlayPendingBeatsHeadless`, first choice) so the recruits still join; the Test Mode cycle line reports them as `story: …`.
-| Enchanter's Wagon | 700 / 1600 | armor enchants −20 / −40 % gold (`ArmorEnchanting.Gold(c, s, e)`; never below 1; the guided first rune stays free) — GG-T75 |
-| Quartermaster's Ledger | 450 / 1100 | salvage (bag, equipped and Broken) returns +25 / +50 % of each material, rounded half up (`CaravanUpgrades.LedgerYield`) — GG-T75 |
 - **Balance (`BalanceReport.Campaign_pacing_table`, 4 seeds, up to 4 attempts a stage):** the default rows now start with the trio and play story beats. Greedy finishes 4/4 (as before); greedy+camp 3/4 (was 2/4); Green Valley II onward plays like the five-hero start because the fourth hero arrives before it and the fifth at Sandsea Reaches. The only early stage the trio found harder was Green Valley I for the casual bot (30% of attempts vs 66% with five), so it was lightened (§22.7) and is now 80% with 61% HP left. The table keeps a `greedy+camp trio no-story` row (GG-T87's trio-start: no story recruits, so the Summon Circle step always has a slot to fill) and a `greedy five-start (pre-GG-T118)` row as the yardstick.
 - *(Tests: `StoryRecruitTests` — the small start, JoinHero's named/role/missing-role fallbacks, the summon pool and guests left alone, a full party sends the recruit to the reserve, the `$recruit` face is the joiner, every path through every recruit beat adds exactly one hero, story beats grow the trio to five by Sandsea Reaches, recruits arrive at the roster's experience, Test Mode's headless join, JoinHero validation. Harness: `python tools/harness.py recruits` picks three on the real party select, clears Green Valley I and checks the recruit dialogue plays with the joining hero's portrait and the party grows to four; `uicheck` checks a new game starts with three.)*
-
-#### 25.12.1 The caravan crew and their barks (GG-T75, added 2026-11-02, owner direction 2026-10-16)
-
-Each wagon has a crew member (`Crew`, `CrewRole` in `caravan.json`), shown on its Caravan card ("Crew: Brannoc, cask-keeper"): Brannoc the cask-keeper (Mana Casks), Sister Ilsabet the wagon medic (Medic Wagon), Old Hask the wagon farrier (Armory Wagon), Penny Tallow the purser (Strongbox), Wren and Dace the outriders (Scouts), Lio the rune apprentice (Enchanter's Wagon) and Osk the quartermaster (Quartermaster's Ledger). They are not Camp NPCs (§25.0.1): they have no station, no Talk and no join scene.
-
-**Barks:** each crew member has a few one-line `Barks`. The Caravan screen's header and, once the Caravan station is open (`CampUnlocks.CaravanOpen`), a small "Around the wagons" window under Camp's gold/time panel each show one line with its speaker (`CaravanUpgrades.Bark(c, s, turn)`). The line changes every time the screen rebuilds. Lines come from the crews whose wagon this save has upgraded, or from every crew before the first upgrade. A bark is **flavor text, not dialogue** (§27): no portrait scene, no branching, no choices, no effects, no flags, nothing to tap. It is not an overworld either (§28).
 
 ### 25.18 Rested and the paywall hooks (GG-T232)
 
@@ -2726,7 +2726,6 @@ One UI-only camera (`cullingMask = 0`, black clear); the board is UI Toolkit, so
 
 `GameApp.ApplySafeArea` insets the `screens` container where `Screen.safeArea` (notch, home bar) overlaps the stage — which on a phone that fills the screen is every time. `-safeArea <topPx>,<bottomPx>` simulates one on desktop.
 
----
 ### 26.6 Units and overflow (GG-T272, GG-T271; owner 2026-11-05)
 
 Owner: "measure things in agnostic units" and "all overflow should be avoided when possible, when not possible automatic marquee that prints out the rest and then resets back to left".
@@ -2734,6 +2733,7 @@ Owner: "measure things in agnostic units" and "all overflow should be avoided wh
 - **Units.** Design px already scale uniformly to every resolution (§26.2), so type (`TypeScale`), spacing (`Space`, 8-px scale with a 4-px half step) and fixed-size art and controls (`Size`) stay in design px. What design px don't absorb is aspect, so layout widths and vertical bands that should breathe use stage units: `Fit.W(%)` / `Fit.H(%)` (percent of the safe-area stage, `GameApp.SafeTop/SafeBottom`) or flex/`Length.Percent`, and every full-width panel sits `Fit.Edge` (24) from the stage edge. No App or USS margin, padding, size or position is a bare number any more (`tools/polish_lint.py` POL-C1). The battle board's 1080-px grid and its HUD rows stay fixed game geometry, named beside `BoardTop` (`BannerTop`, `InfoPanelTop`, `TopBarHeight`, `TimelineFrameHeight`).
 - **Overflow.** Text wraps where it can. A single line that can't (a menu row's value — prices, counts, "Lv 1 · 5 waves" — or a fixed-width name) is a marquee (`Ui.Marquee`, `App/UI/Marquee.cs`): it sits in a clipping box; when the text is wider than the box it holds (`Timing.Cinematic`), scrolls left at 90 px/s with `Ease.InOut` until the end shows, holds, fades out, snaps back to the start, fades in and repeats, on pause-aware Tween time. With Reduce Motion it shows an ellipsis instead. Menu-row values never shrink below their text and never take more than 55% of the row, so the row's label wraps instead (before: prices broke as "30 / G" beside a two-line name). The layout audit counts a marquee label as handled, not as overflow, and measures wrapped text with a 1-px rounding allowance.
 
+---
 
 ## 27. Story crawl (no dialog)
 
