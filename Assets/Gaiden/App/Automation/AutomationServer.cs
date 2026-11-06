@@ -211,8 +211,9 @@ namespace GridGame.App.Automation
                 case "clicktext":
                 {
                     var target = q["text"];
-                    var label = app.Stage.Query<Label>().ToList().FirstOrDefault(l => l.text != null && l.text.Contains(target) && l.resolvedStyle.display != DisplayStyle.None && l.worldBound.width > 0);
-                    var btn = app.Stage.Query<Button>().ToList().FirstOrDefault(b => b.text != null && b.text.Contains(target) && b.worldBound.width > 0);
+                    // TextFit.SourceOf: the words as given, before GG-T305's line breaks or a marquee's hiding tag.
+                    var label = app.Stage.Query<Label>().ToList().FirstOrDefault(l => TextFit.SourceOf(l) is string lt && lt.Contains(target) && l.resolvedStyle.display != DisplayStyle.None && l.worldBound.width > 0);
+                    var btn = app.Stage.Query<Button>().ToList().FirstOrDefault(b => TextFit.SourceOf(b) is string bt && bt.Contains(target) && b.worldBound.width > 0);
                     VisualElement hit = (VisualElement)btn ?? label;
                     if (hit == null) return new { error = $"no visible text '{target}'" };
                     StartCoroutine(ScrollIntoViewThenTap(hit, reply));
@@ -441,10 +442,25 @@ namespace GridGame.App.Automation
                     return new { x = tl.x, y = tl.y, w = br.x - tl.x, h = br.y - tl.y, visible = e.resolvedStyle.display != DisplayStyle.None };
                 }
                 case "layout": return LayoutAudit();
+                case "textinfo":
+                {
+                    // GG-T305 diagnostics: how each text element containing `text` is laid out and fitted.
+                    var needle = q["text"] ?? "";
+                    return app.Stage.Query<TextElement>().ToList().Where(t => (TextFit.SourceOf(t) ?? "").Contains(needle)).Take(20).Select(t => new
+                    {
+                        text = t.text, source = TextFit.SourceOf(t), type = t.GetType().Name, classes = string.Join(" ", t.GetClasses()),
+                        parent = t.parent == null ? null : t.parent.GetType().Name + "." + string.Join(".", t.parent.GetClasses()),
+                        layout = t.layout.ToString(), content = t.contentRect.ToString(), world = t.worldBound.ToString(),
+                        ws = t.resolvedStyle.whiteSpace.ToString(), minW = t.resolvedStyle.minWidth.ToString(), maxW = t.resolvedStyle.maxWidth.ToString(),
+                        shrink = t.resolvedStyle.flexShrink, grow = t.resolvedStyle.flexGrow, display = t.resolvedStyle.display.ToString(),
+                        need = t.MeasureTextSize(TextFit.SourceOf(t) ?? "", 0, VisualElement.MeasureMode.Undefined, 0, VisualElement.MeasureMode.Undefined).ToString(),
+                        needOwn = t.MeasureTextSize(t.text ?? "", 0, VisualElement.MeasureMode.Undefined, 0, VisualElement.MeasureMode.Undefined).ToString(),
+                    }).ToList();
+                }
                 case "texts":
                     return app.Stage.Query<TextElement>().ToList()
                         .Where(t => !string.IsNullOrEmpty(t.text) && t.resolvedStyle.display != DisplayStyle.None && t.resolvedStyle.visibility == Visibility.Visible && t.worldBound.width > 0 && Opaque(t))
-                        .Select(t => t.text).ToList();
+                        .Select(TextFit.SourceOf).ToList();
                 case "names":
                 {
                     var prefix = q["prefix"] ?? "";
@@ -471,6 +487,7 @@ namespace GridGame.App.Automation
                         case "cutins": st.PincerCutIns = on; break;
                         case "confirm": st.ConfirmActions = on; break;
                         case "menutheme": st.MenuTheme = q["value"]; break; // GG-T185: value=Slate|Classic|...
+                        case "hyphenate": st.Hyphenate = on; break; // GG-T305: Text wrapping → Hyphenate
                         default: return new { error = "unknown key" };
                     }
                     app.ApplySettings();
@@ -962,7 +979,8 @@ namespace GridGame.App.Automation
                 if (wb.xMin < sb.xMin - 2 || wb.xMax > sb.xMax + 2) problems.Add($"label off-stage horizontally '{Trim(l.text)}' x={DesignPoint(wb.position).x:0}..{DesignPoint(wb.max).x:0}");
                 var size = l.MeasureTextSize(l.text, 0, VisualElement.MeasureMode.Undefined, 0, VisualElement.MeasureMode.Undefined);
                 float k = GameApp.StageWidth / sb.width;
-                if (l.resolvedStyle.whiteSpace == WhiteSpace.NoWrap && size.x > l.contentRect.width + 4 && l.contentRect.width > 0)
+                if (l.resolvedStyle.whiteSpace == WhiteSpace.NoWrap && size.x > l.contentRect.width + 4 && l.contentRect.width > 0 && !l.ClassListContains(Marquee.HostClass)
+                    && !(l.parent != null && l.parent.ClassListContains(Marquee.BoxClass)))
                     problems.Add($"text overflows ({size.x:0}>{l.contentRect.width:0}) '{Trim(l.text)}'");
             }
             // Squashed controls: a tab or button drawn well short of its own styled height means its column ran out

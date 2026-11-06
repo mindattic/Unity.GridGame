@@ -27,6 +27,11 @@ namespace GridGame.App
             });
         }
 
+        /// <summary>GG-T305: <paramref name="text"/> with soft hyphens (U+00AD) at every safe English break point
+        /// (<see cref="GridGame.Meta.Hyphenation"/>; never in proper nouns, [keywords], numbers or rich-text spans).
+        /// Wrapped labels are laid out by <see cref="TextFit"/>; this is for text that does its own layout.</summary>
+        public static string Hyphenate(string text) => GridGame.Meta.Hyphenation.Hyphenate(text);
+
         /// <summary>Applies <see cref="Paragraphs"/> now and whenever a panel refills (detail windows rebuild on selection).</summary>
         public static void Watch(VisualElement root) => root.schedule.Execute(() => Paragraphs(root)).Every(200);
     }

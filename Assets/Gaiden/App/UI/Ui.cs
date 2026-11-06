@@ -58,7 +58,9 @@ namespace GridGame.App
             return l;
         }
 
-        /// <summary>GG-T271: a single-line label that would overflow scrolls to show the rest instead (see <see cref="GridGame.App.Marquee"/>).</summary>
+        /// <summary>GG-T271/T305: makes a label one line that may shrink below its text; when it overflows it becomes the
+        /// shared marquee (see <see cref="GridGame.App.Marquee"/>; every overflowing one-liner gets it, this only opts a
+        /// label into shrinking).</summary>
         public static Label Marquee(Label label, bool grow = true) => GridGame.App.Marquee.Apply(label, grow);
 
         public static VisualElement Window(string title = null, VisualElement parent = null, string classes = null)
@@ -189,8 +191,13 @@ namespace GridGame.App
             // A value (price, count, "Lv 1 · 5 waves") stays on one line: never squeezed below its text, never wider
             // than 55% of the row; longer ones scroll (GG-T271). The label wraps instead.
             Marquee(v, false);
-            v.parent.style.flexShrink = 0f;
-            v.parent.style.maxWidth = Length.Percent(55);
+            v.style.flexShrink = 0f;
+            // In px from the row's width: a percent max-width on a text node resolves against the wrong base (GG-T305).
+            row.RegisterCallback<GeometryChangedEvent>(_ =>
+            {
+                float cap = Mathf.Floor(row.contentRect.width * 0.55f);
+                if (cap > 0 && Mathf.Abs(v.resolvedStyle.maxWidth.value - cap) > 0.5f) v.style.maxWidth = cap;
+            });
             row.EnableInClassList("menu-row--disabled", !enabled);
             Pressable(row);
             row.RegisterCallback<PointerEnterEvent>(_ => Select(row));

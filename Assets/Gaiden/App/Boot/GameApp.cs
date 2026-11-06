@@ -91,6 +91,7 @@ namespace GridGame.App
 
             BuildPanel();
             Router = new ScreenRouter(Stage.Q("screens"), Stage.Q("fade"));
+            TextFit.Install(Document.rootVisualElement); // GG-T305: every wrapped line and every overflowing one-liner
             ApplySettings(); // the profile's settings hold on the title screen too, before any save is loaded
 
             if (CommandLine.Has("-noDiagonalSlip")) BattleConfig.DiagonalSlipEnabled = false;
@@ -306,6 +307,7 @@ namespace GridGame.App
             Art.ApplyTheme(st.MenuTheme);
             Ui.ApplyMenuTheme(Document?.rootVisualElement);
             Fonts.ApplyFont(st.FontName);
+            TextFit.Configure(st.Hyphenate);
         }
 
         /// <summary>Writes the active profile's settings to its settings.json (a settings change, bible §15.2).</summary>

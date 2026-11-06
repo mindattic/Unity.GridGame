@@ -62,7 +62,9 @@ namespace GridGame.App.Automation
 
                 var why = new List<string>();
                 // GG-T271: a marquee label is meant to be wider than its clipping box; the box scrolls it into view.
-                bool marquee = t.parent != null && t.parent.ClassListContains(Marquee.BoxClass);
+                // GG-T305: its host draws the same line invisibly (and with Reduce Motion ellipsizes it) — handled too.
+                bool marquee = (t.parent != null && t.parent.ClassListContains(Marquee.BoxClass)) || t.ClassListContains(Marquee.HostClass);
+                if (t.ClassListContains(Marquee.HostClass) && t.Q(className: Marquee.BoxClass) != null) continue; // its overlay is the visible copy
                 bool scrolled = InScroll(t); // scroll content legitimately runs past the stage
                 if (!scrolled && !marquee && (wb.xMin < sb.xMin - 2 || wb.xMax > sb.xMax + 2 || wb.yMin < sb.yMin - 2 || wb.yMax > sb.yMax + 2))
                     why.Add($"off-stage {r.xMin:0},{r.yMin:0}..{r.xMax:0},{r.yMax:0}");

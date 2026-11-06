@@ -1552,6 +1552,9 @@ namespace GridGame.App
                 App.ApplySettings(); App.SaveSettings(); Refresh();
             }
             Ui.MenuRow("Font", st.FontName, CycleFont, w);
+            // GG-T305: how wrapped text breaks, applied live to every screen (TextFit).
+            Ui.MenuRow("Text wrapping", st.Hyphenate ? "Hyphenate" : "Word wrap",
+                () => { st.Hyphenate = !st.Hyphenate; App.ApplySettings(); App.SaveSettings(); Refresh(); }, w).name = "settings-text-wrap";
             var diff = st.Difficulty;
             void CycleDifficulty()
             {

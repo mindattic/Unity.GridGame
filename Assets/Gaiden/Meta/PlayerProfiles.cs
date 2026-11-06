@@ -29,6 +29,7 @@ namespace GridGame.Meta
             public const string ConfirmActions = "confirmActions";
             public const string MenuTheme = "menuTheme";
             public const string FontName = "fontName";
+            public const string Hyphenate = "hyphenate";
             public const string Difficulty = "difficulty";
         }
 
@@ -54,6 +55,7 @@ namespace GridGame.Meta
             d.ConfirmActions = g.GetBool(Keys.ConfirmActions, d.ConfirmActions);
             d.MenuTheme = g.GetString(Keys.MenuTheme, d.MenuTheme);
             d.FontName = g.GetString(Keys.FontName, d.FontName);
+            d.Hyphenate = g.GetBool(Keys.Hyphenate, d.Hyphenate);
             var diff = g.GetObject(Keys.Difficulty);
             if (diff != null)
             {
@@ -89,6 +91,7 @@ namespace GridGame.Meta
             g.Set(Keys.ConfirmActions, s.ConfirmActions);
             g.Set(Keys.MenuTheme, s.MenuTheme ?? "Classic");
             g.Set(Keys.FontName, s.FontName ?? "Classic");
+            g.Set(Keys.Hyphenate, s.Hyphenate);
             var x = s.Difficulty ?? new DifficultySettings();
             var diff = g.GetOrAddObject(Keys.Difficulty);
             diff.Set("preset", x.Preset ?? "Normal");

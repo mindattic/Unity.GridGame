@@ -817,6 +817,14 @@ Owner: "gaining mana is too generous since I see the whole bar filled almost in 
   - Six heroes spawn in rows 6–7 on every campaign stage and share one bag. Camp shows six in its two-column grid.
 - *(Tests: `PartyCapTests`, `StoryRecruitTests`.)*
 
+## 2026-11-06 — Text wraps itself; every overflowing line is a marquee (owner, GG-T305)
+
+Owner: "Perfect text wrapping on all things (hyphenated or word wrap as an option), and one-line things like buttons have a restarting marquee that scrolls the info, flashes 3 times, then resets to left-most and begins again."
+
+- **Every** single-line text that overflows its box (buttons, tabs, menu values, names, chips, badges, headers) is the one shared marquee, found automatically by `TextFit`; nothing opts in. The cycle ends in **three flashes** before the snap back (was: fade out, snap, fade in), and it no longer speeds up with Battle speed. Reduce Motion still shows an ellipsis.
+- Wrapped text is laid out by our own line breaker (no lone last word, no line ending in "a"/"I"/a dash, overlong words hyphenated instead of cut mid-glyph) and is left exactly as given when the engine's wrap is already clean.
+- **Settings → Text wrapping: Word wrap (default) / Hyphenate**, per profile, live. Hyphenation is a small deterministic English rule set (suffixes, a few prefixes, consonant-cluster onsets), not the full TeX pattern set: it only breaks where it is sure, and never in proper nouns, [keywords], numbers or rich-text spans. *Why:* a no-download, testable helper; a wrong break reads worse than a ragged line.
+
 ## 2026-11-06 — Active, Passive and Reactive abilities on one trigger engine (GG-T296)
 
 - **Was:** `AbilityKind` had only `Passive` next to the Active kinds. Each of the ten battle passives was its own C# path (`HasPassive`, `MaybeCounter`, `MaybeThorns`, Berserk inside the enemy strike multiplier, and so on), several for enemies only. Passives learned from skill-tree nodes never reached the battle.

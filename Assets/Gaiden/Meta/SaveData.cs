@@ -318,6 +318,9 @@ namespace GridGame.Meta
         public string MenuTheme = "Classic";
         /// <summary>Body font by name (App.Fonts.Presets); unknown/missing names fall back to Classic.</summary>
         public string FontName = "Classic";
+        /// <summary>Settings → Text wrapping (GG-T305): false = Word wrap (default), true = Hyphenate (ragged lines and
+        /// overlong words break at <see cref="Hyphenation"/> points).</summary>
+        public bool Hyphenate;
         /// <summary>Difficulty preset + multipliers (§22.9). Scaffolding only — every multiplier is inert
         /// at 1.0 until balance work consumes it; only Custom lets the player move them away from 1.0 today.</summary>
         public DifficultySettings Difficulty = new DifficultySettings();
