@@ -49,6 +49,8 @@
     --type-title: 120px;
     --space-4: 4px;
     --space-8: 8px;
+    --space-12: 12px; /* half of the 24-px target gap: two neighbours' margins add up to POL-C3 */
+    --size-target: 132px; /* POL-C2 minimum tap target (44 pt) */
     --space-16: 16px;
     --space-24: 24px;
     --space-32: 32px;
@@ -132,10 +134,10 @@
 .menu-row {
     flex-direction: row;
     align-items: center;
-    min-height: 96px;
+    min-height: var(--size-target);
     padding: var(--space-8) var(--space-16) var(--space-8) var(--space-8);
     border-radius: 10px;
-    margin: var(--space-4) 0;
+    margin: var(--space-12) 0;
 }
 .menu-row:hover { background-color: rgba(255, 255, 255, 0.06); }
 .menu-row--selected { background-color: rgba(140, 170, 255, 0.20); }
@@ -150,9 +152,10 @@
 /* ── Buttons ─────────────────────────────────────────────────────────────── */
 /* Every button stands on a darker lip (the thick bottom border). Pressing sinks it onto the lip. */
 .btn {
-    min-height: 104px;
+    min-height: var(--size-target);
+    min-width: var(--size-target);
     padding: 0 var(--space-48);
-    margin: var(--space-8);
+    margin: var(--space-12);
     border-width: 4px;
     border-bottom-width: 12px;
     border-radius: 16px;
@@ -197,9 +200,9 @@
 .slot--targeting { scale: 1.06 1.06; }
 .slot.is-pressed { scale: 0.92 0.92; translate: 0 10px; }
 .btn--disabled { opacity: 0.4; }
-.btn--small { min-height: 80px; font-size: var(--type-small); padding: 0 24px; border-bottom-width: 9px; }
+.btn--small { min-height: var(--size-target); font-size: var(--type-small); padding: 0 24px; border-bottom-width: 9px; }
 .btn--small.is-pressed { border-bottom-width: 3px; translate: 0 6px; }
-.btn--icon { width: 104px; padding: 0; }
+.btn--icon { width: var(--size-target); padding: 0; }
 
 /* ── Header bar ──────────────────────────────────────────────────────────── */
 .header {
@@ -215,11 +218,11 @@
 .header-gold { font-size: var(--type-h3); color: var(--color-gold); -unity-text-align: middle-right; margin-right: var(--space-16); }
 
 /* ── Tabs ────────────────────────────────────────────────────────────────── */
-.tabs { flex-direction: row; margin: var(--space-8) var(--space-8) 0 var(--space-8); flex-shrink: 0; }
+.tabs { flex-direction: row; margin: var(--space-8) var(--space-8) 0 var(--space-8); padding: 0 var(--space-12); flex-shrink: 0; } /* edge = tab margin 12 + 12 = gap 24 (POL-C8) */
 .tab {
     flex-grow: 1;
-    height: 96px;
-    margin: 0 var(--space-4);
+    height: var(--size-target);
+    margin: 0 var(--space-12);
     border-width: 4px 4px 0 4px;
     border-color: var(--color-frame);
     border-top-left-radius: 16px;
