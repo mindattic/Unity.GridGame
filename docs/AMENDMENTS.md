@@ -844,3 +844,16 @@ Owner: "Perfect text wrapping on all things (hyphenated or word wrap as an optio
   - A hold still opens the InspectCard. Both stay gated by the Bestiary knowledge tier.
 
 - **Bracketed terms are tap tooltips** (owner 2026-11-06, GG-T300: "anything in brackets is a tap tooltip"). Content marks keywords as `[term]`, each validated against `glossary.json`; tapping one opens a definition card, alongside (not replacing) hold-to-read. Unquantified odds use five fixed chance words ([slight]/[small]/[fair]/[good]/[likely]). *Why:* descriptions stay short while every mechanic word explains itself on demand.
+
+## 2026-11-06 — Difficulty is one 1–10 dial, starting at 10, and pays more the higher it is (owner, GG-T309)
+
+Owner: "This is a difficulty question, and the higher the difficulty the greater the rewards. On a 1-10 scale you would start on 10 and let players adjust the game if they feel it is too easy or hard."
+
+- **Was:** §22.9's scaffold — an Easy/Normal/Hard/Custom preset plus six multipliers, all pinned at 1.0 and read by nothing but telemetry.
+- **Now:** see BIBLE §22.9.
+  - One profile setting, `Difficulty.Level` 1..10, **10 by default**; Settings shows − / level / + with a one-line description and the reward multiplier, and it applies from the next battle.
+  - `DifficultyTable` (validated, monotonic) scales enemy HP and plates ×0.55→×1.0, enemy damage to heroes ×0.60→×1.0 and enemy level −2→0 from 1 to 10. Level 10 is the designed game: its enemy side is exactly as authored, so every balance number still holds there.
+  - Rewards rise with the dial: coins, XP and drop chance ×0.6 at 1 → ×1.0 at 5 → **×1.5 at 10**. *Effect on the default game:* a player at 10 now earns 1.5× the gold, XP and drops the economy paid before; the curve is one table row per level if that needs retuning.
+  - Old settings migrate: Easy → 5, a below-×1 Custom → the nearest level, everything else → 10.
+  - Soaks fight at `GAIDEN_DIFFICULTY` (default 10); `polish.py --balance --difficulty N`.
+- *(Tests: `DifficultyTests`.)*

@@ -109,6 +109,7 @@ namespace GridGame.Tests
                         plan.Add((Enumerable.Range(0, 5).Select(i => heroes[(start + i + round * 2) % heroes.Count]).Distinct().ToList(), stages[b % stages.Count]));
             }
             string onlyStage = Environment.GetEnvironmentVariable("GAIDEN_ABILITY_STAGE");
+            int difficulty = BotDifficulty.FromEnv(); // GG-T309: GAIDEN_DIFFICULTY=1..10 (default 10, the designed game)
             int battle = 0;
             foreach (var (party, stage) in plan)
                 {
@@ -119,7 +120,7 @@ namespace GridGame.Tests
                     // GG-T292: GAIDEN_LEVEL_OFFSET=-3 fights under-levelled, a stress test that shows how much skill matters.
                     int level = Math.Max(1, Progression.StageRecommendedLevel(c, save, stage) + (int.TryParse(Environment.GetEnvironmentVariable("GAIDEN_LEVEL_OFFSET"), out var lo) ? lo : 0));
                     foreach (var h in save.Roster) h.TotalXp = Formulas.TotalXpForLevel(level);
-                    var setup = BattleFactory.Build(c, save, stage.Id, seed);
+                    var setup = BattleFactory.Build(c, save, stage.Id, seed, difficulty);
                     var opening = new List<BattleEvent>();
                     var s = BattleEngine.Create(c, setup, opening);
                     var rec = new BattleRecorder(s, setup, source, opening);

@@ -2,6 +2,7 @@ using System;
 using System.Collections.Generic;
 using System.IO;
 using System.Linq;
+using GridGame.Core.Battle;
 using Newtonsoft.Json;
 using Newtonsoft.Json.Converters;
 using Newtonsoft.Json.Linq;
@@ -56,18 +57,13 @@ namespace GridGame.Meta
             d.MenuTheme = g.GetString(Keys.MenuTheme, d.MenuTheme);
             d.FontName = g.GetString(Keys.FontName, d.FontName);
             d.Hyphenate = g.GetBool(Keys.Hyphenate, d.Hyphenate);
+            // GG-T309: {"level": 1..10}. A file from before it still holds the §22.9 preset: map it once (it is
+            // rewritten as a level on the next save); a missing block is a new profile, at the default 10.
             var diff = g.GetObject(Keys.Difficulty);
             if (diff != null)
-            {
-                var x = d.Difficulty;
-                x.Preset = diff.GetString("preset", x.Preset);
-                x.EnemyHp = diff.GetFloat("enemyHp", x.EnemyHp);
-                x.EnemyDamage = diff.GetFloat("enemyDamage", x.EnemyDamage);
-                x.EnemySpeed = diff.GetFloat("enemySpeed", x.EnemySpeed);
-                x.RewardGold = diff.GetFloat("rewardGold", x.RewardGold);
-                x.RewardXp = diff.GetFloat("rewardXp", x.RewardXp);
-                x.ItemDropRate = diff.GetFloat("itemDropRate", x.ItemDropRate);
-            }
+                d.Difficulty.Level = diff.ContainsKey(DifficultyLevelKey)
+                    ? DifficultyTable.Clamp(diff.GetInt(DifficultyLevelKey, DifficultyTable.Default))
+                    : DifficultySettings.FromLegacyPreset(diff.GetString("preset", null), diff.GetFloat("enemyHp", 1f), diff.GetFloat("enemyDamage", 1f));
             return d;
         }
 
@@ -94,14 +90,13 @@ namespace GridGame.Meta
             g.Set(Keys.Hyphenate, s.Hyphenate);
             var x = s.Difficulty ?? new DifficultySettings();
             var diff = g.GetOrAddObject(Keys.Difficulty);
-            diff.Set("preset", x.Preset ?? "Normal");
-            diff.Set("enemyHp", x.EnemyHp);
-            diff.Set("enemyDamage", x.EnemyDamage);
-            diff.Set("enemySpeed", x.EnemySpeed);
-            diff.Set("rewardGold", x.RewardGold);
-            diff.Set("rewardXp", x.RewardXp);
-            diff.Set("itemDropRate", x.ItemDropRate);
+            diff.Set(DifficultyLevelKey, DifficultyTable.Clamp(x.Level));
+            foreach (var legacy in new[] { "preset", "enemyHp", "enemyDamage", "enemySpeed", "rewardGold", "rewardXp", "itemDropRate" })
+                diff.Remove(legacy); // the §22.9 scaffold's keys, retired by the dial (GG-T309)
         }
+
+        /// <summary>The dial's key inside the <c>difficulty</c> object (GG-T309).</summary>
+        public const string DifficultyLevelKey = "level";
 
         private static float Clamp01(float v) => float.IsNaN(v) ? 0f : Math.Max(0f, Math.Min(1f, v));
     }
@@ -243,7 +238,15 @@ namespace GridGame.Meta
                 var token = JObject.Parse(File.ReadAllText(slotPath))["Settings"];
                 if (token == null || token.Type != JTokenType.Object) return null;
                 var s = token.ToObject<SettingsSave>(JsonSerializer.Create(SaveFiles.Settings));
-                if (s != null) s.Difficulty ??= new DifficultySettings();
+                if (s != null)
+                {
+                    // A slot's Settings block predates the dial (GG-T309): it can only hold the §22.9 preset.
+                    s.Difficulty = new DifficultySettings();
+                    if (token["Difficulty"] is JObject d && d["Level"] == null)
+                        s.Difficulty.Level = DifficultySettings.FromLegacyPreset((string)d["Preset"],
+                            d["EnemyHp"]?.Value<float>() ?? 1f, d["EnemyDamage"]?.Value<float>() ?? 1f);
+                    else if (token["Difficulty"] is JObject d2) s.Difficulty.Level = DifficultyTable.Clamp(d2["Level"].Value<int>());
+                }
                 return s;
             }
             catch (Exception) { return null; }

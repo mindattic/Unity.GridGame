@@ -264,7 +264,7 @@ namespace GridGame.Core.Battle
                 }
                 var def = C.TryClass(sp.Class);
                 if (def == null) continue;
-                int level = S.Stage.IsTest ? sp.Level : Math.Max(sp.Level, S.RecommendedLevel) + S.NewGamePlus * BattleConfig.NgPlusLevelStep;
+                int level = S.Stage.IsTest ? sp.Level : Math.Max(sp.Level, S.RecommendedLevel) + S.NewGamePlus * BattleConfig.NgPlusLevelStep + DifficultyTable.At(S.Difficulty).EnemyLevelOffset;
                 // No room anywhere for this footprint: a wave's opening spawn is skipped (the board was just cleared,
                 // so this only happens on a stage packed with blocks) — never stacked on another actor (GG-T97).
                 var u = SpawnEnemy(def, level, sp.X, sp.Y);
@@ -289,7 +289,7 @@ namespace GridGame.Core.Battle
                 if (pending.Consumed || pending.Wave != S.Wave || S.Clock < pending.TriggerClock) continue;
                 var def = C.TryClass(pending.Spawn.Class);
                 if (def == null) { pending.Consumed = true; continue; }
-                int level = S.Stage.IsTest ? pending.Spawn.Level : Math.Max(pending.Spawn.Level, S.RecommendedLevel) + S.NewGamePlus * BattleConfig.NgPlusLevelStep;
+                int level = S.Stage.IsTest ? pending.Spawn.Level : Math.Max(pending.Spawn.Level, S.RecommendedLevel) + S.NewGamePlus * BattleConfig.NgPlusLevelStep + DifficultyTable.At(S.Difficulty).EnemyLevelOffset;
                 var u = SpawnEnemy(def, level, pending.Spawn.X, pending.Spawn.Y);
                 if (u == null)
                 {
@@ -340,9 +340,11 @@ namespace GridGame.Core.Battle
                 H = h,
             };
             u.LevelStats = Formulas.StatsAtLevel(def, u.Level);
-            u.MaxHp = Math.Max(1, (int)Math.Round(Formulas.MaxHp(u.Effective, u.Level) * BattleConfig.EnemyHpScale));
+            // The difficulty dial (GG-T309) scales HP and plates; 1.0 at level 10 and on test stages.
+            float hpScale = BattleConfig.EnemyHpScale * (S.Stage != null && S.Stage.IsTest ? 1f : DifficultyTable.At(S.Difficulty).EnemyHp);
+            u.MaxHp = Math.Max(1, (int)Math.Round(Formulas.MaxHp(u.Effective, u.Level) * hpScale));
             u.Hp = u.MaxHp;
-            if (def.ArmorPlate > 0) u.PlateHp = u.PlateMax = Math.Max(1, (int)Math.Round(def.ArmorPlate * (1f + BattleConfig.PlatePerLevel * (u.Level - 1)) * BattleConfig.EnemyHpScale));
+            if (def.ArmorPlate > 0) u.PlateHp = u.PlateMax = Math.Max(1, (int)Math.Round(def.ArmorPlate * (1f + BattleConfig.PlatePerLevel * (u.Level - 1)) * hpScale));
             if (!AddUnit(u)) return null;
             if (u.PlateMax > 0) FaceTarget(u, false);
             S.Timeline.Add(new TimelineEntry

@@ -1801,7 +1801,7 @@ persistentDataPath/Profiles/
 ├─ <Name>/settings.json        {"format":"mindattic.settings","version":1,"common":{…},"game":{…}}
 │   common: musicVolume, sfxVolume, muteMusic, muteSfx, reduceMotion, language   (every MindAttic game)
 │   game:   battleSpeed, dragTimer, colorblindMode, pincerCutIns, confirmActions,
-│           menuTheme, fontName, difficulty{preset, enemyHp, enemyDamage, enemySpeed, rewardGold, rewardXp, itemDropRate}
+│           menuTheme, fontName, difficulty{level}   (1..10, default 10; §22.9)
 ├─ <Name>/Saves/slot1-3.json   that profile's save slots (§15.1)
 └─ .trash/<Name>~<UTC>         deleted profiles, moved aside, never erased
 ```
@@ -1979,7 +1979,7 @@ PostBattle — gold, items, unlocks, bounty ════════════
 - **Farming is the point:** cleared stages stay replayable and drop tables differ per enemy.
 - A strip above the list shows the active bounty's progress.
 
-**Difficulty curve:** `Progression.RecommendedLevel(i) = i + 1`; spawned enemy levels are `max(authored, recommended)`; test stages are exempt. XP and coins scale with enemy level.
+**Difficulty curve:** `Progression.RecommendedLevel(i) = i + 1`; spawned enemy levels are `max(authored, recommended)`; test stages are exempt. XP and coins scale with enemy level. The player's difficulty dial ([§22.9](#229-difficulty-settings-scaffolding-added-2026-10-11-owner-direction)) then scales the enemy side down from the designed 10 and the rewards with it.
 
 **Amended 2026-11-05 (GG-T261, POL-G1/G2):** the casual-bot curve is measured by `python tools/polish.py --balance` (casual bot, rotating five-hero parties at the stage's level). Before: Frostmaw Caverns I–III and Veshker Ruins I–III won 0 %, Green Valley III 0 %, Green Valley II and Sandsea Reaches II 100 % — the zeros were the remains rule (§14.5), not the waves. After the remains fix, wave trims where losses clustered and additions where it was a walk-over — Sandsea Reaches I wave 5 (−1 Mecha Armor), II waves 1/4 (+Scorpion, +Soldier), III waves 2/4 (+Tech Gremlin, +Vulture); Mireholt Fens I wave 5 (Hag → Lurker); Green Valley III waves 2/3 (+Wolf, +Ganger); Frostmaw Caverns I waves 3/4 (a Goblin Thug for one Ceramic Knight and for the Troll), II wave 3 (+Goblin Thug), III waves 2/5 (a Goblin Thug for one Ceramic Knight, −Ice Mauler; the Cyclops' GravityStamp stays); Veshker Ruins II wave 1 (−Bat), III waves 1/2/4 (the two-undead Flank group, one Bat, −Undead) — every main stage now wins 25–100 % with 8 rotating parties (most 50–88 %; party make-up swings a stage ±25 %). POL-G1 17.4 → 31.0, POL-G2 71.4 → 78.6.
 
@@ -2068,24 +2068,61 @@ non-empty (`PostBattleScreen.RouteFrom` decides; skipped entirely otherwise). On
 
 ### 22.9 Difficulty settings (scaffolding, added 2026-10-11, owner direction)
 
-Owner: a Difficulty selection with presets and a Custom mode "so when you read the telemetry you can ML
-it and learn what multipliers affect what; for right now just keep everything at 1.0."
+**Amended 2026-11-06 (owner, GG-T309): one dial, 1–10, starting at 10.** Owner: "This is a difficulty question, and
+the higher the difficulty the greater the rewards. On a 1-10 scale you would start on 10 and let players adjust the
+game if they feel it is too easy or hard." The Easy/Normal/Hard/Custom preset and its six inert multipliers (below,
+superseded) are gone.
 
-- `SettingsSave.Difficulty` (`DifficultySettings`): a `Preset` (`"Easy"`/`"Normal"`/`"Hard"`/`"Custom"`,
-  default `"Normal"`) plus six multipliers — `EnemyHp`, `EnemyDamage`, `EnemySpeed`, `RewardGold`,
-  `RewardXp`, `ItemDropRate` — all defaulting to, and today permanently pinned at, **1.0 for every
-  built-in preset**. Landing on Easy/Normal/Hard resets all six to 1.0; only **Custom** lets the player
-  move them (Settings → Difficulty → Custom reveals six more rows, each cycling ×0.5/×0.75/×1/×1.25/×1.5/×2).
-- **None of the six multipliers are consumed by `BattleRunner`/`Formulas`/`BattleFactory` yet.** This is
-  intentionally pure scaffolding: the selection UI, persistence and telemetry tagging exist now so that
-  (a) later balance work has a lever already wired to Settings instead of needing new UI, and (b)
-  telemetry sessions are already tagged with the active preset and every multiplier
-  (`difficultyPreset`/`diffEnemyHp`/`diffEnemyDamage`/`diffEnemySpeed`/`diffRewardGold`/`diffRewardXp`/
-  `diffItemDropRate` tags on every `TelemetryUnity.Begin`, `BattleScreen.Build`), so once the multipliers
-  do something, there's already a history of battles to learn from.
-- **Future direction, not yet built:** higher difficulty should mean better rewards (`RewardGold`/
-  `RewardXp`/`ItemDropRate` scaling up as `EnemyHp`/`EnemyDamage`/`EnemySpeed` scale up) — this amendment
-  only lands once the six multipliers are actually wired into combat and loot math.
+- **Where it lives.** `SettingsSave.Difficulty.Level` (`DifficultySettings`), a **profile** setting in settings.json
+  (`game.difficulty = {"level": N}`, [§15.4](#154-player-profiles)), so every save slot of the profile plays it. New profiles
+  start at **10**. It applies from the **next battle** (`BattleFactory.Build(…, difficulty)` copies it into
+  `BattleSetup.Difficulty` → `BattleState.Difficulty`); a battle in progress keeps the level it began at.
+- **One table.** `Core/Battle/DifficultyTable.cs` (`DifficultyTable.Rows`), validated by `ContentLoader.Validate`
+  (`DifficultyTable.Problems`): ten rows in order, positive multipliers, every enemy column non-decreasing, every
+  reward column strictly rising, and level 10's enemy side exactly 1.0 / offset 0. **Level 10 is the designed game**:
+  every balance number in this bible is tuned at 10, and lowering the dial only ever softens it.
+
+  | Level | Name | Enemy HP | Enemy damage | Enemy Lv | Rewards (gold, XP, drop chance) |
+  |---|---|---|---|---|---|
+  | 1 | Gentle | ×0.55 | ×0.60 | −2 | ×0.6 |
+  | 2 | Gentle | ×0.60 | ×0.65 | −2 | ×0.7 |
+  | 3 | Easy | ×0.65 | ×0.70 | −1 | ×0.8 |
+  | 4 | Easy | ×0.70 | ×0.75 | −1 | ×0.9 |
+  | 5 | Moderate | ×0.75 | ×0.80 | −1 | ×1.0 |
+  | 6 | Moderate | ×0.80 | ×0.85 | 0 | ×1.1 |
+  | 7 | Hard | ×0.85 | ×0.90 | 0 | ×1.2 |
+  | 8 | Hard | ×0.90 | ×0.93 | 0 | ×1.3 |
+  | 9 | Very hard | ×0.95 | ×0.97 | 0 | ×1.4 |
+  | 10 | Intended | ×1.00 | ×1.00 | 0 | ×1.5 |
+
+- **What it scales.** Enemy MaxHP and armor plates at spawn (on top of `BattleConfig.EnemyHpScale`); the damage an
+  enemy's blow deals a hero (after the hero's own reductions start, min 1); every non-test enemy spawn level
+  (`EnemyLevelOffset`, never below 1, which also lowers that foe's stats and XP); and per kill the coins, the XP and
+  every drop-table entry's chance (capped at 100%), after New Game+'s coin bonus. Test stages (`StageDef.IsTest`) keep
+  the enemy side unscaled. Level 0 (`DifficultyTable.Neutral`) is the raw rules with no scaling at all — what a
+  hand-built `BattleSetup` (the rules tests) gets.
+- **Shown to the player.** Settings → **Difficulty**: − / the level / + (132-px targets) and one line underneath from
+  `DifficultyTable.Describe`, e.g. "Intended: the designed fight. Rewards ×1.5." or "Gentle: foes 55% HP, 60% damage,
+  -2 Lv. Rewards ×0.6." The results screen names the dial under Experience ("Difficulty 10 — rewards ×1.5";
+  `BattleReport.Difficulty`).
+- **Migration.** A settings.json from before the dial holds the old preset: **Easy → 5**; **Custom** with enemy HP and
+  damage averaging below ×1 → the level whose enemy side is nearest that average; **Normal, Hard, Custom at ×1 or more,
+  and anything unknown → 10** (the old multipliers were inert, so those players were already fighting the designed
+  game). It is rewritten as `{"level": N}` on the next save and the scaffold's keys are dropped. A legacy save slot's
+  Settings block migrates the same way.
+- **Telemetry** tags every battle with `difficulty` and the multipliers it applied (`diffEnemyHp`, `diffEnemyDamage`,
+  `diffEnemyLevel`, `diffRewardGold`, `diffRewardXp`, `diffItemDropRate`); battle records carry `difficulty`.
+- **Balance runs** fight at a chosen level: `GAIDEN_DIFFICULTY=1..10` (default 10) for `AbilityUsageSoak` and
+  `BalanceReport`, and `python tools/polish.py --balance --difficulty N`.
+- *(Tests: `DifficultyTests` — table valid and monotonic, 10 = unscaled enemies, the reward curve and its label, new
+  settings at 10, preset migration, enemy HP/levels rising with the dial on a real stage, kill rewards scaling.)*
+
+*Superseded 2026-11-06 (GG-T309) — the original scaffold:* Owner: a Difficulty selection with presets and a Custom
+mode "so when you read the telemetry you can ML it and learn what multipliers affect what; for right now just keep
+everything at 1.0." `SettingsSave.Difficulty` held a `Preset` (Easy/Normal/Hard/Custom, default Normal) and six
+multipliers (`EnemyHp`, `EnemyDamage`, `EnemySpeed`, `RewardGold`, `RewardXp`, `ItemDropRate`) pinned at 1.0 for every
+built-in preset, none of them consumed by the battle; telemetry was tagged with all of them. The stated future
+direction — higher difficulty, better rewards — is what the dial above delivers.
 
 ### 22.10 The Crucible (added 2026-10-19, owner direction, GG-T95)
 

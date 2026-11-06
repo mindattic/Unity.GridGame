@@ -6,6 +6,7 @@ dimension A-H 0-100, write a scorecard + report, and ratchet against docs/polish
     python tools/polish.py --no-player     # static parts only (lint, art, gates, records)
     python tools/polish.py --balance       # also run the greedy + casual bot soaks (minutes) and score dimension G
                            [--per-stage N] # casual battles per campaign stage (default 4); --keep-records keeps them
+                           [--difficulty N] # the dial 1..10 the soaks fight at (default 10; GG-T309, GAIDEN_DIFFICULTY)
     python tools/polish.py --accept-dims G # merge only these dimensions' rules into the baseline
     python tools/polish.py --records DIR   # score dimension G from existing battle records
     python tools/polish.py --accept        # write this pass as the new baseline (only when nothing regressed)
@@ -338,7 +339,7 @@ def balance(tally, rec_dirs):
     return len(recs)
 
 
-def run_soak(out, per_stage=4):
+def run_soak(out, per_stage=4, difficulty=None):
     """The two measurement soaks: the greedy bot through every hero class (ability use, POL-G3..G6) and the casual
     bot fighting each campaign stage `per_stage` times with rotating parties (POL-G1, G2, G7)."""
     proj = os.path.join(ROOT, "Tests", "Core.Tests", "Core.Tests.csproj")
@@ -347,7 +348,8 @@ def run_soak(out, per_stage=4):
         d = os.path.join(out, "records", label)
         os.makedirs(d, exist_ok=True)
         subprocess.run(["dotnet", "test", proj, "--filter", "FullyQualifiedName~AbilityUsageSoak"], cwd=ROOT,
-                       env={**os.environ, "GAIDEN_ABILITY_RECORDS": d, **extra})
+                       env={**os.environ, "GAIDEN_ABILITY_RECORDS": d, **extra,
+                            **({"GAIDEN_DIFFICULTY": str(difficulty)} if difficulty else {})})
         dirs.append(d)
     return dirs
 
@@ -425,7 +427,8 @@ def main():
     soaked = None
     if "--balance" in args:
         per_stage = int(args[args.index("--per-stage") + 1]) if "--per-stage" in args else 4
-        rec_dir = soaked = run_soak(out, per_stage)
+        difficulty = int(args[args.index("--difficulty") + 1]) if "--difficulty" in args else None
+        rec_dir = soaked = run_soak(out, per_stage, difficulty)
     battles = balance(tally, rec_dir) if rec_dir else 0
     if soaked and "--keep-records" not in args:
         import shutil

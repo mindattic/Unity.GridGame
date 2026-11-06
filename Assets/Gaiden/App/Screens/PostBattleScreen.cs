@@ -57,6 +57,9 @@ namespace GridGame.App
             {
                 Ui.MenuRow("Gold", "+" + Ui.Gold(report.Gold), null, list).Q<Label>("value").AddToClassList("gold");
                 Ui.MenuRow("Experience", $"+{report.XpEach} each", null, list);
+                // Higher difficulty, greater rewards (GG-T309): name the dial the gold, XP and drops above were scaled by.
+                if (report.Difficulty > GridGame.Core.Battle.DifficultyTable.Neutral)
+                    Ui.MenuRow($"Difficulty {report.Difficulty}", "rewards " + GridGame.Core.Battle.DifficultyTable.RewardLabel(report.Difficulty), null, list).name = "results-difficulty";
                 if (report.Items.Count == 0) Ui.Text("No items dropped.", "small dim", list);
                 RevealItems(report.Items, c, list);
                 if (report.UnlockedStage != null) Ui.MenuRow("New stage unlocked", report.UnlockedStage, null, list).Q<Label>("value").AddToClassList("gold");

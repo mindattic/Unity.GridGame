@@ -43,6 +43,7 @@ namespace GridGame.Core.Battle
                 Stage = setup.Stage,
                 RecommendedLevel = setup.RecommendedLevel,
                 NewGamePlus = setup.NewGamePlus,
+                Difficulty = setup.Difficulty,
                 Rng = new Rng(setup.Seed),
                 Blocks = new HashSet<Coord>(setup.Stage?.Blocks ?? new List<Coord>()),
             }, events);

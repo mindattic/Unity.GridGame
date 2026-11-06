@@ -321,28 +321,43 @@ namespace GridGame.Meta
         /// <summary>Settings → Text wrapping (GG-T305): false = Word wrap (default), true = Hyphenate (ragged lines and
         /// overlong words break at <see cref="Hyphenation"/> points).</summary>
         public bool Hyphenate;
-        /// <summary>Difficulty preset + multipliers (§22.9). Scaffolding only — every multiplier is inert
-        /// at 1.0 until balance work consumes it; only Custom lets the player move them away from 1.0 today.</summary>
+        /// <summary>The difficulty dial 1..10 (§22.9, GG-T309), 10 by default; applies from the next battle.</summary>
         public DifficultySettings Difficulty = new DifficultySettings();
     }
 
     /// <summary>
-    /// Difficulty presets and their multipliers (owner direction 2026-10-11: build the selection and its
-    /// multipliers now, before any of them do anything, so (a) later balance work has a lever to turn and
-    /// (b) telemetry can already tag every battle with the active multipliers to learn what affects what.
-    /// A built-in preset (Easy/Normal/Hard) resets every multiplier to 1.0 — they're placeholders until
-    /// balance work gives each one a real curve; Custom is the only preset where the player's own values
-    /// stick. "Higher difficulty = better rewards" is the intended direction once that work lands, not yet.
+    /// The difficulty dial (owner, GG-T309: "On a 1-10 scale you would start on 10 and let players adjust the game if
+    /// they feel it is too easy or hard … the higher the difficulty the greater the rewards"). One number replaces the
+    /// §22.9 scaffold's Easy/Normal/Hard/Custom preset and its six inert multipliers; what each level does is
+    /// <see cref="DifficultyTable"/>. It is a profile setting (settings.json), so every save slot of the profile plays it.
     /// </summary>
     public sealed class DifficultySettings
     {
-        public string Preset = "Normal"; // "Easy" | "Normal" | "Hard" | "Custom"
-        public float EnemyHp = 1f;
-        public float EnemyDamage = 1f;
-        public float EnemySpeed = 1f;
-        public float RewardGold = 1f;
-        public float RewardXp = 1f;
-        public float ItemDropRate = 1f;
+        public int Level = DifficultyTable.Default;
+
+        /// <summary>The level an old §22.9 preset becomes. Its multipliers were pinned at 1.0 (inert), so every player
+        /// actually fought the designed game — level 10 — except one who chose a lower setting on purpose: Easy → 5, and
+        /// a Custom whose enemy HP/damage averaged below ×1 → the level whose enemy side is nearest that average.
+        /// Normal, Hard, a Custom at ×1 or above, and anything unknown → 10.</summary>
+        public static int FromLegacyPreset(string preset, float enemyHp = 1f, float enemyDamage = 1f)
+        {
+            switch ((preset ?? "").Trim().ToLowerInvariant())
+            {
+                case "easy": return 5;
+                case "custom":
+                    float want = (enemyHp + enemyDamage) / 2f;
+                    if (!(want < 1f)) return DifficultyTable.Default;
+                    int best = DifficultyTable.Min;
+                    float bestGap = float.MaxValue;
+                    foreach (var r in DifficultyTable.Rows)
+                    {
+                        float gap = Math.Abs((r.EnemyHp + r.EnemyDamage) / 2f - want);
+                        if (gap < bestGap) { bestGap = gap; best = r.Level; }
+                    }
+                    return best;
+                default: return DifficultyTable.Default;
+            }
+        }
     }
 
     public static class SaveMigrations

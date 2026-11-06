@@ -57,6 +57,9 @@ namespace GridGame.Core.Battle
         public int RecommendedLevel = 1;
         /// <summary>New Game+ cycle (0 = first playthrough): enemies +10 levels and coins +50% per cycle.</summary>
         public int NewGamePlus;
+        /// <summary>The difficulty dial 1..10 (§22.9, GG-T309; <see cref="DifficultyTable"/>): enemy HP/damage/level at spawn
+        /// and coins/XP/drop chance per kill. 0 = <see cref="DifficultyTable.Neutral"/>, the raw rules (tests, hand-built setups).</summary>
+        public int Difficulty = DifficultyTable.Neutral;
         /// <summary>Orbs carried over from the previous battle of an expedition (§22.5).</summary>
         public int StartOrbs;
         /// <summary>Guest classes that must not appear (already recruited, or — only with permadeath on — lost).</summary>
@@ -168,6 +171,8 @@ namespace GridGame.Core.Battle
         public StageDef Stage;
         public int RecommendedLevel = 1;
         public int NewGamePlus;
+        /// <summary>The difficulty dial (GG-T309), copied from <see cref="BattleSetup.Difficulty"/>.</summary>
+        public int Difficulty;
         /// <summary>Banked gold going in (<see cref="BattleSetup.Purse"/>); what's left is Purse − Results.CoinsSpent.</summary>
         public int Purse;
         /// <summary>The class of the captive freed as a guest this battle (GG-T236), or null.</summary>

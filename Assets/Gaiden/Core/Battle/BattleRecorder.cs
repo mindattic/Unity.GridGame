@@ -47,6 +47,7 @@ namespace GridGame.Core.Battle
                 ["seed"] = setup?.Seed ?? 0,
                 ["recommendedLevel"] = setup?.RecommendedLevel ?? 0,
                 ["newGamePlus"] = setup?.NewGamePlus ?? 0,
+                ["difficulty"] = setup?.Difficulty ?? 0, // the dial (GG-T309); 0 = unscaled
                 ["startOrbs"] = setup?.StartOrbs ?? 0,
                 ["party"] = new JArray(s.Units.Where(u => u.IsHero).Select(u => new JObject
                 {

@@ -17,15 +17,15 @@ namespace GridGame.App
         private EncounterTelemetry encounterTelemetry;
         private bool encounterRecorded;
 
-        private void BeginEncounterTelemetry(BattleSetup setup, List<BattleEvent> initial, DifficultySettings diff)
+        private void BeginEncounterTelemetry(BattleSetup setup, List<BattleEvent> initial, DifficultyRow diff)
         {
             encounterRecorded = false;
             if (!TelemetryUnity.Current.Enabled) { encounterTelemetry = null; return; }
             var tags = new Dictionary<string, object>
             {
-                ["preset"] = diff?.Preset,
-                ["enemyHp"] = diff?.EnemyHp, ["enemyDamage"] = diff?.EnemyDamage, ["enemySpeed"] = diff?.EnemySpeed,
-                ["rewardGold"] = diff?.RewardGold, ["rewardXp"] = diff?.RewardXp, ["itemDropRate"] = diff?.ItemDropRate,
+                ["level"] = setup.Difficulty,
+                ["enemyHp"] = diff.EnemyHp, ["enemyDamage"] = diff.EnemyDamage, ["enemyLevel"] = diff.EnemyLevelOffset,
+                ["rewardGold"] = diff.RewardGold, ["rewardXp"] = diff.RewardXp, ["itemDropRate"] = diff.DropChance,
             };
             encounterTelemetry = new EncounterTelemetry(App.Content, setup, State, initial, tags, Time.realtimeSinceStartupAsDouble);
         }

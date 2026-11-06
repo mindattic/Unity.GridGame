@@ -73,7 +73,7 @@ namespace GridGame.Tests
                 MusicVolume = 0.4f, SfxVolume = 0.25f, MuteSfx = true, ReduceMotion = true,
                 BattleSpeed = 3f, DragTimer = true, ColorblindMode = true, PincerCutIns = false, ConfirmActions = false,
                 MenuTheme = "Slate", FontName = "Clean",
-                Difficulty = new DifficultySettings { Preset = "Custom", EnemyHp = 1.5f },
+                Difficulty = new DifficultySettings { Level = 4 },
             });
             // The older slot's file is touched last: the save's own UpdatedUtc decides, not the file time.
             File.SetLastWriteTimeUtc(SaveFiles.PathFor(Legacy, 0), now);
@@ -92,13 +92,13 @@ namespace GridGame.Tests
             Assert.That(ps.Game.GetFloat(GaidenSettings.Keys.BattleSpeed), Is.EqualTo(3f));
             Assert.That(ps.Game.GetString(GaidenSettings.Keys.MenuTheme), Is.EqualTo("Slate"));
             Assert.That(ps.Game.GetBool(GaidenSettings.Keys.ColorblindMode), Is.True);
-            Assert.That(ps.Game.GetObject(GaidenSettings.Keys.Difficulty).GetString("preset"), Is.EqualTo("Custom"));
+            Assert.That(ps.Game.GetObject(GaidenSettings.Keys.Difficulty).GetInt(GaidenSettings.DifficultyLevelKey), Is.EqualTo(4));
             var back = GaidenSettings.Read(ps);
             Assert.That(back.DragTimer, Is.True);
             Assert.That(back.PincerCutIns, Is.False);
             Assert.That(back.ConfirmActions, Is.False);
             Assert.That(back.FontName, Is.EqualTo("Clean"));
-            Assert.That(back.Difficulty.EnemyHp, Is.EqualTo(1.5f));
+            Assert.That(back.Difficulty.Level, Is.EqualTo(4));
         }
 
         [Test]

@@ -1522,6 +1522,38 @@ namespace GridGame.App
         public override string Id => "settings";
         protected override string Title => "Settings";
 
+        /// <summary>The difficulty dial (§22.9, GG-T309): − / level / + (each a 132-px target), then one line naming what
+        /// the level does and its reward multiplier. Saved at once; the next battle is built at the new level.</summary>
+        private void DifficultyControl(SettingsSave st, VisualElement parent)
+        {
+            st.Difficulty ??= new DifficultySettings();
+            int level = DifficultyTable.Clamp(st.Difficulty.Level);
+            void Set(int to)
+            {
+                st.Difficulty.Level = Math.Max(DifficultyTable.Min, Math.Min(DifficultyTable.Max, to));
+                App.SaveSettings(); Refresh();
+            }
+            var row = Ui.El("row", parent);
+            row.name = "settings-difficulty";
+            row.style.alignItems = Align.Center;
+            row.style.minHeight = 132;
+            row.style.paddingLeft = Space.S16;
+            Ui.Text("Difficulty", "menu-label grow", row);
+            var minus = Ui.Button("−", () => Set(level - 1), "btn--small btn--icon", row);
+            minus.name = "difficulty-down";
+            var n = Ui.Text(level.ToString(), "h2 gold", row);
+            n.name = "difficulty-level";
+            n.style.width = Size.ColumnS; n.style.unityTextAlign = TextAnchor.MiddleCenter;
+            var plus = Ui.Button("+", () => Set(level + 1), "btn--small btn--icon", row);
+            plus.name = "difficulty-up";
+            Ui.SetEnabled(minus, level > DifficultyTable.Min);
+            Ui.SetEnabled(plus, level < DifficultyTable.Max);
+            var line = Ui.Text(DifficultyTable.Describe(level) + " Applies from the next battle.", "tiny dim", parent);
+            line.name = "difficulty-text";
+            line.style.whiteSpace = WhiteSpace.Normal;
+            line.style.marginLeft = Space.S48; line.style.marginBottom = Space.S8;
+        }
+
         protected override void BuildBody(VisualElement body)
         {
             // The active profile's settings (GG-T99, §15.4): one set for every save slot, kept in its settings.json.
@@ -1555,39 +1587,7 @@ namespace GridGame.App
             // GG-T305: how wrapped text breaks, applied live to every screen (TextFit).
             Ui.MenuRow("Text wrapping", st.Hyphenate ? "Hyphenate" : "Word wrap",
                 () => { st.Hyphenate = !st.Hyphenate; App.ApplySettings(); App.SaveSettings(); Refresh(); }, w).name = "settings-text-wrap";
-            var diff = st.Difficulty;
-            void CycleDifficulty()
-            {
-                var presets = new[] { "Easy", "Normal", "Hard", "Custom" };
-                int i = Array.IndexOf(presets, diff.Preset);
-                diff.Preset = presets[(i + 1) % presets.Length];
-                // Built-in presets are inert scaffolding for now (§22.9): landing on one resets every
-                // multiplier to 1.0 so Custom is the only place values can actually move.
-                if (diff.Preset != "Custom")
-                {
-                    diff.EnemyHp = diff.EnemyDamage = diff.EnemySpeed = diff.RewardGold = diff.RewardXp = diff.ItemDropRate = 1f;
-                }
-                App.SaveSettings(); Refresh();
-            }
-            Ui.MenuRow("Difficulty", diff.Preset, CycleDifficulty, w);
-            if (diff.Preset == "Custom")
-            {
-                var mults = new[] { 0.5f, 0.75f, 1f, 1.25f, 1.5f, 2f };
-                void CycleMult(string label, float value, Action<float> set)
-                {
-                    int i = Array.FindIndex(mults, o => Mathf.Abs(o - value) < 0.01f);
-                    if (i < 0) i = 2; // default to the ×1 slot if the stored value doesn't land on a step
-                    var row = Ui.MenuRow(label, $"×{value:0.##}", () => { set(mults[(i + 1) % mults.Length]); App.SaveSettings(); Refresh(); }, w);
-                    row.style.marginLeft = Space.S48;
-                }
-                CycleMult("Enemy HP", diff.EnemyHp, v => diff.EnemyHp = v);
-                CycleMult("Enemy damage", diff.EnemyDamage, v => diff.EnemyDamage = v);
-                CycleMult("Enemy speed", diff.EnemySpeed, v => diff.EnemySpeed = v);
-                CycleMult("Reward gold", diff.RewardGold, v => diff.RewardGold = v);
-                CycleMult("Reward XP", diff.RewardXp, v => diff.RewardXp = v);
-                CycleMult("Item drop rate", diff.ItemDropRate, v => diff.ItemDropRate = v);
-                Ui.Text("Not wired into battles yet — these numbers don't do anything, but your picks are saved.", "tiny dim", w).style.whiteSpace = WhiteSpace.Normal;
-            }
+            DifficultyControl(st, w); // GG-T309: the 1..10 dial
             Cycle("Music volume", st.MusicVolume, new[] { 0f, 0.2f, 0.4f, 0.6f, 0.8f, 1f }, "{0:P0}", v => st.MusicVolume = v);
             Cycle("Sound volume", st.SfxVolume, new[] { 0f, 0.25f, 0.5f, 0.85f, 1f }, "{0:P0}", v => st.SfxVolume = v);
             Toggle("Mute music", st.MuteMusic, v => st.MuteMusic = v);

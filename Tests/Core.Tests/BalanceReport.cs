@@ -44,7 +44,7 @@ namespace GridGame.Tests
                     if (story) DialogueRunner.PlayPendingBeatsHeadless(c, s, stage.Id);
                     if (manageCamp) CampRoutine.Run(c, s);
                     else if (CampNpcs.Joined(s, CampNpcs.Innkeeper) && Inn.Cost(c, s) > 0 && Inn.Cost(c, s) <= s.Gold) Inn.Rest(c, s);
-                    var setup = BattleFactory.Build(c, s, stage.Id, battleSeed++);
+                    var setup = BattleFactory.Build(c, s, stage.Id, battleSeed++, BotDifficulty.FromEnv()); // GG-T309
                     var st = BotRunner.Play(c, setup, new HeroBot(battleSeed, randomness), 900); // the first battle is a 20-wave gauntlet
                     if (!rows.TryGetValue(stage.Id, out var row)) rows[stage.Id] = row = new Row();
                     row.Runs++;

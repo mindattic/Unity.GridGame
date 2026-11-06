@@ -509,6 +509,9 @@ namespace GridGame.Core.Battle
                 float reduce = Triggers.IncomingMultiplier(S, target, source, type);
                 if (reduce < 1f) amount = reduce <= 0f ? 0 : Triggers.FloorScaled(amount, reduce);
             }
+            // The difficulty dial (GG-T309): an enemy's blow on a hero lands at the level's EnemyDamage (min 1; 1.0 at 10).
+            if (hit != HitKind.Miss && amount > 0 && target.IsHero && source != null && source.Team == Team.Enemy && !(S.Stage?.IsTest ?? false))
+                amount = DifficultyTable.Scale(amount, DifficultyTable.At(S.Difficulty).EnemyDamage, 1);
             if (hit != HitKind.Miss && amount > 0 && target.IsHero && source != null)
             {
                 float reduction = BestAdjacentGuardianReduction(target);
@@ -683,13 +686,17 @@ namespace GridGame.Core.Battle
             C.DropTables.TryGetValue(enemy.Def.DropTable ?? "", out var table);
             if (table != null && table.CoinsMax > 0) loot.Coins = S.Rng.Range(table.CoinsMin, table.CoinsMax + 1);
             else if (!enemy.IsSnakeSegment) loot.Coins = CoinsFor(loot.Xp);
+            // Higher difficulty, greater rewards (GG-T309): the dial scales coins, XP and every drop chance.
+            var dial = DifficultyTable.At(S.Difficulty);
             if (table != null)
             {
                 foreach (var entry in table.Entries)
-                    if (S.Rng.Chance(entry.Chance))
+                    if (S.Rng.Chance(Math.Min(1f, entry.Chance * dial.DropChance)))
                         loot.Items.Add(new ItemCount { Item = entry.Item, Count = S.Rng.Range(entry.Min, entry.Max + 1) });
             }
             if (S.NewGamePlus > 0) loot.Coins = (int)Math.Round(loot.Coins * (1f + BattleConfig.NgPlusCoinBonus * S.NewGamePlus));
+            loot.Coins = DifficultyTable.Scale(loot.Coins, dial.RewardGold, loot.Coins > 0 ? 1 : 0);
+            loot.Xp = DifficultyTable.Scale(loot.Xp, dial.RewardXp, loot.Xp > 0 ? 1 : 0);
             S.Results.Coins += loot.Coins;
             S.Results.Xp += loot.Xp;
             foreach (var ic in loot.Items) Add(S.Results.Items, ic.Item, ic.Count);

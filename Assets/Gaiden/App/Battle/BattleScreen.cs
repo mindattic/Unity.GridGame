@@ -149,21 +149,20 @@ namespace GridGame.App
             {
                 // A Crucible run is seeded by the save (§22.10) so the same save replays the same gauntlet.
                 int seed = InCrucible && App.Save != null ? Crucible.SeedFor(App.Save) : Environment.TickCount;
-                var setup = setupOverride ?? BattleFactory.Build(App.Content, App.Save, stageId, seed);
+                var setup = setupOverride ?? BattleFactory.Build(App.Content, App.Save, stageId, seed, App.Settings?.Difficulty?.Level ?? DifficultyTable.Default);
                 if (setupOverride == null) Rescues.Apply(App.Content, App.Save, setup); // GG-T236: maybe a captive to free
                 if (setupOverride == null && DevNextCaptive != null) { setup.Captive = new CaptiveSpec { Class = DevNextCaptive, Wave = 0 }; DevNextCaptive = null; }
                 State = BattleEngine.Create(App.Content, setup, initial);
                 recorder = new BattleRecorder(State, setup, "player", initial);
-                var diff = App.Settings.Difficulty;
+                // Every battle is tagged with the dial and the multipliers it applied (§22.9, GG-T309).
+                var diff = DifficultyTable.At(setup.Difficulty);
                 TelemetryUnity.Begin("GridGameGaiden", seed: setup.Seed, contentVersion: Application.version,
                     tags: new TelemetryData
                     {
                         ["stage"] = State.Stage.Id, ["source"] = "player",
-                        // Difficulty is a scaffold today (§22.9) — tagging every battle with it now means
-                        // the data to learn "what multiplier affects what" already exists once it's wired in.
-                        ["difficultyPreset"] = diff?.Preset,
-                        ["diffEnemyHp"] = diff?.EnemyHp, ["diffEnemyDamage"] = diff?.EnemyDamage, ["diffEnemySpeed"] = diff?.EnemySpeed,
-                        ["diffRewardGold"] = diff?.RewardGold, ["diffRewardXp"] = diff?.RewardXp, ["diffItemDropRate"] = diff?.ItemDropRate,
+                        ["difficulty"] = setup.Difficulty,
+                        ["diffEnemyHp"] = diff.EnemyHp, ["diffEnemyDamage"] = diff.EnemyDamage, ["diffEnemyLevel"] = diff.EnemyLevelOffset,
+                        ["diffRewardGold"] = diff.RewardGold, ["diffRewardXp"] = diff.RewardXp, ["diffItemDropRate"] = diff.DropChance,
                     });
                 BeginEncounterTelemetry(setup, initial, diff); // GG-T59
             }

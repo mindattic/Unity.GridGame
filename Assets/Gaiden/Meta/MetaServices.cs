@@ -273,6 +273,8 @@ namespace GridGame.Meta
         public string StageTheme;
         public int Gold;
         public int XpEach;
+        /// <summary>The difficulty dial this battle was fought at (GG-T309; 0 = unscaled), so the results can name its reward multiplier.</summary>
+        public int Difficulty;
         public Dictionary<string, int> Items = new Dictionary<string, int>();
         public List<(string classId, int fromLevel, int toLevel)> LevelUps = new List<(string, int, int)>();
         public bool FirstClear;
@@ -491,9 +493,12 @@ namespace GridGame.Meta
             return spec;
         }
 
-        public static BattleSetup Build(ContentDb c, SaveData s, string stageId, int seed) => Build(c, s, c.Stage(stageId), seed);
+        public static BattleSetup Build(ContentDb c, SaveData s, string stageId, int seed, int difficulty = DifficultyTable.Neutral) =>
+            Build(c, s, c.Stage(stageId), seed, difficulty);
 
-        public static BattleSetup Build(ContentDb c, SaveData s, StageDef stage, int seed)
+        /// <summary>A battle for this save. <paramref name="difficulty"/> is the profile's dial 1..10 (GG-T309; the app passes
+        /// <c>Settings.Difficulty.Level</c>, the soaks GAIDEN_DIFFICULTY); the default <see cref="DifficultyTable.Neutral"/> is unscaled.</summary>
+        public static BattleSetup Build(ContentDb c, SaveData s, StageDef stage, int seed, int difficulty = DifficultyTable.Neutral)
         {
             Mercenaries.Settle(c, s); // a spent contract never fights an unpaid battle (GG-T233)
             bool crucible = Crucible.IsStage(stage.Id);
@@ -506,6 +511,7 @@ namespace GridGame.Meta
                 // curve nor New Game+'s step may lift it further.
                 RecommendedLevel = crucible ? 1 : Progression.StageRecommendedLevel(c, s, stage),
                 NewGamePlus = crucible ? 0 : s.NewGamePlus,
+                Difficulty = difficulty <= DifficultyTable.Neutral ? DifficultyTable.Neutral : DifficultyTable.Clamp(difficulty),
                 StartOrbs = Expeditions.StartOrbs(c, s, stage.Id) + (int)CaravanUpgrades.Value(c, s, "mana_casks"),
             };
             foreach (var h in s.Roster) setup.ExcludedGuests.Add(h.ClassId);
@@ -542,6 +548,7 @@ namespace GridGame.Meta
                 StageId = battle.Stage.Id,
                 StageName = battle.Stage.Name,
                 StageTheme = battle.Stage.Theme,
+                Difficulty = battle.Difficulty,
             };
             int slotsBefore = Progression.UnlockedSlots(s);
             Bargains.Rotate(s);
