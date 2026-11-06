@@ -32,6 +32,9 @@ namespace GridGame.Core.Battle
         /// <summary>Item id → owned count, used to size bar item stacks.</summary>
         public Dictionary<string, int> ItemCounts = new Dictionary<string, int>();
         public Coord? Start;
+        /// <summary>Passive/Reactive ability ids the hero knows beyond its class kit — skill-tree grants, rewards (GG-T296).
+        /// The meta layer fills it from <c>HeroSave.Known</c>; the battle's trigger engine reads it.</summary>
+        public List<string> Passives = new List<string>();
     }
 
     /// <summary>One equipped armor piece carried from the save into a battle (§24.2, GG-T89).</summary>

@@ -75,6 +75,11 @@ namespace GridGame.Core.Battle
 
         public List<BuffInstance> Buffs = new List<BuffInstance>();
         public Dictionary<string, int> Cooldowns = new Dictionary<string, int>();
+        /// <summary>Passive/Reactive ability ids this hero learned (skill-tree nodes, rewards), from <see cref="HeroSpec.Passives"/>
+        /// (GG-T296). One of the trigger sources (<see cref="GridGame.Core.Rules.Triggers.Sources"/>).</summary>
+        public List<string> Passives = new List<string>();
+        /// <summary>Trigger ability id → own turns before it may fire again (<see cref="TriggerDef.Cooldown"/>).</summary>
+        public Dictionary<string, int> TriggerCooldowns = new Dictionary<string, int>();
         public List<AbilitySlot> Bar = new List<AbilitySlot>();
         public int UnlockedSlots = 2;
 
@@ -254,6 +259,8 @@ namespace GridGame.Core.Battle
             u.Buffs = new List<BuffInstance>(Buffs.Count);
             foreach (var b in Buffs) u.Buffs.Add(b.Clone());
             u.Cooldowns = new Dictionary<string, int>(Cooldowns);
+            u.Passives = new List<string>(Passives);
+            u.TriggerCooldowns = new Dictionary<string, int>(TriggerCooldowns);
             u.Bar = new List<AbilitySlot>(Bar.Count);
             foreach (var s in Bar) u.Bar.Add(s.Clone());
             u.GearResist = new Dictionary<DamageType, float>(GearResist);

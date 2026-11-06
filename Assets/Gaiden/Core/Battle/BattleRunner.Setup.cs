@@ -141,6 +141,9 @@ namespace GridGame.Core.Battle
             }
             u.MaxHp = Formulas.MaxHp(u.Effective, u.Level);
             u.Hp = spec.Hp > 0 ? Math.Min(spec.Hp, u.MaxHp) : u.MaxHp;
+            if (spec.Passives != null)
+                foreach (var id in spec.Passives)
+                    if (id != null && !u.Passives.Contains(id)) u.Passives.Add(id); // learned passives/reactives (GG-T296)
 
             for (int s = 0; s < MaxSlots; s++)
             {

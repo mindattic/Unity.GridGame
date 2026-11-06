@@ -817,6 +817,16 @@ Owner: "gaining mana is too generous since I see the whole bar filled almost in 
   - Six heroes spawn in rows 6–7 on every campaign stage and share one bag. Camp shows six in its two-column grid.
 - *(Tests: `PartyCapTests`, `StoryRecruitTests`.)*
 
+## 2026-11-06 — Active, Passive and Reactive abilities on one trigger engine (GG-T296)
+
+- **Was:** `AbilityKind` had only `Passive` next to the Active kinds. Each of the ten battle passives was its own C# path (`HasPassive`, `MaybeCounter`, `MaybeThorns`, Berserk inside the enemy strike multiplier, and so on), several for enemies only. Passives learned from skill-tree nodes never reached the battle.
+- **Now (owner):** see BIBLE §4.1, §7, §25.6.1.
+  - Three kinds: Active (you take it), Passive (just happens), Reactive (fires after something happens to you). `AbilityDef.Trigger` carries the event, chance, condition, effects and guards as data, validated at load.
+  - One engine fires every passive and reactive for heroes and enemies. Evaluation order is fixed and only a chance below 1 draws from the Rng. A reaction never provokes a reaction.
+  - All ten battle passives are data now; Counter Attack and Thorns are Reactive. Learned passives apply in battle.
+  - Behaviour changes: Lifesteal, Berserk, Tough Hide and Double Attack also work for heroes (the old enemy-only gates kept skill-tree grants from doing anything). An enemy's Double Attack second swing can be countered, as a hero's already could. A counter blow no longer sets off Thorns. Lifesteal and Regenerate stay silent at full HP instead of logging a 0 heal.
+- *(Tests: `TriggerEngineTests`.)*
+
 ## 2026-11-06 — Tap a timeline icon to select its unit (GG-T288)
 
 - **Was:** timeline icons only answered a hold (the InspectCard); selecting a unit needed a board tap.

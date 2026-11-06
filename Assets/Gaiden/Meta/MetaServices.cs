@@ -485,6 +485,9 @@ namespace GridGame.Meta
             }
             foreach (var id in h.Jewelry.Values) if (id != null) spec.EquippedItemIds.Add(id);
             spec.Bar = new List<string>(h.Bar);
+            // GG-T296: learned passives/reactives (skill-tree grants like Last Bastion's Counter Attack) fight with the hero.
+            foreach (var id in h.Known)
+                if (c.TryAbility(id) is AbilityDef a && (a.Kind == AbilityKind.Passive || a.Kind == AbilityKind.Reactive)) spec.Passives.Add(id);
             return spec;
         }
 

@@ -21,6 +21,9 @@ namespace GridGame.Core.Battle
             }
             if (enemy.IsEgg) { Hatch(enemy); return; }
             enemy.TurnsTaken++;
+            firedThisAction.Clear(); // one enemy turn is one action for OncePerAction triggers (GG-T296)
+            TriggersTurnStart(enemy);
+            if (S.IsOver || !enemy.Alive) return;
             // A charge with CooldownTurns waits that many of the caster's own turns before it can be charged again
             // (GG-T283: templars charged Smite every turn from the board edge and never closed in).
             if (enemy.Cooldowns.Count > 0)
@@ -194,8 +197,9 @@ namespace GridGame.Core.Battle
         private void EndEnemyTurn(Unit enemy)
         {
             if (enemy.Alive) FaceTarget(enemy);
-            // Regenerate kit: knits 6% of MaxHP at the end of its own turn.
-            if (enemy.Alive && HasPassive(enemy, "regenerate") && enemy.Hp < enemy.MaxHp) Heal(enemy, Math.Max(1, enemy.MaxHp * BattleConfig.RegeneratePercent / 100), enemy);
+            // ActionEnd, then TurnEnd passives (Regenerate knits 6% of MaxHP at the end of its own turn) — GG-T296.
+            if (enemy.Alive) Fire(TriggerOn.ActionEnd, enemy, new TriggerContext());
+            if (enemy.Alive) Fire(TriggerOn.TurnEnd, enemy, new TriggerContext());
             if (enemy.Alive) TickTurnBuffs(enemy, false);
             CheckEnd();
         }
@@ -384,28 +388,14 @@ namespace GridGame.Core.Battle
                 var shot = EnemyPlanner.RangedTarget(S, enemy);
                 if (shot != null)
                 {
-                    Emit(new AttackEvent { AttackerId = enemy.Id, TargetId = shot.Id, IsRanged = true });
-                    var r = Formulas.Physical(enemy, shot, S.Rng, KitDamageMultiplier(enemy) * enemy.OutgoingDamageMultiplier);
-                    int hp0 = shot.Hp;
-                    Damage(shot, r.Damage, enemy, r.Hit, DamageType.Physical);
-                    if (r.Hit != HitKind.Miss) AfterLandedHit(enemy, shot, hp0 - shot.Hp);
+                    Strike(enemy, shot, 1f, BlowKind.Ranged);
                 }
                 return;
             }
             if (target == null) return;
-            Emit(new AttackEvent { AttackerId = enemy.Id, TargetId = target.Id, IsMelee = true });
-            var roll = Formulas.Physical(enemy, target, S.Rng, KitDamageMultiplier(enemy) * enemy.OutgoingDamageMultiplier);
-            int hpBefore = target.Hp;
-            Damage(target, roll.Damage, enemy, roll.Hit, DamageType.Physical);
-            if (roll.Hit != HitKind.Miss) { AfterLandedHit(enemy, target, hpBefore - target.Hp); MaybeCounter(target, enemy); }
-            if (HasPassive(enemy, "double_attack") && target.Alive && enemy.Alive)
-            {
-                Emit(new AttackEvent { AttackerId = enemy.Id, TargetId = target.Id, IsMelee = true });
-                var r2 = Formulas.Physical(enemy, target, S.Rng, 0.5f * KitDamageMultiplier(enemy) * enemy.OutgoingDamageMultiplier);
-                int hp2 = target.Hp;
-                Damage(target, r2.Damage, enemy, r2.Hit, DamageType.Physical);
-                if (r2.Hit != HitKind.Miss) AfterLandedHit(enemy, target, hp2 - target.Hp);
-            }
+            // One melee swing through the shared blow (GG-T296): Counter Attack, Lifesteal and Double Attack's
+            // follow-up are its triggers, not code here.
+            Strike(enemy, target, 1f, BlowKind.Melee);
         }
     }
 }

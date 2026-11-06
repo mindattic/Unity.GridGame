@@ -422,7 +422,9 @@ namespace GridGame.App
             if (!string.IsNullOrEmpty(d.OnHitBuff)) t.Add($"hits may inflict {c.TryBuff(d.OnHitBuff)?.Name ?? d.OnHitBuff} ({Mathf.RoundToInt(d.OnHitChance * 100)}%)");
             if (d.DeathBurst > 0) t.Add($"explodes when killed ({d.DeathBurst})");
             foreach (var id in d.Abilities)
-                if (c.TryAbility(id) is AbilityDef a && a.Kind == AbilityKind.Passive && !string.IsNullOrEmpty(a.Name)) t.Add(a.Name.ToLowerInvariant());
+                if (c.TryAbility(id) is AbilityDef a && (a.Kind == AbilityKind.Passive || a.Kind == AbilityKind.Reactive) && !string.IsNullOrEmpty(a.Name))
+                    t.Add(a.Trigger == null ? a.Name.ToLowerInvariant()
+                        : $"{a.Name.ToLowerInvariant()} ({GridGame.Core.Rules.TriggerText.KindLabel(a).ToLowerInvariant()}: {GridGame.Core.Rules.TriggerText.Describe(c, a).TrimEnd('.')})"); // GG-T296
             if (d.ImmuneBuffs != null && d.ImmuneBuffs.Count > 0) t.Add("immune to " + string.Join("/", d.ImmuneBuffs));
             return t.Count == 0 ? "" : char.ToUpper(t[0][0]) + string.Join(" · ", t).Substring(1);
         }

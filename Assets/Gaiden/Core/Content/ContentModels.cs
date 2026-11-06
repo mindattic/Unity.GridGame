@@ -26,7 +26,145 @@ namespace GridGame.Core.Content
 
     public enum DamageType { Physical, Fire, Ice, Lightning, Poison, Holy, Dark, Arcane }
 
-    public enum AbilityKind { Skill, Spell, Item, Passive }
+    /// <summary>The three ability kinds (owner design, GG-T296): Skill/Spell/Item are <i>Active</i> (you take them);
+    /// <c>Passive</c> just happens (an always-on modifier, or an "every time I…" effect); <c>Reactive</c> fires after
+    /// something happens <i>to</i> you, usually on a chance. Passive and Reactive abilities carry a
+    /// <see cref="AbilityDef.Trigger"/> that the battle's trigger engine evaluates (§4.1).</summary>
+    public enum AbilityKind { Skill, Spell, Item, Passive, Reactive }
+
+    /// <summary>When a <see cref="TriggerDef"/> is evaluated (§4.1, GG-T296), fired by the battle funnels in a fixed order.</summary>
+    public enum TriggerOn
+    {
+        /// <summary>Not an event: an always-on modifier (DamageMultiplier, ReductionMultiplier, Immunity), checked where the number is computed.</summary>
+        Always,
+        /// <summary>The owner makes a primary weapon attack (as a pincer attacker, or an enemy's melee swing), hit or miss. Context: Target.</summary>
+        OnAttack,
+        /// <summary>A weapon blow by the owner lands (any blow: pincer, supporter, counter, melee, ranged). Context: Target, Damage.</summary>
+        OnLandedHit,
+        /// <summary>The owner loses HP to anything (Damage &gt; 0; Attacker is null for a poison tick or a blast).</summary>
+        OnDamaged,
+        /// <summary>A foe's weapon blow from an adjacent tile lands on the owner (not a miss). Context: Attacker, Damage.</summary>
+        OnAttackedDirect,
+        /// <summary>Any foe's blow or ability lands on the owner, from any range (not a miss). Context: Attacker, Damage.</summary>
+        OnAttackedAny,
+        /// <summary>A foe's weapon blow misses the owner (the dodge hook GG-T297 builds on). Context: Attacker.</summary>
+        OnDodge,
+        /// <summary>At the owner's turn start, at least <see cref="TriggerDef.Count"/> foes stand adjacent.</summary>
+        OnSurrounded,
+        /// <summary>The owner gains status <see cref="TriggerDef.Status"/> (any status when empty).</summary>
+        OnStatusGained,
+        /// <summary>A hit drops the owner from at/above <see cref="TriggerDef.Threshold"/> of its HP to below it, and it lives.</summary>
+        OnLowHp,
+        /// <summary>An ally of the owner falls. Context: Target = the fallen ally, Attacker = its killer.</summary>
+        OnAllyKO,
+        /// <summary>The owner fells a foe. Context: Target = the fallen foe.</summary>
+        OnKill,
+        /// <summary>The owner was one of a pincer's two attackers, after their blows. Context: Target = a trapped foe.</summary>
+        OnPincerAsAttacker,
+        /// <summary>The owner supported a pincer, after its support action (GG-T298 builds supporter effects on it). Context: Target = the attacker it backed.</summary>
+        OnPincerAsSupporter,
+        /// <summary>The owner's turn begins (an enemy's own turn; for heroes, each time control returns to the party).</summary>
+        TurnStart,
+        /// <summary>The owner's turn ends (an enemy's own turn; for heroes, each time control returns to the party).</summary>
+        TurnEnd,
+        /// <summary>The owner just finished an action (the hero whose command it was; an enemy at the end of its turn).</summary>
+        ActionEnd,
+    }
+
+    /// <summary>What a fired trigger does (§4.1, GG-T296).</summary>
+    public enum TriggerEffectKind
+    {
+        /// <summary>Heal Who (default Self) Amount × its MaxHP.</summary>
+        Heal,
+        /// <summary>Heal the owner Amount × the damage in the context.</summary>
+        Lifesteal,
+        /// <summary>Apply <see cref="TriggerEffect.Buff"/> to Who (default Self).</summary>
+        ApplyBuff,
+        /// <summary>A weapon blow at ×Amount on Who (default the attacker), only when it's a foe within the owner's reach.</summary>
+        Counterstrike,
+        /// <summary>Strike the context's Target again at ×Amount of the blow that fired it (Double Attack).</summary>
+        FollowUp,
+        /// <summary>Resolve Active ability <see cref="TriggerEffect.Ability"/> through the normal dispatcher, instantly and free,
+        /// at Who (default the attacker, else the target, else Self).</summary>
+        CastAbility,
+        /// <summary>Deal Amount × the context's damage back to the attacker (Thorns).</summary>
+        Reflect,
+        /// <summary>Remove every debuff from Who (default Self).</summary>
+        Cleanse,
+        /// <summary>Add Amount charge to the party's mana meter (hero owners only).</summary>
+        ManaCharge,
+        /// <summary>The Pushback keyword on Who (default the attacker, else the target): Amount seconds, foes only.</summary>
+        Pushback,
+        /// <summary>Always-on: the owner's weapon blows deal ×Amount (while the condition holds).</summary>
+        DamageMultiplier,
+        /// <summary>Always-on: damage the owner takes is ×Amount (while the condition holds; Condition.DamageType narrows it).</summary>
+        ReductionMultiplier,
+        /// <summary>Always-on: the owner can't gain any of <see cref="TriggerEffect.Statuses"/>.</summary>
+        Immunity,
+    }
+
+    /// <summary>Whom an effect lands on. Default picks the effect kind's natural target (see <see cref="TriggerEffectKind"/>).</summary>
+    public enum EffectTarget { Default, Self, Target, Attacker }
+
+    /// <summary>
+    /// The data half of a Passive or Reactive ability (§4.1, GG-T296): <see cref="On"/> an event, roll <see cref="Chance"/>,
+    /// check <see cref="Condition"/>, then run every <see cref="Effects"/> entry. Pure data validated by
+    /// <see cref="ContentLoader.Validate"/>; the battle's trigger engine is the only code that reads it, so a new passive
+    /// or reactive is a new abilities.json row (GG-LAW-5).
+    /// </summary>
+    public sealed class TriggerDef
+    {
+        public TriggerOn On;
+        /// <summary>0..1; 1 fires every time without touching the Rng.</summary>
+        public float Chance = 1f;
+        /// <summary>Added to Chance per point of the owner's Luck (optional).</summary>
+        public float ChancePerLuck;
+        /// <summary>OnSurrounded: how many adjacent foes.</summary>
+        public int Count;
+        /// <summary>OnLowHp: the HP fraction (0..1) crossed.</summary>
+        public float Threshold;
+        /// <summary>OnStatusGained: the buff id (empty = any).</summary>
+        public string Status;
+        public TriggerCondition Condition;
+        public List<TriggerEffect> Effects = new List<TriggerEffect>();
+        /// <summary>Once fired, the owner's turns before it can fire again (0 = none).</summary>
+        public int Cooldown;
+        /// <summary>Fires at most once per action (a command, or one enemy turn).</summary>
+        public bool OncePerAction;
+        /// <summary>The float shown when it fires; empty = the ability's name.</summary>
+        public string Callout;
+    }
+
+    /// <summary>A small predicate vocabulary (§4.1): every set field must hold. "Other" is the context's attacker, else its target.</summary>
+    public sealed class TriggerCondition
+    {
+        /// <summary>Owner HP fraction strictly below this (0 = unchecked).</summary>
+        public float SelfHpBelow;
+        /// <summary>Owner HP fraction strictly above this (0 = unchecked).</summary>
+        public float SelfHpAbove;
+        public string HasStatus;
+        public string LacksStatus;
+        /// <summary>At least this many foes adjacent to the owner (0 = unchecked).</summary>
+        public int AdjacentFoesAtLeast;
+        /// <summary>The other unit carries this class tag (Undead, Beast…).</summary>
+        public string OtherTag;
+        /// <summary>The damage in the context is of this type (null = any).</summary>
+        public DamageType? DamageType;
+    }
+
+    public sealed class TriggerEffect
+    {
+        public TriggerEffectKind Kind;
+        /// <summary>Fraction, multiplier, seconds or charge, by kind.</summary>
+        public float Amount;
+        public EffectTarget Who;
+        /// <summary>ApplyBuff: the buff id.</summary>
+        public string Buff;
+        /// <summary>CastAbility: the Active ability id.</summary>
+        public string Ability;
+        /// <summary>Immunity: the buff ids warded off.</summary>
+        public List<string> Statuses = new List<string>();
+    }
 
     public enum TargetShape { Self, SingleActor, SingleTile, Square, Diamond, Cross, Plus, Row, Column, AllEnemies, AllAllies }
 
@@ -352,6 +490,9 @@ namespace GridGame.Core.Content
         /// (<see cref="GridGame.Meta.MetaServices.Abilities.Learnable"/>). Ignored on Spell/Passive, which already
         /// have their own universal/owning-class rules.</summary>
         public bool Universal;
+        /// <summary>Passive/Reactive only (GG-T296): when and how it fires (§4.1). Null on Active abilities and on
+        /// meta-only passives (the proficiency unlocks).</summary>
+        public TriggerDef Trigger;
     }
 
     public sealed class BuffDef

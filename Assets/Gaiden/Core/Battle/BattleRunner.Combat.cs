@@ -216,19 +216,28 @@ namespace GridGame.Core.Battle
                 if (attacker == amplified) mult *= BattleConfig.AmplifierDamageMultiplier;
                 bool shatters = attacker.IsHero && attacker.WeaponId != null && attacker.WeaponDurability == 1;
                 if (shatters) mult *= BattleConfig.ShatterTargetMultiplier;
-                bool twice = HasPassive(attacker, "double_attack");
                 foreach (var target in p.Opponents)
                 {
                     if (!target.Alive || !attacker.Alive || wardedThisPincer.Contains(target)) continue;
-                    Strike(attacker, target, mult, false);
-                    if (twice && target.Alive && attacker.Alive) Strike(attacker, target, mult * 0.5f, false);
+                    Strike(attacker, target, mult, BlowKind.Pincer); // Double Attack follows up from inside (OnAttack)
                     if (target.Alive) TryWeaponPincerBuff(attacker, target);
                 }
                 if (attacker.IsHero && attacker.WeaponId != null && attacker.WeaponDurability > 0) WearWeapon(attacker);
             }
+            foreach (var attacker in new[] { p.A, p.B })
+                if (attacker.Alive && !S.IsOver)
+                {
+                    Unit trapped = null;
+                    foreach (var o in p.Opponents) if (trapped == null && o.Alive) trapped = o;
+                    Fire(TriggerOn.OnPincerAsAttacker, attacker, new TriggerContext { Target = trapped });
+                }
 
             foreach (var sup in supporters)
-                if (sup.Alive && !S.IsOver) PerformSupport(p, sup, team);
+                if (sup.Alive && !S.IsOver)
+                {
+                    PerformSupport(p, sup, team);
+                    if (sup.Alive) Fire(TriggerOn.OnPincerAsSupporter, sup, new TriggerContext { Target = p.AttackerOf(sup) });
+                }
 
             // The pincer attack carries Pushback (GG-T286): every trapped foe a hero pincer landed a blow on acts later.
             if (team == Team.Hero)
@@ -279,7 +288,7 @@ namespace GridGame.Core.Battle
                 case SupportEffect.Strike:
                     float frac = def.Magnitude > 0f ? def.Magnitude : BattleConfig.SupporterDamageFraction;
                     foreach (var target in targets)
-                        if (sup.Alive && target.Alive) Strike(sup, target, frac, true);
+                        if (sup.Alive && target.Alive) Strike(sup, target, frac, BlowKind.Support);
                     break;
                 case SupportEffect.Heal:
                     foreach (var t in targets)
@@ -301,49 +310,9 @@ namespace GridGame.Core.Battle
             }
         }
 
-        /// <summary>The unit has passive <paramref name="id"/>: from its class kit, or (GG-T179) from an enchant on an
-        /// intact armor piece it wears (a broken piece leaves <see cref="Unit.Gear"/>, taking its enchant with it).</summary>
-        private bool HasPassive(Unit u, string id)
-        {
-            var a = C.TryAbility(id);
-            if (a == null || a.Kind != AbilityKind.Passive) return false;
-            if (u.Def.Abilities != null && u.Def.Abilities.Contains(id)) return true;
-            foreach (var piece in u.Gear.Values)
-                if (piece.Durability > 0 && piece.Enchant != null && C.TryArmorEnchant(piece.Enchant)?.Passive == id) return true;
-            return false;
-        }
-
-        /// <summary>Armor enchant passives that ward off buffs (GG-T179): passive id → the buff ids it makes the wearer immune to.</summary>
-        private static readonly Dictionary<string, string[]> WardingPassives = new Dictionary<string, string[]>
-        {
-            { "poison_ward", new[] { "poisoned" } },
-            { "steadfast", new[] { "frozen", "sleep" } },
-        };
-
-        /// <summary>A passive the unit has makes it immune to <paramref name="buffId"/>.</summary>
-        private bool WardedAgainst(Unit u, string buffId)
-        {
-            foreach (var kv in WardingPassives)
-                if (Array.IndexOf(kv.Value, buffId) >= 0 && HasPassive(u, kv.Key)) return true;
-            return false;
-        }
-
-        private bool reflecting;
-
-        /// <summary>Thorns (GG-T179): a hero wearing it reflects a share of a landed enemy hit back at the attacker.</summary>
-        private void MaybeThorns(Unit target, Unit source, int amount)
-        {
-            if (reflecting || amount <= 0 || source == null || !source.Alive || !target.IsHero || source.Team != Team.Enemy || !HasPassive(target, "thorns")) return;
-            reflecting = true;
-            Damage(source, Math.Max(1, (int)Math.Round(amount * BattleConfig.ThornsFraction)), target, HitKind.Normal, DamageType.Physical, "Thorns");
-            reflecting = false;
-        }
-
-        /// <summary>Mana Siphon (GG-T179): every hit the wearer lands adds a little charge to the mana meter.</summary>
-        private void MaybeSiphon(Unit attacker, int dealt)
-        {
-            if (dealt > 0 && attacker.IsHero && HasPassive(attacker, "mana_siphon")) AddCharge(BattleConfig.ManaSiphonCharge, attacker.Id, "siphon");
-        }
+        /// <summary>A passive the unit has makes it immune to <paramref name="buffId"/> (Poison Ward, Steadfast: an Always
+        /// Immunity trigger, GG-T296).</summary>
+        private bool WardedAgainst(Unit u, string buffId) => Triggers.ImmunityTo(S, u, buffId) != null;
 
         /// <summary>Named weapon passive (§24.6.1, GG-T47): a landed pincer strike (not a supporter or counter hit)
         /// may apply the wielder's weapon's signature buff to the target, e.g. Flamebrand's Burn.</summary>
@@ -356,45 +325,36 @@ namespace GridGame.Core.Battle
             if (buff != null) ApplyBuff(target, buff, buff.Duration);
         }
 
-        /// <summary>Named weapon passive (§24.6.1, GG-T47): heals the wielder a fraction of any damage a hero lands
-        /// with it, e.g. Vampiric Edge.</summary>
-        private void TryWeaponLifesteal(Unit attacker, int dealt)
+        /// <summary>
+        /// One weapon blow (a pincer strike, a supporter's, a counter, an enemy's melee swing or shot). The trigger engine
+        /// rides it (GG-T296): OnDodge on a miss; on a landing blow OnLandedHit for the striker (Lifesteal, Mana Siphon,
+        /// a weapon's lifesteal), the class on-hit buff, then OnAttackedDirect for an adjacent victim (Counter Attack);
+        /// a primary blow then fires OnAttack (Double Attack's follow-up).
+        /// </summary>
+        private void Strike(Unit attacker, Unit target, float mult, BlowKind kind, bool followUp = false)
         {
-            if (dealt <= 0 || !attacker.IsHero || attacker.WeaponId == null) return;
-            var weapon = C.TryItem(attacker.WeaponId);
-            if (weapon == null || weapon.LifestealFraction <= 0f) return;
-            Heal(attacker, Math.Max(1, (int)Math.Round(dealt * weapon.LifestealFraction)), attacker);
-        }
-
-        private bool countering;
-
-        /// <summary>Counter Attack passive: a surviving, adjacent defender strikes back at half strength (no chains).</summary>
-        private void MaybeCounter(Unit defender, Unit attacker)
-        {
-            if (countering || attacker == null || !defender.Alive || !attacker.Alive) return;
-            if (defender.Team == attacker.Team || !defender.IsAdjacentTo(attacker) || !HasPassive(defender, "counter_attack")) return;
-            countering = true;
-            Announce("Counter!", defender.Id);
-            Strike(defender, attacker, 0.5f, false);
-            countering = false;
-        }
-
-        private void Strike(Unit attacker, Unit target, float mult, bool support)
-        {
-            Emit(new AttackEvent { AttackerId = attacker.Id, TargetId = target.Id, IsSupport = support });
-            var roll = Formulas.Physical(attacker, target, S.Rng, mult * KitDamageMultiplier(attacker) * attacker.OutgoingDamageMultiplier);
-            if (roll.Hit != HitKind.Miss && PlateAbsorbs(target, attacker, roll.Damage)) return;
-            int before = target.Hp;
-            Damage(target, roll.Damage, attacker, roll.Hit, DamageType.Physical);
-            if (roll.Hit == HitKind.Critical && attacker.IsHero) AddCharge(BattleConfig.CritCharge, attacker.Id, "critical");
-            if (roll.Hit != HitKind.Miss)
+            Emit(new AttackEvent { AttackerId = attacker.Id, TargetId = target.Id, IsSupport = kind == BlowKind.Support, IsMelee = kind == BlowKind.Melee, IsRanged = kind == BlowKind.Ranged });
+            var roll = Formulas.Physical(attacker, target, S.Rng, mult * KitDamageMultiplier(attacker, target) * attacker.OutgoingDamageMultiplier);
+            if (!(roll.Hit != HitKind.Miss && PlateAbsorbs(target, attacker, roll.Damage)))
             {
-                int dealt = before - target.Hp;
-                AfterLandedHit(attacker, target, dealt);
-                TryWeaponLifesteal(attacker, dealt);
-                MaybeSiphon(attacker, dealt);
-                MaybeCounter(target, attacker);
+                int before = target.Hp;
+                Damage(target, roll.Damage, attacker, roll.Hit, DamageType.Physical);
+                if (roll.Hit == HitKind.Critical && attacker.IsHero) AddCharge(BattleConfig.CritCharge, attacker.Id, "critical");
+                if (roll.Hit == HitKind.Miss)
+                {
+                    if (Triggers.Foes(target, attacker)) Fire(TriggerOn.OnDodge, target, new TriggerContext { Attacker = attacker, Blow = kind, Type = DamageType.Physical });
+                }
+                else
+                {
+                    int dealt = before - target.Hp;
+                    if (attacker.Alive) Fire(TriggerOn.OnLandedHit, attacker, new TriggerContext { Target = target, Damage = dealt, Blow = kind, StrikeMultiplier = mult, Type = DamageType.Physical });
+                    AfterLandedHit(attacker, target);
+                    if (target.Alive && attacker.Alive && Triggers.Foes(target, attacker) && target.IsAdjacentTo(attacker))
+                        Fire(TriggerOn.OnAttackedDirect, target, new TriggerContext { Attacker = attacker, Damage = dealt, Blow = kind, Type = DamageType.Physical });
+                }
             }
+            if (!followUp && (kind == BlowKind.Pincer || kind == BlowKind.Melee) && attacker.Alive && target.Alive)
+                Fire(TriggerOn.OnAttack, attacker, new TriggerContext { Target = target, Blow = kind, StrikeMultiplier = mult, Type = DamageType.Physical });
         }
 
         // ── Armor plates (§13.5) ──
@@ -491,16 +451,15 @@ namespace GridGame.Core.Battle
 
         // ── Enemy kits (§14.4): passives and on-hit effects shared by every enemy attack ──
 
-        /// <summary>Berserk: below half HP an enemy hits 35% harder.</summary>
-        private float KitDamageMultiplier(Unit attacker) =>
-            attacker.IsHero ? 1f : BattleConfig.EnemyStrikeMultiplier * (skirmishing ? 0.8f : 1f) * (attacker.HpFraction < 0.5f && HasPassive(attacker, "berserk") ? 1.35f : 1f);
+        /// <summary>An enemy's blows scale with the kit multiplier (and the skirmish discount); anyone's with their
+        /// Always DamageMultiplier passives (Berserk: ×1.35 below half HP, GG-T296).</summary>
+        private float KitDamageMultiplier(Unit attacker, Unit target) =>
+            (attacker.IsHero ? 1f : BattleConfig.EnemyStrikeMultiplier * (skirmishing ? 0.8f : 1f)) * Triggers.OutgoingMultiplier(S, attacker, target);
 
-        /// <summary>After an enemy's attack lands: lifesteal heals a share of the damage (BattleConfig.EnemyLifestealFraction);
-        /// an on-hit buff may stick.</summary>
-        private void AfterLandedHit(Unit attacker, Unit target, int dealt)
+        /// <summary>After an enemy's attack lands: its class on-hit buff may stick.</summary>
+        private void AfterLandedHit(Unit attacker, Unit target)
         {
             if (attacker.IsHero || !attacker.Alive) return;
-            if (dealt > 0 && HasPassive(attacker, "lifesteal")) Heal(attacker, Math.Max(1, (int)Math.Round(dealt * BattleConfig.EnemyLifestealFraction)), attacker);
             var buff = C.TryBuff(attacker.Def.OnHitBuff);
             if (buff != null && target.Alive && S.Rng.Chance(attacker.Def.OnHitChance)) ApplyBuff(target, buff, buff.Duration);
         }

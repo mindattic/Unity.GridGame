@@ -832,6 +832,15 @@ The battle HUD shows **5 slot buttons** for the **selected hero** (`BattleRunner
 | **Spell** | mana orbs | cast icon on the timeline (all content spells: 1.5 s base) | blue + cost pips |
 | **Item** | one charge of the slot's stack | instant | warm leather; "name n/max" |
 
+**Amended 2026-11-06 (GG-T296, owner): Active, Passive, Reactive.** Skills, spells and items are the *Active* kind: you take them. Two more kinds never sit on the bar. A **Passive** just happens (Vampire's Kiss heals when you attack; Tough Hide always softens blows). A **Reactive** fires after something happens *to* you, usually on a chance ("when [attacked directly], a [slight] chance to [Counterstrike]"). Heroes and enemies use the same system, so a character can be built to benefit from being hit, dodging or being surrounded.
+
+- **Data:** `AbilityDef.Trigger` (`TriggerDef`): `On` (the event), `Chance` (0..1; 1 never touches the Rng; optional `ChancePerLuck`), event parameters `Count` (OnSurrounded), `Threshold` (OnLowHp) and `Status` (OnStatusGained), an optional `Condition` (owner HP below/above, has/lacks a status, adjacent foes ≥ n, the other unit's tag, the damage type), a list of `Effects`, and the guards `Cooldown` (own turns) and `OncePerAction`. `Callout` overrides the float text. Everything is checked by `ContentLoader.ValidateTrigger`.
+- **Events (`TriggerOn`):** `Always` (modifiers only), `OnAttack` (a primary weapon attack, hit or miss), `OnLandedHit`, `OnDamaged`, `OnAttackedDirect` (an adjacent foe's blow lands), `OnAttackedAny` (any foe's blow or ability lands), `OnDodge` (a foe's blow misses), `OnSurrounded` (at turn start), `OnStatusGained`, `OnLowHp` (a hit crosses the threshold), `OnAllyKO`, `OnKill`, `OnPincerAsAttacker`, `OnPincerAsSupporter`, `TurnStart`, `TurnEnd`, `ActionEnd`. A hero's turn starts and ends each time control returns to the party; an enemy's is its own turn.
+- **Effects (`TriggerEffectKind`):** `Heal` (fraction of max HP), `Lifesteal` and `Reflect` (fraction of the context's damage), `ApplyBuff`, `Counterstrike` (a blow at ×Amount on a foe in reach), `FollowUp` (strike the target again at ×Amount of the blow), `CastAbility` (an Active ability resolved instantly and free through the normal dispatcher), `Cleanse`, `ManaCharge` (heroes), `Pushback` (seconds, foes). The `Always` modifiers are `DamageMultiplier` (the owner's weapon blows), `ReductionMultiplier` (damage taken) and `Immunity` (statuses). `Who` (Self/Target/Attacker) overrides each effect's default target.
+- **Engine (`BattleRunner.Triggers.cs` + pure `Rules/Triggers.cs`):** `Triggers.Sources(unit)` lists a unit's passives in a fixed order: class kit, learned passives (`Unit.Passives` from `HeroSpec.Passives` from `HeroSave.Known`), enchants on intact armor, then the weapon's named lifesteal. The funnels fire it: `Damage` (OnDamaged, OnAttackedAny, OnLowHp), `Strike` (OnDodge, OnLandedHit, OnAttackedDirect, OnAttack), `Kill` (OnKill, OnAllyKO), `ApplyBuff` (OnStatusGained), pincer resolve, turn starts and ends, and the end of a command. Owners go in unit-id order, abilities in source order, and only a chance below 1 draws from the battle Rng. **A reaction never provokes a reaction:** a Reactive can't fire from inside another Reactive's effects, and no ability re-enters itself. A Passive such as Lifesteal still rides a counter blow.
+- **Presentation:** every firing emits `TriggeredEvent` ahead of its effects. The view floats the callout over the unit with a sound: a clang for Counterstrike/Reflect, a war cry for a free cast, a power-up otherwise (POL-D4). The InspectCard and the bestiary kit line show **Passive** or **Reactive** with a sentence generated from the data (`TriggerText.Describe`), keywords in [brackets].
+- *(Tests: `TriggerEngineTests`, `ArmorEnchantTests`, `Double_attack_passive_strikes_twice_and_counter_strikes_back`.)*
+
 #### 4.1.1 Skill cooldowns
 
 A skill locks for `AbilityDef.CooldownTurns` after use: **Steal 3, Mug 2, Teleport 3**. Countdowns live per hero in `Unit.Cooldowns`. **Amended 2026-10-09:** they tick **once per committed action** at control return (the old "turn-cycle" = hero window is now one action). A cooling slot shows "CD n" and refuses ("Recharging"). *(Test: `Teleport_relocates_and_fires_pincer_then_goes_on_cooldown`.)*
@@ -1118,10 +1127,22 @@ All entries in `abilities.json`. Every spell has base cast time **1.5 s** (scale
 
 Enemy-only entries: `charge_fireball` (Fire), `charge_ice` (Ice), `charge_thunder` (Lightning), `charge_smite` (Holy) — 2.5 s charges with base 0 (damage comes from the INT-vs-WIS roll, [§13.4](#134-the-interrupt-path)); `enrage` (self Hasten 0.35, Cyclops phase 2). **Amended 2026-11-05 (GG-T283):** an enemy charge with `CooldownTurns` > 0 rests that many of the caster's own turns (counted at each turn start) before it can be charged again; `charge_smite` has 2, so a templar charges every other turn and closes in between.
 
-**Passives** (`Kind: "Passive"`, active when listed in a class's `Abilities`; never on the bar, never learnable) — **Amended 2026-10-09:**
-- **Double Attack** (`double_attack`): as a pincer attacker, strikes each trapped opponent a second time at ×0.5.
-- **Counter Attack** (`counter_attack`): when hit by a landing physical strike (pincer, supporter or melee) from an adjacent attacker and still alive, strikes back once at ×0.5 ("Counter!"); counters never chain.
-- Carried by `bat01`, `bat02`, `scorpion` (enemies). *(Test: `Double_attack_passive_strikes_twice_and_counter_strikes_back`.)*
+**Passives and Reactives** (`Kind: "Passive"` / `"Reactive"`, active from a class's `Abilities`, a learned skill-tree node or an armor enchant; never on the bar, never bought). **Amended 2026-11-06 (GG-T296):** each is now a `Trigger` row on the engine of [§4.1](#41-the-three-kinds); no passive has its own code.
+
+| Id | Kind | Trigger → effect |
+|---|---|---|
+| `double_attack` | Passive | OnAttack → FollowUp ×0.5 (a pincer attacker or a melee swing strikes the same foe again) |
+| `counter_attack` | Reactive | OnAttackedDirect → Counterstrike ×0.5, callout "Counter!" |
+| `lifesteal` | Passive | OnLandedHit → Lifesteal 25% of the damage |
+| `tough_hide` | Passive | Always, physical damage → ReductionMultiplier 0.7 |
+| `berserk` | Passive | Always, below 50% HP → DamageMultiplier 1.35 |
+| `regenerate` | Passive | TurnEnd → Heal 6% max HP |
+| `poison_ward` | Passive | Always → Immunity: poisoned ("Warded!") |
+| `steadfast` | Passive | Always → Immunity: frozen, sleep |
+| `thorns` | Reactive | OnAttackedAny → Reflect 25% of the damage |
+| `mana_siphon` | Passive | OnLandedHit → ManaCharge 5 |
+
+The three proficiency passives carry no trigger; they only gate equipment ([§24.2.1](#2421-proficiency-gating-gg-t52)). Every one now works for heroes and enemies alike: a hero who learns Tough Hide, Lifesteal or Double Attack from a skill tree gets it in battle. Before, those were enemy-only code paths, and learned passives never reached the battle. *(Tests: `TriggerEngineTests`, `Double_attack_passive_strikes_twice_and_counter_strikes_back`.)*
 
 **Notes (current truth, Amended 2026-10-09):**
 - **Mug** = Steal's roll + its row's `BaseDamage` 10 Physical, one hit per target (fixed 2026-10-09; `Mug_steals_and_hits_exactly_once_per_target`).
@@ -2475,7 +2496,7 @@ The first time the player opens a Camp station, a one-time **camp tip** points a
 ### 25.6.1 Skill trees (content only, GG-T50)
 
 `Assets/Gaiden/Resources/Content/skilltrees.json` → `ContentDb.SkillTrees` (`SkillTreeDef`/`SkillNodeDef`, `Core/Content/ContentModels.cs`): one tree per hero archetype, named by a `ClassDef.HomeTree` id every hero class must set (`ContentLoader.Validate`, same pattern as §25.13's `Role` check). A tree is a small DAG of nodes:
-- `Grants` — the ability or passive id the node would unlock (must resolve in `ContentDb.Abilities`).
+- `Grants` — the ability or passive id the node would unlock (must resolve in `ContentDb.Abilities`). **Amended 2026-11-06 (GG-T296):** a granted Passive or Reactive (Last Bastion's Counter Attack, Lifesteal, Double Attack, Tough Hide, Regenerate) fights with the hero. `BattleFactory.SpecFor` copies every known Passive/Reactive into `HeroSpec.Passives`; it had dropped them, so these nodes did nothing in battle.
 - `Cost` — skill points to spend on it.
 - `RequiredPointsInTree` — total points already spent anywhere in the tree before it can unlock.
 - `Prerequisites` — sibling node ids (same tree) that must already be unlocked.

@@ -158,7 +158,7 @@ namespace GridGame.Tests
             var all = ArmorEnchanting.All(C);
             Assert.That(all.Count, Is.GreaterThanOrEqualTo(6));
             Assert.That(all.Select(e => e.Passive).Distinct().Count(), Is.EqualTo(all.Count), "each enchant grants its own passive");
-            foreach (var e in all) Assert.That(C.Ability(e.Passive).Kind, Is.EqualTo(AbilityKind.Passive), e.Id);
+            foreach (var e in all) Assert.That(C.Ability(e.Passive).Kind, Is.AnyOf(AbilityKind.Passive, AbilityKind.Reactive), e.Id); // Thorns/Counter are Reactive (GG-T296)
             var first = C.Campaign.Themes[0];
             var early = new HashSet<string>(first.Stages.Select(id => C.Stages[id]).SelectMany(st => st.Waves).SelectMany(w => w.Enemies)
                 .Select(e => C.TryClass(e.Class)?.DropTable).Where(t => t != null && C.DropTables.ContainsKey(t))

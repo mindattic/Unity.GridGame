@@ -140,6 +140,7 @@ namespace GridGame.Core.Content
                 NeedBuff(a.ApplyBuff, $"ability {a.Id}"); NeedBuff(a.RemovesBuff, $"ability {a.Id} removes");
                 if (!(a.Pushback >= 0f) || a.Pushback > Battle.BattleConfig.PushbackMaxSeconds)
                     p.Add($"ability {a.Id}: Pushback {a.Pushback}s outside 0..{Battle.BattleConfig.PushbackMaxSeconds}s (GG-T286)");
+                ValidateTrigger(db, a, p);
             }
             foreach (var b in db.Buffs.Values) NeedBuff(b.OnExpireApply, $"buff {b.Id}");
             foreach (var i in db.Items.Values)
@@ -221,7 +222,7 @@ namespace GridGame.Core.Content
                 string w = $"armor enchant {e.Id}";
                 if (string.IsNullOrWhiteSpace(e.Name)) p.Add($"{w}: needs a Name");
                 if (!db.Abilities.TryGetValue(e.Passive ?? "", out var passive)) p.Add($"{w}: unknown passive '{e.Passive}'");
-                else if (passive.Kind != AbilityKind.Passive) p.Add($"{w}: '{e.Passive}' isn't a Passive ability");
+                else if (passive.Kind != AbilityKind.Passive && passive.Kind != AbilityKind.Reactive) p.Add($"{w}: '{e.Passive}' isn't a Passive or Reactive ability");
                 if (e.Inputs.Count == 0) p.Add($"{w}: needs inputs");
                 foreach (var ic in e.Inputs) { NeedItem(ic.Item, w); if (ic.Count <= 0) p.Add($"{w}: input counts must be positive"); }
                 if (e.Gold < 0) p.Add($"{w}: gold can't be negative");
@@ -329,6 +330,87 @@ namespace GridGame.Core.Content
 
         private static bool IsArmorSlot(EquipmentSlot s) =>
             s == EquipmentSlot.Head || s == EquipmentSlot.Torso || s == EquipmentSlot.Legs || s == EquipmentSlot.Gloves || s == EquipmentSlot.Boots;
+
+        /// <summary>GG-T296 (§4.1): a trigger lives only on a Passive or Reactive ability, a Reactive must have one that
+        /// reacts to an event, and every knob is in range and names real content. Public so a trigger built outside
+        /// abilities.json (a reward-granted one, GG-T301) can be checked the same way.</summary>
+        public static void ValidateTrigger(ContentDb db, AbilityDef a, List<string> p)
+        {
+            string w = $"ability {a.Id} trigger";
+            var t = a.Trigger;
+            if (t == null)
+            {
+                if (a.Kind == AbilityKind.Reactive) p.Add($"ability {a.Id}: a Reactive ability needs a Trigger");
+                return;
+            }
+            if (a.Kind != AbilityKind.Passive && a.Kind != AbilityKind.Reactive) { p.Add($"{w}: only Passive and Reactive abilities carry a Trigger"); return; }
+            if (a.Kind == AbilityKind.Reactive && t.On == TriggerOn.Always) p.Add($"{w}: a Reactive ability reacts to an event, not Always");
+            if (!(t.Chance > 0f && t.Chance <= 1f)) p.Add($"{w}: Chance {t.Chance} outside (0, 1]");
+            if (t.ChancePerLuck < 0f || t.ChancePerLuck > 0.1f) p.Add($"{w}: ChancePerLuck {t.ChancePerLuck} outside 0..0.1");
+            if (t.Cooldown < 0) p.Add($"{w}: Cooldown can't be negative");
+            if (t.On == TriggerOn.OnSurrounded && (t.Count < 1 || t.Count > 4)) p.Add($"{w}: OnSurrounded needs Count 1..4");
+            if (t.On != TriggerOn.OnSurrounded && t.Count != 0) p.Add($"{w}: Count is only for OnSurrounded");
+            if (t.On == TriggerOn.OnLowHp && !(t.Threshold > 0f && t.Threshold < 1f)) p.Add($"{w}: OnLowHp needs Threshold in (0, 1)");
+            if (t.On != TriggerOn.OnLowHp && t.Threshold != 0f) p.Add($"{w}: Threshold is only for OnLowHp");
+            if (t.Status != null && t.On != TriggerOn.OnStatusGained) p.Add($"{w}: Status is only for OnStatusGained");
+            if (t.Status != null && !db.Buffs.ContainsKey(t.Status)) p.Add($"{w}: unknown status '{t.Status}'");
+            var c = t.Condition;
+            if (c != null)
+            {
+                if (c.SelfHpBelow < 0f || c.SelfHpBelow > 1f || c.SelfHpAbove < 0f || c.SelfHpAbove >= 1f) p.Add($"{w}: condition HP fractions outside 0..1");
+                if (c.HasStatus != null && !db.Buffs.ContainsKey(c.HasStatus)) p.Add($"{w}: condition unknown status '{c.HasStatus}'");
+                if (c.LacksStatus != null && !db.Buffs.ContainsKey(c.LacksStatus)) p.Add($"{w}: condition unknown status '{c.LacksStatus}'");
+                if (c.AdjacentFoesAtLeast < 0 || c.AdjacentFoesAtLeast > 4) p.Add($"{w}: condition AdjacentFoesAtLeast outside 0..4");
+                if (c.OtherTag != null && c.OtherTag.Trim().Length == 0) p.Add($"{w}: condition OtherTag is blank");
+            }
+            if (t.Effects == null || t.Effects.Count == 0) { p.Add($"{w}: needs at least one effect"); return; }
+            foreach (var e in t.Effects)
+            {
+                if (e == null) { p.Add($"{w}: null effect"); continue; }
+                string we = $"{w} {e.Kind}";
+                bool modifier = e.Kind == TriggerEffectKind.DamageMultiplier || e.Kind == TriggerEffectKind.ReductionMultiplier || e.Kind == TriggerEffectKind.Immunity;
+                if (modifier != (t.On == TriggerOn.Always)) p.Add($"{we}: DamageMultiplier/ReductionMultiplier/Immunity are exactly the Always effects");
+                switch (e.Kind)
+                {
+                    case TriggerEffectKind.Heal:
+                    case TriggerEffectKind.Lifesteal:
+                    case TriggerEffectKind.Reflect:
+                        if (!(e.Amount > 0f && e.Amount <= 1f)) p.Add($"{we}: Amount (a fraction) must be in (0, 1]");
+                        break;
+                    case TriggerEffectKind.Counterstrike:
+                    case TriggerEffectKind.FollowUp:
+                        if (!(e.Amount > 0f && e.Amount <= 2f)) p.Add($"{we}: Amount (a multiplier) must be in (0, 2]");
+                        break;
+                    case TriggerEffectKind.DamageMultiplier:
+                        if (!(e.Amount > 0f && e.Amount <= 3f)) p.Add($"{we}: Amount must be in (0, 3]");
+                        break;
+                    case TriggerEffectKind.ReductionMultiplier:
+                        if (!(e.Amount >= 0f && e.Amount <= 1f)) p.Add($"{we}: Amount must be in 0..1");
+                        break;
+                    case TriggerEffectKind.ManaCharge:
+                        if (!(e.Amount >= 1f && e.Amount <= 100f) || e.Amount != (float)Math.Floor(e.Amount)) p.Add($"{we}: Amount must be a whole 1..100");
+                        break;
+                    case TriggerEffectKind.Pushback:
+                        if (!(e.Amount > 0f && e.Amount <= Battle.BattleConfig.PushbackMaxSeconds)) p.Add($"{we}: Amount {e.Amount}s outside (0, {Battle.BattleConfig.PushbackMaxSeconds}]s");
+                        break;
+                    case TriggerEffectKind.ApplyBuff:
+                        if (string.IsNullOrEmpty(e.Buff)) p.Add($"{we}: needs a Buff");
+                        else if (!db.Buffs.ContainsKey(e.Buff)) p.Add($"{we}: unknown buff '{e.Buff}'");
+                        break;
+                    case TriggerEffectKind.Immunity:
+                        if (e.Statuses == null || e.Statuses.Count == 0) p.Add($"{we}: needs Statuses");
+                        else foreach (var s in e.Statuses) if (!db.Buffs.ContainsKey(s ?? "")) p.Add($"{we}: unknown status '{s}'");
+                        break;
+                    case TriggerEffectKind.CastAbility:
+                        if (!db.Abilities.TryGetValue(e.Ability ?? "", out var cast)) p.Add($"{we}: unknown ability '{e.Ability}'");
+                        else if (cast.Kind == AbilityKind.Passive || cast.Kind == AbilityKind.Reactive) p.Add($"{we}: '{e.Ability}' must be an Active ability");
+                        break;
+                }
+                if (e.Kind != TriggerEffectKind.ApplyBuff && e.Buff != null) p.Add($"{we}: Buff is only for ApplyBuff");
+                if (e.Kind != TriggerEffectKind.CastAbility && e.Ability != null) p.Add($"{we}: Ability is only for CastAbility");
+                if (e.Kind != TriggerEffectKind.Immunity && e.Statuses != null && e.Statuses.Count > 0) p.Add($"{we}: Statuses are only for Immunity");
+            }
+        }
 
         /// <summary>GG-T231: a campaign crawl (Prologue/Ending) is optional, but one that exists needs text, a known
         /// backdrop theme, and (the Ending) a campaign stage to follow.</summary>

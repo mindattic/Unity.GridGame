@@ -225,7 +225,8 @@ namespace GridGame.App
             if (a == null) return false;
             var itemTex = a.Id != null && a.Id.StartsWith("item:") ? Art.ItemIcon(a.Id.Substring(5)) : null;
             string kind = a.Kind == AbilityKind.Item ? "Item · acts at once"
-                : a.Kind == AbilityKind.Passive ? "Passive · always on"
+                : a.Kind == AbilityKind.Passive ? "Passive · just happens"
+                : a.Kind == AbilityKind.Reactive ? "Reactive · fires when something happens to it"
                 : a.Kind == AbilityKind.Skill ? (a.CooldownTurns > 0 ? $"Skill · recharges in {a.CooldownTurns} turns" : "Skill · free")
                 : a.CastTime > 0 ? $"Spell · charges {a.CastTime:0.#}s on the timeline" : "Spell · instant";
             var head = Header(body, itemTex ?? Art.AbilityIcon(a), a.Name, kind, Palette.Gold);
@@ -239,7 +240,9 @@ namespace GridGame.App
             }
 
             var facts = new List<string>();
-            if (a.Mode == TargetMode.Auto) facts.Add("No aim needed");
+            // A Passive/Reactive reads as its trigger, generated from the data (GG-T296, §4.1).
+            if (a.Trigger != null) facts.Add(GridGame.Core.Rules.TriggerText.Describe(GameApp.I?.Content, a));
+            else if (a.Mode == TargetMode.Auto) facts.Add("No aim needed");
             else
             {
                 string reach = a.AdjacentOnly ? "an adjacent tile" : a.Radius > 0 ? $"{Words(a.Shape.ToString())}, radius {a.Radius}" : Words(a.Shape.ToString());

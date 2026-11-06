@@ -189,6 +189,7 @@ namespace GridGame.App
                 case BuffRemovedEvent br: RefreshUnit(br.UnitId); return br.Reason == "steam" ? FloatText(br.UnitId, "Steam!", Palette.White, 0.25f) : null;
                 case BuffTickedEvent bt: RefreshUnit(bt.UnitId); return null;
                 case AnnounceEvent an: ShowBanner(an.Text); return Tween.Wait(Timing.Standard);
+                case TriggeredEvent tr: return TriggeredAnim(tr);
                 case TrapPlacedEvent tp: board.SyncTraps(State); App.Audio.Sfx("battle.trap"); return FloatText(tp.ById, "Snare!", Palette.Boss, 0.3f);
                 case TrapTriggeredEvent tt: board.SyncTraps(State); App.Audio.Sfx("battle.trap"); return FloatText(tt.UnitId, "Trap!", Palette.Boss, 0.25f);
                 case WeaponWornEvent _: return null;
@@ -1375,7 +1376,7 @@ namespace GridGame.App
             var hit = ar.Targets.Select(State.UnitById).Where(u => u != null).Select(u => u.Name).Distinct().ToList();
             string who = hit.Count == 0 ? "" : hit.Count <= 2 ? " → " + string.Join(" & ", hit) : $" → {hit.Count} targets";
             ShowBanner(a == null ? "" : caster != null ? $"{caster.Name}: {a.Name}{who}" : a.Name + who);
-            if (a != null && a.Kind != AbilityKind.Passive) Billboard(a.Name + who, Art.AbilityIcon(a), Palette.White);
+            if (a != null && a.Kind != AbilityKind.Passive && a.Kind != AbilityKind.Reactive) Billboard(a.Name + who, Art.AbilityIcon(a), Palette.White);
             // The caster's portrait is the cast-splash beat: it slides in and out BEFORE the projectile flies, so it never covers the flight.
             if (a != null && caster != null && a.Kind == AbilityKind.Spell && CutInsEnabled && !ReduceMotion) yield return CasterSlide(caster, a.Name);
             board.ClearMarks();
@@ -1717,6 +1718,18 @@ namespace GridGame.App
                 v.SetHp(u.Hp, u.MaxHp);
                 if (!u.HasBuff("frozen")) v.Art.style.unityBackgroundImageTintColor = Palette.White; // the frost tint thaws with the status
             }
+        }
+
+        /// <summary>A Passive or Reactive fired (GG-T296, POL-D4): its callout floats over the unit with a cue — a clang for a
+        /// counterstrike or reflect, a war-cry for a free cast, a soft power-up for the rest; its effects' own beats follow.</summary>
+        private IEnumerator TriggeredAnim(TriggeredEvent tr)
+        {
+            RefreshUnit(tr.UnitId);
+            string sfx = tr.Effect == TriggerEffectKind.Counterstrike || tr.Effect == TriggerEffectKind.Reflect ? "battle.clang"
+                : tr.Effect == TriggerEffectKind.CastAbility ? "battle.warcry" : "battle.powerup";
+            App.Audio.Sfx(sfx, tr.Kind == AbilityKind.Reactive ? 0.8f : 0.5f);
+            string text = string.IsNullOrEmpty(tr.Callout) ? "!" : tr.Callout.EndsWith("!") ? tr.Callout : tr.Callout + "!";
+            return FloatText(tr.UnitId, text, tr.Kind == AbilityKind.Reactive ? Palette.Gold : Palette.Info, tr.Kind == AbilityKind.Reactive ? 0.2f : 0.1f, tr.Kind == AbilityKind.Reactive ? 56 : 44);
         }
 
         private IEnumerator FloatText(int unitId, string text, Color c, float hold, float size = 60)

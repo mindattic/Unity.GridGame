@@ -529,8 +529,8 @@ namespace GridGame.Tests
         public void Double_attack_passive_strikes_twice_and_counter_strikes_back()
         {
             var db = Mini();
-            db.Abilities["double_attack"] = new AbilityDef { Id = "double_attack", Name = "Double Attack", Kind = AbilityKind.Passive };
-            db.Abilities["counter_attack"] = new AbilityDef { Id = "counter_attack", Name = "Counter", Kind = AbilityKind.Passive };
+            db.Abilities["double_attack"] = Real.Ability("double_attack");
+            db.Abilities["counter_attack"] = Real.Ability("counter_attack");
             db.Classes["knight"].Abilities.Add("double_attack");
             db.Classes["tank"].Abilities.Add("counter_attack");
             var (s, _) = Battle(db, Stage(("tank", 2, 3)), ("knight", 1, 3), ("cleric", 3, 4));

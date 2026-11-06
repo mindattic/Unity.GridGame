@@ -635,13 +635,22 @@
   "ProjectileVfx": null,
   "ImpactVfx": null,
   "LingerVfx": null,
-  "Sfx": null
+  "Sfx": null,
+  "Trigger": {
+   "On": "OnAttack",
+   "Effects": [
+    {
+     "Kind": "FollowUp",
+     "Amount": 0.5
+    }
+   ]
+  }
  },
  {
   "Id": "counter_attack",
   "Name": "Counter Attack",
   "Description": "When attacked, automatically strikes back at the attacker.",
-  "Kind": "Passive",
+  "Kind": "Reactive",
   "Cost": 0,
   "CastTime": 0.0,
   "CooldownTurns": 0,
@@ -664,7 +673,17 @@
   "ProjectileVfx": null,
   "ImpactVfx": null,
   "LingerVfx": null,
-  "Sfx": null
+  "Sfx": null,
+  "Trigger": {
+   "On": "OnAttackedDirect",
+   "Effects": [
+    {
+     "Kind": "Counterstrike",
+     "Amount": 0.5
+    }
+   ],
+   "Callout": "Counter!"
+  }
  },
  {
   "Id": "enrage",
@@ -892,7 +911,16 @@
   "ProjectileVfx": null,
   "ImpactVfx": null,
   "LingerVfx": null,
-  "Sfx": null
+  "Sfx": null,
+  "Trigger": {
+   "On": "OnLandedHit",
+   "Effects": [
+    {
+     "Kind": "Lifesteal",
+     "Amount": 0.25
+    }
+   ]
+  }
  },
  {
   "Id": "tough_hide",
@@ -921,7 +949,19 @@
   "ProjectileVfx": null,
   "ImpactVfx": null,
   "LingerVfx": null,
-  "Sfx": null
+  "Sfx": null,
+  "Trigger": {
+   "On": "Always",
+   "Condition": {
+    "DamageType": "Physical"
+   },
+   "Effects": [
+    {
+     "Kind": "ReductionMultiplier",
+     "Amount": 0.7
+    }
+   ]
+  }
  },
  {
   "Id": "berserk",
@@ -950,7 +990,19 @@
   "ProjectileVfx": null,
   "ImpactVfx": null,
   "LingerVfx": null,
-  "Sfx": null
+  "Sfx": null,
+  "Trigger": {
+   "On": "Always",
+   "Condition": {
+    "SelfHpBelow": 0.5
+   },
+   "Effects": [
+    {
+     "Kind": "DamageMultiplier",
+     "Amount": 1.35
+    }
+   ]
+  }
  },
  {
   "Id": "regenerate",
@@ -979,7 +1031,16 @@
   "ProjectileVfx": null,
   "ImpactVfx": null,
   "LingerVfx": null,
-  "Sfx": null
+  "Sfx": null,
+  "Trigger": {
+   "On": "TurnEnd",
+   "Effects": [
+    {
+     "Kind": "Heal",
+     "Amount": 0.06
+    }
+   ]
+  }
  },
  {
   "Id": "poison_ward",
@@ -1008,7 +1069,18 @@
   "ProjectileVfx": null,
   "ImpactVfx": null,
   "LingerVfx": null,
-  "Sfx": null
+  "Sfx": null,
+  "Trigger": {
+   "On": "Always",
+   "Effects": [
+    {
+     "Kind": "Immunity",
+     "Statuses": [
+      "poisoned"
+     ]
+    }
+   ]
+  }
  },
  {
   "Id": "steadfast",
@@ -1037,13 +1109,25 @@
   "ProjectileVfx": null,
   "ImpactVfx": null,
   "LingerVfx": null,
-  "Sfx": null
+  "Sfx": null,
+  "Trigger": {
+   "On": "Always",
+   "Effects": [
+    {
+     "Kind": "Immunity",
+     "Statuses": [
+      "frozen",
+      "sleep"
+     ]
+    }
+   ]
+  }
  },
  {
   "Id": "thorns",
   "Name": "Thorns",
   "Description": "An enemy whose blow lands takes a quarter of that damage back.",
-  "Kind": "Passive",
+  "Kind": "Reactive",
   "Cost": 0,
   "CastTime": 0.0,
   "CooldownTurns": 0,
@@ -1066,7 +1150,16 @@
   "ProjectileVfx": null,
   "ImpactVfx": null,
   "LingerVfx": null,
-  "Sfx": null
+  "Sfx": null,
+  "Trigger": {
+   "On": "OnAttackedAny",
+   "Effects": [
+    {
+     "Kind": "Reflect",
+     "Amount": 0.25
+    }
+   ]
+  }
  },
  {
   "Id": "mana_siphon",
@@ -1095,7 +1188,16 @@
   "ProjectileVfx": null,
   "ImpactVfx": null,
   "LingerVfx": null,
-  "Sfx": null
+  "Sfx": null,
+  "Trigger": {
+   "On": "OnLandedHit",
+   "Effects": [
+    {
+     "Kind": "ManaCharge",
+     "Amount": 5
+    }
+   ]
+  }
  },
  {
   "Id": "shield_bash",

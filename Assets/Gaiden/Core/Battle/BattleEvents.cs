@@ -315,6 +315,16 @@ namespace GridGame.Core.Battle
         public override string ToString() => $"BuffRemoved {UnitId} {BuffId} ({Reason})";
     }
 
+    /// <summary>A Passive or Reactive ability fired (§4.1, GG-T296); its effects' own events follow. The view floats
+    /// <see cref="Callout"/> over the unit with a sound (POL-D4).</summary>
+    public sealed class TriggeredEvent : BattleEvent
+    {
+        public int UnitId; public string AbilityId; public string Callout; public AbilityKind Kind; public TriggerOn On;
+        /// <summary>The first effect that did something (Counterstrike, Lifesteal…), for the cue.</summary>
+        public TriggerEffectKind Effect;
+        public override string ToString() => $"Triggered {UnitId} {AbilityId} ({On} → {Effect})";
+    }
+
     public sealed class AnnounceEvent : BattleEvent
     {
         public string Text; public int UnitId = -1;

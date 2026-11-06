@@ -47,6 +47,7 @@ namespace GridGame.Core.Battle
             if (!BattleEngine.IsAuthorized(S, cmd)) { Emit(new AbilityRefusedEvent { CasterId = BattleEngine.CommandHeroId(cmd), Reason = "Not your hero" }); return; }
 
             pushedThisAction.Clear();
+            firedThisAction.Clear();
             int waveBefore = S.Wave;
             bool acted;
             switch (cmd)
@@ -62,6 +63,12 @@ namespace GridGame.Core.Battle
 
             S.Results.ActionsTaken++;
             CheckEnd();
+            // ActionEnd passives/reactives of the hero whose command it was (GG-T296).
+            if (!S.IsOver && S.UnitById(BattleEngine.CommandHeroId(cmd)) is Unit actor && actor.IsHero && actor.Alive)
+            {
+                Fire(TriggerOn.ActionEnd, actor, new TriggerContext());
+                CheckEnd();
+            }
             // GG-T188 (§2.0): every committed action ends the player's turn — the clock runs on until the next enemy
             // turn icon reaches ACT and that enemy acts. Clearing a wave hands the fresh wave's first turn to the player;
             // with no enemy icon able to arrive at all, a turn spends the fixed ActionTicks instead.
@@ -386,8 +393,9 @@ namespace GridGame.Core.Battle
             foreach (var h in S.LivingList(Team.Hero))
             {
                 if (h.RegenPerTurn > 0 && h.Hp < h.MaxHp) Heal(h, h.RegenPerTurn, h);
-                // A Regeneration-enchanted armor piece (GG-T179) knits the hero like the enemy kit does.
-                if (h.Hp < h.MaxHp && HasPassive(h, "regenerate")) Heal(h, Math.Max(1, h.MaxHp * BattleConfig.RegeneratePercent / 100), h);
+                // TurnEnd passives (GG-T296): a hero's turn ends each time control returns (Regenerate knits 6%).
+                if (h.Alive) Fire(TriggerOn.TurnEnd, h, new TriggerContext());
+                if (!h.Alive) continue;
                 TickTurnBuffs(h, false);
                 var keys = new List<string>(h.Cooldowns.Keys);
                 foreach (var k in keys)
@@ -397,6 +405,10 @@ namespace GridGame.Core.Battle
             // since a halted icon never reaches its own turn boundary.
             foreach (var e in S.LivingList(Team.Enemy)) TickTurnBuffs(e, true);
             TickTempo();
+            // The party's new turn begins: hero trigger cooldowns tick, TurnStart and OnSurrounded fire (GG-T296).
+            foreach (var h in S.LivingList(Team.Hero))
+                if (!S.IsOver && h.Alive) TriggersTurnStart(h);
+            if (S.IsOver) return;
             Emit(new PlayerControlEvent());
         }
 
@@ -489,9 +501,14 @@ namespace GridGame.Core.Battle
         private void Damage(Unit target, int amount, Unit source, HitKind hit, DamageType type, string note = null)
         {
             if (!target.Alive) return;
+            float hpBefore = target.HpFraction;
             if (hit != HitKind.Miss && amount > 0 && IsArmored(target)) { amount = 0; note = "Armored!"; }
-            // Tough hide kit (§14.4): physical blows land at 70%.
-            if (hit != HitKind.Miss && amount > 0 && type == DamageType.Physical && !target.IsHero && HasPassive(target, "tough_hide")) amount = Math.Max(1, amount * 7 / 10);
+            // Always ReductionMultiplier passives (GG-T296): Tough Hide's physical blows land at 70%, on heroes too now.
+            if (hit != HitKind.Miss && amount > 0)
+            {
+                float reduce = Triggers.IncomingMultiplier(S, target, source, type);
+                if (reduce < 1f) amount = reduce <= 0f ? 0 : Triggers.FloorScaled(amount, reduce);
+            }
             if (hit != HitKind.Miss && amount > 0 && target.IsHero && source != null)
             {
                 float reduction = BestAdjacentGuardianReduction(target);
@@ -502,11 +519,15 @@ namespace GridGame.Core.Battle
             target.Hp = Math.Max(0, target.Hp - amount);
             Emit(new DamagedEvent { TargetId = target.Id, SourceId = source?.Id ?? -1, Amount = amount, Hit = hit, Type = type, HpAfter = target.Hp, Note = note });
             if (source != null && source.IsHero && target.Team == Team.Enemy) source.DamageDealt += amount;
+            // Damage triggers (GG-T296), before WearArmor: the blow that breaks an enchanted piece still pricks (Thorns).
+            if (hit != HitKind.Miss && amount > 0)
+                Fire(TriggerOn.OnDamaged, target, new TriggerContext { Attacker = source, Damage = amount, Type = type });
+            if (source != null && hit != HitKind.Miss && Triggers.Foes(source, target))
+                Fire(TriggerOn.OnAttackedAny, target, new TriggerContext { Attacker = source, Damage = amount, Type = type });
+            if (hit != HitKind.Miss && amount > 0 && target.Hp > 0)
+                Fire(TriggerOn.OnLowHp, target, new TriggerContext { Attacker = source, Damage = amount, Type = type, HpBefore = hpBefore });
             if (source != null && hit != HitKind.Miss && amount > 0 && target.IsHero && source.Team == Team.Enemy)
-            {
-                MaybeThorns(target, source, amount); // checked before WearArmor: the blow that breaks the piece still pricks
                 WearArmor(target);
-            }
 
             if (target.Hp <= 0) { Kill(target, source); ResolveDeathBursts(); return; }
             if (source == null || hit == HitKind.Miss) return;
@@ -562,6 +583,11 @@ namespace GridGame.Core.Battle
             if (u.Team == Team.Enemy && !u.NoLoot) AwardLoot(u);
             if (u.Team == Team.Enemy) LeaveRemains(u, at);
             if (u.Team == Team.Enemy && !u.NoLoot && !u.IsRemains && !u.IsSnakeSegment) MaybeDropPickup(u, at, killer);
+            // Death triggers (GG-T296): the killer's OnKill, then each living ally's OnAllyKO in unit-id order.
+            if (u.IsEgg) return;
+            if (killer != null && killer.Alive && Triggers.Foes(killer, u)) Fire(TriggerOn.OnKill, killer, new TriggerContext { Target = u });
+            var team = u.Team;
+            if (team != Team.Neutral) FireAll(TriggerOn.OnAllyKO, x => x.Team == team && x != u && !x.IsCorpse && !x.IsRemains && !x.IsEgg, _ => new TriggerContext { Target = u, Attacker = killer });
         }
 
         // ─────────────────────────────────────────────────────────────────────────────
@@ -693,7 +719,7 @@ namespace GridGame.Core.Battle
             if (!u.Alive || def == null) return;
             duration = Math.Max(1, duration);
             if (u.Def.ImmuneBuffs != null && u.Def.ImmuneBuffs.Contains(def.Id)) { Announce("Immune!", u.Id); return; }
-            if (WardedAgainst(u, def.Id)) { Announce("Warded!", u.Id); return; } // armor enchant passives (GG-T179)
+            if (WardedAgainst(u, def.Id)) { Announce("Warded!", u.Id); return; } // Always Immunity passives (GG-T179, GG-T296)
             var existing = u.Buffs.Find(b => b.Def.Id == def.Id);
             if (existing != null)
             {
@@ -717,6 +743,7 @@ namespace GridGame.Core.Battle
             Emit(new BuffAppliedEvent { UnitId = u.Id, BuffId = def.Id, Duration = duration });
             if (u.IsHero && def.Tempo != 0)
                 AddTempo("buff:" + def.Id, def.Tempo, def.Unit == DurationUnit.Turns ? duration : BattleConfig.DefaultTempoTurns);
+            Fire(TriggerOn.OnStatusGained, u, new TriggerContext { Status = def.Id });
         }
 
         // ── Party tempo (GG-T268, §2.11) ─────────────────────────────────────────────────────────────────

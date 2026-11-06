@@ -18,7 +18,7 @@ namespace GridGame.Tests
             db.Buffs["poisoned"] = new BuffDef { Id = "poisoned", Name = "Poisoned", Unit = DurationUnit.Ticks, Duration = 6, DamagePerTick = 1 };
             foreach (var id in new[] { "poison_ward", "thorns", "regenerate" })
             {
-                db.Abilities[id] = new AbilityDef { Id = id, Name = id, Kind = AbilityKind.Passive };
+                db.Abilities[id] = Real.Ability(id); // the shipped trigger data (GG-T296)
                 var e = new ArmorEnchantDef { Id = "ae_" + id, Name = id, Passive = id };
                 db.ArmorEnchants[e.Id] = e;
                 db.ArmorEnchantOrder.Add(e);
