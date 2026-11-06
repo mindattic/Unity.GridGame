@@ -323,7 +323,6 @@ namespace GridGame.Core.Bot
                     }
                     if (a.Pull > 0) score += 2.5f;
                     if (a.SwapsPlaces) score += 2f;
-                    if (a.IsScan && !s.Results.Scanned.Contains(t.Def.Id)) score += t.BossPhase >= 0 ? 3f : 2f;
                 }
                 else
                 {

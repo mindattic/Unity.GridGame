@@ -76,7 +76,6 @@ namespace GridGame.Core.Battle
         public Dictionary<string, int> Items = new Dictionary<string, int>();
         public Dictionary<string, int> Kills = new Dictionary<string, int>();
         public HashSet<string> Seen = new HashSet<string>();
-        public HashSet<string> Scanned = new HashSet<string>();
         /// <summary>Item uses that came from inventory stacks (deducted on commit).</summary>
         public Dictionary<string, int> ItemsConsumed = new Dictionary<string, int>();
         /// <summary>Hero class → weapon durability after battle (-1 = shattered/removed).</summary>
@@ -119,7 +118,6 @@ namespace GridGame.Core.Battle
                 Items = new Dictionary<string, int>(Items),
                 Kills = new Dictionary<string, int>(Kills),
                 Seen = new HashSet<string>(Seen),
-                Scanned = new HashSet<string>(Scanned),
                 ItemsConsumed = new Dictionary<string, int>(ItemsConsumed),
                 WeaponDurability = new Dictionary<string, int>(WeaponDurability),
                 ArmorDurability = CloneArmorMap(ArmorDurability),

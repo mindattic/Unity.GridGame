@@ -6,6 +6,7 @@ using System.Text.RegularExpressions;
 using GridGame.Core.Battle;
 using GridGame.Core.Content;
 using GridGame.Core.Rules;
+using GridGame.Meta;
 using UnityEngine;
 using UnityEngine.UIElements;
 
@@ -246,7 +247,6 @@ namespace GridGame.App
             if (a.DelayU > 0) facts.Add("Pushes back on the timeline");
             if (a.RemovesDebuffs) facts.Add("Cleanses debuffs");
             if (a.GrantsOrbs > 0) facts.Add($"Grants {a.GrantsOrbs} orbs");
-            if (a.IsScan) facts.Add("Reveals stats");
             var factBox = Ui.El("col", body);
             factBox.style.marginTop = Space.S16;
             foreach (var f in facts) Line(factBox, "• " + f, "t-caption");
@@ -278,14 +278,19 @@ namespace GridGame.App
             return true;
         }
 
-        /// <summary>A unit on the board: level, HP, what it's about to do (a charging foe's whole spell) and its statuses.</summary>
-        public static bool Unit(VisualElement body, BattleState s, Unit u, bool reveal)
+        /// <summary>A unit on the board: level, HP, what it's about to do (a charging foe's whole spell) and its statuses.
+        /// <paramref name="knowledge"/> is the <see cref="BestiaryKnowledge"/> tier (§25.11, GG-T290): HP and stats from
+        /// Stats, Speed alone from Speed, elements from Elements, its brain and abilities from Abilities.</summary>
+        public static bool Unit(VisualElement body, BattleState s, Unit u, int knowledge)
         {
+            bool reveal = knowledge >= BestiaryKnowledge.Stats;
             if (u == null) return false;
             var head = Header(body, null, $"{u.Name}  Lv {u.Level}", u.IsHero ? u.Def.Role : u.IsNeutral ? "Neutral" : "Enemy",
                 u.IsHero ? Palette.Hero : u.IsNeutral ? Palette.Neutral : Palette.Enemy);
-            Line(head, reveal ? $"HP {u.Hp}/{u.MaxHp}" : "HP ??? — scan it to reveal", "t-caption");
+            Line(head, reveal ? $"HP {u.Hp}/{u.MaxHp}" : "HP ??? — defeat more to learn it", "t-caption");
             if (reveal) Line(head, Ui.StatLine(u.Effective), "t-caption", Palette.TextDim);
+            else if (knowledge >= BestiaryKnowledge.Speed) Line(head, $"SPD {u.Effective.Speed:0}", "t-caption", Palette.TextDim);
+            if (!u.IsHero && knowledge >= BestiaryKnowledge.Elements) Line(head, BestiaryKnowledge.ElementLine(u.Def), "t-caption", Palette.TextDim);
             if (!u.IsHero && !u.IsNeutral)
             {
                 var cast = s.CastEntryOf(u.Id);
@@ -301,8 +306,11 @@ namespace GridGame.App
                     box.style.borderLeftColor = Palette.Warn;
                     Ability(box, ca);
                 }
-                var mind = Line(body, $"{EnemyPlanner.DescribeBrain(u.Def.Brain)} · {EnemyPlanner.Describe(EnemyPlanner.TargetingOf(u)).ToLowerInvariant()}", "t-caption", Palette.TextDim);
-                mind.style.marginTop = Space.S8;
+                if (knowledge >= BestiaryKnowledge.Abilities)
+                {
+                    var mind = Line(body, $"{EnemyPlanner.DescribeBrain(u.Def.Brain)} · {EnemyPlanner.Describe(EnemyPlanner.TargetingOf(u)).ToLowerInvariant()}", "t-caption", Palette.TextDim);
+                    mind.style.marginTop = Space.S8;
+                }
                 if (u.HasPlate) Line(body, $"Armor plate {u.PlateHp}/{u.PlateMax} — strike from the sides, or break it head-on", "t-caption", Palette.Info);
             }
             foreach (var b in u.Buffs)

@@ -77,7 +77,7 @@ namespace GridGame.Meta
         public static List<List<ClassDef>> Families(ContentDb c, SaveData s)
         {
             var known = new HashSet<string>(StringComparer.OrdinalIgnoreCase);
-            foreach (var kv in s.Bestiary) if (kv.Value != null && (kv.Value.Seen || kv.Value.Scanned || kv.Value.Defeated > 0)) known.Add(kv.Key);
+            foreach (var kv in s.Bestiary) if (kv.Value != null && (kv.Value.Seen || BestiaryKnowledge.Tier(kv.Value) > BestiaryKnowledge.None)) known.Add(kv.Key);
             foreach (var st in StagesSoFar(c, s))
                 foreach (var w in st.Waves)
                     foreach (var e in w.Enemies) known.Add(e.Class);
@@ -175,7 +175,6 @@ namespace GridGame.Meta
 
             foreach (var kv in r.ItemsConsumed) s.AddItem(kv.Key, -kv.Value);
             foreach (var id in r.Seen) BattleFactory.Entry(s, id).Seen = true;
-            foreach (var id in r.Scanned) BattleFactory.Entry(s, id).Scanned = true;
 
             rep.Gold = r.Coins;
             s.Gold += r.Coins;

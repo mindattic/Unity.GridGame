@@ -328,7 +328,6 @@ namespace GridGame.Core.Content
         /// <summary>Movement (GG-T183): once it resolves, the caster steps up to this many tiles straight away from the
         /// nearest foe (Disengage, Hit and Run).</summary>
         public int StepBack;
-        public bool IsScan;
         /// <summary>Random WUBRG orbs added to the bank on resolve (ethers).</summary>
         public int GrantsOrbs;
         /// <summary>Removes just this buff id (Eye Drops → blinded).</summary>

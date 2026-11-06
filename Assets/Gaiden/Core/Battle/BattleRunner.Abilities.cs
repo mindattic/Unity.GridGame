@@ -213,13 +213,6 @@ namespace GridGame.Core.Battle
                 if (S.IsOver) return;
                 if (!t.Alive) continue;
 
-                if (a.IsScan)
-                {
-                    Emit(new ScannedEvent { UnitId = t.Id, Stats = t.Effective, Hp = t.Hp, MaxHp = t.MaxHp });
-                    S.Results.Scanned.Add(t.Def.Id);
-                    S.Results.Seen.Add(t.Def.Id);
-                }
-
                 if (a.RemovesDebuffs) RemoveBuffsWhere(t, b => b.Def.Kind == BuffKind.Debuff, "cleansed");
                 if (a.RemovesBuff != null) RemoveBuffsWhere(t, b => b.Def.Id == a.RemovesBuff, "cured");
 

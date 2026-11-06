@@ -804,19 +804,25 @@ namespace GridGame.App
             Ui.Text(u.Name, "h2 grow", top);
             if (u.IsHero && !string.IsNullOrEmpty(u.Def.Role)) Ui.RoleBadge(u.Def.Role, top, 26);
             Ui.Text($"Lv {u.Level}", "h2 gold", top);
-            bool reveal = u.IsHero || State.Results.Scanned.Contains(u.Def.Id) || (App.Save?.Bestiary.TryGetValue(u.Def.Id, out var be) == true && be.Scanned);
+            // What the Bestiary has learned from defeating its class gates the numbers (§25.11, GG-T290).
+            int know = Knowledge(u);
             var hpRow = Ui.El("row", col);
             Ui.Gauge(u.HpFraction, hpRow, 460);
-            Ui.Text(reveal ? $"  {u.Hp}/{u.MaxHp}" : "  ???", "small", hpRow);
-            if (reveal) Ui.Text(Ui.StatLine(u.Effective), "tiny dim", col);
+            Ui.Text(know >= BestiaryKnowledge.Stats ? $"  {u.Hp}/{u.MaxHp}" : "  ???", "small", hpRow);
+            if (know >= BestiaryKnowledge.Stats) Ui.Text(Ui.StatLine(u.Effective), "tiny dim", col);
+            else if (know >= BestiaryKnowledge.Speed) Ui.Text($"SPD {u.Effective.Speed:0}  ·  defeat more to learn the rest", "tiny dim", col);
+            if (!u.IsHero && know >= BestiaryKnowledge.Elements) Ui.Text(BestiaryKnowledge.ElementLine(u.Def), "tiny dim", col);
             if (!u.IsHero)
             {
                 int n = BattleEngine.ActionsUntilTurn(State, u.Id);
                 var cast = State.CastEntryOf(u.Id);
                 Ui.Text(cast != null ? $"Charging {App.Content.TryAbility(cast.AbilityId)?.Name}!" : n < 0 ? "Frozen in time" : n == 0 ? "Acts after your next move!" : $"Acts in {n} moves", "small warn", col);
-                var mind = Ui.Text($"{EnemyPlanner.DescribeBrain(u.Def.Brain)} · {EnemyPlanner.Describe(EnemyPlanner.TargetingOf(u)).ToLowerInvariant()}", "tiny dim", col);
-                mind.name = "enemy-brain";
-                mind.style.whiteSpace = WhiteSpace.Normal;
+                if (know >= BestiaryKnowledge.Abilities)
+                {
+                    var mind = Ui.Text($"{EnemyPlanner.DescribeBrain(u.Def.Brain)} · {EnemyPlanner.Describe(EnemyPlanner.TargetingOf(u)).ToLowerInvariant()}", "tiny dim", col);
+                    mind.name = "enemy-brain";
+                    mind.style.whiteSpace = WhiteSpace.Normal;
+                }
                 if (u.HasPlate) { var pl = Ui.Text($"Armor plate {u.PlateHp}/{u.PlateMax} on its {SideName(u.Facing)} — strike from the sides, break it head-on, or use spells", "tiny", col); pl.style.whiteSpace = WhiteSpace.Normal; pl.style.color = Palette.Info; }
                 if (u.IsCorpse) { var co = Ui.Text($"The body of a {App.Content.TryClass(u.CorpseOf)?.Name ?? "foe"} — blocks the tile, rots in {u.DecayIn} actions", "tiny dim", col); co.style.whiteSpace = WhiteSpace.Normal; }
                 var kit = Ui.KitTraits(App.Content, u.Def);

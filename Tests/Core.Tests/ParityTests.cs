@@ -333,19 +333,6 @@ namespace GridGame.Tests
             Assert.That(k.Bar[0].Charges, Is.EqualTo(1));
         }
 
-        [Test] // US-107
-        public void Scan_reveals_and_records_the_class()
-        {
-            var db = Mini();
-            db.Abilities["scan"] = new AbilityDef { Id = "scan", Name = "Scan", Kind = AbilityKind.Spell, IsScan = true, Shape = TargetShape.SingleActor, Mode = TargetMode.PickActor, Filter = TargetFilter.EnemyOnly };
-            var (s, _) = Battle(db, Stage(("tank", 2, 2)), ("knight", 5, 7), ("cleric", 4, 7));
-            var k = Hero(s, "knight");
-            k.Bar[0] = new AbilitySlot { AbilityId = "scan" };
-            var ev = BattleEngine.Apply(s, new UseSlotCommand { HeroId = k.Id, Slot = 0, Target = new Coord(2, 2) });
-            Assert.That(ev.Any(e => e is ScannedEvent), Is.True);
-            Assert.That(s.Results.Scanned, Does.Contain("tank"));
-        }
-
         // ── Buffs ───────────────────────────────────────────────────────────────
 
         [Test] // US-140

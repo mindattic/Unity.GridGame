@@ -1440,15 +1440,19 @@ namespace GridGame.App
             return cols;
         }
 
+        /// <summary>The detail panel (§25.11, GG-T290): name and description once Seen, then each knowledge row in the order
+        /// defeats unlock it — Speed, HP and stats, elements, abilities — with a locked row reading "???" and a hint
+        /// naming how many more defeats the next one takes.</summary>
         private void Show(VisualElement w, ClassDef d, BestiaryEntry e)
         {
             w.Clear();
             if (e == null || !e.Seen) { Ui.Text("??? — not yet encountered", "h2 dim", w); return; }
+            int tier = BestiaryKnowledge.Tier(e);
             var top = Ui.El("row", w);
             Ui.Text(d.Name, "h2 grow", top);
             Ui.Text($"Defeated {e.Defeated}", "small gold", top);
-            var lore = Ui.Text(Ui.Keywords(d.Lore ?? d.Description ?? ""), "small dim", w);
-            lore.style.whiteSpace = WhiteSpace.Normal;
+            if (!string.IsNullOrEmpty(d.Description)) Ui.Text(Ui.Keywords(d.Description), "small", w).style.whiteSpace = WhiteSpace.Normal;
+            if (!string.IsNullOrEmpty(d.Lore) && d.Lore != d.Description) Ui.Text(Ui.Keywords(d.Lore), "small dim", w).style.whiteSpace = WhiteSpace.Normal;
             if (d.DropTable != null && C.DropTables.TryGetValue(d.DropTable, out var drops) && drops.Entries.Count > 0)
             {
                 Ui.Text("Drops", "small dim", w).style.marginTop = Space.S8;
@@ -1462,9 +1466,13 @@ namespace GridGame.App
                     tag.style.marginRight = Space.S8;
                 }
             }
-            if (e.Scanned)
+            Fact(w, "beast-speed", "Speed", tier >= BestiaryKnowledge.Speed ? $"SPD {d.BaseStats.Speed:0}" : null);
+            Fact(w, "beast-stats", "Stats", tier >= BestiaryKnowledge.Stats
+                ? $"HP {Formulas.MaxHp(d.BaseStats, 1)} at Lv 1  ·  " + Ui.StatLine(d.BaseStats).Replace("\n", "  ") : null);
+            Fact(w, "beast-elements", "Elements", tier >= BestiaryKnowledge.Elements ? BestiaryKnowledge.ElementLine(d) : null);
+            Fact(w, "beast-abilities", "Abilities", tier >= BestiaryKnowledge.Abilities ? "" : null);
+            if (tier >= BestiaryKnowledge.Abilities)
             {
-                Ui.Text(Ui.StatLine(d.BaseStats), "small", w);
                 var kit = Ui.KitTraits(C, d);
                 if (kit.Length > 0) Ui.Text(kit, "small gold", w).style.whiteSpace = WhiteSpace.Normal;
                 // Its abilities as chips: hold one to read it whole (GG-T252).
@@ -1487,7 +1495,19 @@ namespace GridGame.App
                 Ui.Text(GridGame.Core.Rules.EnemyPlanner.Describe(d.Targeting != Targeting.Auto ? d.Targeting : d.BaseStats.Intelligence >= 14 ? Targeting.Weakest : d.Tags.Contains("Humanoid") ? Targeting.Threat : Targeting.Closest), "small warn", w);
                 Ui.Text(GridGame.Core.Rules.EnemyPlanner.DescribeBrain(d.Brain), "small", w).style.whiteSpace = WhiteSpace.Normal;
             }
-            else Ui.Text("Scan it in battle to reveal its stats.", "tiny dim", w);
+            var hint = BestiaryKnowledge.Hint(e);
+            if (hint != null) { var h = Ui.Text(hint, "tiny dim", w); h.name = "beast-hint"; h.style.marginTop = Space.S8; }
+        }
+
+        /// <summary>One knowledge row: its label, then the value, or "???" while <paramref name="value"/> is still locked (null).</summary>
+        private static void Fact(VisualElement w, string name, string label, string value)
+        {
+            var row = Ui.El("row", w);
+            row.name = name;
+            row.style.marginTop = Space.S8;
+            Ui.Text(label, "small dim", row).style.width = 220;
+            if (value == null) Ui.Text("???", "small dim", row);
+            else if (value.Length > 0) { var v = Ui.Text(value, "small", row); v.style.whiteSpace = WhiteSpace.Normal; v.style.flexShrink = 1; }
         }
     }
 

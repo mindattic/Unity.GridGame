@@ -189,7 +189,7 @@ def main():
         fps = max(samples)
         check("frame rate ≥ 50", fps >= 50, f"fps={fps} samples={samples}")
 
-    with section('Actor panel hides unscanned enemy HP'):
+    with section('Actor panel hides an unlearned enemy HP (Bestiary tier)'):
         e = enemies[0]
         h.call("tap", x=h.tile(e["x"], e["y"])[0], y=h.tile(e["x"], e["y"])[1]); time.sleep(0.4)
         check("tapping an enemy shows it with hidden HP", has_text("???"))

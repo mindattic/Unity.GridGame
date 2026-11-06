@@ -540,7 +540,6 @@ namespace GridGame.Meta
 
             foreach (var kv in r.ItemsConsumed) s.AddItem(kv.Key, -kv.Value);
             foreach (var id in r.Seen) Entry(s, id).Seen = true;
-            foreach (var id in r.Scanned) Entry(s, id).Scanned = true;
 
             if (rep.Victory)
             {
@@ -1963,7 +1962,7 @@ namespace GridGame.Meta
         /// different coat of paint. The key is: how it is paid and timed (skill on a cooldown, spell cast on the
         /// timeline, instant spell), its footprint (shape, radius where it changes the footprint, auto/pick, who it
         /// filters, adjacent-only), and each effect it carries — damage (Fire and Lightning separately, since they
-        /// thaw/steam and shock/blind), heal or drain, the status it applies or clears, steal, orbs, scan, revive,
+        /// thaw/steam and shock/blind), heal or drain, the status it applies or clears, steal, orbs, revive,
         /// bonus-vs-tag, the movement it causes (teleport, knockback, pull, swap, step back) and the timeline change
         /// (hasten, delay). Other elements are resistance-only, so they count as the same mechanic.
         /// </summary>
@@ -1988,7 +1987,6 @@ namespace GridGame.Meta
             if (a.RemovesBuff != null) k.Add("cure:" + a.RemovesBuff);
             if (a.StealsMana) k.Add("steal");
             if (a.GrantsOrbs > 0) k.Add("orbs");
-            if (a.IsScan) k.Add("scan");
             if (a.Revives) k.Add("revive");
             if (a.Escape) k.Add("escape");
             if (a.BonusVsTag != null) k.Add("vs:" + a.BonusVsTag);
@@ -2005,7 +2003,7 @@ namespace GridGame.Meta
         /// <summary>Does the ability do anything at all when it resolves? (GG-T183 found four that did nothing.)</summary>
         public static bool HasEffect(AbilityDef a) =>
             a.BaseDamage > 0 || a.BaseHeal > 0 || a.ApplyBuff != null || a.RemovesDebuffs || a.RemovesBuff != null || a.StealsMana ||
-            a.GrantsOrbs > 0 || a.IsScan || a.Revives || a.Escape || a.IsTeleport || a.Knockback > 0 || a.Pull > 0 || a.SwapsPlaces ||
+            a.GrantsOrbs > 0 || a.Revives || a.Escape || a.IsTeleport || a.Knockback > 0 || a.Pull > 0 || a.SwapsPlaces ||
             a.StepBack > 0 || a.HastenU > 0f || a.DelayU > 0f;
 
         public static Result Learn(ContentDb c, SaveData s, HeroSave h, string abilityId)

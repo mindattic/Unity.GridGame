@@ -3,6 +3,7 @@ using System.Linq;
 using GridGame.Core;
 using GridGame.Core.Battle;
 using GridGame.Core.Content;
+using GridGame.Meta;
 using UnityEngine;
 using UnityEngine.UIElements;
 
@@ -20,8 +21,10 @@ namespace GridGame.App
         private bool inspectOpen;
         private readonly List<VisualElement> outcomeTags = new List<VisualElement>();
 
-        private bool Revealed(Unit u) =>
-            u.IsHero || State.Results.Scanned.Contains(u.Def.Id) || (App.Save?.Bestiary.TryGetValue(u.Def.Id, out var be) == true && be.Scanned);
+        /// <summary>How much the party knows about <paramref name="u"/> (§25.11, GG-T290): a hero is fully known; any other
+        /// unit shows what the save's Bestiary has learned from defeating its class (<see cref="BestiaryKnowledge"/>).</summary>
+        private int Knowledge(Unit u) =>
+            u.IsHero ? BestiaryKnowledge.Abilities : BestiaryKnowledge.Tier(App.Save, u.Def.Id);
 
         private void AttachSlotInspect(VisualElement slot, int idx) =>
             InspectCard.Attach(slot, body =>
@@ -47,7 +50,7 @@ namespace GridGame.App
                 if (e.Kind == TimelineKind.Cast)
                     return InspectCard.Ability(body, App.Content.TryAbility(e.AbilityId),
                         owner == null ? "Lands when it reaches ACT." : $"{owner.Name}'s spell — lands when it reaches ACT. Hit {owner.Name} to push it back.");
-                return owner != null && InspectCard.Unit(body, State, owner, Revealed(owner));
+                return owner != null && InspectCard.Unit(body, State, owner, Knowledge(owner));
             });
         }
 
@@ -72,7 +75,7 @@ namespace GridGame.App
             if (Time.unscaledTime - inspectSince < InspectCard.HoldSeconds) return;
             var u = State.UnitById(inspectUnitId);
             if (u == null || !u.Alive || !board.Units.TryGetValue(u.Id, out var v)) { inspectUnitId = -1; return; }
-            inspectOpen = InspectCard.Show(v.Root, body => InspectCard.Unit(body, State, u, Revealed(u)));
+            inspectOpen = InspectCard.Show(v.Root, body => InspectCard.Unit(body, State, u, Knowledge(u)));
         }
 
         /// <summary>Ends a board hold; true when it had opened a card (the release then does nothing else).</summary>

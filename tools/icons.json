@@ -308,10 +308,6 @@
    "sbed/vial",
    "poison"
   ],
-  "scan": [
-   "lorc/magnifying-glass",
-   "silver"
-  ],
   "meteor": [
    "lorc/meteor-impact",
    "fire"

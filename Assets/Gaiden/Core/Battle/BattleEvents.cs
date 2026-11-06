@@ -321,12 +321,6 @@ namespace GridGame.Core.Battle
         public override string ToString() => $"Announce '{Text}'";
     }
 
-    public sealed class ScannedEvent : BattleEvent
-    {
-        public int UnitId; public Stats Stats; public int Hp; public int MaxHp;
-        public override string ToString() => $"Scanned {UnitId}";
-    }
-
     public sealed class TrapPlacedEvent : BattleEvent
     {
         public int ById; public Coord At; public string TrapId;

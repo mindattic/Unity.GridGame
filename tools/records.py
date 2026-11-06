@@ -176,8 +176,6 @@ def ability_usage(recs, known=None):
                     c["traps"] += 1
                 elif ty == "Revived":
                     c["revives"] += 1
-                elif ty == "Scanned":
-                    c["scans"] += 1
                 elif ty == "OrbMinted" and e.get("Landed"):
                     c["orbs"] += 1
     return stats, mana
