@@ -27,13 +27,18 @@ namespace GridGame.Meta
         /// <summary>
         /// The default starting party. Owner 2026-10-11 made it five ("a 5 player team seems about right for max");
         /// owner 2026-10-19 (GG-T118) shrank the start to a small party — Tank, Striker, Healer — with the rest of
-        /// the five joining at story beats (dialogue JoinHero), on top of rescued guests and the Summon Circle.
+        /// the party joining at story beats (dialogue JoinHero), on top of rescued guests and the Summon Circle.
         /// </summary>
         public static readonly string[] StartingRoster = { "paladin", "barbarian", "cleric" };
         /// <summary>Heroes a new game starts with (character select locks in this many; GG-T118).</summary>
         public const int StartingPartySize = 3;
         public const int StartingGold = 200;
-        public const int MaxPartySize = 5;
+        /// <summary>
+        /// The party cap (§25.14). Owner 2026-11-06 (GG-T291): six — "two attackers and two supporters for each
+        /// attacker". Slots fill at the story beats (GG-T118): the 4th after Green Valley I, the 5th at Sandsea
+        /// Reaches, the 6th at Frostmaw Caverns; later recruits, guests and summons wait in reserve when it's full.
+        /// </summary>
+        public const int MaxPartySize = 6;
         public const int MaxBarSlots = 5;
         /// <summary>
         /// Slot unlocks (§4.7). Amended 2026-10-11 (owner: "give each character 2 stacks of full life potions and unlock

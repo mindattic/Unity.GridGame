@@ -202,10 +202,14 @@ namespace GridGame.App
                 Ui.Button("Use on party", () => Done(Camp.Use(C, S, it.Id, null)), "btn--small btn--primary", row);
                 return;
             }
+            // One button per party hero; a party of six (GG-T291) wraps into equal thirds instead of running off the window.
+            row.style.flexWrap = Wrap.Wrap;
             foreach (var id in S.Party)
             {
                 var hero = id;
-                Ui.Button(C.TryClass(id)?.Name ?? id, () => { selected = it; Done(Camp.Use(C, S, it.Id, hero)); }, "btn--small", row);
+                var b = Ui.Button(C.TryClass(id)?.Name ?? id, () => { selected = it; Done(Camp.Use(C, S, it.Id, hero)); }, "btn--small", row);
+                b.style.flexGrow = 1; b.style.flexShrink = 1; b.style.flexBasis = Length.Percent(25); b.style.minWidth = 0;
+                b.name = "use-on-" + id;
             }
         }
     }

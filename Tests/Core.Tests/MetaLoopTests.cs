@@ -150,7 +150,7 @@ namespace GridGame.Tests
                 Assert.That(Summon.Recruit(c, s, Summon.Pool(c, s).First(d => s.Hero(d.Id) == null).Id).Ok, Is.True);
             }
             Assert.That(s.Party.Count, Is.EqualTo(Progression.MaxPartySize));
-            Assert.That(Progression.MaxPartySize, Is.EqualTo(5));
+            Assert.That(Progression.MaxPartySize, Is.EqualTo(6)); // GG-T291: two attackers, two supporters each
 
             // Bounty
             var bounty = Bounties.Posted(c, s).First();

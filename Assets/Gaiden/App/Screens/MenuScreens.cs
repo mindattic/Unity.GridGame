@@ -192,7 +192,7 @@ namespace GridGame.App
     /// <summary>
     /// Fighting-game-style roster pick (owner request: "a grid at the bottom, select a tile, the full
     /// artwork appears on top, lock in that character"). Every hero class is open here regardless of
-    /// normal unlocks; <see cref="PartySize"/> picks build the small starting party — the rest of the five join
+    /// normal unlocks; <see cref="PartySize"/> picks build the small starting party — the rest of the six join
     /// at story beats (GG-T118). <c>-demo</c> drives the same screen by tapping random tiles instead of a
     /// human, so each attract-mode run shows a different squad.
     /// </summary>

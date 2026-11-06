@@ -68,11 +68,11 @@ namespace GridGame.Tests
         [Test]
         public void A_full_party_sends_the_recruit_to_the_reserve()
         {
-            var c = Real; var s = Progression.NewGame(c, "Full", new[] { "paladin", "barbarian", "cleric", "redmage", "engineer" });
-            Assert.That(DialogueRunner.ApplyEffect(c, s, Join("knight")), Does.Contain("reserve"));
-            Assert.That(s.Hero("knight"), Is.Not.Null);
+            var c = Real; var s = Progression.NewGame(c, "Full", new[] { "paladin", "barbarian", "cleric", "redmage", "engineer", "knight" });
+            Assert.That(DialogueRunner.ApplyEffect(c, s, Join("sage")), Does.Contain("reserve"));
+            Assert.That(s.Hero("sage"), Is.Not.Null);
             Assert.That(s.Party.Count, Is.EqualTo(Progression.MaxPartySize));
-            Assert.That(s.Party, Does.Not.Contain("knight"));
+            Assert.That(s.Party, Does.Not.Contain("sage"));
         }
 
         [Test]
@@ -110,7 +110,7 @@ namespace GridGame.Tests
         }
 
         [Test]
-        public void Story_beats_grow_a_trio_to_a_full_party_by_the_second_theme()
+        public void Story_beats_grow_a_trio_to_a_full_party_by_the_third_theme()
         {
             var c = Real; var s = Progression.NewGame(c, "Grow");
             DialogueRunner.PlayPendingBeatsHeadless(c, s, "greenvalley-01");
@@ -120,8 +120,12 @@ namespace GridGame.Tests
             Assert.That(s.Party.Count, Is.EqualTo(4), string.Join("; ", log));
             s.ClearedStages.Add("greenvalley-02"); s.ClearedStages.Add("greenvalley-03"); s.HighestClearedStage = 2;
             DialogueRunner.PlayPendingBeatsHeadless(c, s, "desert-01");
-            Assert.That(s.Party.Count, Is.EqualTo(Progression.MaxPartySize));
+            Assert.That(s.Party.Count, Is.EqualTo(5));
             Assert.That(DialogueRunner.PlayPendingBeatsHeadless(c, s, "desert-01"), Is.Empty, "a beat plays once");
+            // GG-T291: the sixth slot fills at the start of the third theme (Frostmaw Caverns).
+            s.ClearedStages.Add("desert-01"); s.ClearedStages.Add("desert-02"); s.ClearedStages.Add("desert-03"); s.HighestClearedStage = 5;
+            DialogueRunner.PlayPendingBeatsHeadless(c, s, "cave-01");
+            Assert.That(s.Party.Count, Is.EqualTo(Progression.MaxPartySize));
         }
 
         [Test]

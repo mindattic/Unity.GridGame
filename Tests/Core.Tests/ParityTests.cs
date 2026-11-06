@@ -709,15 +709,15 @@ namespace GridGame.Tests
         public void Recruits_arrive_at_roster_average_xp()
         {
             var c = Real;
-            var save = Progression.NewGame(c, "R", new[] { "paladin", "barbarian", "cleric", "redmage", "engineer" });
+            var save = Progression.NewGame(c, "R", new[] { "paladin", "barbarian", "cleric", "redmage", "engineer", "knight" });
             foreach (var h in save.Roster) h.TotalXp = 300;
             save.Gold = 10000;
             var pick = Summon.Pool(c, save).First();
             Assert.That(Summon.Recruit(c, save, pick.Id).Ok, Is.True);
             Assert.That(save.Hero(pick.Id).TotalXp, Is.EqualTo(300));
-            // The starting party of five is full, so a recruit waits in reserve until there's room.
+            // A party of six is full (GG-T291), so a recruit waits in reserve until there's room.
             Assert.That(save.Party, Does.Not.Contain(pick.Id));
-            Assert.That(Party.Toggle(save, save.Party[4]).Ok, Is.True);
+            Assert.That(Party.Toggle(save, save.Party[5]).Ok, Is.True);
             Assert.That(Party.Toggle(save, pick.Id).Ok, Is.True);
             Assert.That(save.Party, Does.Contain(pick.Id));
         }

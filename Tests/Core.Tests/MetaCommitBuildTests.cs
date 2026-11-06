@@ -523,7 +523,7 @@ namespace GridGame.Tests
         [Test]
         public void CampRoutine_does_not_recruit_with_a_full_party()
         {
-            var c = Real; var s = Progression.NewGame(c, "CRSummonFull", new[] { "paladin", "barbarian", "cleric", "redmage", "engineer" }); CampNpcs.JoinAll(s); // every Camp service open (GG-T119)
+            var c = Real; var s = Progression.NewGame(c, "CRSummonFull", new[] { "paladin", "barbarian", "cleric", "redmage", "engineer", "knight" }); CampNpcs.JoinAll(s); // every Camp service open (GG-T119)
             s.Gold = 100000;
             CampRoutine.Run(c, s);
             Assert.That(s.Recruits, Is.EqualTo(0));
