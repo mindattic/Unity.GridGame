@@ -275,6 +275,8 @@ namespace GridGame.App
             Ui.RoleBadge(def.Role, roleRow, 30).style.marginLeft = Space.S0;
             var blurb = Ui.Text(Ui.RoleBlurb(def.Role), "tiny dim", roleRow);
             blurb.style.whiteSpace = WhiteSpace.Normal; blurb.style.flexShrink = 1;
+            var support = GlossaryText.Create(GridGame.Core.Rules.SupportText.Describe(C, def.Support), "tiny gold", stats); // GG-T298
+            support.name = "hero-support"; support.style.whiteSpace = WhiteSpace.Normal; support.style.marginBottom = Space.S8;
             Ui.Text($"HP  {hp} / {u.MaxHp}", "h2", stats);
             Ui.Gauge(hp / (float)u.MaxHp, stats).style.marginBottom = Space.S16;
             var (lvl, into) = GridGame.Core.Rules.Formulas.LevelFromTotalXp(h.TotalXp);
@@ -529,6 +531,9 @@ namespace GridGame.App
                 InspectCard.Attach(cell, b => InspectEntry(b, entry));
                 Ui.Tappable(cell, () => { slot = idx; Refresh(); });
             }
+            // GG-T298: what this hero does when it joins a pincer as a supporter.
+            var support = GlossaryText.Create(GridGame.Core.Rules.SupportText.Describe(C, C.Class(h.ClassId).Support), "tiny gold", barW);
+            support.name = "abilities-support"; support.style.whiteSpace = WhiteSpace.Normal; support.style.marginTop = Space.S8;
             var tools = Ui.El("row", barW);
             tools.style.marginTop = Space.S8; tools.style.alignItems = Align.Center;
             Ui.Text("Pick a slot, then choose what goes in it — or move it along the bar.", "tiny dim grow", tools).style.whiteSpace = WhiteSpace.Normal;

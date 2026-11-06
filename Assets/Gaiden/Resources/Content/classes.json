@@ -259,11 +259,11 @@
     "SnakeSegments": 0,
     "Role": "Striker",
     "Support": {
-      "Effect": "Strike",
-      "Magnitude": 0.5,
+      "Effect": "Crit",
+      "Magnitude": 0.35,
       "Target": "Attacker",
       "Range": 1,
-      "Label": "Strike"
+      "Label": "Killing Intent"
     },
     "HomeTree": "warrior",
     "WeaponProficiencies": [
@@ -395,10 +395,10 @@
     "Role": "Striker",
     "Support": {
       "Effect": "Strike",
-      "Magnitude": 0.5,
+      "Magnitude": 0.6,
       "Target": "Attacker",
       "Range": 1,
-      "Label": "Strike"
+      "Label": "Rampage"
     },
     "HomeTree": "warrior",
     "WeaponProficiencies": [
@@ -529,11 +529,11 @@
     "SnakeSegments": 0,
     "Role": "Striker",
     "Support": {
-      "Effect": "Strike",
+      "Effect": "Pushback",
       "Magnitude": 0.5,
       "Target": "Attacker",
       "Range": 1,
-      "Label": "Strike"
+      "Label": "Bash"
     },
     "HomeTree": "warrior",
     "WeaponProficiencies": [
@@ -999,11 +999,11 @@
     "SnakeSegments": 0,
     "Role": "Striker",
     "Support": {
-      "Effect": "Strike",
-      "Magnitude": 0.5,
+      "Effect": "Crit",
+      "Magnitude": 0.3,
       "Target": "Attacker",
       "Range": 1,
-      "Label": "Strike"
+      "Label": "Shadow Edge"
     },
     "HomeTree": "rogue",
     "WeaponProficiencies": [
@@ -1139,11 +1139,11 @@
     "SnakeSegments": 0,
     "Role": "Mage",
     "Support": {
-      "Effect": "Mana",
-      "Magnitude": 35,
+      "Effect": "Cast",
+      "Magnitude": 0.4,
       "Target": "Attacker",
       "Range": 2,
-      "Label": "Mana Well"
+      "Label": "Hex Echo"
     },
     "HomeTree": "mage",
     "WeaponProficiencies": [
@@ -1409,11 +1409,11 @@
     "SnakeSegments": 0,
     "Role": "Striker",
     "Support": {
-      "Effect": "Strike",
-      "Magnitude": 0.5,
+      "Effect": "Crit",
+      "Magnitude": 0.3,
       "Target": "Attacker",
       "Range": 1,
-      "Label": "Strike"
+      "Label": "Still Water"
     },
     "HomeTree": "rogue",
     "WeaponProficiencies": [
@@ -1544,11 +1544,11 @@
     "SnakeSegments": 0,
     "Role": "Striker",
     "Support": {
-      "Effect": "Strike",
+      "Effect": "Pushback",
       "Magnitude": 0.5,
       "Target": "Attacker",
       "Range": 1,
-      "Label": "Strike"
+      "Label": "Shove"
     },
     "HomeTree": "warrior",
     "WeaponProficiencies": [
@@ -2625,11 +2625,11 @@
     "SnakeSegments": 0,
     "Role": "Striker",
     "Support": {
-      "Effect": "Strike",
-      "Magnitude": 0.5,
+      "Effect": "Crit",
+      "Magnitude": 0.3,
       "Target": "Attacker",
       "Range": 1,
-      "Label": "Strike"
+      "Label": "Prism Edge"
     },
     "HomeTree": "rogue",
     "WeaponProficiencies": [
@@ -2898,7 +2898,7 @@
     "Role": "Support",
     "Support": {
       "Effect": "Haste",
-      "Magnitude": 0.25,
+      "Magnitude": 1.5,
       "Target": "Attacker",
       "Range": 3,
       "Label": "Express"
@@ -4683,7 +4683,7 @@
     "Role": "Support",
     "Support": {
       "Effect": "Haste",
-      "Magnitude": 0.12,
+      "Magnitude": 0.75,
       "Target": "Chain",
       "Range": 2,
       "Label": "Whirl"
@@ -4954,7 +4954,7 @@
     "Role": "Mage",
     "Support": {
       "Effect": "Haste",
-      "Magnitude": 0.15,
+      "Magnitude": 1.0,
       "Target": "Attacker",
       "Range": 2,
       "Label": "Tailwind"
@@ -5089,11 +5089,11 @@
     "SnakeSegments": 0,
     "Role": "Striker",
     "Support": {
-      "Effect": "Strike",
-      "Magnitude": 0.5,
+      "Effect": "Crit",
+      "Magnitude": 0.3,
       "Target": "Attacker",
       "Range": 1,
-      "Label": "Strike"
+      "Label": "Read the Opening"
     },
     "HomeTree": "warrior",
     "WeaponProficiencies": [
@@ -5359,11 +5359,11 @@
     "SnakeSegments": 0,
     "Role": "Striker",
     "Support": {
-      "Effect": "Strike",
-      "Magnitude": 0.5,
+      "Effect": "Crit",
+      "Magnitude": 0.3,
       "Target": "Attacker",
       "Range": 1,
-      "Label": "Strike"
+      "Label": "Riposte Eye"
     },
     "HomeTree": "warrior",
     "WeaponProficiencies": [
@@ -5498,7 +5498,7 @@
       "Magnitude": 0.5,
       "Target": "Attacker",
       "Range": 1,
-      "Label": "Strike"
+      "Label": "Follow Through"
     },
     "HomeTree": "rogue",
     "WeaponProficiencies": [
@@ -7188,11 +7188,12 @@
     "SnakeSegments": 0,
     "Role": "Striker",
     "Support": {
-      "Effect": "Strike",
+      "Effect": "Status",
       "Magnitude": 0.5,
       "Target": "Attacker",
       "Range": 1,
-      "Label": "Strike"
+      "Buff": "poisoned",
+      "Label": "Venom Dart"
     },
     "HomeTree": "rogue",
     "WeaponProficiencies": [
@@ -7775,11 +7776,11 @@
     "SnakeSegments": 0,
     "Role": "Mage",
     "Support": {
-      "Effect": "Mana",
-      "Magnitude": 35,
+      "Effect": "Cast",
+      "Magnitude": 0.4,
       "Target": "Attacker",
       "Range": 2,
-      "Label": "Omen"
+      "Label": "Arcane Echo"
     },
     "HomeTree": "mage",
     "WeaponProficiencies": [
@@ -8301,11 +8302,11 @@
     "SnakeSegments": 0,
     "Role": "Striker",
     "Support": {
-      "Effect": "Strike",
+      "Effect": "Pushback",
       "Magnitude": 0.5,
       "Target": "Attacker",
       "Range": 1,
-      "Label": "Strike"
+      "Label": "Lance Drive"
     },
     "HomeTree": "rogue",
     "WeaponProficiencies": [
@@ -9354,11 +9355,11 @@
     "SnakeSegments": 0,
     "Role": "Striker",
     "Support": {
-      "Effect": "Strike",
+      "Effect": "Pushback",
       "Magnitude": 0.5,
       "Target": "Attacker",
       "Range": 1,
-      "Label": "Strike"
+      "Label": "Palm Strike"
     },
     "HomeTree": "rogue",
     "WeaponProficiencies": [
@@ -10330,11 +10331,11 @@
     "SnakeSegments": 0,
     "Role": "Striker",
     "Support": {
-      "Effect": "Strike",
-      "Magnitude": 0.5,
+      "Effect": "Crit",
+      "Magnitude": 0.25,
       "Target": "Attacker",
       "Range": 1,
-      "Label": "Strike"
+      "Label": "Hunter's Mark"
     },
     "HomeTree": "rogue",
     "WeaponProficiencies": [
@@ -10470,7 +10471,7 @@
       "Magnitude": 0.5,
       "Target": "Attacker",
       "Range": 1,
-      "Label": "Strike"
+      "Label": "Great Arc"
     },
     "HomeTree": "warrior",
     "WeaponProficiencies": [
@@ -10942,7 +10943,7 @@
     "Role": "Mage",
     "Support": {
       "Effect": "Haste",
-      "Magnitude": 0.2,
+      "Magnitude": 1.25,
       "Target": "Attacker",
       "Range": 2,
       "Label": "Overclock"
@@ -11214,11 +11215,11 @@
     "SnakeSegments": 0,
     "Role": "Striker",
     "Support": {
-      "Effect": "Strike",
-      "Magnitude": 0.5,
+      "Effect": "Pushback",
+      "Magnitude": 0.75,
       "Target": "Attacker",
       "Range": 1,
-      "Label": "Strike"
+      "Label": "Belly Bump"
     },
     "HomeTree": "warrior",
     "WeaponProficiencies": [
@@ -11460,11 +11461,11 @@
     "SnakeSegments": 0,
     "Role": "Striker",
     "Support": {
-      "Effect": "Strike",
+      "Effect": "Pushback",
       "Magnitude": 0.5,
       "Target": "Attacker",
       "Range": 1,
-      "Label": "Strike"
+      "Label": "Uppercut"
     },
     "HomeTree": "rogue",
     "WeaponProficiencies": [
@@ -11595,11 +11596,11 @@
     "SnakeSegments": 0,
     "Role": "Striker",
     "Support": {
-      "Effect": "Strike",
+      "Effect": "Pushback",
       "Magnitude": 0.5,
       "Target": "Attacker",
       "Range": 1,
-      "Label": "Strike"
+      "Label": "Haymaker"
     },
     "HomeTree": "rogue",
     "WeaponProficiencies": [
@@ -12290,7 +12291,7 @@
       "Magnitude": 0.5,
       "Target": "Attacker",
       "Range": 1,
-      "Label": "Strike"
+      "Label": "Plunder"
     },
     "HomeTree": "rogue",
     "WeaponProficiencies": [
@@ -12672,11 +12673,12 @@
     "SnakeSegments": 0,
     "Role": "Striker",
     "Support": {
-      "Effect": "Strike",
-      "Magnitude": 0.5,
+      "Effect": "Status",
+      "Magnitude": 0.4,
       "Target": "Attacker",
       "Range": 1,
-      "Label": "Strike"
+      "Buff": "burning",
+      "Label": "Fire Shuriken"
     },
     "HomeTree": "rogue",
     "WeaponProficiencies": [
@@ -12808,11 +12810,11 @@
     "SnakeSegments": 0,
     "Role": "Striker",
     "Support": {
-      "Effect": "Strike",
-      "Magnitude": 0.5,
+      "Effect": "Crit",
+      "Magnitude": 0.3,
       "Target": "Attacker",
       "Range": 1,
-      "Label": "Strike"
+      "Label": "Find the Vein"
     },
     "HomeTree": "rogue",
     "WeaponProficiencies": [
@@ -13083,11 +13085,11 @@
     "SnakeSegments": 0,
     "Role": "Striker",
     "Support": {
-      "Effect": "Strike",
-      "Magnitude": 0.5,
+      "Effect": "Crit",
+      "Magnitude": 0.3,
       "Target": "Attacker",
       "Range": 1,
-      "Label": "Strike"
+      "Label": "Iaido"
     },
     "HomeTree": "warrior",
     "WeaponProficiencies": [
@@ -13583,7 +13585,7 @@
       "Magnitude": 0.5,
       "Target": "Attacker",
       "Range": 1,
-      "Label": "Strike"
+      "Label": "Paid Blade"
     },
     "HomeTree": "warrior",
     "WeaponProficiencies": [
@@ -14323,11 +14325,12 @@
     "SnakeSegments": 0,
     "Role": "Striker",
     "Support": {
-      "Effect": "Strike",
-      "Magnitude": 0.5,
+      "Effect": "Status",
+      "Magnitude": 0.4,
       "Target": "Attacker",
       "Range": 1,
-      "Label": "Strike"
+      "Buff": "poisoned",
+      "Label": "Rusty Blade"
     },
     "HomeTree": "warrior",
     "WeaponProficiencies": [
@@ -15338,11 +15341,11 @@
     "SnakeSegments": 0,
     "Role": "Striker",
     "Support": {
-      "Effect": "Strike",
-      "Magnitude": 0.5,
+      "Effect": "Haste",
+      "Magnitude": 1.0,
       "Target": "Attacker",
       "Range": 1,
-      "Label": "Strike"
+      "Label": "Slipstream"
     },
     "HomeTree": "rogue",
     "WeaponProficiencies": [
@@ -16028,11 +16031,11 @@
     "SnakeSegments": 0,
     "Role": "Striker",
     "Support": {
-      "Effect": "Strike",
+      "Effect": "Pushback",
       "Magnitude": 0.5,
       "Target": "Attacker",
       "Range": 1,
-      "Label": "Strike"
+      "Label": "Shoulder Check"
     },
     "HomeTree": "rogue",
     "WeaponProficiencies": [
@@ -16167,7 +16170,7 @@
       "Magnitude": 0.5,
       "Target": "Attacker",
       "Range": 1,
-      "Label": "Strike"
+      "Label": "Flurry"
     },
     "HomeTree": "rogue",
     "WeaponProficiencies": [
@@ -16411,11 +16414,11 @@
     "SnakeSegments": 0,
     "Role": "Striker",
     "Support": {
-      "Effect": "Strike",
-      "Magnitude": 0.5,
+      "Effect": "Crit",
+      "Magnitude": 0.3,
       "Target": "Attacker",
       "Range": 1,
-      "Label": "Strike"
+      "Label": "Perfect Form"
     },
     "HomeTree": "warrior",
     "WeaponProficiencies": [
@@ -17824,11 +17827,12 @@
     "SnakeSegments": 0,
     "Role": "Striker",
     "Support": {
-      "Effect": "Strike",
+      "Effect": "Status",
       "Magnitude": 0.5,
       "Target": "Attacker",
       "Range": 1,
-      "Label": "Strike"
+      "Buff": "blinded",
+      "Label": "Pocket Sand"
     },
     "HomeTree": "warrior",
     "WeaponProficiencies": [
@@ -19354,11 +19358,12 @@
     "SnakeSegments": 0,
     "Role": "Striker",
     "Support": {
-      "Effect": "Strike",
+      "Effect": "Status",
       "Magnitude": 0.5,
       "Target": "Attacker",
       "Range": 1,
-      "Label": "Strike"
+      "Buff": "slowed",
+      "Label": "Mesmerize"
     },
     "HomeTree": "warrior",
     "WeaponProficiencies": [
@@ -20721,11 +20726,12 @@
     "SnakeSegments": 0,
     "Role": "Striker",
     "Support": {
-      "Effect": "Strike",
-      "Magnitude": 0.5,
+      "Effect": "Status",
+      "Magnitude": 0.4,
       "Target": "Attacker",
       "Range": 1,
-      "Label": "Strike"
+      "Buff": "blinded",
+      "Label": "Flash Powder"
     },
     "HomeTree": "rogue",
     "WeaponProficiencies": [
@@ -21408,11 +21414,12 @@
     "SnakeSegments": 0,
     "Role": "Ranged",
     "Support": {
-      "Effect": "Strike",
-      "Magnitude": 0.5,
+      "Effect": "Status",
+      "Magnitude": 0.35,
       "Target": "Attacker",
       "Range": 2,
-      "Label": "Cover Fire"
+      "Buff": "silenced",
+      "Label": "Hex Round"
     },
     "HomeTree": "ranger",
     "WeaponProficiencies": [
@@ -21542,11 +21549,12 @@
     "SnakeSegments": 0,
     "Role": "Ranged",
     "Support": {
-      "Effect": "Strike",
+      "Effect": "Status",
       "Magnitude": 0.5,
       "Target": "Attacker",
       "Range": 2,
-      "Label": "Cover Fire"
+      "Buff": "slowed",
+      "Label": "Snare Shot"
     },
     "HomeTree": "ranger",
     "WeaponProficiencies": [
@@ -21675,11 +21683,12 @@
     "SnakeSegments": 0,
     "Role": "Ranged",
     "Support": {
-      "Effect": "Strike",
+      "Effect": "Status",
       "Magnitude": 0.5,
       "Target": "Attacker",
       "Range": 2,
-      "Label": "Cover Fire"
+      "Buff": "poisoned",
+      "Label": "Venom Rain"
     },
     "HomeTree": "ranger",
     "WeaponProficiencies": [

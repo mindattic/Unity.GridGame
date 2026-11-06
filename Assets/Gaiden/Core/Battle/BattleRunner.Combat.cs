@@ -208,6 +208,7 @@ namespace GridGame.Core.Battle
 
             var hpBefore = new Dictionary<Unit, int>();
             foreach (var o in p.Opponents) hpBefore[o] = o.Hp;
+            LendSupportCrits(p, supporters, team); // Crit supporters call out their edge before the blows land (GG-T298)
 
             foreach (var attacker in new[] { p.A, p.B })
             {
@@ -224,6 +225,7 @@ namespace GridGame.Core.Battle
                 }
                 if (attacker.IsHero && attacker.WeaponId != null && attacker.WeaponDurability > 0) WearWeapon(attacker);
             }
+            p.A.SupportCritBonus = p.B.SupportCritBonus = 0f;
             foreach (var attacker in new[] { p.A, p.B })
                 if (attacker.Alive && !S.IsOver)
                 {
@@ -232,17 +234,23 @@ namespace GridGame.Core.Battle
                     Fire(TriggerOn.OnPincerAsAttacker, attacker, new TriggerContext { Target = trapped });
                 }
 
+            var supportPush = new Dictionary<Unit, float>();
             foreach (var sup in supporters)
                 if (sup.Alive && !S.IsOver)
                 {
-                    PerformSupport(p, sup, team);
+                    if (PincerDetector.SupportOf(sup).Effect != SupportEffect.Crit) PerformSupport(p, sup, team, supportPush);
                     if (sup.Alive) Fire(TriggerOn.OnPincerAsSupporter, sup, new TriggerContext { Target = p.AttackerOf(sup) });
                 }
 
             // The pincer attack carries Pushback (GG-T286): every trapped foe a hero pincer landed a blow on acts later.
-            if (team == Team.Hero)
-                foreach (var o in p.Opponents)
-                    if (o.Alive && o.Hp < hpBefore[o]) Pushback(o, BattleConfig.PincerPushbackSeconds);
+            // A Pushback supporter's shove adds to that one push (GG-T298) — for either team — never a second push.
+            foreach (var o in p.Opponents)
+            {
+                if (!o.Alive) continue;
+                float secs = team == Team.Hero && o.Hp < hpBefore[o] ? BattleConfig.PincerPushbackSeconds : 0f;
+                if (supportPush.TryGetValue(o, out var extra)) secs += extra;
+                if (secs > 0f) Pushback(o, secs);
+            }
 
             if (team == Team.Hero)
             {
@@ -259,55 +267,6 @@ namespace GridGame.Core.Battle
                 if (amplified != null && amplified.Alive) AddCharge(BattleConfig.AmplifierCharge, amplified.Id, "amplifier");
             }
             chainBonusDepth = 0;
-        }
-
-        /// <summary>
-        /// A supporter's class support action (§1.2.3, GG-T187): the classic strike on every trapped opponent, or a
-        /// heal / buff / haste / mana / cleanse on the attacker it's chained to, the chain itself, the party or itself.
-        /// </summary>
-        private void PerformSupport(Pincer p, Unit sup, Team team)
-        {
-            var def = PincerDetector.SupportOf(sup);
-            var attacker = p.AttackerOf(sup);
-            var targets = new List<Unit>();
-            if (def.Effect == SupportEffect.Strike) { foreach (var o in p.Opponents) if (o.Alive && !wardedThisPincer.Contains(o)) targets.Add(o); }
-            else
-                switch (def.Target)
-                {
-                    case SupportTarget.Self: targets.Add(sup); break;
-                    case SupportTarget.Chain: foreach (var u in p.ChainOf(sup)) if (u.Alive) targets.Add(u); break;
-                    case SupportTarget.Party: foreach (var u in S.Living(team)) targets.Add(u); break;
-                    default: if (attacker.Alive) targets.Add(attacker); break;
-                }
-            var ev = new SupportActionEvent { SupporterId = sup.Id, AttackerId = attacker.Id, Effect = def.Effect, Label = def.DisplayLabel };
-            foreach (var t in targets) ev.Targets.Add(t.Id);
-            Emit(ev);
-
-            switch (def.Effect)
-            {
-                case SupportEffect.Strike:
-                    float frac = def.Magnitude > 0f ? def.Magnitude : BattleConfig.SupporterDamageFraction;
-                    foreach (var target in targets)
-                        if (sup.Alive && target.Alive) Strike(sup, target, frac, BlowKind.Support);
-                    break;
-                case SupportEffect.Heal:
-                    foreach (var t in targets)
-                        if (t.Alive && t.Hp < t.MaxHp) Heal(t, Math.Max(1, (int)Math.Round(t.MaxHp * def.Magnitude)), sup);
-                    break;
-                case SupportEffect.Buff:
-                    var buff = C.TryBuff(def.Buff);
-                    if (buff != null) foreach (var t in targets) ApplyBuff(t, buff, buff.Duration);
-                    break;
-                case SupportEffect.Haste:
-                    foreach (var t in targets) if (t.Alive) Hasten(t, def.Magnitude);
-                    break;
-                case SupportEffect.Mana:
-                    if (team == Team.Hero) AddCharge(Math.Max(1, (int)Math.Round(def.Magnitude * BattleConfig.SupportManaFactor)), sup.Id, "support");
-                    break;
-                case SupportEffect.Cleanse:
-                    foreach (var t in targets) RemoveBuffsWhere(t, b => b.Def.Kind == BuffKind.Debuff, "cleansed");
-                    break;
-            }
         }
 
         /// <summary>A passive the unit has makes it immune to <paramref name="buffId"/> (Poison Ward, Steadfast: an Always

@@ -218,6 +218,7 @@ namespace GridGame.Core.Content
                     }
                     if ((c.Support.Effect == SupportEffect.Heal || c.Support.Effect == SupportEffect.Haste || c.Support.Effect == SupportEffect.Mana) && c.Support.Magnitude <= 0f)
                         p.Add($"class {c.Id}: a {c.Support.Effect} support needs a positive magnitude");
+                    ValidateSupport(db, c, p); // GG-T298: Crit / Cast / Status / Pushback, Haste in seconds
                 }
             }
             foreach (var b in db.Bounties.Values) { NeedClass(b.TargetClass, $"bounty {b.Id}"); NeedItem(b.RewardItem, $"bounty {b.Id}"); }
@@ -307,6 +308,43 @@ namespace GridGame.Core.Content
             p.AddRange(GridGame.Core.Battle.DifficultyTable.Problems()); // the 1..10 dial (GG-T309)
             return p;
             Glossary.Validate(db, p);
+        }
+
+        /// <summary>GG-T298 (§1.2.3): the widened support effects stay in their sane ranges, and the generated "As a
+        /// Supporter" sentence only uses glossary terms.</summary>
+        private static void ValidateSupport(ContentDb db, ClassDef c, List<string> p)
+        {
+            var s = c.Support;
+            float m = s.Magnitude;
+            string w = $"class {c.Id} support";
+            switch (s.Effect)
+            {
+                case SupportEffect.Haste:
+                    if (m > SupportDef.MaxHasteSeconds) p.Add($"{w}: Haste {m}s is over {SupportDef.MaxHasteSeconds}s (seconds sooner, not a bar fraction)");
+                    break;
+                case SupportEffect.Crit:
+                    if (!(m > 0f && m <= SupportDef.MaxCritBonus)) p.Add($"{w}: Crit {m} outside (0, {SupportDef.MaxCritBonus}] (crit chance fraction)");
+                    break;
+                case SupportEffect.Cast:
+                    if (!(m > 0f && m <= SupportDef.MaxCastPower)) p.Add($"{w}: Cast power {m} outside (0, {SupportDef.MaxCastPower}]");
+                    bool any = false;
+                    foreach (var id in c.Abilities)
+                        if (db.TryAbility(id) is AbilityDef a && a.Kind == AbilityKind.Spell && a.BaseDamage > 0 && a.Filter != TargetFilter.AllyOnly) any = true;
+                    if (!any) p.Add($"{w}: a Cast support needs a damaging spell in the class kit");
+                    break;
+                case SupportEffect.Status:
+                    if (!(m > 0f && m <= 1f)) p.Add($"{w}: Status chance {m} outside (0, 1]");
+                    if (string.IsNullOrEmpty(s.Buff)) p.Add($"{w}: a Status support needs a Buff id");
+                    else if (db.TryBuff(s.Buff) is BuffDef b) { if (b.Kind != BuffKind.Debuff) p.Add($"{w}: Status {s.Buff} is not a debuff"); }
+                    else p.Add($"{w}: unknown status {s.Buff}");
+                    break;
+                case SupportEffect.Pushback:
+                    if (!(m > 0f && m <= Battle.BattleConfig.PushbackMaxSeconds)) p.Add($"{w}: Pushback {m}s outside (0, {Battle.BattleConfig.PushbackMaxSeconds}]s");
+                    break;
+            }
+            if (db.GlossaryIndex.Count > 0)
+                foreach (var t in Glossary.Terms(Rules.SupportText.Describe(db, s)))
+                    if (db.TryTerm(t) == null) p.Add($"{w}: unknown glossary term [{t}] in its supporter sentence");
         }
 
         /// <summary>Armor sets (GG-T182): five real armor pieces, one per armor slot, all the set's weight, no piece in

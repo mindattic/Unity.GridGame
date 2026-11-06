@@ -373,6 +373,8 @@ namespace GridGame.App
                 Ui.RoleBadge(def.Role, info).style.marginBottom = Space.S8;
                 var desc = GlossaryText.Create(def.Description ?? "", "small dim", info);
                 desc.style.whiteSpace = WhiteSpace.Normal;
+                var sup = GlossaryText.Create(GridGame.Core.Rules.SupportText.Describe(App.Content, def.Support), "small gold", info); // GG-T298
+                sup.style.whiteSpace = WhiteSpace.Normal; sup.style.marginTop = Space.S8;
                 if (locked.Contains(showId)) Ui.Text("Locked in", "small good", info).style.marginTop = Space.S8;
                 App.StartCoroutine(SlamIn(row));
             }

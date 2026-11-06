@@ -309,6 +309,13 @@ namespace GridGame.App
             if (reveal) Line(head, $"{Ui.StatLine(u.Effective)} · EVA {GridGame.Core.Rules.Formulas.Evasion(u):0}%", "t-caption", Palette.TextDim); // GG-T297
             else if (knowledge >= BestiaryKnowledge.Speed) Line(head, $"SPD {u.Effective.Speed:0}", "t-caption", Palette.TextDim);
             if (!u.IsHero && knowledge >= BestiaryKnowledge.Elements) Line(head, BestiaryKnowledge.ElementLine(u.Def), "t-caption", Palette.TextDim);
+            // What it brings as a supporter (GG-T298, §1.2.3): every hero; a foe once its abilities are known.
+            if (u.IsHero || knowledge >= BestiaryKnowledge.Abilities)
+            {
+                var sup = GlossaryText.Create(SupportText.Describe(GameApp.I?.Content, PincerDetector.SupportOf(u)), "t-caption", body, false);
+                sup.name = "inspect-support";
+                sup.style.marginTop = Space.S8;
+            }
             if (!u.IsHero && !u.IsNeutral)
             {
                 var cast = s.CastEntryOf(u.Id);

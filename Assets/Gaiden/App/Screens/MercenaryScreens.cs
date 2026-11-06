@@ -60,6 +60,7 @@ namespace GridGame.App
                 Ui.RoleBadge(def.Role, top).style.marginLeft = Space.S8;
                 Ui.Text(m.Temperament.ToString(), "tiny dim", top).style.marginLeft = Space.S8;
                 Ui.Text($"\"{m.Pitch}\"", "tiny", col).style.whiteSpace = WhiteSpace.Normal;
+                GlossaryText.Create(GridGame.Core.Rules.SupportText.Describe(C, def.Support), "tiny gold", col).style.whiteSpace = WhiteSpace.Normal; // GG-T298
                 int adj = Mercenaries.HaggleAdjust(S, m.Class);
                 if (adj != 0) Ui.Text(adj < 0 ? $"Haggled down {-adj}%" : $"Price up {adj}%", adj < 0 ? "tiny gold" : "tiny bad", col);
                 if (walked) { Ui.Text("Walked off. Back after the next battle.", "small bad", col); continue; }

@@ -159,6 +159,10 @@ namespace GridGame.Core.Battle
     public sealed class SupportActionEvent : BattleEvent
     {
         public int SupporterId; public int AttackerId; public SupportEffect Effect; public string Label;
+        /// <summary>GG-T298: Cast — the spell from the supporter's kit it casts; Status — the buff id it tries to inflict.</summary>
+        public string AbilityId; public string BuffId;
+        /// <summary>GG-T298: the effect's magnitude as played (crit fraction, haste/pushback seconds, chance, power).</summary>
+        public float Amount;
         public List<int> Targets = new List<int>();
         public override string ToString() => $"Support {SupporterId}->{AttackerId} {Effect} '{Label}' [{string.Join(",", Targets)}]";
     }

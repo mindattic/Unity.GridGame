@@ -93,6 +93,9 @@ namespace GridGame.Core.Battle
         /// and Masterwork multiplier; a piece is removed from here the instant it breaks (§24.2, GG-T89).</summary>
         public Dictionary<EquipmentSlot, EquippedPiece> Gear = new Dictionary<EquipmentSlot, EquippedPiece>();
         public float PincerDamageBonus;
+        /// <summary>Crit chance (0.2 = +20 points) a Crit supporter lent this unit for the pincer resolving now (GG-T298);
+        /// set as the pincer forms, cleared once its attackers have struck.</summary>
+        public float SupportCritBonus;
         public int RegenPerTurn;
         public Dictionary<DamageType, float> GearResist = new Dictionary<DamageType, float>();
         /// <summary>Armor set bonus tiers currently folded into GearStats/GearResist/PincerDamageBonus/RegenPerTurn

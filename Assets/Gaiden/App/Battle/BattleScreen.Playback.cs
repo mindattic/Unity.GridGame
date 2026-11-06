@@ -603,12 +603,29 @@ namespace GridGame.App
             SupporterPop(sup, sup.Team, label.ToUpperInvariant());
             if (sa.Effect == SupportEffect.Strike) yield break; // the support strikes animate themselves
             var color = SupportColor(sa.Effect);
-            Feed($"✦ {sup.Name}: {label}", color);
-            App.Audio.Sfx(sa.Effect == SupportEffect.Heal ? "battle.heal" : sa.Effect == SupportEffect.Mana ? "battle.orb" : "battle.cast", 0.7f, 1.2f);
+            // GG-T298: the float names the edge it brings ("+20% Crit", "Fireball", "Poisoned", "Pushback +0.5 s").
+            string what = GridGame.Core.Rules.SupportText.Short(App.Content, sa.Effect, sa.Amount, sa.AbilityId, sa.BuffId);
+            Feed(what == null ? $"✦ {sup.Name}: {label}" : $"✦ {sup.Name}: {label} — {what}", color);
+            App.Audio.Sfx(SupportSfx(sa.Effect), 0.7f, 1.2f);
             App.StartCoroutine(Tween.Pop(sv.Root, 1.12f, 0.18f));
             var at = BoardView.CenterOf(sv.Tile, sv.W, sv.H);
-            App.StartCoroutine(FloatAway(board.Float(label + "!", at, color, 60), 0.6f));
+            App.StartCoroutine(FloatAway(board.Float(what == null ? label + "!" : $"{label}! {what}", at, color, 60), 0.6f));
             yield return Tween.Wait(ReduceMotion ? 0.08f : 0.2f);
+        }
+
+        /// <summary>One sound per support effect (POL-D4), reusing the battle ids.</summary>
+        private static string SupportSfx(SupportEffect e)
+        {
+            switch (e)
+            {
+                case SupportEffect.Heal: return "battle.heal";
+                case SupportEffect.Mana: return "battle.orb";
+                case SupportEffect.Crit: return "battle.crit";
+                case SupportEffect.Status: return "status.debuff";
+                case SupportEffect.Pushback: return "battle.whoosh";
+                case SupportEffect.Buff: return "battle.powerup";
+                default: return "battle.cast";
+            }
         }
 
         private static Color SupportColor(SupportEffect e)
@@ -620,6 +637,10 @@ namespace GridGame.App
                 case SupportEffect.Haste: return Palette.Haste;
                 case SupportEffect.Mana: return Palette.Mana;
                 case SupportEffect.Cleanse: return Palette.Cleanse;
+                case SupportEffect.Crit: return Palette.Gold;
+                case SupportEffect.Cast: return Palette.CastHero;
+                case SupportEffect.Status: return Palette.Bad;
+                case SupportEffect.Pushback: return Palette.Warn;
                 default: return Palette.Info;
             }
         }

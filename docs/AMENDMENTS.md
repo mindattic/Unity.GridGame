@@ -835,6 +835,19 @@ Owner: "Perfect text wrapping on all things (hyphenated or word wrap as an optio
   - Behaviour changes: Lifesteal, Berserk, Tough Hide and Double Attack also work for heroes (the old enemy-only gates kept skill-tree grants from doing anything). An enemy's Double Attack second swing can be countered, as a hero's already could. A counter blow no longer sets off Thorns. Lifesteal and Regenerate stay silent at full HP instead of logging a 0 heal.
 - *(Tests: `TriggerEngineTests`.)*
 
+## 2026-11-06 — Every supporter brings its class's edge (owner, GG-T298)
+
+Owner: "Each supporter gives some kind of passive or active effect when they are a supporter: a Cleric sends a heal to the attacker; a ninja might increase your crit %; a wizard might randomly cast a spell on enemies in the line — so some characters are just plain better for support because of their passive benefits."
+
+- **Was (GG-T187):** six support effects; 34 of the hero classes (every ninja, duelist, brawler, hex archer…) only struck at 50 %, and Haste was a fraction of the old bar.
+- **Now:** see BIBLE §1.2.3, §1.2.4.
+  - Four new `SupportEffect`s: **Crit** (lends the attacker crit chance for this pincer, before its blows), **Cast** (echoes a random damaging spell from the supporter's own kit on the trapped foes at a power fraction, no mana), **Status** (a debuff on each trapped foe by chance) and **Pushback** (seconds added to the pincer's single push per foe, capped at 2 s).
+  - **Haste is seconds now** (≤ 3 s), the mirror of Pushback on the BRAVE timeline.
+  - The 34 strike-only classes are reassigned by archetype (10 Crit, 9 Status, 8 Pushback, 1 Haste, 6 keep Strike as their identity); Black Witch and Harbinger trade Mana for Cast.
+  - A generated "As a [Supporter]: …" sentence shows on the InspectCard, hero page, Abilities screen, mercenary offers and party pick; the cut-in float names the effect.
+  - The effects are plain `SupportDef` data, so enemy classes can carry them too (GG-T307).
+- *(Tests: `SupportEffectTests`.)*
+
 ## 2026-11-06 — Tap a timeline icon to select its unit (GG-T288)
 
 - **Was:** timeline icons only answered a hold (the InspectCard); selecting a unit needed a board tap.

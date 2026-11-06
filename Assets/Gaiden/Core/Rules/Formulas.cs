@@ -126,6 +126,7 @@ namespace GridGame.Core.Rules
             float acc = attacker.AccuracyMultiplier;
             if (acc < 1f) hit = Clamp(hit * acc, 5f, 95f);
             float crit = CritPercent(a);
+            if (attacker.SupportCritBonus > 0f) crit = Clamp(crit + attacker.SupportCritBonus * 100f, 0f, SupportDef.MaxSupportedCritPercent); // GG-T298
             float roll = rng.Range(0f, 100f);
             HitKind kind = roll <= crit ? HitKind.Critical : roll <= hit ? HitKind.Normal : HitKind.Miss;
             if (kind != HitKind.Miss && dodgeable && roll > hit - Evasion(defender))

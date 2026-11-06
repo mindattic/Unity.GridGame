@@ -267,6 +267,11 @@ namespace GridGame.Tests
                 var db = SupportDb();
                 foreach (var b in real.Buffs) db.Buffs[b.Key] = b.Value;
                 db.Classes["mage"].Support = def;
+                if (def.Effect == SupportEffect.Cast) // a Cast supporter echoes a spell from its own class kit (GG-T298)
+                {
+                    foreach (var a in real.Abilities) db.Abilities[a.Key] = a.Value;
+                    db.Classes["mage"].Abilities = new List<string>(cls.Abilities);
+                }
                 var (s, _) = Battle(db, Stage(("tank", 2, 3)), ("knight", 1, 3), ("cleric", 3, 4), ("mage", 1, 4));
                 var knight = Hero(s, "knight"); var mage = Hero(s, "mage");
                 knight.Hp = knight.MaxHp / 2;
@@ -292,6 +297,14 @@ namespace GridGame.Tests
                         Assert.That(ev.Any(e => e is ManaChargedEvent m && m.Reason == "support" && m.SourceId == mage.Id), Is.True, why); break;
                     case SupportEffect.Cleanse:
                         if (act.Targets.Contains(knight.Id)) Assert.That(ev.Any(e => e is BuffRemovedEvent r && r.UnitId == knight.Id && r.Reason == "cleansed"), Is.True, why); break;
+                    case SupportEffect.Crit:
+                        Assert.That(act.Targets, Is.EqualTo(new[] { knight.Id }), why);
+                        Assert.That(ev.IndexOf(act), Is.LessThan(ev.FindIndex(e => e is AttackEvent)), $"{why}: the edge is lent before the blows"); break;
+                    case SupportEffect.Cast:
+                        Assert.That(ev.Any(e => e is DamagedEvent d && d.SourceId == mage.Id && act.Targets.Contains(d.TargetId)), Is.True, why); break;
+                    case SupportEffect.Status:
+                    case SupportEffect.Pushback:
+                        Assert.That(act.Targets.All(t => s.UnitById(t).Team == Team.Enemy), Is.True, $"{why}: lands on the trapped foes"); break;
                 }
                 if (def.Effect != SupportEffect.Strike)
                     Assert.That(ev.Any(e => e is AttackEvent a && a.AttackerId == mage.Id), Is.False, $"{why}: only strikers strike in support");

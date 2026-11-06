@@ -307,15 +307,29 @@ namespace GridGame.Core.Content
         Heal,
         /// <summary>Apply buff <see cref="SupportDef.Buff"/> to each target (ATK up, shield, regen, taunt…).</summary>
         Buff,
-        /// <summary>Slide each target's turn icon forward <see cref="SupportDef.Magnitude"/> of the bar (or rush its cast).</summary>
+        /// <summary>Each target acts <see cref="SupportDef.Magnitude"/> seconds sooner (its turn icon slides forward, or its
+        /// cast is rushed; a hero's party also gains tempo). Seconds since GG-T298 (was a fraction of the bar).</summary>
         Haste,
         /// <summary>Add <see cref="SupportDef.Magnitude"/> charge to the mana meter (100 = one orb). Hero team only.</summary>
         Mana,
         /// <summary>Strip every debuff from each target.</summary>
         Cleanse,
+        /// <summary>GG-T298: the attacker the supporter is chained to gains +<see cref="SupportDef.Magnitude"/> crit chance
+        /// (0.2 = +20 points) on its blows in this pincer. Resolves before the attackers strike.</summary>
+        Crit,
+        /// <summary>GG-T298: the supporter casts a random damaging spell from its own kit (no mana, no cast time) on every
+        /// trapped opponent at <see cref="SupportDef.Magnitude"/> × its power. Nothing happens if its kit has none.</summary>
+        Cast,
+        /// <summary>GG-T298: each trapped opponent gains status <see cref="SupportDef.Buff"/> with chance
+        /// <see cref="SupportDef.Magnitude"/> (poison, blind, slow, silence, burn…).</summary>
+        Status,
+        /// <summary>GG-T298: <see cref="SupportDef.Magnitude"/> extra seconds of Pushback on every trapped opponent, folded
+        /// into the pincer's own push (one push per foe per action, capped at PushbackMaxSeconds).</summary>
+        Pushback,
     }
 
-    /// <summary>Who a supporter's effect lands on (§1.2.3, GG-T187). Strike always hits the trapped opponents.</summary>
+    /// <summary>Who a supporter's effect lands on (§1.2.3, GG-T187). Strike, Cast, Status and Pushback always hit the
+    /// trapped opponents; Crit always goes to the attacker the supporter is chained to.</summary>
     public enum SupportTarget
     {
         /// <summary>The pincer attacker the supporter's chain reaches.</summary>
@@ -333,17 +347,27 @@ namespace GridGame.Core.Content
     public sealed class SupportDef
     {
         public SupportEffect Effect = SupportEffect.Strike;
-        /// <summary>Strike: damage fraction. Heal: fraction of the target's max HP. Haste: fraction of the bar. Mana: charge.</summary>
+        /// <summary>Strike: damage fraction. Heal: fraction of the target's max HP. Haste: seconds sooner. Mana: charge.
+        /// Crit: crit chance added (0.2 = +20 points). Cast: spell power fraction. Status: chance 0..1. Pushback: seconds.</summary>
         public float Magnitude = 0.5f;
         public SupportTarget Target = SupportTarget.Attacker;
         /// <summary>How many links along the chain of allies the supporter may stand from the attacker (1 = adjacent).</summary>
         public int Range = 1;
-        /// <summary>Buff id applied by <see cref="SupportEffect.Buff"/>.</summary>
+        /// <summary>Buff id applied by <see cref="SupportEffect.Buff"/>, or the status inflicted by <see cref="SupportEffect.Status"/>.</summary>
         public string Buff;
         /// <summary>Short name shown on the cut-in and float text ("Mend", "Guard", "Haste"…); defaults to the effect.</summary>
         public string Label;
 
         public static readonly SupportDef Default = new SupportDef();
+
+        /// <summary>Largest Haste a support may give, in seconds (GG-T298).</summary>
+        public const float MaxHasteSeconds = 3f;
+        /// <summary>Largest crit chance one Crit support may add (0.5 = +50 points), and the cap on the attacker's total crit
+        /// percent while supported (GG-T298).</summary>
+        public const float MaxCritBonus = 0.5f;
+        public const float MaxSupportedCritPercent = 75f;
+        /// <summary>Largest spell power fraction a Cast support may use (GG-T298).</summary>
+        public const float MaxCastPower = 1f;
 
         public string DisplayLabel => string.IsNullOrEmpty(Label) ? Effect.ToString() : Label;
     }
