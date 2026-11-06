@@ -757,3 +757,9 @@ Owner: "gaining mana is too generous since I see the whole bar filled almost in 
 - **Was:** the `lifesteal` enemy passive healed half of every landed hit. That was tuned when enemies struck at 0.9 with their full stat HP.
 - **Why it broke:** GG-T262 raised the strike to 1.2 and cut enemy HP to 45%, so half a hit healed about three times as much of the pool. In casual-bot losses on Veshker Ruins III, the wave-1 undead healed back 75–85% of all the damage dealt to them, and the wave ran a median 76 actions.
 - **Now:** `BattleConfig.EnemyLifestealFraction` = 0.25. On the same seeds (8 casual battles per stage): Veshker Ruins II 4/8 → 6/8, Veshker Ruins III 3/8 → 6/8; POL-G 70.1 → 71.8, G7 69.2 → 84.6.
+
+## 2026-11-05 — Enemy charges can rest between casts; Smite does (GG-T283, balance loop GG-T276)
+
+- **Was:** a caster charged its spell on every turn no hero stood next to it, with no cooldown. Templars are melee Guardians carrying `charge_smite`; from the board edge they charged Smite every turn and never closed in. In Veshker Ruins I wave 2 the casual bot took up to 154 Smites and dealt the two templars 41 damage in 102 actions.
+- **Now:** enemy charges honour the ability's `CooldownTurns`, counted down at the start of the caster's own turn; `charge_smite` = 2. Same seeds: Veshker Ruins I 2/8 → 4/8, its wave 2 a median 66 → 48 actions, Smites per wave at most 24; POL-G 71.8 → 71.8, G2 71.4 → 78.6, G6 51.8 → 52.4.
+- **Still open:** the casual bot lands only 1–5 pincers on edge-hugging Guardians; that is bot positioning, left to the loop.

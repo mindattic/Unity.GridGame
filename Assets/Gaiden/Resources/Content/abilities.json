@@ -632,11 +632,11 @@
  {
   "Id": "charge_smite",
   "Name": "Smite",
-  "Description": "A telegraphed Smite charge.",
+  "Description": "A telegraphed Smite charge; it rests a turn between charges.",
   "Kind": "Spell",
   "Cost": 0,
   "CastTime": 2.5,
-  "CooldownTurns": 0,
+  "CooldownTurns": 2,
   "Shape": "SingleActor",
   "Radius": 0,
   "Mode": "PickActor",

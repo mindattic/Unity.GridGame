@@ -328,6 +328,7 @@ namespace GridGame.Core.Rules
             if (enemy.IsImmobile || enemy.IsSilenced) return null;
             var ability = s.Content.TryAbility(enemy.Def.ChargeAbility);
             if (ability == null) return null;
+            if (enemy.Cooldowns.TryGetValue(ability.Id, out var cd) && cd > 0) return null; // recharging: act normally (GG-T283)
             var heroes = s.LivingList(Team.Hero);
             if (heroes.Count == 0) return null;
             if (!ignoreMeleeRange)

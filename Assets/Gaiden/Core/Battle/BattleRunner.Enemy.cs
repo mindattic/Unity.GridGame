@@ -21,6 +21,11 @@ namespace GridGame.Core.Battle
             }
             if (enemy.IsEgg) { Hatch(enemy); return; }
             enemy.TurnsTaken++;
+            // A charge with CooldownTurns waits that many of the caster's own turns before it can be charged again
+            // (GG-T283: templars charged Smite every turn from the board edge and never closed in).
+            if (enemy.Cooldowns.Count > 0)
+                foreach (var k in new List<string>(enemy.Cooldowns.Keys))
+                    if (enemy.Cooldowns[k] > 0) enemy.Cooldowns[k]--;
 
             if (!string.IsNullOrEmpty(enemy.Def.LaysEgg) && enemy.TurnsTaken % Math.Max(1, enemy.Def.EggInterval) == 0)
                 LayEgg(enemy);
@@ -231,6 +236,7 @@ namespace GridGame.Core.Battle
                 LineTiles = plan.Shape == ChargeShape.Line ? plan.Line : null,
             };
             S.Timeline.Add(entry);
+            if (plan.Ability.CooldownTurns > 0) enemy.Cooldowns[plan.Ability.Id] = plan.Ability.CooldownTurns;
             Emit(new CastQueuedEvent { EntryId = entry.Id, CasterId = enemy.Id, AbilityId = plan.Ability.Id, Ticks = ticks, IsCharge = true, LineTiles = entry.LineTiles, TargetUnitId = plan.Target.Id, TargetTile = plan.Target.Pos });
             Announce($"{enemy.Name} is charging {plan.Ability.Name}!", enemy.Id);
         }
