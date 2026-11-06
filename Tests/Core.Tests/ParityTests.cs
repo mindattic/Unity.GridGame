@@ -62,7 +62,7 @@ namespace GridGame.Tests
         }
 
         [Test] // US-027
-        public void Humanoid_enemies_pincer_heroes_without_minting_orbs()
+        public void Sentient_enemies_pincer_heroes_without_minting_orbs()
         {
             var db = Mini();
             var (s, _) = Battle(db, Stage(("goblin", 0, 3), ("goblin", 2, 3)), ("knight", 1, 3), ("cleric", 5, 7));

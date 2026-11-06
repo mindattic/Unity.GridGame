@@ -40,7 +40,7 @@ namespace GridGame.Tests
             db.Classes["knight"] = new ClassDef { Id = "knight", Name = "Knight", Team = Team.Hero, Tags = { "Humanoid" }, BaseStats = S(20, 10, 10) };
             db.Classes["cleric"] = new ClassDef { Id = "cleric", Name = "Cleric", Team = Team.Hero, Tags = { "Humanoid" }, BaseStats = S(20, 10, 10) };
             db.Classes["mage"] = new ClassDef { Id = "mage", Name = "Mage", Team = Team.Hero, Tags = { "Humanoid" }, BaseStats = S(10, 10, 10) };
-            db.Classes["goblin"] = new ClassDef { Id = "goblin", Name = "Goblin", Team = Team.Enemy, Tags = { "Humanoid" }, BaseStats = S(5, 2, 10), MoveRange = 0, DropTable = "goblin" };
+            db.Classes["goblin"] = new ClassDef { Id = "goblin", Name = "Goblin", Team = Team.Enemy, Tags = { "Humanoid", "Sentient" }, BaseStats = S(5, 2, 10), MoveRange = 0, DropTable = "goblin" };
             db.Classes["wolf"] = new ClassDef { Id = "wolf", Name = "Wolf", Team = Team.Enemy, Tags = { "Beast" }, BaseStats = S(5, 2, 10), MoveRange = 1 };
             db.Classes["tank"] = new ClassDef { Id = "tank", Name = "Tank", Team = Team.Enemy, Tags = { "Beast" }, BaseStats = S(1, 200, 1), MoveRange = 0 };
             db.Classes["boss"] = new ClassDef { Id = "boss", Name = "Boss", Team = Team.Enemy, Tags = { "Boss" }, BaseStats = S(5, 50, 5), Footprint = new Footprint { W = 2, H = 2 }, MoveRange = 0 };

@@ -360,10 +360,10 @@ namespace GridGame.Core.Battle
             return trail;
         }
 
-        /// <summary>Humanoid enemies resolve any pincer they're part of; otherwise melee the adjacent hero their personality picks.</summary>
+        /// <summary>Sentient enemies resolve any pincer they're part of; otherwise melee the adjacent hero their personality picks.</summary>
         private void EnemyAttack(Unit enemy)
         {
-            if (enemy.IsHumanoid && !enemy.IsMultiTile)
+            if (enemy.CanPincer && !enemy.IsMultiTile)
             {
                 var pincers = PincerDetector.Detect(S, Team.Enemy, enemy);
                 bool any = false;

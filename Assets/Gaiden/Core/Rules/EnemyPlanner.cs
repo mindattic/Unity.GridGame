@@ -16,13 +16,13 @@ namespace GridGame.Core.Rules
     /// <summary>Enemy decision-making (bible §14). Pure: reads state, never commits.</summary>
     public static class EnemyPlanner
     {
-        /// <summary>The enemy's personality; Auto → Weakest for clever foes (INT ≥ 14), Threat for other humanoids, else Closest.</summary>
+        /// <summary>The enemy's personality; Auto → Weakest for clever foes (INT ≥ 14), Threat for other sentient foes, else Closest.</summary>
         public static Targeting TargetingOf(Unit enemy)
         {
             var t = enemy.Def.Targeting;
             if (t != Targeting.Auto) return t;
             if (enemy.Def.BaseStats.Intelligence >= 14) return Targeting.Weakest;
-            return enemy.IsHumanoid ? Targeting.Threat : Targeting.Closest;
+            return enemy.CanPincer ? Targeting.Threat : Targeting.Closest;
         }
 
         public static string Describe(Targeting t)
@@ -254,7 +254,7 @@ namespace GridGame.Core.Rules
                 foreach (var a in s.Living(Team.Enemy)) if (a != enemy && !a.IsRemains && a.HpFraction < 0.9f && (patient == null || a.HpFraction < patient.HpFraction)) patient = a;
 
             bool wounded = enemy.HpFraction < RetreatThreshold(enemy) && !LoneHero(s);
-            bool seeksPincer = enemy.IsHumanoid && !enemy.IsMultiTile;
+            bool seeksPincer = enemy.CanPincer && !enemy.IsMultiTile;
             var original = enemy.Pos;
             Coord best = enemy.Pos; float bestScore = float.NegativeInfinity;
             foreach (var c in candidates)

@@ -35,7 +35,7 @@ namespace GridGame.Tests
         }
 
         [Test]
-        public void Humanoid_enemy_seeks_a_pincer_on_a_hero()
+        public void Sentient_enemy_seeks_a_pincer_on_a_hero()
         {
             var db = Mini();
             db.Classes["goblin"].MoveRange = 1;

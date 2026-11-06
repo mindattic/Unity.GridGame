@@ -141,7 +141,8 @@ namespace GridGame.Core.Battle
         public bool IsSnakeSegment => SnakeHeadId >= 0 && SnakeIndex > 0;
         public bool IsSnakeMember => SnakeHeadId >= 0;
         public string Name => Def.Name;
-        public bool IsHumanoid => Team == Team.Hero || Def.HasTag("Humanoid");
+        /// <summary>Pincer eligibility (bible §1.2, GG-LAW-2): heroes always; enemies only with a society (tag Sentient, GG-T289).</summary>
+        public bool CanPincer => Team == Team.Hero || Def.HasTag("Sentient");
         public bool IsRanged => Def.AttackRange > 1;
 
         public Stats Effective

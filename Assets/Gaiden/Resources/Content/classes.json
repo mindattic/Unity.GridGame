@@ -1560,7 +1560,8 @@
     "Name": "Captain",
     "Team": "Enemy",
     "Tags": [
-      "Humanoid"
+      "Humanoid",
+      "Sentient"
     ],
     "Description": "A flexible fighter with no single defining specialty.",
     "Lore": "Walks many roads, never lost for lack of a single path.",
@@ -1673,7 +1674,8 @@
     "Team": "Enemy",
     "Tags": [
       "Humanoid",
-      "Construct"
+      "Construct",
+      "Sentient"
     ],
     "Description": "A stalwart defender that anchors the line and absorbs pressure.",
     "Lore": "Built on vows and iron patience, they stand where others fall back.",
@@ -1791,7 +1793,8 @@
     "Team": "Enemy",
     "Tags": [
       "Humanoid",
-      "Construct"
+      "Construct",
+      "Sentient"
     ],
     "Description": "A stalwart defender that anchors the line and absorbs pressure.",
     "Lore": "Built on vows and iron patience, they stand where others fall back.",
@@ -1909,7 +1912,8 @@
     "Team": "Enemy",
     "Tags": [
       "Humanoid",
-      "Construct"
+      "Construct",
+      "Sentient"
     ],
     "Description": "A stalwart defender that anchors the line and absorbs pressure.",
     "Lore": "Built on vows and iron patience, they stand where others fall back.",
@@ -2027,7 +2031,8 @@
     "Team": "Enemy",
     "Tags": [
       "Humanoid",
-      "Construct"
+      "Construct",
+      "Sentient"
     ],
     "Description": "A stalwart defender that anchors the line and absorbs pressure.",
     "Lore": "Built on vows and iron patience, they stand where others fall back.",
@@ -2145,7 +2150,8 @@
     "Team": "Enemy",
     "Tags": [
       "Humanoid",
-      "Construct"
+      "Construct",
+      "Sentient"
     ],
     "Description": "A stalwart defender that anchors the line and absorbs pressure.",
     "Lore": "Built on vows and iron patience, they stand where others fall back.",
@@ -2263,7 +2269,8 @@
     "Team": "Enemy",
     "Tags": [
       "Humanoid",
-      "Construct"
+      "Construct",
+      "Sentient"
     ],
     "Description": "A stalwart defender that anchors the line and absorbs pressure.",
     "Lore": "Built on vows and iron patience, they stand where others fall back.",
@@ -2381,7 +2388,8 @@
     "Team": "Enemy",
     "Tags": [
       "Humanoid",
-      "Construct"
+      "Construct",
+      "Sentient"
     ],
     "Description": "A stalwart defender that anchors the line and absorbs pressure.",
     "Lore": "Built on vows and iron patience, they stand where others fall back.",
@@ -3483,7 +3491,8 @@
     "Team": "Enemy",
     "Tags": [
       "Humanoid",
-      "Boss"
+      "Boss",
+      "Sentient"
     ],
     "Description": "A flexible fighter with no single defining specialty.",
     "Lore": "Walks many roads, never lost for lack of a single path.",
@@ -3608,7 +3617,8 @@
     "Team": "Enemy",
     "Tags": [
       "Humanoid",
-      "Boss"
+      "Boss",
+      "Sentient"
     ],
     "Description": "A flexible fighter with no single defining specialty.",
     "Lore": "Walks many roads, never lost for lack of a single path.",
@@ -3719,7 +3729,8 @@
     "Team": "Enemy",
     "Tags": [
       "Humanoid",
-      "Boss"
+      "Boss",
+      "Sentient"
     ],
     "Description": "A flexible fighter with no single defining specialty.",
     "Lore": "Walks many roads, never lost for lack of a single path.",
@@ -3829,7 +3840,8 @@
     "Name": "Cyclops",
     "Team": "Enemy",
     "Tags": [
-      "Humanoid"
+      "Humanoid",
+      "Sentient"
     ],
     "Description": "A flexible fighter with no single defining specialty.",
     "Lore": "Walks many roads, never lost for lack of a single path.",
@@ -3939,7 +3951,8 @@
     "Name": "Cyclops",
     "Team": "Enemy",
     "Tags": [
-      "Humanoid"
+      "Humanoid",
+      "Sentient"
     ],
     "Description": "A flexible fighter with no single defining specialty.",
     "Lore": "Walks many roads, never lost for lack of a single path.",
@@ -4049,7 +4062,8 @@
     "Name": "Cyclops",
     "Team": "Enemy",
     "Tags": [
-      "Humanoid"
+      "Humanoid",
+      "Sentient"
     ],
     "Description": "A flexible fighter with no single defining specialty.",
     "Lore": "Walks many roads, never lost for lack of a single path.",
@@ -4435,7 +4449,8 @@
     "Name": "Demon Lord",
     "Team": "Enemy",
     "Tags": [
-      "Humanoid"
+      "Humanoid",
+      "Sentient"
     ],
     "Description": "A flexible fighter with no single defining specialty.",
     "Lore": "Walks many roads, never lost for lack of a single path.",
@@ -5605,7 +5620,8 @@
     "Name": "Frog",
     "Team": "Enemy",
     "Tags": [
-      "Aquatic"
+      "Aquatic",
+      "Sentient"
     ],
     "Description": "A feral threat that overwhelms foes with instinct and power.",
     "Lore": "Born to the deep places, it runs by instinct and strikes without doubt.",
@@ -5715,7 +5731,8 @@
     "Name": "Frog",
     "Team": "Enemy",
     "Tags": [
-      "Aquatic"
+      "Aquatic",
+      "Sentient"
     ],
     "Description": "A feral threat that overwhelms foes with instinct and power.",
     "Lore": "Born to the deep places, it runs by instinct and strikes without doubt.",
@@ -5825,7 +5842,8 @@
     "Name": "Frog",
     "Team": "Enemy",
     "Tags": [
-      "Aquatic"
+      "Aquatic",
+      "Sentient"
     ],
     "Description": "A feral threat that overwhelms foes with instinct and power.",
     "Lore": "Born to the deep places, it runs by instinct and strikes without doubt.",
@@ -5935,7 +5953,8 @@
     "Name": "Frog_",
     "Team": "Enemy",
     "Tags": [
-      "Aquatic"
+      "Aquatic",
+      "Sentient"
     ],
     "Description": "A feral threat that overwhelms foes with instinct and power.",
     "Lore": "Born to the deep places, it runs by instinct and strikes without doubt.",
@@ -6045,7 +6064,8 @@
     "Name": "Ganger",
     "Team": "Enemy",
     "Tags": [
-      "Humanoid"
+      "Humanoid",
+      "Sentient"
     ],
     "Description": "A flexible fighter with no single defining specialty.",
     "Lore": "Walks many roads, never lost for lack of a single path.",
@@ -6156,7 +6176,8 @@
     "Name": "Ganger",
     "Team": "Enemy",
     "Tags": [
-      "Humanoid"
+      "Humanoid",
+      "Sentient"
     ],
     "Description": "A flexible fighter with no single defining specialty.",
     "Lore": "Walks many roads, never lost for lack of a single path.",
@@ -6267,7 +6288,8 @@
     "Name": "Ganger",
     "Team": "Enemy",
     "Tags": [
-      "Humanoid"
+      "Humanoid",
+      "Sentient"
     ],
     "Description": "A flexible fighter with no single defining specialty.",
     "Lore": "Walks many roads, never lost for lack of a single path.",
@@ -6378,7 +6400,8 @@
     "Name": "Ganger",
     "Team": "Enemy",
     "Tags": [
-      "Humanoid"
+      "Humanoid",
+      "Sentient"
     ],
     "Description": "A flexible fighter with no single defining specialty.",
     "Lore": "Walks many roads, never lost for lack of a single path.",
@@ -6489,7 +6512,8 @@
     "Name": "Ganger",
     "Team": "Enemy",
     "Tags": [
-      "Humanoid"
+      "Humanoid",
+      "Sentient"
     ],
     "Description": "A flexible fighter with no single defining specialty.",
     "Lore": "Walks many roads, never lost for lack of a single path.",
@@ -6600,7 +6624,8 @@
     "Name": "Ganger",
     "Team": "Enemy",
     "Tags": [
-      "Humanoid"
+      "Humanoid",
+      "Sentient"
     ],
     "Description": "A flexible fighter with no single defining specialty.",
     "Lore": "Walks many roads, never lost for lack of a single path.",
@@ -6711,7 +6736,8 @@
     "Name": "Ganger",
     "Team": "Enemy",
     "Tags": [
-      "Humanoid"
+      "Humanoid",
+      "Sentient"
     ],
     "Description": "A flexible fighter with no single defining specialty.",
     "Lore": "Walks many roads, never lost for lack of a single path.",
@@ -6932,7 +6958,8 @@
     "Name": "Goblin Thug",
     "Team": "Enemy",
     "Tags": [
-      "Humanoid"
+      "Humanoid",
+      "Sentient"
     ],
     "Description": "A flexible fighter with no single defining specialty.",
     "Lore": "Walks many roads, never lost for lack of a single path.",
@@ -7177,7 +7204,8 @@
     "Team": "Enemy",
     "Tags": [
       "Humanoid",
-      "Ranged"
+      "Ranged",
+      "Sentient"
     ],
     "Description": "A flexible fighter with no single defining specialty.",
     "Lore": "Walks many roads, never lost for lack of a single path.",
@@ -7289,7 +7317,8 @@
     "Team": "Enemy",
     "Tags": [
       "Humanoid",
-      "Ranged"
+      "Ranged",
+      "Sentient"
     ],
     "Description": "A flexible fighter with no single defining specialty.",
     "Lore": "Walks many roads, never lost for lack of a single path.",
@@ -7400,7 +7429,8 @@
     "Name": "Hag",
     "Team": "Enemy",
     "Tags": [
-      "Humanoid"
+      "Humanoid",
+      "Sentient"
     ],
     "Description": "A flexible fighter with no single defining specialty.",
     "Lore": "Walks many roads, never lost for lack of a single path.",
@@ -7510,7 +7540,8 @@
     "Name": "Hag",
     "Team": "Enemy",
     "Tags": [
-      "Humanoid"
+      "Humanoid",
+      "Sentient"
     ],
     "Description": "A flexible fighter with no single defining specialty.",
     "Lore": "Walks many roads, never lost for lack of a single path.",
@@ -7761,7 +7792,8 @@
     "Tags": [
       "Humanoid",
       "Magic",
-      "IceAffinity"
+      "IceAffinity",
+      "Sentient"
     ],
     "Description": "A flexible fighter with no single defining specialty.",
     "Lore": "Walks many roads, never lost for lack of a single path.",
@@ -8284,7 +8316,8 @@
     "Name": "Lurker",
     "Team": "Enemy",
     "Tags": [
-      "Humanoid"
+      "Humanoid",
+      "Sentient"
     ],
     "Description": "A flexible fighter with no single defining specialty.",
     "Lore": "Walks many roads, never lost for lack of a single path.",
@@ -8395,7 +8428,8 @@
     "Name": "Lurker",
     "Team": "Enemy",
     "Tags": [
-      "Humanoid"
+      "Humanoid",
+      "Sentient"
     ],
     "Description": "A flexible fighter with no single defining specialty.",
     "Lore": "Walks many roads, never lost for lack of a single path.",
@@ -8506,7 +8540,8 @@
     "Name": "Lurker",
     "Team": "Enemy",
     "Tags": [
-      "Humanoid"
+      "Humanoid",
+      "Sentient"
     ],
     "Description": "A flexible fighter with no single defining specialty.",
     "Lore": "Walks many roads, never lost for lack of a single path.",
@@ -8751,7 +8786,8 @@
     "Name": "Mannequin",
     "Team": "Enemy",
     "Tags": [
-      "Humanoid"
+      "Humanoid",
+      "Sentient"
     ],
     "Description": "An unnatural entity that endures through grim resilience and dread.",
     "Lore": "Life ended. Purpose remained. The rest is hunger and memory.",
@@ -8861,7 +8897,8 @@
     "Name": "Marsh Shambler",
     "Team": "Enemy",
     "Tags": [
-      "Humanoid"
+      "Humanoid",
+      "Sentient"
     ],
     "Description": "A flexible fighter with no single defining specialty.",
     "Lore": "Walks many roads, never lost for lack of a single path.",
@@ -8972,7 +9009,8 @@
     "Name": "Marsh Shambler",
     "Team": "Enemy",
     "Tags": [
-      "Humanoid"
+      "Humanoid",
+      "Sentient"
     ],
     "Description": "A flexible fighter with no single defining specialty.",
     "Lore": "Walks many roads, never lost for lack of a single path.",
@@ -9083,7 +9121,8 @@
     "Name": "Marsh Shambler",
     "Team": "Enemy",
     "Tags": [
-      "Humanoid"
+      "Humanoid",
+      "Sentient"
     ],
     "Description": "A flexible fighter with no single defining specialty.",
     "Lore": "Walks many roads, never lost for lack of a single path.",
@@ -9330,7 +9369,8 @@
     "Name": "Mecha Armor",
     "Team": "Enemy",
     "Tags": [
-      "Humanoid"
+      "Humanoid",
+      "Sentient"
     ],
     "Description": "A gadgeteer who leverages devices, traps, and tactical tools.",
     "Lore": "Blueprints and boldness turned problems into levers and switches.",
@@ -9442,7 +9482,8 @@
     "Name": "Mecha Armor",
     "Team": "Enemy",
     "Tags": [
-      "Humanoid"
+      "Humanoid",
+      "Sentient"
     ],
     "Description": "A gadgeteer who leverages devices, traps, and tactical tools.",
     "Lore": "Blueprints and boldness turned problems into levers and switches.",
@@ -9554,7 +9595,8 @@
     "Name": "Mecha Armor",
     "Team": "Enemy",
     "Tags": [
-      "Humanoid"
+      "Humanoid",
+      "Sentient"
     ],
     "Description": "A gadgeteer who leverages devices, traps, and tactical tools.",
     "Lore": "Blueprints and boldness turned problems into levers and switches.",
@@ -9802,7 +9844,8 @@
     "Name": "Mountain Troll",
     "Team": "Enemy",
     "Tags": [
-      "Humanoid"
+      "Humanoid",
+      "Sentient"
     ],
     "Description": "A feral threat that overwhelms foes with instinct and power.",
     "Lore": "Born to the deep places, it runs by instinct and strikes without doubt.",
@@ -10053,7 +10096,8 @@
     "Team": "Enemy",
     "Tags": [
       "Aquatic",
-      "Boss"
+      "Boss",
+      "Sentient"
     ],
     "Description": "A feral threat that overwhelms foes with instinct and power.",
     "Lore": "Born to the deep places, it runs by instinct and strikes without doubt.",
@@ -10437,7 +10481,8 @@
     "Name": "Oni",
     "Team": "Enemy",
     "Tags": [
-      "Humanoid"
+      "Humanoid",
+      "Sentient"
     ],
     "Description": "A flexible fighter with no single defining specialty.",
     "Lore": "Walks many roads, never lost for lack of a single path.",
@@ -10548,7 +10593,8 @@
     "Name": "Oni",
     "Team": "Enemy",
     "Tags": [
-      "Humanoid"
+      "Humanoid",
+      "Sentient"
     ],
     "Description": "A flexible fighter with no single defining specialty.",
     "Lore": "Walks many roads, never lost for lack of a single path.",
@@ -10659,7 +10705,8 @@
     "Name": "Oni",
     "Team": "Enemy",
     "Tags": [
-      "Humanoid"
+      "Humanoid",
+      "Sentient"
     ],
     "Description": "A flexible fighter with no single defining specialty.",
     "Lore": "Walks many roads, never lost for lack of a single path.",
@@ -11562,7 +11609,8 @@
     "Name": "Purple Prototype",
     "Team": "Enemy",
     "Tags": [
-      "Humanoid"
+      "Humanoid",
+      "Sentient"
     ],
     "Description": "A gadgeteer who leverages devices, traps, and tactical tools.",
     "Lore": "Blueprints and boldness turned problems into levers and switches.",
@@ -11672,7 +11720,8 @@
     "Name": "Purple Prototype",
     "Team": "Enemy",
     "Tags": [
-      "Humanoid"
+      "Humanoid",
+      "Sentient"
     ],
     "Description": "A gadgeteer who leverages devices, traps, and tactical tools.",
     "Lore": "Blueprints and boldness turned problems into levers and switches.",
@@ -11782,7 +11831,8 @@
     "Name": "Purple Prototype",
     "Team": "Enemy",
     "Tags": [
-      "Humanoid"
+      "Humanoid",
+      "Sentient"
     ],
     "Description": "A gadgeteer who leverages devices, traps, and tactical tools.",
     "Lore": "Blueprints and boldness turned problems into levers and switches.",
@@ -11892,7 +11942,8 @@
     "Name": "Purple Prototype",
     "Team": "Enemy",
     "Tags": [
-      "Humanoid"
+      "Humanoid",
+      "Sentient"
     ],
     "Description": "A gadgeteer who leverages devices, traps, and tactical tools.",
     "Lore": "Blueprints and boldness turned problems into levers and switches.",
@@ -12002,7 +12053,8 @@
     "Name": "Purple Prototype",
     "Team": "Enemy",
     "Tags": [
-      "Humanoid"
+      "Humanoid",
+      "Sentient"
     ],
     "Description": "A gadgeteer who leverages devices, traps, and tactical tools.",
     "Lore": "Blueprints and boldness turned problems into levers and switches.",
@@ -14712,7 +14764,8 @@
     "Name": "Soldier",
     "Team": "Enemy",
     "Tags": [
-      "Humanoid"
+      "Humanoid",
+      "Sentient"
     ],
     "Description": "A flexible fighter with no single defining specialty.",
     "Lore": "Walks many roads, never lost for lack of a single path.",
@@ -14824,7 +14877,8 @@
     "Name": "Soldier",
     "Team": "Enemy",
     "Tags": [
-      "Humanoid"
+      "Humanoid",
+      "Sentient"
     ],
     "Description": "A flexible fighter with no single defining specialty.",
     "Lore": "Walks many roads, never lost for lack of a single path.",
@@ -14936,7 +14990,8 @@
     "Name": "Soldier",
     "Team": "Enemy",
     "Tags": [
-      "Humanoid"
+      "Humanoid",
+      "Sentient"
     ],
     "Description": "A flexible fighter with no single defining specialty.",
     "Lore": "Walks many roads, never lost for lack of a single path.",
@@ -15048,7 +15103,8 @@
     "Name": "Soldier",
     "Team": "Enemy",
     "Tags": [
-      "Humanoid"
+      "Humanoid",
+      "Sentient"
     ],
     "Description": "A flexible fighter with no single defining specialty.",
     "Lore": "Walks many roads, never lost for lack of a single path.",
@@ -15295,7 +15351,8 @@
     "Name": "Steppin Razor",
     "Team": "Enemy",
     "Tags": [
-      "Humanoid"
+      "Humanoid",
+      "Sentient"
     ],
     "Description": "A flexible fighter with no single defining specialty.",
     "Lore": "Walks many roads, never lost for lack of a single path.",
@@ -15405,7 +15462,8 @@
     "Name": "Steppin Razor",
     "Team": "Enemy",
     "Tags": [
-      "Humanoid"
+      "Humanoid",
+      "Sentient"
     ],
     "Description": "A flexible fighter with no single defining specialty.",
     "Lore": "Walks many roads, never lost for lack of a single path.",
@@ -15515,7 +15573,8 @@
     "Name": "Steppin Razor",
     "Team": "Enemy",
     "Tags": [
-      "Humanoid"
+      "Humanoid",
+      "Sentient"
     ],
     "Description": "A flexible fighter with no single defining specialty.",
     "Lore": "Walks many roads, never lost for lack of a single path.",
@@ -15625,7 +15684,8 @@
     "Name": "Steppin Razor",
     "Team": "Enemy",
     "Tags": [
-      "Humanoid"
+      "Humanoid",
+      "Sentient"
     ],
     "Description": "A flexible fighter with no single defining specialty.",
     "Lore": "Walks many roads, never lost for lack of a single path.",
@@ -15735,7 +15795,8 @@
     "Name": "Steppin Razor",
     "Team": "Enemy",
     "Tags": [
-      "Humanoid"
+      "Humanoid",
+      "Sentient"
     ],
     "Description": "A flexible fighter with no single defining specialty.",
     "Lore": "Walks many roads, never lost for lack of a single path.",
@@ -16116,7 +16177,8 @@
     "Team": "Enemy",
     "Tags": [
       "Humanoid",
-      "Ranged"
+      "Ranged",
+      "Sentient"
     ],
     "Description": "A flexible fighter with no single defining specialty.",
     "Lore": "Walks many roads, never lost for lack of a single path.",
@@ -16500,7 +16562,8 @@
     "Name": "Tech Gremlin",
     "Team": "Enemy",
     "Tags": [
-      "Humanoid"
+      "Humanoid",
+      "Sentient"
     ],
     "Description": "A gadgeteer who leverages devices, traps, and tactical tools.",
     "Lore": "Blueprints and boldness turned problems into levers and switches.",
@@ -16608,7 +16671,8 @@
     "Name": "Tech Gremlin",
     "Team": "Enemy",
     "Tags": [
-      "Humanoid"
+      "Humanoid",
+      "Sentient"
     ],
     "Description": "A gadgeteer who leverages devices, traps, and tactical tools.",
     "Lore": "Blueprints and boldness turned problems into levers and switches.",
@@ -16716,7 +16780,8 @@
     "Name": "Tech Gremlin",
     "Team": "Enemy",
     "Tags": [
-      "Humanoid"
+      "Humanoid",
+      "Sentient"
     ],
     "Description": "A gadgeteer who leverages devices, traps, and tactical tools.",
     "Lore": "Blueprints and boldness turned problems into levers and switches.",
@@ -16958,7 +17023,8 @@
     "Name": "Templar",
     "Team": "Enemy",
     "Tags": [
-      "Humanoid"
+      "Humanoid",
+      "Sentient"
     ],
     "Description": "A stalwart defender that anchors the line and absorbs pressure.",
     "Lore": "Built on vows and iron patience, they stand where others fall back.",
@@ -17070,7 +17136,8 @@
     "Name": "Templar",
     "Team": "Enemy",
     "Tags": [
-      "Humanoid"
+      "Humanoid",
+      "Sentient"
     ],
     "Description": "A stalwart defender that anchors the line and absorbs pressure.",
     "Lore": "Built on vows and iron patience, they stand where others fall back.",
@@ -17182,7 +17249,8 @@
     "Name": "Templar",
     "Team": "Enemy",
     "Tags": [
-      "Humanoid"
+      "Humanoid",
+      "Sentient"
     ],
     "Description": "A stalwart defender that anchors the line and absorbs pressure.",
     "Lore": "Built on vows and iron patience, they stand where others fall back.",
@@ -17294,7 +17362,8 @@
     "Name": "Templar",
     "Team": "Enemy",
     "Tags": [
-      "Humanoid"
+      "Humanoid",
+      "Sentient"
     ],
     "Description": "A stalwart defender that anchors the line and absorbs pressure.",
     "Lore": "Built on vows and iron patience, they stand where others fall back.",
@@ -17406,7 +17475,8 @@
     "Name": "Templar",
     "Team": "Enemy",
     "Tags": [
-      "Humanoid"
+      "Humanoid",
+      "Sentient"
     ],
     "Description": "A stalwart defender that anchors the line and absorbs pressure.",
     "Lore": "Built on vows and iron patience, they stand where others fall back.",
@@ -17518,7 +17588,8 @@
     "Name": "Templar",
     "Team": "Enemy",
     "Tags": [
-      "Humanoid"
+      "Humanoid",
+      "Sentient"
     ],
     "Description": "A stalwart defender that anchors the line and absorbs pressure.",
     "Lore": "Built on vows and iron patience, they stand where others fall back.",
@@ -17900,7 +17971,8 @@
     "Name": "Toad",
     "Team": "Enemy",
     "Tags": [
-      "Aquatic"
+      "Aquatic",
+      "Sentient"
     ],
     "Description": "A feral threat that overwhelms foes with instinct and power.",
     "Lore": "Born to the deep places, it runs by instinct and strikes without doubt.",
@@ -21614,7 +21686,7 @@
     "Id": "chronomancer",
     "Name": "Chronomancer",
     "Team": "Enemy",
-    "Tags": [ "Humanoid", "Caster" ],
+    "Tags": [ "Humanoid", "Caster", "Sentient" ],
     "Description": "A caster who fights the party's tempo instead of its health.",
     "Lore": "It does not hurry. It makes everyone else late.",
     "Card": "Charges [Temporal Drag]: the party loses [tempo] and every foe acts sooner. [Interrupt] the charge, [cleanse] Slowed or [out-haste] it. Rewinds once when badly hurt.",

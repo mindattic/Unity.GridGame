@@ -106,6 +106,14 @@ namespace GridGame.Tests
             Assert.That(ContentLoader.Validate(ValidDb()), Is.Empty);
         }
 
+        [Test] // GG-T289: the dead keep no society, so no undead may pincer.
+        public void Sentient_undead_enemy_is_reported()
+        {
+            var db = ValidDb();
+            db.Classes["goblin"].Tags.AddRange(new[] { "Sentient", "Undead" });
+            Assert.That(ContentLoader.Validate(db).Where(x => x.Contains("Sentient and Undead")), Is.EqualTo(new[] { "class goblin: Sentient and Undead (the dead keep no society; GG-T289)" }));
+        }
+
         [Test]
         public void Unknown_class_in_stage_wave_enemy_is_reported()
         {

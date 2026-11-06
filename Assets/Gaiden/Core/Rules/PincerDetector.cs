@@ -55,7 +55,7 @@ namespace GridGame.Core.Rules
     }
 
     /// <summary>
-    /// Pincer geometry (bible §1.2, GG-LAW-2): two Humanoid allies in the same row or column with
+    /// Pincer geometry (bible §1.2, GG-LAW-2): two pincer-eligible allies (heroes, Sentient enemies) in the same row or column with
     /// every tile strictly between them covered by opponents (no gaps, no allies). A multi-tile
     /// enemy covering several line tiles counts as one opponent. Board-wide scan.
     /// </summary>
@@ -65,7 +65,7 @@ namespace GridGame.Core.Rules
         {
             var members = new List<Unit>();
             foreach (var u in s.Units)
-                if (u.Alive && u.Team == team && !u.IsMultiTile && u.IsHumanoid) members.Add(u);
+                if (u.Alive && u.Team == team && !u.IsMultiTile && u.CanPincer) members.Add(u);
 
             var pairs = new List<Pincer>();
             for (int i = 0; i < members.Count; i++)

@@ -1492,7 +1492,7 @@ namespace GridGame.App
                     Ui.Text(ab.Name, "small", chip);
                     InspectCard.Attach(chip, b => InspectCard.Ability(b, ab));
                 }
-                Ui.Text(GridGame.Core.Rules.EnemyPlanner.Describe(d.Targeting != Targeting.Auto ? d.Targeting : d.BaseStats.Intelligence >= 14 ? Targeting.Weakest : d.Tags.Contains("Humanoid") ? Targeting.Threat : Targeting.Closest), "small warn", w);
+                Ui.Text(GridGame.Core.Rules.EnemyPlanner.Describe(d.Targeting != Targeting.Auto ? d.Targeting : d.BaseStats.Intelligence >= 14 ? Targeting.Weakest : d.Tags.Contains("Sentient") ? Targeting.Threat : Targeting.Closest), "small warn", w);
                 Ui.Text(GridGame.Core.Rules.EnemyPlanner.DescribeBrain(d.Brain), "small", w).style.whiteSpace = WhiteSpace.Normal;
             }
             var hint = BestiaryKnowledge.Hint(e);
