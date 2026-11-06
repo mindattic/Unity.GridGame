@@ -11229,7 +11229,8 @@
     "Name": "Phantom",
     "Team": "Enemy",
     "Tags": [
-      "Humanoid"
+      "Humanoid",
+      "Sentient"
     ],
     "Description": "A flexible fighter with no single defining specialty.",
     "Lore": "Walks many roads, never lost for lack of a single path.",
@@ -12300,7 +12301,8 @@
     "Name": "Reaper",
     "Team": "Enemy",
     "Tags": [
-      "Humanoid"
+      "Humanoid",
+      "Sentient"
     ],
     "Description": "A flexible fighter with no single defining specialty.",
     "Lore": "Walks many roads, never lost for lack of a single path.",
@@ -19231,7 +19233,8 @@
     "Tags": [
       "Humanoid",
       "Undead",
-      "Boss"
+      "Boss",
+      "Sentient"
     ],
     "Description": "An unnatural entity that endures through grim resilience and dread.",
     "Lore": "Life ended. Purpose remained. The rest is hunger and memory.",

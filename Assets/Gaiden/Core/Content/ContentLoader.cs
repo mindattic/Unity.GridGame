@@ -129,7 +129,6 @@ namespace GridGame.Core.Content
                 if (c.Trap != null && !db.Traps.ContainsKey(c.Trap)) p.Add($"class {c.Id}: unknown trap '{c.Trap}'");
                 if (c.Trail != null && !db.Traps.ContainsKey(c.Trail)) p.Add($"class {c.Id}: unknown trail '{c.Trail}'");
                 NeedBuff(c.OnHitBuff, $"class {c.Id} on-hit buff");
-                if (c.Team == Team.Enemy && c.HasTag("Sentient") && c.HasTag("Undead")) p.Add($"class {c.Id}: Sentient and Undead (the dead keep no society; GG-T289)");
                 NeedClass(c.Remains, $"class {c.Id} remains");
                 NeedClass(c.LaysEgg, $"class {c.Id} egg");
                 foreach (var ph in c.BossPhases) NeedAbility(ph.OnEnterAbility, $"class {c.Id} boss phase");

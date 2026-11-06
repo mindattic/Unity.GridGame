@@ -9,8 +9,10 @@ using static GridGame.Tests.TestKit;
 namespace GridGame.Tests
 {
     /// <summary>
-    /// GG-T289: only enemies with a society (tag Sentient) can pincer; heroes always can. A frog folk
-    /// or a soldier closes a pincer on a hero line; a yeti or an undead never does, Humanoid body or not.
+    /// GG-T289: only sentient enemies (tag Sentient: a society, or planning ahead) can pincer; heroes always can.
+    /// A frog folk or a soldier closes a pincer on a hero line; a yeti never does, Humanoid body or not.
+    /// GG-T294: it's sentience, not undeath — a shambling undead doesn't pincer, the Vampire Lord does.
+    /// The undead00 and vampire defs here carry their real content tags.
     /// </summary>
     public class PincerEligibilityTests
     {
@@ -21,7 +23,8 @@ namespace GridGame.Tests
             db.Classes["frog"] = new ClassDef { Id = "frog", Name = "Frog", Team = Team.Enemy, Tags = { "Aquatic", "Sentient" }, BaseStats = st, MoveRange = 0 };
             db.Classes["soldier"] = new ClassDef { Id = "soldier", Name = "Soldier", Team = Team.Enemy, Tags = { "Humanoid", "Sentient" }, BaseStats = st, MoveRange = 0 };
             db.Classes["yeti"] = new ClassDef { Id = "yeti", Name = "Yeti", Team = Team.Enemy, Tags = { "Beast", "Humanoid" }, BaseStats = st, MoveRange = 0 };
-            db.Classes["zombie"] = new ClassDef { Id = "zombie", Name = "Zombie", Team = Team.Enemy, Tags = { "Humanoid", "Undead" }, BaseStats = st, MoveRange = 0 };
+            foreach (var id in new[] { "undead00", "vampire" })
+                db.Classes[id] = new ClassDef { Id = id, Name = id, Team = Team.Enemy, Tags = new System.Collections.Generic.List<string>(Real.Classes[id].Tags), BaseStats = st, MoveRange = 0 };
             return db;
         }
 
@@ -31,6 +34,7 @@ namespace GridGame.Tests
 
         [TestCase("frog")]
         [TestCase("soldier")]
+        [TestCase("vampire")] // a sentient undead
         public void Sentient_enemies_pincer_a_hero_line(string cls)
         {
             var s = Flank(cls);
@@ -41,7 +45,7 @@ namespace GridGame.Tests
         }
 
         [TestCase("yeti")]
-        [TestCase("zombie")]
+        [TestCase("undead00")] // a mindless undead
         public void Enemies_without_a_society_never_pincer(string cls)
         {
             var s = Flank(cls);
@@ -78,11 +82,10 @@ namespace GridGame.Tests
         public void Real_content_tags_society_not_body()
         {
             var c = Real.Classes;
-            foreach (var id in new[] { "frog00", "toad00", "soldier00", "goblinthug00", "mechaarmor00", "naga00", "lurker00" })
+            foreach (var id in new[] { "frog00", "toad00", "soldier00", "goblinthug00", "mechaarmor00", "naga00", "lurker00", "phantom", "reaper", "vampire" })
                 Assert.That(c[id].HasTag("Sentient"), Is.True, id);
-            foreach (var id in new[] { "yeti", "bat00", "slime00", "werewolf00", "scorpion", "phantom", "reaper", "undead00", "cyberzombie00", "treegolem00", "nagaegg" })
+            foreach (var id in new[] { "yeti", "bat00", "slime00", "werewolf00", "scorpion", "undead00", "undead04", "ghost", "skelepede00", "cyberzombie00", "treegolem00", "nagaegg", "bonepile" })
                 Assert.That(c[id].HasTag("Sentient"), Is.False, id);
-            Assert.That(c.Values.Where(d => d.HasTag("Sentient")).All(d => d.Team == Team.Enemy && !d.HasTag("Undead")), Is.True);
         }
     }
 }
