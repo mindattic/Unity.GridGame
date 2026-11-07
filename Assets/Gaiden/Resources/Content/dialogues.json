@@ -27,25 +27,203 @@
     ]
   },
   {
-    "Id": "rescue_freed",
-    "Title": "A captive freed",
-    "Trigger": { "Kind": "Rescue" },
+    "Id": "wanderer_met",
+    "Title": "A wanderer",
+    "Trigger": { "Kind": "Wanderer" },
     "Speakers": [
-      { "Id": "freed", "Class": "$with" },
-      { "Id": "lead", "Class": "$lead" }
+      { "Id": "hero", "Class": "$hero" },
+      { "Id": "with", "Class": "$with" }
     ],
     "Nodes": [
-      { "Id": "thanks", "Speaker": "freed", "Text": "They had me roped for the tithe-wagon. Another day and I'd have walked into a Still smiling. You came through all of that -- for a stranger?", "Next": "lead" },
-      { "Id": "lead", "Speaker": "lead", "Text": "Nobody gets left for the Choir. Not while we've got wheels.", "Next": "ask" },
+      { "Id": "meet", "Speaker": "hero", "Text": "You fought well. I'm not in the habit of thanking strangers, so take the nod and keep it.", "Next": "reply" },
+      { "Id": "reply", "Speaker": "with", "Text": "We saw you holding that field alone. You don't have to walk off alone too.", "Next": "ask" },
       {
-        "Id": "ask", "Speaker": "freed", "Text": "Then I owe you whatever they were going to take. Where does this caravan need me?",
+        "Id": "ask", "Speaker": "hero", "Text": "Walk with a stolen Concord caravan? Tell me one reason that isn't a debt.",
         "Choices": [
-          { "Label": "Ride with us. There's room on the wagons.", "Next": "join" },
-          { "Label": "Rest first. The road will keep.", "Next": "rest" }
+          { "Label": "Because you're good, and we'd be fools not to want you.", "Next": "heard" },
+          { "Label": "Because you owe us for the help.", "Next": "unheard" },
+          { "Label": "Because the road will kill you otherwise.", "Next": "unheard" }
         ]
       },
-      { "Id": "rest", "Speaker": "freed", "Text": "Resting's how they caught me. I'll sleep in a wagon -- and fight beside you when it stops.", "Next": "join" },
-      { "Id": "join", "Speaker": "freed", "Text": "Count me in. Whoever roped me is going to learn what they let go of." }
+      { "Id": "heard", "Speaker": "hero", "Text": "...Huh. Nobody's put it that plainly in a long time. Wanted, not owed.", "Next": "$outcome" },
+      { "Id": "unheard", "Speaker": "hero", "Text": "That's the tithe-man's arithmetic. I've heard it before.", "Next": "$outcome" },
+      { "Id": "join", "Speaker": "hero", "Text": "Fine. Find me a wagon with a dry corner. I'm yours." },
+      { "Id": "part", "Speaker": "hero", "Text": "No hard feelings. Maybe our roads cross again, once we know each other better." }
+    ]
+  },
+  {
+    "Id": "wanderer_street",
+    "Title": "A face from the Street",
+    "Trigger": { "Kind": "Wanderer", "Id": "street" },
+    "Speakers": [
+      { "Id": "hero", "Class": "$hero" },
+      { "Id": "with", "Class": "$with" }
+    ],
+    "Nodes": [
+      { "Id": "meet", "Speaker": "hero", "Text": "Yo. Nice pincer. Didn't need the help, but -- nice pincer.", "Next": "reply" },
+      { "Id": "reply", "Speaker": "with", "Text": "You ran the Concord's lines solo out there? That's stupid. That's also kind of great.", "Next": "ask" },
+      {
+        "Id": "ask", "Speaker": "hero", "Text": "So what's the pitch? Quick. I got places to not be.",
+        "Choices": [
+          { "Label": "We could use a lookout who knows the rules.", "Next": "unheard" },
+          { "Label": "Nobody tithes you while you're with us. Nobody. You keep every drop.", "Next": "heard" },
+          { "Label": "We pay well, half up front.", "Next": "unheard" }
+        ]
+      },
+      { "Id": "heard", "Speaker": "hero", "Text": "...Every drop. Say that again slow. -- Nah, don't, I heard it.", "Next": "$outcome" },
+      { "Id": "unheard", "Speaker": "hero", "Text": "Rules, pay, sure. Everyone's got a pitch. Mine's \"no\".", "Next": "$outcome" },
+      { "Id": "join", "Speaker": "hero", "Text": "Alright. Alright! Which wagon? I call the one with the roof." },
+      { "Id": "part", "Speaker": "hero", "Text": "Catch you round the underspire. Or not. Probably not." }
+    ]
+  },
+  {
+    "Id": "wanderer_holds",
+    "Title": "A sworn sword of the Holds",
+    "Trigger": { "Kind": "Wanderer", "Id": "holds" },
+    "Speakers": [
+      { "Id": "hero", "Class": "$hero" },
+      { "Id": "with", "Class": "$with" }
+    ],
+    "Nodes": [
+      { "Id": "meet", "Speaker": "hero", "Text": "By my hold's old oath, I stood that field as long as it stood. You stood it with me. That counts for something.", "Next": "reply" },
+      { "Id": "reply", "Speaker": "with", "Text": "You fight like someone who remembers when the holds kept their own.", "Next": "ask" },
+      {
+        "Id": "ask", "Speaker": "hero", "Text": "My hold sold its oath to the Concord. What would I swear to now?",
+        "Choices": [
+          { "Label": "Swear to the road. It goes everywhere.", "Next": "unheard" },
+          { "Label": "Swear to us, and we'll keep your oath as you kept it -- every hold that pays the tithe will see it broken.", "Next": "heard" },
+          { "Label": "Don't swear to anything. Oaths got you here.", "Next": "unheard" }
+        ]
+      },
+      { "Id": "heard", "Speaker": "hero", "Text": "...Kept as I kept it. That is how my grandmother said it. Word for word.", "Next": "$outcome" },
+      { "Id": "unheard", "Speaker": "hero", "Text": "Words without weight. My hold had plenty of those, at the end.", "Next": "$outcome" },
+      { "Id": "join", "Speaker": "hero", "Text": "Then hear it: my shield is your caravan's, until the tithe is broken or I am." },
+      { "Id": "part", "Speaker": "hero", "Text": "I'll keep walking the moor roads. An oath shouldn't be given to the first wagon that asks." }
+    ]
+  },
+  {
+    "Id": "wanderer_lantern",
+    "Title": "A walker of the Lantern Road",
+    "Trigger": { "Kind": "Wanderer", "Id": "lantern" },
+    "Speakers": [
+      { "Id": "hero", "Class": "$hero" },
+      { "Id": "with", "Class": "$with" }
+    ],
+    "Nodes": [
+      { "Id": "meet", "Speaker": "hero", "Text": "'The lantern lights one step at a time.' Tonight it lit yours. Strange coincidence.", "Next": "reply" },
+      { "Id": "reply", "Speaker": "with", "Text": "You fought like you'd done it a thousand times and never once for anyone.", "Next": "ask" },
+      {
+        "Id": "ask", "Speaker": "hero", "Text": "The Road owes nothing and keeps nothing. Why should I walk your way?",
+        "Choices": [
+          { "Label": "Because we need a blade.", "Next": "unheard" },
+          { "Label": "Because a road needs walkers, and you're the best walker I've seen on it. Walk where you like -- just walk it with us.", "Next": "heard" },
+          { "Label": "Because the Concord will find you alone.", "Next": "unheard" }
+        ]
+      },
+      { "Id": "heard", "Speaker": "hero", "Text": "Walk where I like. ...The proverb says flattery is a trap. The proverb never met you.", "Next": "$outcome" },
+      { "Id": "unheard", "Speaker": "hero", "Text": "Need, fear. Those are chains with a nicer shape.", "Next": "$outcome" },
+      { "Id": "join", "Speaker": "hero", "Text": "Then the lantern walks with the caravan. For a while. Which is how every forever starts." },
+      { "Id": "part", "Speaker": "hero", "Text": "The Road calls. If it bends back to you, I'll know it meant something." }
+    ]
+  },
+  {
+    "Id": "wanderer_fendark",
+    "Title": "Someone out of the fens",
+    "Trigger": { "Kind": "Wanderer", "Id": "fendark" },
+    "Speakers": [
+      { "Id": "hero", "Class": "$hero" },
+      { "Id": "with", "Class": "$with" }
+    ],
+    "Nodes": [
+      { "Id": "meet", "Speaker": "hero", "Text": "You didn't flinch when I started singing. Most do. The hex goes the other way -- it's the Choir's hymn, turned.", "Next": "reply" },
+      { "Id": "reply", "Speaker": "with", "Text": "We saw. Whatever you sang, it hit the right things.", "Next": "ask" },
+      {
+        "Id": "ask", "Speaker": "hero", "Text": "People call what I do a curse. What do you call it?",
+        "Choices": [
+          { "Label": "Dangerous. We'd want you to keep it on a leash.", "Next": "unheard" },
+          { "Label": "A curse. But a useful one.", "Next": "unheard" },
+          { "Label": "Justice. You took their hymn and turned it on them. Nobody else had the nerve.", "Next": "heard" }
+        ]
+      },
+      { "Id": "heard", "Speaker": "hero", "Text": "...Justice. They called it rot in the Stills. You call it nerve. Keep talking like that.", "Next": "$outcome" },
+      { "Id": "unheard", "Speaker": "hero", "Text": "Ah. Yes. I've heard that tone before, usually through a Still's door.", "Next": "$outcome" },
+      { "Id": "join", "Speaker": "hero", "Text": "Then I'll sing for your caravan. Mind your ears when the hymn turns." },
+      { "Id": "part", "Speaker": "hero", "Text": "Back to the fog, then. It doesn't ask what I am." }
+    ]
+  },
+  {
+    "Id": "wanderer_ember",
+    "Title": "An Ember-touched stranger",
+    "Trigger": { "Kind": "Wanderer", "Id": "ember" },
+    "Speakers": [
+      { "Id": "hero", "Class": "$hero" },
+      { "Id": "with", "Class": "$with" }
+    ],
+    "Nodes": [
+      { "Id": "meet", "Speaker": "hero", "Text": "You fought beside something with blood-light in it and didn't run. Why?", "Next": "reply" },
+      { "Id": "reply", "Speaker": "with", "Text": "Because you were fighting the same things we were.", "Next": "ask" },
+      {
+        "Id": "ask", "Speaker": "hero", "Text": "The Ember says the moon is coming home. Part of me still believes it. Does that frighten you?",
+        "Choices": [
+          { "Label": "Yes. Keep it under control.", "Next": "unheard" },
+          { "Label": "No. You drank it and chose to stand with people anyway. That's stronger than the Ember ever was.", "Next": "heard" },
+          { "Label": "Doesn't matter what you believe, as long as you fight.", "Next": "unheard" }
+        ]
+      },
+      { "Id": "heard", "Speaker": "hero", "Text": "...Stronger than the Ember. I've been waiting a long time for someone to say that.", "Next": "$outcome" },
+      { "Id": "unheard", "Speaker": "hero", "Text": "Everyone wants the sword. No one wants what's burning in the hand that holds it.", "Next": "$outcome" },
+      { "Id": "join", "Speaker": "hero", "Text": "Then the red stays sheathed until you need it. And it answers to me, not the moon." },
+      { "Id": "part", "Speaker": "hero", "Text": "Keep your distance. I'll keep mine. It's safer that way for both of us." }
+    ]
+  },
+  {
+    "Id": "wanderer_wild",
+    "Title": "Something from the Wild",
+    "Trigger": { "Kind": "Wanderer", "Id": "wild" },
+    "Speakers": [
+      { "Id": "hero", "Class": "$hero" },
+      { "Id": "with", "Class": "$with" }
+    ],
+    "Nodes": [
+      { "Id": "meet", "Speaker": "hero", "Text": "*sniffs* You fight in a pack. Loud. Good pack.", "Next": "reply" },
+      { "Id": "reply", "Speaker": "with", "Text": "You fought like the wolves were your family. Were they?", "Next": "ask" },
+      {
+        "Id": "ask", "Speaker": "hero", "Text": "Packs eat strays. Why would yours not?",
+        "Choices": [
+          { "Label": "Because you're stronger than any of us, and a pack that has you never goes hungry.", "Next": "heard" },
+          { "Label": "Because we have rules about that.", "Next": "unheard" },
+          { "Label": "We'll feed you first. You'll be fine.", "Next": "unheard" }
+        ]
+      },
+      { "Id": "heard", "Speaker": "hero", "Text": "*a low, pleased growl* Stronger. Yes. You see right.", "Next": "$outcome" },
+      { "Id": "unheard", "Speaker": "hero", "Text": "Rules. Food. Words for leashes.", "Next": "$outcome" },
+      { "Id": "join", "Speaker": "hero", "Text": "Then I run with your pack. I eat second. Maybe." },
+      { "Id": "part", "Speaker": "hero", "Text": "I go back to the long grass. I will smell you on the wind, pack." }
+    ]
+  },
+  {
+    "Id": "wanderer_darktemplar",
+    "Title": "A templar with a red sword",
+    "Trigger": { "Kind": "Wanderer", "Id": "darktemplar" },
+    "Speakers": [
+      { "Id": "hero", "Class": "$hero" },
+      { "Id": "with", "Class": "$with" }
+    ],
+    "Nodes": [
+      { "Id": "meet", "Speaker": "hero", "Text": "I wore the Red Seal once. I collected the tithe from holds like yours. Then they tithed me, and I drank the Ember to keep from going Hollow.", "Next": "reply" },
+      { "Id": "reply", "Speaker": "with", "Text": "And now you're out here alone, cutting down the things the Concord leaves behind.", "Next": "ask" },
+      {
+        "Id": "ask", "Speaker": "hero", "Text": "So which am I to you? A tithe-taker, or a demon?",
+        "Choices": [
+          { "Label": "Both. We'll be watching.", "Next": "unheard" },
+          { "Label": "Neither. You're the only templar who ever paid the tithe back.", "Next": "heard" },
+          { "Label": "Doesn't matter, so long as the sword's on our side.", "Next": "unheard" }
+        ]
+      },
+      { "Id": "heard", "Speaker": "hero", "Text": "...Paid it back. I have been trying to, a field at a time. I didn't know it showed.", "Next": "$outcome" },
+      { "Id": "unheard", "Speaker": "hero", "Text": "Yes. That's what everyone decides, sooner or later.", "Next": "$outcome" },
+      { "Id": "join", "Speaker": "hero", "Text": "Then take the sword, and the man who still owes. I'll keep paying, beside you." },
+      { "Id": "part", "Speaker": "hero", "Text": "I'll keep the debt by myself, then. It's mine to carry." }
     ]
   },
   {

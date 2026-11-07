@@ -70,8 +70,9 @@ namespace GridGame.App
                 foreach (var note in report.QuestProgress) Ui.MenuRow("Quest", note, null, list);
                 if (report.AutoSold > 0) Ui.MenuRow("Bag full — sold extras", $"{report.AutoSold} items", null, list);
                 foreach (var g in report.GuestsJoined)
-                    Ui.MenuRow(report.Rescued && g == report.Captive ? $"{c.Class(g).Name} is freed and joins the caravan!" : $"{c.Class(g).Name} joins the caravan!", "New hero", null, list).Q<Label>("label").AddToClassList("good");
+                    Ui.MenuRow($"{c.Class(g).Name} joins the caravan!", "New hero", null, list).Q<Label>("label").AddToClassList("good");
                 foreach (var offer in report.TameOffers) TameOfferBlock(offer, c, list); // GG-T303
+                if (report.WandererOffer != null) WandererBlock(report.WandererOffer, c, list); // GG-T342
                 if (report.CampaignComplete) Ui.MenuRow("Campaign complete!", "New Game+ unlocked at camp", null, list).Q<Label>("label").AddToClassList("gold");
                 if (report.ExpeditionComplete)
                 {
@@ -103,7 +104,10 @@ namespace GridGame.App
 
             // A guest down at the end isn't lost (GG-T114) — they'll be met on this stage again.
             foreach (var g in report.GuestsFell)
-                Ui.MenuRow($"{c.Class(g).Name} fell in battle", g == report.Captive ? "May be found again" : "Will return", null, list).Q<Label>("label").AddToClassList("dim");
+                Ui.MenuRow($"{c.Class(g).Name} fell in battle", "Will return", null, list).Q<Label>("label").AddToClassList("dim");
+            // A wanderer who fell (or saw a defeat) goes back to the road: still out there to be met again (GG-T342).
+            if (report.Wanderer != null && report.WandererOffer == null && App.Save.Hero(report.Wanderer) == null && c.TryClass(report.Wanderer) != null)
+                Ui.MenuRow($"The wandering {c.Class(report.Wanderer).Name} goes on their way", "May be met again", null, list).Q<Label>("label").AddToClassList("dim");
             foreach (var g in report.GuestsLost) // permadeath only (a future Ironman mode) — never in the normal game
                 Ui.MenuRow($"{c.Class(g).Name} fell in battle", "Gone for good", null, list).Q<Label>("label").AddToClassList("bad");
             var row = Ui.El("row", col);
@@ -115,13 +119,7 @@ namespace GridGame.App
                 string retryId = report.ExpeditionFailed && theme != null ? theme.Stages[0] : stageId;
                 if (c.TryStage(retryId) != null) Ui.Button("Retry", () => StageLauncher.Launch(retryId, true), null, row); // a pruned generated stage can't be retried
             }
-            // A freed captive (GG-T236) says their piece on the way back to camp, not on the way into the ending.
-            var rescue = report.Rescued && !TestMode.Active && !Story.EndingDue(c, App.Save, report.Victory, stageId) ? Rescues.Scene(c, report.Captive) : null;
-            var cont = Ui.Button("Continue", () =>
-            {
-                if (rescue != null) App.Router.ResetTo(DialogueScreen.WithThen(rescue, report.Captive, StoryBeats.Camp));
-                else StoryBeats.AfterResults(report.Victory, stageId);
-            }, "btn--primary", row);
+            var cont = Ui.Button("Continue", () => StoryBeats.AfterResults(report.Victory, stageId), "btn--primary", row);
             cont.name = "continue";
             bool ending = Story.EndingDue(c, App.Save, report.Victory, stageId);
             if (ending) Ui.Text("The road ahead is quiet, for now. Continue to see how the story closes.", "small gold", list).style.whiteSpace = WhiteSpace.Normal;
@@ -278,6 +276,70 @@ namespace GridGame.App
             }, null, buttons).name = "tame-decline";
             box.style.opacity = 0f;
             reveals.Add(App.StartCoroutine(RevealRow(box, 0.2f)));
+        }
+
+        /// <summary>The wanderer's talk (GG-T342), once per results screen: true once it has been played.</summary>
+        private bool wandererTalked;
+
+        /// <summary>A wanderer standing at the victory (§25.11.2, GG-T342): their trust, the rule in one line, and a button per
+        /// party member — the one the player picks talks with them (Wanderers.Begin). The talk plays as a dialogue on top
+        /// and comes back here, which then says whether they joined or went their way. Leaving without talking lets them go.</summary>
+        private void WandererBlock(Wanderers.Offer offer, ContentDb c, VisualElement list)
+        {
+            var def = c.TryClass(offer.ClassId);
+            if (def == null) return;
+            var box = Ui.El("row", list);
+            box.name = "wanderer-offer";
+            box.style.alignItems = Align.FlexStart;
+            box.style.marginTop = Space.S8; box.style.marginBottom = Space.S8;
+            Ui.Thumb(def.Id, box, 96).style.marginRight = Space.S16;
+            var text = Ui.El("col", box);
+            text.style.flexGrow = 1; text.style.flexShrink = 1;
+            if (wandererTalked)
+            {
+                bool joined = App.Save.Hero(def.Id) != null;
+                Ui.Text(joined ? $"{def.Name} joins the caravan!" : $"{def.Name} goes their own way.", joined ? "h2 good" : "h2 dim", text).style.whiteSpace = WhiteSpace.Normal;
+                if (!joined) Ui.Text("Back to the road. You may meet them again.", "tiny dim", text);
+                return;
+            }
+            var head = Ui.Text($"The wandering {def.Name} lingers to talk.", "h2", text);
+            head.style.whiteSpace = WhiteSpace.Normal;
+            head.style.color = Palette.Wanderer;
+            var trust = Ui.El("row", text);
+            trust.style.alignItems = Align.Center;
+            Ui.Text($"Trust {offer.Trust}/{offer.TrustNeeded}", "small", trust).style.marginRight = Space.S16;
+            Ui.Gauge(offer.TrustNeeded <= 0 ? 1f : Mathf.Clamp01(offer.Trust / (float)offer.TrustNeeded), trust, 220).name = "wanderer-trust";
+            var faction = c.FactionOf(def.Id);
+            var rule = Ui.Text(Wanderers.Outlook(c, offer, null), "tiny dim", text);
+            rule.name = "wanderer-outlook";
+            rule.style.whiteSpace = WhiteSpace.Normal;
+            Ui.Text("Who talks with them?", "small", text).style.marginTop = Space.S8;
+            var buttons = Ui.El("row", text);
+            buttons.style.flexWrap = Wrap.Wrap;
+            foreach (var id in App.Save.Party)
+            {
+                var h = App.Save.Hero(id);
+                var hd = c.TryClass(id);
+                if (h == null || hd == null || h.Domesticated || id == def.Id) continue; // a tamed beast doesn't talk
+                string who = id;
+                bool kin = Wanderers.Fits(c, def.Id, who);
+                var b = Ui.Button(kin && faction != null ? $"{hd.Name} ({faction.Name})" : hd.Name, () => Talk(offer, who), kin ? "btn--primary btn--small" : "btn--small", buttons);
+                b.name = "wanderer-talk-" + who;
+                b.style.marginTop = Space.S8; b.style.marginRight = Space.S8;
+            }
+            box.style.opacity = 0f;
+            reveals.Add(App.StartCoroutine(RevealRow(box, 0.25f)));
+        }
+
+        /// <summary><paramref name="companion"/> talks with the wanderer: the dialogue plays on top; its ending is the rule's.</summary>
+        private void Talk(Wanderers.Offer offer, string companion)
+        {
+            if (wandererTalked) return;
+            var run = Wanderers.Begin(App.Content, App.Save, offer, companion);
+            if (run == null) { App.Audio.Sfx("ui.error"); return; }
+            wandererTalked = true;
+            App.Audio.Sfx("ui.confirm");
+            App.Router.Push(DialogueScreen.ForRunner(run, null));
         }
 
         private IEnumerator RevealRow(VisualElement row, float delay)

@@ -77,6 +77,11 @@ namespace GridGame.App
             nextFactory = next;
         }
 
+        /// <summary>Plays a runner already set up by the meta layer (GG-T342: a wanderer talk, whose
+        /// <see cref="DialogueRunner.Outcome"/> decides how it ends), then goes to whatever <paramref name="next"/> builds.</summary>
+        public static DialogueScreen ForRunner(DialogueRunner runner, Func<GameScreen> next) =>
+            new DialogueScreen(next, runner.Def, runner.With) { run = runner };
+
         public override string Id => "dialogue";
         /// <summary>Keeps whatever was playing (the crawl's theme before a beat, camp music for a chat).</summary>
         public override string Music => null;

@@ -229,16 +229,17 @@ namespace GridGame.App
         public void SetTeamLook(Unit u, bool? independent = null)
         {
             bool tamed = independent ?? u.IsIndependent;
-            foreach (var cls in new[] { "unit-keyline--guest", "unit-keyline--hero", "unit-keyline--boss", "unit-keyline--foe", "unit-keyline--neutral", "unit-keyline--tamed" })
+            bool wanderer = tamed && u.Wanderer; // GG-T342: its own keyline and tag
+            foreach (var cls in new[] { "unit-keyline--guest", "unit-keyline--hero", "unit-keyline--boss", "unit-keyline--foe", "unit-keyline--neutral", "unit-keyline--tamed", "unit-keyline--wanderer" })
                 Keyline.RemoveFromClassList(cls);
-            Keyline.AddToClassList(u.IsNeutral ? "unit-keyline--neutral" : tamed ? "unit-keyline--tamed" : u.IsGuest ? "unit-keyline--guest" : independent == false || !u.IsHero ? ((u.Def.HasTag("Boss") || u.IsMultiTile) ? "unit-keyline--boss" : "unit-keyline--foe") : "unit-keyline--hero");
+            Keyline.AddToClassList(u.IsNeutral ? "unit-keyline--neutral" : wanderer ? "unit-keyline--wanderer" : tamed ? "unit-keyline--tamed" : u.IsGuest ? "unit-keyline--guest" : independent == false || !u.IsHero ? ((u.Def.HasTag("Boss") || u.IsMultiTile) ? "unit-keyline--boss" : "unit-keyline--foe") : "unit-keyline--hero");
             Frame.Q<Label>("guest-" + u.Id)?.RemoveFromHierarchy();
             if (!u.IsGuest && !u.IsNeutral && !tamed) return;
-            var tag = new Label(u.IsNeutral ? "TALK" : tamed ? "TAMED" : "GUEST") { name = "guest-" + u.Id, pickingMode = PickingMode.Ignore };
+            var tag = new Label(u.IsNeutral ? "TALK" : wanderer ? "WANDERER" : tamed ? "TAMED" : "GUEST") { name = "guest-" + u.Id, pickingMode = PickingMode.Ignore };
             tag.AddToClassList("shadow");
             tag.style.position = Position.Absolute; tag.style.left = Space.S8; tag.style.top = Space.S8;
             tag.style.fontSize = 22; Fonts.UseHeavy(tag);
-            tag.style.color = u.IsNeutral ? Palette.Neutral : tamed ? Palette.Tamed : new Color(0.6f, 1f, 0.75f);
+            tag.style.color = u.IsNeutral ? Palette.Neutral : wanderer ? Palette.Wanderer : tamed ? Palette.Tamed : new Color(0.6f, 1f, 0.75f);
             Frame.Add(tag);
         }
 

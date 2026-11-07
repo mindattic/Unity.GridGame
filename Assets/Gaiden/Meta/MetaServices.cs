@@ -307,10 +307,10 @@ namespace GridGame.Meta
         public List<string> GuestsFell = new List<string>();
         /// <summary>Guests lost for good — only ever filled with <see cref="Permadeath"/> on (never in the normal game).</summary>
         public List<string> GuestsLost = new List<string>();
-        /// <summary>The captive this battle held (GG-T236), freed or not; null = none.</summary>
-        public string Captive;
-        /// <summary>True when <see cref="Captive"/> was freed and joined (its rescue scene plays on leaving the results).</summary>
-        public bool Rescued;
+        /// <summary>The wanderer this battle held (GG-T342), whatever became of them; null = none.</summary>
+        public string Wanderer;
+        /// <summary>The wanderer standing at this victory, waiting to talk (the results screen's conversation); null = none.</summary>
+        public Wanderers.Offer WandererOffer;
         // Crucible (§22.10)
         public bool Crucible;
         /// <summary>Waves fully cleared before the party fell or left.</summary>
@@ -571,7 +571,7 @@ namespace GridGame.Meta
                 GrantItems(c, s, rep, r.Items);
                 foreach (var kv in r.Kills) Entry(s, kv.Key).Defeated += kv.Value;
 
-                var heroes = battle.Units.Where(u => u.IsHero && !u.IsWildTamed).ToList(); // a wild tamed beast isn't yours (GG-T303)
+                var heroes = battle.Units.Where(u => u.IsHero && !u.IsVisitor).ToList(); // a wild tamed beast or a wanderer isn't yours (GG-T303, GG-T342)
                 rep.XpEach = heroes.Count > 0 ? r.Xp : 0;
                 foreach (var u in heroes)
                 {
@@ -608,7 +608,7 @@ namespace GridGame.Meta
             else if (rep.Escaped)
             {
                 // Escaping keeps wounds (no defeat reset) and grants nothing.
-                foreach (var u in battle.Units.Where(u => u.IsHero && !u.IsWildTamed))
+                foreach (var u in battle.Units.Where(u => u.IsHero && !u.IsVisitor))
                 {
                     var h = s.Hero(u.Def.Id);
                     if (h != null) h.Hp = u.Alive ? (u.Hp >= u.MaxHp ? 0 : u.Hp) : 1;
@@ -650,21 +650,33 @@ namespace GridGame.Meta
                     continue;
                 }
                 if (!rep.Victory || s.Hero(g.Def.Id) != null) continue;
-                var h = Progression.NewHero(c, g.Def.Id);
-                h.TotalXp = Formulas.TotalXpForLevel(g.Level);
-                h.SkillPoints += Formulas.SkillPointsForLevelUp(1, g.Level);
-                h.Hp = g.Hp >= g.MaxHp ? 0 : g.Hp;
-                s.Roster.Add(h);
-                if (s.Party.Count < Progression.MaxPartySize) s.Party.Add(h.ClassId);
+                JoinRoster(c, s, g.Def.Id, g.Level, g.Hp, g.MaxHp);
                 rep.GuestsJoined.Add(g.Def.Id);
-                if (g.Def.Id == battle.Captive) rep.Rescued = true;
             }
-            rep.Captive = battle.Captive;
+            // A wanderer (GG-T342) doesn't join on its own: standing at a victory it waits to talk on the results screen;
+            // down at the end it's simply gone back to the road — nothing recorded, still in the pool.
+            rep.Wanderer = battle.Wanderer;
+            rep.WandererOffer = Wanderers.OfferFrom(s, battle);
             Expeditions.AfterBattle(c, s, rep, battle);
             rep.NewSlots = Progression.UnlockedSlots(s) - slotsBefore;
             s.LastStage = battle.Stage.Id;
             s.UpdatedUtc = DateTime.UtcNow;
             return rep;
+        }
+
+        /// <summary>A hero met in battle joins the roster at <paramref name="level"/> with its wounds (a freed guest, a
+        /// wanderer won round — GG-T342), and the party when there's room. Returns whether it took a party slot.</summary>
+        public static bool JoinRoster(ContentDb c, SaveData s, string classId, int level, int hp, int maxHp)
+        {
+            if (s.Hero(classId) != null) return false;
+            var h = Progression.NewHero(c, classId);
+            h.TotalXp = Formulas.TotalXpForLevel(level);
+            h.SkillPoints += Formulas.SkillPointsForLevelUp(1, level);
+            h.Hp = hp >= maxHp ? 0 : hp;
+            s.Roster.Add(h);
+            bool party = s.Party.Count < Progression.MaxPartySize;
+            if (party) s.Party.Add(h.ClassId);
+            return party;
         }
 
         /// <summary>Writes one hero's end-of-battle gear back into the save: a bar weapon swap, current weapon/armor
@@ -737,7 +749,7 @@ namespace GridGame.Meta
         /// end, so each retry of a long gauntlet leaves the party stronger. Shared by Defeat and Retreat.</summary>
         private static void GrantHardWonXp(SaveData s, BattleState battle, BattleResults r, BattleReport rep)
         {
-            var heroes = battle.Units.Where(u => u.IsHero && !u.IsGuest && !u.IsWildTamed).ToList();
+            var heroes = battle.Units.Where(u => u.IsHero && !u.IsGuest && !u.IsVisitor).ToList();
             rep.XpEach = heroes.Count > 0 ? r.Xp : 0;
             foreach (var u in heroes)
             {

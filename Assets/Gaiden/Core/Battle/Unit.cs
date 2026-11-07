@@ -169,11 +169,20 @@ namespace GridGame.Core.Battle
         /// <summary>A domesticated monster from the roster (HeroSave.Domesticated): always the party's, still on its own AI.</summary>
         public bool Domesticated;
         /// <summary>A hero-team unit the player never commands: it keeps its own timeline icon and acts on its own turn (Umaro, FF VI).</summary>
-        public bool IsIndependent => Team == Team.Hero && (Tamed || Domesticated);
+        public bool IsIndependent => Team == Team.Hero && (Tamed || Domesticated || Wanderer);
         /// <summary>The Pincer keyword (GG-T303): tamed and domesticated monsters may end or support a pincer though not Sentient.</summary>
         public bool HasPincerKeyword => Tamed || Domesticated || (Def != null && Def.HasTag("Pincer"));
         /// <summary>A wild monster fighting for the party only for this battle (not a roster member).</summary>
         public bool IsWildTamed => Tamed && !Domesticated;
+
+        // ── Wanderers (§25.11.2, GG-T342) ──
+        /// <summary>A wandering hero met this battle: hero team, fighting on its own AI, earning trust; not a roster member.</summary>
+        public bool Wanderer;
+        /// <summary>Trust earned this battle (hero pincers that include it, heals from heroes) and its full gauge.</summary>
+        public int Trust, TrustNeeded;
+        public bool TrustFull => Wanderer && TrustNeeded > 0 && Trust >= TrustNeeded;
+        /// <summary>On the party's side for this battle only, never the player's own hero: a wild tamed beast or a wanderer.</summary>
+        public bool IsVisitor => IsWildTamed || Wanderer;
         public bool IsRanged => Def.AttackRange > 1;
 
         public Stats Effective

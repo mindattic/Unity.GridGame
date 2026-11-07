@@ -32,6 +32,11 @@ namespace GridGame.Meta
         public DialogueDef Def { get; }
         /// <summary>The party member a Talk dialogue is with ("$with"); null otherwise.</summary>
         public string With { get; }
+        /// <summary>The wanderer a Wanderer talk is with ("$hero", GG-T342); null otherwise.</summary>
+        public string Hero { get; }
+        /// <summary>Resolves <see cref="DialogueDef.OutcomeNext"/> to the node to go to (GG-T342: the wanderer's
+        /// understanding rule, set by <c>Wanderers.Begin</c>); without one the marker ends the dialogue.</summary>
+        public Func<DialogueRunner, string> Outcome;
         public DialogueNode Node { get; private set; }
         public bool Finished => Node == null;
         /// <summary>Every line reached so far, in order (the current one last).</summary>
@@ -43,9 +48,9 @@ namespace GridGame.Meta
         public string Recruit => recruits.Values.FirstOrDefault(v => v != null);
         private readonly Dictionary<DialogueEffect, string> recruits = new Dictionary<DialogueEffect, string>();
 
-        public DialogueRunner(ContentDb c, SaveData s, DialogueDef def, string with = null)
+        public DialogueRunner(ContentDb c, SaveData s, DialogueDef def, string with = null, string hero = null)
         {
-            this.c = c; this.s = s; Def = def ?? throw new ArgumentNullException(nameof(def)); With = with;
+            this.c = c; this.s = s; Def = def ?? throw new ArgumentNullException(nameof(def)); With = with; Hero = hero;
             nodes = def.Nodes.Where(n => n?.Id != null).GroupBy(n => n.Id, StringComparer.OrdinalIgnoreCase).ToDictionary(g => g.Key, g => g.First(), StringComparer.OrdinalIgnoreCase);
             var promised = new List<string>();
             foreach (var e in def.AllEffects().Where(e => e?.Type == DialogueEffectType.JoinHero))
@@ -87,6 +92,7 @@ namespace GridGame.Meta
 
         private void Enter(string id)
         {
+            if (string.Equals(id, DialogueDef.OutcomeNext, StringComparison.OrdinalIgnoreCase)) id = Outcome?.Invoke(this);
             if (id == null || !nodes.TryGetValue(id, out var n))
             {
                 Node = null;
@@ -104,7 +110,7 @@ namespace GridGame.Meta
         public (string name, string portrait) Resolve(DialogueSpeaker sp)
         {
             if (sp == null) return ("", null);
-            string cls = sp.Class == "$lead" ? s.Party.FirstOrDefault() : sp.Class == "$with" ? With : sp.Class == "$recruit" ? Recruit : sp.Class;
+            string cls = sp.Class == "$lead" ? s.Party.FirstOrDefault() : sp.Class == "$with" ? With : sp.Class == "$recruit" ? Recruit : sp.Class == "$hero" ? Hero : sp.Class;
             var def = c.TryClass(cls);
             return (sp.Name ?? def?.Name ?? sp.Id, sp.Portrait ?? def?.Id);
         }

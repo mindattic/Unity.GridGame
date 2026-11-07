@@ -325,7 +325,7 @@ namespace GridGame.App
         }
 
         private static Color TurnRing(Unit owner) =>
-            owner != null && owner.IsIndependent ? Palette.Tamed // a tamed/domesticated ally's own icon (GG-T303)
+            owner != null && owner.IsIndependent ? (owner.Wanderer ? Palette.Wanderer : Palette.Tamed) // an independent ally's own icon (GG-T303, GG-T342)
             : owner != null && (owner.Def.HasTag("Boss") || owner.IsMultiTile) ? Palette.Boss : Palette.Enemy;
 
         /// <summary>An icon's own colour: enemy red, boss purple, hero cast teal, enemy charge amber.</summary>

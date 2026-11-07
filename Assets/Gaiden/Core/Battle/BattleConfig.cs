@@ -241,6 +241,14 @@ namespace GridGame.Core.Battle
         /// <summary>Never more than this many pickups on the board at once.</summary>
         public const int MaxPickups = 3;
 
+        // ── Wanderers (§25.11.2, GG-T342): the trust gauge, in one place ───────────
+        /// <summary>A wanderer's full trust gauge.</summary>
+        public const int WandererTrustNeeded = 6;
+        /// <summary>Trust when a hero pincer includes the wanderer (an end or a flanking supporter): three pincers fill it.</summary>
+        public const int TrustPerPincer = 2;
+        /// <summary>Trust when a commanded hero restores some of the wanderer's HP.</summary>
+        public const int TrustPerHeal = 1;
+
         /// <summary>Knockback into another unit: both take this (+ half the blow).</summary>
         public const int KnockbackCrashDamage = 8;
         /// <summary>Knockback into stone or the board edge: the target takes this (+ the full blow).</summary>

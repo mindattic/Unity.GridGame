@@ -355,10 +355,11 @@ namespace GridGame.App.Automation
                 case "devwin":
                     if (app.Router.Current is BattleScreen dwin) return new { ok = dwin.DevWin() };
                     return new { error = "not in battle" };
-                case "devcaptive":
-                    // GG-T241: the next player-launched battle holds this captive (skips the 25% rescue roll).
-                    BattleScreen.DevNextCaptive = q["class"] ?? Rescues.Pool(app.Content, app.Save).FirstOrDefault();
-                    return new { ok = BattleScreen.DevNextCaptive != null, captive = BattleScreen.DevNextCaptive };
+                case "devwanderer":
+                case "devcaptive": // the GG-T241 name, kept for old harness scripts
+                    // GG-T342: the next player-launched battle holds this wanderer (skips the 25% roll).
+                    BattleScreen.DevNextWanderer = q["class"] ?? Wanderers.Pool(app.Content, app.Save).FirstOrDefault();
+                    return new { ok = BattleScreen.DevNextWanderer != null, wanderer = BattleScreen.DevNextWanderer };
                 case "goto":
                     if (!StartScreens.TryGet(q["screen"], out var screen)) return new { error = "unknown screen" };
                     app.Router.Push(screen);

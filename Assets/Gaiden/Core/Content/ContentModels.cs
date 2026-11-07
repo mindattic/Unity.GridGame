@@ -1005,10 +1005,14 @@ namespace GridGame.Core.Content
     /// LevelReached (GG-T231) fires once any roster hero is at <see cref="DialogueTrigger.Level"/> or above — on the way back
     /// to Camp after the battle that did it, or at the next launch. StageStart (GG-T231) fires on launching the stage
     /// <see cref="DialogueTrigger.Id"/> (a boss's introduction).
-    /// Rescue (GG-T236) plays on leaving the results of a battle that freed a captive; "$with" is the rescued hero, and
-    /// <see cref="DialogueTrigger.Id"/> is that hero's class (a class-specific scene) or null (the generic one).</summary>
+    /// Wanderer (GG-T342; replaces the GG-T236 Rescue scene) is the talk with a wanderer standing at a victory, played from
+    /// the results screen: "$hero" is the wanderer, "$with" the party member the player chose to talk, and
+    /// <see cref="DialogueTrigger.Id"/> is the wanderer's hero class, a factions.json faction id, or null (the generic one).
+    /// It has one question with three answers — exactly one goes to <see cref="DialogueDef.HeardNode"/> (what they want to
+    /// hear), the others to <see cref="DialogueDef.UnheardNode"/> — both of which go on to <see cref="DialogueDef.OutcomeNext"/>,
+    /// where the meta layer's rule picks <see cref="DialogueDef.JoinNode"/> or <see cref="DialogueDef.PartNode"/>.</summary>
     public enum DialogueTriggerKind { ThemeStart, StageCleared, Talk, GearWorn, CanBrew, FirstArmor, Recruit, LevelReached, StageStart,
-        Rescue }
+        Wanderer }
 
     public sealed class DialogueTrigger
     {
@@ -1059,7 +1063,8 @@ namespace GridGame.Core.Content
     {
         public string Id;
         /// <summary>A class id (its name and portrait), or "$lead" (the first party member), "$with" (the
-        /// party member a Talk dialogue is with) or "$recruit" (the hero this dialogue's first JoinHero brings, GG-T118).</summary>
+        /// party member a Talk dialogue is with) or "$recruit" (the hero this dialogue's first JoinHero brings, GG-T118), or
+        /// "$hero" (the wanderer a Wanderer talk is with, GG-T342).</summary>
         public string Class;
         /// <summary>Display name; defaults to the class's name.</summary>
         public string Name;
@@ -1098,6 +1103,10 @@ namespace GridGame.Core.Content
         public string Id;
         /// <summary>Talk row label (Talk dialogues); also a debugging name.</summary>
         public string Title;
+        /// <summary>Wanderer talks (GG-T342): the reply that speaks to them, the ones that don't, and the two endings the
+        /// <see cref="OutcomeNext"/> marker resolves to.</summary>
+        public const string HeardNode = "heard", UnheardNode = "unheard", JoinNode = "join", PartNode = "part", OutcomeNext = "$outcome";
+
         public DialogueTrigger Trigger = new DialogueTrigger();
         /// <summary>All must hold for the dialogue to be offered.</summary>
         public List<DialogueCondition> Conditions = new List<DialogueCondition>();

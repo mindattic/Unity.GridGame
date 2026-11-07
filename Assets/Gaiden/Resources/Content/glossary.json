@@ -727,6 +727,20 @@
     "Text": "A wild monster fighting for you on its own: it keeps its own turn icon, attacks your foes, carries the [Pincer] keyword and grows its bond each turn. A full bond keeps it for the battle; standing at victory, it asks to join."
   },
   {
+    "Id": "wanderer",
+    "Term": "Wanderer",
+    "Aliases": [
+      "Wanderers",
+      "Wandering"
+    ],
+    "Text": "A hero you meet mid-battle who fights the monsters on their own: their own turn icon, never commanded, but they close [Pincer] attacks with you. Earn their [Trust]; standing at victory, a party member of your choice talks with them, and they may join."
+  },
+  {
+    "Id": "trust",
+    "Term": "Trust",
+    "Text": "A [Wanderer]'s gauge (full at 6): +2 for each hero pincer they're part of, as an end or a flanker, and +1 each time a hero heals them. After the battle they join only if your companion says what they want to hear, and they trust you fully, or half, with a companion from their own faction."
+  },
+  {
     "Id": "beast",
     "Term": "Beast",
     "Aliases": [

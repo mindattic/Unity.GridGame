@@ -24,7 +24,7 @@ namespace GridGame.Core.Battle
             unlockedSlotsForGuests = setup.UnlockedSlots;
             carriedOrbs = Math.Max(0, setup.StartOrbs);
             S.Purse = Math.Max(0, setup.Purse);
-            captive = setup.Captive;
+            wanderer = setup.Wanderer;
             int i = 0;
             foreach (var spec in setup.Party)
             {
@@ -255,7 +255,7 @@ namespace GridGame.Core.Battle
             var wave = S.Stage.Waves[index];
             var started = new WaveStartedEvent { Wave = index, TotalWaves = S.Stage.Waves.Count };
             SpawnGuests(wave);
-            SpawnCaptive(index);
+            SpawnWanderer(index);
             SpawnRecruitables(wave);
             foreach (var sp in wave.Enemies)
             {

@@ -182,7 +182,7 @@ namespace GridGame.Meta
             BattleFactory.GrantItems(c, s, rep, r.Items);
             foreach (var kv in r.Kills) BattleFactory.Entry(s, kv.Key).Defeated += kv.Value;
 
-            var heroes = battle.Units.Where(u => u.IsHero && !u.IsGuest && !u.IsWildTamed).ToList();
+            var heroes = battle.Units.Where(u => u.IsHero && !u.IsGuest && !u.IsVisitor).ToList();
             rep.XpEach = heroes.Count > 0 ? r.Xp : 0;
             foreach (var u in heroes)
             {

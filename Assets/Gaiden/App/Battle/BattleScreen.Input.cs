@@ -37,7 +37,7 @@ namespace GridGame.App
             }
 
             if (unit != null) BeginBoardInspect(unit);
-            if (unit != null && unit.IsIndependent) { panelUnitId = unit.Id; SyncPanel(); ShowBanner($"{unit.Name} is tamed: it fights on its own"); return; } // GG-T303
+            if (unit != null && unit.IsIndependent) { panelUnitId = unit.Id; SyncPanel(); ShowBanner(unit.Wanderer ? $"{unit.Name} is a wanderer: it fights on its own. Pincer beside them or heal them to earn their trust" : $"{unit.Name} is tamed: it fights on its own"); return; } // GG-T303, GG-T342
             if (unit != null && unit.IsHero)
             {
                 SelectHero(unit.Id);

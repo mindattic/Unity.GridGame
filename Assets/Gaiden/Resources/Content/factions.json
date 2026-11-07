@@ -1,0 +1,30 @@
+[
+  {
+    "Id": "street", "Name": "the Street",
+    "Heroes": [ "courier", "engineer", "technician", "speedster", "basher", "slasher", "fencer", "streetfighter", "striker", "fighter",
+      "prizefighter", "pugilist", "thief", "chromaninja", "yellowninja", "machinist", "tinkerer", "ripper", "raider", "lancer",
+      "duelist", "assassain", "operative", "nighthunter" ]
+  },
+  {
+    "Id": "holds", "Name": "the Free Holds",
+    "Heroes": [ "knight", "paladin", "defender", "shieldmaiden", "tank", "jadeknight", "myrmidon", "warchief", "barbarian", "bruiser" ]
+  },
+  {
+    "Id": "lantern", "Name": "the Lantern Road",
+    "Heroes": [ "ronin", "odachi", "swordmaster", "sellsword", "monk", "martialartist", "drifter", "dervish", "blackninja", "blueninja",
+      "greenninja", "redninja", "whiteninja", "pandagirl", "sage" ]
+  },
+  {
+    "Id": "fendark", "Name": "the Fen-dark",
+    "Heroes": [ "blackwitch", "whitewitch", "ritualist", "hexwarden", "hexsniper", "hexstalker", "harbinger", "redmage", "alchemist",
+      "doctor", "sister", "cleric", "vampire" ]
+  },
+  {
+    "Id": "ember", "Name": "the Ember",
+    "Heroes": [ "darktemplar" ]
+  },
+  {
+    "Id": "wild", "Name": "the Wild",
+    "Heroes": [ "wildchild", "monstertamer", "bluelion" ]
+  }
+]

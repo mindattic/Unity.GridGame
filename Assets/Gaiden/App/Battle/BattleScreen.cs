@@ -150,8 +150,8 @@ namespace GridGame.App
                 // A Crucible run is seeded by the save (§22.10) so the same save replays the same gauntlet.
                 int seed = InCrucible && App.Save != null ? Crucible.SeedFor(App.Save) : Environment.TickCount;
                 var setup = setupOverride ?? BattleFactory.Build(App.Content, App.Save, stageId, seed, App.Settings?.Difficulty?.Level ?? DifficultyTable.Default);
-                if (setupOverride == null) Rescues.Apply(App.Content, App.Save, setup); // GG-T236: maybe a captive to free
-                if (setupOverride == null && DevNextCaptive != null) { setup.Captive = new CaptiveSpec { Class = DevNextCaptive, Wave = 0 }; DevNextCaptive = null; }
+                if (setupOverride == null) Wanderers.Apply(App.Content, App.Save, setup); // GG-T342: maybe a wanderer to win over
+                if (setupOverride == null && DevNextWanderer != null) { setup.Wanderer = new WandererSpec { Class = DevNextWanderer, Wave = 0 }; DevNextWanderer = null; }
                 State = BattleEngine.Create(App.Content, setup, initial);
                 recorder = new BattleRecorder(State, setup, "player", initial);
                 // Every battle is tagged with the dial and the multipliers it applied (§22.9, GG-T309).
@@ -616,7 +616,8 @@ namespace GridGame.App
             var col = Ui.El("col grow", row);
             var top = Ui.El("row", col);
             Ui.Text(u.Name, "h2 grow", top);
-            if (u.IsIndependent) Ui.RoleBadge(Ui.TamedRole, top, 26); // GG-T303
+            if (u.IsIndependent && !u.Wanderer) Ui.RoleBadge(Ui.TamedRole, top, 26); // GG-T303
+            else if (u.Wanderer && !string.IsNullOrEmpty(u.Def.Role)) Ui.RoleBadge(u.Def.Role, top, 26); // a wanderer is a hero class (GG-T342)
             else if (u.IsHero && !string.IsNullOrEmpty(u.Def.Role)) Ui.RoleBadge(u.Def.Role, top, 26);
             Ui.Text($"Lv {u.Level}", "h2 gold", top);
             // What the Bestiary has learned from defeating its class gates the numbers (§25.11, GG-T290).
@@ -758,8 +759,8 @@ namespace GridGame.App
         }
 
         /// <summary>Dev/automation helper: set a unit's HP (art review: make the next blow a kill).</summary>
-        /// <summary>Dev/automation (GG-T241): the next player-launched battle holds this captive, skipping the 25% roll.</summary>
-        public static string DevNextCaptive;
+        /// <summary>Dev/automation (GG-T241, GG-T342): the next player-launched battle holds this wanderer, skipping the 25% roll.</summary>
+        public static string DevNextWanderer;
 
         /// <summary>Dev/automation (GG-T241): end the battle as a victory now and commit it like a real one, so story
         /// beats that hang off a win (the ending, interludes, rescues) can be reached without fighting every wave.</summary>

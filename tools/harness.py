@@ -1119,12 +1119,12 @@ def _drain_story(seen, tag, limit=30):
     return call("state")["screen"]
 
 
-_ANNOUNCE = ("captive", "ignores", "rises", "joins the fight")
+_ANNOUNCE = ("wandering", "ignores", "rises", "joins the fight")
 
 
 def _watch_banners(seconds=8.0, until_battle_ends=False):
     """Every distinct battle banner shown over the next few seconds, plus billboard announcements read off the screen
-    (captives, rule-breaks). With until_battle_ends, keeps watching until the screen leaves the battle."""
+    (wanderers, rule-breaks). With until_battle_ends, keeps watching until the screen leaves the battle."""
     out, end = [], time.time() + seconds
     while time.time() < end:
         st = call("state")
@@ -1140,8 +1140,8 @@ def _watch_banners(seconds=8.0, until_battle_ends=False):
 
 def storyarc(run="storyarc", capture=True):
     """GG-T241: the title-to-credits experience (GG-T231..T237), recorded. Part 1 is a real new campaign: Title -> New
-    Game -> pick three -> the prologue crawl -> Camp (Rested meter) -> Green Valley I with a forced captive, a hero
-    pushed to Lv 10 and a forced win -> the rescue conversation -> the Lv 10 interlude -> Camp; then Rested at 0
+    Game -> pick three -> the prologue crawl -> Camp (Rested meter) -> Green Valley I with a forced wanderer, a hero
+    pushed to Lv 10 and a forced win -> the wanderer talk on the results -> the Lv 10 interlude -> Camp; then Rested at 0
     refuses a launch and the 1g/1s refill relaunches it. Part 2, on a stocked save: hire a mercenary, the Quests
     journal, a 1s Summon, a Diamond bought and spent on a lucky craft, Green Valley III's boss intro and rule-break
     banner, then cityruins-03's intro, a forced win, the ending crawl, the rolling credits and the Title."""
@@ -1162,7 +1162,7 @@ def storyarc(run="storyarc", capture=True):
     time.sleep(0.8); shot("03-camp")
     ok["camp_rested_meter"] = bool(call("names", prefix="camp-rested"))
     call("devrested", limit=1, points=5)
-    call("devcaptive")
+    call("devwanderer")
     call("clicktext", text="Adventure"); time.sleep(0.8)
     call("clicktext", text="Green Valley I"); time.sleep(1.5)
     _drain_story(seen, "04-gv1")
@@ -1170,19 +1170,23 @@ def storyarc(run="storyarc", capture=True):
     ok["rested_spent_on_launch"] = save().get("rested") == 4
     banners = _watch_banners(8)
     notes["gv1_banners"] = banners
-    shot("05-gv1-captive")
-    ok["captive_billboard"] = any("captive" in b.lower() for b in banners)
+    shot("05-gv1-wanderer")
+    ok["wanderer_billboard"] = any("wandering" in b.lower() for b in banners)
     lead = (save().get("party") or ["paladin"])[0]
     call("devxp", hero=lead, level=10)
     ok["gv1_forced_win"] = (call("devwin") or {}).get("ok") is True
     time.sleep(1.5); _skip_levelups(st())
     _wait_screen("postbattle", 6); time.sleep(0.8); shot("06-gv1-results")
-    ok["captive_freed_on_results"] = any("freed" in str(t).lower() for t in call("texts"))
+    ok["wanderer_on_results"] = any("lingers to talk" in str(t).lower() for t in call("texts"))
+    talk = sorted(call("names", prefix="wanderer-talk-") or [])
+    if talk:
+        call("click", name=talk[0]); time.sleep(1.5)
+        _drain_story(seen, "06b-wanderer-talk"); time.sleep(1.0); shot("06c-gv1-results-after-talk")
+    ok["wanderer_conversation"] = any(str(d).startswith("wanderer_") for d in save().get("seen", []))
     call("click", name="continue"); time.sleep(1.5)
     before = len(seen)
     _drain_story(seen, "07-after-gv1")
     played = " ".join(t for _, t in seen[before:])
-    ok["rescue_conversation"] = any(k == "dialogue" for k, _ in seen[before:]) and "rescue_freed" in save().get("seen", [])
     ok["lv10_interlude_crawl"] = "What We Swore For" in played
     ok["lv10_interlude_seen"] = "interlude_level10_motives" in save().get("seen", [])
     ok["back_at_camp"] = _wait_screen("hub", 6)

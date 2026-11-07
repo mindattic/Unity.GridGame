@@ -31,6 +31,10 @@ namespace GridGame.Core.Content
         /// <summary>mercenaries.json (GG-T233), in file order.</summary>
         public readonly List<MercenaryDef> Mercenaries = new List<MercenaryDef>();
         public MercenaryDef TryMercenary(string classId) => Mercenaries.Find(m => string.Equals(m.Class, classId, StringComparison.OrdinalIgnoreCase));
+        /// <summary>factions.json (GG-T342): the STORY.md factions and the hero classes in each, in file order.</summary>
+        public readonly List<FactionDef> Factions = new List<FactionDef>();
+        /// <summary>The faction a hero class belongs to, or null.</summary>
+        public FactionDef FactionOf(string classId) => classId == null ? null : Factions.Find(f => f.Heroes.Exists(h => string.Equals(h, classId, StringComparison.OrdinalIgnoreCase)));
         public readonly Dictionary<string, CaravanUpgradeDef> Caravan = new Dictionary<string, CaravanUpgradeDef>(StringComparer.OrdinalIgnoreCase);
         public readonly Dictionary<string, SkillTreeDef> SkillTrees = new Dictionary<string, SkillTreeDef>(StringComparer.OrdinalIgnoreCase);
         /// <summary>dialogues.json in file order (§27.1, GG-T117) — the first matching beat wins, so order matters.</summary>

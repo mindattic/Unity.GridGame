@@ -52,6 +52,7 @@ namespace GridGame.Core.Content
             db.Vfx = ReadOne<VfxStyleSheet>(readText, "vfxstyle") ?? new VfxStyleSheet();
             db.VfxPrefabs = ReadOne<VfxCatalog>(readText, "vfx") ?? new VfxCatalog();
             db.Mercenaries.AddRange(ReadList<MercenaryDef>(readText, "mercenaries"));
+            db.Factions.AddRange(ReadList<FactionDef>(readText, "factions"));
             AddAll(db.Caravan, ReadList<CaravanUpgradeDef>(readText, "caravan"), x => x.Id);
             AddAll(db.Pickups, ReadList<PickupDef>(readText, "pickups"), x => x.Id);
             AddAll(db.SkillTrees, ReadList<SkillTreeDef>(readText, "skilltrees"), x => x.Id);
@@ -325,6 +326,7 @@ namespace GridGame.Core.Content
             foreach (var set in db.ArmorSetOrder) ValidateArmorSet(db, set, p);
             EncounterCatalog.Validate(db, p);
             MercenaryContent.Validate(db, p);
+            WandererContent.ValidateFactions(db, p);
             QuestCatalog.Validate(db, p);
             RewardCatalog.Validate(db, p); // Tomes, Chests, campaign milestones (GG-T301)
             VfxStyleSheet.Validate(db, p);
@@ -554,9 +556,9 @@ namespace GridGame.Core.Content
                 case DialogueTriggerKind.StageStart:
                     if (trigger.Id == null || !db.Stages.ContainsKey(trigger.Id)) p.Add($"{w}: unknown StageStart stage '{trigger.Id}'");
                     break;
-                case DialogueTriggerKind.Rescue:
-                    // GG-T236: "$with" is the freed captive; Id narrows it to one class, null is the generic scene.
-                    if (trigger.Id != null && !IsHero(trigger.Id)) p.Add($"{w}: Rescue needs a hero class or no Id, has '{trigger.Id}'");
+                case DialogueTriggerKind.Wanderer:
+                    // GG-T342: "$hero" is the wanderer, "$with" the companion talking; the shape is WandererContent's.
+                    WandererContent.ValidateDialogue(db, d, p);
                     break;
             }
             if (d.Crawl != null)
@@ -566,7 +568,8 @@ namespace GridGame.Core.Content
                 if (string.IsNullOrWhiteSpace(d.Title)) p.Add($"{w}: a Crawl needs a Title to head it");
             }
             bool talkWithHero = (trigger.Kind == DialogueTriggerKind.Talk || trigger.Kind == DialogueTriggerKind.Recruit) && trigger.Id != null && !trigger.Id.StartsWith(NpcFlagPrefix)
-                || trigger.Kind == DialogueTriggerKind.Rescue;
+                || trigger.Kind == DialogueTriggerKind.Wanderer;
+            bool wanderer = trigger.Kind == DialogueTriggerKind.Wanderer;
             bool joinsHero = false;
             foreach (var e in d.AllEffects()) joinsHero |= e?.Type == DialogueEffectType.JoinHero;
 
@@ -638,6 +641,7 @@ namespace GridGame.Core.Content
                 if (s.Class == "$lead") { }
                 else if (s.Class == "$with") { if (!talkWithHero) p.Add($"{w} speaker {s.Id}: \"$with\" only fits a Talk with a party member"); }
                 else if (s.Class == "$recruit") { if (!joinsHero) p.Add($"{w} speaker {s.Id}: \"$recruit\" needs a JoinHero effect in this dialogue"); }
+                else if (s.Class == "$hero") { if (!wanderer) p.Add($"{w} speaker {s.Id}: \"$hero\" only fits a Wanderer talk"); }
                 else if (s.Class != null) { if (db.TryClass(s.Class) == null) p.Add($"{w} speaker {s.Id}: unknown class '{s.Class}'"); }
                 else if (string.IsNullOrEmpty(s.Portrait) || string.IsNullOrEmpty(s.Name)) p.Add($"{w} speaker {s.Id}: needs a Class, or a Name and a Portrait");
                 var portrait = s.Portrait ?? (s.Class != null && !s.Class.StartsWith("$") ? s.Class : null);
@@ -658,7 +662,8 @@ namespace GridGame.Core.Content
                 string nw = $"{w} node {n.Id}";
                 if (n.Speaker == null || !speakers.Contains(n.Speaker)) p.Add($"{nw}: unknown speaker '{n.Speaker}'");
                 if (string.IsNullOrWhiteSpace(n.Text)) p.Add($"{nw}: empty text");
-                if (n.Next != null && !nodes.ContainsKey(n.Next)) p.Add($"{nw}: unknown next node '{n.Next}'");
+                bool outcome = wanderer && string.Equals(n.Next, DialogueDef.OutcomeNext, StringComparison.OrdinalIgnoreCase);
+                if (n.Next != null && !outcome && !nodes.ContainsKey(n.Next)) p.Add($"{nw}: unknown next node '{n.Next}'");
                 if (n.Next != null && n.Choices.Count > 0) p.Add($"{nw}: has both Next and Choices");
                 foreach (var e in n.Effects) Effect(e, nw);
                 for (int i = 0; i < n.Choices.Count; i++)
@@ -682,7 +687,8 @@ namespace GridGame.Core.Content
             {
                 var id = open.Pop();
                 if (!reached.Add(id) || !nodes.TryGetValue(id, out var n)) continue;
-                if (n.Next != null) open.Push(n.Next);
+                if (wanderer && string.Equals(n.Next, DialogueDef.OutcomeNext, StringComparison.OrdinalIgnoreCase)) { open.Push(DialogueDef.JoinNode); open.Push(DialogueDef.PartNode); }
+                else if (n.Next != null) open.Push(n.Next);
                 foreach (var ch in n.Choices) if (ch?.Next != null) open.Push(ch.Next);
             }
             foreach (var n in nodes.Values) if (!reached.Contains(n.Id)) p.Add($"{w}: node '{n.Id}' is unreachable");

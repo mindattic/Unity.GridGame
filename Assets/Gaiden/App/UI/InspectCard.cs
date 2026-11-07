@@ -303,8 +303,8 @@ namespace GridGame.App
         {
             bool reveal = knowledge >= BestiaryKnowledge.Stats;
             if (u == null) return false;
-            var head = Header(body, null, $"{u.Name}  Lv {u.Level}", u.IsIndependent ? (u.Domesticated ? "Tamed ally" : "Tamed") : u.IsHero ? u.Def.Role : u.IsNeutral ? "Neutral" : "Enemy",
-                u.IsIndependent ? Palette.Tamed : u.IsHero ? Palette.Hero : u.IsNeutral ? Palette.Neutral : Palette.Enemy);
+            var head = Header(body, null, $"{u.Name}  Lv {u.Level}", u.Wanderer && u.IsHero ? $"Wanderer · {u.Def.Role}" : u.IsIndependent ? (u.Domesticated ? "Tamed ally" : "Tamed") : u.IsHero ? u.Def.Role : u.IsNeutral ? "Neutral" : "Enemy",
+                u.Wanderer && u.IsHero ? Palette.Wanderer : u.IsIndependent ? Palette.Tamed : u.IsHero ? Palette.Hero : u.IsNeutral ? Palette.Neutral : Palette.Enemy);
             Line(head, reveal ? $"HP {u.Hp}/{u.MaxHp}" : "HP ??? — defeat more to learn it", "t-caption");
             if (reveal) Line(head, $"{Ui.StatLine(u.Effective)} · EVA {GridGame.Core.Rules.Formulas.Evasion(u):0}%", "t-caption", Palette.TextDim); // GG-T297
             else if (knowledge >= BestiaryKnowledge.Speed) Line(head, $"SPD {u.Effective.Speed:0}", "t-caption", Palette.TextDim);
@@ -317,7 +317,8 @@ namespace GridGame.App
                 sup.name = "inspect-support";
                 sup.style.marginTop = Space.S8;
             }
-            if (u.IsIndependent) TameSection(body, u); // GG-T303: who it is now, and its bond
+            if (u.Wanderer && u.IsHero) TrustSection(body, u); // GG-T342: its trust gauge
+            else if (u.IsIndependent) TameSection(body, u); // GG-T303: who it is now, and its bond
             if (!u.IsHero && !u.IsNeutral)
             {
                 var cast = s.CastEntryOf(u.Id);
@@ -373,6 +374,24 @@ namespace GridGame.App
             g.name = "inspect-bond-gauge";
             string note = u.Bonded ? "Bond full: it stays for this battle and asks to join you at victory."
                 : $"[Tamed] for {u.TameTurnsLeft} more of its turns. Each turn it fights for you fills its bond.";
+            var t = GlossaryText.Create(note, "t-caption", box, false);
+            t.style.marginTop = Space.S8;
+        }
+
+        /// <summary>A wanderer's trust meter (GG-T342): trust so far out of the full gauge, and how to earn it.</summary>
+        private static void TrustSection(VisualElement body, Unit u)
+        {
+            var box = Ui.El("col", body);
+            box.name = "inspect-trust";
+            box.style.marginTop = Space.S16;
+            var row = Ui.El("row", box);
+            row.style.alignItems = Align.Center;
+            var label = Line(row, $"Trust {u.Trust}/{u.TrustNeeded}", "t-body", Palette.Wanderer);
+            label.style.marginRight = Space.S16;
+            var g = Ui.Gauge(u.TrustNeeded <= 0 ? 0f : Mathf.Clamp01(u.Trust / (float)u.TrustNeeded), row, 220);
+            g.name = "inspect-trust-gauge";
+            string note = u.TrustFull ? "[Trust] full: if they're standing at victory, say what they want to hear and they join you."
+                : $"A [Wanderer]: fights on its own. Each hero [Pincer] it's part of earns {GridGame.Core.Battle.BattleConfig.TrustPerPincer} [Trust], each heal {GridGame.Core.Battle.BattleConfig.TrustPerHeal}.";
             var t = GlossaryText.Create(note, "t-caption", box, false);
             t.style.marginTop = Space.S8;
         }

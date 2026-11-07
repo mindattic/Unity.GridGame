@@ -600,6 +600,7 @@ namespace GridGame.Core.Battle
             target.Hp = Math.Min(target.MaxHp, target.Hp + amount);
             Emit(new HealedEvent { TargetId = target.Id, SourceId = source?.Id ?? -1, Amount = target.Hp - before, HpAfter = target.Hp });
             if (target.IsNeutral && source != null && source.IsHero) MarkRecruit(target, "healed", source);
+            if (target.Wanderer) TrustFromHeal(target, source, target.Hp - before); // GG-T342
         }
 
         private void Kill(Unit u, Unit killer)
@@ -616,6 +617,7 @@ namespace GridGame.Core.Battle
             if (u.IsRemains) { Announce("Laid to rest", u.Id); return; }
             // A fallen guest is down, not gone (GG-T114): revive them and they can still be recruited.
             if (u.IsGuest) Announce(permadeath ? $"{u.Name} has fallen for good" : $"{u.Name} has fallen!", u.Id);
+            else if (u.Wanderer && u.Team == Team.Hero) Announce($"{u.Name} has fallen!", u.Id); // down, never lost (GG-T342)
             if (u.Team == Team.Enemy && !u.NoLoot) AwardLoot(u);
             if (u.Team == Team.Enemy) LeaveRemains(u, at);
             if (u.Team == Team.Enemy && !u.NoLoot && !u.IsRemains && !u.IsSnakeSegment) MaybeDropPickup(u, at, killer);

@@ -72,8 +72,8 @@ namespace GridGame.Core.Battle
         public bool Permadeath;
         /// <summary>Gold the caravan has banked going in — a recruitable's PayGold is paid from it (§25.11.1, GG-T132).</summary>
         public int Purse;
-        /// <summary>A rolled captive to free as a guest (§25.11.2, GG-T236); null = none.</summary>
-        public CaptiveSpec Captive;
+        /// <summary>A rolled wanderer who fights beside the party on its own (§25.11.2, GG-T342; was the GG-T236 captive); null = none.</summary>
+        public WandererSpec Wanderer;
     }
 
     /// <summary>Totals the meta layer commits after the battle (XP, coins, drops, kills, bestiary).</summary>
@@ -180,8 +180,8 @@ namespace GridGame.Core.Battle
         public int PartySize;
         /// <summary>Banked gold going in (<see cref="BattleSetup.Purse"/>); what's left is Purse − Results.CoinsSpent.</summary>
         public int Purse;
-        /// <summary>The class of the captive freed as a guest this battle (GG-T236), or null.</summary>
-        public string Captive;
+        /// <summary>The class of the wanderer met this battle (GG-T342), or null.</summary>
+        public string Wanderer;
         public Rng Rng;
         public List<Unit> Units = new List<Unit>();
         public List<TimelineEntry> Timeline = new List<TimelineEntry>();
