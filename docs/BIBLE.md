@@ -1985,7 +1985,7 @@ A frozen or sleeping rule-breaker skips its rule along with its turn. The bot ha
 
 Owner: "Stack haste, while a Chronomancer casts slow on you would be an interesting battle mechanic." A caster that fights the party's **tempo** (§2.11) instead of its health.
 
-- **Class.** `chronomancer`, an enemy caster (Kiter brain, shoots 3 tiles, moves 1). It reuses the `Hag03` portrait (house defector convention; no hero pool uses it). It is not a Crucible family: it has a boss phase, which the Crucible excludes.
+- **Class.** `chronomancer`, an enemy caster (Kiter brain, shoots 3 tiles, moves 1). Its portrait is the owner's own art (GG-T328, cut with `tools/portrait_cut.py`); `"Portrait": "chronomancer"` keeps `tools/import_art.py` from overwriting it with the old `Hag03` stand-in. It is not a Crucible family: it has a boss phase, which the Crucible excludes.
 - **Temporal Drag** (`charge_temporal_drag`). A telegraphed charge (2.5 s on the cast lane), `AllEnemies`: 4 Arcane to every hero plus **Slowed** (2 turns). That is one −1 tempo effect for the whole party, not one per hero, so every foe's icon runs ×1.25.
 - **Rewind** (`chrono_rewind`). Once, at 40% HP (its boss phase), it heals 20 and hastens **its own** icon 0.5 u. That never touches party tempo (§2.7.1).
 - **Brain.** It holds Drag while the party's net tempo is already negative (`EnemyPlanner.PlanCast`). It moves or shoots instead, and drags when the party is level or hasted, which is the tug-of-war. As a Kiter it keeps out of pincers.
@@ -2158,7 +2158,7 @@ Learn price: 120 + 80 × 2 orbs = 280 G. What you don't touch: the dispatcher, t
 ## 20. How to Add a New Enemy — Checklist
 
 1. Add a `ClassDef` to `classes.json` with `Team: "Enemy"`, `Tags` (`Sentient` if it has a society or plans ahead and so may pincer — vampires and mummies yes, mindless undead and beasts no, GG-T289/GG-T294), `BaseStats`, `Growth`, `Resistances`, `XpReward`, `MoveRange`, optional `DropTable`, `ChargeAbility`/`ChargeShape`, `Trap`, `BossPhases`, `Footprint`, `SnakeSegments`, `Lore`.
-2. Add `Resources/Portraits/<id>.png` (or run `tools/import_art.py`) and give the class a `Thumbnail`: frame it in Thumbnail Studio (`tools/thumbnail-studio.ps1`, [§12.1.1](#1211-thumbnails-are-a-window-onto-the-portrait-added-2026-11-03-owner-direction-gg-t220)); there is no separate thumb image.
+2. Add `Resources/Portraits/<id>.png` (or run `tools/import_art.py`; owner art on a white background goes through `python tools/portrait_cut.py <image> --import <id>`, which erases the background and keeps white cloth and translucent smoke, GG-T327; give the class `"Portrait": "<id>"` so a later `import_art.py` run leaves it alone) and give the class a `Thumbnail`: frame it in Thumbnail Studio (`tools/thumbnail-studio.ps1`, [§12.1.1](#1211-thumbnails-are-a-window-onto-the-portrait-added-2026-11-03-owner-direction-gg-t220)); there is no separate thumb image.
 3. Put it in a `stages.json` wave; optionally add a `droptables.json` table.
 4. `pwsh tools/test.ps1` — validation, catalog and soak include it automatically. The Bestiary lists it (silhouette until seen).
 

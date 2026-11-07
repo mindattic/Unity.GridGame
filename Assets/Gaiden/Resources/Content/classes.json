@@ -22738,8 +22738,8 @@
     "Description": "A caster who fights the party's tempo instead of its health.",
     "Lore": "It does not hurry. It makes everyone else late.",
     "Card": "Charges [Temporal Drag]: the party loses [tempo] and every foe acts sooner. [Interrupt] the charge, [cleanse] Slowed or [out-haste] it. Rewinds once when badly hurt.",
-    "Portrait": "Hag03",
-    "Thumbnail": { "Zoom": 2.3787, "X": 0.4977, "Y": 0.2102 },
+    "Portrait": "chronomancer",
+    "Thumbnail": { "Zoom": 2.5, "X": 0.46, "Y": 0.27 },
     "Footprint": { "W": 1, "H": 1 },
     "Support": {
       "Effect": "Haste",
