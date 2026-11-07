@@ -196,10 +196,10 @@ namespace GridGame.Core.Battle
         public const int AmplifierCharge = 30;
 
         /// <summary>Global weight on enemy physical strikes (difficulty knob; tuned with BalanceReport after the brains, §14.6).</summary>
-        public const float EnemyStrikeMultiplier = 1.2f;
+        public static float EnemyStrikeMultiplier = 1.2f;
         /// <summary>Enemy MaxHP at spawn, as a share of the stat formula (GG-T262: waves ran a median 34 player actions
         /// against POL-G6's 6–20).</summary>
-        public const float EnemyHpScale = 0.45f;
+        public static float EnemyHpScale = 0.45f;
         /// <summary>An Ambusher lies in wait for at most this many of its own turns, then comes out (GG-T262: a lone
         /// ambushing naga held Mireholt Fens II's last wave to a median 116 player actions).</summary>
         public const int AmbushPatienceTurns = 3;
