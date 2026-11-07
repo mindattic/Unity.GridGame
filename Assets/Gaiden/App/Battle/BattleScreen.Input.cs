@@ -312,6 +312,7 @@ namespace GridGame.App
             float k = holdWindow > 0f ? Mathf.Clamp01(holdElapsed / holdWindow) : 0f;
             int ticks = holdTurnTicks > 0 ? Mathf.FloorToInt(k * holdTurnTicks) : 0;
             var at = BattleEngine.TimelineUAfter(State, ticks);
+            RefreshRecoverView(ticks); // GG-T319: tray rings count down with the hold; one that runs out slides onto the bar
             SyncTimeline(at);
             holdDrainFill.style.width = Length.Percent((1f - k) * 100f);
             holdDrainFill.style.backgroundColor = Color.Lerp(HoldEmpty, HoldFull, 1f - k);

@@ -1,3 +1,4 @@
+using System.Collections;
 using System.Collections.Generic;
 using System.Linq;
 using GridGame.Core;
@@ -33,8 +34,20 @@ namespace GridGame.App
 
         /// <summary>x of the "acts now" end of the track (u = 0): an icon there touches the prominence slot.</summary>
         private static float TrackX0 => Fit.Edge + SlotSpan + Space.S16 + IconSpan / 2f;
-        /// <summary>x of u = 1 (BarSeconds away), clear of the GUARD button.</summary>
-        private static float TrackX1 => GameApp.StageWidth - Fit.Edge - Size.Target - Space.S16 - IconSpan / 2f;
+        /// <summary>x of u = 1 (BarSeconds away): an icon there ends a gutter short of the recovery tray.</summary>
+        private static float TrackX1 => TrayX0 - Space.S16 - IconSpan / 2f;
+
+        // ── The recovery tray (GG-T319): after acting, a turn icon spends its recovery OFF the bar, here, between the
+        // track's right end and GUARD. Its diamonds sit in a diamond lattice (left = back on the bar soonest), shrunk
+        // and dimmed, each traced by a countdown ring; when one runs out the icon slides onto the bar at its entry. ──
+        private const float TrayScale = 0.58f;
+        /// <summary>The lattice step: two ringed tray diamonds a step apart along a diagonal sit edge to edge.</summary>
+        private const float TrayCell = 66f;
+        private static float TrayW => 2f * TrayCell;
+        /// <summary>Right edge of the tray: a gutter short of GUARD.</summary>
+        private static float TrayX1 => GameApp.StageWidth - Fit.Edge - Size.Target - Space.S16;
+        private static float TrayX0 => TrayX1 - TrayW;
+        private static float TraySocketSide => TrayW / Sqrt2 + Space.S8;
         private static float XOfU(float u) => TrackX0 + Mathf.Clamp01(u) * (TrackX1 - TrackX0);
 
         private VisualElement timelineFrame, timelineBar, timelineIcons, timelineSlot, slotFrame, slotHalo;
@@ -50,12 +63,22 @@ namespace GridGame.App
         private readonly HashSet<int> cueKeep = new HashSet<int>();
         private readonly Dictionary<int, (Color c, float k, bool next)> unitCue = new Dictionary<int, (Color, float, bool)>();
         private int nextActorEntry = -1, slotEntry = int.MinValue, actingEntry = -1;
+        /// <summary>GG-T319: icons off the bar, recovering: entry id → (ticks left, of total). At rest it mirrors the
+        /// state; a hold plays it forward, playback sets it from each TimelineAdvanced snapshot and each turn.</summary>
+        private readonly Dictionary<int, (int left, int total)> recoverView = new Dictionary<int, (int, int)>();
+        private readonly HashSet<int> inTray = new HashSet<int>();
+        /// <summary>Icons mid-flight between the bar and the tray: where (left, top, scale) the flight started, and when.</summary>
+        private readonly Dictionary<int, (float x, float y, float s, float t0, float dur)> trayFlights = new Dictionary<int, (float, float, float, float, float)>();
+        private readonly Dictionary<int, float> iconScaleNow = new Dictionary<int, float>();
+        private readonly Dictionary<int, float> ringFlash = new Dictionary<int, float>();
+        private VisualElement traySocket;
         /// <summary>Off for the very first sync of a build, so the opening layout doesn't fire arrival/glow sounds.</summary>
         private bool timelineSeeded;
 
         private void BuildTimeline(VisualElement root)
         {
             timelineIconViews.Clear(); drawn.Clear(); approach.Clear(); glowing.Clear(); delimiters.Clear();
+            recoverView.Clear(); inTray.Clear(); trayFlights.Clear(); iconScaleNow.Clear(); ringFlash.Clear();
             nextActorEntry = -1; slotEntry = int.MinValue; actingEntry = -1; timelineSeeded = false;
 
             var frame = Ui.El("", root);
@@ -92,6 +115,16 @@ namespace GridGame.App
             }
 
             BuildGapLane(frame);
+
+            // The tray's socket: one dark diamond the four-slot lattice fills, echoing the prominence slot at the left.
+            traySocket = new VisualElement { name = "tl-tray", pickingMode = PickingMode.Ignore };
+            traySocket.style.position = Position.Absolute;
+            traySocket.style.width = traySocket.style.height = TraySocketSide;
+            traySocket.style.top = TrackY - TraySocketSide / 2f;
+            traySocket.style.rotate = new Rotate(45f);
+            traySocket.style.backgroundColor = Palette.Ink.WithA(0.45f);
+            SetBorder(traySocket, 8f, 2f, Palette.TextDim.WithA(0.45f));
+            frame.Add(traySocket);
 
             timelineIcons = Ui.El("", frame);
             timelineIcons.name = "timeline-icons";
@@ -230,6 +263,7 @@ namespace GridGame.App
             timelineBar.style.width = Mathf.Max(0f, XOfU(1f) + IconSpan / 2f - start);
             float bar = Mathf.Max(0.0001f, BattleConfig.BarSeconds);
             foreach (var (d, side, s) in delimiters) d.style.left = XOfU(s / bar) - side / 2f;
+            if (traySocket != null) traySocket.style.left = TrayX0 + TrayW / 2f - TraySocketSide / 2f;
             if (lastAt != null) LayoutIcons(lastAt);
         }
 
@@ -312,6 +346,7 @@ namespace GridGame.App
             frame.style.overflow = Overflow.Hidden;
             SetBorder(frame, 5f, IconBorder, EntryColor(e));
             SetDiamondArt(frame, IconSide, IconBorder, e);
+            if (e.Kind == TimelineKind.Turn) icon.Add(new RecoverRing(IconSpan));
             AttachTimelineInspect(icon, e);
             icon.RegisterCallback<ClickEvent>(_ => OnTimelineTap(e.OwnerId)); // GG-T288: a tap selects, a hold reads
             return icon;
@@ -322,6 +357,7 @@ namespace GridGame.App
         private void SyncTimeline(Dictionary<int, float> uOverride)
         {
             if (timelineIcons == null || State == null) return;
+            if (uOverride == null && !playing) RefreshRecoverView(); // at rest the state is the truth; playback keeps its snapshots
             drawn.Clear();
             var at = new Dictionary<int, float>();
             foreach (var e in State.Timeline)
@@ -344,20 +380,23 @@ namespace GridGame.App
                 };
                 at[g.EntryId] = Mathf.Clamp01(uOverride != null && uOverride.TryGetValue(g.EntryId, out var gu) ? gu : g.U);
             }
+            var created = new HashSet<int>();
             foreach (var kv in drawn)
                 if (!timelineIconViews.ContainsKey(kv.Key))
                 {
                     var icon = MakeTimelineIcon(kv.Value);
                     timelineIconViews[kv.Key] = icon;
                     timelineIcons.Add(icon);
+                    created.Add(kv.Key);
                 }
             foreach (var kv in timelineIconViews.ToList())
-                if (!drawn.ContainsKey(kv.Key)) { kv.Value.RemoveFromHierarchy(); timelineIconViews.Remove(kv.Key); }
+                if (!drawn.ContainsKey(kv.Key)) { kv.Value.RemoveFromHierarchy(); timelineIconViews.Remove(kv.Key); trayFlights.Remove(kv.Key); iconScaleNow.Remove(kv.Key); }
+            SyncTray(created);
             lastAt = at;
-            LayoutIcons(at);
             SyncGap(at, uOverride != null);
             SyncGuardCall();
             MarkNextAttacker(at);
+            LayoutIcons(at);
             SyncTimelineStatus();
             SyncCastRings(at);
             timelineSeeded = true;
@@ -393,9 +432,8 @@ namespace GridGame.App
                 var c = EntryColor(e);
                 var frame = icon.Q("tl-frame");
                 if (frame != null) SetBorder(frame, 5f, isNext ? IconBorder + 1f : IconBorder, isNext ? Palette.Gold : c);
-                icon.style.scale = new Scale(isNext ? new Vector2(NextScale, NextScale) : Vector2.one);
-                icon.EnableInClassList("tl-next", isNext);
-                float k = Halted(e) ? 0f : Mathf.Clamp01(1f - at[e.Id] * BattleConfig.BarSeconds / ApproachSeconds);
+                icon.EnableInClassList("tl-next", isNext); // its scale is LayoutIcons' (the tray shrinks it)
+                float k = Halted(e) || inTray.Contains(e.Id) ? 0f : Mathf.Clamp01(1f - at[e.Id] * BattleConfig.BarSeconds / ApproachSeconds);
                 approach[e.Id] = (c, k);
                 if (k > 0f) { if (glowing.Add(e.Id)) newGlow = true; }
                 else glowing.Remove(e.Id);
@@ -430,18 +468,24 @@ namespace GridGame.App
         }
 
         /// <summary>
-        /// Every icon sits on the same centre line at its u (owner direction 2026-10-10: never lift or bury one). Where
+        /// Every bar icon sits on the same centre line at its u (owner direction 2026-10-10: never lift or bury one). Where
         /// icons overlap they form a cluster, and each member gets its own beat on top: the front one rotates every 1.2 s.
+        /// Recovering icons sit in the tray instead (GG-T319); an icon mid-flight between the two eases from where its
+        /// flight began toward its live target.
         /// </summary>
         private void LayoutIcons(Dictionary<int, float> at)
         {
-            var entries = drawn.Values.Where(e => timelineIconViews.ContainsKey(e.Id) && at.ContainsKey(e.Id))
-                .OrderBy(e => at[e.Id]).ThenBy(e => e.Id).ToList();
+            var all = drawn.Values.Where(e => timelineIconViews.ContainsKey(e.Id) && at.ContainsKey(e.Id)).ToList();
+            var entries = all.Where(e => !inTray.Contains(e.Id)).OrderBy(e => at[e.Id]).ThenBy(e => e.Id).ToList();
+            var tray = all.Where(e => inTray.Contains(e.Id))
+                .OrderBy(e => recoverView.TryGetValue(e.Id, out var r) ? r.left : int.MaxValue).ThenBy(e => e.Id).ToList();
+            float now = Time.unscaledTime;
             foreach (var e in entries)
+                PlaceIcon(e, XOfU(at[e.Id]), TrackY, e.Id == nextActorEntry ? NextScale : 1f, 0f, now);
+            for (int i = 0; i < tray.Count; i++)
             {
-                var icon = timelineIconViews[e.Id];
-                icon.style.left = XOfU(at[e.Id]) - IconSpan / 2f;
-                icon.style.top = TrackY - IconSpan / 2f;
+                var (cx, cy) = TraySlot(i);
+                PlaceIcon(tray[i], cx, cy, TrayScale, 1f, now);
             }
             var cluster = new List<TimelineEntry>();
             void Flush()
@@ -460,6 +504,103 @@ namespace GridGame.App
                 lastX = x;
             }
             Flush();
+            for (int i = tray.Count - 1; i >= 0; i--) timelineIconViews[tray[i].Id].BringToFront(); // the soonest back on top
+            foreach (var id in trayFlights.Keys) if (timelineIconViews.TryGetValue(id, out var fv)) fv.BringToFront();
+        }
+
+        /// <summary>Centre of tray slot <paramref name="i"/>: left, top, bottom, right of the lattice; a fifth and on stack
+        /// a step up on the slots before them.</summary>
+        private static (float x, float y) TraySlot(int i)
+        {
+            float c = TrayCell, depth = i / 4;
+            var (dx, dy) = (i % 4) switch { 0 => (c / 2f, 0f), 1 => (c, -c / 2f), 2 => (c, c / 2f), _ => (1.5f * c, 0f) };
+            return (TrayX0 + dx, TrackY + dy - Space.S8 * depth);
+        }
+
+        /// <summary>Puts one icon at its target centre and scale, or partway there while a tray flight runs, and draws its
+        /// recovery ring (shown as far as the icon is in the tray).</summary>
+        private void PlaceIcon(TimelineEntry e, float cx, float cy, float scale, float trayK, float now)
+        {
+            var icon = timelineIconViews[e.Id];
+            float x = cx - IconSpan / 2f, y = cy - IconSpan / 2f, blend = trayK;
+            if (trayFlights.TryGetValue(e.Id, out var f))
+            {
+                float k = f.dur <= 0f ? 1f : Mathf.Clamp01((now - f.t0) / f.dur);
+                if (k >= 1f) trayFlights.Remove(e.Id);
+                else
+                {
+                    float ek = Tween.EaseInOut(k);
+                    x = Mathf.Lerp(f.x, x, ek);
+                    y = Mathf.Lerp(f.y, y, ek) - (trayK > 0.5f ? 34f : 0f) * Mathf.Sin(Mathf.PI * k); // a small hop into the tray
+                    scale = Mathf.Lerp(f.s, scale, ek);
+                    blend = Mathf.Lerp(1f - trayK, trayK, ek);
+                }
+            }
+            icon.style.left = x; icon.style.top = y;
+            icon.style.scale = new Scale(new Vector2(scale, scale));
+            iconScaleNow[e.Id] = scale;
+            var ring = icon.Q<RecoverRing>();
+            if (ring == null) return;
+            ring.style.display = blend > 0.01f ? DisplayStyle.Flex : DisplayStyle.None;
+            if (blend <= 0.01f) return;
+            ring.style.opacity = blend;
+            float frac = recoverView.TryGetValue(e.Id, out var r) && r.total > 0 ? r.left / (float)r.total : 0f;
+            ring.Set(frac, Color.Lerp(Palette.Text, Palette.Info, ringFlash.TryGetValue(e.Id, out var fl) ? fl : 0f));
+        }
+
+        /// <summary>GG-T319: recovery as the state has it, or <paramref name="aheadTicks"/> from now (a hold plays it forward).</summary>
+        private void RefreshRecoverView(int aheadTicks = 0)
+        {
+            recoverView.Clear();
+            if (State == null) return;
+            foreach (var e in State.Timeline)
+            {
+                if (!BattleEngine.InRecovery(e)) continue;
+                int left = aheadTicks > 0 ? BattleEngine.RecoverTicksAfter(State, e, aheadTicks) : e.RecoverTicks;
+                if (left > 0) recoverView[e.Id] = (left, Mathf.Max(left, e.RecoverTotalTicks));
+            }
+        }
+
+        /// <summary>
+        /// Moves icons between the bar and the tray as <see cref="recoverView"/> says: one that starts recovering flies
+        /// into the tray, one whose recovery ran out slides onto the bar at its entry (its u right now), each with its own
+        /// sound. Icons born this sync, and the opening layout, just appear where they belong.
+        /// </summary>
+        private void SyncTray(HashSet<int> created)
+        {
+            var now = new HashSet<int>(drawn.Values.Where(e => e.Kind == TimelineKind.Turn && recoverView.ContainsKey(e.Id)).Select(e => e.Id));
+            bool into = false, outOf = false;
+            foreach (var id in now) if (!inTray.Contains(id) && StartTrayFlight(id, created)) into = true;
+            foreach (var id in inTray) if (!now.Contains(id) && drawn.ContainsKey(id) && StartTrayFlight(id, created)) outOf = true;
+            inTray.Clear();
+            inTray.UnionWith(now);
+            if (into) App.Audio.Sfx("battle.slide", 0.45f, 0.8f); // tucked away to recover
+            if (outOf) App.Audio.Sfx("battle.slide", 0.6f, 1.35f); // back on the bar
+        }
+
+        private bool StartTrayFlight(int id, HashSet<int> created)
+        {
+            trayFlights.Remove(id);
+            if (!timelineSeeded || created.Contains(id) || !timelineIconViews.TryGetValue(id, out var icon)) return false;
+            if (!ReduceMotion)
+                trayFlights[id] = (icon.style.left.value.value, icon.style.top.value.value, iconScaleNow.TryGetValue(id, out var sc) ? sc : 1f,
+                    Time.unscaledTime, inTray.Contains(id) ? Timing.Standard : Timing.Emphasis);
+            return true;
+        }
+
+        /// <summary>GG-T319: pushback on a recovering icon lengthens its recovery: its ring winds back out, flashing.</summary>
+        private IEnumerator ExtendRecovery(int entryId, int ticks)
+        {
+            if (!recoverView.TryGetValue(entryId, out var r)) yield break;
+            yield return Tween.Run(0.3f, k =>
+            {
+                int add = Mathf.RoundToInt(ticks * Tween.EaseOut(k));
+                if (recoverView.ContainsKey(entryId)) recoverView[entryId] = (r.left + add, r.total + add);
+                ringFlash[entryId] = 1f - k * k;
+                if (lastAt != null) LayoutIcons(lastAt);
+            });
+            ringFlash.Remove(entryId);
+            if (lastAt != null) LayoutIcons(lastAt);
         }
 
         /// <summary>Why an enemy isn't moving: a badge on its timeline diamond for halting/immobilising effects and pushback stun.</summary>
@@ -472,7 +613,8 @@ namespace GridGame.App
                 var badge = timelineIcons.Q<VisualElement>("tl-status-" + e.Id);
                 var status = owner == null ? null : StatusOf(owner, e);
                 var art = icon.Q("tl-art");
-                if (status == null) { badge?.RemoveFromHierarchy(); if (art != null) art.style.opacity = 1f; continue; }
+                bool tray = inTray.Contains(e.Id);
+                if (status == null) { badge?.RemoveFromHierarchy(); if (art != null) art.style.opacity = tray ? 0.6f : 1f; continue; } // a tray icon reads dimmed
                 if (badge != null && badge.viewDataKey != status.Value.icon) { badge.RemoveFromHierarchy(); badge = null; }
                 if (badge == null)
                 {
@@ -481,8 +623,9 @@ namespace GridGame.App
                     badge.AddToClassList("tl-status");
                     badge.style.position = Position.Absolute;
                 }
-                badge.style.left = icon.style.left.value.value + IconSpan - 34f;
-                badge.style.top = icon.style.top.value.value + IconSpan - 34f;
+                float sc = iconScaleNow.TryGetValue(e.Id, out var isc) ? isc : 1f, off = (IconSpan / 2f - 14f) * sc - 20f;
+                badge.style.left = icon.style.left.value.value + IconSpan / 2f + off;
+                badge.style.top = icon.style.top.value.value + IconSpan / 2f + off;
                 badge.BringToFront();
                 if (art != null) art.style.opacity = 0.55f; // dimmed: it isn't moving
             }
@@ -500,6 +643,7 @@ namespace GridGame.App
         private void PulseTimeline()
         {
             if (State == null || board == null || timelineIcons == null || Paused) return;
+            if (trayFlights.Count > 0 && lastAt != null) { LayoutIcons(lastAt); SyncTimelineStatus(); } // tray flights run on this beat too
             float t = Time.unscaledTime;
             unitCue.Clear();
             foreach (var kv in approach)
@@ -552,6 +696,59 @@ namespace GridGame.App
                 slotHalo.style.unityBackgroundImageTintColor = lit ? EntryColor(se) : Palette.Gold;
                 slotHalo.style.opacity = 0.25f + 0.75f * k * pulse;
             }
+        }
+    }
+
+    /// <summary>
+    /// GG-T319: the countdown traced around a recovering icon's diamond, clockwise from its top vertex: the lit part is
+    /// the recovery still to run, over a dark track of the whole diamond.
+    /// </summary>
+    internal sealed class RecoverRing : VisualElement
+    {
+        private float frac = -1f;
+        private Color color = Color.white;
+
+        public RecoverRing(float span)
+        {
+            name = "tl-recover";
+            pickingMode = PickingMode.Ignore;
+            style.position = Position.Absolute;
+            style.left = style.top = 0f;
+            style.width = style.height = span;
+            style.display = DisplayStyle.None;
+            generateVisualContent += Draw;
+        }
+
+        public void Set(float f, Color c)
+        {
+            f = Mathf.Clamp01(f);
+            if (Mathf.Abs(f - frac) < 0.002f && c == color) return;
+            frac = f; color = c;
+            MarkDirtyRepaint();
+        }
+
+        private void Draw(MeshGenerationContext ctx)
+        {
+            var p = ctx.painter2D;
+            var r = contentRect;
+            var c = r.center;
+            float h = r.width / 2f + 7f; // just outside the diamond's tips (thick: it is read at tray scale)
+            var v = new[] { c + new Vector2(0f, -h), c + new Vector2(h, 0f), c + new Vector2(0f, h), c + new Vector2(-h, 0f) };
+            p.lineJoin = LineJoin.Round;
+            p.lineCap = LineCap.Round;
+            p.lineWidth = 15f;
+            p.strokeColor = Palette.Ink.WithA(0.8f);
+            p.BeginPath();
+            p.MoveTo(v[0]); p.LineTo(v[1]); p.LineTo(v[2]); p.LineTo(v[3]); p.ClosePath();
+            p.Stroke();
+            if (frac <= 0f) return;
+            p.lineWidth = 10f;
+            p.strokeColor = color;
+            p.BeginPath();
+            p.MoveTo(v[0]);
+            float rem = frac * 4f;
+            for (int i = 0; i < 4 && rem > 0f; i++, rem -= 1f) p.LineTo(Vector2.Lerp(v[i], v[(i + 1) % 4], Mathf.Min(1f, rem)));
+            p.Stroke();
         }
     }
 }

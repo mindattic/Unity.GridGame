@@ -224,12 +224,16 @@ namespace GridGame.Core.Battle
         public int Ticks;
         /// <summary>Snapshot of (entry id → u) after the advance segment, for smooth playback.</summary>
         public Dictionary<int, float> U = new Dictionary<int, float>();
+        /// <summary>GG-T319: turn icons still off the bar after the segment: entry id → (recovery ticks left, of total).</summary>
+        public Dictionary<int, (int Left, int Total)> Recover = new Dictionary<int, (int Left, int Total)>();
         public override string ToString() => $"TimelineAdvanced {Ticks}t";
     }
 
     public sealed class PushedBackEvent : BattleEvent
     {
         public int UnitId; public float FromU; public float ToU; public int StunTicks;
+        /// <summary>GG-T319: ticks added to a recovering (off-bar) icon's recovery; 0 when it was on the bar.</summary>
+        public int RecoverTicks;
         public override string ToString() => $"PushedBack {UnitId} {FromU:F2}->{ToU:F2} stun={StunTicks}";
     }
 

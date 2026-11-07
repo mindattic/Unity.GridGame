@@ -155,7 +155,7 @@ namespace GridGame.Core.Battle
                     if (u.IsCorpse) { o["corpseOf"] = u.CorpseOf; o["decayIn"] = u.DecayIn; }
                     if (u.PlateMax > 0) { o["plate"] = u.PlateHp; o["plateMax"] = u.PlateMax; o["facing"] = new JArray(u.Facing.X, u.Facing.Y); }
                 }
-                if (turn != null) { o["turnU"] = Math.Round(BattleEngine.BarU(s, turn), 4); o["stun"] = turn.StunTicks; }
+                if (turn != null) { o["turnU"] = Math.Round(BattleEngine.BarU(s, turn), 4); o["stun"] = turn.StunTicks; o["in_recovery"] = BattleEngine.InRecovery(turn); o["recover_seconds"] = Math.Round(Math.Max(0, turn.RecoverTicks) / (double)BattleConfig.TicksPerSecond, 2); }
                 if (cast != null) o["casting"] = new JObject { ["ability"] = cast.AbilityId, ["u"] = Math.Round(BattleEngine.BarU(s, cast), 4), ["target"] = cast.TargetUnitId };
                 return o;
             })),

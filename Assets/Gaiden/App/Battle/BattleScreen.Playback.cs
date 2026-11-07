@@ -93,6 +93,7 @@ namespace GridGame.App
             // Before the safety-net snap: did playback leave every token where the state says it stands? A miss here
             // means a beat was skipped or played out of order (the snap below would hide it as a jump).
             BoardAudit.Settled(AuditTokens(true));
+            RefreshRecoverView(); // GG-T319: the tray snaps to the true state with everything else
             SyncAll();
             BoardAudit.Synced(AuditTokens(true, rendered: true));
             while (Tween.Paused) yield return null;
@@ -1288,12 +1289,28 @@ namespace GridGame.App
             actingEntry = -1;
             var starts = lastAt != null ? new Dictionary<int, float>(lastAt) : new Dictionary<int, float>();
             float seconds = Mathf.Clamp(ta.Ticks / 40f, 0.18f, 0.45f);
+            // GG-T319: the tray follows the snapshot: rings wind down over the glide, and an icon whose recovery ran out
+            // in this stretch slides onto the bar as it goes.
+            var recStart = new Dictionary<int, (int left, int total)>(recoverView);
+            var recEnd = ta.Recover;
+            void Recover(float k)
+            {
+                if (recEnd == null) return;
+                recoverView.Clear();
+                foreach (var kv in recEnd)
+                {
+                    int from = recStart.TryGetValue(kv.Key, out var r0) ? r0.left : kv.Value.Left;
+                    recoverView[kv.Key] = (Mathf.Max(1, Mathf.RoundToInt(Mathf.Lerp(from, kv.Value.Left, k))), kv.Value.Total);
+                }
+            }
             yield return Tween.Run(seconds, k =>
             {
+                Recover(k);
                 var at = new Dictionary<int, float>();
                 foreach (var kv in ta.U) at[kv.Key] = Mathf.Lerp(starts.TryGetValue(kv.Key, out var v) ? v : kv.Value, kv.Value, k);
                 SyncTimeline(at); // lanes, overtakes, badges and cast rings follow the glide
             }, Tween.EaseInOut);
+            Recover(1f);
             SyncTimeline(ta.U);
         }
 
@@ -1309,7 +1326,11 @@ namespace GridGame.App
         {
             var entry = State.TurnEntryOf(pb.UnitId);
             App.Audio.Sfx("battle.slide", 0.8f, 0.8f);
-            if (entry != null && timelineIconViews.ContainsKey(entry.Id))
+            if (entry != null && inTray.Contains(entry.Id))
+                // GG-T319: off the bar, so it recovers longer: its tray ring winds back out instead of a bar icon moving.
+                App.StartCoroutine(ExtendRecovery(entry.Id, pb.RecoverTicks > 0 ? pb.RecoverTicks
+                    : Mathf.Max(1, Mathf.RoundToInt((pb.ToU - pb.FromU) * BattleConfig.BarSeconds * BattleConfig.TicksPerSecond))));
+            else if (entry != null && timelineIconViews.ContainsKey(entry.Id))
                 App.StartCoroutine(GlideOne(entry.Id, pb.FromU, pb.ToU, 0.3f));
             yield return FloatText(pb.UnitId, "Pushback!", Palette.Info, 0.12f, 46);
         }
@@ -1340,11 +1361,14 @@ namespace GridGame.App
             var entry = State.TurnEntryOf(ts.UnitId);
             if (entry != null && timelineIconViews.ContainsKey(entry.Id))
             {
-                // It takes the prominence slot for its turn (GG-T287) while its bar icon starts the next lap at the far end.
+                // It takes the prominence slot for its turn (GG-T287) while its bar icon flies into the recovery tray
+                // (GG-T319) with a full ring; the next TimelineAdvanced snapshot carries its real recovery from there.
                 actingEntry = entry.Id;
                 var reset = new Dictionary<int, float>();
                 foreach (var e in State.Timeline) reset[e.Id] = lastAt != null && lastAt.TryGetValue(e.Id, out var lu) ? lu : BattleEngine.BarU(State, e);
-                reset[entry.Id] = BattleEngine.BarU(State, entry); // acted: back to the far end of its lap (GG-T286)
+                reset[entry.Id] = BattleEngine.BarU(State, entry);
+                int total = Mathf.Max(BattleConfig.TicksPerSecond, entry.RecoverTotalTicks);
+                recoverView[entry.Id] = (total, total);
                 SyncTimeline(reset);
                 if (!ReduceMotion) App.StartCoroutine(Tween.Pop(timelineSlot, 1.3f, Timing.Standard));
             }

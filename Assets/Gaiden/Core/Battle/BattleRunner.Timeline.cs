@@ -53,7 +53,11 @@ namespace GridGame.Core.Battle
         {
             if (ticksSinceReport <= 0) return;
             var e = new TimelineAdvancedEvent { Ticks = ticksSinceReport };
-            foreach (var t in S.Timeline) e.U[t.Id] = BattleEngine.BarU(S, t);
+            foreach (var t in S.Timeline)
+            {
+                e.U[t.Id] = BattleEngine.BarU(S, t);
+                if (BattleEngine.InRecovery(t)) e.Recover[t.Id] = (t.RecoverTicks, Math.Max(t.RecoverTicks, t.RecoverTotalTicks)); // GG-T319
+            }
             Emit(e);
             ticksSinceReport = 0;
         }

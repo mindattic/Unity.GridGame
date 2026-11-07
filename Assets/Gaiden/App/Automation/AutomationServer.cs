@@ -957,7 +957,7 @@ namespace GridGame.App.Automation
                         bar = u.IsHero ? Enumerable.Range(0, u.Bar.Count).Select(i => (u.Bar[i].AbilityId ?? u.Bar[i].ItemId ?? "-") + "=" + BattleEngine.GetSlotStatus(s, u.Id, i)).ToList() : null,
                     }).ToList(),
                     window_seconds = BattleEngine.TurnTicks(s) / (float)BattleConfig.TicksPerSecond, to_act = BattleEngine.HeroesLeftToAct(s).Select(h => h.Id).ToList(), too_little_time = BattleEngine.TooLittleTime(s), // GG-T308/GG-T311
-                    timeline = s.Timeline.Select(e => new { e.Id, kind = e.Kind.ToString(), owner = e.OwnerId, u = Math.Round(BattleEngine.BarU(s, e), 3), e.AbilityId }).ToList(),
+                    timeline = s.Timeline.Select(e => new { e.Id, kind = e.Kind.ToString(), owner = e.OwnerId, u = Math.Round(BattleEngine.BarU(s, e), 3), e.AbilityId, in_recovery = BattleEngine.InRecovery(e), recover_seconds = Math.Round(Math.Max(0, e.RecoverTicks) / (double)BattleConfig.TicksPerSecond, 2), entry_u = Math.Round(BattleEngine.EntryBarU(s, e), 3) }).ToList(),
                     pickups = s.Pickups.Select(p => new { p.Id, kind = p.PickupId, x = p.At.X, y = p.At.Y, left = p.ActionsLeft }).ToList(), // GG-T228
                     results = new { s.Results.Coins, s.Results.Xp, s.Results.ActionsTaken },
                 };

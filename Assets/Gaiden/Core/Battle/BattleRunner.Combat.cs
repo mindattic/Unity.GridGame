@@ -513,6 +513,7 @@ namespace GridGame.Core.Battle
             if (entry != null)
             {
                 float from = BattleEngine.BarU(S, entry);
+                int recoverAdded = entry.RecoverTicks > 0 ? ticks : 0;
                 if (entry.RecoverTicks > 0) { entry.RecoverTicks += ticks; entry.RecoverTotalTicks += ticks; } // GG-T318: still off the bar, so it recovers longer and its entry keeps reading its Speed
                 else
                 {
@@ -521,7 +522,7 @@ namespace GridGame.Core.Battle
                     if (ip < 0) { entry.StunTicks += (-ip + rate - 1) / rate; ip = 0; }
                     entry.Ip = ip;
                 }
-                Emit(new PushedBackEvent { UnitId = target.Id, FromU = from, ToU = BattleEngine.BarU(S, entry), StunTicks = entry.StunTicks });
+                Emit(new PushedBackEvent { UnitId = target.Id, FromU = from, ToU = BattleEngine.BarU(S, entry), StunTicks = entry.StunTicks, RecoverTicks = recoverAdded });
                 return;
             }
             var cast = S.CastEntryOf(target.Id);
