@@ -19,6 +19,18 @@ Self-play harness: launches the development player with the automation endpoint 
     python tools/harness.py shot NAME        # screenshot the running player
     python tools/harness.py call PATH [k=v]  # raw endpoint call, e.g. call state
 
+    --headless anywhere in the args (GG-T314): no popup window. Passes Unity's native -batchmode
+    -nographics to the launched player instead of a real window, for bot-driven runs that are never
+    watched (endless, testmode, boardaudit, stress, clips, durability, campaign, crucible, fullloop,
+    smoke, ...). The automation HTTP endpoint and game logic run the same either way; only pixels
+    are gone. A command that screenshots (sweep, aspects, vfxsheet, storyarc, profiles, recruits,
+    camptips, firstbrew/firstforge/firstarmor/firstenchant/firstskill, bestiary, orbs, pause,
+    outline, shot) fails fast with a clear error the moment it tries to, rather than silently.
+    Verified live (board_audit, GG-T314): the process opens with MainWindowHandle 0 and still
+    completes a real bot battle through the automation endpoint. Don't combine with --capture or
+    endless's own --capture: MindAttic.Capture needs a GPU and logs (non-fatal) "AsyncGPUReadback is
+    not supported on Null" under -nographics instead of recording.
+
 Screenshots land in artifacts/<run>/. Design coordinates are 1170x2532 (top-left origin).
 """
 import hashlib
@@ -42,6 +54,12 @@ EXE = os.path.join(ROOT, "Build", "Windows", "GridGameGaiden.exe")
 _DEFAULT_PORT = 20000 + (int(hashlib.sha1(ROOT.encode()).hexdigest(), 16) % 20000)
 PORT = int(os.environ.get("GAIDEN_PORT", str(_DEFAULT_PORT)))
 BASE = f"http://127.0.0.1:{PORT}"
+
+# GG-T314: set from __main__ when --headless is anywhere in argv (stripped before each subcommand's
+# own parsing, since none of them expect it positionally). launch() and endless()'s own inline args
+# read this to swap a real window for Unity's -batchmode -nographics; shot() refuses outright rather
+# than fail confusingly against a window that was never opened.
+HEADLESS = False
 
 BOARD_LEFT, BOARD_TOP, TILE = 45, 450, 180
 
@@ -91,6 +109,8 @@ def launch(run, width=585, height=1266, extra=(), fresh=False, muted=True):
             "-logFile", os.path.join(art, "player.log"), *extra]
     if muted:
         args.append("-muted")
+    if HEADLESS:
+        args += ["-batchmode", "-nographics"]
     subprocess.Popen(args, cwd=ROOT)
     for _ in range(60):
         if alive():
@@ -100,6 +120,9 @@ def launch(run, width=585, height=1266, extra=(), fresh=False, muted=True):
 
 
 def shot(name):
+    if HEADLESS:
+        raise RuntimeError(f"shot({name!r}): --headless runs -nographics, no window to screenshot; "
+                            "drop --headless for this command, or use a bot-only one (endless/testmode/boardaudit/stress/...).")
     return call("screenshot", name=name)["file"]
 
 
@@ -1985,6 +2008,8 @@ def endless(count, seed=None, capture=False, run="endless", speed=None,
         args = [EXE, "-automation", str(PORT), "-artifacts", art, "-saveRoot", saves,
                 "-screen-width", "585", "-screen-height", "1266", "-screen-fullscreen", "0",
                 "-logFile", log_path, "-muted", "-demo", "-endless", "-seed", str(base), "-count", str(remaining), *extra]
+        if HEADLESS:
+            args += ["-batchmode", "-nographics"]
         print(f"endless: launch {k}: seeds {base}..{base + remaining - 1} ({remaining} encounter{'s' if remaining != 1 else ''})")
         proc = subprocess.Popen(args, cwd=ROOT)
         offset, partial = 0, ""
@@ -2222,6 +2247,9 @@ def _row_texts():
 
 
 if __name__ == "__main__":
+    if "--headless" in sys.argv:
+        HEADLESS = True
+        sys.argv = [a for a in sys.argv if a != "--headless"]
     cmd = sys.argv[1] if len(sys.argv) > 1 else "smoke"
     if cmd == "smoke":
         smoke(sys.argv[2] if len(sys.argv) > 2 else "smoke")
