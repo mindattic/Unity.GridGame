@@ -282,20 +282,24 @@ namespace GridGame.Core.Battle
         }
 
         /// <summary>
-        /// GG-T311 (§2.0): heroes go first in the round. A fresh wave's enemy turn icons are held back so none reaches the
-        /// left edge sooner than <see cref="BattleConfig.OpeningWindowSeconds"/> (a fast foe's random head start is
-        /// trimmed, at most to the start of the bar — a foe too fast for that gets one full lap; its spread against the others is
-        /// otherwise kept), so the party's first window is a real one.
+        /// GG-T311 (§2.0): heroes go first in the round. GG-T318: a fresh wave's foes are scheduled one by one, in entry
+        /// order. Each starts at its Speed's entry, is held so it acts no sooner than
+        /// <see cref="BattleConfig.OpeningWindowSeconds"/>, and is spaced against the foes already placed, so the party's
+        /// first window is a real one and the wave doesn't arrive as one clump.
         /// </summary>
         private void OpenPartyWindow()
         {
             int need = BattleEngine.NeedTicks(BattleConfig.OpeningWindowSeconds);
             S.Rally = 0;
+            var fresh = new List<TimelineEntry>();
             foreach (var e in S.Timeline)
+                if (e.Kind == TimelineKind.Turn && S.UnitById(e.OwnerId) is Unit u && u.Team == Team.Enemy && !u.IsIndependent && u.Alive)
+                    fresh.Add(e);
+            var unscheduled = new HashSet<TimelineEntry>(fresh);
+            foreach (var e in fresh)
             {
-                if (e.Kind != TimelineKind.Turn || !(S.UnitById(e.OwnerId) is Unit u) || u.IsHero || !u.Alive) continue;
-                int maxIp = BattleConfig.BarLength - BattleEngine.TurnRatePerTick(S, u) * need;
-                if (e.Ip > maxIp) e.Ip = Math.Max(0, maxIp);
+                unscheduled.Remove(e);
+                ScheduleReentry(e, S.UnitById(e.OwnerId), 0f, space: true, floorTicks: need, unscheduled: unscheduled);
             }
         }
 
@@ -368,13 +372,11 @@ namespace GridGame.Core.Battle
             if (def.ArmorPlate > 0) u.PlateHp = u.PlateMax = Math.Max(1, (int)Math.Round(def.ArmorPlate * (1f + BattleConfig.PlatePerLevel * (u.Level - 1)) * hpScale));
             if (!AddUnit(u)) return null;
             if (u.PlateMax > 0) FaceTarget(u, false);
-            S.Timeline.Add(new TimelineEntry
-            {
-                Id = S.NextEntryId++,
-                Kind = TimelineKind.Turn,
-                OwnerId = u.Id,
-                Ip = S.Rng.Range(0, BattleConfig.SpawnStaggerIp + 1),
-            });
+            var entry = new TimelineEntry { Id = S.NextEntryId++, Kind = TimelineKind.Turn, OwnerId = u.Id };
+            S.Timeline.Add(entry);
+            // GG-T318: a foe arriving mid-battle (reinforcement, egg, risen remains) enters at its Speed's entry, spaced.
+            // A wave's opening spawns are rescheduled together by OpenPartyWindow.
+            ScheduleReentry(entry, u, 0f, space: true);
             if (!def.HasTag("Remains")) S.Results.Seen.Add(def.Id);
             return u;
         }

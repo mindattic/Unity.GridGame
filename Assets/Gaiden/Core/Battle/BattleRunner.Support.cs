@@ -185,7 +185,7 @@ namespace GridGame.Core.Battle
             {
                 float from = BattleEngine.BarU(S, turn);
                 turn.StunTicks = 0;
-                turn.Ip = Math.Min(BattleConfig.BarLength, turn.Ip + ticks * BattleEngine.TurnRatePerTick(S, t));
+                RushTurn(turn, t, ticks);
                 Emit(new HastenedEvent { EntryId = turn.Id, UnitId = t.Id, FromU = from, ToU = BattleEngine.BarU(S, turn) });
                 return;
             }

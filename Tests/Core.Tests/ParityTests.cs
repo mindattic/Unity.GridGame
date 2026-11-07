@@ -66,7 +66,7 @@ namespace GridGame.Tests
         {
             var db = Mini();
             var (s, _) = Battle(db, Stage(("goblin", 0, 3), ("goblin", 2, 3)), ("knight", 1, 3), ("cleric", 5, 7));
-            s.TurnEntryOf(s.Units.First(u => u.Def.Id == "goblin").Id).Ip = 999;
+            s.TurnEntryOf(s.Units.First(u => u.Def.Id == "goblin").Id).Ip = BattleConfig.BarLength - 1;
             var ev = BattleEngine.Apply(s, new ShieldCommand());
             Assert.That(ev.Any(e => e is PincerFormedEvent p && p.Team == Team.Enemy), Is.True);
             Assert.That(ev.Any(e => e is OrbMintedEvent o && (o.Reason == "pincer" || o.Reason == "support")), Is.False);
@@ -79,7 +79,7 @@ namespace GridGame.Tests
             db.Classes["boss"].MoveRange = 1;
             var (s, _) = Battle(db, Stage(("boss", 0, 0)), ("knight", 2, 0), ("cleric", 5, 0));
             var boss = Enemy(s, "boss");
-            s.TurnEntryOf(boss.Id).Ip = 999;
+            s.TurnEntryOf(boss.Id).Ip = BattleConfig.BarLength - 1;
             var ev = BattleEngine.Apply(s, new ShieldCommand());
             Assert.That(boss.Pos, Is.EqualTo(new Coord(1, 0)));
             Assert.That(Hero(s, "knight").Pos, Is.EqualTo(new Coord(0, 0)));
@@ -112,7 +112,7 @@ namespace GridGame.Tests
             var (s, _) = Battle(db, Stage(("wolf", 2, 3)), ("knight", 1, 3), ("cleric", 3, 3));
             db.Classes["wolf"].MoveRange = 0;
             Hero(s, "cleric").Hp = 5;
-            s.TurnEntryOf(Enemy(s, "wolf").Id).Ip = 999;
+            s.TurnEntryOf(Enemy(s, "wolf").Id).Ip = BattleConfig.BarLength - 1;
             var ev = BattleEngine.Apply(s, new ShieldCommand());
             var melee = ev.OfType<AttackEvent>().First(a => a.IsMelee);
             Assert.That(melee.TargetId, Is.EqualTo(Hero(s, "cleric").Id));
@@ -124,7 +124,7 @@ namespace GridGame.Tests
             var db = Mini();
             db.Classes["wolf"].MoveRange = 2;
             var (s, _) = Battle(db, Stage(("wolf", 0, 0)), ("knight", 0, 7), ("cleric", 5, 7));
-            s.TurnEntryOf(Enemy(s, "wolf").Id).Ip = 999;
+            s.TurnEntryOf(Enemy(s, "wolf").Id).Ip = BattleConfig.BarLength - 1;
             var ev = BattleEngine.Apply(s, new ShieldCommand());
             Assert.That(ev.OfType<SteppedEvent>().Count(st => st.UnitId == Enemy(s, "wolf").Id), Is.EqualTo(2));
         }
@@ -155,23 +155,20 @@ namespace GridGame.Tests
 
         // ── Timeline ────────────────────────────────────────────────────────────
 
-        [Test] // US-043
-        public void Timeline_rate_is_linear_in_speed_with_no_zone_crawl()
+        [Test] // US-043, GG-T318: one rate for every icon; Speed moves where it re-enters, not how fast it travels
+        public void Timeline_rate_ignores_speed_and_speed_moves_the_entry_instead()
         {
             var db = Mini();
             var (s, _) = Battle(db, Stage(("wolf", 0, 0)), ("knight", 5, 7), ("cleric", 4, 7));
             var wolf = Enemy(s, "wolf");
             var e = s.TurnEntryOf(wolf.Id);
-            e.Ip = 0;
+            e.Ip = BattleConfig.BarLength / 2;
             int speed10 = BattleEngine.TicksUntilTurn(s, wolf.Id);
-            Assert.That(speed10, Is.EqualTo((int)Math.Ceiling(1000.0 / BattleEngine.TurnRatePerTick(s, wolf)))); // one rate the whole way (GG-T286)
+            Assert.That(speed10, Is.EqualTo((int)Math.Ceiling(BattleConfig.BarLength / 2.0 / BattleConfig.BaseIpPerTick)));
+            int entry10 = BattleEngine.EntryIp(wolf);
             wolf.LevelStats.Speed = 20;
-            int speed20 = BattleEngine.TicksUntilTurn(s, wolf.Id);
-            Assert.That(speed20 < speed10, Is.True);
-            e.Ip = 650; // where the old Zone began: Speed still matters there
-            int fastLate = BattleEngine.TicksUntilTurn(s, wolf.Id);
-            wolf.LevelStats.Speed = 5;
-            Assert.That(BattleEngine.TicksUntilTurn(s, wolf.Id), Is.GreaterThan(fastLate));
+            Assert.That(BattleEngine.TicksUntilTurn(s, wolf.Id), Is.EqualTo(speed10), "the same place on the bar acts at the same time");
+            Assert.That(BattleEngine.EntryIp(wolf), Is.GreaterThan(entry10), "but a faster foe re-enters further left");
         }
 
         [Test] // US-057
@@ -231,7 +228,7 @@ namespace GridGame.Tests
             db.Abilities["zap"] = new AbilityDef { Id = "zap", Name = "Zap", Kind = AbilityKind.Spell, BaseDamage = 1, Shape = TargetShape.SingleActor, Mode = TargetMode.PickActor, Filter = TargetFilter.EnemyOnly, DamageType = DamageType.Arcane };
             var (s, _) = Battle(db, Stage(("wolf", 2, 0)), ("knight", 5, 7), ("mage", 4, 7));
             var wolf = Enemy(s, "wolf");
-            s.TurnEntryOf(wolf.Id).Ip = 999;
+            s.TurnEntryOf(wolf.Id).Ip = BattleConfig.BarLength - 1;
             s.Timeline.Add(new TimelineEntry { Id = 501, Kind = TimelineKind.Cast, OwnerId = Hero(s, "mage").Id, CasterTeam = Team.Hero, AbilityId = "zap", RemainingTicks = 1, TotalCastTicks = 10, TargetUnitId = wolf.Id, TargetTile = wolf.Pos });
             var ev = BattleEngine.Apply(s, new ShieldCommand());
             int cast = ev.FindIndex(e => e is AbilityResolvedEvent r && r.AbilityId == "zap");
@@ -239,12 +236,16 @@ namespace GridGame.Tests
             Assert.That(cast >= 0 && turn >= 0 && cast < turn, Is.True);
         }
 
-        [Test] // US-052
-        public void Wave_icons_start_with_a_bounded_random_head_start()
+        [Test] // US-052, GG-T318: a wave's icons start at their Speed's entry, none before the opening window
+        public void Wave_icons_start_at_their_entry_and_never_inside_the_opening_window()
         {
             var db = Mini();
             var (s, _) = Battle(db, Stage(("tank", 0, 0), ("tank", 1, 0), ("tank", 2, 0), ("tank", 3, 0)), ("knight", 5, 7), ("cleric", 4, 7));
-            foreach (var e in s.Timeline) Assert.That(e.Ip, Is.InRange(0, BattleConfig.SpawnStaggerIp));
+            foreach (var e in s.Timeline)
+            {
+                Assert.That(e.Ip, Is.EqualTo(BattleEngine.EntryIp(s.UnitById(e.OwnerId))));
+                Assert.That(BattleEngine.TicksUntilAct(s, e), Is.GreaterThanOrEqualTo(BattleEngine.NeedTicks(BattleConfig.OpeningWindowSeconds)));
+            }
         }
 
         // ── Mana ────────────────────────────────────────────────────────────────
@@ -426,7 +427,7 @@ namespace GridGame.Tests
             var (s, _) = Battle(db, Stage(("wolf", 2, 2)), ("knight", 5, 7), ("cleric", 4, 7));
             var wolf = Enemy(s, "wolf");
             wolf.Buffs.Add(new BuffInstance { Def = db.Buffs["sleep"], Remaining = 3 });
-            s.TurnEntryOf(wolf.Id).Ip = 999;
+            s.TurnEntryOf(wolf.Id).Ip = BattleConfig.BarLength - 1;
             var ev = BattleEngine.Apply(s, new ShieldCommand());
             Assert.That(ev.Any(e => e is TurnSkippedEvent t && t.UnitId == wolf.Id && t.Reason == "asleep"), Is.True);
         }
@@ -840,7 +841,7 @@ namespace GridGame.Tests
             var (s, _) = Battle(db, Stage(("witch", 2, 2)), ("knight", 2, 3), ("cleric", 5, 7));
             var witch = Enemy(s, "witch");
             Assert.That(EnemyPlanner.PlanCast(s, witch, false), Is.Null); // adjacent: normally melee
-            s.TurnEntryOf(witch.Id).Ip = 999;
+            s.TurnEntryOf(witch.Id).Ip = BattleConfig.BarLength - 1;
             var ev = BattleEngine.Apply(s, new ShieldCommand());
             Assert.That(ev.Any(e => e is CastQueuedEvent q && q.IsCharge), Is.True);
         }

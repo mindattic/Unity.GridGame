@@ -68,7 +68,7 @@ namespace GridGame.Tests
             var boss = Enemy(s, "boss");
             var knight = Hero(s, "knight");
             // Force the boss to step right into the knight's lane.
-            s.TurnEntryOf(boss.Id).Ip = 999;
+            s.TurnEntryOf(boss.Id).Ip = BattleConfig.BarLength - 1;
             BattleEngine.Apply(s, new ShieldCommand());
             AssertInvariants(s);
             if (boss.Pos == new Coord(1, 0)) Assert.That(knight.Pos, Is.EqualTo(new Coord(0, 1)));
@@ -81,7 +81,7 @@ namespace GridGame.Tests
             db.Classes["witch"].ChargeShape = ChargeShape.Line;
             db.Abilities["charge_bolt"].BaseDamage = 5;
             var (s, _) = Battle(db, Stage(("witch", 0, 0)), ("knight", 4, 0), ("cleric", 5, 7));
-            s.TurnEntryOf(Enemy(s, "witch").Id).Ip = 999;
+            s.TurnEntryOf(Enemy(s, "witch").Id).Ip = BattleConfig.BarLength - 1;
             var ev = BattleEngine.Apply(s, new ShieldCommand());
             var q = ev.OfType<CastQueuedEvent>().Single();
             Assert.That(q.LineTiles, Is.Not.Null);
@@ -108,7 +108,7 @@ namespace GridGame.Tests
                 BattleEngine.Apply(s, new UseSlotCommand { HeroId = mage.Id, Slot = 0, Target = new Coord(3, 5) });
                 if (s.CastEntryOf(mage.Id) == null) continue;
                 var wolf = Enemy(s, "wolf");
-                s.TurnEntryOf(wolf.Id).Ip = 999;
+                s.TurnEntryOf(wolf.Id).Ip = BattleConfig.BarLength - 1;
                 var ev = BattleEngine.Apply(s, new ShieldCommand());
                 sawClutch = ev.Any(e => e is ClutchEvent);
             }
@@ -180,7 +180,7 @@ namespace GridGame.Tests
             Assert.That(BattleEngine.IsArmored(s, head), Is.True);
             Assert.That(BattleEngine.IsArmored(s, segs.Last()), Is.False);
             var headBefore = head.Pos;
-            s.TurnEntryOf(head.Id).Ip = 999;
+            s.TurnEntryOf(head.Id).Ip = BattleConfig.BarLength - 1;
             BattleEngine.Apply(s, new ShieldCommand());
             if (head.Pos != headBefore) Assert.That(segs[0].Pos, Is.EqualTo(headBefore));
             AssertInvariants(s);
@@ -194,7 +194,7 @@ namespace GridGame.Tests
             db.Classes["wolf"].Trap = "snare";
             db.Classes["wolf"].MoveRange = 0;
             var (s, _) = Battle(db, Stage(("wolf", 2, 2)), ("knight", 2, 7), ("cleric", 5, 7));
-            s.TurnEntryOf(Enemy(s, "wolf").Id).Ip = 999;
+            s.TurnEntryOf(Enemy(s, "wolf").Id).Ip = BattleConfig.BarLength - 1;
             var ev = BattleEngine.Apply(s, new ShieldCommand());
             var placed = ev.OfType<TrapPlacedEvent>().Single();
             var k = Hero(s, "knight");
@@ -330,14 +330,19 @@ namespace GridGame.Tests
         }
 
         [Test]
-        public void A_fast_enemy_overtakes_a_slow_one_during_the_windup()
+        public void A_fast_enemy_that_acted_with_a_slow_one_comes_back_first()
         {
+            // GG-T318: both recover the same time off the bar, but the faster one re-enters further left.
             var db = Mini();
             var (s, _) = Battle(db, Stage(("wolf", 0, 0), ("tank", 5, 0)), ("knight", 5, 7), ("cleric", 4, 7));
             var wolf = Enemy(s, "wolf"); var tank = Enemy(s, "tank");
             wolf.LevelStats.Speed = 18; tank.LevelStats.Speed = 8;
-            s.TurnEntryOf(wolf.Id).Ip = 0;     // fast one starts at the very back
-            s.TurnEntryOf(tank.Id).Ip = 300;   // slow one has a head start
+            foreach (var u in new[] { wolf, tank })
+            {
+                var e = s.TurnEntryOf(u.Id);
+                e.Ip = BattleEngine.EntryIp(u);
+                e.RecoverTicks = BattleEngine.NeedTicks(BattleConfig.RecoverBaseSeconds);
+            }
             Assert.That(BattleEngine.TicksUntilTurn(s, wolf.Id) < BattleEngine.TicksUntilTurn(s, tank.Id), Is.True);
         }
 

@@ -23,7 +23,7 @@ namespace GridGame.Tests
         {
             var db = Mini();
             var (s, _) = Battle(db, Stage(("wolf", 0, 0)), ("knight", 5, 7), ("cleric", 4, 7));
-            s.Timeline[0].Ip = 100; // GG-T311: off IP 0, where a lap at the faster bar would land it again after it acts
+            s.Timeline[0].Ip = BattleConfig.BarLength / 10; // GG-T311: off IP 0, where a lap at the faster bar would land it again after it acts
             long c0 = s.Clock;
             int ip0 = s.Timeline[0].Ip;
             int turn = BattleEngine.TurnTicks(s);
@@ -122,7 +122,7 @@ namespace GridGame.Tests
             var (s, _) = Battle(db, Stage(("wolf", 0, 0), ("tank", 2, 0)), ("knight", 5, 7), ("cleric", 4, 7));
             var wolf = s.Units.Single(u => u.Def.Id == "wolf");
             var tank = s.Units.Single(u => u.Def.Id == "tank");
-            s.TurnEntryOf(wolf.Id).Ip = 900;
+            s.TurnEntryOf(wolf.Id).Ip = BattleConfig.BarLength * 9 / 10;
             s.TurnEntryOf(tank.Id).Ip = 0;
             Assert.That(BattleEngine.ActionsUntilTurn(s, wolf.Id), Is.EqualTo(0)); // acts at the end of this turn
             Assert.That(BattleEngine.ActionsUntilTurn(s, tank.Id), Is.GreaterThanOrEqualTo(1)); // the fast wolf goes first, maybe more than once
@@ -192,24 +192,27 @@ namespace GridGame.Tests
             var (s, _) = Battle(db, Stage(("tank", 2, 3)), ("knight", 1, 3), ("cleric", 3, 4));
             var tank = s.Units.Single(u => u.Def.Id == "tank");
             var entry = s.TurnEntryOf(tank.Id);
-            entry.Ip = 920;
+            entry.Ip = BattleConfig.BarLength - BattleConfig.BaseIpPerTick * 12; // 1.2 s out: near the left, with room for a drag
             var ev = BattleEngine.Apply(s, new MoveCommand { HeroId = Hero(s, "cleric").Id, Path = P((3, 3)) });
             var push = ev.OfType<PushedBackEvent>().Single();
             Assert.That(push.ToU > push.FromU, Is.True); // further right = acts later (GG-T286)
         }
 
         [Test]
-        public void Pincer_pushback_works_far_from_the_left_edge_too()
+        public void Pincer_pushback_reaches_a_foe_still_recovering_off_the_bar()
         {
             var db = Mini();
-            db.Classes["tank"].BaseStats.Speed = 10; // a 6.3 s lap: on the drawn bar even from IP 0
             var (s, _) = Battle(db, Stage(("tank", 2, 3)), ("knight", 1, 3), ("cleric", 3, 4));
             var tank = s.Units.Single(u => u.Def.Id == "tank");
-            s.TurnEntryOf(tank.Id).Ip = 0; // just acted: no IP left to lose, so it stands still for the push instead
+            var e = s.TurnEntryOf(tank.Id);
+            e.Ip = BattleEngine.EntryIp(tank);
+            e.RecoverTicks = 5; // GG-T318: it just acted and hasn't re-entered yet
+            long clock = s.Clock;
             var ev = BattleEngine.Apply(s, new MoveCommand { HeroId = Hero(s, "cleric").Id, Path = P((3, 3)) });
             var push = ev.OfType<PushedBackEvent>().Single(p => p.UnitId == tank.Id);
-            Assert.That(push.ToU - push.FromU, Is.EqualTo(BattleConfig.PincerPushbackSeconds / BattleConfig.BarSeconds).Within(1e-4));
-            Assert.That(push.StunTicks, Is.EqualTo(Formulas.SecondsToTicks(BattleConfig.PincerPushbackSeconds)));
+            Assert.That(push.StunTicks, Is.EqualTo(0), "recovering longer, not stunned");
+            Assert.That(e.Ip, Is.EqualTo(BattleEngine.EntryIp(tank)), "it still re-enters where its Speed puts it");
+            Assert.That(e.RecoverTicks, Is.EqualTo(5 + Formulas.SecondsToTicks(BattleConfig.PincerPushbackSeconds) - (int)(s.Clock - clock)));
         }
 
         [Test]
@@ -373,7 +376,7 @@ namespace GridGame.Tests
             m.Bar[0] = new AbilitySlot { AbilityId = "quicken" };
             s.Bank.Add(1);
             var tank = s.Units.Single(u => u.Def.Id == "tank");
-            s.TurnEntryOf(tank.Id).Ip = 850; // Speed 1: 75 ticks out, on the drawn bar
+            s.TurnEntryOf(tank.Id).Ip = BattleConfig.BarLength - BattleConfig.BaseIpPerTick * 50; // 5 s out, on the drawn bar
             var ev = BattleEngine.Apply(s, new UseSlotCommand { HeroId = m.Id, Slot = 0, Target = tank.Pos });
             var h = ev.OfType<HastenedEvent>().Single();
             Assert.That(h.ToU, Is.LessThan(h.FromU)); // toward the left edge (GG-T286)
@@ -385,7 +388,7 @@ namespace GridGame.Tests
             var db = Mini();
             var (s, _) = Battle(db, Stage(("witch", 2, 0)), ("knight", 5, 7), ("cleric", 0, 7));
             var witch = s.Units.Single(u => u.Def.Id == "witch");
-            s.TurnEntryOf(witch.Id).Ip = 990;
+            s.TurnEntryOf(witch.Id).Ip = BattleConfig.BarLength * 99 / 100;
             var ev = BattleEngine.Apply(s, new ShieldCommand());
             Assert.That(ev.Any(e => e is CastQueuedEvent q && q.IsCharge), Is.True);
             var cast = s.CastEntryOf(witch.Id);
@@ -521,7 +524,7 @@ namespace GridGame.Tests
                 var s = BattleEngine.Create(db, setup, new());
                 var knight = Hero(s, "knight");
                 var wolf = s.Units.Single(u => u.Def.Id == "wolf");
-                s.TurnEntryOf(wolf.Id).Ip = 999;
+                s.TurnEntryOf(wolf.Id).Ip = BattleConfig.BarLength - 1;
                 var ev = BattleEngine.Apply(s, new ShieldCommand());
                 return ev.OfType<DamagedEvent>().Where(d => d.TargetId == knight.Id).Sum(d => d.Amount);
             }

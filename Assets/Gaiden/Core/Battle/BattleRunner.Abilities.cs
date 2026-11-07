@@ -162,6 +162,7 @@ namespace GridGame.Core.Battle
         /// <summary>The dispatcher (§6): per target, cleanse → fire×wet/frozen → steal → damage → blind roll → heal → hasten → buff.</summary>
         private void ResolveAbility(Unit caster, AbilityDef a, Coord anchor, Unit pickedUnit)
         {
+            NoteRecover(caster, a);
             if (a.IsTeleport)
             {
                 // The whole footprint must land on open tiles — never onto a unit, a movable, a block or off the board.
@@ -431,7 +432,7 @@ namespace GridGame.Core.Battle
             {
                 float from = BattleEngine.BarU(S, turn);
                 turn.StunTicks = 0;
-                turn.Ip = Math.Min(BattleConfig.BarLength, turn.Ip + (int)Math.Round(amountU * BattleConfig.BarLength));
+                RushTurn(turn, t, (int)Math.Round(amountU * BattleConfig.BarLength / BattleConfig.BaseIpPerTick));
                 Emit(new HastenedEvent { EntryId = turn.Id, UnitId = t.Id, FromU = from, ToU = BattleEngine.BarU(S, turn) });
                 return;
             }
@@ -439,10 +440,20 @@ namespace GridGame.Core.Battle
             if (cast != null)
             {
                 float from = BattleEngine.BarU(S, cast);
-                int ticks = (int)Math.Round(amountU * BattleConfig.BarLength / BattleConfig.ReferencePacePerTick);
+                int ticks = (int)Math.Round(amountU * BattleConfig.BarLength / BattleConfig.BaseIpPerTick);
                 cast.RemainingTicks = Math.Max(0, cast.RemainingTicks - ticks);
                 Emit(new HastenedEvent { EntryId = cast.Id, UnitId = t.Id, FromU = from, ToU = BattleEngine.BarU(S, cast) });
             }
+        }
+
+        /// <summary>GG-T318: a turn icon acts <paramref name="ticks"/> sooner. Recovery is eaten first; the rest moves it
+        /// along the bar at its current rate (never past a full load).</summary>
+        private void RushTurn(TimelineEntry turn, Unit owner, int ticks)
+        {
+            int fromRecovery = Math.Min(Math.Max(0, turn.RecoverTicks), Math.Max(0, ticks));
+            turn.RecoverTicks -= fromRecovery;
+            ticks -= fromRecovery;
+            if (ticks > 0) turn.Ip = Math.Min(BattleConfig.BarLength, turn.Ip + ticks * BattleEngine.TurnRatePerTick(S, owner));
         }
 
         /// <summary>Enemy charge resolution (§13.4, §14.2): a magic hit on the target, or every hero still on the locked line.</summary>

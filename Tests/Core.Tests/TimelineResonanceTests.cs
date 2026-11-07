@@ -38,7 +38,7 @@ namespace GridGame.Tests
         {
             var (s, _) = Battle(Db(), Stage(("wolf", 0, 0)), ("knight", 5, 7), ("mage", 4, 7));
             var turn = s.TurnEntryOf(Wolf(s).Id);
-            turn.Ip = 1000 - BattleEngine.TurnRatePerTick(s, Wolf(s)) * 30; // 30 ticks out at the wolf's rate
+            turn.Ip = BattleConfig.BarLength - BattleEngine.TurnRatePerTick(s, Wolf(s)) * 30; // 30 ticks out at the wolf's rate
             Assert.That(BattleEngine.SecondsUntilAct(s, turn), Is.EqualTo(3f).Within(1e-4));
             Assert.That(BattleEngine.BarU(s, turn), Is.EqualTo(3f / BattleConfig.BarSeconds).Within(1e-4));
             turn.Ip = BattleConfig.BarLength;
@@ -75,7 +75,7 @@ namespace GridGame.Tests
             {
                 var (s, _) = Battle(Db(), Stage(("wolf", 2, 0)), ("knight", 5, 7), ("mage", 4, 7));
                 var wolf = Wolf(s);
-                s.TurnEntryOf(wolf.Id).Ip = 1000 - BattleEngine.TurnRatePerTick(s, wolf) * 35; // acts in 3.5 s
+                s.TurnEntryOf(wolf.Id).Ip = BattleConfig.BarLength - BattleEngine.TurnRatePerTick(s, wolf) * 35; // acts in 3.5 s
                 s.Timeline.Add(new TimelineEntry { Id = 700, Kind = TimelineKind.Cast, OwnerId = Hero(s, "mage").Id, CasterTeam = Team.Hero, AbilityId = "zap", RemainingTicks = 40, TotalCastTicks = 40, TargetUnitId = wolf.Id, TargetTile = wolf.Pos });
                 if (slow) wolf.Buffs.Add(new BuffInstance { Def = s.Content.Buffs["slowed"], Remaining = 2 });
                 var turnEntry = s.TurnEntryOf(wolf.Id);
@@ -104,15 +104,15 @@ namespace GridGame.Tests
         [Test]
         public void The_Pushback_keyword_pushes_its_seconds_anywhere_on_the_bar()
         {
-            // GG-T311: ticks until it acts — a skill's use time (as close as an action fits), mid-bar, and a full lap from IP 0;
-            // a Speed 5 tank laps slowly enough that a 1.5 s push never clamps at the far end.
-            foreach (int ticksOut in new[] { 10, 20, -1 })
+            // GG-T311: ticks until it acts — a skill's use time (as close as an action fits), mid-bar, and far out (4 s, so a
+            // 1.5 s push still lands on the 6 s bar, GG-T318).
+            foreach (int ticksOut in new[] { 10, 20, 40 })
             {
                 var db = Db();
                 db.Classes["tank"].BaseStats.Speed = 5;
                 var (s, _) = Battle(db, Stage(("tank", 2, 3)), ("knight", 2, 4), ("cleric", 5, 7));
                 var tank = s.Units.Single(u => u.Def.Id == "tank");
-                s.TurnEntryOf(tank.Id).Ip = ticksOut < 0 ? 0 : BattleConfig.BarLength - BattleEngine.TurnRatePerTick(s, tank) * ticksOut;
+                s.TurnEntryOf(tank.Id).Ip = BattleConfig.BarLength - BattleEngine.TurnRatePerTick(s, tank) * ticksOut;
                 int ip = s.TurnEntryOf(tank.Id).Ip;
                 var push = UseSkill(s, Hero(s, "knight"), "shove_time", tank).OfType<PushedBackEvent>().Single();
                 Assert.That(push.ToU - push.FromU, Is.EqualTo(1.5f / BattleConfig.BarSeconds).Within(1e-4), "ip " + ip);

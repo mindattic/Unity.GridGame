@@ -36,7 +36,7 @@ namespace GridGame.Tests
             setup.Party.Add(new HeroSpec { ClassId = "knight", Start = new Coord(1, 3) });
             setup.Party.Add(new HeroSpec { ClassId = "cleric", Start = new Coord(5, 7) });
             var s = BattleEngine.Create(db, setup, new List<BattleEvent>());
-            s.TurnEntryOf(FrogA(s).Id).Ip = 999;
+            s.TurnEntryOf(FrogA(s).Id).Ip = BattleConfig.BarLength - 1;
             before?.Invoke(s);
             var ev = BattleEngine.Apply(s, new ShieldCommand());
             Assert.That(ev.Any(e => e is PincerFormedEvent p && p.Team == Team.Enemy && p.Supporters.Contains(Helper(s).Id)), Is.True, Trace(ev));
@@ -109,7 +109,7 @@ namespace GridGame.Tests
         public void An_enemy_haste_supporter_moves_its_sides_turn_icons_left_by_seconds()
         {
             var (s, ev) = EnemyPincer(new SupportDef { Effect = SupportEffect.Haste, Magnitude = 1f, Target = SupportTarget.Party, Label = "Time Skip" },
-                before: st => { foreach (var u in st.Units.Where(u => u.Team == Team.Enemy && u != FrogA(st))) st.TurnEntryOf(u.Id).Ip = 0; });
+                before: st => { foreach (var u in st.Units.Where(u => u.Team == Team.Enemy && u != FrogA(st))) st.TurnEntryOf(u.Id).Ip = BattleConfig.BarLength - BattleConfig.BaseIpPerTick * 30; }); // 3 s out, on the 6 s bar (GG-T318)
             var frogB = At(s, 2, 3);
             var h = ev.OfType<HastenedEvent>().FirstOrDefault(x => x.UnitId == frogB.Id);
             Assert.That(h, Is.Not.Null, Trace(ev));

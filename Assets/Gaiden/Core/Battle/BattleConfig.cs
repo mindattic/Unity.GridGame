@@ -20,19 +20,33 @@ namespace GridGame.Core.Battle
 
         // ── Timeline ────────────────────────────────────────────────────────────────
         public const int TicksPerSecond = 10;
-        public const int BarLength = 1000;                 // a turn icon loads IP 0 → BarLength, then acts
-        /// <summary>IP per tick per point of Speed, the one linear rate (GG-T286: no Zone crawl). Speed 10 → 42 IP/tick
-        /// → a full lap in 2.4 s (GG-T311: 1.6 → 4.2 — with the minimum action time a tight cluster of foes now costs the
-        /// party its turns; the difficulty dial's EnemySpeed column slows it below level 10). Tempo and buffs (Slowed, Hasted, Frozen) scale it (<see cref="BattleEngine.TimelineScale"/>). Static, not const, so a
-        /// balance soak can sweep it (GAIDEN_TUNE, GG-T292).</summary>
-        public static float IpPerTickPerSpeed = 4.2f;
+        /// <summary>A turn icon fills IP up to BarLength, then acts. At <see cref="BaseIpPerTick"/> a full load is 10 s, so a
+        /// HastenU of 0.15 is 1.5 s.</summary>
+        public const int BarLength = 2000;
+        /// <summary>GG-T318: every turn icon gains this much IP per tick, whatever its Speed. Tempo, buffs (Slowed, Frozen), Rally
+        /// and the difficulty dial's EnemySpeed scale it (<see cref="BattleEngine.TimelineScale"/>). Speed sets where an icon
+        /// re-enters the bar instead (<see cref="BattleEngine.EntrySeconds"/>).</summary>
+        public const int BaseIpPerTick = 20;
         /// <summary>
-        /// Seconds the drawn bar spans (GG-T286, Resonance-style): an icon sits at u = secondsUntilAct / BarSeconds, so
-        /// u = 0 is the LEFT edge (acting now) and anything further off than BarSeconds waits at the right end.
+        /// Seconds the drawn bar spans (GG-T286, Resonance-style). An icon sits at u = secondsUntilAct / BarSeconds, so u = 0
+        /// is the LEFT edge (acting now). Anything further off waits at the right end.
+        /// GG-T318: 10 → 6, the latest a foe re-enters.
         /// </summary>
-        public static float BarSeconds = 10f;
-        /// <summary>Reference pace (Speed 10) used to draw cast icons on the shared u-axis.</summary>
-        public const float ReferencePacePerTick = 16f;
+        public static float BarSeconds = 6f;
+
+        // ── Re-entry (GG-T318, owner: "the average time to move is 4 seconds … they start a little more to the left the
+        //    faster they are"). After acting, a foe recovers off the bar, then re-enters at a place set by its Speed. ──
+        /// <summary>Seconds from re-entry to acting for a foe of exactly average Speed for its level.</summary>
+        public static float EntryBaseSeconds = 4f;
+        /// <summary>How strongly Speed moves the entry: EntryBase × (ReferenceSpeed / Speed)^this.</summary>
+        public static float EntrySpeedExponent = 0.6f;
+        public static float EntryMinSeconds = 2f;
+        public static float EntryMaxSeconds = 6f;
+        /// <summary>Seconds a foe spends off the bar after acting, before it re-enters (plus its action's RecoverSeconds and
+        /// any spacing delay from the difficulty row).</summary>
+        public static float RecoverBaseSeconds = 1f;
+        /// <summary>Most extra recovery one action's RecoverSeconds keyword may add (validated).</summary>
+        public const float RecoverMaxSeconds = 3f;
         /// <summary>
         /// Clock a spent window takes when no enemy turn icon can arrive at all (none left, all Frozen, a wave still
         /// waiting on reinforcements). Otherwise a window always runs to the next enemy arrival (GG-T188/GG-T308, §2.0).
@@ -77,8 +91,6 @@ namespace GridGame.Core.Battle
         public const float BotGuardBelowScore = 0.5f;
         /// <summary>Bot driver (GG-T191): chance of Guarding on such a turn (a lone hero always does).</summary>
         public const float BotGuardChance = 0.2f;
-        /// <summary>Max random head-start IP for icons at wave spawn (staggered entry).</summary>
-        public const int SpawnStaggerIp = 250;
 
         // ── Pushback (§2.3, GG-T286): only an ability/item carrying the Pushback keyword (seconds) moves an icon, anywhere
         //    on the bar; plain hits never push. One push per foe per action, capped. ──

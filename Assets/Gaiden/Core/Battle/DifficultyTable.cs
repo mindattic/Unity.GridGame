@@ -20,6 +20,14 @@ namespace GridGame.Core.Battle
         /// <summary>GG-T311: enemy turn-icon pace (the timeline). Slower foes leave wider gaps between their turns, so
         /// the party gets to act more often between them (§2.0 minimum action time).</summary>
         public float EnemySpeed = 1f;
+        /// <summary>GG-T318 spacing: a foe re-entering the bar is held in recovery until it would act at least this many
+        /// seconds from every other foe's turn… (0 on the neutral row: no spacing).</summary>
+        public float MinGapSeconds;
+        /// <summary>…but never held more than this much extra. When no time in that range fits, it takes the widest gap
+        /// on offer, so clusters can still happen.</summary>
+        public float MaxSpreadSeconds;
+        /// <summary>± seeded jitter on each re-entry, so the rhythm never repeats mechanically.</summary>
+        public float JitterSeconds;
         /// <summary>Coins every kill pays.</summary>
         public float RewardGold = 1f;
         /// <summary>XP every kill pays.</summary>
@@ -47,20 +55,26 @@ namespace GridGame.Core.Battle
         /// <summary>Monotonic in every column: enemies never get weaker and rewards never shrink as the level rises.</summary>
         public static readonly DifficultyRow[] Rows =
         {
-            Row(1,  "Gentle",    0.55f, 0.60f, -2, 0.6f, 0.60f),
-            Row(2,  "Gentle",    0.60f, 0.65f, -2, 0.7f, 0.65f),
-            Row(3,  "Easy",      0.65f, 0.70f, -1, 0.8f, 0.70f),
-            Row(4,  "Easy",      0.70f, 0.75f, -1, 0.9f, 0.75f),
-            Row(5,  "Moderate",  0.75f, 0.80f, -1, 1.0f, 0.80f),
-            Row(6,  "Moderate",  0.80f, 0.85f,  0, 1.1f, 0.85f),
-            Row(7,  "Hard",      0.85f, 0.90f,  0, 1.2f, 0.90f),
-            Row(8,  "Hard",      0.90f, 0.93f,  0, 1.3f, 0.93f),
-            Row(9,  "Very hard", 0.95f, 0.97f,  0, 1.4f, 0.97f),
-            Row(10, "Intended",  1.00f, 1.00f,  0, 1.5f, 1.00f),        };
+            //                   hp     dmg   lvl  reward speed  minGap spread
+            Row(1,  "Gentle",    0.55f, 0.60f, -2, 0.6f, 0.60f, 1.60f, 2.00f),
+            Row(2,  "Gentle",    0.60f, 0.65f, -2, 0.7f, 0.65f, 1.55f, 1.90f),
+            Row(3,  "Easy",      0.65f, 0.70f, -1, 0.8f, 0.70f, 1.50f, 1.80f),
+            Row(4,  "Easy",      0.70f, 0.75f, -1, 0.9f, 0.75f, 1.45f, 1.70f),
+            Row(5,  "Moderate",  0.75f, 0.80f, -1, 1.0f, 0.80f, 1.40f, 1.60f),
+            Row(6,  "Moderate",  0.80f, 0.85f,  0, 1.1f, 0.85f, 1.30f, 1.45f),
+            Row(7,  "Hard",      0.85f, 0.90f,  0, 1.2f, 0.90f, 1.25f, 1.35f),
+            Row(8,  "Hard",      0.90f, 0.93f,  0, 1.3f, 0.93f, 1.15f, 1.20f),
+            Row(9,  "Very hard", 0.95f, 0.97f,  0, 1.4f, 0.97f, 1.10f, 1.10f),
+            Row(10, "Intended",  1.00f, 1.00f,  0, 1.5f, 1.00f, 1.00f, 1.00f),
+        };
 
-        private static DifficultyRow Row(int level, string name, float hp, float dmg, int lvl, float reward, float speed) => new DifficultyRow
+        /// <summary>GG-T318: the re-entry jitter on every non-neutral row.</summary>
+        public const float RowJitterSeconds = 0.25f;
+
+        private static DifficultyRow Row(int level, string name, float hp, float dmg, int lvl, float reward, float speed, float minGap, float spread) => new DifficultyRow
         {
             Level = level, Name = name, EnemyHp = hp, EnemyDamage = dmg, EnemyLevelOffset = lvl, EnemySpeed = speed,
+            MinGapSeconds = minGap, MaxSpreadSeconds = spread, JitterSeconds = RowJitterSeconds,
             RewardGold = reward, RewardXp = reward, DropChance = reward,
         };
 
@@ -97,10 +111,15 @@ namespace GridGame.Core.Battle
                 if (r.EnemyHp <= 0f || r.EnemyDamage <= 0f || r.EnemySpeed <= 0f || r.RewardGold <= 0f || r.RewardXp <= 0f || r.DropChance <= 0f)
                     p.Add($"difficulty {r.Level}: multipliers must be positive");
                 if (string.IsNullOrEmpty(r.Name)) p.Add($"difficulty {r.Level}: no name");
+                if (r.MinGapSeconds < 0f || r.MaxSpreadSeconds < 0f || r.JitterSeconds < 0f)
+                    p.Add($"difficulty {r.Level}: spacing columns must not be negative");
                 if (i == 0) continue;
                 var q = Rows[i - 1];
                 if (r.EnemyHp < q.EnemyHp || r.EnemyDamage < q.EnemyDamage || r.EnemyLevelOffset < q.EnemyLevelOffset || r.EnemySpeed < q.EnemySpeed)
                     p.Add($"difficulty {r.Level}: an enemy column falls below level {q.Level}'s");
+                // Less spacing is more pressure, so the spacing columns may only fall as the level rises.
+                if (r.MinGapSeconds > q.MinGapSeconds || r.MaxSpreadSeconds > q.MaxSpreadSeconds)
+                    p.Add($"difficulty {r.Level}: a spacing column rises above level {q.Level}'s");
                 if (r.RewardGold <= q.RewardGold || r.RewardXp <= q.RewardXp || r.DropChance <= q.DropChance)
                     p.Add($"difficulty {r.Level}: a reward column doesn't rise above level {q.Level}'s");
             }

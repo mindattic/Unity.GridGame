@@ -213,19 +213,43 @@ namespace GridGame.Core.Battle
         // ── The one timeline model (GG-T286, Resonance-style): every icon moves at one linear rate; where it is drawn is
         //    the seconds until it acts. No Zone, no crawl. ──
 
-        /// <summary>IP a turn icon gains per tick right now: Speed × <see cref="BattleConfig.IpPerTickPerSpeed"/> × tempo × status
-        /// (never under 1). Halting (Frozen) is not applied here — the clock simply skips a halted icon.</summary>
+        /// <summary>IP a turn icon gains per tick right now: <see cref="BattleConfig.BaseIpPerTick"/> × tempo × status × the
+        /// difficulty dial (never under 1). GG-T318: Speed is not in it; it sets where the icon re-enters
+        /// (<see cref="EntrySeconds"/>). Halting (Frozen) is not applied here — the clock simply skips a halted icon.</summary>
         public static int TurnRatePerTick(BattleState s, Unit u) =>
-            System.Math.Max(1, (int)System.Math.Round(u.Effective.Speed * BattleConfig.IpPerTickPerSpeed * TimelineScale(s, u) * DialSpeed(s, u)));
+            System.Math.Max(1, (int)System.Math.Round(BattleConfig.BaseIpPerTick * TimelineScale(s, u) * DialSpeed(s, u)));
 
         /// <summary>GG-T311: the difficulty dial's enemy pace (1.0 at level 10, on test stages and for anyone not an enemy).</summary>
         private static float DialSpeed(BattleState s, Unit u) =>
             u.Team != Team.Enemy || s.Stage == null || s.Stage.IsTest ? 1f : DifficultyTable.At(s.Difficulty).EnemySpeed;
 
+        /// <summary>GG-T318: the difficulty row whose spacing columns apply. Test stages and hand-built setups use the
+        /// neutral row (no spacing, no jitter), so their timing stays exact.</summary>
+        public static DifficultyRow SpacingRow(BattleState s) =>
+            s.Stage == null || s.Stage.IsTest ? DifficultyTable.At(DifficultyTable.Neutral) : DifficultyTable.At(s.Difficulty);
+
         /// <summary>
-        /// Clock ticks until this icon acts (a turn reaches the end of its load, a cast lands) at today's rates — stun
-        /// included, no future pushback/haste/buff change assumed. -1 when it never will: its owner is gone, or (unless
-        /// <paramref name="ignoreHalt"/>) halted by Frozen.
+        /// GG-T318 (§2.1): seconds from re-entering the bar to acting, at base pace. It is set by Speed against the average
+        /// Speed for the unit's level: <c>EntryBase × (ReferenceSpeed / Speed)^EntrySpeedExponent</c>, clamped to
+        /// EntryMin..EntryMax. An average foe enters <see cref="BattleConfig.EntryBaseSeconds"/> (4 s) out, and a faster one
+        /// further left.
+        /// </summary>
+        public static float EntrySeconds(Unit u)
+        {
+            float speed = System.Math.Max(1f, u.Effective.Speed);
+            float reference = Formulas.ReferenceEnemySpeed(u.Level);
+            float secs = BattleConfig.EntryBaseSeconds * (float)System.Math.Pow(reference / speed, BattleConfig.EntrySpeedExponent);
+            return System.Math.Max(BattleConfig.EntryMinSeconds, System.Math.Min(BattleConfig.EntryMaxSeconds, secs));
+        }
+
+        /// <summary>The IP a turn icon re-enters the bar at: <see cref="EntrySeconds"/> short of a full load, at base pace.</summary>
+        public static int EntryIp(Unit u) =>
+            System.Math.Max(0, BattleConfig.BarLength - (int)System.Math.Round(EntrySeconds(u) * BattleConfig.TicksPerSecond * BattleConfig.BaseIpPerTick));
+
+        /// <summary>
+        /// Clock ticks until this icon acts (a turn reaches the end of its load, a cast lands) at today's rates. Recovery
+        /// and stun are included; no future pushback, haste or buff change is assumed. -1 when it never will: its owner is
+        /// gone, or (unless <paramref name="ignoreHalt"/>) halted by Frozen.
         /// </summary>
         public static int TicksUntilAct(BattleState s, TimelineEntry e, bool ignoreHalt = false)
         {
@@ -235,8 +259,11 @@ namespace GridGame.Core.Battle
             if (e.Kind == TimelineKind.Cast) return System.Math.Max(0, e.RemainingTicks);
             int left = System.Math.Max(0, BattleConfig.BarLength - e.Ip);
             int rate = TurnRatePerTick(s, u);
-            return System.Math.Max(0, e.StunTicks) + (left + rate - 1) / rate;
+            return System.Math.Max(0, e.RecoverTicks) + System.Math.Max(0, e.StunTicks) + (left + rate - 1) / rate;
         }
+
+        /// <summary>GG-T318: is this turn icon off the bar, recovering after its last action?</summary>
+        public static bool InRecovery(TimelineEntry e) => e.Kind == TimelineKind.Turn && e.RecoverTicks > 0;
 
         /// <summary>Seconds until this icon (turn or cast) acts at today's rates; +∞ when it never will (gone/Frozen).</summary>
         public static float SecondsUntilAct(BattleState s, TimelineEntry e)
@@ -281,7 +308,8 @@ namespace GridGame.Core.Battle
         /// <summary>
         /// Player turns until this enemy acts (Terra Battle-style countdown badge). 0 = it acts at the end of your next
         /// turn. GG-T188 (§2.0): every turn ends at the next enemy arrival, so this counts the distinct arrival ticks of
-        /// the other enemies (each re-loading from IP 0 after it acts) that land before this one's.
+        /// the other enemies that land before this one's. GG-T318: after acting, each one recovers, then re-enters at its
+        /// entry. The estimate uses base recovery and no spacing.
         /// </summary>
         public static int ActionsUntilTurn(BattleState s, int unitId)
         {
@@ -294,7 +322,8 @@ namespace GridGame.Core.Battle
                 var o = s.UnitById(e.OwnerId);
                 int first = TicksUntilAct(s, e);
                 if (o == null || first < 0) continue;
-                int lap = (BattleConfig.BarLength + TurnRatePerTick(s, o) - 1) / TurnRatePerTick(s, o); // re-loads from IP 0
+                int rate = TurnRatePerTick(s, o);
+                int lap = System.Math.Max(1, NeedTicks(BattleConfig.RecoverBaseSeconds) + (BattleConfig.BarLength - EntryIp(o) + rate - 1) / rate);
                 for (int tick = first; tick < t; tick += lap) if (tick >= 1) earlier.Add(tick);
             }
             return earlier.Count;

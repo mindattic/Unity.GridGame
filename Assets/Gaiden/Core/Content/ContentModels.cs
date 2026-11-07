@@ -488,6 +488,10 @@ namespace GridGame.Core.Content
         /// icon sits on the bar (a held cast slips instead; never cancelled). Capped per action at
         /// <see cref="Battle.BattleConfig.PushbackMaxSeconds"/>, one push per foe per action. Plain hits never push.</summary>
         public float Pushback;
+        /// <summary>GG-T318 (§2.12): extra seconds the unit spends off the timeline after the turn it used this, on top of
+        /// <see cref="Battle.BattleConfig.RecoverBaseSeconds"/>. Heavy blows recover longer, so a foe's rhythm can be read.
+        /// 0..<see cref="Battle.BattleConfig.RecoverMaxSeconds"/>.</summary>
+        public float RecoverSeconds;
         /// <summary>Movement (GG-T183): each target is dragged up to this many tiles straight toward the caster, stopping
         /// beside it or at the first thing in the way. Bosses and snakes don't budge.</summary>
         public int Pull;

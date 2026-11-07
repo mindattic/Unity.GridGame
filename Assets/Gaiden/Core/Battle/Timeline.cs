@@ -21,6 +21,8 @@ namespace GridGame.Core.Battle
         // Turn icons
         public int Ip;
         public int StunTicks;
+        /// <summary>GG-T318: ticks left off the bar after acting (the recovery tray) before the icon re-enters at its Ip.</summary>
+        public int RecoverTicks;
 
         // Cast icons
         public string AbilityId;

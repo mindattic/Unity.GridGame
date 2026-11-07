@@ -513,10 +513,14 @@ namespace GridGame.Core.Battle
             if (entry != null)
             {
                 float from = BattleEngine.BarU(S, entry);
-                int rate = BattleEngine.TurnRatePerTick(S, target);
-                int ip = entry.Ip - ticks * rate;
-                if (ip < 0) { entry.StunTicks += (-ip + rate - 1) / rate; ip = 0; }
-                entry.Ip = ip;
+                if (entry.RecoverTicks > 0) entry.RecoverTicks += ticks; // GG-T318: still off the bar, so it recovers longer and its entry keeps reading its Speed
+                else
+                {
+                    int rate = BattleEngine.TurnRatePerTick(S, target);
+                    int ip = entry.Ip - ticks * rate;
+                    if (ip < 0) { entry.StunTicks += (-ip + rate - 1) / rate; ip = 0; }
+                    entry.Ip = ip;
+                }
                 Emit(new PushedBackEvent { UnitId = target.Id, FromU = from, ToU = BattleEngine.BarU(S, entry), StunTicks = entry.StunTicks });
                 return;
             }

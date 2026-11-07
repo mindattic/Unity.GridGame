@@ -32,7 +32,7 @@ namespace GridGame.Tests
             var wolf = s.Units.First(u => u.Def.Id == "wolf");
             for (int i = 0; i < turns && wolf.Alive && k.Alive && !s.IsOver; i++)
             {
-                s.TurnEntryOf(wolf.Id).Ip = 999;
+                s.TurnEntryOf(wolf.Id).Ip = BattleConfig.BarLength - 1;
                 all.AddRange(BattleEngine.Apply(s, new ShieldCommand()));
             }
             return (s, k, wolf, all);
@@ -181,7 +181,7 @@ namespace GridGame.Tests
             var all = new List<BattleEvent>();
             for (int i = 0; i < 4 && !all.OfType<DamagedEvent>().Any(d => d.SourceId == wolf.Id && d.Amount > 0); i++)
             {
-                s.TurnEntryOf(wolf.Id).Ip = 999;
+                s.TurnEntryOf(wolf.Id).Ip = BattleConfig.BarLength - 1;
                 all.AddRange(BattleEngine.Apply(s, new ShieldCommand()));
             }
             var bite = all.OfType<DamagedEvent>().FirstOrDefault(d => d.SourceId == wolf.Id && d.TargetId == k.Id && d.Amount > 0);

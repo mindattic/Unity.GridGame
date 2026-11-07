@@ -541,7 +541,7 @@ namespace GridGame.Core.Bot
             int rate = BattleEngine.TurnRatePerTick(s, f);
             int slowRate = Math.Max(1, (int)Math.Round(rate * mult));
             int left = Math.Max(0, BattleConfig.BarLength - e.Ip);
-            int after = Math.Max(0, e.StunTicks) + (left + slowRate - 1) / slowRate;
+            int after = Math.Max(0, e.RecoverTicks) + Math.Max(0, e.StunTicks) + (left + slowRate - 1) / slowRate; // recovery isn't slowed (GG-T318)
             // A Slow lasts its turns, so the lap after is slowed too: a threatening foe loses most of a turn over the fight.
             return LandsFirstValue(s, f, before, after) + (Threatens(s, f) ? 2f : 0.5f);
         }

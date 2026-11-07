@@ -54,7 +54,9 @@ namespace GridGame.Core.Battle
         private void EnsureTurnEntry(Unit u)
         {
             if (!u.OnBoard || S.TurnEntryOf(u.Id) != null) return;
-            S.Timeline.Add(new TimelineEntry { Id = S.NextEntryId++, Kind = TimelineKind.Turn, OwnerId = u.Id, Ip = S.Rng.Range(0, BattleConfig.SpawnStaggerIp + 1) });
+            var entry = new TimelineEntry { Id = S.NextEntryId++, Kind = TimelineKind.Turn, OwnerId = u.Id };
+            S.Timeline.Add(entry);
+            ScheduleReentry(entry, u, 0f, space: false); // GG-T318: an ally enters at its Speed's entry, never spaced
         }
 
         /// <summary>The tame wears off: back on the enemy team, where it stands (its bond so far is kept for a re-tame).</summary>

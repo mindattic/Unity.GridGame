@@ -44,7 +44,7 @@ namespace GridGame.Tests
             var wolf = s.Units.First(u => u.Def.Id == "wolf");
             for (int i = 0; i < 4 && wolf.Alive && k.Alive; i++)
             {
-                s.TurnEntryOf(wolf.Id).Ip = 999;
+                s.TurnEntryOf(wolf.Id).Ip = BattleConfig.BarLength - 1;
                 all.AddRange(BattleEngine.Apply(s, new ShieldCommand()));
             }
             return (k, wolf, all);

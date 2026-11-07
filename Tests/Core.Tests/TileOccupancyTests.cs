@@ -163,7 +163,7 @@ namespace GridGame.Tests
                 : Battle(db, st, ("knight", 2, 0), ("cleric", 2, 1), ("mage", 3, 1));
             if (ampInLane) s.Amplifier = new Coord(2, 1);
             var boss = Enemy(s, "boss");
-            s.TurnEntryOf(boss.Id).Ip = 999;
+            s.TurnEntryOf(boss.Id).Ip = BattleConfig.BarLength - 1;
             BattleEngine.Apply(s, new ShieldCommand());
             AssertBoardClean(s);
             Assert.That(boss.Pos, Is.EqualTo(new Coord(1, 0)));
@@ -181,7 +181,7 @@ namespace GridGame.Tests
             st.Blocks.Add(new Coord(0, 2)); st.Blocks.Add(new Coord(1, 2));
             var (s, _) = Battle(db, st, ("knight", 2, 0), ("cleric", 5, 7));
             var boss = Enemy(s, "boss");
-            s.TurnEntryOf(boss.Id).Ip = 999;
+            s.TurnEntryOf(boss.Id).Ip = BattleConfig.BarLength - 1;
             BattleEngine.Apply(s, new ShieldCommand());
             AssertBoardClean(s);
             Assert.That(boss.Pos, Is.EqualTo(new Coord(0, 0)), "a tank in the entered lane blocks the step");
@@ -199,7 +199,7 @@ namespace GridGame.Tests
             var tail = s.Units.Where(u => u.SnakeHeadId == head.Id).OrderBy(u => u.SnakeIndex).Last();
             var tailBefore = tail.Pos;
             s.Amplifier = new Coord(2, 4);
-            s.TurnEntryOf(head.Id).Ip = 999;
+            s.TurnEntryOf(head.Id).Ip = BattleConfig.BarLength - 1;
             BattleEngine.Apply(s, new ShieldCommand());
             AssertBoardClean(s);
             Assert.That(head.Pos, Is.EqualTo(new Coord(2, 4)));
@@ -241,7 +241,7 @@ namespace GridGame.Tests
             s.Amplifier = new Coord(3, 3);
             var imp = Enemy(s, "imp");
             imp.TurnsTaken = 1; // its next turn is a blink turn
-            s.TurnEntryOf(imp.Id).Ip = 999;
+            s.TurnEntryOf(imp.Id).Ip = BattleConfig.BarLength - 1;
             BattleEngine.Apply(s, new ShieldCommand());
             AssertBoardClean(s);
             Assert.That(imp.Pos, Is.Not.EqualTo(new Coord(3, 3)), "never onto the amplifier boxed in beside its prey");
@@ -340,7 +340,7 @@ namespace GridGame.Tests
             // Three of the naga's four sides are taken; a trap sits on the fourth's neighbour — the egg must take (3,2).
             var (s, _) = Battle(db, Stage(("naga", 3, 3), ("tank", 2, 3), ("tank", 4, 3)), ("knight", 3, 4), ("cleric", 5, 7));
             var naga = Enemy(s, "naga");
-            s.TurnEntryOf(naga.Id).Ip = 999;
+            s.TurnEntryOf(naga.Id).Ip = BattleConfig.BarLength - 1;
             var ev = BattleEngine.Apply(s, new ShieldCommand());
             var laid = ev.OfType<EggLaidEvent>().Single();
             Assert.That(laid.At, Is.EqualTo(new Coord(3, 2)));
@@ -452,7 +452,7 @@ namespace GridGame.Tests
             var (s, _) = Battle(db, Stage(("wolf", 2, 3)), ("knight", 2, 6), ("cleric", 5, 7));
             var wolf = Enemy(s, "wolf");
             var p = Drop(s, 2, 4); // right in the wolf's path to the knight
-            s.TurnEntryOf(wolf.Id).Ip = 999;
+            s.TurnEntryOf(wolf.Id).Ip = BattleConfig.BarLength - 1;
             var ev = BattleEngine.Apply(s, new ShieldCommand());
             AssertBoardClean(s);
             AssertNobodyOnAPickup(s);
@@ -472,7 +472,7 @@ namespace GridGame.Tests
             var (s, _) = Battle(db, st, ("knight", 2, 0), ("mage", 3, 1), ("cleric", 5, 7));
             var p = Drop(s, 2, 1);
             var boss = Enemy(s, "boss");
-            s.TurnEntryOf(boss.Id).Ip = 999;
+            s.TurnEntryOf(boss.Id).Ip = BattleConfig.BarLength - 1;
             BattleEngine.Apply(s, new ShieldCommand());
             AssertBoardClean(s);
             AssertNobodyOnAPickup(s);
@@ -490,7 +490,7 @@ namespace GridGame.Tests
             var head = s.Units.First(u => u.Def.Id == "naga" && u.SnakeIndex == 0);
             var tailBefore = s.Units.Where(u => u.SnakeHeadId == head.Id).OrderBy(u => u.SnakeIndex).Last().Pos;
             var p = Drop(s, 2, 4);
-            s.TurnEntryOf(head.Id).Ip = 999;
+            s.TurnEntryOf(head.Id).Ip = BattleConfig.BarLength - 1;
             BattleEngine.Apply(s, new ShieldCommand());
             AssertBoardClean(s);
             AssertNobodyOnAPickup(s);
@@ -657,7 +657,7 @@ namespace GridGame.Tests
             var (s, _) = Battle(db, Stage(("naga", 3, 3), ("tank", 2, 3), ("tank", 4, 3)), ("knight", 3, 4), ("cleric", 5, 7));
             Drop(s, 3, 2);
             var naga = Enemy(s, "naga");
-            s.TurnEntryOf(naga.Id).Ip = 999;
+            s.TurnEntryOf(naga.Id).Ip = BattleConfig.BarLength - 1;
             var ev = BattleEngine.Apply(s, new ShieldCommand());
             Assert.That(ev.OfType<EggLaidEvent>().Any(), Is.False);
             AssertBoardClean(s);
@@ -696,7 +696,7 @@ namespace GridGame.Tests
             Drop(s, 3, 3);
             var imp = Enemy(s, "imp");
             imp.TurnsTaken = 1; // its next turn is a blink turn
-            s.TurnEntryOf(imp.Id).Ip = 999;
+            s.TurnEntryOf(imp.Id).Ip = BattleConfig.BarLength - 1;
             var ev = BattleEngine.Apply(s, new ShieldCommand());
             Assert.That(ev.OfType<TeleportedEvent>().Any(t => t.UnitId == imp.Id), Is.False, "nowhere free to surface");
             AssertBoardClean(s);

@@ -57,7 +57,7 @@ namespace GridGame.Tests
         public void A_frog_closes_the_pincer_on_its_own_turn()
         {
             var s = Flank("frog");
-            s.TurnEntryOf(s.Units.First(u => u.Def.Id == "frog").Id).Ip = 999;
+            s.TurnEntryOf(s.Units.First(u => u.Def.Id == "frog").Id).Ip = BattleConfig.BarLength - 1;
             var ev = BattleEngine.Apply(s, new ShieldCommand());
             Assert.That(ev.Any(e => e is PincerFormedEvent p && p.Team == Team.Enemy), Is.True);
         }
@@ -66,7 +66,7 @@ namespace GridGame.Tests
         public void A_yeti_flanking_a_hero_only_melees()
         {
             var s = Flank("yeti");
-            s.TurnEntryOf(s.Units.First(u => u.Def.Id == "yeti").Id).Ip = 999;
+            s.TurnEntryOf(s.Units.First(u => u.Def.Id == "yeti").Id).Ip = BattleConfig.BarLength - 1;
             var ev = BattleEngine.Apply(s, new ShieldCommand());
             Assert.That(ev.Any(e => e is PincerFormedEvent), Is.False);
         }

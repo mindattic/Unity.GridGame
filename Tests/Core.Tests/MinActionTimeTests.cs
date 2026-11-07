@@ -152,13 +152,15 @@ namespace GridGame.Tests
         [Test]
         public void Rally_breaks_a_lock_of_gaps_all_too_short()
         {
-            // Four equal wolves 0.8 s apart lap in 3.2 s: every gap is too short for any action, for ever — unless the
-            // forced Guards rally the party and slow them.
-            var (s, _) = Battle(Db(), Stage(("wolf", 0, 0), ("wolf", 2, 0), ("wolf", 4, 0), ("wolf", 5, 1)), ("knight", 5, 7), ("cleric", 3, 7));
+            // Seven equal wolves evenly spread over one cycle (GG-T318: recovery + the trip from their entry, ~5.3 s), with no
+            // spacer on the neutral row: every gap is too short for any action, for ever — unless the forced Guards rally
+            // the party and slow them.
+            var (s, _) = Battle(Db(), Stage(("wolf", 0, 0), ("wolf", 1, 0), ("wolf", 2, 0), ("wolf", 3, 0), ("wolf", 4, 0), ("wolf", 5, 0), ("wolf", 0, 1)), ("knight", 5, 7), ("cleric", 3, 7));
             var w = Wolves(s);
-            int lap = (BattleConfig.BarLength + BattleEngine.TurnRatePerTick(s, w[0]) - 1) / BattleEngine.TurnRatePerTick(s, w[0]);
-            for (int i = 0; i < 4; i++) In(s, w[i], (i + 1) * lap / 4);
-            Assert.That(lap / 4, Is.LessThan(BattleEngine.NeedTicks(BattleEngine.MinDragSeconds)), "every gap is too short");
+            int rate = BattleEngine.TurnRatePerTick(s, w[0]);
+            int lap = BattleEngine.NeedTicks(BattleConfig.RecoverBaseSeconds) + (BattleConfig.BarLength - BattleEngine.EntryIp(w[0]) + rate - 1) / rate;
+            for (int i = 0; i < w.Count; i++) In(s, w[i], (i + 1) * lap / w.Count);
+            Assert.That(lap / w.Count, Is.LessThan(BattleEngine.NeedTicks(BattleEngine.MinDragSeconds)), "every gap is too short");
             Assert.That(BattleEngine.TooLittleTime(s), Is.True);
             int guards = 0;
             while (BattleEngine.TooLittleTime(s) && guards < 12 && !s.IsOver) { BattleEngine.Apply(s, new ShieldCommand()); guards++; }

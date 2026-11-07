@@ -28,7 +28,7 @@ namespace GridGame.Tests
             var k = Hero(s, "knight");
             float vit = k.Effective.Vitality;
             var all = new List<BattleEvent>();
-            for (int i = 0; i < 6 && k.Gear.ContainsKey(EquipmentSlot.Torso); i++) { s.TurnEntryOf(Enemy(s, "wolf").Id).Ip = 999; all.AddRange(BattleEngine.Apply(s, new ShieldCommand())); }
+            for (int i = 0; i < 6 && k.Gear.ContainsKey(EquipmentSlot.Torso); i++) { s.TurnEntryOf(Enemy(s, "wolf").Id).Ip = BattleConfig.BarLength - 1; all.AddRange(BattleEngine.Apply(s, new ShieldCommand())); }
             Assert.That(all.Any(e => e is ArmorBrokenEvent), Is.True);
             Assert.That(k.Gear.ContainsKey(EquipmentSlot.Torso), Is.False);
             Assert.That(k.Effective.Vitality, Is.EqualTo(vit - 5));
@@ -77,7 +77,7 @@ namespace GridGame.Tests
             var db = Mini();
             db.Classes["hag"] = new ClassDef { Id = "hag", Name = "Hag", Team = Team.Enemy, Tags = { "Ranged" }, AttackRange = 3, MoveRange = 0, BaseStats = new Stats { Strength = 12, Vitality = 10, Speed = 10, Agility = 10, Luck = 0 } };
             var (s, _) = Battle(db, Stage(("hag", 2, 1)), ("knight", 2, 4), ("cleric", 5, 7));
-            s.TurnEntryOf(Enemy(s, "hag").Id).Ip = 999;
+            s.TurnEntryOf(Enemy(s, "hag").Id).Ip = BattleConfig.BarLength - 1;
             var ev = BattleEngine.Apply(s, new ShieldCommand());
             Assert.That(ev.Any(e => e is AttackEvent a && a.IsRanged && a.TargetId == Hero(s, "knight").Id), Is.True);
             // A unit in the lane blocks the shot.

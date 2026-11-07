@@ -209,7 +209,7 @@ namespace GridGame.Tests
             var all = new List<BattleEvent>();
             for (int i = 0; i < 6 && k.Gear.ContainsKey(EquipmentSlot.Head); i++)
             {
-                s.TurnEntryOf(s.Units.First(u => u.Def.Id == "wolf" && u.Alive).Id).Ip = 999;
+                s.TurnEntryOf(s.Units.First(u => u.Def.Id == "wolf" && u.Alive).Id).Ip = BattleConfig.BarLength - 1;
                 all.AddRange(BattleEngine.Apply(s, new ShieldCommand()));
             }
             Assert.That(k.Gear.ContainsKey(EquipmentSlot.Head), Is.False, "the head piece should have broken");
