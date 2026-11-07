@@ -1020,3 +1020,12 @@ Owner: *"so you will sometimes meet a hero while fighting a monster and they wil
 - *Why deterministic:* the owner wants a readable loop ("earn trust in battle, say the right thing, and they join"); the results screen states the rule before the talk.
 - Retired: `Rescues`, `CaptiveSpec`, `GuestJoinedEvent.Captive`, `BattleReport.Captive/Rescued`, the `Rescue` dialogue trigger and `rescue_freed`. A wanderer standing alone never staves off defeat; a fallen one is down, never lost.
 - *(Tests: `WanderTests`.)*
+
+## 2026-11-07 — A random summon for Diamonds (owner, GG-T343)
+
+Owner: *"another way is to simply summon them randomly with Diamonds monetized currency"*.
+
+- **Was:** "Not a gacha" (BIBLE §3): heroes were only recruited deliberately for gold at the Summon Circle.
+- **Now:** the Summon Circle also offers one random draw for **1 Diamond** (`DiamondSummon.Price`, the one tuning constant) from the wanderer pool (unowned heroes with no other way in, the pool a parted wanderer returns to). It rides the Summon paywall job (1 s) and ends in a portrait reveal. The gold, deliberate summon stays.
+- **Not monetized yet:** Diamonds still come only from the LuckyDiamond paywall hook (1 g · 1 s); there is no store and no IAP UI ("until I call it monetize, it's not"). Bots, `CampRoutine` and Test Mode never spend Diamonds.
+- *(Tests: `SummonTests`.)*

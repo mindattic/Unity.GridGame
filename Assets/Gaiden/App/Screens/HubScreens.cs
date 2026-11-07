@@ -1333,6 +1333,7 @@ namespace GridGame.App
             bool busy = Paywall.Pending(S, PaywallKind.Summon) != null;
             var head = Ui.Window(null, body);
             Ui.Text($"Summon a hero to your side ({tag}). The circle takes a moment to answer.", "small", head).style.whiteSpace = WhiteSpace.Normal;
+            RandomDraw(body, busy);
             var w = Ui.Window(null, body);
             w.style.flexGrow = 1;
             var list = Ui.List(w).contentContainer;
@@ -1348,6 +1349,81 @@ namespace GridGame.App
                 var b = Ui.Button(owned ? "Joined" : "Recruit", () => Confirm.Show($"Summon {def.Name} for {Ui.Gold(price)}?", "Summon", () =>
                     TimedJobView.Begin(now => (Summon.BeginRecruit(C, S, def.Id, now, out var job), job), $"Summoning {def.Name}…", _ => Refresh())), "btn--small", card);
                 Ui.SetEnabled(b, !owned && !busy && S.Gold >= price);
+            }
+        }
+
+        /// <summary>The random draw for Diamonds (§25.10.2, GG-T343): a stranger from the wanderer pool, revealed when the
+        /// summoning lands. Diamonds still come only from the LuckyDiamond hook (§24.6.5); there is no store.</summary>
+        private void RandomDraw(VisualElement body, bool busy)
+        {
+            var w = Ui.Window("Call a stranger", body);
+            w.name = "summon-random";
+            int diamonds = S.Count(Crafting.DiamondId);
+            int left = DiamondSummon.Pool(C, S).Count;
+            var t = Ui.Text(left > 0
+                ? $"Spend a Diamond and the circle calls someone who has no other way to you: one of {left} heroes still out on the road. Who answers is up to the circle."
+                : "No one is left on the road to answer.", "small", w);
+            t.style.whiteSpace = WhiteSpace.Normal;
+            var row = Ui.El("row", w);
+            row.style.alignItems = Align.Center;
+            row.style.marginTop = Space.S8;
+            var icon = Art.ItemIcon(Crafting.DiamondId);
+            if (icon != null)
+            {
+                var img = Ui.El(null, row);
+                img.style.width = img.style.height = Size.IconS;
+                img.style.backgroundImage = new StyleBackground(icon);
+                img.style.marginRight = Space.S8;
+            }
+            Ui.Text($"Diamonds: {diamonds}", "small grow", row);
+            var b = Ui.Button($"Draw · {DiamondSummon.Tag(S)}", () => Confirm.Show($"Spend {DiamondSummon.Price} Diamond on a random summon?", "Draw", () =>
+            {
+                string drawn = null;
+                TimedJobView.Begin(now => { var r = DiamondSummon.Begin(C, S, now, out var job); drawn = job?.Arg; return (r, job); },
+                    "The circle reaches out along the road…", r => { if (r.Ok && drawn != null) SummonReveal.Show(drawn, Refresh); else Refresh(); });
+            }), "btn--small btn--primary", row);
+            b.name = "summon-draw";
+            Ui.SetEnabled(b, !busy && DiamondSummon.CanDraw(C, S).Ok);
+            if (diamonds < DiamondSummon.Price)
+                Ui.Text("Diamonds are bought for the lucky craft at the Blacksmith's forge.", "tiny dim", w).style.whiteSpace = WhiteSpace.Normal;
+        }
+    }
+
+    /// <summary>The Diamond draw's reveal (GG-T343): the summoned hero's portrait swells out of the light with a fanfare
+    /// cue and their name, then a tap closes it.</summary>
+    internal static class SummonReveal
+    {
+        public static void Show(string classId, Action onClose)
+        {
+            var app = GameApp.I;
+            var def = app.Content.TryClass(classId);
+            if (def == null) { onClose?.Invoke(); return; }
+            var veil = Ui.El("fill veil col center", app.Overlay);
+            veil.name = "summon-reveal";
+            veil.pickingMode = PickingMode.Position;
+            var thumb = Ui.Thumb(def.Id, veil, 420);
+            thumb.style.scale = new Scale(Vector2.zero);
+            var name = Ui.Text(def.Name, "title shadow gold", veil);
+            name.style.marginTop = Space.S24;
+            name.style.opacity = 0f;
+            var role = Ui.Text($"{def.Role} · answers the circle", "h2 shadow", veil);
+            role.style.opacity = 0f;
+            var tap = Ui.Text("Tap to continue", "small dim", veil);
+            tap.style.marginTop = Space.S48;
+            tap.style.opacity = 0f;
+            bool ready = false;
+            veil.RegisterCallback<ClickEvent>(_ => { if (!ready) return; veil.RemoveFromHierarchy(); onClose?.Invoke(); });
+            app.StartCoroutine(Play());
+            System.Collections.IEnumerator Play()
+            {
+                app.Audio.Sfx("battle.powerup", 0.8f);
+                yield return Tween.Run(Timing.Standard, k => thumb.style.scale = new Scale(Vector2.one * (k < 0.7f ? k / 0.7f * 1.12f : 1.12f - 0.12f * (k - 0.7f) / 0.3f)), Tween.EaseOut);
+                thumb.style.scale = new Scale(Vector2.one);
+                app.Audio.Sfx("battle.victory", 0.6f);
+                yield return Tween.Run(Timing.Quick, k => { name.style.opacity = k; role.style.opacity = k; });
+                yield return Tween.Pop(name, 1.15f, 0.2f);
+                tap.style.opacity = 1f;
+                ready = true;
             }
         }
     }

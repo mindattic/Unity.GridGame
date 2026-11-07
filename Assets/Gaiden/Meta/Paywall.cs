@@ -17,6 +17,8 @@ namespace GridGame.Meta
         public DateTime StartedUtc;
         public double Seconds;
         public int Paid;
+        /// <summary>Diamonds spent instead of gold (the Summon Circle's random draw, GG-T343); refunded if it fizzles.</summary>
+        public int Diamonds;
     }
 
     /// <summary>The paywall hooks (§25.18, GG-T232): every premium action prices and times itself here.</summary>
@@ -65,7 +67,10 @@ namespace GridGame.Meta
             s.Jobs.Remove(job);
             switch (job.Kind)
             {
-                case PaywallKind.Summon: return Summon.Arrive(c, s, job.Arg);
+                case PaywallKind.Summon:
+                    var arrived = Summon.Arrive(c, s, job.Arg);
+                    if (!arrived.Ok && job.Diamonds > 0) s.AddItem(Crafting.DiamondId, job.Diamonds); // a fizzled draw gives its Diamonds back
+                    return arrived;
                 case PaywallKind.RestedRefill: RestedPool.Fill(s, now); return Result.Success("The party is rested.");
                 case PaywallKind.LuckyDiamond:
                     var diamond = c.TryItem(Crafting.DiamondId);
