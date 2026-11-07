@@ -424,13 +424,13 @@
       {
         "Enemies": [
           {
-            "Class": "sandmaw",
+            "Class": "infernalist02",
             "Level": 1,
             "X": -1,
             "Y": -1
           },
           {
-            "Class": "sandmaw",
+            "Class": "infernalist03",
             "Level": 1,
             "X": -1,
             "Y": -1
@@ -518,13 +518,19 @@
       {
         "Enemies": [
           {
-            "Class": "sandmaw",
+            "Class": "infernalist01",
             "Level": 1,
             "X": -1,
             "Y": -1
           },
           {
-            "Class": "soldier01",
+            "Class": "infernalist04",
+            "Level": 1,
+            "X": -1,
+            "Y": -1
+          },
+          {
+            "Class": "sandmaw",
             "Level": 1,
             "X": -1,
             "Y": -1

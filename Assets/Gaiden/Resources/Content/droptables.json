@@ -2663,5 +2663,72 @@
         "Max": 1
       }
     ]
+  },
+  {
+    "Id": "infernalist",
+    "CoinsMin": 0,
+    "CoinsMax": 0,
+    "Entries": [
+      {
+        "Item": "mat_essence_flame",
+        "Chance": 0.3,
+        "Min": 1,
+        "Max": 1
+      },
+      {
+        "Item": "mat_iron_ore",
+        "Chance": 0.35,
+        "Min": 1,
+        "Max": 2
+      },
+      {
+        "Item": "mat_cloth",
+        "Chance": 0.2,
+        "Min": 1,
+        "Max": 1
+      },
+      {
+        "Item": "mat_demon_shard",
+        "Chance": 0.06,
+        "Min": 1,
+        "Max": 1
+      },
+      {
+        "Item": "eq_ring_ember",
+        "Chance": 0.05,
+        "Min": 1,
+        "Max": 1
+      },
+      {
+        "Item": "eq_earring_ash",
+        "Chance": 0.05,
+        "Min": 1,
+        "Max": 1
+      },
+      {
+        "Item": "eq_ring_bloodstone",
+        "Chance": 0.008,
+        "Min": 1,
+        "Max": 1
+      },
+      {
+        "Item": "eq_sword_flame",
+        "Chance": 0.01,
+        "Min": 1,
+        "Max": 1
+      },
+      {
+        "Item": "chest_wooden",
+        "Chance": 0.015,
+        "Min": 1,
+        "Max": 1
+      },
+      {
+        "Item": "tome_lifesteal",
+        "Chance": 0.08,
+        "Min": 1,
+        "Max": 1
+      }
+    ]
   }
 ]

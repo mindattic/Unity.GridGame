@@ -148,6 +148,8 @@ namespace GridGame.Core.Content
         public int AdjacentFoesAtLeast;
         /// <summary>The other unit carries this class tag (Undead, Beast…).</summary>
         public string OtherTag;
+        /// <summary>GG-T338: the other unit carries this status (the Ember Executioner's blows on a [Burning] hero).</summary>
+        public string OtherHasStatus;
         /// <summary>The damage in the context is of this type (null = any).</summary>
         public DamageType? DamageType;
     }

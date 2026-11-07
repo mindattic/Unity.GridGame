@@ -4948,5 +4948,107 @@
         "Y": 3
       }
     ]
+  },
+  {
+    "Id": "infernalist-pair-2",
+    "Name": "Ember Pair",
+    "Formation": "Pair",
+    "Level": 4,
+    "Enemies": [
+      {
+        "Class": "infernalist01",
+        "X": 1,
+        "Y": 2
+      },
+      {
+        "Class": "infernalist02",
+        "X": 4,
+        "Y": 0
+      }
+    ]
+  },
+  {
+    "Id": "infernalist-delta-3",
+    "Name": "Ember Delta",
+    "Formation": "Delta",
+    "Level": 5,
+    "Enemies": [
+      {
+        "Class": "infernalist04",
+        "X": 2,
+        "Y": 2
+      },
+      {
+        "Class": "infernalist01",
+        "X": 1,
+        "Y": 1
+      },
+      {
+        "Class": "infernalist02",
+        "X": 3,
+        "Y": 0
+      }
+    ]
+  },
+  {
+    "Id": "infernalist-phalanx-4",
+    "Name": "Ember Phalanx",
+    "Formation": "Phalanx",
+    "Level": 6,
+    "Enemies": [
+      {
+        "Class": "infernalist01",
+        "X": 1,
+        "Y": 2
+      },
+      {
+        "Class": "infernalist04",
+        "X": 3,
+        "Y": 2
+      },
+      {
+        "Class": "infernalist03",
+        "X": 2,
+        "Y": 0
+      },
+      {
+        "Class": "infernalist02",
+        "X": 4,
+        "Y": 0
+      }
+    ]
+  },
+  {
+    "Id": "infernalist-crown-5",
+    "Name": "Ember Crown",
+    "Formation": "Crown",
+    "Level": 7,
+    "Enemies": [
+      {
+        "Class": "infernalist01",
+        "X": 0,
+        "Y": 2
+      },
+      {
+        "Class": "infernalist04",
+        "X": 2,
+        "Y": 3
+      },
+      {
+        "Class": "infernalist01",
+        "X": 5,
+        "Y": 2
+      },
+      {
+        "Class": "infernalist02",
+        "X": 1,
+        "Y": 0
+      },
+      {
+        "Class": "infernalist03",
+        "X": 4,
+        "Y": 0
+      }
+    ]
   }
 ]

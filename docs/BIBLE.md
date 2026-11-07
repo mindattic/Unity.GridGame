@@ -2058,6 +2058,32 @@ The last captain of the Ark *Long Patience*, who refused to let his ship die and
   Lich's own spells. The casual bot let it rise from the grave 3 times in 24 battles.
 - *(Tests: `LichTests`.)*
 
+### 14.14 The Infernalists (added 2026-11-07, owner art, GG-T338)
+
+The Ember's zealots (docs/STORY.md §3.6): black armour, long red capes, and the belief that the Nearing is a
+homecoming. Four `Sentient` variants, one `infernalist` family. They resist Fire (×0.5), are weak to Ice (×1.5), and
+three of them carry Infernal Hide (they can't be [Burned]). The family plays one combo: **burn, then execute.**
+
+| Class | Role | Speed / brain / targeting | Kit | Support |
+|---|---|---|---|---|
+| `infernalist01` Zealot | brander | 15 / Hunter / Threat | **Cinder Claws** (`cinder_claws`): a landed blow, 35%: [Burning] on the target | Status burning 50% (*Cinder Brand*) |
+| `infernalist02` Pyromancer | caster | 11 / Kiter / Squishy | **Hellfire** (`charge_hellfire`): 2.5 s charge, a Cross (radius 1) on a hero, 6 Fire and [Burning] on each hero caught; recovers 1.5 s | Cast at 50% (*Ember Echo*), reach 2 |
+| `infernalist03` Bloodbinder | healer | 11 / Medic / Threat | **Blood Rite** (`charge_blood_rite`): 2 s charge on its most wounded ally (below 70%): heals 25 and [Empowers] it; rests a turn. Lifesteal | Heal the chain 10%, reach 2 (*Blood Pact*) |
+| `infernalist04` Executioner | finisher | 11 / Duelist / Weakest | **Executioner's Verdict** (`executioners_verdict`): its blows land ×1.5 on a [Burning] foe | Crit +30% (*Mark for Death*) |
+
+- **Engine (small).** The Verdict needed a trigger condition on the *other* unit's status, so `TriggerCondition` gains
+  `OtherHasStatus` (§4.1): checked against the context's other unit (the attacker, else the target) in
+  `Triggers.ConditionHolds`, written "the foe has [Burning]" by `TriggerText`, and validated as a known buff id.
+- **Counterplay** (their cards): cleanse the burn before the Executioner reaches the hero, or keep burning heroes away
+  from it; spread out against Hellfire; kill the Bloodbinder first or interrupt the rite; Ice spells.
+- **Placement.** The Shardfall, where the Ember wakes. Shardfall I (`desert-01`) wave 3: Pyromancer and Bloodbinder in
+  place of two sand maws. Shardfall II (`desert-02`) wave 2: Zealot and Executioner beside a sand maw, in place of a
+  militia soldier, so the burn-then-execute combo plays out. Casual bot, 24 seeds, campaign parties: desert-01 18/24
+  with them vs 19/24 without, desert-02 14/24 vs 15/24; smart bot 24/24 on both, with and without. The first
+  Executioner (STR 17, VIT 15, healed by the Bloodbinder beside it) dealt twice a soldier's damage, so it was cut to
+  STR 14 and VIT 13 and paired with the Zealot instead.
+- *(Tests: `InfernalistTests`.)*
+
 ## 15. Save
 
 ### 15.1 Data model

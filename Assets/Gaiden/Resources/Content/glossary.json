@@ -754,5 +754,19 @@
     "Text": "The Lich's charge: magenta fire on one hero and every hero in the 3×3 around it, which [Burns] each one hit. Spread out, or [Interrupt] it.",
     "LinkKind": "Ability",
     "LinkId": "charge_soulfire"
+  },
+  {
+    "Id": "hellfire",
+    "Term": "Hellfire",
+    "Text": "An Infernalist Pyromancer's charge: fire on one hero and the four tiles beside it, which [Burns] each one hit. Spread out, or [Interrupt] it.",
+    "LinkKind": "Ability",
+    "LinkId": "charge_hellfire"
+  },
+  {
+    "Id": "blood_rite",
+    "Term": "Blood Rite",
+    "Text": "An Infernalist Bloodbinder's charge: it heals its most wounded ally and turns it [Empowered]. [Interrupt] it, or kill the binder first.",
+    "LinkKind": "Ability",
+    "LinkId": "charge_blood_rite"
   }
 ]

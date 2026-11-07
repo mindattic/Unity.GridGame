@@ -23530,5 +23530,498 @@
     "SnakeSegments": 0,
     "Brain": "Commander",
     "Remains": "gravestone"
+  },
+  {
+    "Id": "infernalist01",
+    "Name": "Infernalist Zealot",
+    "Team": "Enemy",
+    "Tags": [
+      "Humanoid",
+      "Sentient"
+    ],
+    "Description": "A black-armoured zealot whose claws drip cinders onto anyone it strikes.",
+    "Lore": "The Ember: zealots in black armour and long red capes who believe the Nearing is a homecoming. They want the Anchors broken and Morrow to finish falling.",
+    "Card": "Its claws can set a hero [Burning], and an Infernalist Executioner hits burning heroes far harder: [cleanse] the burn. Can't be [Burned] itself.",
+    "Portrait": "infernalist01",
+    "Thumbnail": {
+      "Zoom": 2.6,
+      "X": 0.14,
+      "Y": 0.19
+    },
+    "Footprint": {
+      "W": 1,
+      "H": 1
+    },
+    "Support": {
+      "Effect": "Status",
+      "Magnitude": 0.5,
+      "Target": "Attacker",
+      "Range": 1,
+      "Buff": "burning",
+      "Label": "Cinder Brand"
+    },
+    "BaseStats": {
+      "Strength": 15,
+      "Vitality": 13,
+      "Agility": 13,
+      "Speed": 15,
+      "Stamina": 13,
+      "Intelligence": 9,
+      "Wisdom": 9,
+      "Luck": 10
+    },
+    "Growth": {
+      "Strength": 0.9,
+      "Vitality": 0.75,
+      "Agility": 0.75,
+      "Speed": 0.75,
+      "Stamina": 0.75,
+      "Intelligence": 0.45,
+      "Wisdom": 0.45,
+      "Luck": 0.5
+    },
+    "Milestones": [
+      {
+        "Level": 5,
+        "Growth": {
+          "Strength": 0.32,
+          "Vitality": 0.26,
+          "Agility": 0.26,
+          "Speed": 0.26,
+          "Stamina": 0.26,
+          "Intelligence": 0.16,
+          "Wisdom": 0.16,
+          "Luck": 0.17
+        }
+      },
+      {
+        "Level": 10,
+        "Growth": {
+          "Strength": 0.41,
+          "Vitality": 0.34,
+          "Agility": 0.34,
+          "Speed": 0.34,
+          "Stamina": 0.34,
+          "Intelligence": 0.2,
+          "Wisdom": 0.2,
+          "Luck": 0.23
+        }
+      },
+      {
+        "Level": 20,
+        "Growth": {
+          "Strength": 0.54,
+          "Vitality": 0.45,
+          "Agility": 0.45,
+          "Speed": 0.45,
+          "Stamina": 0.45,
+          "Intelligence": 0.27,
+          "Wisdom": 0.27,
+          "Luck": 0.3
+        }
+      },
+      {
+        "Level": 40,
+        "Growth": {
+          "Strength": 0.72,
+          "Vitality": 0.6,
+          "Agility": 0.6,
+          "Speed": 0.6,
+          "Stamina": 0.6,
+          "Intelligence": 0.36,
+          "Wisdom": 0.36,
+          "Luck": 0.4
+        }
+      }
+    ],
+    "Resistances": {
+      "Fire": 0.5,
+      "Ice": 1.5
+    },
+    "Abilities": [
+      "cinder_claws",
+      "infernal_hide"
+    ],
+    "DefaultLoadout": [],
+    "DropTable": "infernalist",
+    "MoveRange": 1,
+    "Targeting": "Threat",
+    "AttackRange": 1,
+    "XpReward": 15,
+    "BossPhases": [],
+    "ChargeAbility": null,
+    "ChargeShape": "Single",
+    "Trap": null,
+    "SnakeSegments": 0,
+    "Brain": "Hunter"
+  },
+  {
+    "Id": "infernalist02",
+    "Name": "Infernalist Pyromancer",
+    "Team": "Enemy",
+    "Tags": [
+      "Humanoid",
+      "Sentient"
+    ],
+    "Description": "A zealot with a blood-light core in its chest that calls fire down in a cross.",
+    "Lore": "The Ember: zealots in black armour and long red capes who believe the Nearing is a homecoming. They want the Anchors broken and Morrow to finish falling.",
+    "Card": "Charges [Hellfire] on a cross of tiles that [Burns]: spread out or [Interrupt] it. Hangs back from the fight.",
+    "Portrait": "infernalist02",
+    "Thumbnail": {
+      "Zoom": 2.6,
+      "X": 0.17,
+      "Y": 0.2
+    },
+    "Footprint": {
+      "W": 1,
+      "H": 1
+    },
+    "Support": {
+      "Effect": "Cast",
+      "Magnitude": 0.5,
+      "Target": "Attacker",
+      "Range": 2,
+      "Label": "Ember Echo"
+    },
+    "BaseStats": {
+      "Strength": 10,
+      "Vitality": 11,
+      "Agility": 11,
+      "Speed": 11,
+      "Stamina": 11,
+      "Intelligence": 16,
+      "Wisdom": 13,
+      "Luck": 10
+    },
+    "Growth": {
+      "Strength": 0.5,
+      "Vitality": 0.65,
+      "Agility": 0.6,
+      "Speed": 0.7,
+      "Stamina": 0.65,
+      "Intelligence": 0.95,
+      "Wisdom": 0.75,
+      "Luck": 0.5
+    },
+    "Milestones": [
+      {
+        "Level": 5,
+        "Growth": {
+          "Strength": 0.17,
+          "Vitality": 0.23,
+          "Agility": 0.21,
+          "Speed": 0.24,
+          "Stamina": 0.23,
+          "Intelligence": 0.33,
+          "Wisdom": 0.26,
+          "Luck": 0.17
+        }
+      },
+      {
+        "Level": 10,
+        "Growth": {
+          "Strength": 0.23,
+          "Vitality": 0.29,
+          "Agility": 0.27,
+          "Speed": 0.32,
+          "Stamina": 0.29,
+          "Intelligence": 0.43,
+          "Wisdom": 0.34,
+          "Luck": 0.23
+        }
+      },
+      {
+        "Level": 20,
+        "Growth": {
+          "Strength": 0.3,
+          "Vitality": 0.39,
+          "Agility": 0.36,
+          "Speed": 0.42,
+          "Stamina": 0.39,
+          "Intelligence": 0.57,
+          "Wisdom": 0.45,
+          "Luck": 0.3
+        }
+      },
+      {
+        "Level": 40,
+        "Growth": {
+          "Strength": 0.4,
+          "Vitality": 0.52,
+          "Agility": 0.48,
+          "Speed": 0.56,
+          "Stamina": 0.52,
+          "Intelligence": 0.76,
+          "Wisdom": 0.6,
+          "Luck": 0.4
+        }
+      }
+    ],
+    "Resistances": {
+      "Fire": 0.5,
+      "Ice": 1.5
+    },
+    "Abilities": [
+      "charge_hellfire",
+      "infernal_hide"
+    ],
+    "DefaultLoadout": [],
+    "DropTable": "infernalist",
+    "MoveRange": 1,
+    "Targeting": "Squishy",
+    "AttackRange": 1,
+    "XpReward": 16,
+    "BossPhases": [],
+    "ChargeAbility": "charge_hellfire",
+    "ChargeShape": "Single",
+    "Trap": null,
+    "SnakeSegments": 0,
+    "Brain": "Kiter"
+  },
+  {
+    "Id": "infernalist03",
+    "Name": "Infernalist Bloodbinder",
+    "Team": "Enemy",
+    "Tags": [
+      "Humanoid",
+      "Sentient"
+    ],
+    "Description": "A zealot who opens its own veins to mend and madden its kin.",
+    "Lore": "The Ember: zealots in black armour and long red capes who believe the Nearing is a homecoming. They want the Anchors broken and Morrow to finish falling.",
+    "Card": "Charges a [Blood Rite] that heals and [Empowers] its most wounded ally: kill it first or [Interrupt] the rite. Its blows [Lifesteal].",
+    "Portrait": "infernalist03",
+    "Thumbnail": {
+      "Zoom": 2.6,
+      "X": 0.15,
+      "Y": 0.19
+    },
+    "Footprint": {
+      "W": 1,
+      "H": 1
+    },
+    "Support": {
+      "Effect": "Heal",
+      "Magnitude": 0.1,
+      "Target": "Chain",
+      "Range": 2,
+      "Label": "Blood Pact"
+    },
+    "BaseStats": {
+      "Strength": 12,
+      "Vitality": 12,
+      "Agility": 12,
+      "Speed": 11,
+      "Stamina": 12,
+      "Intelligence": 13,
+      "Wisdom": 15,
+      "Luck": 10
+    },
+    "Growth": {
+      "Strength": 0.6,
+      "Vitality": 0.7,
+      "Agility": 0.65,
+      "Speed": 0.7,
+      "Stamina": 0.7,
+      "Intelligence": 0.75,
+      "Wisdom": 0.9,
+      "Luck": 0.5
+    },
+    "Milestones": [
+      {
+        "Level": 5,
+        "Growth": {
+          "Strength": 0.21,
+          "Vitality": 0.24,
+          "Agility": 0.23,
+          "Speed": 0.24,
+          "Stamina": 0.24,
+          "Intelligence": 0.26,
+          "Wisdom": 0.32,
+          "Luck": 0.17
+        }
+      },
+      {
+        "Level": 10,
+        "Growth": {
+          "Strength": 0.27,
+          "Vitality": 0.32,
+          "Agility": 0.29,
+          "Speed": 0.32,
+          "Stamina": 0.32,
+          "Intelligence": 0.34,
+          "Wisdom": 0.41,
+          "Luck": 0.23
+        }
+      },
+      {
+        "Level": 20,
+        "Growth": {
+          "Strength": 0.36,
+          "Vitality": 0.42,
+          "Agility": 0.39,
+          "Speed": 0.42,
+          "Stamina": 0.42,
+          "Intelligence": 0.45,
+          "Wisdom": 0.54,
+          "Luck": 0.3
+        }
+      },
+      {
+        "Level": 40,
+        "Growth": {
+          "Strength": 0.48,
+          "Vitality": 0.56,
+          "Agility": 0.52,
+          "Speed": 0.56,
+          "Stamina": 0.56,
+          "Intelligence": 0.6,
+          "Wisdom": 0.72,
+          "Luck": 0.4
+        }
+      }
+    ],
+    "Resistances": {
+      "Fire": 0.5,
+      "Ice": 1.5
+    },
+    "Abilities": [
+      "charge_blood_rite",
+      "lifesteal"
+    ],
+    "DefaultLoadout": [],
+    "DropTable": "infernalist",
+    "MoveRange": 1,
+    "Targeting": "Threat",
+    "AttackRange": 1,
+    "XpReward": 16,
+    "BossPhases": [],
+    "ChargeAbility": "charge_blood_rite",
+    "ChargeShape": "Single",
+    "Trap": null,
+    "SnakeSegments": 0,
+    "Brain": "Medic"
+  },
+  {
+    "Id": "infernalist04",
+    "Name": "Infernalist Executioner",
+    "Team": "Enemy",
+    "Tags": [
+      "Humanoid",
+      "Sentient"
+    ],
+    "Description": "A zealot with a red blade who finishes whatever the Ember has set alight.",
+    "Lore": "The Ember: zealots in black armour and long red capes who believe the Nearing is a homecoming. They want the Anchors broken and Morrow to finish falling.",
+    "Card": "Hits [Burning] heroes 50% harder: [cleanse] the burn or keep burning heroes away from it. A duelist: [pincer] it, it hates being outnumbered.",
+    "Portrait": "infernalist04",
+    "Thumbnail": {
+      "Zoom": 2.6,
+      "X": 0.15,
+      "Y": 0.19
+    },
+    "Footprint": {
+      "W": 1,
+      "H": 1
+    },
+    "Support": {
+      "Effect": "Crit",
+      "Magnitude": 0.3,
+      "Target": "Attacker",
+      "Range": 1,
+      "Label": "Mark for Death"
+    },
+    "BaseStats": {
+      "Strength": 14,
+      "Vitality": 13,
+      "Agility": 11,
+      "Speed": 11,
+      "Stamina": 14,
+      "Intelligence": 8,
+      "Wisdom": 10,
+      "Luck": 11
+    },
+    "Growth": {
+      "Strength": 0.85,
+      "Vitality": 0.75,
+      "Agility": 0.6,
+      "Speed": 0.7,
+      "Stamina": 0.8,
+      "Intelligence": 0.4,
+      "Wisdom": 0.55,
+      "Luck": 0.55
+    },
+    "Milestones": [
+      {
+        "Level": 5,
+        "Growth": {
+          "Strength": 0.3,
+          "Vitality": 0.26,
+          "Agility": 0.21,
+          "Speed": 0.24,
+          "Stamina": 0.28,
+          "Intelligence": 0.14,
+          "Wisdom": 0.19,
+          "Luck": 0.19
+        }
+      },
+      {
+        "Level": 10,
+        "Growth": {
+          "Strength": 0.38,
+          "Vitality": 0.34,
+          "Agility": 0.27,
+          "Speed": 0.32,
+          "Stamina": 0.36,
+          "Intelligence": 0.18,
+          "Wisdom": 0.25,
+          "Luck": 0.25
+        }
+      },
+      {
+        "Level": 20,
+        "Growth": {
+          "Strength": 0.51,
+          "Vitality": 0.45,
+          "Agility": 0.36,
+          "Speed": 0.42,
+          "Stamina": 0.48,
+          "Intelligence": 0.24,
+          "Wisdom": 0.33,
+          "Luck": 0.33
+        }
+      },
+      {
+        "Level": 40,
+        "Growth": {
+          "Strength": 0.68,
+          "Vitality": 0.6,
+          "Agility": 0.48,
+          "Speed": 0.56,
+          "Stamina": 0.64,
+          "Intelligence": 0.32,
+          "Wisdom": 0.44,
+          "Luck": 0.44
+        }
+      }
+    ],
+    "Resistances": {
+      "Fire": 0.5,
+      "Ice": 1.5
+    },
+    "Abilities": [
+      "executioners_verdict",
+      "infernal_hide"
+    ],
+    "DefaultLoadout": [],
+    "DropTable": "infernalist",
+    "MoveRange": 1,
+    "Targeting": "Weakest",
+    "AttackRange": 1,
+    "XpReward": 18,
+    "BossPhases": [],
+    "ChargeAbility": null,
+    "ChargeShape": "Single",
+    "Trap": null,
+    "SnakeSegments": 0,
+    "Brain": "Duelist"
   }
 ]
