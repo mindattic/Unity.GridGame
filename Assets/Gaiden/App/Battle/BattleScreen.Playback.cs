@@ -466,14 +466,15 @@ namespace GridGame.App
             Unit[] who = { a, b };
             for (int i = 0; i < 2; i++)
             {
-                var tex = Art.Portrait(who[i].Def.Id);
-                float aspect = tex != null && tex.height > 0 ? (float)tex.width / tex.height : 0.7f;
+                var fig = Art.PortraitFigure(who[i].Def.Id);
+                var size = Art.FigureSize(who[i].Def.Id);
+                float aspect = fig != null && size.y > 0 ? size.x / size.y : 0.7f;
                 float h = rowLine ? 760f : 1040f, w = h * aspect;
                 if (!rowLine && w > 540f) { w = 540f; h = w / aspect; }
                 var el = new VisualElement { name = $"cutin-{who[i].Id}", pickingMode = PickingMode.Ignore };
                 el.style.position = Position.Absolute;
                 el.style.width = w; el.style.height = h;
-                el.style.backgroundImage = new StyleBackground(tex);
+                el.style.backgroundImage = new StyleBackground(fig);
                 el.style.left = -w * 2; el.style.top = -h * 2;
                 layer.Add(el);
                 shots.Add(new CutInPortrait
@@ -755,8 +756,9 @@ namespace GridGame.App
         {
             string classId = u.IsCorpse && u.CorpseOf != null ? u.CorpseOf : u.Def?.Id;
             if (string.IsNullOrEmpty(classId) || !Art.Exists("Portraits/" + classId)) yield break;
-            var tex = Art.Portrait(classId);
-            float aspect = tex.height > 0 ? (float)tex.width / tex.height : 1f;
+            var fig = Art.PortraitFigure(classId);
+            var size = Art.FigureSize(classId);
+            float aspect = size.y > 0 ? size.x / size.y : 1f;
             float box = BoardView.Tile * (2f + Mathf.Max(v.W, v.H));
             float w = aspect >= 1f ? box : box * aspect, h = aspect >= 1f ? box / aspect : box;
             var centre = BoardView.CenterOf(v.Tile, v.W, v.H);
@@ -768,7 +770,7 @@ namespace GridGame.App
             float boardW = BoardView.Tile * BattleConfig.Cols, boardH = BoardView.Tile * BattleConfig.Rows;
             el.style.left = w < boardW ? Mathf.Clamp(centre.x - w / 2f, 0f, boardW - w) : centre.x - w / 2f;
             el.style.top = h < boardH ? Mathf.Clamp(centre.y - h / 2f, 0f, boardH - h) : centre.y - h / 2f;
-            el.style.backgroundImage = new StyleBackground(tex);
+            el.style.backgroundImage = new StyleBackground(fig);
             el.style.opacity = DissolveStartAlpha;
             // Beneath the floating numbers and coin burst on the fx layer, above every token, mark and line.
             board.FxLayer.Insert(0, el);
@@ -959,7 +961,7 @@ namespace GridGame.App
             frame.style.backgroundColor = Palette.Ink.WithA(0.6f);
             if (def != null)
             {
-                frame.style.backgroundImage = new StyleBackground(Art.Portrait(def.Id));
+                frame.style.backgroundImage = new StyleBackground(Art.PortraitFigure(def.Id));
                 frame.style.backgroundSize = new BackgroundSize(BackgroundSizeType.Contain);
                 var crop = def.Crop;
                 frame.style.backgroundPositionX = new BackgroundPosition(BackgroundPositionKeyword.Left, Length.Percent(crop?.X ?? 50f));

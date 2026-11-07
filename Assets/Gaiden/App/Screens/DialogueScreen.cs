@@ -278,15 +278,17 @@ namespace GridGame.App
             s.Portrait = HasPortrait(portrait) ? portrait : null;
             s.Name = name;
             if (s.Art == null) return;
-            var tex = s.Portrait != null ? Art.Portrait(s.Portrait) : null;
-            s.Art.style.backgroundImage = new StyleBackground(tex);
-            // One scale for every speaker: 640 canvas px = FigureHeight. A creature canvas shorter than 640 is drawn
-            // that much smaller (POL-H1), so a 234-px slime isn't stretched to a person's height.
-            if (tex != null)
+            var fig = s.Portrait != null ? Art.PortraitFigure(s.Portrait) : null;
+            s.Art.style.backgroundImage = new StyleBackground(fig);
+            // One scale for every speaker: a 640-unit figure = FigureHeight. The figure is its box on the 1024 portrait
+            // fitted inside 640 (Art.FigureSize, GG-T352), so a creature smaller than that is drawn that much smaller
+            // (POL-H1) and a 234-px slime isn't stretched to a person's height.
+            if (fig != null)
             {
                 float k = FigureHeight / PersonCanvas;
-                s.Art.style.height = Mathf.Min(tex.height, PersonCanvas) * k;
-                s.Art.style.width = tex.width * k;
+                var size = Art.FigureSize(s.Portrait);
+                s.Art.style.height = Mathf.Min(size.y, PersonCanvas) * k;
+                s.Art.style.width = size.x * k;
             }
             s.NameLabel.text = name ?? "";
             s.Plate.style.display = string.IsNullOrEmpty(name) ? DisplayStyle.None : DisplayStyle.Flex;
@@ -484,7 +486,7 @@ namespace GridGame.App
                     if (art != null)
                     {
                         ic.style.width = Size.AvatarW; ic.style.height = Size.Avatar;
-                        ic.style.backgroundImage = new StyleBackground(Art.Portrait(art));
+                        ic.style.backgroundImage = new StyleBackground(Art.PortraitFigure(art));
                         ic.style.backgroundPositionY = new BackgroundPosition(BackgroundPositionKeyword.Bottom);
                         row.Insert(1, ic); // after the cursor, where MenuRow puts an icon
                     }

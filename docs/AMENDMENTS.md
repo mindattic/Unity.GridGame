@@ -1041,6 +1041,14 @@ Owner: *"another way is to simply summon them randomly with Diamonds monetized c
 - **Not monetized yet:** Diamonds still come only from the LuckyDiamond paywall hook (1 g · 1 s); there is no store and no IAP UI ("until I call it monetize, it's not"). Bots, `CampRoutine` and Test Mode never spend Diamonds.
 - *(Tests: `SummonTests`.)*
 
+## 2026-11-07 — Portraits are 1024×1024 canvases, never trimmed (owner, GG-T352)
+
+Owner: *"all characters are 1024x1024 with transparent backgrounds; that's the rule, that's what the assets are."*
+
+- **Was:** `tools/import_art.py` alpha-trimmed every portrait to its figure and capped it at 640 px (BIBLE §12.1 "≤ 640 px", POLISH POL-H1 "a person's canvas is 640 px tall"), so all 211 files were smaller crops of the art.
+- **Now:** every portrait is the art's own 1024×1024 RGBA canvas ([BIBLE §12.1.2](BIBLE.md)); a source of another size is fitted onto that canvas whole. Every class's `Thumbnail` was converted to frame the canvas exactly as it framed the trimmed image, and a new `Figure` box (the alpha bounds, written at import) lets whole-figure views (dialogue, cut-ins, level-up, cards, death dissolve) draw just the figure, at the size it had before. POL-H1 now checks the 1024 canvas instead of the 640 fill rules. The 18 originals that were cut by hand earlier at full canvas, and the vulture, which still had its solid background, now draw from their figure box like every other figure, so in dialogue they stand as tall as everyone else instead of carrying their old margins.
+- *(Tests: `PortraitCanvasTests`.)*
+
 ## 2026-11-07 — Backgrounds at the art's resolution, named after their region (owner, GG-T353)
 
 Owner: *"make sure the source files for the Backgrounds all get proper naming to identify them to their world lore counterparts"*.

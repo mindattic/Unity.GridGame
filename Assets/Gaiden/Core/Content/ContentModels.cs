@@ -295,6 +295,25 @@ namespace GridGame.Core.Content
         public float Y = 0.5f;
     }
 
+    /// <summary>
+    /// GG-T352: where the figure sits on its portrait. Owner 2026-11-07: "all characters are 1024x1024 with transparent
+    /// backgrounds; that's the rule, that's what the assets are", so a portrait is the whole canvas, margins included.
+    /// This is the figure's box on it (the alpha bounds, written by tools/import_art.py when the portrait is imported), as
+    /// fractions of the portrait's width and height from its top-left. Whole-figure views (dialogue, cut-ins, cards,
+    /// the death dissolve) draw only this box, so a figure reads at the same size whatever its canvas margins;
+    /// thumbnails frame the whole canvas through <see cref="Thumbnail"/>.
+    /// </summary>
+    public sealed class Figure
+    {
+        public float X;
+        public float Y;
+        public float W = 1f;
+        public float H = 1f;
+
+        /// <summary>A box with some area, inside the portrait.</summary>
+        public bool IsValid => W > 0f && H > 0f && X >= 0f && Y >= 0f && X + W <= 1.0001f && Y + H <= 1.0001f;
+    }
+
     public sealed class BossPhaseDef
     {
         /// <summary>Phase begins when HP fraction drops to or below this (0..1).</summary>
@@ -391,6 +410,8 @@ namespace GridGame.Core.Content
         public string Portrait;
         public PortraitCrop Crop;
         public Thumbnail Thumbnail;
+        /// <summary>The figure's box on the portrait (GG-T352).</summary>
+        public Figure Figure;
         public Footprint Footprint = new Footprint();
         public Stats BaseStats = new Stats();
         public Stats Growth = new Stats();

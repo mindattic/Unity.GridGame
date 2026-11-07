@@ -364,7 +364,7 @@ namespace GridGame.App
                 var roleColor = Ui.RoleColor(def.Role);
                 frame.style.borderTopColor = frame.style.borderBottomColor = frame.style.borderLeftColor = frame.style.borderRightColor = roleColor;
                 frame.style.backgroundColor = Palette.Ink.WithA(0.6f);
-                frame.style.backgroundImage = new StyleBackground(Art.Portrait(showId));
+                frame.style.backgroundImage = new StyleBackground(Art.PortraitFigure(showId));
                 frame.style.backgroundSize = new BackgroundSize(BackgroundSizeType.Contain);
                 var info = Ui.El("col", row);
                 info.style.marginLeft = Space.S24; info.style.flexGrow = 1;

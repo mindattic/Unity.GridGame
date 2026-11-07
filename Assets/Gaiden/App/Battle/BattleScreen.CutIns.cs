@@ -86,7 +86,7 @@ namespace GridGame.App
             portrait = new VisualElement { pickingMode = PickingMode.Ignore };
             portrait.style.position = Position.Absolute;
             portrait.style.left = -w * 0.25f; portrait.style.right = -w * 0.25f; portrait.style.top = -h * 0.04f; portrait.style.height = h * 2.0f;
-            portrait.style.backgroundImage = new StyleBackground(Art.Portrait(u.Def.Id));
+            portrait.style.backgroundImage = new StyleBackground(Art.PortraitFigure(u.Def.Id));
             portrait.style.backgroundSize = new BackgroundSize(BackgroundSizeType.Contain);
             var crop = u.Def.Crop;
             portrait.style.backgroundPositionX = new BackgroundPosition(BackgroundPositionKeyword.Left, Length.Percent(crop?.X ?? 50f));

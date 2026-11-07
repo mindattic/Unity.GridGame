@@ -111,19 +111,17 @@ Status values: ❌ fails, 🟡 partly passes or partly measured, ✅ passes, ⬜
 
 | ID | Rule | Why | Source | Measured by | Status |
 |---|---|---|---|---|---|
-| POL-H1 | **Portrait standard** (spec below): transparent PNG, a person's canvas is 640 px tall, the figure fills ≥ 95% of the canvas height and stands on the bottom edge (≤ 2% gap); a creature may use a shorter canvas, which declares it that much smaller; props exempt | People must be the same scale side by side; the canvas height *is* the scale | Art-direction practice | `check_assets.art_findings` | 🟡 92.7: 13 portraits float or under-fill (frogs, toad, undead, phantom, sage, swordmaster, monk, hag03, mannequin, technician) |
+| POL-H1 | **Portrait standard** (spec below; amended 2026-11-07, GG-T352): a 1024×1024 RGBA canvas with a transparent background, never trimmed or shrunk; the figure's box fitted in a 640 square is its drawn size (640 = one person, a smaller box = a smaller creature) | People must be the same scale side by side; the figure box *is* the scale | Art-direction practice | `check_assets.art_findings` | 🟡 92.7: 13 portraits float or under-fill (frogs, toad, undead, phantom, sage, swordmaster, monk, hag03, mannequin, technician) |
 | POL-H2 | **Icon standard** (spec below): 88×88 RGBA on a 22×22 pixel grid ×4, ≤ 9 colours (8 + the dark outline); UI icons 64×64 | Icons from many sources must read as one set | Icon-system practice (Material 3 icons) | `check_assets.art_findings` | ✅ 100: all 1,514 icons |
 | POL-H3 | **Backdrop standard** (spec below): a 1:2 JPEG at the art's own resolution named `<region>_NN`, mean luminance 0.25–0.50, one top-left key light; units stay ≥ 3 : 1 against the board | The board must always read | Value-structure / art-direction practice | `check_assets.art_findings` (size, value band); R10 (light) | ✅ 100 measured (means 0.29–0.45); light direction by review |
 | POL-H4 | No asset drawn above its native resolution on the largest stage | No blur | Asset-pipeline practice | `check_assets.art_findings` | ❌ 0: dialogue draws 640-px portraits at 1200 px (1.9×); needs ≥ 1200-px sources or a smaller figure height |
 
 #### H specs (GG-T256)
 
-**Portraits** (`Resources/Portraits/<class>.png`):
-- **Canvas.** Transparent PNG (RGBA). Height is the scale: **640 px = one person** (a hero, humanoid foe or NPC). A creature that is smaller than a person uses a proportionally shorter canvas (a slime at 234 px is 234/640 of a person). No canvas is taller than 640. Width is free (today 227–640) and follows the pose.
-- **Fill and foot line.** Crop tight. The figure, including raised weapons, wings and hair, spans **≥ 95%** of the canvas height and its lowest opaque pixel sits within **2%** of the bottom edge, so every speaker stands on the same floor.
-- **Side margin.** At most **8%** transparent margin left and right (a warning only: it shifts the figure off its anchor, but not its scale).
-- **Rendering.** Dialogue draws 640 canvas px at `DialogueScreen.FigureHeight` (1200) and a shorter canvas proportionally (GG-T256). Tokens, turn icons, cards and faces never use a separate image: they frame the portrait through the class `Thumbnail` (BIBLE §12.1.1).
-- **Props** (bone pile, corpse, gravestone) are exempt from the fill and foot rules.
+**Portraits** (`Resources/Portraits/<class>.png`; amended 2026-11-07, GG-T352, owner: "all characters are 1024x1024 with transparent backgrounds; that's the rule, that's what the assets are"):
+- **Canvas.** A **1024×1024** RGBA PNG with a transparent background, exactly as the art comes: never alpha-trimmed, never shrunk (`tools/import_art.py` fits a source of another size onto the canvas whole). The old 640-px canvas, fill, foot-line and side-margin rules are retired.
+- **Figure and scale.** The class's `Figure` box (the alpha bounds, written at import, BIBLE §12.1.2) is what whole-figure views draw. Its size is the box fitted inside a 640 square, never enlarged (`Art.FigureSize`): **640 = one person**, and a creature whose box is smaller draws that much smaller.
+- **Rendering.** Dialogue draws a 640 figure at `DialogueScreen.FigureHeight` (1200) and a smaller one proportionally (GG-T256). Tokens, turn icons, cards and faces never use a separate image: they frame the whole canvas through the class `Thumbnail` (BIBLE §12.1.1).
 
 **Thumbnails.** These are not files: `classes.json` `Thumbnail {Zoom, X, Y}` frames the portrait (BIBLE §12.1.1). The face sits in the upper third of the frame, with the eyes on the frame's upper-third line and the same zoom family for the same body type. Judged in review (R10).
 
@@ -139,7 +137,7 @@ Status values: ❌ fails, 🟡 partly passes or partly measured, ✅ passes, ⬜
 - **One key light from the upper left**, with value falling off toward the bottom where the board sits. Saturation stays below the units' own.
 - Checked by `check_assets` (size, format, value band) and review R10 (light direction, saturation).
 
-**Enforcement.** `tools/check_assets.py` fails on hard breaks: a portrait with no transparency or taller than 640, an icon at the wrong size, or a backdrop that isn't a 1:2 JPEG/PNG at least 1536 tall named `<region>_NN`. Everything else is printed as an art warning. `tools/polish.py` scores POL-H1 to H4 from the same `art_findings()`.
+**Enforcement.** `tools/check_assets.py` fails on hard breaks: a portrait that isn't a 1024×1024 RGBA canvas or is barely transparent (under 20% of it clear), an icon at the wrong size, or a backdrop that isn't a 1:2 JPEG/PNG at least 1536 tall named `<region>_NN`. Everything else is printed as an art warning. `tools/polish.py` scores POL-H1 to H4 from the same `art_findings()`.
 | POL-H5 | Side-by-side test: a stranger can't pick out "the asset from somewhere else" | Cohesion | Art-direction practice | R10 | ❌ owner: "a collection of random effects" |
 
 

@@ -121,6 +121,8 @@ namespace GridGame.Core.Content
                 else if (!(th.Zoom >= Thumbnail.MinZoom && th.Zoom <= Thumbnail.MaxZoom) || !(th.X >= Thumbnail.MinOffset && th.X <= Thumbnail.MaxOffset)
                          || !(th.Y >= Thumbnail.MinOffset && th.Y <= Thumbnail.MaxOffset))
                     p.Add($"class {c.Id}: Thumbnail out of range (Zoom {Thumbnail.MinZoom}..{Thumbnail.MaxZoom}, X/Y {Thumbnail.MinOffset}..{Thumbnail.MaxOffset})");
+                if (c.Figure == null) p.Add($"class {c.Id}: no Figure (tools/import_art.py writes it when the portrait is imported)");
+                else if (!c.Figure.IsValid) p.Add($"class {c.Id}: Figure must be a box with area inside the portrait (fractions 0..1)");
                 foreach (var a in c.Abilities) NeedAbility(a, $"class {c.Id} abilities");
                 foreach (var s in c.DefaultLoadout)
                 {

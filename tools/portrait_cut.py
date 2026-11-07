@@ -20,8 +20,11 @@ The four methods (research summary in the GG-T327 ticket):
 The comparison sheet shows tolerance, ai, hybrid and smoke; unmix (the weakest on the samples) runs only via --pick.
 
 Each variation is written as <name>.<method>.png beside --out, plus <name>.compare.png showing all four over dark and
-light checkerboards with a zoomed detail. --import <classId> saves the --pick'd one as Portraits/<classId>.png
-(alpha-trimmed, max 640 px, like tools/import_art.py); its existing .meta (GUID) is kept.
+light checkerboards with a zoomed detail. --import <classId> saves the --pick'd one as Portraits/<classId>.png the way
+tools/import_art.py does: a 1024x1024 transparent canvas, never trimmed or shrunk (owner 2026-11-07, GG-T352: "all
+characters are 1024x1024 with transparent backgrounds; that's the rule, that's what the assets are"; a pasted image of
+another size is fitted onto the canvas whole), with the class's "Figure" box written to classes.json; its existing
+.meta (GUID) is kept.
 """
 import argparse
 import os
@@ -259,7 +262,7 @@ def main():
     if args.class_id:
         from import_art import save_portrait_assets
         full = save_portrait_assets(results[args.pick][0], args.class_id)
-        print(f"imported Portraits/{args.class_id}.png {full.size} (re-frame its Thumbnail in tools/ThumbnailStudio)")
+        print(f"imported Portraits/{args.class_id}.png {full.size[0]}x{full.size[1]} (re-frame its Thumbnail in tools/ThumbnailStudio)")
 
 
 if __name__ == "__main__":

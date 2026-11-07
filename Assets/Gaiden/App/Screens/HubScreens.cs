@@ -287,7 +287,7 @@ namespace GridGame.App
             var top = Ui.El("row", w);
             var art = Ui.El("", top);
             art.style.width = Size.ArtW; art.style.height = Size.ArtH;
-            art.style.backgroundImage = new StyleBackground(Art.Portrait(h.ClassId));
+            art.style.backgroundImage = new StyleBackground(Art.PortraitFigure(h.ClassId));
             art.style.backgroundSize = new BackgroundSize(BackgroundSizeType.Contain);
             var stats = Ui.El("col grow", top);
             stats.style.marginLeft = Space.S24;

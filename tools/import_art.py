@@ -4,9 +4,13 @@ Reproducible art/audio import from the GridGame2026 reference project into GridG
     python tools/import_art.py [--src D:/Projects/MindAttic/GridGame2026/Assets]
 
 Produces (under Assets/Gaiden/Resources/):
-  Portraits/<classId>.png    full-body art, max 640 px tall: the one image per unit. Every thumbnail (board token,
-                             timeline icon, cards) is a zoom + offset into it, kept in classes.json as the class's
-                             "Thumbnail" and framed in tools/ThumbnailStudio (GG-T220) - no thumb images are cut.
+  Portraits/<classId>.png    full-body art on a 1024x1024 transparent canvas (owner 2026-11-07, GG-T352: "all
+                             characters are 1024x1024 with transparent backgrounds; that's the rule, that's what the
+                             assets are"): the one image per unit, never trimmed or shrunk. Every thumbnail (board
+                             token, timeline icon, cards) is a zoom + offset into it, kept in classes.json as the
+                             class's "Thumbnail" and framed in tools/ThumbnailStudio (GG-T220) - no thumb images are
+                             cut. The figure's own box (alpha bounds) is written to the class's "Figure" so whole-figure
+                             views (dialogue, cut-ins, cards) draw the figure, not the empty canvas around it.
   Backgrounds/<set>_<NN>.jpg every GridGame2026 biome backdrop at its original resolution (1536x3072), JPEG q95
                              (PNG if it had transparency), named after its STORY.md region and numbered from 01
                              (owner 2026-11-07, GG-T353: "make sure the source files for the Backgrounds all get
@@ -52,16 +56,103 @@ def ensure(path):
     return path
 
 
-def save_portrait_assets(im, class_id):
-    """im: an opened RGBA PIL.Image. Writes Portraits/<id>.png (alpha-bbox-trimmed, max 640px tall) and returns it.
-    A new class also needs a "Thumbnail" in classes.json (frame it in tools/ThumbnailStudio)."""
-    portraits = ensure(os.path.join(RES, "Portraits"))
-    full = im.copy()
-    bbox = full.getchannel("A").getbbox()
+# Owner 2026-11-07 (GG-T352): "all characters are 1024x1024 with transparent backgrounds; that's the rule, that's what
+# the assets are." Portraits are written at exactly this size: never alpha-trimmed, never capped smaller.
+CANVAS = 1024
+
+
+def fit_canvas(im):
+    """im on a CANVAS x CANVAS transparent canvas. A 1024x1024 image is kept pixel for pixel. Any other size is cut to
+    its figure (alpha bounds, so nothing of the figure is lost), scaled down only if that is still larger than the
+    canvas, and centred."""
+    im = im.convert("RGBA")
+    if im.size == (CANVAS, CANVAS):
+        return im.copy()
+    bbox = im.getchannel("A").getbbox()
     if bbox:
-        full = full.crop(bbox)
-    full.thumbnail((640, 640), Image.LANCZOS)
+        im = im.crop(bbox)
+    s = min(1.0, CANVAS / im.width, CANVAS / im.height)
+    if s < 1.0:
+        size = (max(1, round(im.width * s)), max(1, round(im.height * s)))
+        im = im.convert("RGBa").resize(size, Image.LANCZOS).convert("RGBA")  # premultiplied: no dark fringe
+    canvas = Image.new("RGBA", (CANVAS, CANVAS), (0, 0, 0, 0))
+    canvas.alpha_composite(im, ((CANVAS - im.width) // 2, (CANVAS - im.height) // 2))
+    return canvas
+
+
+def figure_box(im):
+    """The figure's box on the portrait as classes.json "Figure" fractions {X, Y, W, H} (left, top, width, height of
+    the alpha bounds over the canvas width / height), or None for an empty image."""
+    bbox = im.getchannel("A").getbbox()
+    if not bbox:
+        return None
+    w, h = im.size
+    x0, y0, x1, y1 = bbox
+    return {"X": x0 / w, "Y": y0 / h, "W": (x1 - x0) / w, "H": (y1 - y0) / h}
+
+
+def _num(v):
+    """A number the way tools/ThumbnailStudio writes it (Thumb.Num): 4 decimals, trailing zeros dropped."""
+    t = f"{round(v, 4):.4f}".rstrip("0").rstrip(".")
+    return "0" if t in ("-0", "") else t
+
+
+def set_class_blocks(updates, path=None):
+    """Targeted edit of classes.json: for each {classId: {"Thumbnail": {...}, "Figure": {...}}} replace that block of
+    the class (or insert it after its Thumbnail / Portrait / Id line), leaving every other byte alone like
+    tools/ThumbnailStudio does (other agents own the rest of the file). Returns the ids that are not classes."""
+    import re
+    path = path or os.path.join(RES, "Content", "classes.json")
+    raw = open(path, "rb").read()
+    text = raw.decode("utf-8-sig")
+    nl = "\r\n" if "\r\n" in text else "\n"
+    missing = []
+    for cid, blocks in updates.items():
+        m = re.search(r'^([ \t]*)"Id": "' + re.escape(cid) + r'",?\r?$', text, re.M)
+        if not m:
+            missing.append(cid)
+            continue
+        ind = m.group(1)
+        start = m.start()
+        end = text.find(nl + ind[:-2] + "}", m.end())  # the class object's closing brace
+        body = text[start:end]
+        for key, val in blocks.items():
+            inner = ("," + nl).join(f'{ind}  "{k}": {_num(v)}' for k, v in val.items())
+            block = f'"{key}": {{{nl}{inner}{nl}{ind}}}'
+            bm = re.search(r'"' + key + r'": \{[^{}]*\}', body)
+            if bm:
+                body = body[:bm.start()] + block + body[bm.end():]
+                continue
+            anchor = None
+            for a in ("Thumbnail", "Portrait", "Id"):
+                anchor = re.search(r'^' + re.escape(ind) + '"' + a + r'": (\{[^{}]*\}|"[^"]*"),?(?=\r?$)', body, re.M)
+                if anchor:
+                    break
+            line = anchor.group(0)
+            ins = (line + nl + ind + block + ",") if line.endswith(",") else (line + "," + nl + ind + block)
+            body = body[:anchor.start()] + ins + body[anchor.end():]
+        text = text[:start] + body + text[end:]
+    json.loads(text)  # still valid JSON
+    data = text.encode("utf-8")
+    if raw.startswith(b"\xef\xbb\xbf"):
+        data = b"\xef\xbb\xbf" + data
+    tmp = path + ".import.tmp"
+    open(tmp, "wb").write(data)
+    os.replace(tmp, path)
+    return missing
+
+
+def save_portrait_assets(im, class_id):
+    """im: an opened RGBA PIL.Image. Writes Portraits/<id>.png as a 1024x1024 RGBA canvas (fit_canvas: a 1024 image
+    untouched, never trimmed or shrunk; any other size fitted onto the canvas whole) and returns it. The existing .meta
+    (GUID) is kept, and the class's "Figure" box in classes.json is set from the canvas (figure_box), when the class
+    exists. A new class also needs a "Thumbnail" in classes.json (frame it in tools/ThumbnailStudio)."""
+    portraits = ensure(os.path.join(RES, "Portraits"))
+    full = fit_canvas(im)
     full.save(os.path.join(portraits, class_id + ".png"), optimize=True)
+    box = figure_box(full)
+    if box and set_class_blocks({class_id: {"Figure": box}}):
+        print(f"  {class_id} is not a class yet: give it \"Figure\": {json.dumps({k: float(_num(v)) for k, v in box.items()})}")
     return full
 
 

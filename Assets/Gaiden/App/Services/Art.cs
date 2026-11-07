@@ -66,6 +66,57 @@ namespace GridGame.App
 
         /// <summary>The placeholder portrait every class without art falls back to.</summary>
         public const string MannequinPortrait = "mannequin";
+
+        // ── The figure on a portrait (GG-T352) ─────────────────────────────────────
+        // Owner 2026-11-07: "all characters are 1024x1024 with transparent backgrounds; that's the rule, that's what the
+        // assets are." Thumbnails frame that whole canvas (Ui.PortraitThumb). Whole-figure views draw only the figure's
+        // box on it (ClassDef.Figure, the alpha bounds tools/import_art.py writes), so a figure reads at the same size it
+        // always did instead of shrinking into its canvas margins.
+
+        /// <summary>The size whole-figure views measure a figure by: its box fitted inside this square, never enlarged
+        /// (the size portraits were imported at before GG-T352, so a creature smaller than a person still draws smaller).</summary>
+        public const float FigureBox = 640f;
+
+        private static readonly Dictionary<Texture2D, Sprite> figureSprites = new Dictionary<Texture2D, Sprite>();
+
+        /// <summary>The figure's box on a portrait texture, in texture pixels from the bottom-left (Unity's origin). It is
+        /// the box of the class the texture belongs to, so the mannequin fallback (GG-T351) uses the mannequin's own box;
+        /// a texture with no valid box is used whole.</summary>
+        private static Rect FigureRect(Texture2D tex)
+        {
+            var f = GameApp.I != null ? GameApp.I.Content?.TryClass(tex.name)?.Figure : null;
+            if (f == null || !f.IsValid) return new Rect(0, 0, tex.width, tex.height);
+            float x0 = Mathf.Round(f.X * tex.width), x1 = Mathf.Min(tex.width, Mathf.Round((f.X + f.W) * tex.width));
+            float y0 = Mathf.Round(f.Y * tex.height), y1 = Mathf.Min(tex.height, Mathf.Round((f.Y + f.H) * tex.height));
+            if (x1 - x0 < 1f || y1 - y0 < 1f) return new Rect(0, 0, tex.width, tex.height);
+            return new Rect(x0, tex.height - y1, x1 - x0, y1 - y0);
+        }
+
+        /// <summary>A class's figure (its portrait cut to <see cref="ClassDef.Figure"/>) as a sprite for a
+        /// <c>backgroundImage</c>: every whole-portrait view (dialogue, cut-ins, boss intro, level-up, cards, the death
+        /// dissolve) draws this instead of the raw texture. Cached per texture; null only when there is no art at all.</summary>
+        public static Sprite PortraitFigure(string classId)
+        {
+            var tex = Portrait(classId);
+            if (tex == null) return null;
+            if (figureSprites.TryGetValue(tex, out var s) && s != null) return s;
+            s = Sprite.Create(tex, FigureRect(tex), new Vector2(0.5f, 0.5f), 100f, 0, SpriteMeshType.FullRect);
+            s.name = tex.name + ".figure";
+            return figureSprites[tex] = s;
+        }
+
+        /// <summary>The figure's layout size in <see cref="FigureBox"/> units: its box fitted inside a 640 square, never
+        /// enlarged. Width ÷ height is the figure's aspect; dialogue scales the height (640 = one person).</summary>
+        public static Vector2 FigureSize(string classId)
+        {
+            var tex = Portrait(classId);
+            if (tex == null) return new Vector2(FigureBox * 0.7f, FigureBox);
+            var r = FigureRect(tex);
+            // Measured on the 1024 canvas the box was found on, whatever size the texture was imported at.
+            float px = 1024f / Mathf.Max(1, tex.width), w = r.width * px, h = r.height * px;
+            float k = Mathf.Min(1f, FigureBox / Mathf.Max(w, h));
+            return new Vector2(w * k, h * k);
+        }
         /// <summary>The board tile for a campaign theme (tools/make_tiles.py); the original slate tile when a theme has none.</summary>
         private static Texture2D Pixelled(string folder, string id)
         {

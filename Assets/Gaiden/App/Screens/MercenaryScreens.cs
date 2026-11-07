@@ -164,7 +164,7 @@ namespace GridGame.App
             portrait.name = "merc-portrait";
             portrait.style.position = Position.Absolute;
             portrait.style.left = Fit.Edge; portrait.style.right = Fit.Edge; portrait.style.top = Fit.H(6.3f); portrait.style.bottom = Fit.H(38.7f);
-            portrait.style.backgroundImage = new StyleBackground(Art.Portrait(classId));
+            portrait.style.backgroundImage = new StyleBackground(Art.PortraitFigure(classId));
             portrait.style.backgroundSize = new BackgroundSize(BackgroundSizeType.Contain);
             portrait.style.opacity = 0f;
 

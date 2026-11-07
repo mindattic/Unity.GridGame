@@ -11,11 +11,10 @@ MUSIC = os.path.join(RESD, "Audio", "Music")
 SPECIAL = {"ui.back": "ui_click", "battle.move": "battle_move_0", "battle.hit": "battle_hit_0"}
 
 # docs/POLISH.md section H thresholds.
-PERSON_CANVAS = 640          # POL-H1: a full-height person's canvas; shorter canvases are smaller creatures
-MIN_FILL = 0.95              # POL-H1: figure spans >= 95% of its canvas height
-FOOT_SLACK = 0.02            # POL-H1: figure reaches within 2% of the bottom edge (the foot line)
-SIDE_MARGIN = 0.08           # POL-H1 (warning only): transparent margin left/right <= 8% of the width
-PROPS = {"bonepile", "corpse", "gravestone"}
+PORTRAIT_CANVAS = 1024       # POL-H1, owner 2026-11-07 (GG-T352): "all characters are 1024x1024 with transparent
+                             # backgrounds; that's the rule, that's what the assets are" - never trimmed or shrunk
+FIGURE_BOX = 640             # POL-H1: the figure's box (classes.json "Figure") fitted in this square, never enlarged,
+                             # is its drawn size (App Art.FigureSize): 640 = one person, smaller = a smaller creature
 ICON_PX, ICON_GRID, ICON_COLORS = 88, 22, 9   # POL-H2: 22x22 pixel art at x4, 8 colours + outline
 UI_ICON_PX = 64
 BACKDROP_MIN_H = 1536         # POL-H3 (GG-T353): a 1:2 portrait backdrop at the art's own resolution, never downscaled
@@ -33,25 +32,22 @@ def art_findings():
         im = Image.open(f)
         w, h = im.size
         hard, soft = [], []
-        if im.mode not in ("RGBA", "LA"):
-            hard.append("no transparency")
-        if h > PERSON_CANVAS:
-            hard.append(f"canvas {w}x{h} is taller than {PERSON_CANVAS}")
-        if not hard and n not in PROPS:
-            bb = im.getchannel("A").point(lambda v: 255 if v > 16 else 0).getbbox() or (0, 0, w, h)
-            if (bb[3] - bb[1]) / h < MIN_FILL:
-                soft.append(f"figure fills {(bb[3] - bb[1]) / h:.0%} of the canvas height")
-            if bb[3] < h * (1 - FOOT_SLACK):
-                soft.append(f"feet {h - bb[3]} px above the bottom edge")
+        if im.mode != "RGBA":
+            hard.append(f"{im.mode}, not RGBA (no transparency)")
+        if (w, h) != (PORTRAIT_CANVAS, PORTRAIT_CANVAS):
+            hard.append(f"canvas {w}x{h}, not {PORTRAIT_CANVAS}x{PORTRAIT_CANVAS} (run tools/import_art.py / portrait_cut.py --import)")
+        bb = im.getchannel("A").getbbox() if im.mode == "RGBA" else None
+        if not hard:
+            clear = sum(im.getchannel("A").point(lambda v: 255 if v < 16 else 0).histogram()[255:]) / (w * h)
+            if clear < 0.2:
+                hard.append(f"only {clear:.0%} of the canvas is transparent (a solid background left in?)")
         out.append(("POL-H1", f"Portraits/{n}.png", not (hard or soft), "; ".join(hard + soft), bool(hard)))
-        if not hard and n not in PROPS:
-            bb = im.getchannel("A").point(lambda v: 255 if v > 16 else 0).getbbox() or (0, 0, w, h)
-            margin = max(bb[0], w - bb[2]) / w
-            if margin > SIDE_MARGIN:
-                out.append(("warn", f"Portraits/{n}.png", False, f"{margin:.0%} transparent side margin (crop tighter)", False))
-        scale = DIALOGUE_FIGURE_PX / PERSON_CANVAS
-        out.append(("POL-H4", f"Portraits/{n}.png", scale <= 1.0,
-                    f"drawn at {scale:.2f}x its native size in dialogue (needs a {int(h * scale)} px tall source)", False))
+        if bb:
+            bw, bh = bb[2] - bb[0], bb[3] - bb[1]
+            drawn = bh * min(1.0, FIGURE_BOX / max(bw, bh)) * DIALOGUE_FIGURE_PX / FIGURE_BOX
+            scale = drawn / bh
+            out.append(("POL-H4", f"Portraits/{n}.png", scale <= 1.0,
+                        f"drawn at {scale:.2f}x its native size in dialogue (a {bh} px figure at {drawn:.0f} px)", False))
 
     for folder, px in (("AbilityIcons", ICON_PX), ("ItemIcons", ICON_PX), ("StatusIcons", ICON_PX), ("Icons", UI_ICON_PX)):
         for f in sorted(glob.glob(os.path.join(RESD, folder, "*.png"))):
@@ -110,7 +106,7 @@ def main():
         print(f"art warning {r if r != 'warn' else '(composition)'} {s}: {d}")
     if upscaled:
         print(f"art warning POL-H4: {upscaled} portraits are drawn above native size in dialogue "
-              f"({DIALOGUE_FIGURE_PX} px from {PERSON_CANVAS} px canvases)")
+              f"(a {FIGURE_BOX}-unit figure is {DIALOGUE_FIGURE_PX} px tall)")
     if missing or broken:
         print("MISSING ASSETS:", ", ".join(missing + broken)); sys.exit(1)
     print(f"asset check OK ({len(cues)} cues, {len(tracks)} tracks, pixel icons, "

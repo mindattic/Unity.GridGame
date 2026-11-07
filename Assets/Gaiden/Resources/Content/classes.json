@@ -12,9 +12,15 @@
     "Card": "Backline [healer] [buffer]. Restores tempo with [cleanse] and [aid].",
     "Portrait": "Alchemist",
     "Thumbnail": {
-      "Zoom": 1.4906,
-      "X": 0.5181,
-      "Y": 0.1841
+      "Zoom": 2.4,
+      "X": 0.5073,
+      "Y": 0.1861
+    },
+    "Figure": {
+      "X": 0.1855,
+      "Y": 0.0029,
+      "W": 0.6211,
+      "H": 0.9951
     },
     "Footprint": {
       "W": 1,
@@ -148,9 +154,15 @@
     "Card": "Mobile [striker] [flanker]. Leans on [crit] and [backstab] windows.",
     "Portrait": "Assassain",
     "Thumbnail": {
-      "Zoom": 1.0017,
-      "X": 0.3784,
-      "Y": 0.171
+      "Zoom": 2.6234,
+      "X": 0.5107,
+      "Y": 0.1802
+    },
+    "Figure": {
+      "X": 0.3662,
+      "Y": 0.0137,
+      "W": 0.3818,
+      "H": 0.9736
     },
     "Footprint": {
       "W": 1,
@@ -285,9 +297,15 @@
     "Card": "Flexible [fighter]. Converts [openings] into [combo finishes].",
     "Portrait": "Barbarian",
     "Thumbnail": {
-      "Zoom": 1.8679,
-      "X": 0.4062,
-      "Y": 0.2101
+      "Zoom": 2.4366,
+      "X": 0.4589,
+      "Y": 0.213
+    },
+    "Figure": {
+      "X": 0.1475,
+      "Y": 0.0078,
+      "W": 0.7666,
+      "H": 0.9766
     },
     "Footprint": {
       "W": 1,
@@ -421,9 +439,15 @@
     "Card": "Flexible [fighter]. Converts [openings] into [combo finishes].",
     "Portrait": "Basher",
     "Thumbnail": {
-      "Zoom": 1.9698,
-      "X": 0.5453,
-      "Y": 0.1988
+      "Zoom": 2.4331,
+      "X": 0.5352,
+      "Y": 0.2082
+    },
+    "Figure": {
+      "X": 0.0938,
+      "Y": 0.0137,
+      "W": 0.8096,
+      "H": 0.9785
     },
     "Footprint": {
       "W": 1,
@@ -558,9 +582,15 @@
     "Card": "Ferocious [pouncer] [mauler]. Disrupts with [roar] and [knockdown].",
     "Portrait": "Bat00",
     "Thumbnail": {
-      "Zoom": 0.8696,
-      "X": 0.492,
-      "Y": 0.4443
+      "Zoom": 0.8905,
+      "X": 0.4922,
+      "Y": 0.4328
+    },
+    "Figure": {
+      "X": 0.0117,
+      "Y": 0.0215,
+      "W": 0.9766,
+      "H": 0.9258
     },
     "Footprint": {
       "W": 1,
@@ -679,7 +709,13 @@
     "Thumbnail": {
       "Zoom": 0.8564,
       "X": 0.5278,
-      "Y": 0.4276
+      "Y": 0.3413
+    },
+    "Figure": {
+      "X": 0,
+      "Y": 0.0186,
+      "W": 1,
+      "H": 0.7549
     },
     "Footprint": {
       "W": 1,
@@ -796,9 +832,15 @@
     "Card": "Ferocious [pouncer] [mauler]. Disrupts with [roar] and [knockdown].",
     "Portrait": "Bat02",
     "Thumbnail": {
-      "Zoom": 0.8527,
-      "X": 0.4805,
-      "Y": 0.4483
+      "Zoom": 0.8586,
+      "X": 0.4841,
+      "Y": 0.3953
+    },
+    "Figure": {
+      "X": 0.0068,
+      "Y": 0,
+      "W": 0.9932,
+      "H": 0.8818
     },
     "Footprint": {
       "W": 1,
@@ -918,6 +960,12 @@
       "Zoom": 2.4262,
       "X": 0.5318,
       "Y": 0.1814
+    },
+    "Figure": {
+      "X": 0,
+      "Y": 0,
+      "W": 1,
+      "H": 1
     },
     "Footprint": {
       "W": 1,
@@ -1055,6 +1103,12 @@
       "Zoom": 2.0711,
       "X": 0.4698,
       "Y": 0.2347
+    },
+    "Figure": {
+      "X": 0,
+      "Y": 0,
+      "W": 1,
+      "H": 1
     },
     "Footprint": {
       "W": 1,
@@ -1194,7 +1248,13 @@
     "Thumbnail": {
       "Zoom": 1.3186,
       "X": 0.6549,
-      "Y": 0.3681
+      "Y": 0.3709
+    },
+    "Figure": {
+      "X": 0,
+      "Y": 0.0107,
+      "W": 1,
+      "H": 0.9785
     },
     "Footprint": {
       "W": 1,
@@ -1328,9 +1388,15 @@
     "Card": "Mobile [striker] [flanker]. Leans on [crit] and [backstab] windows.",
     "Portrait": "BlueNinja",
     "Thumbnail": {
-      "Zoom": 1.923,
-      "X": 0.4652,
-      "Y": 0.1482
+      "Zoom": 3.1709,
+      "X": 0.5106,
+      "Y": 0.1466
+    },
+    "Figure": {
+      "X": 0.2285,
+      "Y": 0,
+      "W": 0.6064,
+      "H": 0.9893
     },
     "Footprint": {
       "W": 1,
@@ -1464,9 +1530,15 @@
     "Card": "Flexible [fighter]. Converts [openings] into [combo finishes].",
     "Portrait": "Bruiser",
     "Thumbnail": {
-      "Zoom": 2.3718,
-      "X": 0.6135,
-      "Y": 0.1877
+      "Zoom": 2.5976,
+      "X": 0.5836,
+      "Y": 0.2223
+    },
+    "Figure": {
+      "X": 0.0234,
+      "Y": 0.0498,
+      "W": 0.9131,
+      "H": 0.9189
     },
     "Footprint": {
       "W": 1,
@@ -1601,9 +1673,15 @@
     "Card": "Flexible [fighter]. Converts [openings] into [combo finishes].",
     "Portrait": "Captain",
     "Thumbnail": {
-      "Zoom": 1.7396,
-      "X": 0.305,
+      "Zoom": 2.3879,
+      "X": 0.4937,
       "Y": 0.2023
+    },
+    "Figure": {
+      "X": 0.2715,
+      "Y": 0,
+      "W": 0.7285,
+      "H": 1
     },
     "Footprint": {
       "W": 1,
@@ -1723,9 +1801,15 @@
     "Card": "Frontline [guardian] [bruiser]. Absorbs pressure and [taunts].",
     "Portrait": "CeramicKnight00",
     "Thumbnail": {
-      "Zoom": 1.2572,
-      "X": 0.37,
-      "Y": 0.186
+      "Zoom": 2.4901,
+      "X": 0.5169,
+      "Y": 0.1956
+    },
+    "Figure": {
+      "X": 0.3301,
+      "Y": 0.0176,
+      "W": 0.5049,
+      "H": 0.957
     },
     "Footprint": {
       "W": 1,
@@ -1849,9 +1933,15 @@
     "Card": "Frontline [guardian] [bruiser]. Absorbs pressure and [taunts].",
     "Portrait": "CeramicKnight01",
     "Thumbnail": {
-      "Zoom": 1.2868,
-      "X": 0.3976,
-      "Y": 0.1703
+      "Zoom": 2.5487,
+      "X": 0.5152,
+      "Y": 0.1971
+    },
+    "Figure": {
+      "X": 0.3145,
+      "Y": 0.0381,
+      "W": 0.5049,
+      "H": 0.9336
     },
     "Footprint": {
       "W": 1,
@@ -1975,9 +2065,15 @@
     "Card": "Frontline [guardian] [bruiser]. Absorbs pressure and [taunts].",
     "Portrait": "CeramicKnight02",
     "Thumbnail": {
-      "Zoom": 1.7373,
-      "X": 0.6104,
-      "Y": 0.1816
+      "Zoom": 2.5021,
+      "X": 0.4873,
+      "Y": 0.204
+    },
+    "Figure": {
+      "X": 0.0635,
+      "Y": 0.0312,
+      "W": 0.6943,
+      "H": 0.9512
     },
     "Footprint": {
       "W": 1,
@@ -2101,9 +2197,15 @@
     "Card": "Frontline [guardian] [bruiser]. Absorbs pressure and [taunts].",
     "Portrait": "CeramicKnight03",
     "Thumbnail": {
-      "Zoom": 1.2559,
-      "X": 0.3922,
-      "Y": 0.184
+      "Zoom": 2.5217,
+      "X": 0.5137,
+      "Y": 0.1987
+    },
+    "Figure": {
+      "X": 0.3184,
+      "Y": 0.0244,
+      "W": 0.498,
+      "H": 0.9473
     },
     "Footprint": {
       "W": 1,
@@ -2227,9 +2329,15 @@
     "Card": "Frontline [guardian] [bruiser]. Absorbs pressure and [taunts].",
     "Portrait": "CeramicKnight04",
     "Thumbnail": {
-      "Zoom": 1.2623,
-      "X": 0.3666,
-      "Y": 0.1879
+      "Zoom": 2.5002,
+      "X": 0.5044,
+      "Y": 0.1994
+    },
+    "Figure": {
+      "X": 0.3193,
+      "Y": 0.0205,
+      "W": 0.5049,
+      "H": 0.9521
     },
     "Footprint": {
       "W": 1,
@@ -2353,9 +2461,15 @@
     "Card": "Frontline [guardian] [bruiser]. Absorbs pressure and [taunts].",
     "Portrait": "CeramicKnight05",
     "Thumbnail": {
-      "Zoom": 1.2718,
-      "X": 0.3171,
-      "Y": 0.1945
+      "Zoom": 2.4759,
+      "X": 0.4939,
+      "Y": 0.2017
+    },
+    "Figure": {
+      "X": 0.3311,
+      "Y": 0.0146,
+      "W": 0.5137,
+      "H": 0.9619
     },
     "Footprint": {
       "W": 1,
@@ -2479,9 +2593,15 @@
     "Card": "Frontline [guardian] [bruiser]. Absorbs pressure and [taunts].",
     "Portrait": "CeramicKnight06",
     "Thumbnail": {
-      "Zoom": 1.2302,
-      "X": 0.3672,
-      "Y": 0.1836
+      "Zoom": 2.5144,
+      "X": 0.5068,
+      "Y": 0.2001
+    },
+    "Figure": {
+      "X": 0.3271,
+      "Y": 0.0264,
+      "W": 0.4893,
+      "H": 0.9463
     },
     "Footprint": {
       "W": 1,
@@ -2603,9 +2723,15 @@
     "Card": "Mobile [striker] [flanker]. Leans on [crit] and [backstab] windows.",
     "Portrait": "ChromaNinja",
     "Thumbnail": {
-      "Zoom": 1.0009,
-      "X": 0.48,
-      "Y": 0.1904
+      "Zoom": 2.5687,
+      "X": 0.5083,
+      "Y": 0.194
+    },
+    "Figure": {
+      "X": 0.3213,
+      "Y": 0.0088,
+      "W": 0.3896,
+      "H": 0.9727
     },
     "Footprint": {
       "W": 1,
@@ -2740,9 +2866,15 @@
     "Card": "Backline [healer] [buffer]. Restores tempo with [cleanse] and [aid].",
     "Portrait": "Cleric",
     "Thumbnail": {
-      "Zoom": 1.3933,
-      "X": 0.5242,
-      "Y": 0.19
+      "Zoom": 2.4684,
+      "X": 0.4892,
+      "Y": 0.2017
+    },
+    "Figure": {
+      "X": 0.1934,
+      "Y": 0.0186,
+      "W": 0.5645,
+      "H": 0.9639
     },
     "Footprint": {
       "W": 1,
@@ -2876,9 +3008,15 @@
     "Card": "Backline [healer] [buffer]. Restores tempo with [cleanse] and [aid].",
     "Portrait": "Courier",
     "Thumbnail": {
-      "Zoom": 1.0053,
-      "X": 0.4885,
-      "Y": 0.1577
+      "Zoom": 2.8998,
+      "X": 0.4955,
+      "Y": 0.1651
+    },
+    "Figure": {
+      "X": 0.3262,
+      "Y": 0.0107,
+      "W": 0.3467,
+      "H": 0.9785
     },
     "Footprint": {
       "W": 1,
@@ -3012,9 +3150,15 @@
     "Card": "Grim [attrition] [drain]. Pressures with [fear] and [rot].",
     "Portrait": "CyberZombie00",
     "Thumbnail": {
-      "Zoom": 0.9037,
-      "X": 0.4999,
-      "Y": 0.5
+      "Zoom": 0.9897,
+      "X": 0.4643,
+      "Y": 0.4961
+    },
+    "Figure": {
+      "X": 0.0078,
+      "Y": 0.0088,
+      "W": 0.9131,
+      "H": 0.9746
     },
     "Footprint": {
       "W": 1,
@@ -3139,9 +3283,15 @@
     "Card": "Grim [attrition] [drain]. Pressures with [fear] and [rot].",
     "Portrait": "CyberZombie01",
     "Thumbnail": {
-      "Zoom": 0.873,
-      "X": 0.4987,
-      "Y": 0.4996
+      "Zoom": 0.9999,
+      "X": 0.5106,
+      "Y": 0.5055
+    },
+    "Figure": {
+      "X": 0.0752,
+      "Y": 0.0254,
+      "W": 0.873,
+      "H": 0.9609
     },
     "Footprint": {
       "W": 1,
@@ -3266,9 +3416,15 @@
     "Card": "Grim [attrition] [drain]. Pressures with [fear] and [rot].",
     "Portrait": "CyberZombie02",
     "Thumbnail": {
-      "Zoom": 0.8828,
-      "X": 0.5,
-      "Y": 0.4992
+      "Zoom": 1.0331,
+      "X": 0.5122,
+      "Y": 0.4934
+    },
+    "Figure": {
+      "X": 0.085,
+      "Y": 0.0283,
+      "W": 0.8545,
+      "H": 0.9316
     },
     "Footprint": {
       "W": 1,
@@ -3393,9 +3549,15 @@
     "Card": "Grim [attrition] [drain]. Pressures with [fear] and [rot].",
     "Portrait": "CyberZombie03",
     "Thumbnail": {
-      "Zoom": 0.7853,
-      "X": 0.499,
-      "Y": 0.5
+      "Zoom": 1.0077,
+      "X": 0.4855,
+      "Y": 0.5049
+    },
+    "Figure": {
+      "X": 0.0967,
+      "Y": 0.0283,
+      "W": 0.7793,
+      "H": 0.9531
     },
     "Footprint": {
       "W": 1,
@@ -3520,9 +3682,15 @@
     "Card": "Grim [attrition] [drain]. Pressures with [fear] and [rot].",
     "Portrait": "CyberZombie04",
     "Thumbnail": {
-      "Zoom": 0.8616,
-      "X": 0.4999,
-      "Y": 0.4999
+      "Zoom": 1.0176,
+      "X": 0.4584,
+      "Y": 0.5048
+    },
+    "Figure": {
+      "X": 0.0352,
+      "Y": 0.0312,
+      "W": 0.8467,
+      "H": 0.9473
     },
     "Footprint": {
       "W": 1,
@@ -3648,9 +3816,15 @@
     "Card": "Flexible [fighter]. Converts [openings] into [combo finishes].",
     "Portrait": "Cyclops00",
     "Thumbnail": {
-      "Zoom": 2.345,
-      "X": 0.5094,
-      "Y": 0.1983
+      "Zoom": 2.4781,
+      "X": 0.5328,
+      "Y": 0.2021
+    },
+    "Figure": {
+      "X": 0.0508,
+      "Y": 0.0107,
+      "W": 0.9463,
+      "H": 0.9648
     },
     "Footprint": {
       "W": 2,
@@ -3782,9 +3956,15 @@
     "Card": "Flexible [fighter]. Converts [openings] into [combo finishes].",
     "Portrait": "Cyclops01",
     "Thumbnail": {
-      "Zoom": 2.2046,
-      "X": 0.5359,
-      "Y": 0.2098
+      "Zoom": 2.4093,
+      "X": 0.5021,
+      "Y": 0.2075
+    },
+    "Figure": {
+      "X": 0.0117,
+      "Y": 0,
+      "W": 0.915,
+      "H": 0.9893
     },
     "Footprint": {
       "W": 1,
@@ -3902,9 +4082,15 @@
     "Card": "Flexible [fighter]. Converts [openings] into [combo finishes].",
     "Portrait": "Cyclops02",
     "Thumbnail": {
-      "Zoom": 2.3311,
-      "X": 0.5414,
-      "Y": 0.1976
+      "Zoom": 2.4762,
+      "X": 0.5302,
+      "Y": 0.2016
+    },
+    "Figure": {
+      "X": 0.0205,
+      "Y": 0.0117,
+      "W": 0.9414,
+      "H": 0.9609
     },
     "Footprint": {
       "W": 1,
@@ -4021,9 +4207,15 @@
     "Card": "Flexible [fighter]. Converts [openings] into [combo finishes].",
     "Portrait": "Cyclops03",
     "Thumbnail": {
-      "Zoom": 2.3316,
-      "X": 0.551,
-      "Y": 0.1981
+      "Zoom": 2.4922,
+      "X": 0.5428,
+      "Y": 0.2007
+    },
+    "Figure": {
+      "X": 0.0273,
+      "Y": 0.0107,
+      "W": 0.9355,
+      "H": 0.959
     },
     "Footprint": {
       "W": 1,
@@ -4139,9 +4331,15 @@
     "Card": "Flexible [fighter]. Converts [openings] into [combo finishes].",
     "Portrait": "Cyclops04",
     "Thumbnail": {
-      "Zoom": 2.1703,
-      "X": 0.5333,
-      "Y": 0.1982
+      "Zoom": 2.4503,
+      "X": 0.5222,
+      "Y": 0.2041
+    },
+    "Figure": {
+      "X": 0.0498,
+      "Y": 0.0107,
+      "W": 0.8857,
+      "H": 0.9756
     },
     "Footprint": {
       "W": 1,
@@ -4257,9 +4455,15 @@
     "Card": "Flexible [fighter]. Converts [openings] into [combo finishes].",
     "Portrait": "Cyclops06",
     "Thumbnail": {
-      "Zoom": 2.4444,
-      "X": 0.5342,
-      "Y": 0.1839
+      "Zoom": 2.4758,
+      "X": 0.5274,
+      "Y": 0.2017
+    },
+    "Figure": {
+      "X": 0,
+      "Y": 0.0244,
+      "W": 0.9873,
+      "H": 0.9639
     },
     "Footprint": {
       "W": 1,
@@ -4374,9 +4578,15 @@
     "Card": "Frontline [guardian] [bruiser]. Absorbs pressure and [taunts].",
     "Portrait": "DarkTemplar",
     "Thumbnail": {
-      "Zoom": 2.152,
-      "X": 0.6067,
-      "Y": 0.2079
+      "Zoom": 2.4296,
+      "X": 0.5784,
+      "Y": 0.2062
+    },
+    "Figure": {
+      "X": 0.041,
+      "Y": 0.002,
+      "W": 0.8857,
+      "H": 0.9824
     },
     "Footprint": {
       "W": 1,
@@ -4513,9 +4723,15 @@
     "Card": "Frontline [guardian] [bruiser]. Absorbs pressure and [taunts].",
     "Portrait": "Defender",
     "Thumbnail": {
-      "Zoom": 1.7094,
-      "X": 0.3099,
+      "Zoom": 2.3719,
+      "X": 0.363,
       "Y": 0.1848
+    },
+    "Figure": {
+      "X": 0.1406,
+      "Y": 0,
+      "W": 0.4336,
+      "H": 0.9873
     },
     "Footprint": {
       "W": 1,
@@ -4654,9 +4870,15 @@
     "Card": "Flexible [fighter]. Converts [openings] into [combo finishes].",
     "Portrait": "DemonLord",
     "Thumbnail": {
-      "Zoom": 1.8344,
-      "X": 0.5027,
-      "Y": 0.2091
+      "Zoom": 2.4113,
+      "X": 0.5436,
+      "Y": 0.2073
+    },
+    "Figure": {
+      "X": 0.1611,
+      "Y": 0,
+      "W": 0.7607,
+      "H": 0.9912
     },
     "Footprint": {
       "W": 1,
@@ -4774,9 +4996,15 @@
     "Card": "Backline [healer] [buffer]. Restores tempo with [cleanse] and [aid].",
     "Portrait": "Dervish",
     "Thumbnail": {
-      "Zoom": 1.7127,
-      "X": 0.3505,
+      "Zoom": 2.3764,
+      "X": 0.5319,
       "Y": 0.2103
+    },
+    "Figure": {
+      "X": 0.2793,
+      "Y": 0,
+      "W": 0.7207,
+      "H": 1
     },
     "Footprint": {
       "W": 1,
@@ -4914,6 +5142,12 @@
       "X": 0.493,
       "Y": 0.2102
     },
+    "Figure": {
+      "X": 0,
+      "Y": 0,
+      "W": 1,
+      "H": 1
+    },
     "Footprint": {
       "W": 1,
       "H": 1
@@ -5045,9 +5279,15 @@
     "Card": "Backline [healer] [buffer]. Restores tempo with [cleanse] and [aid].",
     "Portrait": "Drifter",
     "Thumbnail": {
-      "Zoom": 2.2414,
-      "X": 0.5299,
-      "Y": 0.2102
+      "Zoom": 2.3983,
+      "X": 0.5441,
+      "Y": 0.2084
+    },
+    "Figure": {
+      "X": 0.0488,
+      "Y": 0,
+      "W": 0.9346,
+      "H": 0.9912
     },
     "Footprint": {
       "W": 1,
@@ -5185,9 +5425,15 @@
     "Card": "Close-range [brawler] [cleaver]. Wins trades with [stagger].",
     "Portrait": "Duelist",
     "Thumbnail": {
-      "Zoom": 2.0434,
-      "X": 0.5138,
-      "Y": 0.1868
+      "Zoom": 2.4675,
+      "X": 0.5466,
+      "Y": 0.2023
+    },
+    "Figure": {
+      "X": 0.1211,
+      "Y": 0.0225,
+      "W": 0.8281,
+      "H": 0.9629
     },
     "Footprint": {
       "W": 1,
@@ -5326,6 +5572,12 @@
       "X": 0.531,
       "Y": 0.2092
     },
+    "Figure": {
+      "X": 0,
+      "Y": 0,
+      "W": 1,
+      "H": 1
+    },
     "Footprint": {
       "W": 1,
       "H": 1
@@ -5458,9 +5710,15 @@
     "Card": "Close-range [brawler] [cleaver]. Wins trades with [stagger].",
     "Portrait": "Fencer",
     "Thumbnail": {
-      "Zoom": 1.2737,
-      "X": 0.4043,
-      "Y": 0.191
+      "Zoom": 2.4288,
+      "X": 0.4933,
+      "Y": 0.206
+    },
+    "Figure": {
+      "X": 0.2812,
+      "Y": 0.0186,
+      "W": 0.5244,
+      "H": 0.9814
     },
     "Footprint": {
       "W": 1,
@@ -5599,6 +5857,12 @@
       "X": 0.4664,
       "Y": 0.2102
     },
+    "Figure": {
+      "X": 0,
+      "Y": 0,
+      "W": 1,
+      "H": 1
+    },
     "Footprint": {
       "W": 1,
       "H": 1
@@ -5732,9 +5996,15 @@
     "Card": "Ferocious [pouncer] [mauler]. Disrupts with [roar] and [knockdown].",
     "Portrait": "FlyingMonkey",
     "Thumbnail": {
-      "Zoom": 0.9623,
-      "X": 0.4993,
-      "Y": 0.5009
+      "Zoom": 0.9864,
+      "X": 0.4871,
+      "Y": 0.4896
+    },
+    "Figure": {
+      "X": 0,
+      "Y": 0.0117,
+      "W": 0.9756,
+      "H": 0.9541
     },
     "Footprint": {
       "W": 1,
@@ -5857,6 +6127,12 @@
       "X": 0.5,
       "Y": 0.5
     },
+    "Figure": {
+      "X": 0.0625,
+      "Y": 0.1289,
+      "W": 0.8594,
+      "H": 0.7979
+    },
     "Footprint": {
       "W": 1,
       "H": 1
@@ -5978,6 +6254,12 @@
       "X": 0.5,
       "Y": 0.5
     },
+    "Figure": {
+      "X": 0.0098,
+      "Y": 0.0127,
+      "W": 0.9736,
+      "H": 0.9697
+    },
     "Footprint": {
       "W": 1,
       "H": 1
@@ -6097,6 +6379,12 @@
       "Zoom": 0.9615,
       "X": 0.5,
       "Y": 0.5
+    },
+    "Figure": {
+      "X": 0.0234,
+      "Y": 0,
+      "W": 0.959,
+      "H": 0.9922
     },
     "Footprint": {
       "W": 1,
@@ -6219,6 +6507,12 @@
       "X": 0.5,
       "Y": 0.5
     },
+    "Figure": {
+      "X": 0.0166,
+      "Y": 0.0098,
+      "W": 0.9678,
+      "H": 0.9902
+    },
     "Footprint": {
       "W": 1,
       "H": 1
@@ -6335,9 +6629,15 @@
     "Card": "Flexible [fighter]. Converts [openings] into [combo finishes].",
     "Portrait": "Ganger00",
     "Thumbnail": {
-      "Zoom": 1.0969,
-      "X": 0.5948,
-      "Y": 0.1992
+      "Zoom": 2.4365,
+      "X": 0.5559,
+      "Y": 0.2051
+    },
+    "Figure": {
+      "X": 0.2881,
+      "Y": 0.0107,
+      "W": 0.4502,
+      "H": 0.9756
     },
     "Footprint": {
       "W": 1,
@@ -6457,9 +6757,15 @@
     "Card": "Flexible [fighter]. Converts [openings] into [combo finishes].",
     "Portrait": "Ganger01",
     "Thumbnail": {
-      "Zoom": 1.229,
-      "X": 0.495,
-      "Y": 0.206
+      "Zoom": 2.4342,
+      "X": 0.5214,
+      "Y": 0.2061
+    },
+    "Figure": {
+      "X": 0.2715,
+      "Y": 0.0039,
+      "W": 0.5049,
+      "H": 0.9814
     },
     "Footprint": {
       "W": 1,
@@ -6578,9 +6884,15 @@
     "Card": "Flexible [fighter]. Converts [openings] into [combo finishes].",
     "Portrait": "Ganger02",
     "Thumbnail": {
-      "Zoom": 1.0536,
-      "X": 0.4568,
-      "Y": 0.1966
+      "Zoom": 2.4745,
+      "X": 0.4689,
+      "Y": 0.2026
+    },
+    "Figure": {
+      "X": 0.2744,
+      "Y": 0.0127,
+      "W": 0.4258,
+      "H": 0.9658
     },
     "Footprint": {
       "W": 1,
@@ -6700,9 +7012,15 @@
     "Card": "Flexible [fighter]. Converts [openings] into [combo finishes].",
     "Portrait": "Ganger03",
     "Thumbnail": {
-      "Zoom": 1.1786,
-      "X": 0.5635,
-      "Y": 0.2001
+      "Zoom": 2.4382,
+      "X": 0.5595,
+      "Y": 0.2058
+    },
+    "Figure": {
+      "X": 0.2871,
+      "Y": 0.0098,
+      "W": 0.4834,
+      "H": 0.9795
     },
     "Footprint": {
       "W": 1,
@@ -6821,9 +7139,15 @@
     "Card": "Flexible [fighter]. Converts [openings] into [combo finishes].",
     "Portrait": "Ganger04",
     "Thumbnail": {
-      "Zoom": 1.2497,
-      "X": 0.5727,
-      "Y": 0.2007
+      "Zoom": 2.4375,
+      "X": 0.5544,
+      "Y": 0.205
+    },
+    "Figure": {
+      "X": 0.2607,
+      "Y": 0.0088,
+      "W": 0.5127,
+      "H": 0.9775
     },
     "Footprint": {
       "W": 1,
@@ -6943,9 +7267,15 @@
     "Card": "Flexible [fighter]. Converts [openings] into [combo finishes].",
     "Portrait": "Ganger05",
     "Thumbnail": {
-      "Zoom": 1.2697,
-      "X": 0.4994,
-      "Y": 0.2067
+      "Zoom": 2.4167,
+      "X": 0.5192,
+      "Y": 0.2068
+    },
+    "Figure": {
+      "X": 0.2568,
+      "Y": 0.0029,
+      "W": 0.5254,
+      "H": 0.9863
     },
     "Footprint": {
       "W": 1,
@@ -7064,9 +7394,15 @@
     "Card": "Flexible [fighter]. Converts [openings] into [combo finishes].",
     "Portrait": "Ganger06",
     "Thumbnail": {
-      "Zoom": 1.2349,
-      "X": 0.4983,
-      "Y": 0.2054
+      "Zoom": 2.4271,
+      "X": 0.5201,
+      "Y": 0.2053
+    },
+    "Figure": {
+      "X": 0.2666,
+      "Y": 0.0039,
+      "W": 0.5088,
+      "H": 0.9805
     },
     "Footprint": {
       "W": 1,
@@ -7185,9 +7521,15 @@
     "Card": "Grim [attrition] [drain]. Pressures with [fear] and [rot].",
     "Portrait": "Ghost",
     "Thumbnail": {
-      "Zoom": 0.4872,
-      "X": 0.4985,
-      "Y": 0.4992
+      "Zoom": 1.0459,
+      "X": 0.4705,
+      "Y": 0.4939
+    },
+    "Figure": {
+      "X": 0.2383,
+      "Y": 0.0352,
+      "W": 0.4658,
+      "H": 0.9189
     },
     "Footprint": {
       "W": 1,
@@ -7307,9 +7649,15 @@
     "Card": "Flexible [fighter]. Converts [openings] into [combo finishes].",
     "Portrait": "GoblinThug00",
     "Thumbnail": {
-      "Zoom": 2.3786,
-      "X": 0.6118,
+      "Zoom": 2.374,
+      "X": 0.4978,
       "Y": 0.2102
+    },
+    "Figure": {
+      "X": 0.1807,
+      "Y": 0.0127,
+      "W": 0.5801,
+      "H": 0.9727
     },
     "Footprint": {
       "W": 1,
@@ -7425,9 +7773,15 @@
     "Card": "Mobile [striker] [flanker]. Leans on [crit] and [backstab] windows.",
     "Portrait": "GreenNinja",
     "Thumbnail": {
-      "Zoom": 1.4396,
-      "X": 0.5024,
-      "Y": 0.1897
+      "Zoom": 2.4326,
+      "X": 0.5112,
+      "Y": 0.2053
+    },
+    "Figure": {
+      "X": 0.2139,
+      "Y": 0.0195,
+      "W": 0.5918,
+      "H": 0.9795
     },
     "Footprint": {
       "W": 1,
@@ -7566,7 +7920,13 @@
     "Thumbnail": {
       "Zoom": 2.4284,
       "X": 0.5043,
-      "Y": 0.1996
+      "Y": 0.2062
+    },
+    "Figure": {
+      "X": 0,
+      "Y": 0.0098,
+      "W": 1,
+      "H": 0.9844
     },
     "Footprint": {
       "W": 1,
@@ -7685,9 +8045,15 @@
     "Card": "Flexible [fighter]. Converts [openings] into [combo finishes].",
     "Portrait": "Hag01",
     "Thumbnail": {
-      "Zoom": 2.3924,
-      "X": 0.4512,
-      "Y": 0.1827
+      "Zoom": 2.536,
+      "X": 0.4579,
+      "Y": 0.2023
+    },
+    "Figure": {
+      "X": 0.0322,
+      "Y": 0.0303,
+      "W": 0.9434,
+      "H": 0.9414
     },
     "Footprint": {
       "W": 1,
@@ -7805,9 +8171,15 @@
     "Card": "Flexible [fighter]. Converts [openings] into [combo finishes].",
     "Portrait": "Hag02",
     "Thumbnail": {
-      "Zoom": 2.3905,
-      "X": 0.5529,
-      "Y": 0.2092
+      "Zoom": 2.4406,
+      "X": 0.5416,
+      "Y": 0.2049
+    },
+    "Figure": {
+      "X": 0,
+      "Y": 0,
+      "W": 0.9795,
+      "H": 0.9795
     },
     "Footprint": {
       "W": 1,
@@ -7928,6 +8300,12 @@
       "X": 0.4977,
       "Y": 0.2102
     },
+    "Figure": {
+      "X": 0.0723,
+      "Y": 0.0156,
+      "W": 0.8125,
+      "H": 0.9609
+    },
     "Footprint": {
       "W": 1,
       "H": 1
@@ -8045,6 +8423,12 @@
       "Zoom": 2.3786,
       "X": 0.6336,
       "Y": 0.2102
+    },
+    "Figure": {
+      "X": 0,
+      "Y": 0,
+      "W": 1,
+      "H": 1
     },
     "Footprint": {
       "W": 1,
@@ -8185,9 +8569,15 @@
     "Card": "Flexible [fighter]. Converts [openings] into [combo finishes].",
     "Portrait": "IceMauler",
     "Thumbnail": {
-      "Zoom": 2.54,
-      "X": 0.5703,
-      "Y": 0.1836
+      "Zoom": 2.5425,
+      "X": 0.5697,
+      "Y": 0.2001
+    },
+    "Figure": {
+      "X": 0,
+      "Y": 0.0283,
+      "W": 0.999,
+      "H": 0.9355
     },
     "Footprint": {
       "W": 1,
@@ -8307,9 +8697,15 @@
     "Card": "Frontline [guardian] [bruiser]. Absorbs pressure and [taunts].",
     "Portrait": "JadeKnight",
     "Thumbnail": {
-      "Zoom": 1.1125,
-      "X": 0.3725,
-      "Y": 0.1897
+      "Zoom": 2.4499,
+      "X": 0.4865,
+      "Y": 0.2029
+    },
+    "Figure": {
+      "X": 0.3174,
+      "Y": 0.0186,
+      "W": 0.4541,
+      "H": 0.9717
     },
     "Footprint": {
       "W": 1,
@@ -8446,9 +8842,15 @@
     "Card": "Frontline [guardian] [bruiser]. Absorbs pressure and [taunts].",
     "Portrait": "Knight",
     "Thumbnail": {
-      "Zoom": 2.0842,
-      "X": 0.7256,
-      "Y": 0.1842
+      "Zoom": 2.5745,
+      "X": 0.6265,
+      "Y": 0.2197
+    },
+    "Figure": {
+      "X": 0.0391,
+      "Y": 0.0488,
+      "W": 0.8096,
+      "H": 0.9277
     },
     "Footprint": {
       "W": 1,
@@ -8585,9 +8987,15 @@
     "Card": "Close-range [brawler] [cleaver]. Wins trades with [stagger].",
     "Portrait": "Lancer",
     "Thumbnail": {
-      "Zoom": 2.6062,
-      "X": 0.6856,
-      "Y": 0.1836
+      "Zoom": 2.7513,
+      "X": 0.6709,
+      "Y": 0.2182
+    },
+    "Figure": {
+      "X": 0.0215,
+      "Y": 0.0586,
+      "W": 0.9473,
+      "H": 0.8691
     },
     "Footprint": {
       "W": 1,
@@ -8723,9 +9131,15 @@
     "Card": "Flexible [fighter]. Converts [openings] into [combo finishes].",
     "Portrait": "Lurker00",
     "Thumbnail": {
-      "Zoom": 2.3887,
-      "X": 0.4237,
-      "Y": 0.184
+      "Zoom": 2.5217,
+      "X": 0.4336,
+      "Y": 0.2069
+    },
+    "Figure": {
+      "X": 0.0322,
+      "Y": 0.0322,
+      "W": 0.9473,
+      "H": 0.9492
     },
     "Footprint": {
       "W": 1,
@@ -8844,9 +9258,15 @@
     "Card": "Flexible [fighter]. Converts [openings] into [combo finishes].",
     "Portrait": "Lurker01",
     "Thumbnail": {
-      "Zoom": 2.3316,
-      "X": 0.4164,
-      "Y": 0.1841
+      "Zoom": 2.4896,
+      "X": 0.4144,
+      "Y": 0.2011
+    },
+    "Figure": {
+      "X": 0.0244,
+      "Y": 0.0244,
+      "W": 0.9365,
+      "H": 0.96
     },
     "Footprint": {
       "W": 1,
@@ -8965,9 +9385,15 @@
     "Card": "Flexible [fighter]. Converts [openings] into [combo finishes].",
     "Portrait": "Lurker02",
     "Thumbnail": {
-      "Zoom": 2.463,
-      "X": 0.6296,
-      "Y": 0.184
+      "Zoom": 2.5683,
+      "X": 0.6331,
+      "Y": 0.202
+    },
+    "Figure": {
+      "X": 0.0293,
+      "Y": 0.0312,
+      "W": 0.959,
+      "H": 0.9277
     },
     "Footprint": {
       "W": 1,
@@ -9085,9 +9511,15 @@
     "Card": "Tactical [engineer] [controller]. Deploys [traps] [turrets] [gadgets].",
     "Portrait": "Machinist",
     "Thumbnail": {
-      "Zoom": 1.0533,
-      "X": 0.5136,
-      "Y": 0.2005
+      "Zoom": 2.4402,
+      "X": 0.5137,
+      "Y": 0.2048
+    },
+    "Figure": {
+      "X": 0.292,
+      "Y": 0.0088,
+      "W": 0.4316,
+      "H": 0.9775
     },
     "Footprint": {
       "W": 1,
@@ -9225,6 +9657,12 @@
       "X": 0.493,
       "Y": 0.2102
     },
+    "Figure": {
+      "X": 0,
+      "Y": 0,
+      "W": 1,
+      "H": 1
+    },
     "Footprint": {
       "W": 1,
       "H": 1
@@ -9339,9 +9777,15 @@
     "Card": "Flexible [fighter]. Converts [openings] into [combo finishes].",
     "Portrait": "MarshShambler00",
     "Thumbnail": {
-      "Zoom": 2.3963,
-      "X": 0.5555,
-      "Y": 0.1955
+      "Zoom": 2.4587,
+      "X": 0.5433,
+      "Y": 0.2034
+    },
+    "Figure": {
+      "X": 0.002,
+      "Y": 0.0137,
+      "W": 0.9746,
+      "H": 0.9707
     },
     "Footprint": {
       "W": 1,
@@ -9460,9 +9904,15 @@
     "Card": "Flexible [fighter]. Converts [openings] into [combo finishes].",
     "Portrait": "MarshShambler01",
     "Thumbnail": {
-      "Zoom": 2.4323,
-      "X": 0.5149,
-      "Y": 0.1849
+      "Zoom": 2.4982,
+      "X": 0.5062,
+      "Y": 0.2159
+    },
+    "Figure": {
+      "X": 0.0049,
+      "Y": 0.04,
+      "W": 0.9736,
+      "H": 0.9512
     },
     "Footprint": {
       "W": 1,
@@ -9581,9 +10031,15 @@
     "Card": "Flexible [fighter]. Converts [openings] into [combo finishes].",
     "Portrait": "MarshShambler03",
     "Thumbnail": {
-      "Zoom": 2.3437,
-      "X": 0.5435,
-      "Y": 0.2084
+      "Zoom": 2.4096,
+      "X": 0.5433,
+      "Y": 0.2079
+    },
+    "Figure": {
+      "X": 0.0146,
+      "Y": 0.002,
+      "W": 0.9727,
+      "H": 0.9883
     },
     "Footprint": {
       "W": 1,
@@ -9701,9 +10157,15 @@
     "Card": "Flexible [fighter]. Converts [openings] into [combo finishes].",
     "Portrait": "MartialArtist",
     "Thumbnail": {
-      "Zoom": 1.1464,
-      "X": 0.553,
+      "Zoom": 2.3812,
+      "X": 0.525,
       "Y": 0.2068
+    },
+    "Figure": {
+      "X": 0.2588,
+      "Y": 0,
+      "W": 0.4814,
+      "H": 1
     },
     "Footprint": {
       "W": 1,
@@ -9839,9 +10301,15 @@
     "Card": "Tactical [engineer] [controller]. Deploys [traps] [turrets] [gadgets].",
     "Portrait": "MechaArmor00",
     "Thumbnail": {
-      "Zoom": 2.4424,
-      "X": 0.6438,
-      "Y": 0.1837
+      "Zoom": 2.5136,
+      "X": 0.6256,
+      "Y": 0.2078
+    },
+    "Figure": {
+      "X": 0,
+      "Y": 0.0332,
+      "W": 0.9717,
+      "H": 0.9502
     },
     "Footprint": {
       "W": 1,
@@ -9960,9 +10428,15 @@
     "Card": "Tactical [engineer] [controller]. Deploys [traps] [turrets] [gadgets].",
     "Portrait": "MechaArmor01",
     "Thumbnail": {
-      "Zoom": 2.4363,
-      "X": 0.6521,
-      "Y": 0.1843
+      "Zoom": 2.5073,
+      "X": 0.6336,
+      "Y": 0.2083
+    },
+    "Figure": {
+      "X": 0,
+      "Y": 0.0332,
+      "W": 0.9717,
+      "H": 0.9502
     },
     "Footprint": {
       "W": 1,
@@ -10081,9 +10555,15 @@
     "Card": "Tactical [engineer] [controller]. Deploys [traps] [turrets] [gadgets].",
     "Portrait": "MechaArmor02",
     "Thumbnail": {
-      "Zoom": 2.4363,
-      "X": 0.6427,
-      "Y": 0.1843
+      "Zoom": 2.5098,
+      "X": 0.6239,
+      "Y": 0.2083
+    },
+    "Figure": {
+      "X": 0,
+      "Y": 0.0332,
+      "W": 0.9707,
+      "H": 0.9502
     },
     "Footprint": {
       "W": 1,
@@ -10205,6 +10685,12 @@
       "Zoom": 2.3906,
       "X": 0.5076,
       "Y": 0.2091
+    },
+    "Figure": {
+      "X": 0,
+      "Y": 0,
+      "W": 1,
+      "H": 1
     },
     "Footprint": {
       "W": 1,
@@ -10339,9 +10825,15 @@
     "Card": "Ferocious [pouncer] [mauler]. Disrupts with [roar] and [knockdown].",
     "Portrait": "MountainTroll",
     "Thumbnail": {
-      "Zoom": 2.3591,
-      "X": 0.492,
-      "Y": 0.189
+      "Zoom": 2.4401,
+      "X": 0.4874,
+      "Y": 0.2056
+    },
+    "Figure": {
+      "X": 0.0117,
+      "Y": 0.0205,
+      "W": 0.9668,
+      "H": 0.9795
     },
     "Footprint": {
       "W": 1,
@@ -10458,9 +10950,15 @@
     "Card": "Frontline [guardian] [bruiser]. Absorbs pressure and [taunts].",
     "Portrait": "Myrmidon",
     "Thumbnail": {
-      "Zoom": 1.8704,
-      "X": 0.3831,
-      "Y": 0.203
+      "Zoom": 2.4031,
+      "X": 0.474,
+      "Y": 0.2077
+    },
+    "Figure": {
+      "X": 0.1758,
+      "Y": 0.0059,
+      "W": 0.7783,
+      "H": 0.9941
     },
     "Footprint": {
       "W": 1,
@@ -10599,9 +11097,15 @@
     "Card": "Ferocious [pouncer] [mauler]. Disrupts with [roar] and [knockdown].",
     "Portrait": "Naga00",
     "Thumbnail": {
-      "Zoom": 0.9616,
-      "X": 0.4996,
-      "Y": 0.4988
+      "Zoom": 1.03,
+      "X": 0.5328,
+      "Y": 0.4906
+    },
+    "Figure": {
+      "X": 0.0664,
+      "Y": 0.0254,
+      "W": 0.9336,
+      "H": 0.9326
     },
     "Footprint": {
       "W": 1,
@@ -10722,9 +11226,15 @@
     "Card": "Flexible [fighter]. Converts [openings] into [combo finishes].",
     "Portrait": "NightHunter",
     "Thumbnail": {
-      "Zoom": 2.3106,
-      "X": 0.5233,
-      "Y": 0.189
+      "Zoom": 2.4854,
+      "X": 0.5197,
+      "Y": 0.2011
+    },
+    "Figure": {
+      "X": 0.0332,
+      "Y": 0.0195,
+      "W": 0.9297,
+      "H": 0.9609
     },
     "Footprint": {
       "W": 1,
@@ -10863,6 +11373,12 @@
       "X": 0.4977,
       "Y": 0.2102
     },
+    "Figure": {
+      "X": 0.0635,
+      "Y": 0.0186,
+      "W": 0.8408,
+      "H": 0.9629
+    },
     "Footprint": {
       "W": 1,
       "H": 1
@@ -10997,9 +11513,15 @@
     "Card": "Flexible [fighter]. Converts [openings] into [combo finishes].",
     "Portrait": "Oni00",
     "Thumbnail": {
-      "Zoom": 2.3447,
-      "X": 0.4855,
-      "Y": 0.1921
+      "Zoom": 2.4701,
+      "X": 0.5028,
+      "Y": 0.2023
+    },
+    "Figure": {
+      "X": 0.042,
+      "Y": 0.0166,
+      "W": 0.9492,
+      "H": 0.9668
     },
     "Footprint": {
       "W": 1,
@@ -11117,9 +11639,15 @@
     "Card": "Flexible [fighter]. Converts [openings] into [combo finishes].",
     "Portrait": "Oni01",
     "Thumbnail": {
-      "Zoom": 2.1666,
-      "X": 0.5361,
-      "Y": 0.2087
+      "Zoom": 2.3959,
+      "X": 0.5141,
+      "Y": 0.2082
+    },
+    "Figure": {
+      "X": 0.0293,
+      "Y": 0.001,
+      "W": 0.9043,
+      "H": 0.9932
     },
     "Footprint": {
       "W": 1,
@@ -11237,9 +11765,15 @@
     "Card": "Flexible [fighter]. Converts [openings] into [combo finishes].",
     "Portrait": "Oni02",
     "Thumbnail": {
-      "Zoom": 2.1611,
-      "X": 0.5025,
-      "Y": 0.189
+      "Zoom": 2.5233,
+      "X": 0.5046,
+      "Y": 0.1986
+    },
+    "Figure": {
+      "X": 0.0742,
+      "Y": 0.0195,
+      "W": 0.8564,
+      "H": 0.9473
     },
     "Footprint": {
       "W": 1,
@@ -11356,9 +11890,15 @@
     "Card": "Tactical [engineer] [controller]. Deploys [traps] [turrets] [gadgets].",
     "Portrait": "Operative",
     "Thumbnail": {
-      "Zoom": 1.0006,
-      "X": 0.4671,
-      "Y": 0.1679
+      "Zoom": 2.7396,
+      "X": 0.4958,
+      "Y": 0.1818
+    },
+    "Figure": {
+      "X": 0.3252,
+      "Y": 0.0215,
+      "W": 0.3652,
+      "H": 0.9551
     },
     "Footprint": {
       "W": 1,
@@ -11496,9 +12036,15 @@
     "Card": "Frontline [guardian] [bruiser]. Absorbs pressure and [taunts].",
     "Portrait": "Paladin",
     "Thumbnail": {
-      "Zoom": 1.711,
-      "X": 0.408,
-      "Y": 0.206
+      "Zoom": 2.4034,
+      "X": 0.4731,
+      "Y": 0.2087
+    },
+    "Figure": {
+      "X": 0.1826,
+      "Y": 0.0039,
+      "W": 0.7119,
+      "H": 0.9941
     },
     "Footprint": {
       "W": 1,
@@ -11634,9 +12180,15 @@
     "Card": "Ferocious [pouncer] [mauler]. Disrupts with [roar] and [knockdown].",
     "Portrait": "PandaGirl",
     "Thumbnail": {
-      "Zoom": 2.3106,
-      "X": 0.5072,
-      "Y": 0.1874
+      "Zoom": 2.4519,
+      "X": 0.5024,
+      "Y": 0.2039
+    },
+    "Figure": {
+      "X": 0.0244,
+      "Y": 0.0215,
+      "W": 0.9424,
+      "H": 0.9736
     },
     "Footprint": {
       "W": 1,
@@ -11772,9 +12324,15 @@
     "Card": "Flexible [fighter]. Converts [openings] into [combo finishes].",
     "Portrait": "Phantom",
     "Thumbnail": {
-      "Zoom": 2.2451,
-      "X": 0.5383,
+      "Zoom": 2.3848,
+      "X": 0.5361,
       "Y": 0.2095
+    },
+    "Figure": {
+      "X": 0.0293,
+      "Y": 0,
+      "W": 0.9414,
+      "H": 1
     },
     "Footprint": {
       "W": 1,
@@ -11892,9 +12450,15 @@
     "Card": "Close-range [brawler] [cleaver]. Wins trades with [stagger].",
     "Portrait": "PrizeFighter",
     "Thumbnail": {
-      "Zoom": 1.0823,
-      "X": 0.572,
-      "Y": 0.2101
+      "Zoom": 2.3834,
+      "X": 0.5107,
+      "Y": 0.2095
+    },
+    "Figure": {
+      "X": 0.251,
+      "Y": 0,
+      "W": 0.4541,
+      "H": 0.9971
     },
     "Footprint": {
       "W": 1,
@@ -12028,9 +12592,15 @@
     "Card": "Close-range [brawler] [cleaver]. Wins trades with [stagger].",
     "Portrait": "Pugilist",
     "Thumbnail": {
-      "Zoom": 1.0037,
-      "X": 0.4833,
-      "Y": 0.2047
+      "Zoom": 2.4355,
+      "X": 0.5048,
+      "Y": 0.2056
+    },
+    "Figure": {
+      "X": 0.3057,
+      "Y": 0.0049,
+      "W": 0.4121,
+      "H": 0.9805
     },
     "Footprint": {
       "W": 1,
@@ -12165,9 +12735,15 @@
     "Card": "Tactical [engineer] [controller]. Deploys [traps] [turrets] [gadgets].",
     "Portrait": "PurplePrototype00",
     "Thumbnail": {
-      "Zoom": 2.1992,
-      "X": 0.4939,
-      "Y": 0.1842
+      "Zoom": 2.4884,
+      "X": 0.5097,
+      "Y": 0.213
+    },
+    "Figure": {
+      "X": 0.0732,
+      "Y": 0.0361,
+      "W": 0.8838,
+      "H": 0.96
     },
     "Footprint": {
       "W": 1,
@@ -12283,9 +12859,15 @@
     "Card": "Tactical [engineer] [controller]. Deploys [traps] [turrets] [gadgets].",
     "Portrait": "PurplePrototype01",
     "Thumbnail": {
-      "Zoom": 1.9494,
-      "X": 0.4768,
-      "Y": 0.2061
+      "Zoom": 2.3993,
+      "X": 0.5456,
+      "Y": 0.2092
+    },
+    "Figure": {
+      "X": 0.1582,
+      "Y": 0.0039,
+      "W": 0.8125,
+      "H": 0.9961
     },
     "Footprint": {
       "W": 1,
@@ -12401,9 +12983,15 @@
     "Card": "Tactical [engineer] [controller]. Deploys [traps] [turrets] [gadgets].",
     "Portrait": "PurplePrototype02",
     "Thumbnail": {
-      "Zoom": 1.7456,
-      "X": 0.4208,
-      "Y": 0.2037
+      "Zoom": 2.4123,
+      "X": 0.5399,
+      "Y": 0.2072
+    },
+    "Figure": {
+      "X": 0.2354,
+      "Y": 0.0059,
+      "W": 0.7236,
+      "H": 0.9883
     },
     "Footprint": {
       "W": 1,
@@ -12519,9 +13107,15 @@
     "Card": "Tactical [engineer] [controller]. Deploys [traps] [turrets] [gadgets].",
     "Portrait": "PurplePrototype03",
     "Thumbnail": {
-      "Zoom": 2.1557,
-      "X": 0.5342,
-      "Y": 0.1927
+      "Zoom": 2.4803,
+      "X": 0.4946,
+      "Y": 0.2018
+    },
+    "Figure": {
+      "X": 0.0303,
+      "Y": 0.0166,
+      "W": 0.8691,
+      "H": 0.9609
     },
     "Footprint": {
       "W": 1,
@@ -12637,9 +13231,15 @@
     "Card": "Tactical [engineer] [controller]. Deploys [traps] [turrets] [gadgets].",
     "Portrait": "PurplePrototype04",
     "Thumbnail": {
-      "Zoom": 2.0826,
-      "X": 0.6169,
+      "Zoom": 2.3801,
+      "X": 0.5974,
       "Y": 0.2101
+    },
+    "Figure": {
+      "X": 0.0576,
+      "Y": 0,
+      "W": 0.875,
+      "H": 1
     },
     "Footprint": {
       "W": 1,
@@ -12754,9 +13354,15 @@
     "Card": "Close-range [brawler] [cleaver]. Wins trades with [stagger].",
     "Portrait": "Raider",
     "Thumbnail": {
-      "Zoom": 1.5353,
-      "X": 0.6322,
-      "Y": 0.1841
+      "Zoom": 2.468,
+      "X": 0.5534,
+      "Y": 0.2037
+    },
+    "Figure": {
+      "X": 0.1602,
+      "Y": 0.0254,
+      "W": 0.6221,
+      "H": 0.9688
     },
     "Footprint": {
       "W": 1,
@@ -12892,9 +13498,15 @@
     "Card": "Flexible [fighter]. Converts [openings] into [combo finishes].",
     "Portrait": "Reaper",
     "Thumbnail": {
-      "Zoom": 2.2841,
-      "X": 0.4062,
-      "Y": 0.2006
+      "Zoom": 2.444,
+      "X": 0.4372,
+      "Y": 0.2043
+    },
+    "Figure": {
+      "X": 0.0576,
+      "Y": 0.0088,
+      "W": 0.9346,
+      "H": 0.9746
     },
     "Footprint": {
       "W": 1,
@@ -13011,9 +13623,15 @@
     "Card": "Arcane [controller] [debuffer]. Shapes fights with [aoe] [curse].",
     "Portrait": "RedMage",
     "Thumbnail": {
-      "Zoom": 1.1683,
-      "X": 0.4853,
+      "Zoom": 2.3831,
+      "X": 0.4928,
       "Y": 0.2022
+    },
+    "Figure": {
+      "X": 0.2549,
+      "Y": 0,
+      "W": 0.4902,
+      "H": 1
     },
     "Footprint": {
       "W": 1,
@@ -13151,9 +13769,15 @@
     "Card": "Mobile [striker] [flanker]. Leans on [crit] and [backstab] windows.",
     "Portrait": "RedNinja",
     "Thumbnail": {
-      "Zoom": 1.9173,
-      "X": 0.5337,
-      "Y": 0.184
+      "Zoom": 2.4789,
+      "X": 0.5173,
+      "Y": 0.2021
+    },
+    "Figure": {
+      "X": 0.1045,
+      "Y": 0.0244,
+      "W": 0.7734,
+      "H": 0.9658
     },
     "Footprint": {
       "W": 1,
@@ -13288,9 +13912,15 @@
     "Card": "Flexible [fighter]. Converts [openings] into [combo finishes].",
     "Portrait": "Ripper",
     "Thumbnail": {
-      "Zoom": 1.6924,
-      "X": 0.2336,
-      "Y": 0.1904
+      "Zoom": 2.4757,
+      "X": 0.396,
+      "Y": 0.2024
+    },
+    "Figure": {
+      "X": 0.2363,
+      "Y": 0.0186,
+      "W": 0.6836,
+      "H": 0.9658
     },
     "Footprint": {
       "W": 1,
@@ -13428,7 +14058,13 @@
     "Thumbnail": {
       "Zoom": 2.4363,
       "X": 0.4771,
-      "Y": 0.1938
+      "Y": 0.2051
+    },
+    "Figure": {
+      "X": 0,
+      "Y": 0.0156,
+      "W": 1,
+      "H": 0.9775
     },
     "Footprint": {
       "W": 1,
@@ -13566,9 +14202,15 @@
     "Card": "Close-range [brawler] [cleaver]. Wins trades with [stagger].",
     "Portrait": "Ronin",
     "Thumbnail": {
-      "Zoom": 1.5356,
-      "X": 0.4781,
-      "Y": 0.1851
+      "Zoom": 2.457,
+      "X": 0.5058,
+      "Y": 0.2096
+    },
+    "Figure": {
+      "X": 0.207,
+      "Y": 0.0303,
+      "W": 0.625,
+      "H": 0.9688
     },
     "Footprint": {
       "W": 1,
@@ -13705,9 +14347,15 @@
     "Card": "Arcane [controller] [debuffer]. Shapes fights with [aoe] [curse].",
     "Portrait": "Sage",
     "Thumbnail": {
-      "Zoom": 2.3787,
-      "X": 0.4883,
-      "Y": 0.2008
+      "Zoom": 2.3729,
+      "X": 0.4978,
+      "Y": 0.2099
+    },
+    "Figure": {
+      "X": 0.0654,
+      "Y": 0.0352,
+      "W": 0.876,
+      "H": 0.9502
     },
     "Footprint": {
       "W": 1,
@@ -13842,9 +14490,15 @@
     "Card": "Ferocious [pouncer] [mauler]. Disrupts with [roar] and [knockdown].",
     "Portrait": "SandMaw",
     "Thumbnail": {
-      "Zoom": 0.964,
-      "X": 0.4999,
-      "Y": 0.5007
+      "Zoom": 0.9649,
+      "X": 0.4994,
+      "Y": 0.5017
+    },
+    "Figure": {
+      "X": 0,
+      "Y": 0.0176,
+      "W": 0.999,
+      "H": 0.9668
     },
     "Footprint": {
       "W": 1,
@@ -13961,9 +14615,15 @@
     "Card": "Close-range [brawler] [cleaver]. Wins trades with [stagger].",
     "Portrait": "Scorpion",
     "Thumbnail": {
-      "Zoom": 1.8801,
-      "X": 0.5763,
-      "Y": 0.2473
+      "Zoom": 3.5785,
+      "X": 0.5401,
+      "Y": 0.1397
+    },
+    "Figure": {
+      "X": 0.2373,
+      "Y": 0.0137,
+      "W": 0.5254,
+      "H": 0.5098
     },
     "Footprint": {
       "W": 1,
@@ -14082,9 +14742,15 @@
     "Card": "Close-range [brawler] [cleaver]. Wins trades with [stagger].",
     "Portrait": "Sellsword",
     "Thumbnail": {
-      "Zoom": 1.7941,
-      "X": 0.5016,
-      "Y": 0.184
+      "Zoom": 2.4793,
+      "X": 0.4977,
+      "Y": 0.2021
+    },
+    "Figure": {
+      "X": 0.1348,
+      "Y": 0.0244,
+      "W": 0.7236,
+      "H": 0.9658
     },
     "Footprint": {
       "W": 1,
@@ -14223,6 +14889,12 @@
       "X": 0.6227,
       "Y": 0.2102
     },
+    "Figure": {
+      "X": 0,
+      "Y": 0,
+      "W": 1,
+      "H": 1
+    },
     "Footprint": {
       "W": 1,
       "H": 1
@@ -14358,9 +15030,15 @@
     "Card": "Flexible [fighter]. Converts [openings] into [combo finishes].",
     "Portrait": "Sister",
     "Thumbnail": {
-      "Zoom": 1.9019,
-      "X": 0.5296,
-      "Y": 0.1939
+      "Zoom": 2.4223,
+      "X": 0.5193,
+      "Y": 0.2065
+    },
+    "Figure": {
+      "X": 0.1035,
+      "Y": 0.0156,
+      "W": 0.7852,
+      "H": 0.9844
     },
     "Footprint": {
       "W": 1,
@@ -14495,9 +15173,15 @@
     "Card": "Grim [attrition] [drain]. Pressures with [fear] and [rot].",
     "Portrait": "Skelepede00",
     "Thumbnail": {
-      "Zoom": 0.9161,
-      "X": 0.4997,
-      "Y": 0.4998
+      "Zoom": 0.9731,
+      "X": 0.4958,
+      "Y": 0.5047
+    },
+    "Figure": {
+      "X": 0.0254,
+      "Y": 0.0098,
+      "W": 0.9414,
+      "H": 0.9902
     },
     "Footprint": {
       "W": 1,
@@ -14617,9 +15301,15 @@
     "Card": "Grim [attrition] [drain]. Pressures with [fear] and [rot].",
     "Portrait": "Skelepede01",
     "Thumbnail": {
-      "Zoom": 0.9616,
-      "X": 0.4996,
-      "Y": 0.4988
+      "Zoom": 0.9896,
+      "X": 0.5138,
+      "Y": 0.5071
+    },
+    "Figure": {
+      "X": 0.0283,
+      "Y": 0.0234,
+      "W": 0.9717,
+      "H": 0.9697
     },
     "Footprint": {
       "W": 1,
@@ -14739,9 +15429,15 @@
     "Card": "Grim [attrition] [drain]. Pressures with [fear] and [rot].",
     "Portrait": "Skelepede02",
     "Thumbnail": {
-      "Zoom": 0.9512,
-      "X": 0.5003,
-      "Y": 0.5003
+      "Zoom": 0.9929,
+      "X": 0.5037,
+      "Y": 0.5047
+    },
+    "Figure": {
+      "X": 0.0244,
+      "Y": 0.0195,
+      "W": 0.958,
+      "H": 0.9697
     },
     "Footprint": {
       "W": 1,
@@ -14860,9 +15556,15 @@
     "Card": "Close-range [brawler] [cleaver]. Wins trades with [stagger].",
     "Portrait": "Slasher",
     "Thumbnail": {
-      "Zoom": 1.5714,
-      "X": 0.3632,
-      "Y": 0.1832
+      "Zoom": 2.6379,
+      "X": 0.48,
+      "Y": 0.2057
+    },
+    "Figure": {
+      "X": 0.2637,
+      "Y": 0.04,
+      "W": 0.5957,
+      "H": 0.9043
     },
     "Footprint": {
       "W": 1,
@@ -14996,9 +15698,15 @@
     "Card": "Ferocious [pouncer] [mauler]. Disrupts with [roar] and [knockdown].",
     "Portrait": "Slime00",
     "Thumbnail": {
-      "Zoom": 0.9625,
-      "X": 0.4997,
-      "Y": 0.4995
+      "Zoom": 2.4396,
+      "X": 0.5643,
+      "Y": 0.4999
+    },
+    "Figure": {
+      "X": 0.3672,
+      "Y": 0.3857,
+      "W": 0.3945,
+      "H": 0.2285
     },
     "Footprint": {
       "W": 1,
@@ -15113,9 +15821,15 @@
     "Card": "Ferocious [pouncer] [mauler]. Disrupts with [roar] and [knockdown].",
     "Portrait": "Slime01",
     "Thumbnail": {
-      "Zoom": 0.9636,
-      "X": 0.4997,
-      "Y": 0.4996
+      "Zoom": 2.0994,
+      "X": 0.5389,
+      "Y": 0.4999
+    },
+    "Figure": {
+      "X": 0.3096,
+      "Y": 0.3584,
+      "W": 0.459,
+      "H": 0.2832
     },
     "Footprint": {
       "W": 1,
@@ -15230,9 +15944,15 @@
     "Card": "Ferocious [pouncer] [mauler]. Disrupts with [roar] and [knockdown].",
     "Portrait": "Slime02",
     "Thumbnail": {
-      "Zoom": 0.9632,
-      "X": 0.4989,
-      "Y": 0.4984
+      "Zoom": 2.8506,
+      "X": 0.5397,
+      "Y": 0.4918
+    },
+    "Figure": {
+      "X": 0.3711,
+      "Y": 0.3701,
+      "W": 0.3379,
+      "H": 0.2441
     },
     "Footprint": {
       "W": 1,
@@ -15347,9 +16067,15 @@
     "Card": "Ferocious [pouncer] [mauler]. Disrupts with [roar] and [knockdown].",
     "Portrait": "Slime03",
     "Thumbnail": {
-      "Zoom": 0.9633,
-      "X": 0.4997,
-      "Y": 0.4996
+      "Zoom": 2.7249,
+      "X": 0.5565,
+      "Y": 0.4999
+    },
+    "Figure": {
+      "X": 0.3799,
+      "Y": 0.3555,
+      "W": 0.3535,
+      "H": 0.2891
     },
     "Footprint": {
       "W": 1,
@@ -15471,6 +16197,12 @@
       "X": 0.4727,
       "Y": 0.2102
     },
+    "Figure": {
+      "X": 0,
+      "Y": 0,
+      "W": 1,
+      "H": 1
+    },
     "Footprint": {
       "W": 1,
       "H": 1
@@ -15590,6 +16322,12 @@
       "Zoom": 2.3791,
       "X": 0.5477,
       "Y": 0.2102
+    },
+    "Figure": {
+      "X": 0,
+      "Y": 0,
+      "W": 1,
+      "H": 1
     },
     "Footprint": {
       "W": 1,
@@ -15711,6 +16449,12 @@
       "X": 0.5118,
       "Y": 0.2102
     },
+    "Figure": {
+      "X": 0,
+      "Y": 0,
+      "W": 1,
+      "H": 1
+    },
     "Footprint": {
       "W": 1,
       "H": 1
@@ -15831,6 +16575,12 @@
       "X": 0.5024,
       "Y": 0.2102
     },
+    "Figure": {
+      "X": 0,
+      "Y": 0,
+      "W": 1,
+      "H": 1
+    },
     "Footprint": {
       "W": 1,
       "H": 1
@@ -15946,9 +16696,15 @@
     "Card": "Mobile [striker] [flanker]. Leans on [crit] and [backstab] windows.",
     "Portrait": "Speedster",
     "Thumbnail": {
-      "Zoom": 0.9957,
-      "X": 0.5957,
+      "Zoom": 2.5878,
+      "X": 0.5368,
       "Y": 0.1696
+    },
+    "Figure": {
+      "X": 0.3076,
+      "Y": 0,
+      "W": 0.3848,
+      "H": 1
     },
     "Footprint": {
       "W": 1,
@@ -16083,9 +16839,15 @@
     "Card": "Flexible [fighter]. Converts [openings] into [combo finishes].",
     "Portrait": "SteppinRazor00",
     "Thumbnail": {
-      "Zoom": 2.2656,
-      "X": 0.5551,
-      "Y": 0.1843
+      "Zoom": 2.53,
+      "X": 0.5371,
+      "Y": 0.2151
+    },
+    "Figure": {
+      "X": 0.04,
+      "Y": 0.041,
+      "W": 0.8955,
+      "H": 0.9443
     },
     "Footprint": {
       "W": 1,
@@ -16201,9 +16963,15 @@
     "Card": "Flexible [fighter]. Converts [openings] into [combo finishes].",
     "Portrait": "SteppinRazor01",
     "Thumbnail": {
-      "Zoom": 2.3771,
-      "X": 0.6454,
-      "Y": 0.1897
+      "Zoom": 2.4762,
+      "X": 0.6225,
+      "Y": 0.2018
+    },
+    "Figure": {
+      "X": 0.0029,
+      "Y": 0.0195,
+      "W": 0.96,
+      "H": 0.9609
     },
     "Footprint": {
       "W": 1,
@@ -16319,9 +17087,15 @@
     "Card": "Flexible [fighter]. Converts [openings] into [combo finishes].",
     "Portrait": "SteppinRazor02",
     "Thumbnail": {
-      "Zoom": 2.3088,
-      "X": 0.3687,
-      "Y": 0.1841
+      "Zoom": 2.5018,
+      "X": 0.391,
+      "Y": 0.2014
+    },
+    "Figure": {
+      "X": 0.0508,
+      "Y": 0.0254,
+      "W": 0.9229,
+      "H": 0.9561
     },
     "Footprint": {
       "W": 1,
@@ -16437,9 +17211,15 @@
     "Card": "Flexible [fighter]. Converts [openings] into [combo finishes].",
     "Portrait": "SteppinRazor04",
     "Thumbnail": {
-      "Zoom": 2.3681,
-      "X": 0.6197,
-      "Y": 0.1873
+      "Zoom": 2.4871,
+      "X": 0.6008,
+      "Y": 0.2017
+    },
+    "Figure": {
+      "X": 0.0107,
+      "Y": 0.0215,
+      "W": 0.9521,
+      "H": 0.9619
     },
     "Footprint": {
       "W": 1,
@@ -16555,9 +17335,15 @@
     "Card": "Flexible [fighter]. Converts [openings] into [combo finishes].",
     "Portrait": "SteppinRazor05",
     "Thumbnail": {
-      "Zoom": 2.3468,
-      "X": 0.6248,
-      "Y": 0.1906
+      "Zoom": 2.48,
+      "X": 0.6078,
+      "Y": 0.2021
+    },
+    "Figure": {
+      "X": 0.0166,
+      "Y": 0.0186,
+      "W": 0.9463,
+      "H": 0.9629
     },
     "Footprint": {
       "W": 1,
@@ -16672,9 +17458,15 @@
     "Card": "Close-range [brawler] [cleaver]. Wins trades with [stagger].",
     "Portrait": "StreetFighter",
     "Thumbnail": {
-      "Zoom": 2.3428,
-      "X": 0.4991,
-      "Y": 0.1898
+      "Zoom": 2.4732,
+      "X": 0.505,
+      "Y": 0.2023
+    },
+    "Figure": {
+      "X": 0.0322,
+      "Y": 0.0195,
+      "W": 0.9473,
+      "H": 0.9629
     },
     "Footprint": {
       "W": 1,
@@ -16808,9 +17600,15 @@
     "Card": "Mobile [striker] [flanker]. Leans on [crit] and [backstab] windows.",
     "Portrait": "Striker",
     "Thumbnail": {
-      "Zoom": 1.0055,
-      "X": 0.4509,
-      "Y": 0.1778
+      "Zoom": 2.587,
+      "X": 0.5053,
+      "Y": 0.1943
+    },
+    "Figure": {
+      "X": 0.3301,
+      "Y": 0.0234,
+      "W": 0.3887,
+      "H": 0.9609
     },
     "Footprint": {
       "W": 1,
@@ -16946,9 +17744,15 @@
     "Card": "Flexible [fighter]. Converts [openings] into [combo finishes].",
     "Portrait": "SwampMistress00",
     "Thumbnail": {
-      "Zoom": 2.4264,
-      "X": 0.5139,
-      "Y": 0.2043
+      "Zoom": 2.4311,
+      "X": 0.5148,
+      "Y": 0.2058
+    },
+    "Figure": {
+      "X": 0.002,
+      "Y": 0.0049,
+      "W": 0.998,
+      "H": 0.9834
     },
     "Footprint": {
       "W": 1,
@@ -17068,6 +17872,12 @@
       "Zoom": 2.3791,
       "X": 0.5524,
       "Y": 0.2102
+    },
+    "Figure": {
+      "X": 0,
+      "Y": 0,
+      "W": 1,
+      "H": 1
     },
     "Footprint": {
       "W": 1,
@@ -17202,9 +18012,15 @@
     "Card": "Frontline [guardian] [bruiser]. Absorbs pressure and [taunts].",
     "Portrait": "Tank",
     "Thumbnail": {
-      "Zoom": 2.0236,
-      "X": 0.6364,
-      "Y": 0.1842
+      "Zoom": 2.5209,
+      "X": 0.5743,
+      "Y": 0.2145
+    },
+    "Figure": {
+      "X": 0.0635,
+      "Y": 0.04,
+      "W": 0.8027,
+      "H": 0.9473
     },
     "Footprint": {
       "W": 1,
@@ -17342,9 +18158,15 @@
     "Card": "Tactical [engineer] [controller]. Deploys [traps] [turrets] [gadgets].",
     "Portrait": "TechGremlin00",
     "Thumbnail": {
-      "Zoom": 2.2451,
-      "X": 0.4586,
-      "Y": 0.1845
+      "Zoom": 2.6795,
+      "X": 0.4595,
+      "Y": 0.2278
+    },
+    "Figure": {
+      "X": 0.0752,
+      "Y": 0.0635,
+      "W": 0.8379,
+      "H": 0.8906
     },
     "Footprint": {
       "W": 1,
@@ -17461,9 +18283,15 @@
     "Card": "Tactical [engineer] [controller]. Deploys [traps] [turrets] [gadgets].",
     "Portrait": "TechGremlin01",
     "Thumbnail": {
-      "Zoom": 2.2768,
-      "X": 0.4672,
-      "Y": 0.1843
+      "Zoom": 2.6767,
+      "X": 0.4648,
+      "Y": 0.2368
+    },
+    "Figure": {
+      "X": 0.0674,
+      "Y": 0.0723,
+      "W": 0.8506,
+      "H": 0.8926
     },
     "Footprint": {
       "W": 1,
@@ -17579,9 +18407,15 @@
     "Card": "Tactical [engineer] [controller]. Deploys [traps] [turrets] [gadgets].",
     "Portrait": "TechGremlin02",
     "Thumbnail": {
-      "Zoom": 2.2618,
-      "X": 0.4727,
-      "Y": 0.1835
+      "Zoom": 2.65,
+      "X": 0.4699,
+      "Y": 0.2254
+    },
+    "Figure": {
+      "X": 0.0664,
+      "Y": 0.0605,
+      "W": 0.8535,
+      "H": 0.8984
     },
     "Footprint": {
       "W": 1,
@@ -17697,9 +18531,15 @@
     "Card": "Tactical [engineer] [controller]. Deploys [traps] [turrets] [gadgets].",
     "Portrait": "Technician",
     "Thumbnail": {
-      "Zoom": 1.0008,
-      "X": 0.5579,
-      "Y": 0.178
+      "Zoom": 2.704,
+      "X": 0.5151,
+      "Y": 0.1845
+    },
+    "Figure": {
+      "X": 0.3086,
+      "Y": 0.0088,
+      "W": 0.3701,
+      "H": 0.9873
     },
     "Footprint": {
       "W": 1,
@@ -17837,6 +18677,12 @@
       "X": 0.4977,
       "Y": 0.2102
     },
+    "Figure": {
+      "X": 0.2607,
+      "Y": 0.0078,
+      "W": 0.4814,
+      "H": 0.9883
+    },
     "Footprint": {
       "W": 1,
       "H": 1
@@ -17958,6 +18804,12 @@
       "X": 0.4977,
       "Y": 0.2102
     },
+    "Figure": {
+      "X": 0.3047,
+      "Y": 0.001,
+      "W": 0.4238,
+      "H": 0.9912
+    },
     "Footprint": {
       "W": 1,
       "H": 1
@@ -18077,6 +18929,12 @@
       "Zoom": 2.3787,
       "X": 0.4977,
       "Y": 0.2102
+    },
+    "Figure": {
+      "X": 0.3047,
+      "Y": 0.0146,
+      "W": 0.4434,
+      "H": 0.9824
     },
     "Footprint": {
       "W": 1,
@@ -18199,6 +19057,12 @@
       "X": 0.4977,
       "Y": 0.2102
     },
+    "Figure": {
+      "X": 0.3047,
+      "Y": 0.0029,
+      "W": 0.4131,
+      "H": 0.9893
+    },
     "Footprint": {
       "W": 1,
       "H": 1
@@ -18318,6 +19182,12 @@
       "Zoom": 2.3787,
       "X": 0.4977,
       "Y": 0.2102
+    },
+    "Figure": {
+      "X": 0.3047,
+      "Y": 0.0029,
+      "W": 0.4131,
+      "H": 0.9893
     },
     "Footprint": {
       "W": 1,
@@ -18440,6 +19310,12 @@
       "X": 0.4977,
       "Y": 0.2102
     },
+    "Figure": {
+      "X": 0.2773,
+      "Y": 0.0049,
+      "W": 0.4639,
+      "H": 0.9893
+    },
     "Footprint": {
       "W": 1,
       "H": 1
@@ -18555,9 +19431,15 @@
     "Card": "Mobile [striker] [flanker]. Leans on [crit] and [backstab] windows.",
     "Portrait": "Thief",
     "Thumbnail": {
-      "Zoom": 1.6466,
-      "X": 0.4715,
-      "Y": 0.1936
+      "Zoom": 2.4296,
+      "X": 0.5383,
+      "Y": 0.206
+    },
+    "Figure": {
+      "X": 0.2188,
+      "Y": 0.0156,
+      "W": 0.6777,
+      "H": 0.9834
     },
     "Footprint": {
       "W": 1,
@@ -18697,6 +19579,12 @@
       "X": 0.4977,
       "Y": 0.2102
     },
+    "Figure": {
+      "X": 0.04,
+      "Y": 0.0205,
+      "W": 0.9434,
+      "H": 0.9736
+    },
     "Footprint": {
       "W": 1,
       "H": 1
@@ -18833,6 +19721,12 @@
       "X": 0.5,
       "Y": 0.5
     },
+    "Figure": {
+      "X": 0.0312,
+      "Y": 0.1338,
+      "W": 0.9316,
+      "H": 0.7314
+    },
     "Footprint": {
       "W": 1,
       "H": 1
@@ -18953,7 +19847,13 @@
     "Thumbnail": {
       "Zoom": 0.963,
       "X": 0.5005,
-      "Y": 0.4997
+      "Y": 0.5002
+    },
+    "Figure": {
+      "X": 0,
+      "Y": 0.0059,
+      "W": 1,
+      "H": 0.9893
     },
     "Footprint": {
       "W": 1,
@@ -19079,6 +19979,12 @@
       "X": 0.4998,
       "Y": 0.4998
     },
+    "Figure": {
+      "X": 0,
+      "Y": 0,
+      "W": 1,
+      "H": 1
+    },
     "Footprint": {
       "W": 1,
       "H": 1
@@ -19202,6 +20108,12 @@
       "Zoom": 0.9614,
       "X": 0.4998,
       "Y": 0.4998
+    },
+    "Figure": {
+      "X": 0,
+      "Y": 0,
+      "W": 1,
+      "H": 1
     },
     "Footprint": {
       "W": 1,
@@ -19327,6 +20239,12 @@
       "X": 0.4998,
       "Y": 0.4998
     },
+    "Figure": {
+      "X": 0,
+      "Y": 0,
+      "W": 1,
+      "H": 1
+    },
     "Footprint": {
       "W": 1,
       "H": 1
@@ -19451,6 +20369,12 @@
       "X": 0.4998,
       "Y": 0.4998
     },
+    "Figure": {
+      "X": 0,
+      "Y": 0,
+      "W": 1,
+      "H": 1
+    },
     "Footprint": {
       "W": 1,
       "H": 1
@@ -19571,9 +20495,15 @@
     "Card": "Ferocious [pouncer] [mauler]. Disrupts with [roar] and [knockdown].",
     "Portrait": "TreeGolem06",
     "Thumbnail": {
-      "Zoom": 0.9525,
-      "X": 0.4997,
-      "Y": 0.5005
+      "Zoom": 0.9676,
+      "X": 0.5075,
+      "Y": 0.5029
+    },
+    "Figure": {
+      "X": 0.0156,
+      "Y": 0.0049,
+      "W": 0.9844,
+      "H": 0.9951
     },
     "Footprint": {
       "W": 1,
@@ -19697,7 +20627,13 @@
     "Thumbnail": {
       "Zoom": 0.9611,
       "X": 0.4999,
-      "Y": 0.5007
+      "Y": 0.508
+    },
+    "Figure": {
+      "X": 0,
+      "Y": 0.0146,
+      "W": 1,
+      "H": 0.9854
     },
     "Footprint": {
       "W": 1,
@@ -19819,6 +20755,12 @@
       "X": 0.4998,
       "Y": 0.4998
     },
+    "Figure": {
+      "X": 0,
+      "Y": 0.0156,
+      "W": 1,
+      "H": 0.9688
+    },
     "Footprint": {
       "W": 1,
       "H": 1
@@ -19939,6 +20881,12 @@
       "X": 0.4998,
       "Y": 0.4998
     },
+    "Figure": {
+      "X": 0,
+      "Y": 0,
+      "W": 1,
+      "H": 1
+    },
     "Footprint": {
       "W": 1,
       "H": 1
@@ -20055,9 +21003,15 @@
     "Card": "Grim [attrition] [drain]. Pressures with [fear] and [rot].",
     "Portrait": "Undead04",
     "Thumbnail": {
-      "Zoom": 0.9616,
-      "X": 0.4997,
-      "Y": 0.5005
+      "Zoom": 0.9808,
+      "X": 0.4899,
+      "Y": 0.5112
+    },
+    "Figure": {
+      "X": 0,
+      "Y": 0.0215,
+      "W": 0.9805,
+      "H": 0.9785
     },
     "Footprint": {
       "W": 1,
@@ -20178,9 +21132,15 @@
     "Card": "Grim [attrition] [drain]. Pressures with [fear] and [rot].",
     "Portrait": "Vampire",
     "Thumbnail": {
-      "Zoom": 1.1391,
-      "X": 0.4455,
-      "Y": 0.1974
+      "Zoom": 2.4924,
+      "X": 0.4878,
+      "Y": 0.2006
+    },
+    "Figure": {
+      "X": 0.2842,
+      "Y": 0.0117,
+      "W": 0.457,
+      "H": 0.957
     },
     "Footprint": {
       "W": 1,
@@ -20321,6 +21281,12 @@
       "X": 0.4998,
       "Y": 0.4998
     },
+    "Figure": {
+      "X": 0,
+      "Y": 0.0166,
+      "W": 1,
+      "H": 0.9189
+    },
     "Footprint": {
       "W": 1,
       "H": 1
@@ -20435,9 +21401,15 @@
     "Card": "Frontline [guardian] [bruiser]. Absorbs pressure and [taunts].",
     "Portrait": "WarChief",
     "Thumbnail": {
-      "Zoom": 2.3088,
-      "X": 0.401,
-      "Y": 0.1872
+      "Zoom": 2.5045,
+      "X": 0.4273,
+      "Y": 0.2003
+    },
+    "Figure": {
+      "X": 0.0576,
+      "Y": 0.0215,
+      "W": 0.9219,
+      "H": 0.9551
     },
     "Footprint": {
       "W": 1,
@@ -20575,9 +21547,15 @@
     "Card": "Ferocious [pouncer] [mauler]. Disrupts with [roar] and [knockdown].",
     "Portrait": "Werewolf00",
     "Thumbnail": {
-      "Zoom": 2.3787,
-      "X": 0.4977,
+      "Zoom": 2.3775,
+      "X": 0.4979,
       "Y": 0.2102
+    },
+    "Figure": {
+      "X": 0,
+      "Y": 0,
+      "W": 1,
+      "H": 0.9971
     },
     "Crop": {
       "X": 15,
@@ -20702,6 +21680,12 @@
       "Zoom": 2.3787,
       "X": 0.4977,
       "Y": 0.2102
+    },
+    "Figure": {
+      "X": 0.2344,
+      "Y": 0.0176,
+      "W": 0.5488,
+      "H": 0.9785
     },
     "Footprint": {
       "W": 1,
@@ -20843,6 +21827,12 @@
       "X": 0.4633,
       "Y": 0.2102
     },
+    "Figure": {
+      "X": 0,
+      "Y": 0,
+      "W": 1,
+      "H": 1
+    },
     "Footprint": {
       "W": 1,
       "H": 1
@@ -20976,9 +21966,15 @@
     "Card": "Flexible [fighter]. Converts [openings] into [combo finishes].",
     "Portrait": "WildChild",
     "Thumbnail": {
-      "Zoom": 1.6016,
-      "X": 0.4497,
-      "Y": 0.1843
+      "Zoom": 2.5115,
+      "X": 0.5016,
+      "Y": 0.2056
+    },
+    "Figure": {
+      "X": 0.2148,
+      "Y": 0.0303,
+      "W": 0.6377,
+      "H": 0.9512
     },
     "Footprint": {
       "W": 1,
@@ -21112,9 +22108,15 @@
     "Card": "Ferocious [pouncer] [mauler]. Disrupts with [roar] and [knockdown].",
     "Portrait": "Wolf00",
     "Thumbnail": {
-      "Zoom": 0.7956,
-      "X": 0.4997,
-      "Y": 0.4998
+      "Zoom": 1.007,
+      "X": 0.553,
+      "Y": 0.4949
+    },
+    "Figure": {
+      "X": 0.1582,
+      "Y": 0.0166,
+      "W": 0.79,
+      "H": 0.957
     },
     "Crop": {
       "X": 17,
@@ -21235,9 +22237,15 @@
     "Card": "Ferocious [pouncer] [mauler]. Disrupts with [roar] and [knockdown].",
     "Portrait": "Wolf01",
     "Thumbnail": {
-      "Zoom": 0.884,
-      "X": 0.4993,
-      "Y": 0.4993
+      "Zoom": 1.07,
+      "X": 0.4994,
+      "Y": 0.4999
+    },
+    "Figure": {
+      "X": 0.0869,
+      "Y": 0.0508,
+      "W": 0.8262,
+      "H": 0.8994
     },
     "Crop": {
       "X": 82,
@@ -21358,9 +22366,15 @@
     "Card": "Ferocious [pouncer] [mauler]. Disrupts with [roar] and [knockdown].",
     "Portrait": "Wolf02",
     "Thumbnail": {
-      "Zoom": 0.8679,
-      "X": 0.4998,
-      "Y": 0.4991
+      "Zoom": 1.0169,
+      "X": 0.5194,
+      "Y": 0.4943
+    },
+    "Figure": {
+      "X": 0.0928,
+      "Y": 0.0215,
+      "W": 0.8535,
+      "H": 0.9473
     },
     "Crop": {
       "X": 85,
@@ -21481,9 +22495,15 @@
     "Card": "Ferocious [pouncer] [mauler]. Disrupts with [roar] and [knockdown].",
     "Portrait": "Wolf03",
     "Thumbnail": {
-      "Zoom": 0.94,
-      "X": 0.4999,
-      "Y": 0.5007
+      "Zoom": 1.0926,
+      "X": 0.4975,
+      "Y": 0.4811
+    },
+    "Figure": {
+      "X": 0.0674,
+      "Y": 0.04,
+      "W": 0.8604,
+      "H": 0.8809
     },
     "Crop": {
       "X": 78,
@@ -21604,9 +22624,15 @@
     "Card": "Mobile [striker] [flanker]. Leans on [crit] and [backstab] windows.",
     "Portrait": "YellowNinja",
     "Thumbnail": {
-      "Zoom": 1.3203,
-      "X": 0.6442,
-      "Y": 0.2001
+      "Zoom": 2.4716,
+      "X": 0.5316,
+      "Y": 0.2022
+    },
+    "Figure": {
+      "X": 0.1875,
+      "Y": 0.0088,
+      "W": 0.5342,
+      "H": 0.9668
     },
     "Footprint": {
       "W": 1,
@@ -21745,7 +22771,13 @@
     "Thumbnail": {
       "Zoom": 2.4082,
       "X": 0.542,
-      "Y": 0.208
+      "Y": 0.2081
+    },
+    "Figure": {
+      "X": 0,
+      "Y": 0.002,
+      "W": 1,
+      "H": 0.9912
     },
     "Footprint": {
       "W": 1,
@@ -21865,9 +22897,15 @@
     "Card": "A cracked grave marker. Break it before the dead climb back out.",
     "Portrait": "gravestone",
     "Thumbnail": {
-      "Zoom": 0.7527,
-      "X": 0.5064,
-      "Y": 0.6079
+      "Zoom": 1.9317,
+      "X": 0.502,
+      "Y": 0.5674
+    },
+    "Figure": {
+      "X": 0.3535,
+      "Y": 0.335,
+      "W": 0.2939,
+      "H": 0.4648
     },
     "Footprint": {
       "W": 1,
@@ -21996,9 +23034,15 @@
     "Card": "A heap of rattling bones that wants to stand up again. Scatter it.",
     "Portrait": "bonepile",
     "Thumbnail": {
-      "Zoom": 1.053,
-      "X": 0.5024,
-      "Y": 0.7335
+      "Zoom": 2.7024,
+      "X": 0.5004,
+      "Y": 0.6459
+    },
+    "Figure": {
+      "X": 0.334,
+      "Y": 0.4971,
+      "W": 0.333,
+      "H": 0.2969
     },
     "Footprint": {
       "W": 1,
@@ -22126,9 +23170,15 @@
     "Card": "A fallen body in the way. Clear it with a pincer or wait for it to rot.",
     "Portrait": "corpse",
     "Thumbnail": {
-      "Zoom": 1.053,
-      "X": 0.5024,
-      "Y": 0.7335
+      "Zoom": 2.7024,
+      "X": 0.5004,
+      "Y": 0.6459
+    },
+    "Figure": {
+      "X": 0.334,
+      "Y": 0.4971,
+      "W": 0.333,
+      "H": 0.2969
     },
     "Footprint": {
       "W": 1,
@@ -22257,9 +23307,15 @@
     "Card": "A leathery egg, still warm. Best to break it before it hatches.",
     "Portrait": "naga00",
     "Thumbnail": {
-      "Zoom": 0.9616,
-      "X": 0.4996,
-      "Y": 0.4988
+      "Zoom": 1.03,
+      "X": 0.5328,
+      "Y": 0.4906
+    },
+    "Figure": {
+      "X": 0.0664,
+      "Y": 0.0254,
+      "W": 0.9336,
+      "H": 0.9326
     },
     "Footprint": {
       "W": 1,
@@ -22333,9 +23389,15 @@
     "Card": "Ranged precision. Converts [patience] into a [piercing shot] nothing else in the party can match.",
     "Portrait": "hexsniper",
     "Thumbnail": {
-      "Zoom": 2.4284,
-      "X": 0.5043,
-      "Y": 0.1996
+      "Zoom": 3.8854,
+      "X": 0.5027,
+      "Y": 0.3152
+    },
+    "Figure": {
+      "X": 0.1875,
+      "Y": 0.1924,
+      "W": 0.625,
+      "H": 0.6152
     },
     "Footprint": {
       "W": 1,
@@ -22471,9 +23533,15 @@
     "Card": "Ranged control. Converts [distance] into [crowd control] that keeps the front line clean.",
     "Portrait": "hexwarden",
     "Thumbnail": {
-      "Zoom": 2.3924,
-      "X": 0.4512,
-      "Y": 0.1827
+      "Zoom": 3.8278,
+      "X": 0.4695,
+      "Y": 0.3015
+    },
+    "Figure": {
+      "X": 0.1875,
+      "Y": 0.1875,
+      "W": 0.625,
+      "H": 0.624
     },
     "Footprint": {
       "W": 1,
@@ -22607,9 +23675,15 @@
     "Card": "Ranged skirmish. Converts [footwork] into [shots] that keep a whole lane at arm's length.",
     "Portrait": "hexstalker",
     "Thumbnail": {
-      "Zoom": 2.3905,
-      "X": 0.5529,
-      "Y": 0.2092
+      "Zoom": 3.8248,
+      "X": 0.5331,
+      "Y": 0.3183
+    },
+    "Figure": {
+      "X": 0.1875,
+      "Y": 0.1875,
+      "W": 0.624,
+      "H": 0.625
     },
     "Footprint": {
       "W": 1,
@@ -22739,7 +23813,17 @@
     "Lore": "It does not hurry. It makes everyone else late.",
     "Card": "Charges [Temporal Drag]: the party loses [tempo] and every foe acts sooner. [Interrupt] the charge, [cleanse] Slowed or [out-haste] it. Rewinds once when badly hurt.",
     "Portrait": "chronomancer",
-    "Thumbnail": { "Zoom": 2.5, "X": 0.46, "Y": 0.27 },
+    "Thumbnail": {
+      "Zoom": 2.6474,
+      "X": 0.4461,
+      "Y": 0.292
+    },
+    "Figure": {
+      "X": 0.0117,
+      "Y": 0.0381,
+      "W": 0.9443,
+      "H": 0.9404
+    },
     "Footprint": { "W": 1, "H": 1 },
     "Support": {
       "Effect": "Haste",
@@ -22782,9 +23866,15 @@
     "Card": "Wild monsters turn [Tamed] and fight for you.",
     "Portrait": "WildChild",
     "Thumbnail": {
-      "Zoom": 1.6016,
-      "X": 0.4497,
-      "Y": 0.1843
+      "Zoom": 2.5115,
+      "X": 0.5016,
+      "Y": 0.2056
+    },
+    "Figure": {
+      "X": 0.2148,
+      "Y": 0.0303,
+      "W": 0.6377,
+      "H": 0.9512
     },
     "Footprint": {
       "W": 1,
@@ -22913,9 +24003,15 @@
     "Card": "Swift [Flanker]: strikes, then darts a tile away. Its talons can [Slow] a hero, costing the party [tempo]. [Pincer] it before it lifts off, or [cleanse] the Slow.",
     "Portrait": "harpy01",
     "Thumbnail": {
-      "Zoom": 2.4,
-      "X": 0.4,
-      "Y": 0.1
+      "Zoom": 2.7156,
+      "X": 0.4023,
+      "Y": 0.1045
+    },
+    "Figure": {
+      "X": 0.0488,
+      "Y": 0.0068,
+      "W": 0.8838,
+      "H": 0.9766
     },
     "Footprint": {
       "W": 1,
@@ -23034,9 +24130,15 @@
     "Card": "Charges a [Gale Shriek] that blows heroes apart and breaks your [pincer] lines. [Interrupt] the charge or keep the party spread out. Hastens the harpy it backs as a [Supporter].",
     "Portrait": "harpy02",
     "Thumbnail": {
-      "Zoom": 2.4,
-      "X": 0.5,
-      "Y": 0.09
+      "Zoom": 2.7801,
+      "X": 0.5068,
+      "Y": 0.1076
+    },
+    "Figure": {
+      "X": 0.0752,
+      "Y": 0.0234,
+      "W": 0.8633,
+      "H": 0.9355
     },
     "Footprint": {
       "W": 1,
@@ -23156,9 +24258,15 @@
     "Card": "Hangs back and fires [shots] at your casters; its darts can [Silence]. It is frail up close: close in and [pincer] it.",
     "Portrait": "harpy03",
     "Thumbnail": {
-      "Zoom": 2.5,
-      "X": 0.43,
-      "Y": 0.12
+      "Zoom": 2.56,
+      "X": 0.4355,
+      "Y": 0.128
+    },
+    "Figure": {
+      "X": 0.0156,
+      "Y": 0.0107,
+      "W": 0.9766,
+      "H": 0.9775
     },
     "Footprint": {
       "W": 1,
@@ -23278,9 +24386,15 @@
     "Card": "Charges a [Void Beam] down a marked line that [Silences]: step off the line or [Interrupt] it. Its front is plated, so [pincer] it from the flanks. At half HP its core flares a [Ward].",
     "Portrait": "voidsentinel",
     "Thumbnail": {
-      "Zoom": 2.0,
-      "X": 0.48,
-      "Y": 0.13
+      "Zoom": 2.4734,
+      "X": 0.4868,
+      "Y": 0.1448
+    },
+    "Figure": {
+      "X": 0.0986,
+      "Y": 0.0205,
+      "W": 0.8086,
+      "H": 0.9561
     },
     "Footprint": {
       "W": 1,
@@ -23405,9 +24519,15 @@
     "Card": "Charges [Soulfire] on a 3×3 that [Burns]: spread out or [Interrupt] it. At half HP it harvests every hero to heal. It falls into a grave: smash the grave, or it rises again.",
     "Portrait": "lich",
     "Thumbnail": {
-      "Zoom": 2.4,
+      "Zoom": 2.5026,
       "X": 0.5,
-      "Y": 0.15
+      "Y": 0.1601
+    },
+    "Figure": {
+      "X": 0.0205,
+      "Y": 0.0146,
+      "W": 0.959,
+      "H": 0.9697
     },
     "Footprint": {
       "W": 1,
@@ -23544,9 +24664,15 @@
     "Card": "Its claws can set a hero [Burning], and an Infernalist Executioner hits burning heroes far harder: [cleanse] the burn. Can't be [Burned] itself.",
     "Portrait": "infernalist01",
     "Thumbnail": {
-      "Zoom": 2.6,
-      "X": 0.14,
-      "Y": 0.19
+      "Zoom": 2.9129,
+      "X": 0.2148,
+      "Y": 0.2406
+    },
+    "Figure": {
+      "X": 0.0898,
+      "Y": 0.0723,
+      "W": 0.8926,
+      "H": 0.8857
     },
     "Footprint": {
       "W": 1,
@@ -23668,9 +24794,15 @@
     "Card": "Charges [Hellfire] on a cross of tiles that [Burns]: spread out or [Interrupt] it. Hangs back from the fight.",
     "Portrait": "infernalist02",
     "Thumbnail": {
-      "Zoom": 2.6,
-      "X": 0.17,
-      "Y": 0.2
+      "Zoom": 2.6179,
+      "X": 0.1688,
+      "Y": 0.2504
+    },
+    "Figure": {
+      "X": 0,
+      "Y": 0.0713,
+      "W": 0.9932,
+      "H": 0.8955
     },
     "Footprint": {
       "W": 1,
@@ -23791,9 +24923,15 @@
     "Card": "Charges a [Blood Rite] that heals and [Empowers] its most wounded ally: kill it first or [Interrupt] the rite. Its blows [Lifesteal].",
     "Portrait": "infernalist03",
     "Thumbnail": {
-      "Zoom": 2.6,
-      "X": 0.15,
-      "Y": 0.19
+      "Zoom": 2.8144,
+      "X": 0.2108,
+      "Y": 0.235
+    },
+    "Figure": {
+      "X": 0.0723,
+      "Y": 0.0645,
+      "W": 0.9238,
+      "H": 0.8975
     },
     "Footprint": {
       "W": 1,
@@ -23914,9 +25052,15 @@
     "Card": "Hits [Burning] heroes 50% harder: [cleanse] the burn or keep burning heroes away from it. A duelist: [pincer] it, it hates being outnumbered.",
     "Portrait": "infernalist04",
     "Thumbnail": {
-      "Zoom": 2.6,
-      "X": 0.15,
-      "Y": 0.19
+      "Zoom": 2.6947,
+      "X": 0.1682,
+      "Y": 0.2335
+    },
+    "Figure": {
+      "X": 0.0234,
+      "Y": 0.0645,
+      "W": 0.9648,
+      "H": 0.8896
     },
     "Footprint": {
       "W": 1,
@@ -24037,9 +25181,15 @@
     "Card": "Shoots straight down a line from up to 3 tiles away, and a shot can [Blind]: close in and [pincer] it. Weak to Lightning.",
     "Portrait": "heavytrooper01",
     "Thumbnail": {
-      "Zoom": 2.2,
-      "X": 0.47,
-      "Y": 0.11
+      "Zoom": 2.5865,
+      "X": 0.474,
+      "Y": 0.1328
+    },
+    "Figure": {
+      "X": 0.0742,
+      "Y": 0.0312,
+      "W": 0.8506,
+      "H": 0.9229
     },
     "Footprint": {
       "W": 1,
@@ -24160,9 +25310,15 @@
     "Card": "Charges [Aegis Field], a [Ward] on every ally within 2 tiles: [Interrupt] it, and hit it from the flank, not its plate.",
     "Portrait": "heavytrooper02",
     "Thumbnail": {
-      "Zoom": 2.2,
-      "X": 0.53,
-      "Y": 0.11
+      "Zoom": 2.6195,
+      "X": 0.5193,
+      "Y": 0.1386
+    },
+    "Figure": {
+      "X": 0.0742,
+      "Y": 0.0371,
+      "W": 0.8398,
+      "H": 0.9229
     },
     "Footprint": {
       "W": 1,
@@ -24284,9 +25440,15 @@
     "Card": "Charges [Aether Siphon] on your casters, and when it lands an orb leaves your bank: spend your orbs first, or [Interrupt] it.",
     "Portrait": "heavytrooper03",
     "Thumbnail": {
-      "Zoom": 2.2,
-      "X": 0.53,
-      "Y": 0.12
+      "Zoom": 2.7142,
+      "X": 0.5253,
+      "Y": 0.1361
+    },
+    "Figure": {
+      "X": 0.0957,
+      "Y": 0.0244,
+      "W": 0.8105,
+      "H": 0.9307
     },
     "Footprint": {
       "W": 1,
@@ -24406,9 +25568,15 @@
     "Card": "Charges a slow [Siege Shot] down a marked line to the board's edge: step off the line or [Interrupt] it. It needs a long rest after.",
     "Portrait": "heavytrooper04",
     "Thumbnail": {
-      "Zoom": 2.2,
-      "X": 0.48,
-      "Y": 0.12
+      "Zoom": 2.6349,
+      "X": 0.477,
+      "Y": 0.1491
+    },
+    "Figure": {
+      "X": 0.0762,
+      "Y": 0.0391,
+      "W": 0.835,
+      "H": 0.917
     },
     "Footprint": {
       "W": 1,
@@ -24530,9 +25698,15 @@
     "Card": "Never leaves its post, and answers a blow from beside it with a chilling [Counterstrike] that can [Slow]: strike from range, or [pincer] it and take the hit. Its grave rises unless smashed.",
     "Portrait": "wraithknight01",
     "Thumbnail": {
-      "Zoom": 1.3,
-      "X": 0.62,
-      "Y": 0.06
+      "Zoom": 2.8025,
+      "X": 0.5435,
+      "Y": 0.0845
+    },
+    "Figure": {
+      "X": 0.2559,
+      "Y": 0.0273,
+      "W": 0.4639,
+      "H": 0.9531
     },
     "Footprint": {
       "W": 1,
@@ -24657,9 +25831,15 @@
     "Card": "Hunts the weakest hero. The first time it drops low, its oath holds: it heals and gains [Ward]. Finish it in one push, and smash its grave.",
     "Portrait": "wraithknight02",
     "Thumbnail": {
-      "Zoom": 1.3,
-      "X": 0.56,
-      "Y": 0.05
+      "Zoom": 2.7733,
+      "X": 0.5057,
+      "Y": 0.0765
+    },
+    "Figure": {
+      "X": 0.2432,
+      "Y": 0.0293,
+      "W": 0.4688,
+      "H": 0.9443
     },
     "Footprint": {
       "W": 1,
@@ -24782,9 +25962,15 @@
     "Card": "Charges [Ember Vigil], [Regen] on every ally within 2 tiles: [Interrupt] it or cut it down first. Fire burns the Watch hardest.",
     "Portrait": "wraithknight03",
     "Thumbnail": {
-      "Zoom": 1.3,
-      "X": 0.6,
-      "Y": 0.06
+      "Zoom": 2.7561,
+      "X": 0.5252,
+      "Y": 0.0907
+    },
+    "Figure": {
+      "X": 0.2422,
+      "Y": 0.0342,
+      "W": 0.4717,
+      "H": 0.9414
     },
     "Footprint": {
       "W": 1,
@@ -24905,9 +26091,15 @@
     "Card": "Charges the [Tithe Hymn] on the whole party, which can [Silence] every hero it reaches: cast before it lands, [Interrupt] it, or [Cleanse] after.",
     "Portrait": "cultist01",
     "Thumbnail": {
-      "Zoom": 1.6,
-      "X": 0.5,
-      "Y": 0.11
+      "Zoom": 2.8007,
+      "X": 0.4995,
+      "Y": 0.1236
+    },
+    "Figure": {
+      "X": 0.2139,
+      "Y": 0.0176,
+      "W": 0.5713,
+      "H": 0.9639
     },
     "Footprint": {
       "W": 1,
@@ -25028,9 +26220,15 @@
     "Card": "Charges [Psalm of Certainty], [Empowers] every ally within 2 tiles: [Interrupt] it, or pull its allies away. Quick and frail.",
     "Portrait": "cultist02",
     "Thumbnail": {
-      "Zoom": 1.15,
-      "X": 0.46,
-      "Y": 0.1
+      "Zoom": 2.7839,
+      "X": 0.483,
+      "Y": 0.1124
+    },
+    "Figure": {
+      "X": 0.293,
+      "Y": 0.0156,
+      "W": 0.4131,
+      "H": 0.9678
     },
     "Footprint": {
       "W": 1,
@@ -25151,9 +26349,15 @@
     "Card": "Charges [Absolution] on its most wounded ally: a heal, a [Cleanse] of every debuff, and a [Ward]. Kill it first, or [Interrupt] it.",
     "Portrait": "cultist03",
     "Thumbnail": {
-      "Zoom": 1.15,
+      "Zoom": 2.8583,
       "X": 0.5,
-      "Y": 0.11
+      "Y": 0.1251
+    },
+    "Figure": {
+      "X": 0.2988,
+      "Y": 0.0195,
+      "W": 0.4023,
+      "H": 0.96
     },
     "Footprint": {
       "W": 1,
@@ -25273,9 +26477,15 @@
     "Card": "Charges [Feed the Herd], healing and rushing every ally near it: kill it first or [Interrupt] it. Hangs back behind its crew. [Stampede]: when an ally falls, its next turn comes sooner.",
     "Portrait": "minotaur01",
     "Thumbnail": {
-      "Zoom": 2.3,
-      "X": 0.47,
-      "Y": 0.1
+      "Zoom": 2.6286,
+      "X": 0.4659,
+      "Y": 0.1049
+    },
+    "Figure": {
+      "X": 0.0547,
+      "Y": 0.0068,
+      "W": 0.875,
+      "H": 0.9805
     },
     "Footprint": {
       "W": 1,
@@ -25397,9 +26607,15 @@
     "Card": "Guards the crew behind a thick front: flank it, not its chest. Its punches can [Slow] a hero. [Stampede]: when an ally falls, its next turn comes sooner.",
     "Portrait": "minotaur02",
     "Thumbnail": {
-      "Zoom": 2.3,
-      "X": 0.46,
-      "Y": 0.1
+      "Zoom": 3.1741,
+      "X": 0.4808,
+      "Y": 0.1041
+    },
+    "Figure": {
+      "X": 0.1475,
+      "Y": 0.0059,
+      "W": 0.7246,
+      "H": 0.9824
     },
     "Footprint": {
       "W": 1,
@@ -25523,9 +26739,15 @@
     "Card": "Charges a [Bull Rush] down a marked line to the board's edge: step off the line or [Interrupt] it. [Stampede]: when an ally falls, its next turn comes sooner.",
     "Portrait": "minotaur03",
     "Thumbnail": {
-      "Zoom": 2.3,
-      "X": 0.5,
-      "Y": 0.1
+      "Zoom": 2.6947,
+      "X": 0.4746,
+      "Y": 0.0997
+    },
+    "Figure": {
+      "X": 0.0479,
+      "Y": 0,
+      "W": 0.8535,
+      "H": 0.9971
     },
     "Footprint": {
       "W": 1,
@@ -25647,9 +26869,15 @@
     "Card": "Charges in and never backs off; below half HP it hits harder (Berserk): finish it in one push. [Stampede]: when an ally falls, its next turn comes sooner.",
     "Portrait": "minotaur04",
     "Thumbnail": {
-      "Zoom": 2.3,
-      "X": 0.46,
-      "Y": 0.1
+      "Zoom": 3.0989,
+      "X": 0.4752,
+      "Y": 0.0988
+    },
+    "Figure": {
+      "X": 0.1338,
+      "Y": 0,
+      "W": 0.7422,
+      "H": 0.9883
     },
     "Footprint": {
       "W": 1,
@@ -25770,9 +26998,15 @@
     "Card": "[Bloodscent]: hits a hero below half HP 50% harder, and goes for the weakest: keep the party topped up. Can't be [Burned].",
     "Portrait": "hellspawn01",
     "Thumbnail": {
-      "Zoom": 2.6,
-      "X": 0.3,
-      "Y": 0.15
+      "Zoom": 2.7504,
+      "X": 0.3246,
+      "Y": 0.1567
+    },
+    "Figure": {
+      "X": 0.041,
+      "Y": 0.0098,
+      "W": 0.9453,
+      "H": 0.9795
     },
     "Footprint": {
       "W": 1,
@@ -25893,9 +27127,15 @@
     "Card": "[Bloodscent]: hits a hero below half HP 50% harder. Strikes then darts away, healing on every blow ([Lifesteal]): [pincer] it when it lands. Can't be [Burned].",
     "Portrait": "hellspawn02",
     "Thumbnail": {
-      "Zoom": 2.6,
-      "X": 0.3,
-      "Y": 0.13
+      "Zoom": 2.6785,
+      "X": 0.3205,
+      "Y": 0.1364
+    },
+    "Figure": {
+      "X": 0.0293,
+      "Y": 0.0088,
+      "W": 0.9707,
+      "H": 0.9814
     },
     "Footprint": {
       "W": 1,
@@ -26016,9 +27256,15 @@
     "Card": "Charges a [Red Tide] that floods its target's whole row and sets everyone in it [Burning]: leave the row or [Interrupt] it. [Bloodscent]. Can't be [Burned].",
     "Portrait": "hellspawn03",
     "Thumbnail": {
-      "Zoom": 2.6,
-      "X": 0.29,
-      "Y": 0.15
+      "Zoom": 2.6947,
+      "X": 0.3052,
+      "Y": 0.1555
+    },
+    "Figure": {
+      "X": 0.0254,
+      "Y": 0.0078,
+      "W": 0.9648,
+      "H": 0.9844
     },
     "Footprint": {
       "W": 1,
@@ -26139,9 +27385,15 @@
     "Card": "Strike it up close and it may set you [Burning] (Searing Scales); flank its scaled front. [Bloodscent]. Never retreats. Can't be [Burned].",
     "Portrait": "hellspawn04",
     "Thumbnail": {
-      "Zoom": 2.6,
-      "X": 0.28,
-      "Y": 0.15
+      "Zoom": 2.7476,
+      "X": 0.3021,
+      "Y": 0.1603
+    },
+    "Figure": {
+      "X": 0.0371,
+      "Y": 0.0137,
+      "W": 0.9463,
+      "H": 0.9775
     },
     "Footprint": {
       "W": 1,

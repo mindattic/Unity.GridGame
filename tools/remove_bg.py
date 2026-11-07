@@ -19,7 +19,8 @@ How only the background is erased:
 
 Writes, next to the input (or --out): <name>.cut.png (RGBA) and <name>.preview.png (the cut over a checkerboard,
 dark and light, beside the original) to judge it by. --import <classId> also saves the cut as the game's
-Portraits/<classId>.png the same way tools/import_art.py does (alpha-trimmed, max 640 px), keeping its .meta.
+Portraits/<classId>.png the same way tools/import_art.py does (a 1024x1024 transparent canvas, never trimmed or shrunk,
+GG-T352), keeping its .meta.
 """
 import argparse
 import os
