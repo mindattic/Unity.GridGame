@@ -2141,6 +2141,30 @@ leaves a gravestone that raises it again unless smashed (§14.5), and each role 
   both. In the casual runs the Reaver's oath held 29 times and the graves stirred 134 times.
 - *(Tests: `AnchorWatchTests`.)*
 
+### 14.17 The Choir — cultists (added 2026-11-07, owner art, GG-T335)
+
+The Pale Concord's engineer-priests (docs/STORY.md §3.1): faceless hoods, white ponchos printed with violet
+circuit-glyphs. They run the Stills and sing the aether out of people; the glyphs are the hymn. Three `Sentient`
+variants, one `choir` family, every one of them a singer: each role is a telegraphed charge the party can read on the
+bar and interrupt. Their own song is aether, so they resist Arcane (×0.5); they are weak to Dark (×1.5).
+
+| Class | Role | Speed / brain / targeting | Kit | Support |
+|---|---|---|---|---|
+| `cultist01` Choir Cantor | the hymn | 11 / Commander / Weakest | **Tithe Hymn** (`charge_tithe_hymn`): 2.5 s charge on the whole party, 3 Arcane to every hero and a 50% [Silenced] on each; rests a turn, recovers 1.5 s | Silence 30%, reach 2 (*Hush*) |
+| `cultist02` Choir Psalmist | the buffer | 15 / Kiter / Squishy | **Psalm of Certainty** (`charge_psalm_of_certainty`): 2 s charge, [Empowered] on every ally within 2 tiles; rests a turn, recovers 0.5 s | Empower its attacker, reach 2 (*Certainty*) |
+| `cultist03` Choir Confessor | the absolver | 11 / Medic / Threat | **Absolution** (`charge_absolution`): 2 s charge on its most wounded ally (below 70%): heals 15, [Cleanses] every debuff, gives [Ward]; rests a turn, recovers 0.5 s | Cleanse the chain (*Absolve*) |
+
+- **No engine code.** An AllEnemies charge with a buff chance, an AllyOnly area buff and a single-ally heal that also
+  cleanses and wards are all existing dispatcher data.
+- **Counterplay** (their cards): cast your spells before the hymn lands, interrupt it, or cleanse the Silence after;
+  pull the Concord away from the Psalmist or interrupt the psalm; kill the Confessor first, or interrupt the absolution.
+- **Placement.** Halcyon III (`cityruins-03`) wave 3: a whole Choir (Cantor, Psalmist, Confessor) in place of two
+  Chromed Hollow and the Choir's training mannequin. Casual bot, 24 seeds, campaign parties: 19/24 with them vs 17/24
+  with the stage as it stood (the Bulwark's Siege Gunner already in wave 2; 18/24 before either); smart bot 24/24 both.
+  The stage got no harder: the three frail singers stand in for a cyber-zombie pair whose death bursts (14 to every
+  adjacent hero) hurt more than a hymn, and the casual bot reached wave 5 in 23 of 24 runs.
+- *(Tests: `ChoirTests`.)*
+
 ## 15. Save
 
 ### 15.1 Data model

@@ -5254,5 +5254,107 @@
         "Y": 4
       }
     ]
+  },
+  {
+    "Id": "choir-pair-2",
+    "Name": "Choir Pair",
+    "Formation": "Pair",
+    "Level": 13,
+    "Enemies": [
+      {
+        "Class": "cultist01",
+        "X": 1,
+        "Y": 0
+      },
+      {
+        "Class": "cultist03",
+        "X": 4,
+        "Y": 1
+      }
+    ]
+  },
+  {
+    "Id": "choir-delta-3",
+    "Name": "Choir Delta",
+    "Formation": "Delta",
+    "Level": 14,
+    "Enemies": [
+      {
+        "Class": "cultist01",
+        "X": 2,
+        "Y": 0
+      },
+      {
+        "Class": "cultist02",
+        "X": 1,
+        "Y": 2
+      },
+      {
+        "Class": "cultist03",
+        "X": 3,
+        "Y": 2
+      }
+    ]
+  },
+  {
+    "Id": "choir-rearguard-4",
+    "Name": "Choir Rearguard",
+    "Formation": "Rearguard",
+    "Level": 15,
+    "Enemies": [
+      {
+        "Class": "cultist01",
+        "X": 0,
+        "Y": 0
+      },
+      {
+        "Class": "cultist03",
+        "X": 2,
+        "Y": 0
+      },
+      {
+        "Class": "cultist03",
+        "X": 3,
+        "Y": 0
+      },
+      {
+        "Class": "cultist02",
+        "X": 5,
+        "Y": 0
+      }
+    ]
+  },
+  {
+    "Id": "choir-horseshoe-5",
+    "Name": "Choir Horseshoe",
+    "Formation": "Horseshoe",
+    "Level": 16,
+    "Enemies": [
+      {
+        "Class": "cultist01",
+        "X": 2,
+        "Y": 0
+      },
+      {
+        "Class": "cultist02",
+        "X": 0,
+        "Y": 1
+      },
+      {
+        "Class": "cultist02",
+        "X": 5,
+        "Y": 1
+      },
+      {
+        "Class": "cultist03",
+        "X": 1,
+        "Y": 3
+      },
+      {
+        "Class": "cultist03",
+        "X": 4,
+        "Y": 3
+      }
+    ]
   }
 ]

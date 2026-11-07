@@ -796,5 +796,26 @@
     "Text": "A Watch Vigilant's charge: every ally within 2 tiles of it gains [Regen]. [Interrupt] it, or cut the Vigilant down first.",
     "LinkKind": "Ability",
     "LinkId": "charge_ember_vigil"
+  },
+  {
+    "Id": "tithe_hymn",
+    "Term": "Tithe Hymn",
+    "Text": "A Choir Cantor's charge: 3 Arcane to every hero, each with a [good] chance to be [Silenced]. Cast your spells before it lands, or [Interrupt] it.",
+    "LinkKind": "Ability",
+    "LinkId": "charge_tithe_hymn"
+  },
+  {
+    "Id": "psalm_of_certainty",
+    "Term": "Psalm of Certainty",
+    "Text": "A Choir Psalmist's charge: every ally within 2 tiles of it turns [Empowered]. [Interrupt] it, or draw its allies away.",
+    "LinkKind": "Ability",
+    "LinkId": "charge_psalm_of_certainty"
+  },
+  {
+    "Id": "absolution",
+    "Term": "Absolution",
+    "Text": "A Choir Confessor's charge on its most wounded ally: a heal, a [Cleanse] of its debuffs, and a [Ward]. Kill it first, or [Interrupt] it.",
+    "LinkKind": "Ability",
+    "LinkId": "charge_absolution"
   }
 ]

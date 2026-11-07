@@ -1718,19 +1718,19 @@
       {
         "Enemies": [
           {
-            "Class": "cyberzombie00",
+            "Class": "cultist01",
             "Level": 1,
             "X": -1,
             "Y": -1
           },
           {
-            "Class": "cyberzombie01",
+            "Class": "cultist02",
             "Level": 1,
             "X": -1,
             "Y": -1
           },
           {
-            "Class": "mannequin",
+            "Class": "cultist03",
             "Level": 1,
             "X": -1,
             "Y": -1

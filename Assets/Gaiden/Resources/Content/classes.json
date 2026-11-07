@@ -24891,5 +24891,373 @@
     "SnakeSegments": 0,
     "Brain": "Commander",
     "Remains": "gravestone"
+  },
+  {
+    "Id": "cultist01",
+    "Name": "Choir Cantor",
+    "Team": "Enemy",
+    "Tags": [
+      "Humanoid",
+      "Sentient"
+    ],
+    "Description": "Leads the hymn that sings the aether out of a crowd. Nobody has heard its real voice; the glyphs on its poncho sing for it.",
+    "Lore": "The Choir: the Pale Concord's engineer-priests, faceless under white ponchos printed with violet circuit-glyphs. They run the Stills and sing the aether out of people. The glyphs are the hymn.",
+    "Card": "Charges the [Tithe Hymn] on the whole party, which can [Silence] every hero it reaches: cast before it lands, [Interrupt] it, or [Cleanse] after.",
+    "Portrait": "cultist01",
+    "Thumbnail": {
+      "Zoom": 1.6,
+      "X": 0.5,
+      "Y": 0.11
+    },
+    "Footprint": {
+      "W": 1,
+      "H": 1
+    },
+    "Support": {
+      "Effect": "Status",
+      "Magnitude": 0.3,
+      "Target": "Attacker",
+      "Range": 2,
+      "Buff": "silenced",
+      "Label": "Hush"
+    },
+    "BaseStats": {
+      "Strength": 9,
+      "Vitality": 11,
+      "Agility": 11,
+      "Speed": 11,
+      "Stamina": 11,
+      "Intelligence": 15,
+      "Wisdom": 14,
+      "Luck": 10
+    },
+    "Growth": {
+      "Strength": 0.45,
+      "Vitality": 0.65,
+      "Agility": 0.6,
+      "Speed": 0.7,
+      "Stamina": 0.65,
+      "Intelligence": 0.95,
+      "Wisdom": 0.8,
+      "Luck": 0.5
+    },
+    "Milestones": [
+      {
+        "Level": 5,
+        "Growth": {
+          "Strength": 0.16,
+          "Vitality": 0.23,
+          "Agility": 0.21,
+          "Speed": 0.24,
+          "Stamina": 0.23,
+          "Intelligence": 0.33,
+          "Wisdom": 0.28,
+          "Luck": 0.17
+        }
+      },
+      {
+        "Level": 10,
+        "Growth": {
+          "Strength": 0.2,
+          "Vitality": 0.29,
+          "Agility": 0.27,
+          "Speed": 0.32,
+          "Stamina": 0.29,
+          "Intelligence": 0.43,
+          "Wisdom": 0.36,
+          "Luck": 0.23
+        }
+      },
+      {
+        "Level": 20,
+        "Growth": {
+          "Strength": 0.27,
+          "Vitality": 0.39,
+          "Agility": 0.36,
+          "Speed": 0.42,
+          "Stamina": 0.39,
+          "Intelligence": 0.57,
+          "Wisdom": 0.48,
+          "Luck": 0.3
+        }
+      },
+      {
+        "Level": 40,
+        "Growth": {
+          "Strength": 0.36,
+          "Vitality": 0.52,
+          "Agility": 0.48,
+          "Speed": 0.56,
+          "Stamina": 0.52,
+          "Intelligence": 0.76,
+          "Wisdom": 0.64,
+          "Luck": 0.4
+        }
+      }
+    ],
+    "Resistances": {
+      "Arcane": 0.5,
+      "Dark": 1.5
+    },
+    "Abilities": [
+      "charge_tithe_hymn"
+    ],
+    "DefaultLoadout": [],
+    "DropTable": "choir",
+    "MoveRange": 1,
+    "Targeting": "Weakest",
+    "AttackRange": 1,
+    "XpReward": 15,
+    "BossPhases": [],
+    "ChargeAbility": "charge_tithe_hymn",
+    "ChargeShape": "Single",
+    "Trap": null,
+    "SnakeSegments": 0,
+    "Brain": "Commander"
+  },
+  {
+    "Id": "cultist02",
+    "Name": "Choir Psalmist",
+    "Team": "Enemy",
+    "Tags": [
+      "Humanoid",
+      "Sentient"
+    ],
+    "Description": "Sings the Concord's certainty into its soldiers until they stop doubting and start hitting harder.",
+    "Lore": "The Choir: the Pale Concord's engineer-priests, faceless under white ponchos printed with violet circuit-glyphs. They run the Stills and sing the aether out of people. The glyphs are the hymn.",
+    "Card": "Charges [Psalm of Certainty], [Empowers] every ally within 2 tiles: [Interrupt] it, or pull its allies away. Quick and frail.",
+    "Portrait": "cultist02",
+    "Thumbnail": {
+      "Zoom": 1.15,
+      "X": 0.46,
+      "Y": 0.1
+    },
+    "Footprint": {
+      "W": 1,
+      "H": 1
+    },
+    "Support": {
+      "Effect": "Buff",
+      "Magnitude": 1.0,
+      "Target": "Attacker",
+      "Range": 2,
+      "Buff": "empowered",
+      "Label": "Certainty"
+    },
+    "BaseStats": {
+      "Strength": 10,
+      "Vitality": 10,
+      "Agility": 13,
+      "Speed": 15,
+      "Stamina": 10,
+      "Intelligence": 13,
+      "Wisdom": 13,
+      "Luck": 11
+    },
+    "Growth": {
+      "Strength": 0.5,
+      "Vitality": 0.6,
+      "Agility": 0.75,
+      "Speed": 0.75,
+      "Stamina": 0.6,
+      "Intelligence": 0.8,
+      "Wisdom": 0.75,
+      "Luck": 0.55
+    },
+    "Milestones": [
+      {
+        "Level": 5,
+        "Growth": {
+          "Strength": 0.17,
+          "Vitality": 0.21,
+          "Agility": 0.26,
+          "Speed": 0.26,
+          "Stamina": 0.21,
+          "Intelligence": 0.28,
+          "Wisdom": 0.26,
+          "Luck": 0.19
+        }
+      },
+      {
+        "Level": 10,
+        "Growth": {
+          "Strength": 0.23,
+          "Vitality": 0.27,
+          "Agility": 0.34,
+          "Speed": 0.34,
+          "Stamina": 0.27,
+          "Intelligence": 0.36,
+          "Wisdom": 0.34,
+          "Luck": 0.25
+        }
+      },
+      {
+        "Level": 20,
+        "Growth": {
+          "Strength": 0.3,
+          "Vitality": 0.36,
+          "Agility": 0.45,
+          "Speed": 0.45,
+          "Stamina": 0.36,
+          "Intelligence": 0.48,
+          "Wisdom": 0.45,
+          "Luck": 0.33
+        }
+      },
+      {
+        "Level": 40,
+        "Growth": {
+          "Strength": 0.4,
+          "Vitality": 0.48,
+          "Agility": 0.6,
+          "Speed": 0.6,
+          "Stamina": 0.48,
+          "Intelligence": 0.64,
+          "Wisdom": 0.6,
+          "Luck": 0.44
+        }
+      }
+    ],
+    "Resistances": {
+      "Arcane": 0.5,
+      "Dark": 1.5
+    },
+    "Abilities": [
+      "charge_psalm_of_certainty"
+    ],
+    "DefaultLoadout": [],
+    "DropTable": "choir",
+    "MoveRange": 1,
+    "Targeting": "Squishy",
+    "AttackRange": 1,
+    "XpReward": 14,
+    "BossPhases": [],
+    "ChargeAbility": "charge_psalm_of_certainty",
+    "ChargeShape": "Single",
+    "Trap": null,
+    "SnakeSegments": 0,
+    "Brain": "Kiter"
+  },
+  {
+    "Id": "cultist03",
+    "Name": "Choir Confessor",
+    "Team": "Enemy",
+    "Tags": [
+      "Humanoid",
+      "Sentient"
+    ],
+    "Description": "Hears the Concord's wounded confess, then absolves them: the hurt and the curse both lifted, and a ward in their place.",
+    "Lore": "The Choir: the Pale Concord's engineer-priests, faceless under white ponchos printed with violet circuit-glyphs. They run the Stills and sing the aether out of people. The glyphs are the hymn.",
+    "Card": "Charges [Absolution] on its most wounded ally: a heal, a [Cleanse] of every debuff, and a [Ward]. Kill it first, or [Interrupt] it.",
+    "Portrait": "cultist03",
+    "Thumbnail": {
+      "Zoom": 1.15,
+      "X": 0.5,
+      "Y": 0.11
+    },
+    "Footprint": {
+      "W": 1,
+      "H": 1
+    },
+    "Support": {
+      "Effect": "Cleanse",
+      "Magnitude": 1.0,
+      "Target": "Chain",
+      "Range": 1,
+      "Label": "Absolve"
+    },
+    "BaseStats": {
+      "Strength": 10,
+      "Vitality": 12,
+      "Agility": 10,
+      "Speed": 11,
+      "Stamina": 12,
+      "Intelligence": 12,
+      "Wisdom": 16,
+      "Luck": 10
+    },
+    "Growth": {
+      "Strength": 0.5,
+      "Vitality": 0.75,
+      "Agility": 0.55,
+      "Speed": 0.7,
+      "Stamina": 0.75,
+      "Intelligence": 0.7,
+      "Wisdom": 0.95,
+      "Luck": 0.5
+    },
+    "Milestones": [
+      {
+        "Level": 5,
+        "Growth": {
+          "Strength": 0.17,
+          "Vitality": 0.26,
+          "Agility": 0.19,
+          "Speed": 0.24,
+          "Stamina": 0.26,
+          "Intelligence": 0.24,
+          "Wisdom": 0.33,
+          "Luck": 0.17
+        }
+      },
+      {
+        "Level": 10,
+        "Growth": {
+          "Strength": 0.23,
+          "Vitality": 0.34,
+          "Agility": 0.25,
+          "Speed": 0.32,
+          "Stamina": 0.34,
+          "Intelligence": 0.32,
+          "Wisdom": 0.43,
+          "Luck": 0.23
+        }
+      },
+      {
+        "Level": 20,
+        "Growth": {
+          "Strength": 0.3,
+          "Vitality": 0.45,
+          "Agility": 0.33,
+          "Speed": 0.42,
+          "Stamina": 0.45,
+          "Intelligence": 0.42,
+          "Wisdom": 0.57,
+          "Luck": 0.3
+        }
+      },
+      {
+        "Level": 40,
+        "Growth": {
+          "Strength": 0.4,
+          "Vitality": 0.6,
+          "Agility": 0.44,
+          "Speed": 0.56,
+          "Stamina": 0.6,
+          "Intelligence": 0.56,
+          "Wisdom": 0.76,
+          "Luck": 0.4
+        }
+      }
+    ],
+    "Resistances": {
+      "Arcane": 0.5,
+      "Dark": 1.5
+    },
+    "Abilities": [
+      "charge_absolution"
+    ],
+    "DefaultLoadout": [],
+    "DropTable": "choir",
+    "MoveRange": 1,
+    "Targeting": "Threat",
+    "AttackRange": 1,
+    "XpReward": 15,
+    "BossPhases": [],
+    "ChargeAbility": "charge_absolution",
+    "ChargeShape": "Single",
+    "Trap": null,
+    "SnakeSegments": 0,
+    "Brain": "Medic"
   }
 ]
