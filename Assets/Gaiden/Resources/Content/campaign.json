@@ -1,21 +1,21 @@
 {
   "Prologue": {
-    "Title": "The Footfall Oath",
+    "Title": "Tithe Day",
     "Backdrop": "greenvalley",
-    "Crawl": "Every child in the town learns the same three things before they learn their letters. The ground below is not your friend. The Longmother does not stop. And when she puts a foot down, somebody has to go and stand where it landed.\n\nThat somebody is the vanguard. Crews of a handful, sworn at the rail with a hand on her warm plate, lowered on chains into the dust of each new footfall to clear whatever her step woke before the caravan's wheels roll down after it. Most crews last a season. The good ones last two. Nobody's lasted long enough to say what's past the edge of the old maps.\n\nThe last crew that held the forward chains didn't come back up from the Green Valley drop. The rail is empty, the bell is ringing, and the council has run out of veterans to ask.\n\nSo they're asking you.\n\nYou've never cleared a footfall. You've never seen what the blight makes of a living thing that held still too long. You don't know yet that every crew who ever swore this oath swore it for a different reason -- coin, debt, faith, a name to clear, someone below they couldn't leave.\n\nYou'll learn all of that on the road. For now there's only the oath, the chain, and the ground coming up fast.\n\nDrop at the footfall. Clear what the step disturbed. Be back on the chain before she walks on."
+    "Crawl": "Saltmoss is a moor town of eighty roofs, one tavern and a well that has never once frozen. Above it, as above everything, hangs Morrow -- so low and so close you can watch weather cross its face.\n\nEvery spring the white dome on the hill opens its doors. The Concord calls it a Still. Everyone else calls it the tithe. You walk in, the Choir sings, you walk out a little lighter, and the Anchors in the far north go on holding the moon away for another year.\n\nThat's the bargain. Everybody pays it.\n\nThis year the tithe-takers came early, with a longer ledger and more white armour than a town of eighty roofs has ever needed. Old Marrit went in and came out Hollow -- smiling, quiet, gone. So did the cooper's twins. So did half the names above yours.\n\nYour names are next on the page.\n\nThe Concord's supply caravan is parked behind the tavern. Horses fed. Wagons full. Every guard on the hill watching the queue instead of the road.\n\nNobody decided it. Somebody just started running, and then all of you were.\n\nDon't look back at the dome. Drive."
   },
   "Ending": {
-    "Title": "The Longmother Walks On",
+    "Title": "Still Here",
     "Backdrop": "cityruins",
     "Stage": "cityruins-03",
-    "Crawl": "The Vampire Lord falls the way everything on this road was always meant to: all at once, after holding still far too long.\n\nThere is no cure in his ashes. The wells of Veshker stay sour, the stone keeps its rot, and somewhere under the world the blight goes on doing what it has always done, patient as the ground itself. That was never the fight you could win.\n\nThe fight you could win was simpler. A ruler who couldn't bear to keep walking had reached up from his dead city to drag the Longmother down beside him -- to make the last moving thing on this road stand still and spoil like everything else. He didn't get her. She felt the knot go out of the road the way a sleeper feels a stone leave her shoe, and she walked on without breaking stride.\n\nThe bell at the rail rings once, for the crew that came back up the chain. Not veterans anymore. Not strangers, either -- whatever each of you swore for at the start, you found something the oath didn't mention: each other, and the plain stubborn work of keeping a whole town moving one footfall at a time.\n\nShe curls the road ahead toward green country again, deeper than any map has ever run. The blight is older there. Whatever has been growing in that ground has had longer, undisturbed, to get good at it.\n\nThe chains are already being oiled.\n\nThe road continues."
+    "Crawl": "The Hierarch's reservoir breaks the way a dam breaks: slowly, and then all at once.\n\nTwo hundred years of stolen aether runs back down the beams it climbed -- north to the Anchors, and from the Anchors out over every hold that ever paid. Over the moors, over Saltmoss, over towns whose names you never learned, the light comes down like rain.\n\nThe tithe stops. Nobody announces it. The Stills simply stay shut, and the Choir stands in the square with nothing left to sing.\n\nThe Hollow don't wake all at once. But here and there, one stops at a door and frowns, as if trying to remember whose it is.\n\nIn the morning Morrow is still there, exactly as low as yesterday. Nobody has solved the Nearing. Nobody knows what the moon is, or what it wants, or whether it wants anything at all.\n\nBut where the stolen aether came down, the Bloom is growing -- moss and small red flowers in the cracks of the Concord's white stone. Proof, in the plainest terms there are, that giving works.\n\nYou have a caravan, a long road, and each other.\n\nYou're still here."
   },
   "Themes": [
     {
       "Id": "greenvalley",
       "MilestoneReward": "tome_regenerate",
-      "Name": "Green Valley",
-      "Crawl": "The town is the Longmother's back. Nobody alive remembers her hatching, and nobody can say how long the streets above her have been nailed down to old carapace plate -- only that she has never once stood still long enough for anyone to ask. Standing ground goes bad. Somewhere under the world a blight is souring the earth, and it only ever catches up with what holds still.\n\nGreen Valley is the last green ground on the old road, and it's already going: the wells have a taste to them, and the frogs that used to keep to the marsh edge are coming up onto dry land in numbers nobody's seen. This isn't an attack. It's the first proof that staying was never actually safe here -- it just hadn't caught up yet.\n\nEvery footfall breaks ground that's been undisturbed, sometimes for centuries, and whatever's been growing down there -- part rot, part something stranger, metal fused to bone that shouldn't move and does -- comes up through the crack before the town's even finished passing overhead. That's the vanguard crews' work: drop at the footfall, clear what the step disturbed, salvage what it turned up, before she walks on. Gear grown from her own molted plate, not mined; the pincer copied from watching her brood hunt; every action taken on her clock, not yours.\n\nLately the orbs flicker and the wards don't always catch where the ground's worst -- nobody's cast a clean spell within a day's walk of a bad well in a month. That's why the caravan is leaning harder on what can be built and burned than on what has to be summoned. It isn't superstition. It's logistics.",
+      "Name": "The Tithe Moors",
+      "Crawl": "Grey-green moss country, cut by stone walls older than the Concord and dotted with the white domes of the Stills. Morrow sits on the horizon like a second sky.\n\nYou have a stolen caravan, a head start measured in hours, and a ledger you were never meant to see: Saltmoss's quota, in the Concord's own neat hand. The tithe-takers took three times that.\n\nThe moor roads aren't empty. Wolves run thin and bold under a full Morrow. Redline gangers sell tithe-exemption tokens at every crossroads. Hold militia patrol in green hoods for whoever pays them. And down every road, shuffling toward the nearest dome, come the Hollow in their white shrouds.\n\nSomewhere behind you rides the Captain, who sold these holds to the Concord, and who has come to drag the runaways home.\n\nKeep the wagons rolling.",
       "Stages": [
         "greenvalley-01",
         "greenvalley-02",
@@ -25,8 +25,8 @@
     {
       "Id": "desert",
       "MilestoneReward": "tome_thorns",
-      "Name": "Sandsea Reaches",
-      "Crawl": "Sandsea Reaches is country the Longmother has crossed before, maybe more than once -- wagon ruts run under the dunes that aren't hers, old and half-swallowed. The sand keeps what it takes: goblin clans who dug in here generations back are still down there, and her footfalls are turning their old works back up into daylight, diggers and all.\n\nThe heat and the thirst are the obvious danger. The quieter one is what the crew pulls out of the ground between skirmishes -- the first clean proof that the blight isn't just rot with a smell. It has a shape now: joints that shouldn't bend, plating that grew instead of being forged, creatures half built and half born that were neither, a season ago.\n\nSpellcraft frays worse out here than it did in the valley -- a caster's orb can gutter mid-word in exactly the stretch of sand where the ground is sickest, as if the blight and the old magic can't stand to share the same air. The Alchemist's brews don't care what the air is doing. That's the whole of her argument for coming along.",
+      "Name": "The Shardfall",
+      "Crawl": "South of the moors the grass gives out and the ground turns red. This is where the pieces of Morrow came down.\n\nMoon-shards jut from the sand like tusks, taller than towers, curved and pale. Where they crack, red water bleeds out into red rivers -- and where the rivers run, the Ember wakes.\n\nThe Infernalists walk here in black armour and long red capes. They call the Nearing a homecoming and the Anchors a cage. Whatever drinks from their rivers comes back as something else.\n\nAnd out in the dunes, the Concord is digging. Shield-walkers guard a cut into the biggest shard, and the Choir's packs fill as fast as the drills can turn.\n\nThe shards aren't stone. They're full of aether, packed tight as honey in a comb.\n\nWhich raises a question nobody on this crew wants to ask out loud.",
       "Stages": [
         "desert-01",
         "desert-02",
@@ -36,8 +36,8 @@
     {
       "Id": "swamp",
       "MilestoneReward": "tome_poison_ward",
-      "Name": "Mireholt Fens",
-      "Crawl": "Mireholt Fens is wet, low ground, and the blight doesn't dry out and blow off here the way it does elsewhere -- it pools, the way water does, which is why so much trouble sits in so small a stretch of road. Hags and swamp-things aren't passing through; they've made a rotting home of exactly the low ground the Longmother has to cross, and they are not glad to have her overhead.\n\nThis is the leg of the route where the crew can finally say it out loud: the work is getting harder faster than the road is getting easier. Every fen is worse than the last fen.\n\nIt's also where the lights first answered the dark -- someone out here already knew how to bind a working tight enough to survive the interference the wetter ground throws at it, rather than cast one loose and hope. Runes sewn into steel hold their shape where a spoken spell comes apart. The caravan needed that, whether or not it knew it yet.",
+      "Name": "The Arkgrave",
+      "Crawl": "The road west drops into fog -- warm, golden, smelling of rot and old varnish. Out of it rise the ribs of ships the size of towns.\n\nThese were the Arks, built to carry a whole city out of Morrow's reach. Every child is told they fell because the pull was too strong.\n\nThe fen-dark live among the wrecks now. Hags and Hexes, Choir runaways who learned to sing aether the wrong way round. Shamblers in the reeds. And the crew of the Ark Long Patience, whose captain refused to let his ship die and kept himself instead.\n\nThe ships' logs are still aboard, if you can read wet ink. They tell a different story from the one the children get.\n\nAt the heart of the fen waits the drowned Ark's pilot, who has been part of the swamp so long that the swamp answers to her.",
       "Stages": [
         "swamp-01",
         "swamp-02",
@@ -47,8 +47,8 @@
     {
       "Id": "cave",
       "MilestoneReward": "tome_lifesteal",
-      "Name": "Frostmaw Caverns",
-      "Crawl": "The road climbs out of the fens into Frostmaw, and for once the danger underfoot isn't what the Longmother's own feet stirred up -- it's what was already waiting, down where the mineral veins run that have fed the caravan's mana casks since before anyone currently walking remembers tapping them.\n\nCold keeps things slow, the blight included, which means whatever's down here has had the one thing nothing else on the route has had: time to grow old, untouched, instead of being swept along with everything else the footfalls disturb.\n\nHere the crew finds the first thing that was unmistakably built, not merely grown or buried -- machined edges, a purpose to the shape of it that no animal or ruin accounts for. That's the turning point. Whatever is wearing the blight this far along the road didn't just happen to it. Something made it this way, on purpose, a long time before the Longmother ever walked this close.",
+      "Name": "The Anchor Wastes",
+      "Crawl": "North of the last hold the world goes white. Across the ice stand the Anchors -- stone arches bigger than mountains, humming so deep you feel it in your teeth.\n\nThey were raised to push Morrow back. They still do, a little, as long as they're fed.\n\nThe Anchor Watch still walk their posts: knights sworn to guard the arches forever, kept going by the leaking aether long after they should have died. Where an arch leaks worst, Void Sentinels gather out of the smoke. And pale vat-giants, grown in the Stills, tend the stones because nothing born survives the cold.\n\nFrom the crown of every arch, a beam of light runs south, all the way to Halcyon.\n\nWatch how much of that light the Anchors keep. Then watch how much keeps going.",
       "Stages": [
         "cave-01",
         "cave-02",
@@ -58,8 +58,8 @@
     {
       "Id": "cityruins",
       "MilestoneReward": "tome_double_attack",
-      "Name": "Veshker Ruins",
-      "Crawl": "Veshker Ruins is a dead city -- stone instead of carapace, built by people who tried to do what the town does without ever learning to walk. They dug in, raised walls, and told themselves that walls built well enough were the same as never standing still. They failed the way every grounded thing on this road eventually fails.\n\nExcept here, something never let the failure finish. The Vampire Lord was the city's ruler once, and when the blight came for him the way it comes for everything that stops, he found a way to keep \"stopped\" going long after it should have killed him. He isn't trying to outrun the blight anymore. He's past that. He wants the Longmother to stop, too -- so that he can finally be still on ground that won't rot out from under him.\n\nThis is the climax of the road so far: not another step ahead of something chasing, but a straight refusal to make the mistake this whole city already made.",
+      "Name": "Halcyon",
+      "Crawl": "At the end of every road stands the Spire City: neon under a pink sky, towers stacked on towers, and above them all the Hierarch's spire, drinking the beams that run north to the Anchors.\n\nThe tithe ends up here. Most of it, anyway.\n\nThe Bulwark patrols the streets in white power armour. The Choir sings from every balcony. The Kiln Guard -- porcelain knights who crack instead of bleeding -- hold the spire stairs, and somewhere in the clockwork a Chronomancer is making everyone late.\n\nBut Halcyon has an underspire, and the Street has been dodging the tithe down there for two hundred years. They know the back stairs.\n\nThe Hierarch has worn the same young face for two centuries, on other people's lives.\n\nUp the spire. Break the reservoir. Give it back.",
       "Stages": [
         "cityruins-01",
         "cityruins-02",
@@ -69,8 +69,8 @@
     {
       "Id": "greenvalley2",
       "MilestoneReward": "chest_gilded",
-      "Name": "Green Valley, Deeper In",
-      "Crawl": "The Vampire Lord's fall didn't end the march, and it didn't cure anything -- the blight doesn't go anywhere just because its best host finally did. It only cleared one knot out of the road ahead.\n\nThe Longmother can't double back the way she came; ground she's already woken stays bad long after she's past it, so her route has never been a straight line so much as a long curl, carrying her back, again and again, through the same kinds of country rather than the same ground. This is that curl closing on green country again -- deeper than the old road ever ran, country the valley's own maps never reached.\n\nIt looks like home. It isn't. The wells here never had travelers to warn them, and whatever's been working on this ground has had longer, undisturbed, to get good at it.",
+      "Name": "The Moors Beyond the Stills",
+      "Crawl": "The aether came down like rain. But rain never falls everywhere.\n\nPast the last domes lie holds the beams never reached. Their Hollow are still Hollow. Their wells still taste of tithe. Some haven't heard the Hierarch is gone, and some of them don't believe it.\n\nAnd Redline has found a new product. They're cutting the Bloom, drying it, and selling it in twists of paper with a promise that it brings back whoever you lost.\n\nIt doesn't. It only makes people hope, which is worse.\n\nThe moors are wider than the map you stole. Time to finish what you started.",
       "Stages": [
         "greenvalley-04",
         "greenvalley-05"
@@ -79,8 +79,8 @@
     {
       "Id": "desert2",
       "MilestoneReward": "chest_gilded",
-      "Name": "Sandsea Reaches, Further Out",
-      "Crawl": "Further out than the Reaches the crew already crossed, the dunes keep going, and so does the blight's handiwork -- what was a rare, unsettling find back at the oasis is common country out here. Half-grown, half-built things aren't the exception on this stretch of sand. They're what's expected.\n\nIt's the clearest evidence yet that whatever wears the blight well enough -- tagged, in the caravan's own blunt shorthand, a Demon Lord, as if it were one title and not a condition -- isn't one throne the crew is marching toward. It's a shape the blight keeps finding again, out here, wherever the host is strong enough to hold it.",
+      "Name": "Deep Shardfall",
+      "Crawl": "With the Concord broken, nobody is digging in the Shardfall anymore. Nobody is guarding it, either.\n\nThe Ember noticed.\n\nDeep in the red country the Infernalists are mustering -- more black armour than anyone has seen in one place, and Hellspawn in herds behind it. They are marching north. They mean to reach the Anchors, break them, and bring Morrow home.\n\nThe Anchors still need feeding. They just never needed a Hierarch to do it.\n\nSomeone has to stand between the Ember and the arches. It might as well be people who know what the arches cost.",
       "Stages": [
         "desert-04",
         "desert-05"
@@ -89,8 +89,8 @@
     {
       "Id": "swamp2",
       "MilestoneReward": "chest_gilded",
-      "Name": "Mireholt Fens, Past the Mire",
-      "Crawl": "Past the mire the crew already fought through, the fen only gets wetter, and the blight that pools here has had longer to settle than anywhere else on the route. The crew isn't the only vanguard working this ground, either -- wreckage further in carries markings that aren't the caravan's, and the people who left it are either still down here or didn't get the chance to leave.\n\nWhoever they were, they weren't chasing glory. Out past the mire, nobody comes this far who still has somewhere better to be.",
+      "Name": "The Drowned Arks",
+      "Crawl": "The Long Patience still flies. A little. Its keel drags through the fog an arm's length above the fen, and its captain -- the Lich, horned and flame-lit -- has hung lanterns from the rails.\n\nHe is offering passage to anyone who wants it. Away from Morrow. Away from everything.\n\nThe rest of the fen disagrees. The drowned Arks have crews of their own, and the fen-dark have firm opinions about who leaves and who stays.\n\nThe question the Arks were built to answer is open again: when the moon comes close enough, do you hold it back, or do you go?\n\nNobody on this crew has a good answer. That doesn't mean you get to stop asking.",
       "Stages": [
         "swamp-04",
         "swamp-05"
@@ -99,8 +99,8 @@
     {
       "Id": "cave2",
       "MilestoneReward": "chest_gilded",
-      "Name": "Frostmaw Caverns, Lower Depths",
-      "Crawl": "Lower than the veins the caravan has mined for a generation, the caves keep going, following the same seams down toward wherever the thing the crew found earlier -- built, not grown, not buried by accident -- was built. The mana ore gets thinner and stranger the deeper the crew follows it, half-crystal and half-something-else, and less and less of it burns clean.\n\nIt's the sharpest the choice has ever felt: spend what little reliable fuel the depths still give up, or trust a casting in ground this far gone. Most of the crew doesn't trust it anymore.",
+      "Name": "Under the Anchors",
+      "Crawl": "The arches were built on something.\n\nBelow the ice, below the foundations, there are stairs -- older than the Anchors, older than the Concord, cut for feet that weren't quite anyone's. The hum is louder down here, and the cold is wrong. It pulls, the way Morrow pulls.\n\nThe Anchor Watch do not go below the foundations. They won't say why. They only stand a little straighter whenever someone asks.\n\nWhatever the Anchors are pushing against, part of it is down here too.",
       "Stages": [
         "cave-04",
         "cave-05"
@@ -109,8 +109,8 @@
     {
       "Id": "cityruins2",
       "MilestoneReward": "chest_gilded",
-      "Name": "Veshker Ruins, Inner Wards",
-      "Crawl": "Past the wards the Vampire Lord held, deeper into Veshker than the fight that ended him ever reached, the ruins keep going -- older construction under the newer, and under that, older still. Whoever built the city's failed foundations wasn't the first to try keeping ground still here, either.\n\nThe road doesn't end at a dead king's throne. It just goes on being the only question the caravan has ever actually been chasing: not how to beat what's down here, but what, at the bottom of all of it, the blight actually is. Nobody in the crew has an answer yet. That's as far as the road has carried them so far.",
+      "Name": "The Underspire",
+      "Crawl": "Halcyon without a Hierarch is a city holding its breath.\n\nThe Choir wants the spire back, to sing the tithe again -- honestly this time, they swear. The Red Seal wants it because order has to come from somewhere. The Street wants it because they've lived under it for two hundred years and it's their turn.\n\nEveryone has a speech. Everyone has soldiers. Everyone is certain.\n\nDown in the underspire, where the city's real business has always been done, the deals are being struck that will decide who sits where the Hierarch sat -- or whether anyone does.\n\nNobody is going to hand the spire to the people who broke the reservoir. Which is a shame. You're the only ones who've seen what's at the top.",
       "Stages": [
         "cityruins-04",
         "cityruins-05"

@@ -9,8 +9,8 @@ Reads Assets/Gaiden/Resources/Tiles/tile.png (the original slate tile, imported 
 Tiles/<themeId>.png per campaign theme. The outer bevel rim (the black edge + grey highlight BoardView's
 checkerboard tinting relies on) is kept pixel-identical; only the flat interior fill is replaced with a
 deterministically-seeded procedural terrain pattern per biome — sand ripples and grit for the desert, mottled
-grass-and-dirt for the green valley, bog muck and reed streaks for the swamp, frost-glint rock for the frozen
-caverns, and cobblestone/rubble masonry for the city ruins. `cave` ("Frostmaw Caverns") is themed as icy rock
+grass-and-dirt for the moss moors, bog muck and reed streaks for the swamp, frost-glint rock for the frozen
+caverns, and cobblestone/rubble masonry for the city ruins. `cave` ("The Anchor Wastes") is themed as icy rock
 rather than left as the plain original slate, since "snow" was named explicitly.
 """
 import os

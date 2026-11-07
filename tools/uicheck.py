@@ -147,7 +147,7 @@ def main():
         h.call("clicktext", text="Adventure"); time.sleep(0.8)
         t = texts()
         check("adventure lists the first stage", any("Green Valley I" in x for x in t))
-        check("adventure groups battles into expeditions", any("Green Valley Expedition" in x for x in t), str(t[:8]))
+        check("adventure groups battles into expeditions", any("The Tithe Moors Expedition" in x for x in t), str(t[:8]))
         check("locked stages collapse into one teaser", any("more stages ahead" in x for x in t))
         h.call("clicktext", text="Green Valley I"); time.sleep(1.5)
         if h.call("state")["screen"] == "crawl":

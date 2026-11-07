@@ -868,7 +868,7 @@ namespace GridGame.App
             var body = Ui.Text(text, "h2 shadow", roll);
             body.style.whiteSpace = WhiteSpace.Normal;
             body.style.unityTextAlign = TextAnchor.UpperCenter;
-            var coda = Ui.Text("The Longmother walks on. So does the road.\n\nThank you for playing.", "h2 shadow dim", roll);
+            var coda = Ui.Text("Morrow hangs as low as ever. You are still here.\n\nThank you for playing.", "h2 shadow dim", roll);
             coda.style.whiteSpace = WhiteSpace.Normal;
             coda.style.unityTextAlign = TextAnchor.MiddleCenter;
             coda.style.marginTop = Fit.H(8.7f);

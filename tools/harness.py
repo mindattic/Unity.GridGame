@@ -1156,7 +1156,7 @@ def storyarc(run="storyarc", capture=True):
     ok["prologue_plays"] = _wait_screen("crawl", 6)
     if ok["prologue_plays"]:
         time.sleep(3.0); shot("02-prologue-mid")
-        ok["prologue_is_footfall_oath"] = any("Footfall" in str(t) for t in call("texts"))
+        ok["prologue_is_tithe_day"] = any("Tithe Day" in str(t) for t in call("texts"))
         call("clicktext", text="Skip")
     ok["prologue_then_camp"] = _wait_screen("hub", 8)
     time.sleep(0.8); shot("03-camp")
@@ -1286,7 +1286,7 @@ def storyarc(run="storyarc", capture=True):
     ok["ending_crawl"] = _wait_screen("crawl", 6)
     if ok["ending_crawl"]:
         time.sleep(3.0); shot("27-ending-crawl")
-        ok["ending_is_longmother"] = any("Longmother" in str(t) for t in call("texts"))
+        ok["ending_is_still_here"] = any("Still Here" in str(t) for t in call("texts"))
         call("clicktext", text="Skip")
     ok["credits_roll"] = _wait_screen("credits-roll", 6)
     if ok["credits_roll"]:
