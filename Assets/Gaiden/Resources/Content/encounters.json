@@ -4846,5 +4846,107 @@
         "Y": 0
       }
     ]
+  },
+  {
+    "Id": "voidsentinel-sentries-2",
+    "Name": "Void Sentinel Sentries",
+    "Formation": "Sentries",
+    "Level": 9,
+    "Enemies": [
+      {
+        "Class": "voidsentinel",
+        "X": 0,
+        "Y": 1
+      },
+      {
+        "Class": "voidsentinel",
+        "X": 5,
+        "Y": 1
+      }
+    ]
+  },
+  {
+    "Id": "voidsentinel-line-3",
+    "Name": "Void Sentinel Line",
+    "Formation": "Line",
+    "Level": 10,
+    "Enemies": [
+      {
+        "Class": "voidsentinel",
+        "X": 1,
+        "Y": 1
+      },
+      {
+        "Class": "voidsentinel",
+        "X": 3,
+        "Y": 1
+      },
+      {
+        "Class": "voidsentinel",
+        "X": 5,
+        "Y": 1
+      }
+    ]
+  },
+  {
+    "Id": "voidsentinel-diamond-4",
+    "Name": "Void Sentinel Diamond",
+    "Formation": "Diamond",
+    "Level": 11,
+    "Enemies": [
+      {
+        "Class": "voidsentinel",
+        "X": 2,
+        "Y": 0
+      },
+      {
+        "Class": "voidsentinel",
+        "X": 0,
+        "Y": 2
+      },
+      {
+        "Class": "voidsentinel",
+        "X": 4,
+        "Y": 2
+      },
+      {
+        "Class": "voidsentinel",
+        "X": 2,
+        "Y": 4
+      }
+    ]
+  },
+  {
+    "Id": "voidsentinel-crown-5",
+    "Name": "Void Sentinel Crown",
+    "Formation": "Crown",
+    "Level": 12,
+    "Enemies": [
+      {
+        "Class": "voidsentinel",
+        "X": 0,
+        "Y": 0
+      },
+      {
+        "Class": "voidsentinel",
+        "X": 2,
+        "Y": 1
+      },
+      {
+        "Class": "voidsentinel",
+        "X": 5,
+        "Y": 0
+      },
+      {
+        "Class": "voidsentinel",
+        "X": 1,
+        "Y": 3
+      },
+      {
+        "Class": "voidsentinel",
+        "X": 4,
+        "Y": 3
+      }
+    ]
   }
 ]
