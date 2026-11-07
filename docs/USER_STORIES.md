@@ -735,9 +735,9 @@ Open design questions that gate future stories live in [BIBLE §29](BIBLE.md#29-
 | GG-T318 | 2026-11-06 | feature | closed | Timeline core: uniform icon flow, Speed sets re-entry position (avg 4s), recovery interval + spacing scheduler (owner, Grandia-inspired) | 0b7811d |
 | GG-T319 | 2026-11-06 | feature | closed | Timeline UI: 6s bar, recovery tray with countdown, fly-to-tray and slide-in animations | cc06ef4 |
 | GG-T320 | 2026-11-06 | feature | closed | HeroBot values uniform-rate Slow and re-entry pushback; heavy enemy attacks carry RecoverSeconds | d623381 |
-| GG-T321 | 2026-11-06 | chore | open | Gap histogram soak + balance tuning of MinGap/MaxSpread/RecoverBase against plan targets; closes GG-T316 | — |
+| GG-T321 | 2026-11-06 | chore | closed | Gap histogram soak + balance tuning of MinGap/MaxSpread/RecoverBase against plan targets; closes GG-T316 | 26f32be a17bfa3 |
 | GG-T322 | 2026-11-06 | docs | closed | BIBLE §2/§2.1/§2.12/§22.9, AMENDMENTS, USER_STORIES for speed-as-entry timeline | bf7de02 |
-| GG-T323 | 2026-11-06 | feature | open | Adopt the shared off-by-default --headless launch mode (Unity.Shared) | — |
+| GG-T323 | 2026-11-06 | feature | closed | Adopt the shared off-by-default --headless launch mode (Unity.Shared) | 6258243 |
 | GG-T324 | 2026-11-06 | fix | open | Core suite on BRAVE: 28 failures predating GG-T318 - validator fixtures lack Thumbnail/own Support, an enemy at base Speed 14 (not a tier), missing chronomancer portrait, a hero spell costing 0, branch interleave, Ten_cycle camp never slots (only passives learned), and real-content tests racing a shared cache when run in parallel | 0b7811d |
 | GG-T325 | 2026-11-06 | chore | closed | Merge the BRAVE branch (Resonance-style timeline rework) into main | 0b7811d |
 | GG-T326 | 2026-11-07 | chore | closed | Owner: BRAVE is permanent - merge it into main and switch the checkout back to main | cc06ef4 |
