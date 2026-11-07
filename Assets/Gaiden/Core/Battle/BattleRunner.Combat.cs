@@ -420,7 +420,7 @@ namespace GridGame.Core.Battle
         /// <summary>An enemy's blows scale with the kit multiplier (and the skirmish discount); anyone's with their
         /// Always DamageMultiplier passives (Berserk: ×1.35 below half HP, GG-T296).</summary>
         private float KitDamageMultiplier(Unit attacker, Unit target) =>
-            (attacker.IsHero ? 1f : BattleConfig.EnemyStrikeMultiplier * (skirmishing ? 0.8f : 1f)) * Triggers.OutgoingMultiplier(S, attacker, target);
+            (attacker.IsHero ? 1f : BattleConfig.EnemyStrikeMultiplier * BattleEngine.PartyScale(S) * (skirmishing ? 0.8f : 1f)) * Triggers.OutgoingMultiplier(S, attacker, target);
 
         /// <summary>After an enemy's attack lands: its class on-hit buff may stick.</summary>
         private void AfterLandedHit(Unit attacker, Unit target)

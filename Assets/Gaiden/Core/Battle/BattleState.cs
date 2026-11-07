@@ -175,6 +175,9 @@ namespace GridGame.Core.Battle
         public int NewGamePlus;
         /// <summary>The difficulty dial (GG-T309), copied from <see cref="BattleSetup.Difficulty"/>.</summary>
         public int Difficulty;
+        /// <summary>GG-T321: heroes the party fielded (<see cref="BattleSetup.Party"/>); enemy strength scales with it
+        /// (<see cref="BattleEngine.PartyScale"/>).</summary>
+        public int PartySize;
         /// <summary>Banked gold going in (<see cref="BattleSetup.Purse"/>); what's left is Purse − Results.CoinsSpent.</summary>
         public int Purse;
         /// <summary>The class of the captive freed as a guest this battle (GG-T236), or null.</summary>

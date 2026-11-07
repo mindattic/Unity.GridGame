@@ -200,6 +200,10 @@ namespace GridGame.Core.Battle
         /// <summary>Enemy MaxHP at spawn, as a share of the stat formula (GG-T262: waves ran a median 34 player actions
         /// against POL-G6's 6–20).</summary>
         public static float EnemyHpScale = 0.45f;
+        /// <summary>GG-T321: the party size enemies are designed against (the starting three)…</summary>
+        public const int PartyScaleBaseHeroes = 3;
+        /// <summary>…and how much stronger (strike and MaxHP) foes get for each hero fielded beyond it (<see cref="BattleEngine.PartyScale"/>).</summary>
+        public static float EnemyScalePerExtraHero = 0.3f;
         /// <summary>An Ambusher lies in wait for at most this many of its own turns, then comes out (GG-T262: a lone
         /// ambushing naga held Mireholt Fens II's last wave to a median 116 player actions).</summary>
         public const int AmbushPatienceTurns = 3;

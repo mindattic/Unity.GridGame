@@ -72,6 +72,13 @@ namespace GridGame.Core.Bot
             ThinkSeconds = TimelineAware ? SmartThinkSeconds : CasualThinkSeconds;
         }
 
+        /// <summary>GG-T321: the skilled-human profile, the balance probe for difficulty 10. It reads the board and the bar
+        /// like the smart bot, but takes a human's time to plan a route and sometimes picks a near-best move
+        /// (<see cref="SkillLevel"/>). The smart bot plays the 4 s timeline near-perfectly, so it stays as the ceiling reference.</summary>
+        public const float SkilledSkillLevel = 80f, SkilledThinkSeconds = 0.8f;
+
+        public static HeroBot Skilled(int seed) => new HeroBot(seed) { SkillLevel = SkilledSkillLevel, ThinkSeconds = SkilledThinkSeconds };
+
         /// <summary>The best drag on offer (hints and automation teach moving, so they ask for a move specifically).</summary>
         public MoveCommand BestMove(BattleState s) => Decide(s, movesOnly: true) as MoveCommand;
 

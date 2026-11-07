@@ -860,8 +860,21 @@ and convert the remaining time into a portion of mana orb." The cluster fallback
     The median gap is 2.1 s and 22% of gaps are under a minimum drag.
   - This fixes GG-T316. Green Valley I with the real three heroes was 6%/0% with 35–50% forced Guards; it is now 4/4
     smart, 0/4 casual, with 18–24% forced Guards.
-  - At an average 4 s, no timeline setting moves the smart bot below 97%. Challenge at the top of the dial is an open
-    owner decision: enemy strength, a human ceiling for the smart bot, or encounter design.
+  - At an average 4 s, no timeline setting moves the smart bot below 97%.
+  - **Amended 2026-11-07 (GG-T321, decision delegated by the owner): challenge comes from party size.** On this clock
+    the starting three manage about 1.3 actions per enemy turn and six heroes about 2.4. So enemy strike and MaxHP
+    (and plates) grow by `EnemyScalePerExtraHero` **0.30** for each hero fielded beyond `PartyScaleBaseHeroes` 3
+    (`BattleEngine.PartyScale`, `BattleState.PartySize`). Test stages are unscaled.
+
+    | Difficulty, party | Smart | Skilled | Casual |
+    |---|---|---|---|
+    | 10, campaign | 100% | 100% | 45% |
+    | 10, six | 100% | 98% | 38% |
+    | 5, campaign | 100% | 100% | 97% |
+    | 1, campaign | 100% | 100% | 100% |
+
+    Green Valley I is unchanged. The skilled column is `HeroBot.Skilled`: SkillLevel 80, 0.8 s think. A global
+    strength raise was rejected because it walled the first battle; see `docs/research/TimelineTuning.md`.
 - *(Tests: `TimelineSpacingTests`.)*
 
 ### 2.10 Countdown badge
@@ -2338,6 +2351,8 @@ superseded) are gone.
   pressure, so the validator lets these columns only fall as the level rises. The neutral row (level 0, rules tests)
   has no spacing and no jitter.
 
+- **Party size** (*GG-T321*): independent of the dial, enemy strike and MaxHP also grow ×(1 + 0.30 × heroes beyond the
+  starting three), §2.12.
 - **What it scales.** Enemy MaxHP and armor plates at spawn (on top of `BattleConfig.EnemyHpScale`); the damage an
   enemy's blow deals a hero (after the hero's own reductions start, min 1); every enemy's turn-icon pace (`EnemySpeed`, GG-T311: slower foes leave wider gaps for the party, §2.0); how far apart foes are spaced on the timeline (`MinGap`/`MaxSpread`, GG-T318, §2.12); every non-test enemy spawn level
   (`EnemyLevelOffset`, never below 1, which also lowers that foe's stats and XP); and per kill the coins, the XP and

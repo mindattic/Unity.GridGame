@@ -64,12 +64,16 @@ namespace GridGame.Tests
             sb.AppendLine();
             sb.AppendLine("| stage | party | bot | wins | median gap s | gaps <0.85s | forced Guard share | actions/window |");
             sb.AppendLine("|---|---|---|---|---|---|---|---|");
-            var totals = new Dictionary<string, Tally> { ["smart"] = new Tally(), ["casual"] = new Tally() };
+            var bots = new[] { "smart", "skilled", "casual" };
+            var totals = bots.ToDictionary(b => b, _ => new Tally());
+            float skilledLevel = EnvF("GAIDEN_SKILLED_LEVEL") ?? HeroBot.SkilledSkillLevel;
+            float skilledThink = EnvF("GAIDEN_SKILLED_THINK") ?? HeroBot.SkilledThinkSeconds;
+            sb.Insert(sb.ToString().IndexOf("| stage", StringComparison.Ordinal), $"Skilled bot: SkillLevel {skilledLevel}, think {skilledThink}s\n\n");
             int battle = 0;
             for (int si = 0; si < stages.Count; si++)
             {
                 var stage = stages[si];
-                foreach (var botName in new[] { "smart", "casual" })
+                foreach (var botName in bots)
                 {
                     var t = new Tally();
                     int partySize = 0;
@@ -86,7 +90,8 @@ namespace GridGame.Tests
                         int level = Math.Max(1, Progression.StageRecommendedLevel(c, save, stage));
                         foreach (var h in save.Roster) h.TotalXp = Formulas.TotalXpForLevel(level);
                         var s = BattleEngine.Create(c, BattleFactory.Build(c, save, stage.Id, seed, difficulty), new List<BattleEvent>());
-                        var bot = new HeroBot(seed, botName == "casual" ? 0.5f : 0f);
+                        var bot = botName == "skilled" ? new HeroBot(seed) { SkillLevel = skilledLevel, ThinkSeconds = skilledThink }
+                            : new HeroBot(seed, botName == "casual" ? 0.5f : 0f);
                         Play(s, bot, t);
                         t.Battles++;
                         if (s.Phase == BattlePhase.Victory) t.Wins++;

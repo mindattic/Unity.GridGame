@@ -67,11 +67,51 @@ Green Valley I, the real 3-hero start:
    waves, eggs and remains that the spacer can't separate inside MaxSpread. Widening MaxSpread would cut them, but it also
    flattens the "clusters are the danger" moments the owner asked for.
 
-## Open decision (owner)
+## Decision (GG-T321, delegated by the owner 2026-11-07): enemies scale with the party fielded
 
-Challenge at difficulty 10 now has to come from enemy strength, the bot model, or encounter design, not the clock. Options:
+**1. A skilled-human probe (`HeroBot.Skilled`).** It reads the board and the bar like the smart bot, takes 0.8 s to
+plan a route (the smart bot takes 0.4 s), and picks by softmax at `SkillLevel` 80. It scored the same as the smart
+bot everywhere (97–100%), so the soak keeps it as a third column. Board reading, not reflexes, is what wins on the 4 s
+timeline.
 
-- **(a)** Keep it as is: the game is easier, and skill shows mainly in the casual bot's results.
-- **(b)** Raise enemy strike and/or HP at the top of the dial. The casual bot reacts; the smart bot barely does.
-- **(c)** Give the smart bot a human-like ceiling (more think time, imperfect pincer search) so it can serve as a probe
-  again, then tune (b) against it.
+**2. Global strength was the wrong lever.**
+
+| Variant | Smart | Skilled | Casual |
+|---|---|---|---|
+| Strike ×2.5 | 90% | 97% | 48% |
+| Strike ×1.8, HP 0.7 | 95% | 93% | 52% |
+| Strike ×2.2, HP 0.75 | 85% | 93% | 38% |
+| Strike ×2.0, HP 0.7 | 93% | 95% | 45% |
+| Strike ×2.5, HP 0.7 | 92% | 82% | 32% |
+
+The overall rates land in band, but each of these turned Green Valley I (the first battle, three heroes) back into a
+wall: 0–50% even for the smart bot. Raising hero action costs (1.5 s skill, 0.7 + 0.45 s/tile drag) only added
+forced Guards (26–30%) without separating skill.
+
+**3. The cause is party size.** The starting three manage about 1.3 hero actions per enemy turn; six heroes manage
+about 2.4. So enemy strike and MaxHP now grow with the heroes fielded (`BattleEngine.PartyScale`):
+×(1 + `EnemyScalePerExtraHero` × heroes beyond 3). Test stages are unscaled.
+
+| Per extra hero | Smart | Skilled | Casual |
+|---|---|---|---|
+| 0.25 | 100% | 98% | 57% |
+| **0.30 (shipped)** | **100%** | **100%** | **45%** |
+| 0.35 | 100% | 98% | 33% |
+| 0.45 | 100% | 97% | 20% |
+
+**Shipped, 0.30:**
+
+| Difficulty, party | Smart | Skilled | Casual |
+|---|---|---|---|
+| 10, campaign | 100% | 100% | 45% |
+| 10, six | 100% | 98% | 38% |
+| 5, campaign | 100% | 100% | 97% |
+| 1, campaign | 100% | 100% | 100% |
+
+Green Valley I is unchanged: smart and skilled 4/4, casual 0/4.
+
+**Read:** at difficulty 10, informed play wins and careless play loses about half the time, the same shape as the
+79/33 the owner accepted for GG-T311, but now from party size rather than a frantic clock. The plan's "skilled
+75–85%" target is not met. Over these 60 battles the probe bots are near-perfect board solvers, so only a human
+playtest can say where a real skilled player lands. Difficulties 6–9 interpolate and haven't been measured. The step
+from 45% casual at 10 to 97% at 5 is steep.

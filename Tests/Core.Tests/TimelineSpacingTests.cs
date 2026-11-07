@@ -186,6 +186,24 @@ namespace GridGame.Tests
             Assert.That(Snapshot(a), Is.EqualTo(Snapshot(b)));
         }
 
+        [Test] // GG-T321
+        public void Foes_grow_with_every_hero_fielded_beyond_the_starting_three()
+        {
+            BattleState WithParty(params string[] heroes)
+            {
+                var setup = new BattleSetup { Stage = RealStage("wolf"), Seed = 3, UnlockedSlots = 5, Difficulty = 10 };
+                for (int i = 0; i < heroes.Length; i++) setup.Party.Add(new HeroSpec { ClassId = heroes[i], Start = new Coord(i, 7) });
+                return BattleEngine.Create(Db(), setup, new List<BattleEvent>());
+            }
+            var three = WithParty("knight", "cleric", "mage");
+            var five = WithParty("knight", "cleric", "mage", "knight", "cleric");
+            Assert.That(BattleEngine.PartyScale(three), Is.EqualTo(1f), "the starting three fight foes as designed");
+            Assert.That(BattleEngine.PartyScale(five), Is.EqualTo(1f + 2 * BattleConfig.EnemyScalePerExtraHero).Within(1e-5));
+            Assert.That(Of(five, "wolf").MaxHp, Is.GreaterThan(Of(three, "wolf").MaxHp));
+            var (test, _) = Battle(Db(), Stage(("wolf", 0, 0)), ("knight", 0, 7), ("cleric", 1, 7), ("mage", 2, 7), ("knight", 3, 7), ("cleric", 4, 7));
+            Assert.That(BattleEngine.PartyScale(test), Is.EqualTo(1f), "test stages stay unscaled");
+        }
+
         [Test]
         public void The_dial_s_spacing_columns_only_tighten_as_the_level_rises()
         {

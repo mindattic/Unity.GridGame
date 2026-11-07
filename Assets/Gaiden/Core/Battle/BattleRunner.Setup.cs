@@ -366,7 +366,7 @@ namespace GridGame.Core.Battle
             };
             u.LevelStats = Formulas.StatsAtLevel(def, u.Level);
             // The difficulty dial (GG-T309) scales HP and plates; 1.0 at level 10 and on test stages.
-            float hpScale = BattleConfig.EnemyHpScale * (S.Stage != null && S.Stage.IsTest ? 1f : DifficultyTable.At(S.Difficulty).EnemyHp);
+            float hpScale = BattleConfig.EnemyHpScale * BattleEngine.PartyScale(S) * (S.Stage != null && S.Stage.IsTest ? 1f : DifficultyTable.At(S.Difficulty).EnemyHp);
             u.MaxHp = Math.Max(1, (int)Math.Round(Formulas.MaxHp(u.Effective, u.Level) * hpScale));
             u.Hp = u.MaxHp;
             if (def.ArmorPlate > 0) u.PlateHp = u.PlateMax = Math.Max(1, (int)Math.Round(def.ArmorPlate * (1f + BattleConfig.PlatePerLevel * (u.Level - 1)) * hpScale));

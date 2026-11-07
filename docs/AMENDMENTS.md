@@ -989,3 +989,15 @@ Owner: "I want the 'average' time to move to be 4 seconds … when an enemy rest
   - Green Valley I with the real three heroes: smart 6% → 4/4, casual 0/4.
   - At this pace no timeline setting moves the smart bot below 97%. Challenge at the top of the dial is an open owner decision (enemy strength, a human ceiling for the smart bot, or encounter design).
 - *(Tests: `TimelineSpacingTests`; old-model tests rewritten.)*
+
+## 2026-11-07 — Foes grow with the party fielded (GG-T321, decision delegated by the owner)
+
+Owner: "you decide how difficulty 10 gets its challenge back (GG-T321)."
+
+- **Was:** after GG-T318 (Speed sets re-entry, recovery spacing) difficulty 10 was smart 100%, casual 90%. No timeline setting moved the smart bot below 97%.
+- **Now:** enemy strike and MaxHP (and plates) grow ×(1 + `EnemyScalePerExtraHero` 0.30 × heroes beyond the starting three), via `BattleEngine.PartyScale`.
+  - *Why party size:* on the 4 s clock three heroes get about 1.3 actions per enemy turn and six get about 2.4. Party size, not the clock, is what made the game easy.
+  - A global strength raise reached the same overall rates but walled the first battle (Green Valley I, three heroes: 0–50% even for the smart bot).
+- **Skilled-human probe:** `HeroBot.Skilled` (SkillLevel 80, 0.8 s think) joins the tuning soak. It scored the same as the smart bot, so a real skilled player's rate needs a human playtest.
+- **Measured** at difficulty 10, campaign parties: smart/skilled/casual 100/100/45%; six heroes 100/98/38%. Difficulty 5: 100/100/97%. Difficulty 1: 100% for every bot. Green Valley I unchanged. Full runs: `docs/research/TimelineTuning.md`.
+- *(Tests: `Foes_grow_with_every_hero_fielded_beyond_the_starting_three`.)*

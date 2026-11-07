@@ -44,6 +44,7 @@ namespace GridGame.Core.Battle
                 RecommendedLevel = setup.RecommendedLevel,
                 NewGamePlus = setup.NewGamePlus,
                 Difficulty = setup.Difficulty,
+                PartySize = setup.Party.Count,
                 Rng = new Rng(setup.Seed),
                 Blocks = new HashSet<Coord>(setup.Stage?.Blocks ?? new List<Coord>()),
             }, events);
@@ -222,6 +223,16 @@ namespace GridGame.Core.Battle
         /// <summary>GG-T311: the difficulty dial's enemy pace (1.0 at level 10, on test stages and for anyone not an enemy).</summary>
         private static float DialSpeed(BattleState s, Unit u) =>
             u.Team != Team.Enemy || s.Stage == null || s.Stage.IsTest ? 1f : DifficultyTable.At(s.Difficulty).EnemySpeed;
+
+        /// <summary>
+        /// GG-T321 (§22.9): enemy strike and MaxHP grow with the party fielded. On the 4 s timeline every extra hero is
+        /// another action per window, so a six-hero party out-acts its foes about 2.4 to 1 where the starting three manage
+        /// 1.3. The starting party (<see cref="BattleConfig.PartyScaleBaseHeroes"/>) fights foes as designed; each hero
+        /// beyond it adds <see cref="BattleConfig.EnemyScalePerExtraHero"/>. Test stages and hand-built setups are unscaled.
+        /// </summary>
+        public static float PartyScale(BattleState s) =>
+            s.Stage == null || s.Stage.IsTest ? 1f
+                : 1f + BattleConfig.EnemyScalePerExtraHero * System.Math.Max(0, s.PartySize - BattleConfig.PartyScaleBaseHeroes);
 
         /// <summary>GG-T318: the difficulty row whose spacing columns apply. Test stages and hand-built setups use the
         /// neutral row (no spacing, no jitter), so their timing stays exact.</summary>
