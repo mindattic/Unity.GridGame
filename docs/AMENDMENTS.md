@@ -1040,3 +1040,15 @@ Owner: *"another way is to simply summon them randomly with Diamonds monetized c
 - **Now:** the Summon Circle also offers one random draw for **1 Diamond** (`DiamondSummon.Price`, the one tuning constant) from the wanderer pool (unowned heroes with no other way in, the pool a parted wanderer returns to). It rides the Summon paywall job (1 s) and ends in a portrait reveal. The gold, deliberate summon stays.
 - **Not monetized yet:** Diamonds still come only from the LuckyDiamond paywall hook (1 g · 1 s); there is no store and no IAP UI ("until I call it monetize, it's not"). Bots, `CampRoutine` and Test Mode never spend Diamonds.
 - *(Tests: `SummonTests`.)*
+
+## 2026-11-07 — Backgrounds at the art's resolution, named after their region (owner, GG-T353)
+
+Owner: *"make sure the source files for the Backgrounds all get proper naming to identify them to their world lore counterparts"*.
+
+- **Was:** `tools/import_art.py` downscaled the GridGame2026 biome backdrops (1536×3072) to 720×1440 JPEG and kept only the first four per biome, named by theme id (`greenvalley_0` … `cityruins_3`); `GaidenImport` capped Backgrounds at 2048.
+- **Now:** every original is imported at full size (JPEG q95, 4:4:4) and named by its STORY.md region, numbered from 01: `tithemoors_01..05` (Moors), `shardfall_01..05` (RedThorns), `arkgrave_01..05` (ElectricWasteland), `anchorwastes_01..04` (UnderTheBridge), `halcyon_01..14` (CyberNecropolis). Each main theme names its set in campaign.json (`"Backgrounds": "tithemoors"`); theme ids are unchanged and the postgame themes borrow their base theme's set. The 4096 cap keeps them unshrunk ([BIBLE §12.1](BIBLE.md)).
+  - **Fourteen Halcyon images, not sixteen:** CyberNecropolis `02.png` is byte-identical to `00.png` and `15.png` to `01.png`, so the duplicates are skipped (the old import showed `00` twice, as `cityruins_0` and `cityruins_2`).
+  - **Memory:** a 1536×3072 backdrop is about 4.5 MB as a CompressedHQ texture (no mips) against about 1 MB before. Counting a set no longer keeps its images loaded (`Art.BackgroundSet` unloads what it probes).
+  - The 19 files that existed were renamed with their `.meta`, so they keep their GUIDs; the other 14 are new.
+  - The owner's queued region art (GG-T345 to GG-T350) is copied under each ticket's attachment folder as `<region>_NN.png` (`lanternroad_`, `freeholds_`, `bloom_`, `morrowsshadow_`, `underspire_`, `cathedral_`), at its native 768×1536.
+- *(Tests: `BackgroundsTests`, `StillTests`.)*

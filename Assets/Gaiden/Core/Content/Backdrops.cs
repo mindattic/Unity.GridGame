@@ -17,17 +17,19 @@ namespace GridGame.Core.Content
     /// Which backdrop a theme shows (GG-T344). Owner rule: background files are named after their story region, numbered
     /// from 01 with zero padding (<c>Backgrounds/still_01.jpg</c> … <c>still_06.jpg</c>), at the art's original resolution.
     /// A campaign theme may name its set (<c>ThemeDef.Backgrounds</c>, e.g. <c>"still"</c>); otherwise the set is the theme id.
-    /// A set has as many images as the art gives it, and an index wraps over that count instead of a fixed four. The
-    /// legacy unpadded sets (<c>greenvalley_0</c> … <c>_3</c>) still load until GG-T353 renames them. A theme with no set
-    /// borrows its base theme's (a postgame theme like <c>cave2</c> shows <c>cave</c>), then the default theme's, then
-    /// <see cref="Fallback"/>. Pure: the App passes a Resources probe, the tests a file probe.
+    /// A set has as many images as the art gives it, and an index wraps over that count instead of a fixed four. GG-T353
+    /// re-imported the first five themes the same way (<c>tithemoors</c>, <c>shardfall</c>, <c>arkgrave</c>,
+    /// <c>anchorwastes</c>, <c>halcyon</c>, 1536×3072); the legacy unpadded numbering (<c>&lt;set&gt;_0</c>, <c>_1</c>, …) is
+    /// still read but no file uses it. A theme with no set borrows its base theme's (a postgame theme like <c>cave2</c>
+    /// shows <c>cave</c>'s), then the default theme's, then <see cref="Fallback"/>. Pure: the App passes a Resources
+    /// probe, the tests a file probe.
     /// </summary>
     public static class Backdrops
     {
         public const string Folder = "Backgrounds/";
         public const string DefaultTheme = "greenvalley";
-        /// <summary>The last resort (legacy name; GG-T353 renames it with the rest).</summary>
-        public const string Fallback = Folder + DefaultTheme + "_0";
+        /// <summary>The last resort: the default theme's (the Tithe Moors') first image.</summary>
+        public const string Fallback = Folder + "tithemoors_01";
         /// <summary>The most backgrounds counted per set (a guard on the probe, not a design limit).</summary>
         public const int MaxPerTheme = 32;
 

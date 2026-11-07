@@ -113,7 +113,7 @@ Status values: ❌ fails, 🟡 partly passes or partly measured, ✅ passes, ⬜
 |---|---|---|---|---|---|
 | POL-H1 | **Portrait standard** (spec below): transparent PNG, a person's canvas is 640 px tall, the figure fills ≥ 95% of the canvas height and stands on the bottom edge (≤ 2% gap); a creature may use a shorter canvas, which declares it that much smaller; props exempt | People must be the same scale side by side; the canvas height *is* the scale | Art-direction practice | `check_assets.art_findings` | 🟡 92.7: 13 portraits float or under-fill (frogs, toad, undead, phantom, sage, swordmaster, monk, hag03, mannequin, technician) |
 | POL-H2 | **Icon standard** (spec below): 88×88 RGBA on a 22×22 pixel grid ×4, ≤ 9 colours (8 + the dark outline); UI icons 64×64 | Icons from many sources must read as one set | Icon-system practice (Material 3 icons) | `check_assets.art_findings` | ✅ 100: all 1,514 icons |
-| POL-H3 | **Backdrop standard** (spec below): 720×1440 JPEG, mean luminance 0.25–0.50, one top-left key light; units stay ≥ 3 : 1 against the board | The board must always read | Value-structure / art-direction practice | `check_assets.art_findings` (size, value band); R10 (light) | ✅ 100 measured (means 0.29–0.45); light direction by review |
+| POL-H3 | **Backdrop standard** (spec below): a 1:2 JPEG at the art's own resolution named `<region>_NN`, mean luminance 0.25–0.50, one top-left key light; units stay ≥ 3 : 1 against the board | The board must always read | Value-structure / art-direction practice | `check_assets.art_findings` (size, value band); R10 (light) | ✅ 100 measured (means 0.29–0.45); light direction by review |
 | POL-H4 | No asset drawn above its native resolution on the largest stage | No blur | Asset-pipeline practice | `check_assets.art_findings` | ❌ 0: dialogue draws 640-px portraits at 1200 px (1.9×); needs ≥ 1200-px sources or a smaller figure height |
 
 #### H specs (GG-T256)
@@ -133,13 +133,13 @@ Status values: ❌ fails, 🟡 partly passes or partly measured, ✅ passes, ⬜
 - **UI icons** (`Icons/`) are **64×64** RGBA.
 - **Hand-made icons** go through the same pipeline; nothing is drawn outside it.
 
-**Backdrops** (`Backgrounds/<theme>_<n>.jpg`):
-- **720×1440** JPEG (RGB) per stage variant.
+**Backdrops** (`Backgrounds/<region>_<NN>.jpg`, GG-T353):
+- **The art's own resolution**, never downscaled: 1536×3072 for the GridGame2026 biomes, 768×1536 for the owner's region art; JPEG (RGB, q95), 1:2 portrait. Named after the STORY.md region, numbered from 01.
 - **Mean luminance 0.25–0.50**, so units and UI always read on top (today 0.29 for city ruins to 0.45 for desert).
 - **One key light from the upper left**, with value falling off toward the bottom where the board sits. Saturation stays below the units' own.
 - Checked by `check_assets` (size, format, value band) and review R10 (light direction, saturation).
 
-**Enforcement.** `tools/check_assets.py` fails on hard breaks: a portrait with no transparency or taller than 640, an icon at the wrong size, or a backdrop that isn't a 720×1440 JPEG. Everything else is printed as an art warning. `tools/polish.py` scores POL-H1 to H4 from the same `art_findings()`.
+**Enforcement.** `tools/check_assets.py` fails on hard breaks: a portrait with no transparency or taller than 640, an icon at the wrong size, or a backdrop that isn't a 1:2 JPEG/PNG at least 1536 tall named `<region>_NN`. Everything else is printed as an art warning. `tools/polish.py` scores POL-H1 to H4 from the same `art_findings()`.
 | POL-H5 | Side-by-side test: a stranger can't pick out "the asset from somewhere else" | Cohesion | Art-direction practice | R10 | ❌ owner: "a collection of random effects" |
 
 

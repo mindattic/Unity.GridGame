@@ -97,13 +97,23 @@ namespace GridGame.App
 
         private static readonly Dictionary<string, BackdropSet> backdropSets = new Dictionary<string, BackdropSet>(System.StringComparer.OrdinalIgnoreCase);
 
-        /// <summary>A background set as found in Resources (GG-T344: counted once, from <c>_01</c>, or the legacy <c>_0</c>).</summary>
+        /// <summary>A background set as found in Resources (GG-T344: counted once, from <c>_01</c>, or the legacy <c>_0</c>).
+        /// GG-T353: each probed image is unloaded again (a full-size backdrop is ~4.5 MB of texture), so counting a set
+        /// doesn't keep all of it resident; the one shown is loaded by <see cref="Background"/>.</summary>
         public static BackdropSet BackgroundSet(string set)
         {
             if (string.IsNullOrEmpty(set)) return new BackdropSet(set, 0, true);
             if (!backdropSets.TryGetValue(set, out var s))
-                backdropSets[set] = s = Backdrops.Probe(set, key => Resources.Load<Texture2D>(key) != null);
+                backdropSets[set] = s = Backdrops.Probe(set, ProbeBackground);
             return s;
+        }
+
+        private static bool ProbeBackground(string key)
+        {
+            var t = Resources.Load<Texture2D>(key);
+            if (t == null) return false;
+            if (!cache.ContainsKey(key)) Resources.UnloadAsset(t);
+            return true;
         }
 
         /// <summary>A theme's <paramref name="index"/>th backdrop from its campaign <c>Backgrounds</c> set (else the theme id),

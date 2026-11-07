@@ -84,15 +84,19 @@ namespace GridGame.Tests
             Assert.That(Resolve("still", 6), Is.EqualTo("Backgrounds/still_01"));
             Assert.That(Resolve("still", -1), Is.EqualTo("Backgrounds/still_06"));
 
-            var cave = Probe("cave");
-            Assert.That((cave.Count, cave.Padded), Is.EqualTo((4, false)), "a legacy unpadded set still loads until GG-T353 renames it");
-            Assert.That(Resolve("cave", 5), Is.EqualTo("Backgrounds/cave_1"), "a four-image theme wraps as before");
-            Assert.That(Resolve("cave2", 1), Is.EqualTo("Backgrounds/cave_1"), "a postgame theme borrows its base theme's art");
-            Assert.That(Resolve("nowhere", 2), Is.EqualTo("Backgrounds/greenvalley_2"), "an unknown theme falls to the default theme's set");
-            Assert.That(Resolve(null, 0), Is.EqualTo("Backgrounds/greenvalley_0"));
+            // GG-T353 renamed the first five themes' sets after their regions (cave -> anchorwastes_01..04).
+            Assert.That(Resolve("cave", 5), Is.EqualTo("Backgrounds/anchorwastes_02"), "a four-image set wraps at four");
+            Assert.That(Resolve("cave2", 1), Is.EqualTo("Backgrounds/anchorwastes_02"), "a postgame theme borrows its base theme's art");
+            Assert.That(Resolve("nowhere", 2), Is.EqualTo("Backgrounds/tithemoors_03"), "an unknown theme falls to the default theme's set");
+            Assert.That(Resolve(null, 0), Is.EqualTo("Backgrounds/tithemoors_01"));
+            Assert.That(OnDisk(Backdrops.Fallback), "the last-resort backdrop exists");
             Assert.That(Backdrops.Resolve("x", 0, _ => default(BackdropSet)), Is.EqualTo(Backdrops.Fallback), "no art at all");
 
-            // A renamed set (what GG-T353 will do, e.g. greenvalley -> tithemoors_01..) resolves through the theme's set name.
+            // A legacy unpadded set (<set>_0 ..) still resolves, though no file uses that numbering any more.
+            var legacy = new HashSet<string> { "Backgrounds/old_0", "Backgrounds/old_1" };
+            Assert.That(Backdrops.Resolve("old", 3, set => Backdrops.Probe(set, legacy.Contains)), Is.EqualTo("Backgrounds/old_1"));
+
+            // A theme's set name maps it onto differently named files.
             var renamed = new HashSet<string> { "Backgrounds/tithemoors_01", "Backgrounds/tithemoors_02" };
             Assert.That(Backdrops.Resolve("greenvalley", 3, set => Backdrops.Probe(set, renamed.Contains), t => t == "greenvalley" ? "tithemoors" : t),
                 Is.EqualTo("Backgrounds/tithemoors_02"));

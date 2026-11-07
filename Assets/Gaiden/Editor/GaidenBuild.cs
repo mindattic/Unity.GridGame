@@ -126,7 +126,9 @@ namespace GridGame.EditorTools
             ti.sRGBTexture = true;
             ti.textureCompression = TextureImporterCompression.CompressedHQ;
             if (assetPath.Contains("/Portraits/")) ti.maxTextureSize = 1024;
-            else if (assetPath.Contains("/Backgrounds/")) ti.maxTextureSize = 2048;
+            // GG-T353: backdrops keep the art's resolution (1536x3072 originals): 4096 so Unity never halves them.
+            // Still CompressedHQ (BC7 / ASTC 4x4, ~1 byte per pixel, no mips): ~4.5 MB of texture memory each.
+            else if (assetPath.Contains("/Backgrounds/")) ti.maxTextureSize = 4096;
             else if (assetPath.Contains("/Icons/")) { ti.maxTextureSize = 128; ti.textureCompression = TextureImporterCompression.Uncompressed; }
         }
 

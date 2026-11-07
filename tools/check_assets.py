@@ -18,7 +18,7 @@ SIDE_MARGIN = 0.08           # POL-H1 (warning only): transparent margin left/ri
 PROPS = {"bonepile", "corpse", "gravestone"}
 ICON_PX, ICON_GRID, ICON_COLORS = 88, 22, 9   # POL-H2: 22x22 pixel art at x4, 8 colours + outline
 UI_ICON_PX = 64
-BACKDROP_SIZE = (720, 1440)  # POL-H3
+BACKDROP_MIN_H = 1536         # POL-H3 (GG-T353): a 1:2 portrait backdrop at the art's own resolution, never downscaled
 BACKDROP_MEAN = (0.25, 0.50) # POL-H3: mean luminance band shared by every backdrop
 DIALOGUE_FIGURE_PX = 1200    # POL-H4: DialogueScreen.FigureHeight, the largest a portrait is drawn
 
@@ -74,8 +74,11 @@ def art_findings():
             continue
         im = Image.open(f)
         why, hard = [], False
-        if not f.lower().endswith(".jpg") or im.size != BACKDROP_SIZE:
-            why.append(f"{os.path.splitext(f)[1]} {im.size[0]}x{im.size[1]}, not a {BACKDROP_SIZE[0]}x{BACKDROP_SIZE[1]} JPEG"); hard = True
+        w, h = im.size
+        if not f.lower().endswith((".jpg", ".png")) or w * 2 != h or h < BACKDROP_MIN_H:
+            why.append(f"{os.path.splitext(f)[1]} {w}x{h}, not a 1:2 JPEG/PNG at least {BACKDROP_MIN_H} tall"); hard = True
+        if not re.fullmatch(r"[a-z]+_\d\d\.(jpg|png)", os.path.basename(f)):
+            why.append("not named <region>_NN (owner rule, GG-T353)"); hard = True
         mean = ImageStat.Stat(im.convert("L")).mean[0] / 255
         if not BACKDROP_MEAN[0] <= mean <= BACKDROP_MEAN[1]:
             why.append(f"mean luminance {mean:.2f} outside {BACKDROP_MEAN[0]}-{BACKDROP_MEAN[1]}")

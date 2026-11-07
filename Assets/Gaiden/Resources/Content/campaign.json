@@ -15,6 +15,7 @@
       "Id": "greenvalley",
       "MilestoneReward": "tome_regenerate",
       "Name": "The Tithe Moors",
+      "Backgrounds": "tithemoors",
       "Crawl": "Grey-green moss country, cut by stone walls older than the Concord and dotted with the white domes of the Stills. Morrow sits on the horizon like a second sky.\n\nYou have a stolen caravan, a head start measured in hours, and a ledger you were never meant to see: Saltmoss's quota, in the Concord's own neat hand. The tithe-takers took three times that.\n\nThe moor roads aren't empty. Wolves run thin and bold under a full Morrow. Redline gangers sell tithe-exemption tokens at every crossroads. Hold militia patrol in green hoods for whoever pays them. And down every road, shuffling toward the nearest dome, come the Hollow in their white shrouds.\n\nSomewhere behind you rides the Captain, who sold these holds to the Concord, and who has come to drag the runaways home.\n\nKeep the wagons rolling.",
       "Stages": [
         "greenvalley-01",
@@ -26,6 +27,7 @@
       "Id": "desert",
       "MilestoneReward": "tome_thorns",
       "Name": "The Shardfall",
+      "Backgrounds": "shardfall",
       "Crawl": "South of the moors the grass gives out and the ground turns red. This is where the pieces of Morrow came down.\n\nMoon-shards jut from the sand like tusks, taller than towers, curved and pale. Where they crack, red water bleeds out into red rivers -- and where the rivers run, the Ember wakes.\n\nThe Infernalists walk here in black armour and long red capes. They call the Nearing a homecoming and the Anchors a cage. Whatever drinks from their rivers comes back as something else.\n\nAnd out in the dunes, the Concord is digging. Shield-walkers guard a cut into the biggest shard, and the Choir's packs fill as fast as the drills can turn.\n\nThe shards aren't stone. They're full of aether, packed tight as honey in a comb.\n\nWhich raises a question nobody on this crew wants to ask out loud.",
       "Stages": [
         "desert-01",
@@ -37,6 +39,7 @@
       "Id": "swamp",
       "MilestoneReward": "tome_poison_ward",
       "Name": "The Arkgrave",
+      "Backgrounds": "arkgrave",
       "Crawl": "The road west drops into fog -- warm, golden, smelling of rot and old varnish. Out of it rise the ribs of ships the size of towns.\n\nThese were the Arks, built to carry a whole city out of Morrow's reach. Every child is told they fell because the pull was too strong.\n\nThe fen-dark live among the wrecks now. Hags and Hexes, Choir runaways who learned to sing aether the wrong way round. Shamblers in the reeds. And the crew of the Ark Long Patience, whose captain refused to let his ship die and kept himself instead.\n\nThe ships' logs are still aboard, if you can read wet ink. They tell a different story from the one the children get.\n\nAt the heart of the fen waits the drowned Ark's pilot, who has been part of the swamp so long that the swamp answers to her.",
       "Stages": [
         "swamp-01",
@@ -48,6 +51,7 @@
       "Id": "cave",
       "MilestoneReward": "tome_lifesteal",
       "Name": "The Anchor Wastes",
+      "Backgrounds": "anchorwastes",
       "Crawl": "North of the last hold the world goes white. Across the ice stand the Anchors -- stone arches bigger than mountains, humming so deep you feel it in your teeth.\n\nThey were raised to push Morrow back. They still do, a little, as long as they're fed.\n\nThe Anchor Watch still walk their posts: knights sworn to guard the arches forever, kept going by the leaking aether long after they should have died. Where an arch leaks worst, Void Sentinels gather out of the smoke. And pale vat-giants, grown in the Stills, tend the stones because nothing born survives the cold.\n\nFrom the crown of every arch, a beam of light runs south, all the way to Halcyon.\n\nWatch how much of that light the Anchors keep. Then watch how much keeps going.",
       "Stages": [
         "cave-01",
@@ -71,6 +75,7 @@
       "Id": "cityruins",
       "MilestoneReward": "tome_double_attack",
       "Name": "Halcyon",
+      "Backgrounds": "halcyon",
       "Crawl": "Out of the Still's back gate and up into the Spire City: neon under a pink sky, towers stacked on towers, and above them all the Hierarch's spire, drinking the beams that run north to the Anchors.\n\nThe tithe ends up here. Most of it, anyway.\n\nThe Bulwark patrols the streets in white power armour. The Choir sings from every balcony. The Kiln Guard -- porcelain knights who crack instead of bleeding -- hold the spire stairs, and the Still's clocks are still making everyone late.\n\nBut Halcyon has an underspire, and the Street has been dodging the tithe down there for two hundred years. They know the back stairs.\n\nThe Hierarch has worn the same young face for two centuries, on other people's lives.\n\nUp the spire. Break the reservoir. Give it back.",
       "Stages": [
         "cityruins-01",

@@ -7,7 +7,12 @@ Produces (under Assets/Gaiden/Resources/):
   Portraits/<classId>.png    full-body art, max 640 px tall: the one image per unit. Every thumbnail (board token,
                              timeline icon, cards) is a zoom + offset into it, kept in classes.json as the class's
                              "Thumbnail" and framed in tools/ThumbnailStudio (GG-T220) - no thumb images are cut.
-  Backgrounds/<theme>_<n>.jpg 720x1440 biome backdrops (stage themes mapped to biome folders)
+  Backgrounds/<set>_<NN>.jpg every GridGame2026 biome backdrop at its original resolution (1536x3072), JPEG q95
+                             (PNG if it had transparency), named after its STORY.md region and numbered from 01
+                             (owner 2026-11-07, GG-T353: "make sure the source files for the Backgrounds all get
+                             proper naming to identify them to their world lore counterparts"). Biome folder -> set in
+                             BIOME_SET; campaign.json names each theme's set ("Backgrounds": "tithemoors"). Byte-
+                             identical duplicates are skipped; a new file gets a .meta from an existing backdrop's.
   Icons/<Key>.png            ability icons (64x64)
   Tiles/tile.png             the original board tile (checkerboard tint applied in BoardView)
   Audio/Sfx/*.ogg|wav, Audio/Music/*.mp3
@@ -24,12 +29,14 @@ from PIL import Image
 ROOT = os.path.dirname(os.path.dirname(os.path.abspath(__file__)))
 RES = os.path.join(ROOT, "Assets", "Gaiden", "Resources")
 
-THEME_BIOME = {
-    "greenvalley": "Moors",
-    "desert": "RedThorns",
-    "swamp": "ElectricWasteland",
-    "cave": "UnderTheBridge",
-    "cityruins": "CyberNecropolis",
+# GridGame2026 biome folder -> background set (its STORY.md region; GG-T353). The campaign theme that shows it, in
+# campaign.json "Backgrounds": greenvalley, desert, swamp, cave, cityruins (their postgame themes borrow the same set).
+BIOME_SET = {
+    "Moors": "tithemoors",
+    "RedThorns": "shardfall",
+    "ElectricWasteland": "arkgrave",
+    "UnderTheBridge": "anchorwastes",
+    "CyberNecropolis": "halcyon",
 }
 
 SFX_KEEP_PREFIXES = (
@@ -73,14 +80,37 @@ def import_portraits(src, classes):
 
 
 def import_backgrounds(src):
+    """Every biome backdrop, full size, as Backgrounds/<set>_01.. (see the module docstring). No resize: the art's
+    resolution is the asset's (owner rule, GG-T344/GG-T353); GaidenBuild caps Backgrounds at 4096 so Unity keeps it."""
+    import hashlib, re, uuid
     out = ensure(os.path.join(RES, "Backgrounds"))
-    for theme, biome in THEME_BIOME.items():
+    template = next((os.path.join(out, f) for f in sorted(os.listdir(out)) if f.endswith(".jpg.meta")), None)
+    for biome, set_name in BIOME_SET.items():
         folder = os.path.join(src, "Sprites", "Backgrounds", biome)
-        files = sorted(f for f in os.listdir(folder) if f.endswith(".png"))[:4]
-        for i, f in enumerate(files):
-            im = Image.open(os.path.join(folder, f)).convert("RGB")
-            im = im.resize((720, 1440), Image.LANCZOS)
-            im.save(os.path.join(out, f"{theme}_{i}.jpg"), quality=86, optimize=True)
+        seen, n = set(), 0
+        for f in sorted(f for f in os.listdir(folder) if f.endswith(".png")):
+            path = os.path.join(folder, f)
+            digest = hashlib.md5(open(path, "rb").read()).hexdigest()
+            if digest in seen:
+                print(f"  {biome}/{f}: a byte-identical duplicate, skipped")
+                continue
+            seen.add(digest)
+            n += 1
+            im = Image.open(path)
+            alpha = im.mode in ("RGBA", "LA", "PA") or "transparency" in im.info
+            if alpha and im.convert("RGBA").getchannel("A").getextrema()[0] == 255:
+                alpha = False
+            dest = os.path.join(out, f"{set_name}_{n:02d}." + ("png" if alpha else "jpg"))
+            if alpha:
+                im.convert("RGBA").save(dest, optimize=True)
+            else:
+                im.convert("RGB").save(dest, quality=95, subsampling=0, optimize=True)
+            if template and not os.path.exists(dest + ".meta"):
+                meta = open(template, encoding="utf-8").read()
+                meta = re.sub(r"(?m)^guid: [0-9a-f]{32}$", "guid: " + uuid.uuid4().hex, meta)
+                meta = re.sub(r"maxTextureSize: \d+", "maxTextureSize: 4096", meta)
+                open(dest + ".meta", "w", encoding="utf-8", newline="\n").write(meta)
+        print(f"  {biome} -> {set_name}_01..{n:02d}")
     print("  backgrounds done")
 
 
