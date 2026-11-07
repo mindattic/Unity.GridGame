@@ -265,6 +265,23 @@ namespace GridGame.Core.Battle
         /// <summary>GG-T318: is this turn icon off the bar, recovering after its last action?</summary>
         public static bool InRecovery(TimelineEntry e) => e.Kind == TimelineKind.Turn && e.RecoverTicks > 0;
 
+        /// <summary>GG-T319: recovery ticks left <paramref name="ticks"/> from now (a Frozen owner's recovery holds).</summary>
+        public static int RecoverTicksAfter(BattleState s, TimelineEntry e, int ticks)
+        {
+            if (e.Kind != TimelineKind.Turn || e.RecoverTicks <= 0) return 0;
+            var u = s.UnitById(e.OwnerId);
+            if (u == null || !u.Alive || u.IsTimelineHalted) return e.RecoverTicks;
+            return System.Math.Max(0, e.RecoverTicks - System.Math.Max(0, ticks));
+        }
+
+        /// <summary>GG-T319: where on the bar a recovering icon will re-enter (u of its entry: stun and the trip from its Ip,
+        /// recovery excluded). For an icon already on the bar this is just <see cref="BarU"/>.</summary>
+        public static float EntryBarU(BattleState s, TimelineEntry e)
+        {
+            int t = TicksUntilAct(s, e, ignoreHalt: true);
+            return t < 0 ? 1f : UForTicks(System.Math.Max(0, t - System.Math.Max(0, e.Kind == TimelineKind.Turn ? e.RecoverTicks : 0)));
+        }
+
         /// <summary>Seconds until this icon (turn or cast) acts at today's rates; +∞ when it never will (gone/Frozen).</summary>
         public static float SecondsUntilAct(BattleState s, TimelineEntry e)
         {

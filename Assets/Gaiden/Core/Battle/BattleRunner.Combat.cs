@@ -513,7 +513,7 @@ namespace GridGame.Core.Battle
             if (entry != null)
             {
                 float from = BattleEngine.BarU(S, entry);
-                if (entry.RecoverTicks > 0) entry.RecoverTicks += ticks; // GG-T318: still off the bar, so it recovers longer and its entry keeps reading its Speed
+                if (entry.RecoverTicks > 0) { entry.RecoverTicks += ticks; entry.RecoverTotalTicks += ticks; } // GG-T318: still off the bar, so it recovers longer and its entry keeps reading its Speed
                 else
                 {
                     int rate = BattleEngine.TurnRatePerTick(S, target);

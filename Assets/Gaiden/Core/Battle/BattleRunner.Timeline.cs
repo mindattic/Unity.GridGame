@@ -163,6 +163,7 @@ namespace GridGame.Core.Battle
                 recover += TimelineSpacing.Delay(recover + travel, others, SecondsAsTicks(row.MinGapSeconds), SecondsAsTicks(row.MaxSpreadSeconds));
             }
             e.RecoverTicks = recover;
+            e.RecoverTotalTicks = recover;
         }
 
         private static bool Earlier(TimelineEntry a, TimelineEntry b)
