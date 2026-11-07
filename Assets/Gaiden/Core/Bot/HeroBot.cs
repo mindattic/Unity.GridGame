@@ -675,8 +675,10 @@ namespace GridGame.Core.Bot
                 foreach (var t in targets)
                 {
                     int left = t.Team == Team.Enemy && !t.HasBuff(slow.Id) ? BattleEngine.TicksUntilTurn(s, t.Id) : -1;
+                    var te = s.TurnEntryOf(t.Id);
+                    if (left > 0 && te != null) left -= Math.Max(0, te.RecoverTicks) + Math.Max(0, te.StunTicks); // only time on the bar is slowed (GG-T318)
                     if (left <= 0) continue;
-                    pushed.Add(t.Id); // a Slow stretches the foe's remaining ticks by 1/mult − 1
+                    pushed.Add(t.Id); // a Slow stretches the foe's remaining ticks on the bar by 1/mult − 1
                     push = Math.Max(push, (int)(left * (1f / slow.TimelineSpeedMultiplier - 1f)));
                 }
             int gain = WindowGainTicks(s, pushed, push);

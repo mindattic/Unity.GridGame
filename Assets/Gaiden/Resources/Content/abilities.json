@@ -494,6 +494,7 @@
  },
  {
   "Id": "charge_fireball",
+  "RecoverSeconds": 1.5,
   "Name": "Fireball",
   "Description": "A telegraphed Fireball charge.",
   "Kind": "Spell",
@@ -523,6 +524,7 @@
  },
  {
   "Id": "charge_ice",
+  "RecoverSeconds": 1.0,
   "Name": "Ice",
   "Description": "A telegraphed Ice charge.",
   "Kind": "Spell",
@@ -552,6 +554,7 @@
  },
  {
   "Id": "charge_thunder",
+  "RecoverSeconds": 1.0,
   "Name": "Thunder",
   "Description": "A telegraphed Thunder charge.",
   "Kind": "Spell",
@@ -581,6 +584,7 @@
  },
  {
   "Id": "charge_smite",
+  "RecoverSeconds": 0.5,
   "Name": "Smite",
   "Description": "A telegraphed Smite charge; it rests a turn between charges.",
   "Kind": "Spell",
@@ -2576,6 +2580,7 @@
  },
  {
   "Id": "enrage",
+  "RecoverSeconds": 1.0,
   "Name": "Enrage",
   "Description": "Boss phase transition: hastens its own timeline icon 0.35u.",
   "Kind": "Skill",
@@ -2691,6 +2696,7 @@
  },
  {
   "Id": "charge_rally",
+  "RecoverSeconds": 0.5,
   "Name": "Rally",
   "Description": "A battle cry: allies within 2 tiles gain [Protection].",
   "Kind": "Spell",
@@ -2719,6 +2725,7 @@
  },
  {
   "Id": "charge_mend",
+  "RecoverSeconds": 0.5,
   "Name": "Mend",
   "Description": "Heals the most wounded ally for 30.",
   "Kind": "Spell",
@@ -2747,6 +2754,7 @@
  },
  {
   "Id": "charge_miasma",
+  "RecoverSeconds": 1.0,
   "Name": "Poison Cloud",
   "Description": "A choking cloud poisons every hero in a 3×3 area.",
   "Kind": "Spell",
@@ -8370,6 +8378,7 @@
  },
  {
   "Id": "charge_temporal_drag",
+  "RecoverSeconds": 1.5,
   "Name": "Temporal Drag",
   "Description": "Charges, then drags the whole party's time: 4 Arcane to every hero and Slowed (2 turns), which costs the party 1 tempo so every foe's turn comes sooner. Hit the caster while it charges to stagger and interrupt it; cleanse Slowed or stack haste to win the tempo back.",
   "Kind": "Spell",

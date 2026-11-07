@@ -112,6 +112,28 @@ namespace GridGame.Tests
             Assert.That(problems.Any(p => p.Contains("shove_time") && p.Contains("RecoverSeconds")), Is.False);
         }
 
+        [Test]
+        public void Shipped_heavy_charges_recover_longer_and_validate()
+        {
+            var real = TestKit.Real;
+            Assert.That(ContentLoader.Validate(real).Where(p => p.Contains("RecoverSeconds")), Is.Empty);
+            foreach (var id in new[] { "charge_fireball", "charge_temporal_drag", "charge_miasma", "charge_thunder", "charge_ice" })
+                Assert.That(real.Abilities[id].RecoverSeconds, Is.GreaterThanOrEqualTo(1f), id);
+            Assert.That(real.Abilities["charge_howl"].RecoverSeconds, Is.EqualTo(0f), "a wolf pack keeps its pressure");
+        }
+
+        [Test]
+        public void A_heavy_charge_adds_its_recovery_to_the_casters_turn()
+        {
+            var db = Db();
+            db.Abilities["charge_bolt"].RecoverSeconds = 1.5f;
+            var (s, _) = Battle(db, Stage(("witch", 2, 0)), ("knight", 5, 7), ("cleric", 0, 7));
+            var witch = Of(s, "witch");
+            var ev = BattleEngine.Apply(s, new ShieldCommand());
+            Assert.That(ev.Any(e => e is CastQueuedEvent q && q.IsCharge), Is.True, "the witch winds up its charge");
+            Assert.That(s.TurnEntryOf(witch.Id).RecoverTicks, Is.EqualTo(BattleEngine.NeedTicks(BattleConfig.RecoverBaseSeconds + 1.5f)));
+        }
+
         // ── The spacer (pure) ────────────────────────────────────────────────────
 
         [Test]
