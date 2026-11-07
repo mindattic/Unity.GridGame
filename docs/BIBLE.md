@@ -2036,6 +2036,28 @@ elite guardian, and the first enemy to use the Line charge built in §13.4.
   charge, 175 landed and caught 71 heroes: most beams hit an empty line because a hero had moved off it.
 - *(Tests: `VoidSentinelTests`.)*
 
+### 14.13 The Lich (added 2026-11-07, owner art, GG-T331)
+
+The last captain of the Ark *Long Patience*, who refused to let his ship die and kept himself instead (docs/STORY.md
+§3.5). A boss caster for the Arkgrave.
+
+- **Class.** `lich`: `Undead`, `Sentient`, `Caster`, `Boss`. Speed 11, INT 18, WIS 16, frail body (VIT 14). Commander
+  brain (keeps ~3 tiles back with an ally between it and the party), Weakest targeting, shoots 3. Resists Dark (×0.5),
+  weak to Holy (×1.75); Poison Ward and Steadfast. Not tameable and not a Crucible family (it has boss phases).
+- **Soulfire** (`charge_soulfire`): a 2.5 s charge on a 3×3 around its target: 6 Dark to every hero inside and a 50%
+  [Burning]; recovers 1.5 s. Spread out, or interrupt it.
+- **Soul Harvest** (`lich_soul_harvest`, boss phase at 50%): once, 5 Dark to every hero, and it heals 6 per hero touched.
+  Enemy-only (`MetaServices` `EnemyOnly`), like Enrage and Rewind.
+- **The grave.** `Remains: gravestone` (§14.5): when it falls it leaves a grave, and left standing the grave raises it on
+  its third turn. That is the phylactery, with no new code. A risen Lich enters its harvest phase again.
+- **Support:** *Soul Echo*, Cast its Soulfire at 50% power, reach 2.
+- **Placement.** Arkgrave I (`swamp-01`) finale, wave 5: the Lich behind a marsh shambler, in place of a lurker. Casual
+  bot, 24 seeds, campaign parties: 10/24 with it, 13/24 without. The waves before it are unchanged: 14 runs reached
+  wave 5 both times, and the casual bot beat the Lich in 10 of its 14 tries (13 of 14 against the old wave). Smart bot
+  24/24 both. The first cut (8 Dark, Burning every hit) took the stage to 8/24; Burning alone was more damage than the
+  Lich's own spells. The casual bot let it rise from the grave 3 times in 24 battles.
+- *(Tests: `LichTests`.)*
+
 ## 15. Save
 
 ### 15.1 Data model

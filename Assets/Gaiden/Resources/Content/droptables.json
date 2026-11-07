@@ -2590,5 +2590,78 @@
         "Max": 1
       }
     ]
+  },
+  {
+    "Id": "lich",
+    "CoinsMin": 0,
+    "CoinsMax": 0,
+    "Entries": [
+      {
+        "Item": "mat_undead_bone",
+        "Chance": 0.6,
+        "Min": 1,
+        "Max": 3
+      },
+      {
+        "Item": "mat_essence_shadow",
+        "Chance": 0.3,
+        "Min": 1,
+        "Max": 1
+      },
+      {
+        "Item": "mat_arcane_dust",
+        "Chance": 0.6,
+        "Min": 1,
+        "Max": 3
+      },
+      {
+        "Item": "mat_tattered_cloth",
+        "Chance": 0.4,
+        "Min": 1,
+        "Max": 2
+      },
+      {
+        "Item": "eq_skullstaff_grave",
+        "Chance": 0.06,
+        "Min": 1,
+        "Max": 1
+      },
+      {
+        "Item": "eq_scepter_bone",
+        "Chance": 0.05,
+        "Min": 1,
+        "Max": 1
+      },
+      {
+        "Item": "eq_bonewarden_torso",
+        "Chance": 0.05,
+        "Min": 1,
+        "Max": 1
+      },
+      {
+        "Item": "eq_amulet_nightshade",
+        "Chance": 0.03,
+        "Min": 1,
+        "Max": 1
+      },
+      {
+        "Item": "chest_wooden",
+        "Chance": 0.015,
+        "Min": 1,
+        "Max": 1
+      },
+      {
+        "Item": "chest_iron",
+        "Chance": 0.25,
+        "Min": 1,
+        "Max": 1
+      },
+      {
+        "Item": "tome_poison_ward",
+        "Chance": 0.2,
+        "Min": 1,
+        "Max": 1
+      }
+    ]
   }
 ]

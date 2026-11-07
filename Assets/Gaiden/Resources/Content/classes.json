@@ -23389,5 +23389,146 @@
     "SnakeSegments": 0,
     "Brain": "Guardian",
     "ArmorPlate": 20
+  },
+  {
+    "Id": "lich",
+    "Name": "Lich",
+    "Team": "Enemy",
+    "Tags": [
+      "Undead",
+      "Sentient",
+      "Caster",
+      "Boss"
+    ],
+    "Description": "A deathless captain who rains soulfire from behind his crew, drains the party when cornered, and leaves a grave that raises him again.",
+    "Lore": "The last captain of the Ark Long Patience. When his ship came down he refused to let it die, and kept himself instead.",
+    "Card": "Charges [Soulfire] on a 3×3 that [Burns]: spread out or [Interrupt] it. At half HP it harvests every hero to heal. It falls into a grave: smash the grave, or it rises again.",
+    "Portrait": "lich",
+    "Thumbnail": {
+      "Zoom": 2.4,
+      "X": 0.5,
+      "Y": 0.15
+    },
+    "Footprint": {
+      "W": 1,
+      "H": 1
+    },
+    "Support": {
+      "Effect": "Cast",
+      "Magnitude": 0.5,
+      "Target": "Attacker",
+      "Range": 2,
+      "Label": "Soul Echo"
+    },
+    "BaseStats": {
+      "Strength": 9,
+      "Vitality": 14,
+      "Agility": 10,
+      "Speed": 11,
+      "Stamina": 12,
+      "Intelligence": 18,
+      "Wisdom": 16,
+      "Luck": 10
+    },
+    "Growth": {
+      "Strength": 0.5,
+      "Vitality": 0.8,
+      "Agility": 0.55,
+      "Speed": 0.7,
+      "Stamina": 0.7,
+      "Intelligence": 0.95,
+      "Wisdom": 0.85,
+      "Luck": 0.55
+    },
+    "Milestones": [
+      {
+        "Level": 5,
+        "Growth": {
+          "Strength": 0.17,
+          "Vitality": 0.28,
+          "Agility": 0.19,
+          "Speed": 0.24,
+          "Stamina": 0.24,
+          "Intelligence": 0.33,
+          "Wisdom": 0.3,
+          "Luck": 0.19
+        }
+      },
+      {
+        "Level": 10,
+        "Growth": {
+          "Strength": 0.23,
+          "Vitality": 0.36,
+          "Agility": 0.25,
+          "Speed": 0.32,
+          "Stamina": 0.32,
+          "Intelligence": 0.43,
+          "Wisdom": 0.38,
+          "Luck": 0.25
+        }
+      },
+      {
+        "Level": 20,
+        "Growth": {
+          "Strength": 0.3,
+          "Vitality": 0.48,
+          "Agility": 0.33,
+          "Speed": 0.42,
+          "Stamina": 0.42,
+          "Intelligence": 0.57,
+          "Wisdom": 0.51,
+          "Luck": 0.33
+        }
+      },
+      {
+        "Level": 40,
+        "Growth": {
+          "Strength": 0.4,
+          "Vitality": 0.64,
+          "Agility": 0.44,
+          "Speed": 0.56,
+          "Stamina": 0.56,
+          "Intelligence": 0.76,
+          "Wisdom": 0.68,
+          "Luck": 0.44
+        }
+      }
+    ],
+    "Resistances": {
+      "Dark": 0.5,
+      "Holy": 1.75
+    },
+    "Abilities": [
+      "charge_soulfire",
+      "lich_soul_harvest",
+      "poison_ward",
+      "steadfast"
+    ],
+    "DefaultLoadout": [],
+    "DropTable": "lich",
+    "MoveRange": 1,
+    "Targeting": "Weakest",
+    "AttackRange": 3,
+    "XpReward": 30,
+    "BossPhases": [
+      {
+        "HpThreshold": 1.0,
+        "PrefersCharge": false,
+        "OnEnterAbility": null,
+        "Announce": "The Lich"
+      },
+      {
+        "HpThreshold": 0.5,
+        "PrefersCharge": false,
+        "OnEnterAbility": "lich_soul_harvest",
+        "Announce": "The Lich harvests your souls!"
+      }
+    ],
+    "ChargeAbility": "charge_soulfire",
+    "ChargeShape": "Single",
+    "Trap": null,
+    "SnakeSegments": 0,
+    "Brain": "Commander",
+    "Remains": "gravestone"
   }
 ]

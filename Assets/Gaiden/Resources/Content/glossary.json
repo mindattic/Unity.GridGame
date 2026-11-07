@@ -747,5 +747,12 @@
     "Text": "A Void Sentinel's charge: a beam down a marked line to the board's edge that hits and [Silences] every hero still on it. Step off the line, or [Interrupt] it.",
     "LinkKind": "Ability",
     "LinkId": "charge_void_beam"
+  },
+  {
+    "Id": "soulfire",
+    "Term": "Soulfire",
+    "Text": "The Lich's charge: magenta fire on one hero and every hero in the 3×3 around it, which [Burns] each one hit. Spread out, or [Interrupt] it.",
+    "LinkKind": "Ability",
+    "LinkId": "charge_soulfire"
   }
 ]
