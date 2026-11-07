@@ -44,13 +44,16 @@ namespace GridGame.Tests
 
             db.Pickups["p1"] = new PickupDef { Id = "p1", Name = "Pickup", Weight = 1 };
 
-            db.Classes["goblin"] = new ClassDef { Id = "goblin", Name = "Goblin", Team = Team.Enemy };
+            // Every class needs a Thumbnail and every enemy its own Support (GG-T306/GG-T307 validator rules).
+            db.Classes["goblin"] = new ClassDef { Id = "goblin", Name = "Goblin", Team = Team.Enemy, Thumbnail = new Thumbnail(), Support = Heal() };
 
             db.Classes["boss"] = new ClassDef
             {
                 Id = "boss",
                 Name = "Boss",
                 Team = Team.Enemy,
+                Thumbnail = new Thumbnail(),
+                Support = Heal(),
                 ChargeAbility = "bolt",
                 Trap = "spike",
                 Trail = "spike",
@@ -65,6 +68,7 @@ namespace GridGame.Tests
                 Name = "Knight",
                 Team = Team.Hero,
                 Role = "Tank",
+                Thumbnail = new Thumbnail(),
                 DropTable = "knightdrop",
                 Abilities = { "slash" },
                 DefaultLoadout = { "slash", "item:potion" },
@@ -91,6 +95,8 @@ namespace GridGame.Tests
 
             return db;
         }
+
+        private static SupportDef Heal() => new SupportDef { Effect = SupportEffect.Heal, Magnitude = 0.25f, Target = SupportTarget.Attacker, Range = 3 };
 
         /// <summary>Validates the fixture and asserts it reports exactly one problem, returning it.</summary>
         private static string OneProblem(ContentDb db)

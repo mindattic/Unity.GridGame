@@ -45,8 +45,9 @@ namespace GridGame.Tests
         {
             var db = new ContentDb();
             db.Items["potion"] = new ItemDef { Id = "potion", Name = "Potion", Type = ItemType.Consumable };
-            db.Classes["knight"] = new ClassDef { Id = "knight", Name = "Knight", Team = Team.Hero, Role = "Tank", HomeTree = "t" };
-            db.Classes["goblin"] = new ClassDef { Id = "goblin", Name = "Goblin", Team = Team.Enemy };
+            db.Classes["knight"] = new ClassDef { Id = "knight", Name = "Knight", Team = Team.Hero, Role = "Tank", HomeTree = "t", Thumbnail = new Thumbnail() };
+            db.Classes["goblin"] = new ClassDef { Id = "goblin", Name = "Goblin", Team = Team.Enemy, Thumbnail = new Thumbnail(),
+                Support = new SupportDef { Effect = SupportEffect.Heal, Magnitude = 0.25f, Target = SupportTarget.Attacker, Range = 3 } };
             db.SkillTrees["t"] = new SkillTreeDef { Id = "t", Name = "T" };
             db.Campaign.Themes.Add(new ThemeDef { Id = "vale", Name = "Vale" });
             db.Dialogues[d.Id] = d;

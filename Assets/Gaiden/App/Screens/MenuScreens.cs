@@ -476,7 +476,7 @@ namespace GridGame.App
                     var u = Progression.Preview(c, h);
                     var card = Ui.El("card", row);
                     card.name = "camp-hero-" + id;
-                    // Two cards split the row exactly in half; a lone trailing card (an odd party size) fills it.
+                    // Two cards split the row exactly in half; a lone trailing card keeps its half (a hidden twin, below).
                     card.style.flexGrow = 1; card.style.flexShrink = 1; card.style.flexBasis = Length.Percent(0);
                     card.style.marginTop = card.style.marginBottom = card.style.marginLeft = card.style.marginRight = Space.TargetHalfGap;
                     card.style.paddingTop = card.style.paddingBottom = card.style.paddingLeft = card.style.paddingRight = Space.S8;
@@ -494,6 +494,16 @@ namespace GridGame.App
                     Ui.Gauge(hp / (float)u.MaxHp, info, 300).style.marginTop = Space.S8;
                     Ui.Text($"{hp}/{u.MaxHp}", "small dim", info);
                     MercenaryCamp.Tag(s, id, info);
+                    if (j == ids.Count - 1 && ids.Count % 2 == 1)
+                    {
+                        // An odd party's last card keeps its half of the row: an invisible twin holds the other half, so
+                        // the window stays a 2-column grid with even gutters (POL-C8) at every party size.
+                        var spacer = Ui.El("card", row);
+                        spacer.style.flexGrow = 1; spacer.style.flexShrink = 1; spacer.style.flexBasis = Length.Percent(0);
+                        spacer.style.marginTop = spacer.style.marginBottom = spacer.style.marginLeft = spacer.style.marginRight = Space.TargetHalfGap;
+                        spacer.style.visibility = Visibility.Hidden;
+                        spacer.pickingMode = PickingMode.Ignore;
+                    }
                     card.AddToClassList("card-tap");
                     Ui.Tappable(card, () => App.Router.Push(new StatusScreen(id)), "ui.select");
                 }

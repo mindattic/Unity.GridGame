@@ -7,6 +7,7 @@ UI verification gate: drives the real development player through the screens and
 import contextlib
 import json
 import os
+import re
 import sys
 import time
 import traceback
@@ -31,7 +32,14 @@ def texts():
 
 
 def has_text(sub):
-    return any(sub in t for t in texts())
+    # Glossary text (GG-T300) is laid out one element per word, so a phrase may only exist across elements.
+    ts = texts()
+    return any(sub in t for t in ts) or sub in " ".join(ts)
+
+
+def entry_icons(names):
+    """The timeline's turn and cast diamonds (tl-<entry id>), not its ticks, gap lane, slot or tray parts."""
+    return [n for n in names if re.fullmatch(r"tl-\d+", n)]
 
 
 def until(pred, timeout=6.0, step=0.25):
@@ -180,8 +188,11 @@ def main():
         icon = next((h.call("element", name=n) for n in names if n.startswith("tl-")), {})
         tcy = track.get("y", 0) + track.get("h", 0) / 2
         check("timeline track is thin", 0 < track.get("h", 99) <= 8, str(track))
-        check("turn icons sit centred on the timeline line",
-              all(abs(h.call("element", name=n)["y"] + h.call("element", name=n)["h"] / 2 - tcy) < 6 for n in names if n.startswith("tl-")), f"track={track} icon={icon}")
+        # A foe recovering after its turn waits in the tray past the track's end, off the line by design (GG-T319).
+        recovering = {f"tl-{e['Id']}" for e in b.get("timeline", []) if e.get("in_recovery")}
+        off = [(n, h.call("element", name=n)) for n in entry_icons(names) if n not in recovering]
+        off = [(n, e) for n, e in off if abs(e["y"] + e["h"] / 2 - tcy) >= 6]
+        check("turn icons sit centred on the timeline line", bool(entry_icons(names)) and not off, f"track={track} off={off}")
         # Best of three samples over 1.5 s: a sustained low rate still fails, one hitch on a shared machine doesn't.
         samples = []
         for _ in range(3):
@@ -304,10 +315,10 @@ def main():
         st = h.call("style", name=f"buffs-{target['Id']}")
         check("buff shows as a pip on the unit", st.get("children", 0) >= 1, str(st))
 
-    with section("Why isn't it moving? Freeze badge on the tile and on its timeline circle"):
+    with section("Why isn't it moving? Freeze badge on the tile and on its timeline diamond"):
         h.call("buff", unit=target["Id"], id="frozen"); time.sleep(0.3)
         tl = h.call("names", prefix="tl-status-")
-        check("frozen enemy shows a status badge on its timeline circle", len(tl) >= 1, str(tl))
+        check("frozen enemy shows a status badge on its timeline diamond", len(tl) >= 1, str(tl))
         st = h.call("style", name=f"buffs-{target['Id']}")
         check("statuses share one slot on the tile", st.get("children", 0) == 1, str(st))
         seen = set()
@@ -316,8 +327,9 @@ def main():
         check("the status slot flashes through every buff/debuff", len(seen - {None}) >= 2, str(seen))
         names_now = h.call("names", prefix="statuspip-")
         check("status pips are pixel icons (flame, snowflake…)", any(h.call("style", name=n).get("children", 0) >= 1 for n in names_now), str(names_now))
-        disc = h.call("style", name=next((n for n in h.call("names", prefix="tl-") if n[3:].isdigit()), "tl-1"))
-        check("timeline circles are opaque (the line never shows through)", disc.get("background", "").upper().endswith("FF"), str(disc))
+        # GG-T287: an icon is a transparent holder around a rotated diamond face (tl-frame); the face is what must be opaque.
+        face = h.call("style", name="tl-frame")
+        check("timeline diamonds are opaque (the line never shows through)", face.get("background", "").upper().endswith("FF"), str(face))
 
     with section('Power Amplifier marker'):
         # devamp refuses an occupied tile, and earlier sections leave units in varying places: take the first free one.
@@ -332,12 +344,15 @@ def main():
 
     with section('Pending spell: countdown ring on the caster, spell chip on the target, cycling when several'):
         hero = next(u for u in battle_state()["units"] if u["team"] == "Hero")
+        icons_before = set(entry_icons(h.call("names", prefix="tl-")))
         r = h.call("devcast", target=hero["Id"], ability="charge_ice", ticks=40); time.sleep(0.4)
         caster = r.get("caster", -1)
         ring = h.call("element", name=f"castring-{caster}")
         chip = h.call("element", name=f"castchip-{hero['Id']}")
         check("a pending spell rings its caster and marks its target", ring.get("w", 0) > 0 and chip.get("w", 0) > 0, f"{r} {ring} {chip}")
-        check("casts are not drawn on the timeline", not any(n.startswith("tl-") and n[3:].isdigit() and h.call("element", name=n).get("w", 0) == 60 for n in h.call("names", prefix="tl-")))
+        # GG-T287: casts ride the bar as their own diamonds (the old rule "casts are not drawn on the timeline" is gone).
+        new_icons = set(entry_icons(h.call("names", prefix="tl-"))) - icons_before
+        check("a pending spell rides the timeline as a cast diamond", len(new_icons) >= 1, f"{sorted(icons_before)} -> new {sorted(new_icons)}")
         h.call("devcast", target=hero["Id"], ability="charge_fireball", ticks=60); time.sleep(0.2)
         seen = set()
         for _ in range(5):
@@ -349,7 +364,8 @@ def main():
         wait_idle(200)
         h.call("press", x=slot0[0], y=slot0[1], ms=700)
         time.sleep(0.2)
-        check("long-press shows the ability card", any(("Instant" in x) or ("Charges" in x) or ("Skill" in x) or ("Item" in x) for x in texts()))
+        card_words = texts()
+        check("long-press shows the ability card", any(("Instant" in x) or ("Charges" in x) or ("Skill" in x) or ("Item" in x) for x in card_words), str(card_words[-12:]))
         h.call("release"); time.sleep(0.3)
 
     with section('Pause menu'):
