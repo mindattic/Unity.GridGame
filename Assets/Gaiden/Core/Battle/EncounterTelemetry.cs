@@ -192,7 +192,7 @@ namespace GridGame.Core.Battle
                     case RevivedEvent rv:
                         if (heroes.TryGetValue(rv.UnitId, out var revived)) revived.Revives++;
                         break;
-                    case OrbsSpentEvent os: record.ManaSpent += os.Count; break;
+                    case OrbsSpentEvent os: if (!os.Drained) record.ManaSpent += os.Count; break; // GG-T332: a siphon isn't spending
                     case ManaChargedEvent mc: record.ManaCharged += mc.Amount; break;
                     case WeaponShatteredEvent ws:
                         context = "shatter";

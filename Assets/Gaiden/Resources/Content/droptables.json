@@ -2730,5 +2730,78 @@
         "Max": 1
       }
     ]
+  },
+  {
+    "Id": "bulwark",
+    "CoinsMin": 0,
+    "CoinsMax": 0,
+    "Entries": [
+      {
+        "Item": "mat_iron_ore",
+        "Chance": 0.45,
+        "Min": 1,
+        "Max": 2
+      },
+      {
+        "Item": "mat_arcane_dust",
+        "Chance": 0.3,
+        "Min": 1,
+        "Max": 1
+      },
+      {
+        "Item": "mat_cloth",
+        "Chance": 0.2,
+        "Min": 1,
+        "Max": 1
+      },
+      {
+        "Item": "mat_essence_spark",
+        "Chance": 0.1,
+        "Min": 1,
+        "Max": 1
+      },
+      {
+        "Item": "eq_cogwright_head",
+        "Chance": 0.04,
+        "Min": 1,
+        "Max": 1
+      },
+      {
+        "Item": "eq_cogwright_gloves",
+        "Chance": 0.04,
+        "Min": 1,
+        "Max": 1
+      },
+      {
+        "Item": "eq_ring_sentinel",
+        "Chance": 0.03,
+        "Min": 1,
+        "Max": 1
+      },
+      {
+        "Item": "eq_amulet_stormglass",
+        "Chance": 0.015,
+        "Min": 1,
+        "Max": 1
+      },
+      {
+        "Item": "chest_wooden",
+        "Chance": 0.015,
+        "Min": 1,
+        "Max": 1
+      },
+      {
+        "Item": "chest_iron",
+        "Chance": 0.1,
+        "Min": 1,
+        "Max": 1
+      },
+      {
+        "Item": "tome_mana_siphon",
+        "Chance": 0.05,
+        "Min": 1,
+        "Max": 1
+      }
+    ]
   }
 ]

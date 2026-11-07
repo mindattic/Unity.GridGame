@@ -2084,6 +2084,39 @@ three of them carry Infernal Hide (they can't be [Burned]). The family plays one
   STR 14 and VIT 13 and paired with the Zealot instead.
 - *(Tests: `InfernalistTests`.)*
 
+### 14.15 The Bulwark (added 2026-11-07, owner art, GG-T332)
+
+The Pale Concord's soldiers (docs/STORY.md §3.1): white power armour, siege rifles, and an aether pack on every back,
+each pack a portable Still. Four `Sentient` variants, one `bulwark` family, all slow or steady (Speed 8 or 11, re-entering
+≈4.8 s or 4 s out). Sealed suits resist Poison (×0.5); the armour shorts out under Lightning (×1.5). The squad plays
+**hold the line and tithe the party**: a shield-Still wards the soldiers, the rifles and the siege gun shoot from range,
+and the Siphoner drinks the party's orbs.
+
+| Class | Role | Speed / brain / targeting | Kit | Support |
+|---|---|---|---|---|
+| `heavytrooper01` Rifleman | ranged | 11 / Kiter / Squishy, shoots 3 | **Suppressing Fire** (`suppressing_fire`): a landed shot, 30%: [Blinded] | Blind 30%, reach 2 (*Covering Fire*) |
+| `heavytrooper02` Shieldbearer | wall | 8 / Guardian / Threat, plate 30 | **Aegis Field** (`charge_aegis_field`): 2 s charge, [Ward] on every ally within 2 tiles; rests a turn, recovers 0.5 s | Protection on the chain (*Pack Shield*) |
+| `heavytrooper03` Siphoner | tithe | 11 / Kiter / Caster | **Aether Siphon** (`charge_aether_siphon`): 2 s charge on a hero, 4 Arcane, and **an orb leaves the party's bank**; rests a turn, recovers 0.5 s | Haste its attacker 1 s, reach 2 (*Vent Aether*) |
+| `heavytrooper04` Siege Gunner | artillery | 8 / Commander / Threat, plate 24 | **Siege Shot** (`charge_siege_shot`, `ChargeShape: Line`): 3 s charge down a marked line to the board's edge, a Lightning spell on every hero still on it; rests a turn, recovers 2 s | Pushback 0.75 s (*Rail Recoil*) |
+
+- **Engine (small): the siphon.** `AbilityDef.DrainsOrbs` (0–3, validated, only on a `charge_` ability, so a hero can
+  never learn it): when the charge lands on at least one hero (a single target that isn't dodged, or any hero inside an
+  area), `BattleRunner.DrainOrbs` removes up to that many orbs from the party's `ManaBank`, emitting `OrbsSpentEvent`
+  with `Drained` (the bank redraws and the cast cue plays; telemetry doesn't count it as mana spent) and "Siphoned an
+  orb!". An empty bank announces "No aether to take". The smart bot treats a siphon charging while the bank holds orbs
+  like a tempo drain (`HeroBot.ChargesTempoDrain`): worth staggering.
+- **Counterplay** (their cards): spend orbs before a siphon lands, or interrupt it; flank the Shieldbearer and the Siege
+  Gunner off their plates; step off the siege gun's marked line; close on the Rifleman and pincer it; Lightning.
+- **Placement.** Halcyon, where the Concord holds the spire. Halcyon II (`cityruins-02`) wave 3: Shieldbearer, Rifleman
+  and Siphoner in place of two Chromed Hollow. Halcyon III (`cityruins-03`) wave 2: the Siege Gunner beside the lone bat.
+  Casual bot, 24 seeds, campaign parties: cityruins-02 15/24 with them vs 20/24 without (inside the 55–85% band; the
+  losses still come at the reaper's wave 5, with the wounds the squad leaves), cityruins-03 17/24 vs 18/24; smart bot
+  24/24 everywhere. Over the cityruins-02 casual runs the siphon landed 139 times but found orbs in the bank only 37
+  times: the casual bot spends what it earns, which is exactly the counter. The first Shieldbearer also had Tough Hide;
+  plate, Ward and Protection were already a slog, so it was dropped. A two-soldier wave (Shieldbearer and Siphoner, with
+  the Rifleman moved beside the gun) measured 14/24 and cost cityruins-03 three wins.
+- *(Tests: `BulwarkTests`.)*
+
 ## 15. Save
 
 ### 15.1 Data model

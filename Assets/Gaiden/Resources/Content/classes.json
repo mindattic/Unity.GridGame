@@ -24023,5 +24023,497 @@
     "Trap": null,
     "SnakeSegments": 0,
     "Brain": "Duelist"
+  },
+  {
+    "Id": "heavytrooper01",
+    "Name": "Bulwark Rifleman",
+    "Team": "Enemy",
+    "Tags": [
+      "Humanoid",
+      "Sentient"
+    ],
+    "Description": "A white-armoured Concord soldier who keeps three tiles back and fires its siege rifle down any clear line.",
+    "Lore": "The Bulwark: the Pale Concord's soldiers, sealed in white power armour with siege rifles and an aether pack on every back. Each pack is a portable Still; where the Bulwark marches, the tithe comes with it.",
+    "Card": "Shoots straight down a line from up to 3 tiles away, and a shot can [Blind]: close in and [pincer] it. Weak to Lightning.",
+    "Portrait": "heavytrooper01",
+    "Thumbnail": {
+      "Zoom": 2.2,
+      "X": 0.47,
+      "Y": 0.11
+    },
+    "Footprint": {
+      "W": 1,
+      "H": 1
+    },
+    "Support": {
+      "Effect": "Status",
+      "Magnitude": 0.3,
+      "Target": "Attacker",
+      "Range": 2,
+      "Buff": "blinded",
+      "Label": "Covering Fire"
+    },
+    "BaseStats": {
+      "Strength": 13,
+      "Vitality": 12,
+      "Agility": 13,
+      "Speed": 11,
+      "Stamina": 12,
+      "Intelligence": 10,
+      "Wisdom": 10,
+      "Luck": 11
+    },
+    "Growth": {
+      "Strength": 0.8,
+      "Vitality": 0.7,
+      "Agility": 0.75,
+      "Speed": 0.7,
+      "Stamina": 0.7,
+      "Intelligence": 0.5,
+      "Wisdom": 0.5,
+      "Luck": 0.55
+    },
+    "Milestones": [
+      {
+        "Level": 5,
+        "Growth": {
+          "Strength": 0.28,
+          "Vitality": 0.24,
+          "Agility": 0.26,
+          "Speed": 0.24,
+          "Stamina": 0.24,
+          "Intelligence": 0.17,
+          "Wisdom": 0.17,
+          "Luck": 0.19
+        }
+      },
+      {
+        "Level": 10,
+        "Growth": {
+          "Strength": 0.36,
+          "Vitality": 0.32,
+          "Agility": 0.34,
+          "Speed": 0.32,
+          "Stamina": 0.32,
+          "Intelligence": 0.23,
+          "Wisdom": 0.23,
+          "Luck": 0.25
+        }
+      },
+      {
+        "Level": 20,
+        "Growth": {
+          "Strength": 0.48,
+          "Vitality": 0.42,
+          "Agility": 0.45,
+          "Speed": 0.42,
+          "Stamina": 0.42,
+          "Intelligence": 0.3,
+          "Wisdom": 0.3,
+          "Luck": 0.33
+        }
+      },
+      {
+        "Level": 40,
+        "Growth": {
+          "Strength": 0.64,
+          "Vitality": 0.56,
+          "Agility": 0.6,
+          "Speed": 0.56,
+          "Stamina": 0.56,
+          "Intelligence": 0.4,
+          "Wisdom": 0.4,
+          "Luck": 0.44
+        }
+      }
+    ],
+    "Resistances": {
+      "Lightning": 1.5,
+      "Poison": 0.5
+    },
+    "Abilities": [
+      "suppressing_fire"
+    ],
+    "DefaultLoadout": [],
+    "DropTable": "bulwark",
+    "MoveRange": 1,
+    "Targeting": "Squishy",
+    "AttackRange": 3,
+    "XpReward": 14,
+    "BossPhases": [],
+    "ChargeAbility": null,
+    "ChargeShape": "Single",
+    "Trap": null,
+    "SnakeSegments": 0,
+    "Brain": "Kiter"
+  },
+  {
+    "Id": "heavytrooper02",
+    "Name": "Bulwark Shieldbearer",
+    "Team": "Enemy",
+    "Tags": [
+      "Humanoid",
+      "Sentient"
+    ],
+    "Description": "Its aether pack unfolds into a shield-Still that wards every soldier standing near it.",
+    "Lore": "The Bulwark: the Pale Concord's soldiers, sealed in white power armour with siege rifles and an aether pack on every back. Each pack is a portable Still; where the Bulwark marches, the tithe comes with it.",
+    "Card": "Charges [Aegis Field], a [Ward] on every ally within 2 tiles: [Interrupt] it, and hit it from the flank, not its plate.",
+    "Portrait": "heavytrooper02",
+    "Thumbnail": {
+      "Zoom": 2.2,
+      "X": 0.53,
+      "Y": 0.11
+    },
+    "Footprint": {
+      "W": 1,
+      "H": 1
+    },
+    "Support": {
+      "Effect": "Buff",
+      "Magnitude": 1.0,
+      "Target": "Chain",
+      "Range": 1,
+      "Buff": "protection",
+      "Label": "Pack Shield"
+    },
+    "BaseStats": {
+      "Strength": 12,
+      "Vitality": 17,
+      "Agility": 9,
+      "Speed": 8,
+      "Stamina": 16,
+      "Intelligence": 9,
+      "Wisdom": 12,
+      "Luck": 9
+    },
+    "Growth": {
+      "Strength": 0.65,
+      "Vitality": 0.95,
+      "Agility": 0.5,
+      "Speed": 0.55,
+      "Stamina": 0.9,
+      "Intelligence": 0.45,
+      "Wisdom": 0.65,
+      "Luck": 0.45
+    },
+    "Milestones": [
+      {
+        "Level": 5,
+        "Growth": {
+          "Strength": 0.23,
+          "Vitality": 0.33,
+          "Agility": 0.17,
+          "Speed": 0.19,
+          "Stamina": 0.32,
+          "Intelligence": 0.16,
+          "Wisdom": 0.23,
+          "Luck": 0.16
+        }
+      },
+      {
+        "Level": 10,
+        "Growth": {
+          "Strength": 0.29,
+          "Vitality": 0.43,
+          "Agility": 0.23,
+          "Speed": 0.25,
+          "Stamina": 0.41,
+          "Intelligence": 0.2,
+          "Wisdom": 0.29,
+          "Luck": 0.2
+        }
+      },
+      {
+        "Level": 20,
+        "Growth": {
+          "Strength": 0.39,
+          "Vitality": 0.57,
+          "Agility": 0.3,
+          "Speed": 0.33,
+          "Stamina": 0.54,
+          "Intelligence": 0.27,
+          "Wisdom": 0.39,
+          "Luck": 0.27
+        }
+      },
+      {
+        "Level": 40,
+        "Growth": {
+          "Strength": 0.52,
+          "Vitality": 0.76,
+          "Agility": 0.4,
+          "Speed": 0.44,
+          "Stamina": 0.72,
+          "Intelligence": 0.36,
+          "Wisdom": 0.52,
+          "Luck": 0.36
+        }
+      }
+    ],
+    "Resistances": {
+      "Lightning": 1.5,
+      "Poison": 0.5
+    },
+    "Abilities": [
+      "charge_aegis_field"
+    ],
+    "DefaultLoadout": [],
+    "DropTable": "bulwark",
+    "MoveRange": 1,
+    "Targeting": "Threat",
+    "AttackRange": 1,
+    "XpReward": 16,
+    "BossPhases": [],
+    "ChargeAbility": "charge_aegis_field",
+    "ChargeShape": "Single",
+    "Trap": null,
+    "SnakeSegments": 0,
+    "Brain": "Guardian",
+    "ArmorPlate": 30
+  },
+  {
+    "Id": "heavytrooper03",
+    "Name": "Bulwark Siphoner",
+    "Team": "Enemy",
+    "Tags": [
+      "Humanoid",
+      "Sentient"
+    ],
+    "Description": "Its pack runs open: a walking Still that drinks the aether out of whoever it points at.",
+    "Lore": "The Bulwark: the Pale Concord's soldiers, sealed in white power armour with siege rifles and an aether pack on every back. Each pack is a portable Still; where the Bulwark marches, the tithe comes with it.",
+    "Card": "Charges [Aether Siphon] on your casters, and when it lands an orb leaves your bank: spend your orbs first, or [Interrupt] it.",
+    "Portrait": "heavytrooper03",
+    "Thumbnail": {
+      "Zoom": 2.2,
+      "X": 0.53,
+      "Y": 0.12
+    },
+    "Footprint": {
+      "W": 1,
+      "H": 1
+    },
+    "Support": {
+      "Effect": "Haste",
+      "Magnitude": 1.0,
+      "Target": "Attacker",
+      "Range": 2,
+      "Label": "Vent Aether"
+    },
+    "BaseStats": {
+      "Strength": 10,
+      "Vitality": 12,
+      "Agility": 11,
+      "Speed": 11,
+      "Stamina": 12,
+      "Intelligence": 15,
+      "Wisdom": 13,
+      "Luck": 10
+    },
+    "Growth": {
+      "Strength": 0.5,
+      "Vitality": 0.7,
+      "Agility": 0.6,
+      "Speed": 0.7,
+      "Stamina": 0.7,
+      "Intelligence": 0.9,
+      "Wisdom": 0.75,
+      "Luck": 0.5
+    },
+    "Milestones": [
+      {
+        "Level": 5,
+        "Growth": {
+          "Strength": 0.17,
+          "Vitality": 0.24,
+          "Agility": 0.21,
+          "Speed": 0.24,
+          "Stamina": 0.24,
+          "Intelligence": 0.32,
+          "Wisdom": 0.26,
+          "Luck": 0.17
+        }
+      },
+      {
+        "Level": 10,
+        "Growth": {
+          "Strength": 0.23,
+          "Vitality": 0.32,
+          "Agility": 0.27,
+          "Speed": 0.32,
+          "Stamina": 0.32,
+          "Intelligence": 0.41,
+          "Wisdom": 0.34,
+          "Luck": 0.23
+        }
+      },
+      {
+        "Level": 20,
+        "Growth": {
+          "Strength": 0.3,
+          "Vitality": 0.42,
+          "Agility": 0.36,
+          "Speed": 0.42,
+          "Stamina": 0.42,
+          "Intelligence": 0.54,
+          "Wisdom": 0.45,
+          "Luck": 0.3
+        }
+      },
+      {
+        "Level": 40,
+        "Growth": {
+          "Strength": 0.4,
+          "Vitality": 0.56,
+          "Agility": 0.48,
+          "Speed": 0.56,
+          "Stamina": 0.56,
+          "Intelligence": 0.72,
+          "Wisdom": 0.6,
+          "Luck": 0.4
+        }
+      }
+    ],
+    "Resistances": {
+      "Lightning": 1.5,
+      "Poison": 0.5
+    },
+    "Abilities": [
+      "charge_aether_siphon"
+    ],
+    "DefaultLoadout": [],
+    "DropTable": "bulwark",
+    "MoveRange": 1,
+    "Targeting": "Caster",
+    "AttackRange": 1,
+    "XpReward": 15,
+    "BossPhases": [],
+    "ChargeAbility": "charge_aether_siphon",
+    "ChargeShape": "Single",
+    "Trap": null,
+    "SnakeSegments": 0,
+    "Brain": "Kiter"
+  },
+  {
+    "Id": "heavytrooper04",
+    "Name": "Bulwark Siege Gunner",
+    "Team": "Enemy",
+    "Tags": [
+      "Humanoid",
+      "Sentient"
+    ],
+    "Description": "Plants its feet, braces the siege rifle on its pack and puts one round through everything in a line.",
+    "Lore": "The Bulwark: the Pale Concord's soldiers, sealed in white power armour with siege rifles and an aether pack on every back. Each pack is a portable Still; where the Bulwark marches, the tithe comes with it.",
+    "Card": "Charges a slow [Siege Shot] down a marked line to the board's edge: step off the line or [Interrupt] it. It needs a long rest after.",
+    "Portrait": "heavytrooper04",
+    "Thumbnail": {
+      "Zoom": 2.2,
+      "X": 0.48,
+      "Y": 0.12
+    },
+    "Footprint": {
+      "W": 1,
+      "H": 1
+    },
+    "Support": {
+      "Effect": "Pushback",
+      "Magnitude": 0.75,
+      "Target": "Attacker",
+      "Range": 1,
+      "Label": "Rail Recoil"
+    },
+    "BaseStats": {
+      "Strength": 14,
+      "Vitality": 15,
+      "Agility": 9,
+      "Speed": 8,
+      "Stamina": 15,
+      "Intelligence": 14,
+      "Wisdom": 11,
+      "Luck": 9
+    },
+    "Growth": {
+      "Strength": 0.75,
+      "Vitality": 0.85,
+      "Agility": 0.5,
+      "Speed": 0.55,
+      "Stamina": 0.85,
+      "Intelligence": 0.8,
+      "Wisdom": 0.6,
+      "Luck": 0.45
+    },
+    "Milestones": [
+      {
+        "Level": 5,
+        "Growth": {
+          "Strength": 0.26,
+          "Vitality": 0.3,
+          "Agility": 0.17,
+          "Speed": 0.19,
+          "Stamina": 0.3,
+          "Intelligence": 0.28,
+          "Wisdom": 0.21,
+          "Luck": 0.16
+        }
+      },
+      {
+        "Level": 10,
+        "Growth": {
+          "Strength": 0.34,
+          "Vitality": 0.38,
+          "Agility": 0.23,
+          "Speed": 0.25,
+          "Stamina": 0.38,
+          "Intelligence": 0.36,
+          "Wisdom": 0.27,
+          "Luck": 0.2
+        }
+      },
+      {
+        "Level": 20,
+        "Growth": {
+          "Strength": 0.45,
+          "Vitality": 0.51,
+          "Agility": 0.3,
+          "Speed": 0.33,
+          "Stamina": 0.51,
+          "Intelligence": 0.48,
+          "Wisdom": 0.36,
+          "Luck": 0.27
+        }
+      },
+      {
+        "Level": 40,
+        "Growth": {
+          "Strength": 0.6,
+          "Vitality": 0.68,
+          "Agility": 0.4,
+          "Speed": 0.44,
+          "Stamina": 0.68,
+          "Intelligence": 0.64,
+          "Wisdom": 0.48,
+          "Luck": 0.36
+        }
+      }
+    ],
+    "Resistances": {
+      "Lightning": 1.5,
+      "Poison": 0.5
+    },
+    "Abilities": [
+      "charge_siege_shot"
+    ],
+    "DefaultLoadout": [],
+    "DropTable": "bulwark",
+    "MoveRange": 1,
+    "Targeting": "Threat",
+    "AttackRange": 1,
+    "XpReward": 17,
+    "BossPhases": [],
+    "ChargeAbility": "charge_siege_shot",
+    "ChargeShape": "Line",
+    "Trap": null,
+    "SnakeSegments": 0,
+    "Brain": "Commander",
+    "ArmorPlate": 24
   }
 ]

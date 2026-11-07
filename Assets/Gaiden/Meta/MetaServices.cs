@@ -2015,6 +2015,7 @@ namespace GridGame.Meta
             if (a.RemovesDebuffs) k.Add("cleanse");
             if (a.RemovesBuff != null) k.Add("cure:" + a.RemovesBuff);
             if (a.StealsMana) k.Add("steal");
+            if (a.DrainsOrbs > 0) k.Add("siphon"); // GG-T332
             if (a.Tame > 0f) k.Add("tame"); // GG-T303
             if (a.GrantsOrbs > 0) k.Add("orbs");
             if (a.Revives) k.Add("revive");
@@ -2032,7 +2033,7 @@ namespace GridGame.Meta
 
         /// <summary>Does the ability do anything at all when it resolves? (GG-T183 found four that did nothing.)</summary>
         public static bool HasEffect(AbilityDef a) =>
-            a.BaseDamage > 0 || a.BaseHeal > 0 || a.ApplyBuff != null || a.RemovesDebuffs || a.RemovesBuff != null || a.StealsMana ||
+            a.BaseDamage > 0 || a.BaseHeal > 0 || a.ApplyBuff != null || a.RemovesDebuffs || a.RemovesBuff != null || a.StealsMana || a.DrainsOrbs > 0 ||
             a.GrantsOrbs > 0 || a.Revives || a.Escape || a.IsTeleport || a.Knockback > 0 || a.Pull > 0 || a.SwapsPlaces ||
             a.StepBack > 0 || a.HastenU > 0f || a.Pushback > 0f || a.Tame > 0f; // GG-T303: a Tame turns a monster
 

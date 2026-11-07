@@ -216,7 +216,10 @@ namespace GridGame.Core.Battle
         /// to this value instead of the command's end-of-action bank count, which may already include orbs this
         /// same action mints later (their fly-in would otherwise land on a bank that already looks full).</summary>
         public int CountAfter;
-        public override string ToString() => $"OrbsSpent {Count} -> {CountAfter}";
+        /// <summary>GG-T332: a foe's siphon drained these orbs (the party didn't spend them).</summary>
+        public bool Drained;
+        public int DrainedById = -1;
+        public override string ToString() => $"Orbs{(Drained ? "Drained" : "Spent")} {Count} -> {CountAfter}";
     }
 
     public sealed class TimelineAdvancedEvent : BattleEvent

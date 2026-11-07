@@ -1615,13 +1615,19 @@
       {
         "Enemies": [
           {
-            "Class": "cyberzombie03",
+            "Class": "heavytrooper02",
             "Level": 1,
             "X": -1,
             "Y": -1
           },
           {
-            "Class": "cyberzombie04",
+            "Class": "heavytrooper01",
+            "Level": 1,
+            "X": -1,
+            "Y": -1
+          },
+          {
+            "Class": "heavytrooper03",
             "Level": 1,
             "X": -1,
             "Y": -1
@@ -1695,6 +1701,12 @@
       },
       {
         "Enemies": [
+          {
+            "Class": "heavytrooper04",
+            "Level": 1,
+            "X": -1,
+            "Y": -1
+          },
           {
             "Class": "bat00",
             "Level": 1,

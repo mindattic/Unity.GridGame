@@ -285,7 +285,20 @@ namespace GridGame.Core.Battle
                 if (a.Tame > 0f && t.Alive && !friend) TryTame(caster, t, a); // the Tame effect (GG-T303), last: it changes sides
             }
 
+            if (a.DrainsOrbs > 0 && targets.Exists(t => t.IsHero && t.Team != caster.Team)) DrainOrbs(caster, a);
             if (a.StepBack > 0 && caster.Alive && !S.IsOver) StepAway(caster, a.StepBack);
+        }
+
+        /// <summary>GG-T332 (§14.15): a foe's siphon that touched a hero draws up to <see cref="AbilityDef.DrainsOrbs"/>
+        /// orbs out of the party's bank — the Bulwark's aether pack is a portable Still. Spend them first, or interrupt it.</summary>
+        private void DrainOrbs(Unit caster, AbilityDef a)
+        {
+            if (S.IsOver || caster.Team != Team.Enemy) return;
+            int n = Math.Min(a.DrainsOrbs, S.Bank.Count);
+            if (n <= 0) { Announce("No aether to take", caster.Id); return; }
+            S.Bank.Spend(n);
+            Emit(new OrbsSpentEvent { Count = n, CountAfter = S.Bank.Count, Drained = true, DrainedById = caster.Id });
+            Announce(n == 1 ? "Siphoned an orb!" : $"Siphoned {n} orbs!", caster.Id);
         }
 
         /// <summary>Movers an ability may shove about: one-tile, living, not a snake segment or remains.</summary>
@@ -487,6 +500,7 @@ namespace GridGame.Core.Battle
             foreach (var v in victims) resolved.Targets.Add(v.Id);
             Emit(resolved);
             if (victims.Count == 0) { Announce("Dodged!", caster.Id); return; }
+            bool landed = false;
             foreach (var v in victims)
             {
                 if (!v.Alive) continue;
@@ -500,11 +514,13 @@ namespace GridGame.Core.Battle
                 }
                 int dmg = roll.Damage + (roll.Hit == HitKind.Miss ? 0 : Formulas.SpellDamage(a, v, false));
                 Damage(v, dmg, caster, roll.Hit, a.DamageType);
+                if (roll.Hit != HitKind.Miss) landed = true;
                 if (roll.Hit == HitKind.Miss && v.Alive && Triggers.Foes(v, caster))
                     Fire(TriggerOn.OnDodge, v, new TriggerContext { Attacker = caster, Type = a.DamageType });
                 var buff = C.TryBuff(a.ApplyBuff);
                 if (buff != null && v.Alive && roll.Hit != HitKind.Miss) ApplyBuff(v, buff, buff.Duration);
             }
+            if (landed && a.DrainsOrbs > 0) DrainOrbs(caster, a); // GG-T332: the Bulwark's siphon
         }
     }
 }

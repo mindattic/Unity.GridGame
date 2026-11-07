@@ -768,5 +768,26 @@
     "Text": "An Infernalist Bloodbinder's charge: it heals its most wounded ally and turns it [Empowered]. [Interrupt] it, or kill the binder first.",
     "LinkKind": "Ability",
     "LinkId": "charge_blood_rite"
+  },
+  {
+    "Id": "aegis_field",
+    "Term": "Aegis Field",
+    "Text": "A Bulwark Shieldbearer's charge: every ally within 2 tiles of it gains [Ward]. [Interrupt] it, or pull the soldiers apart.",
+    "LinkKind": "Ability",
+    "LinkId": "charge_aegis_field"
+  },
+  {
+    "Id": "aether_siphon",
+    "Term": "Aether Siphon",
+    "Text": "A Bulwark Siphoner's charge: it hits one hero, and an orb leaves the party's bank when it lands. Spend your orbs first, or [Interrupt] it.",
+    "LinkKind": "Ability",
+    "LinkId": "charge_aether_siphon"
+  },
+  {
+    "Id": "siege_shot",
+    "Term": "Siege Shot",
+    "Text": "A Bulwark Siege Gunner's charge: one round down a marked line to the board's edge that hits every hero still on it. Step off the line, or [Interrupt] it.",
+    "LinkKind": "Ability",
+    "LinkId": "charge_siege_shot"
   }
 ]

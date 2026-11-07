@@ -5050,5 +5050,107 @@
         "Y": 0
       }
     ]
+  },
+  {
+    "Id": "bulwark-pair-2",
+    "Name": "Bulwark Pair",
+    "Formation": "Pair",
+    "Level": 13,
+    "Enemies": [
+      {
+        "Class": "heavytrooper02",
+        "X": 2,
+        "Y": 2
+      },
+      {
+        "Class": "heavytrooper01",
+        "X": 3,
+        "Y": 0
+      }
+    ]
+  },
+  {
+    "Id": "bulwark-delta-3",
+    "Name": "Bulwark Delta",
+    "Formation": "Delta",
+    "Level": 14,
+    "Enemies": [
+      {
+        "Class": "heavytrooper02",
+        "X": 2,
+        "Y": 2
+      },
+      {
+        "Class": "heavytrooper01",
+        "X": 1,
+        "Y": 0
+      },
+      {
+        "Class": "heavytrooper03",
+        "X": 4,
+        "Y": 0
+      }
+    ]
+  },
+  {
+    "Id": "bulwark-shieldwall-4",
+    "Name": "Bulwark Shield Wall",
+    "Formation": "Shield Wall",
+    "Level": 15,
+    "Enemies": [
+      {
+        "Class": "heavytrooper02",
+        "X": 1,
+        "Y": 3
+      },
+      {
+        "Class": "heavytrooper02",
+        "X": 3,
+        "Y": 3
+      },
+      {
+        "Class": "heavytrooper01",
+        "X": 0,
+        "Y": 1
+      },
+      {
+        "Class": "heavytrooper04",
+        "X": 4,
+        "Y": 0
+      }
+    ]
+  },
+  {
+    "Id": "bulwark-crown-5",
+    "Name": "Bulwark Crown",
+    "Formation": "Crown",
+    "Level": 16,
+    "Enemies": [
+      {
+        "Class": "heavytrooper02",
+        "X": 2,
+        "Y": 3
+      },
+      {
+        "Class": "heavytrooper01",
+        "X": 0,
+        "Y": 2
+      },
+      {
+        "Class": "heavytrooper01",
+        "X": 5,
+        "Y": 2
+      },
+      {
+        "Class": "heavytrooper03",
+        "X": 1,
+        "Y": 0
+      },
+      {
+        "Class": "heavytrooper04",
+        "X": 4,
+        "Y": 0
+      }
+    ]
   }
 ]

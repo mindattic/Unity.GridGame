@@ -375,13 +375,16 @@ namespace GridGame.Core.Bot
             return side == o.Facing;
         }
 
-        /// <summary>True while <paramref name="o"/> charges a spell that would lower the party's tempo (a Chronomancer's Drag).</summary>
+        /// <summary>True while <paramref name="o"/> charges a spell that would lower the party's tempo (a Chronomancer's Drag),
+        /// or a siphon that would drain orbs the party still holds (GG-T332).</summary>
         internal static bool ChargesTempoDrain(BattleState s, Unit o)
         {
             foreach (var e in s.Timeline)
             {
                 if (e.Kind != TimelineKind.Cast || !e.IsCharge || e.OwnerId != o.Id) continue;
-                var buff = s.Content.TryBuff(s.Content.TryAbility(e.AbilityId)?.ApplyBuff);
+                var ability = s.Content.TryAbility(e.AbilityId);
+                if (ability != null && ability.DrainsOrbs > 0 && s.Bank.Count > 0) return true;
+                var buff = s.Content.TryBuff(ability?.ApplyBuff);
                 if (buff != null && buff.Tempo < 0) return true;
             }
             return false;

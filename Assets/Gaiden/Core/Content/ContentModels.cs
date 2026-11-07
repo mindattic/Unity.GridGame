@@ -494,6 +494,11 @@ namespace GridGame.Core.Content
         /// <see cref="Battle.BattleConfig.RecoverBaseSeconds"/>. Heavy blows recover longer, so a foe's rhythm can be read.
         /// 0..<see cref="Battle.BattleConfig.RecoverMaxSeconds"/>.</summary>
         public float RecoverSeconds;
+        /// <summary>GG-T332: a foe's siphon draws aether out of the party — when it lands on at least one hero, up to this
+        /// many orbs leave the party's bank (the Bulwark's aether pack, a portable Still). Enemy charges only (`charge_`),
+        /// 0..<see cref="MaxDrainsOrbs"/>.</summary>
+        public int DrainsOrbs;
+        public const int MaxDrainsOrbs = 3;
         /// <summary>Movement (GG-T183): each target is dragged up to this many tiles straight toward the caster, stopping
         /// beside it or at the first thing in the way. Bosses and snakes don't budge.</summary>
         public int Pull;

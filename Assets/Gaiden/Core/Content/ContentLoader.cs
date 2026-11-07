@@ -143,6 +143,10 @@ namespace GridGame.Core.Content
                     p.Add($"ability {a.Id}: Pushback {a.Pushback}s outside 0..{Battle.BattleConfig.PushbackMaxSeconds}s (GG-T286)");
                 if (!(a.RecoverSeconds >= 0f) || a.RecoverSeconds > Battle.BattleConfig.RecoverMaxSeconds)
                     p.Add($"ability {a.Id}: RecoverSeconds {a.RecoverSeconds}s outside 0..{Battle.BattleConfig.RecoverMaxSeconds}s (GG-T318)");
+                if (a.DrainsOrbs < 0 || a.DrainsOrbs > AbilityDef.MaxDrainsOrbs)
+                    p.Add($"ability {a.Id}: DrainsOrbs {a.DrainsOrbs} outside 0..{AbilityDef.MaxDrainsOrbs} (GG-T332)");
+                else if (a.DrainsOrbs > 0 && (a.Id == null || !a.Id.StartsWith("charge_")))
+                    p.Add($"ability {a.Id}: DrainsOrbs is an enemy charge's siphon; name it charge_… (GG-T332)");
                 ValidateTrigger(db, a, p);
                 // GG-T303: a Tame is a picked single foe from a Skill or a consumable, with a sane chance and a duration.
                 if (a.Tame != 0f)
