@@ -2955,5 +2955,66 @@
         "Max": 1
       }
     ]
+  },
+  {
+    "Id": "herd",
+    "CoinsMin": 0,
+    "CoinsMax": 0,
+    "Entries": [
+      {
+        "Item": "mat_leather",
+        "Chance": 0.35,
+        "Min": 1,
+        "Max": 2
+      },
+      {
+        "Item": "mat_cloth",
+        "Chance": 0.3,
+        "Min": 1,
+        "Max": 1
+      },
+      {
+        "Item": "mat_iron_ore",
+        "Chance": 0.15,
+        "Min": 1,
+        "Max": 1
+      },
+      {
+        "Item": "mat_troll_hide",
+        "Chance": 0.06,
+        "Min": 1,
+        "Max": 1
+      },
+      {
+        "Item": "eq_knuckles_copper",
+        "Chance": 0.05,
+        "Min": 1,
+        "Max": 1
+      },
+      {
+        "Item": "eq_helm_horned",
+        "Chance": 0.02,
+        "Min": 1,
+        "Max": 1
+      },
+      {
+        "Item": "eq_amulet_warhorn",
+        "Chance": 0.015,
+        "Min": 1,
+        "Max": 1
+      },
+      {
+        "Item": "chest_wooden",
+        "Chance": 0.02,
+        "Min": 1,
+        "Max": 1
+      },
+      {
+        "Item": "tome_berserk",
+        "Chance": 0.06,
+        "Min": 1,
+        "Max": 1
+      }
+    ]
   }
 ]

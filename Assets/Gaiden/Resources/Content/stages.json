@@ -309,13 +309,13 @@
             "Y": -1
           },
           {
-            "Class": "ganger05",
+            "Class": "minotaur02",
             "Level": 1,
             "X": -1,
             "Y": -1
           },
           {
-            "Class": "ganger06",
+            "Class": "minotaur03",
             "Level": 1,
             "X": -1,
             "Y": -1
@@ -1541,19 +1541,19 @@
       {
         "Enemies": [
           {
-            "Class": "mannequin",
+            "Class": "minotaur01",
+            "Level": 1,
+            "X": -1,
+            "Y": -1
+          },
+          {
+            "Class": "minotaur04",
             "Level": 1,
             "X": -1,
             "Y": -1
           },
           {
             "Class": "undead04",
-            "Level": 1,
-            "X": -1,
-            "Y": -1
-          },
-          {
-            "Class": "bat01",
             "Level": 1,
             "X": -1,
             "Y": -1

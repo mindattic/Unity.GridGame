@@ -5356,5 +5356,107 @@
         "Y": 3
       }
     ]
+  },
+  {
+    "Id": "herd-pair-2",
+    "Name": "Herd Pair",
+    "Formation": "Pair",
+    "Level": 3,
+    "Enemies": [
+      {
+        "Class": "minotaur02",
+        "X": 2,
+        "Y": 2
+      },
+      {
+        "Class": "minotaur01",
+        "X": 3,
+        "Y": 0
+      }
+    ]
+  },
+  {
+    "Id": "herd-delta-3",
+    "Name": "Herd Delta",
+    "Formation": "Delta",
+    "Level": 4,
+    "Enemies": [
+      {
+        "Class": "minotaur02",
+        "X": 2,
+        "Y": 2
+      },
+      {
+        "Class": "minotaur04",
+        "X": 4,
+        "Y": 2
+      },
+      {
+        "Class": "minotaur01",
+        "X": 3,
+        "Y": 0
+      }
+    ]
+  },
+  {
+    "Id": "herd-phalanx-4",
+    "Name": "Herd Phalanx",
+    "Formation": "Phalanx",
+    "Level": 5,
+    "Enemies": [
+      {
+        "Class": "minotaur04",
+        "X": 1,
+        "Y": 2
+      },
+      {
+        "Class": "minotaur02",
+        "X": 3,
+        "Y": 2
+      },
+      {
+        "Class": "minotaur03",
+        "X": 2,
+        "Y": 0
+      },
+      {
+        "Class": "minotaur01",
+        "X": 4,
+        "Y": 0
+      }
+    ]
+  },
+  {
+    "Id": "herd-crown-5",
+    "Name": "Herd Crown",
+    "Formation": "Crown",
+    "Level": 6,
+    "Enemies": [
+      {
+        "Class": "minotaur04",
+        "X": 0,
+        "Y": 2
+      },
+      {
+        "Class": "minotaur02",
+        "X": 2,
+        "Y": 3
+      },
+      {
+        "Class": "minotaur04",
+        "X": 5,
+        "Y": 2
+      },
+      {
+        "Class": "minotaur03",
+        "X": 1,
+        "Y": 0
+      },
+      {
+        "Class": "minotaur01",
+        "X": 4,
+        "Y": 0
+      }
+    ]
   }
 ]

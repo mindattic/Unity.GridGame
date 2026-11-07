@@ -1966,7 +1966,7 @@ namespace GridGame.Meta
         }
 
         /// <summary>Boss-phase abilities only an enemy fires (an <c>OnEnterAbility</c>): free, so never learnable.</summary>
-        private static readonly HashSet<string> EnemyOnly = new HashSet<string> { "enrage", "chrono_rewind", "lich_soul_harvest" };
+        private static readonly HashSet<string> EnemyOnly = new HashSet<string> { "enrage", "chrono_rewind", "lich_soul_harvest", "stampede_rush" };
 
         public static bool IsHeroUsable(AbilityDef a) => a.Kind != AbilityKind.Passive &&
             (a.Kind == AbilityKind.Spell || a.Kind == AbilityKind.Skill) && !a.Id.StartsWith("charge_") && !EnemyOnly.Contains(a.Id);

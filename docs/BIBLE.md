@@ -2165,6 +2165,36 @@ bar and interrupt. Their own song is aether, so they resist Arcane (×0.5); they
   adjacent hero) hurt more than a hymn, and the casual bot reached wave 5 in 23 of 24 runs.
 - *(Tests: `ChoirTests`.)*
 
+### 14.18 The Herd — minotaurs (added 2026-11-07, owner art, GG-T339)
+
+The Street's hired muscle (docs/STORY.md §3.2): kids spliced with horns and bull-mass in the underspire's back-room
+clinics, in hoodies, cargo pants, platform sneakers and chrome. Four `Humanoid`, `Sentient` variants, one `herd` family
+(`Remains: corpse`). The splice holds a body's aether in so the Stills can't sing it out, so they resist Arcane (×0.5);
+the chrome grafts short out under Lightning (×1.5). The family plays **loyalty on the timeline**: they are loyal to the
+crew that pays and feeds them, and every bull carries **Stampede** (`herd_stampede`, Reactive `OnAllyKO`): when any ally
+falls (a bull or the crew that hired it), it casts the free `stampede_rush` on itself and its icon jumps 0.3 of the bar
+(1.5 s) sooner (§2.7.1).
+
+| Class | Role | Speed / brain / targeting | Kit | Support |
+|---|---|---|---|---|
+| `minotaur01` Herd Boss | the paymaster | 11 / Commander / Weakest | **Feed the Herd** (`charge_feed_the_herd`): 2 s charge when an ally is below 70%, heals every ally within 2 tiles 12 and rushes each 0.15 of the bar; rests a turn, recovers 0.5 s | Haste its attacker 1 s, reach 2 (*On the Payroll*) |
+| `minotaur02` Herd Bouncer | the wall | 8 / Guardian / Threat, plate 24 | **Brass Knuckles** (`brass_knuckles`): a landed punch, 30%: [Slowed] (the party loses a point of tempo) | Ward on its attacker (*Bodyguard*) |
+| `minotaur03` Herd Gorer | the charge | 11 / Hunter / Threat | **Bull Rush** (`charge_bull_rush`, `ChargeShape: Line`): 2.5 s charge down a marked line to the board's edge, 8 Physical plus its INT hit on every hero still on it; rests a turn, recovers 1.5 s | Pushback 0.75 s (*Trample*) |
+| `minotaur04` Herd Breaker | the brawler | 15 / Berserker / Weakest | **Berserk**: ×1.35 below half HP; charges in, never retreats | Crit +25% (*Gore*) |
+
+- **No engine code.** An `OnAllyKO` reactive that casts a free self-haste (`stampede_rush`, enemy-only in
+  `MetaServices` `EnemyOnly` like Enrage), an AllyOnly heal-and-haste charge and a Line charge are all existing data.
+- **Counterplay** (their cards): kill the Herd before the crew that hired it, or watch the bar when a ganger falls and
+  [Pushback] the bull that lurches forward; kill the Boss first or interrupt the feeding; flank the Bouncer off its plate;
+  step off the Gorer's line; finish the Breaker in one push; Lightning.
+- **Placement.** Street territory. Tithe Moors III (`greenvalley-03`) wave 3: a Bouncer and a Gorer hired by two Redline
+  gangers, in place of the other two gangers. Halcyon I (`cityruins-01`) wave 5: the Boss and the Breaker beside a
+  Hollow, in place of the Choir's training mannequin and a bat. Casual bot, 24 seeds, campaign parties, difficulty 10:
+  greenvalley-03 8/24 with them vs 10/24 without, cityruins-01 9/24 vs 9/24 (both stages were already below the 55–85%
+  band); smart bot 24/24 on both, with and without. In the casual runs the herd stampeded 72 times and the
+  Gorer rushed 134 times on greenvalley-03; on cityruins-01 the Boss fed its crew 118 times.
+- *(Tests: `HerdTests`.)*
+
 ## 15. Save
 
 ### 15.1 Data model

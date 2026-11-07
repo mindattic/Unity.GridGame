@@ -817,5 +817,26 @@
     "Text": "A Choir Confessor's charge on its most wounded ally: a heal, a [Cleanse] of its debuffs, and a [Ward]. Kill it first, or [Interrupt] it.",
     "LinkKind": "Ability",
     "LinkId": "charge_absolution"
+  },
+  {
+    "Id": "stampede",
+    "Term": "Stampede",
+    "Text": "The Herd's loyalty: when any of their crew falls, every bull still standing charges, and its next turn comes sooner. Watch the bar, or [Pushback] them after.",
+    "LinkKind": "Ability",
+    "LinkId": "herd_stampede"
+  },
+  {
+    "Id": "feed_the_herd",
+    "Term": "Feed the Herd",
+    "Text": "A Herd Boss's charge: every ally within 2 tiles heals and rushes its next turn. [Interrupt] it, or kill the Boss first.",
+    "LinkKind": "Ability",
+    "LinkId": "charge_feed_the_herd"
+  },
+  {
+    "Id": "bull_rush",
+    "Term": "Bull Rush",
+    "Text": "A Herd Gorer's charge down a marked line to the board's edge: every hero still on the line is trampled. Step off it, or [Interrupt] it.",
+    "LinkKind": "Ability",
+    "LinkId": "charge_bull_rush"
   }
 ]

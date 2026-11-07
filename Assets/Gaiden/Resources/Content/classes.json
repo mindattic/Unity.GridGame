@@ -25259,5 +25259,503 @@
     "Trap": null,
     "SnakeSegments": 0,
     "Brain": "Medic"
+  },
+  {
+    "Id": "minotaur01",
+    "Name": "Herd Boss",
+    "Team": "Enemy",
+    "Tags": [
+      "Humanoid",
+      "Sentient"
+    ],
+    "Description": "The bull who takes the contracts: chain, pink sleeves, and a watch that tells it when the crew gets paid.",
+    "Lore": "The Herd: Street kids spliced with horns and bull-mass in the underspire's back-room clinics, so the Stills can't sing the aether out of them. Muscle for hire, loyal to whichever crew pays them and keeps them fed.",
+    "Card": "Charges [Feed the Herd], healing and rushing every ally near it: kill it first or [Interrupt] it. Hangs back behind its crew. [Stampede]: when an ally falls, its next turn comes sooner.",
+    "Portrait": "minotaur01",
+    "Thumbnail": {
+      "Zoom": 2.3,
+      "X": 0.47,
+      "Y": 0.1
+    },
+    "Footprint": {
+      "W": 1,
+      "H": 1
+    },
+    "Support": {
+      "Effect": "Haste",
+      "Magnitude": 1.0,
+      "Target": "Attacker",
+      "Range": 2,
+      "Label": "On the Payroll"
+    },
+    "BaseStats": {
+      "Strength": 13,
+      "Vitality": 13,
+      "Agility": 11,
+      "Speed": 11,
+      "Stamina": 13,
+      "Intelligence": 12,
+      "Wisdom": 13,
+      "Luck": 12
+    },
+    "Growth": {
+      "Strength": 0.7,
+      "Vitality": 0.75,
+      "Agility": 0.6,
+      "Speed": 0.7,
+      "Stamina": 0.7,
+      "Intelligence": 0.65,
+      "Wisdom": 0.7,
+      "Luck": 0.55
+    },
+    "Milestones": [
+      {
+        "Level": 5,
+        "Growth": {
+          "Strength": 0.24,
+          "Vitality": 0.26,
+          "Agility": 0.21,
+          "Speed": 0.24,
+          "Stamina": 0.24,
+          "Intelligence": 0.23,
+          "Wisdom": 0.24,
+          "Luck": 0.19
+        }
+      },
+      {
+        "Level": 10,
+        "Growth": {
+          "Strength": 0.32,
+          "Vitality": 0.34,
+          "Agility": 0.27,
+          "Speed": 0.32,
+          "Stamina": 0.32,
+          "Intelligence": 0.29,
+          "Wisdom": 0.32,
+          "Luck": 0.25
+        }
+      },
+      {
+        "Level": 20,
+        "Growth": {
+          "Strength": 0.42,
+          "Vitality": 0.45,
+          "Agility": 0.36,
+          "Speed": 0.42,
+          "Stamina": 0.42,
+          "Intelligence": 0.39,
+          "Wisdom": 0.42,
+          "Luck": 0.33
+        }
+      },
+      {
+        "Level": 40,
+        "Growth": {
+          "Strength": 0.56,
+          "Vitality": 0.6,
+          "Agility": 0.48,
+          "Speed": 0.56,
+          "Stamina": 0.56,
+          "Intelligence": 0.52,
+          "Wisdom": 0.56,
+          "Luck": 0.44
+        }
+      }
+    ],
+    "Resistances": {
+      "Arcane": 0.5,
+      "Lightning": 1.5
+    },
+    "Abilities": [
+      "charge_feed_the_herd",
+      "herd_stampede"
+    ],
+    "DefaultLoadout": [],
+    "DropTable": "herd",
+    "MoveRange": 1,
+    "Targeting": "Weakest",
+    "AttackRange": 1,
+    "XpReward": 16,
+    "BossPhases": [],
+    "ChargeAbility": "charge_feed_the_herd",
+    "ChargeShape": "Single",
+    "Trap": null,
+    "SnakeSegments": 0,
+    "Brain": "Commander",
+    "Remains": "corpse"
+  },
+  {
+    "Id": "minotaur02",
+    "Name": "Herd Bouncer",
+    "Team": "Enemy",
+    "Tags": [
+      "Humanoid",
+      "Sentient"
+    ],
+    "Description": "A bull in a white puffer with brass on both fists, paid to stand in front of whoever pays.",
+    "Lore": "The Herd: Street kids spliced with horns and bull-mass in the underspire's back-room clinics, so the Stills can't sing the aether out of them. Muscle for hire, loyal to whichever crew pays them and keeps them fed.",
+    "Card": "Guards the crew behind a thick front: flank it, not its chest. Its punches can [Slow] a hero. [Stampede]: when an ally falls, its next turn comes sooner.",
+    "Portrait": "minotaur02",
+    "Thumbnail": {
+      "Zoom": 2.3,
+      "X": 0.46,
+      "Y": 0.1
+    },
+    "Footprint": {
+      "W": 1,
+      "H": 1
+    },
+    "Support": {
+      "Effect": "Buff",
+      "Magnitude": 0.5,
+      "Target": "Attacker",
+      "Range": 1,
+      "Buff": "ward",
+      "Label": "Bodyguard"
+    },
+    "BaseStats": {
+      "Strength": 14,
+      "Vitality": 17,
+      "Agility": 9,
+      "Speed": 8,
+      "Stamina": 16,
+      "Intelligence": 8,
+      "Wisdom": 11,
+      "Luck": 9
+    },
+    "Growth": {
+      "Strength": 0.8,
+      "Vitality": 0.9,
+      "Agility": 0.5,
+      "Speed": 0.6,
+      "Stamina": 0.85,
+      "Intelligence": 0.4,
+      "Wisdom": 0.6,
+      "Luck": 0.45
+    },
+    "Milestones": [
+      {
+        "Level": 5,
+        "Growth": {
+          "Strength": 0.28,
+          "Vitality": 0.32,
+          "Agility": 0.17,
+          "Speed": 0.21,
+          "Stamina": 0.3,
+          "Intelligence": 0.14,
+          "Wisdom": 0.21,
+          "Luck": 0.16
+        }
+      },
+      {
+        "Level": 10,
+        "Growth": {
+          "Strength": 0.36,
+          "Vitality": 0.41,
+          "Agility": 0.23,
+          "Speed": 0.27,
+          "Stamina": 0.38,
+          "Intelligence": 0.18,
+          "Wisdom": 0.27,
+          "Luck": 0.2
+        }
+      },
+      {
+        "Level": 20,
+        "Growth": {
+          "Strength": 0.48,
+          "Vitality": 0.54,
+          "Agility": 0.3,
+          "Speed": 0.36,
+          "Stamina": 0.51,
+          "Intelligence": 0.24,
+          "Wisdom": 0.36,
+          "Luck": 0.27
+        }
+      },
+      {
+        "Level": 40,
+        "Growth": {
+          "Strength": 0.64,
+          "Vitality": 0.72,
+          "Agility": 0.4,
+          "Speed": 0.48,
+          "Stamina": 0.68,
+          "Intelligence": 0.32,
+          "Wisdom": 0.48,
+          "Luck": 0.36
+        }
+      }
+    ],
+    "Resistances": {
+      "Arcane": 0.5,
+      "Lightning": 1.5
+    },
+    "Abilities": [
+      "brass_knuckles",
+      "herd_stampede"
+    ],
+    "DefaultLoadout": [],
+    "DropTable": "herd",
+    "MoveRange": 1,
+    "Targeting": "Threat",
+    "AttackRange": 1,
+    "XpReward": 16,
+    "BossPhases": [],
+    "ChargeAbility": null,
+    "ChargeShape": "Single",
+    "Trap": null,
+    "SnakeSegments": 0,
+    "Brain": "Guardian",
+    "ArmorPlate": 24,
+    "Remains": "corpse"
+  },
+  {
+    "Id": "minotaur03",
+    "Name": "Herd Gorer",
+    "Team": "Enemy",
+    "Tags": [
+      "Humanoid",
+      "Sentient"
+    ],
+    "Description": "The biggest of the crew, gas-masked, who lowers its horns and runs a whole street flat.",
+    "Lore": "The Herd: Street kids spliced with horns and bull-mass in the underspire's back-room clinics, so the Stills can't sing the aether out of them. Muscle for hire, loyal to whichever crew pays them and keeps them fed.",
+    "Card": "Charges a [Bull Rush] down a marked line to the board's edge: step off the line or [Interrupt] it. [Stampede]: when an ally falls, its next turn comes sooner.",
+    "Portrait": "minotaur03",
+    "Thumbnail": {
+      "Zoom": 2.3,
+      "X": 0.5,
+      "Y": 0.1
+    },
+    "Footprint": {
+      "W": 1,
+      "H": 1
+    },
+    "Support": {
+      "Effect": "Pushback",
+      "Magnitude": 0.75,
+      "Target": "Attacker",
+      "Range": 1,
+      "Label": "Trample"
+    },
+    "BaseStats": {
+      "Strength": 16,
+      "Vitality": 14,
+      "Agility": 11,
+      "Speed": 11,
+      "Stamina": 14,
+      "Intelligence": 8,
+      "Wisdom": 9,
+      "Luck": 10
+    },
+    "Growth": {
+      "Strength": 0.9,
+      "Vitality": 0.8,
+      "Agility": 0.6,
+      "Speed": 0.7,
+      "Stamina": 0.8,
+      "Intelligence": 0.4,
+      "Wisdom": 0.5,
+      "Luck": 0.5
+    },
+    "Milestones": [
+      {
+        "Level": 5,
+        "Growth": {
+          "Strength": 0.32,
+          "Vitality": 0.28,
+          "Agility": 0.21,
+          "Speed": 0.24,
+          "Stamina": 0.28,
+          "Intelligence": 0.14,
+          "Wisdom": 0.17,
+          "Luck": 0.17
+        }
+      },
+      {
+        "Level": 10,
+        "Growth": {
+          "Strength": 0.41,
+          "Vitality": 0.36,
+          "Agility": 0.27,
+          "Speed": 0.32,
+          "Stamina": 0.36,
+          "Intelligence": 0.18,
+          "Wisdom": 0.23,
+          "Luck": 0.23
+        }
+      },
+      {
+        "Level": 20,
+        "Growth": {
+          "Strength": 0.54,
+          "Vitality": 0.48,
+          "Agility": 0.36,
+          "Speed": 0.42,
+          "Stamina": 0.48,
+          "Intelligence": 0.24,
+          "Wisdom": 0.3,
+          "Luck": 0.3
+        }
+      },
+      {
+        "Level": 40,
+        "Growth": {
+          "Strength": 0.72,
+          "Vitality": 0.64,
+          "Agility": 0.48,
+          "Speed": 0.56,
+          "Stamina": 0.64,
+          "Intelligence": 0.32,
+          "Wisdom": 0.4,
+          "Luck": 0.4
+        }
+      }
+    ],
+    "Resistances": {
+      "Arcane": 0.5,
+      "Lightning": 1.5
+    },
+    "Abilities": [
+      "charge_bull_rush",
+      "herd_stampede"
+    ],
+    "DefaultLoadout": [],
+    "DropTable": "herd",
+    "MoveRange": 1,
+    "Targeting": "Threat",
+    "AttackRange": 1,
+    "XpReward": 16,
+    "BossPhases": [],
+    "ChargeAbility": "charge_bull_rush",
+    "ChargeShape": "Line",
+    "Trap": null,
+    "SnakeSegments": 0,
+    "Brain": "Hunter",
+    "Remains": "corpse"
+  },
+  {
+    "Id": "minotaur04",
+    "Name": "Herd Breaker",
+    "Team": "Enemy",
+    "Tags": [
+      "Humanoid",
+      "Sentient"
+    ],
+    "Description": "A bull on chrome-braced legs, goggles down, who hits hardest once it's bleeding.",
+    "Lore": "The Herd: Street kids spliced with horns and bull-mass in the underspire's back-room clinics, so the Stills can't sing the aether out of them. Muscle for hire, loyal to whichever crew pays them and keeps them fed.",
+    "Card": "Charges in and never backs off; below half HP it hits harder (Berserk): finish it in one push. [Stampede]: when an ally falls, its next turn comes sooner.",
+    "Portrait": "minotaur04",
+    "Thumbnail": {
+      "Zoom": 2.3,
+      "X": 0.46,
+      "Y": 0.1
+    },
+    "Footprint": {
+      "W": 1,
+      "H": 1
+    },
+    "Support": {
+      "Effect": "Crit",
+      "Magnitude": 0.25,
+      "Target": "Attacker",
+      "Range": 1,
+      "Label": "Gore"
+    },
+    "BaseStats": {
+      "Strength": 15,
+      "Vitality": 12,
+      "Agility": 14,
+      "Speed": 15,
+      "Stamina": 12,
+      "Intelligence": 8,
+      "Wisdom": 9,
+      "Luck": 11
+    },
+    "Growth": {
+      "Strength": 0.85,
+      "Vitality": 0.7,
+      "Agility": 0.75,
+      "Speed": 0.8,
+      "Stamina": 0.7,
+      "Intelligence": 0.4,
+      "Wisdom": 0.5,
+      "Luck": 0.55
+    },
+    "Milestones": [
+      {
+        "Level": 5,
+        "Growth": {
+          "Strength": 0.3,
+          "Vitality": 0.24,
+          "Agility": 0.26,
+          "Speed": 0.28,
+          "Stamina": 0.24,
+          "Intelligence": 0.14,
+          "Wisdom": 0.17,
+          "Luck": 0.19
+        }
+      },
+      {
+        "Level": 10,
+        "Growth": {
+          "Strength": 0.38,
+          "Vitality": 0.32,
+          "Agility": 0.34,
+          "Speed": 0.36,
+          "Stamina": 0.32,
+          "Intelligence": 0.18,
+          "Wisdom": 0.23,
+          "Luck": 0.25
+        }
+      },
+      {
+        "Level": 20,
+        "Growth": {
+          "Strength": 0.51,
+          "Vitality": 0.42,
+          "Agility": 0.45,
+          "Speed": 0.48,
+          "Stamina": 0.42,
+          "Intelligence": 0.24,
+          "Wisdom": 0.3,
+          "Luck": 0.33
+        }
+      },
+      {
+        "Level": 40,
+        "Growth": {
+          "Strength": 0.68,
+          "Vitality": 0.56,
+          "Agility": 0.6,
+          "Speed": 0.64,
+          "Stamina": 0.56,
+          "Intelligence": 0.32,
+          "Wisdom": 0.4,
+          "Luck": 0.44
+        }
+      }
+    ],
+    "Resistances": {
+      "Arcane": 0.5,
+      "Lightning": 1.5
+    },
+    "Abilities": [
+      "berserk",
+      "herd_stampede"
+    ],
+    "DefaultLoadout": [],
+    "DropTable": "herd",
+    "MoveRange": 1,
+    "Targeting": "Weakest",
+    "AttackRange": 1,
+    "XpReward": 15,
+    "BossPhases": [],
+    "ChargeAbility": null,
+    "ChargeShape": "Single",
+    "Trap": null,
+    "SnakeSegments": 0,
+    "Brain": "Berserker",
+    "Remains": "corpse"
   }
 ]
