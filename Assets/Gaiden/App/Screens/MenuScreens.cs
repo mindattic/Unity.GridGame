@@ -452,47 +452,51 @@ namespace GridGame.App
             col.style.paddingTop = Space.S48; col.style.paddingLeft = col.style.paddingRight = Space.S16; col.style.paddingBottom = Space.S32;
 
             // Party window (portraits, level, HP): a 2-column grid so a full party of six fits above the menu.
+            // GG-T313: built as explicit two-card rows, not a flex-wrap of six cards sized by a reactive
+            // GeometryChangedEvent pixel hack. That hack (party.contentRect.width-driven, with a 1px slack
+            // fudge) measured correctly but still wrapped every card into a single column at the 2:3/3:4 tablet
+            // frame (confirmed live: a hand-built 6-hero save showed 1 column there and 2 everywhere else on
+            // an otherwise identical 1424x2532 stage) - some layout pass during that frame transform resolved
+            // the wrap decision against different available width than the one the callback later measured.
+            // A row that can only ever hold two cards has no wrap arithmetic to get wrong.
             var party = Ui.Window(null, col);
             party.name = "camp-party";
-            party.style.flexDirection = FlexDirection.Row;
-            party.style.flexWrap = Wrap.Wrap;
-            // Two columns with edge = gap = 24 (row padding 12 + card margin 12): even gutters at every width (POL-C8),
-            // and 24 px between the tappable cards (POL-C3).
+            // Edge = gap = 24 (row padding 12 + card margin 12): even gutters at every width (POL-C8), and
+            // 24 px between the tappable cards (POL-C3).
             party.style.paddingLeft = party.style.paddingRight = Space.TargetHalfGap;
-            var cards = new List<VisualElement>();
-            party.RegisterCallback<GeometryChangedEvent>(_ =>
+            var ids = s.Party;
+            for (int i = 0; i < ids.Count; i += 2)
             {
-                // 1 px of slack per card: pixel snapping otherwise rounds two exact halves past the row and wraps the second card.
-                float cw = Mathf.Floor((party.contentRect.width - 4 * Space.TargetHalfGap) / 2f) - 1f;
-                if (cw > 0) foreach (var cd in cards) cd.style.width = cw;
-            });
-            foreach (var id in s.Party)
-            {
-                var h = s.Hero(id);
-                if (h == null) continue;
-                var u = Progression.Preview(c, h);
-                var card = Ui.El("card", party);
-                card.name = "camp-hero-" + id;
-                cards.Add(card);
-                card.style.width = Length.Percent(45);
-                card.style.marginTop = card.style.marginBottom = card.style.marginLeft = card.style.marginRight = Space.TargetHalfGap;
-                card.style.paddingTop = card.style.paddingBottom = card.style.paddingLeft = card.style.paddingRight = Space.S8;
-                var thumb = Ui.Thumb(id, card, 104);
-                thumb.style.marginRight = Space.S16;
-                var info = Ui.El("col grow", card);
-                info.style.flexShrink = 1; info.style.minWidth = 0;
-                var top = Ui.El("row", info);
-                var name = Ui.Text(c.Class(id).Name, "small", top);
-                Fonts.UseHeavy(name);
-                Ui.Marquee(name);
-                Ui.RoleBadge(Ui.RoleOf(h, c.Class(id)), top, TypeScale.Caption).style.marginLeft = Space.S4;
-                Ui.Text($"Lv {u.Level}", "small gold", top);
-                int hp = h.Hp > 0 ? Math.Min(h.Hp, u.MaxHp) : u.MaxHp;
-                Ui.Gauge(hp / (float)u.MaxHp, info, 300).style.marginTop = Space.S8;
-                Ui.Text($"{hp}/{u.MaxHp}", "small dim", info);
-                MercenaryCamp.Tag(s, id, info);
-                card.AddToClassList("card-tap");
-                Ui.Tappable(card, () => App.Router.Push(new StatusScreen(id)), "ui.select");
+                var row = Ui.El("row", party);
+                for (int j = i; j < Math.Min(i + 2, ids.Count); j++)
+                {
+                    var id = ids[j];
+                    var h = s.Hero(id);
+                    if (h == null) continue;
+                    var u = Progression.Preview(c, h);
+                    var card = Ui.El("card", row);
+                    card.name = "camp-hero-" + id;
+                    // Two cards split the row exactly in half; a lone trailing card (an odd party size) fills it.
+                    card.style.flexGrow = 1; card.style.flexShrink = 1; card.style.flexBasis = Length.Percent(0);
+                    card.style.marginTop = card.style.marginBottom = card.style.marginLeft = card.style.marginRight = Space.TargetHalfGap;
+                    card.style.paddingTop = card.style.paddingBottom = card.style.paddingLeft = card.style.paddingRight = Space.S8;
+                    var thumb = Ui.Thumb(id, card, 104);
+                    thumb.style.marginRight = Space.S16;
+                    var info = Ui.El("col grow", card);
+                    info.style.flexShrink = 1; info.style.minWidth = 0;
+                    var top = Ui.El("row", info);
+                    var name = Ui.Text(c.Class(id).Name, "small", top);
+                    Fonts.UseHeavy(name);
+                    Ui.Marquee(name);
+                    Ui.RoleBadge(Ui.RoleOf(h, c.Class(id)), top, TypeScale.Caption).style.marginLeft = Space.S4;
+                    Ui.Text($"Lv {u.Level}", "small gold", top);
+                    int hp = h.Hp > 0 ? Math.Min(h.Hp, u.MaxHp) : u.MaxHp;
+                    Ui.Gauge(hp / (float)u.MaxHp, info, 300).style.marginTop = Space.S8;
+                    Ui.Text($"{hp}/{u.MaxHp}", "small dim", info);
+                    MercenaryCamp.Tag(s, id, info);
+                    card.AddToClassList("card-tap");
+                    Ui.Tappable(card, () => App.Router.Push(new StatusScreen(id)), "ui.select");
+                }
             }
 
             var lower = Ui.El("row grow", col);
