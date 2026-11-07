@@ -146,7 +146,7 @@ namespace GridGame.Tests
         {
             var s = NewSave();
             var r = new DialogueRunner(Real, s, Merchant);
-            Assert.That(r.Current.Name, Is.EqualTo("Wandering Merchant"));
+            Assert.That(r.Current.Name, Is.EqualTo("Lantern Merchant"));
             Assert.That(r.AwaitingChoice, Is.False);
             Assert.That(r.Advance(), Is.True);
             Assert.That(r.Current.Name, Is.EqualTo(Real.Class(s.Party[0]).Name), "$lead resolves to the first party member");
