@@ -607,13 +607,33 @@ Enemies may occupy a rectangle (`ClassDef.Footprint`, e.g. `cyclops00` = 2×2); 
 
 **Amended 2026-11-06 (owner, GG-T286/GG-T287, inspired by Final Fantasy Resonance): one bar, no Zone, icons flow LEFT.** A horizontal track under the top HUD. Every icon (enemy turns and every cast, hero or enemy) moves left at its own steady rate, and **reaching the left edge is acting**. Where an icon sits is simply how long until it acts: `u = secondsUntilAct / BarSeconds` (`BattleEngine.SecondsUntilAct`, `BattleEngine.BarU`), with `BattleConfig.BarSeconds` = **10 s**; anything further off than 10 s waits at the right end. There is no ACT zone, no Pushback Zone and no crawl: the old `ZoneStart`/`ZoneU`/`ZoneCrossingTicks` are gone.
 
+**Amended 2026-11-06 (owner, GG-T318): Speed sets where a foe re-enters, not how fast it travels; a recovery beat
+spaces the foes.** Owner: "I want the 'average' time to move to be 4 seconds … when an enemy restarts on the bar they
+start 4 seconds away on the far right but their speed is calculated so that they start a little more to the left the
+faster they are, that's the main point of the speed stat for enemies; there would also need to be a 'respawn interval'
+which takes place after the enemy attacks but before they appear back on the bar, the idea is to distribute enemies so
+that the player can fight back." And: "this is the lifeblood of the entire game, this is what sets it apart from Terra
+Battle's fixed 4 seconds."
+- Every icon now drains its seconds at **one rate** ([§2.1](#21-speed-and-pace)). `BarSeconds` = **6 s**, the latest a
+  foe re-enters.
+- After acting, a foe leaves the bar for its **recovery**, then re-enters at its **entry**, set by its Speed: an
+  average foe 4 s out, a faster one further left ([§2.12](#212-recovery-and-spacing-gg-t318)).
+- *Why no Grandia-style ACT zone* (the owner asked for this to be weighed without preconceptions): Grandia 2's ACT
+  stretch made commitment visible, aimed counterplay at it, and gave actions different time costs.
+  - Heroes have no icons here (the window is the party's), so a hero-side COM/ACT stretch has nowhere to live.
+  - Enemy charges already are that committed, cancellable stretch for spells (§13.4).
+  - A band would break "position = seconds until acting".
+  - So the action-dependent cost became the recovery (`RecoverSeconds`). Telegraphing a physical attack's target in an
+    enemy's last seconds is a candidate follow-up.
+
 ```
- prominence     u = secondsUntilAct / BarSeconds (BarSeconds = 10 s)
-  diamond   0 s  1    2    3    4    5    6    7    8    9    10 s
-   ◆◆◆      ◆━━━◇━━━━◇━━━━◇━━━━◇━━━━◆━━━━◇━━━━◇━━━━◇━━━━◇━━━━◆     [GUARD]
-  ◆next◆    ◇ = 1 s delimiter, ◆ = 5 s delimiter (no Zone, no ACT)
-   ◆◆◆      ◀── every icon (turn or cast) moves left at
- "NOW"/2.4s     Speed × 1.6 IP/tick × tempo × status; at 0 s it acts
+ prominence     u = secondsUntilAct / BarSeconds (BarSeconds = 6 s)          recovery
+  diamond   0 s  1    2    3    4    5    6 s                                 tray
+   ◆◆◆      ◆━━━◇━━━━◇━━━━◇━━━━◇━━━━◆━━━━◇                                  ◇◇◇   [GUARD]
+  ◆next◆    ◇ = 1 s delimiter, ◆ = 5 s delimiter (no Zone, no ACT)          ↑ just acted: off the bar,
+   ◆◆◆      ◀── every icon (turn or cast) moves left at ONE rate              counting down its recovery,
+ "NOW"/2.4s     (20 IP/tick × tempo × status × dial); at 0 s it acts          then slides on at its entry
+                fast foe re-enters here ─┘    └─ an average foe, 4 s out
 ```
 
 Turns and casts share the one axis, so a cast is a racer like any turn: it is born at `castSeconds / BarSeconds` and acts when it reaches the left edge. *(Tests: `TimelineResonanceTests` — `An_icon_sits_at_its_seconds_until_acting_over_the_bar`, `A_cast_is_born_at_its_cast_time_on_the_bar`, `Slow_on_an_enemy_lets_an_in_flight_cast_overtake_it`.)*
@@ -642,7 +662,8 @@ Turns and casts share the one axis, so a cast is a racer like any turn: it is bo
   - **A drag spends at least its minimum** (`CommandTicks` = max(held share, 0.85 s), never more than the window): a flick is still a pickup and a step. During the drag real time is spent as before, and the forced drop still applies.
   - **Forced sacrifice.** When heroes are left to act but no action of theirs fits (`BattleEngine.TooLittleTime`), the party can only **Guard**: it gives the sliver up, the enemy acts, and the next gap opens. If that one is too short as well, the party Guards again — a tight cluster of foes is several enemy attacks in a row. The forced Guard **keeps Guard's Protection on every hero and banks the time left as mana charge** (`GuardChargeFor`, so a 0.3 s sliver is 3 charge): it softens the blow without replacing an action.
   - **Rally** (`BattleState.Rally`): each forced Guard slows every enemy icon one tempo step (×0.8, stacking to `RallyMaxStacks` **5** ≈ ×0.33, on top of — outside the clamp of — the party's tempo), and the next hero action resets it (a new wave too). Without it, foes whose turns all fall closer together than an action (three wolves lapping in 2 s) would lock the party out for ever; with it, "several enemy attacks in a row" always end in a window. The banner adds "Rally N: foes slowed".
-  - **Heroes act first.** A wave's enemy turn icons are held back at spawn so none reaches the left edge sooner than `OpeningWindowSeconds` = **3 s** (`BattleRunner.OpenPartyWindow`; a foe too fast for that — at 4.2 IP/tick, anything of Speed 8 or more — starts from the beginning of the bar, a full lap) — the party always opens the battle and every wave.
+  - **Heroes act first.** A wave's enemy turn icons are held back at spawn so none reaches the left edge sooner than `OpeningWindowSeconds` = **3 s** (`BattleRunner.OpenPartyWindow`) — the party always opens the battle and every wave. ~~A foe too fast for that started from the beginning of the bar, a full lap.~~ **GG-T318:** the wave is scheduled one foe at a time through the spacer ([§2.12](#212-recovery-and-spacing-gg-t318)), each from its entry with recovery raised to the 3 s floor.
+  - **GG-T318:** with recovery and spacing a lock of gaps all too short is rare (a crowded wave, eggs, remains), and Rally stays as its safety valve.
   - **Opening gaps.** Clusters are the danger; a pincer's pushback, a Pushback keyword or a Slow on the foe at the front of a cluster opens a gap behind it (pushing the *second* foe of a tight pair before the first acts turns the next gap from a forced Guard into a window).
   - **Seen:** the bar draws the current gap as a soft lane from the left edge to the next enemy icon with its seconds — **green** "move or skill", **amber** "move only", **red** "Guard" (`BattleScreen.SyncGap`); with no room, a banner says "Too little time — Guard (0.4s gap, a move needs 0.85s)" and GUARD is lit gold (`SyncGuardCall`); a slot reads "Too little time — needs 1.0s". Automation `/state` carries `too_little_time`.
   - **Bots model a human** (`HeroBot.ThinkSeconds`: smart **0.4 s**, casual **1.0 s** of hesitation while holding; a hop of `QuickDragTiles` 2 or fewer thinks half as long, and after `HurryAfterGuards` 2 Guards in a row it hurries with no think time — a player locked out of a usable window eventually just moves): a bot drag holds think + `DragSeconds(tiles)` (`MaxDragSteps(s, think)` tiles fit; a longer path is a forced drop), so a gap shorter than think + pickup + a tile offers it no drag; it never acts in a gap too short and Guards when forced; the smart bot still prices pushback/Slow by the hero actions the gap they open makes room for.
@@ -661,11 +682,25 @@ Turns and casts share the one axis, so a cast is a racer like any turn: it is bo
 ### 2.1 Speed and pace
 
 **Amended 2026-11-06 (owner, GG-T286): one linear rate, the whole way.** ~~Open track at Speed × 1.6 IP/tick, then a shared 30-tick Zone crawl.~~
-- A turn icon gains `round(Speed × IpPerTickPerSpeed × tempo × status)` IP per tick (`BattleEngine.TurnRatePerTick`), `IpPerTickPerSpeed` = **4.2** (GG-T311; was 1.6), times the difficulty dial's `EnemySpeed` for enemies, minimum 1 IP/tick: Speed 10 → 42 IP/tick → a full lap in ~24 ticks (2.4 s). Speed matters from IP 0 to the left edge; nothing equalizes the last stretch.
+**Amended again 2026-11-06 (owner, GG-T318): one rate for every icon; Speed is where it re-enters.**
+- ~~A turn icon gains `round(Speed × IpPerTickPerSpeed × tempo × status)` IP per tick, `IpPerTickPerSpeed` 4.2: Speed 10 laps in 2.4 s.~~
+- Every turn icon gains `round(BaseIpPerTick × tempo × status)` IP per tick (`BattleEngine.TurnRatePerTick`). `BaseIpPerTick` = **20** against `BarLength` = **2000** IP, so a full load is 10 s. Enemies are also multiplied by the difficulty dial's `EnemySpeed`. The minimum is 1 IP/tick. Speed is not in the rate.
+- **Speed sets the entry.** After its recovery ([§2.12](#212-recovery-and-spacing-gg-t318)) a foe re-enters the bar
+  `EntrySeconds` from acting (`BattleEngine.EntrySeconds`, `EntryIp`):
+  `EntryBaseSeconds × (ReferenceEnemySpeed(level) / Speed)^EntrySpeedExponent`, clamped to `EntryMin`..`EntryMax`
+  (**4 s**, exponent **0.6**, **2–6 s**). `Formulas.ReferenceEnemySpeed(level)` = 11 + 0.75 × (level − 1) is the median
+  enemy SPD at that level in classes.json, so a foe is judged against its peers and stays fast or slow at every level.
+
+  | Lv1 foe | SPD | Re-enters |
+  |---|---|---|
+  | Wolf | 18 | ≈3.0 s |
+  | Average | 11 | 4.0 s |
+  | Slime | 8 | ≈4.8 s |
+  | Bone pile | 5 | 6 s (cap) |
 - **tempo** is the party tempo — hero Haste slows every foe, Slow on the party speeds them ([§2.11](#211-party-tempo-gg-t268)); **status** is the owner's own buffs (Slowed ×0.5; Frozen halts it entirely, `Unit.IsTimelineHalted`) — `BattleEngine.TimelineScale`. Slow, Haste and Frozen change only the **rate**, never the icon's place: a Slowed foe simply drifts left more slowly, so a cast or a faster foe behind it can **overtake** it. (A Hasten/Quicken landing *on an enemy* is the one exception: it jumps the icon forward, [§2.7.1](#271-hasten--quicken--the-inverse).)
 - A cast icon counts its remaining ticks down one per tick; its `secondsUntilAct` is those ticks ÷ 10.
 - `Speed` is the unit's effective SPD: level SPD + gear SPD + ½ gear AGI ([§3.2](#32-hp-and-stats)).
-- *(Tests: `Timeline_rate_is_linear_in_speed_with_no_zone_crawl`, `Slow_on_an_enemy_lets_an_in_flight_cast_overtake_it`.)*
+- *(Tests: `Timeline_rate_ignores_speed_and_speed_moves_the_entry_instead`, `Slow_on_an_enemy_lets_an_in_flight_cast_overtake_it`; GG-T318 `TimelineSpacingTests` — `An_average_foe_re_enters_four_seconds_out_and_a_faster_one_further_left`, `Entry_is_judged_against_the_level_so_a_fast_foe_stays_fast_at_every_level`, `Every_icon_flows_at_the_same_rate_whatever_its_Speed`.)*
 
 ### 2.2 Icon state
 
@@ -678,6 +713,7 @@ Turns and casts share the one axis, so a cast is a racer like any turn: it is bo
 - **A hero pincer carries it.** Every trapped foe a hero pincer lands a blow on is pushed `BattleConfig.PincerPushbackSeconds` = ~~**1 s**~~ **1.5 s** (GG-T306 rebalance, [§14.1.3](#1413-pincer-planning-gg-t306)) (once, after the supporters act). Enemy pincers push nothing.
 - **Anywhere on the bar.** The foe acts that many seconds later wherever its icon sits (`BattleRunner.Pushback`): it loses `ticks × its current rate` IP; whatever IP 0 can't absorb (an icon that just acted) becomes stun ticks, so the delay is always the full amount.
 - **Capped and once.** One push is at most `PushbackMaxSeconds` = **2 s** (`ContentLoader.Validate` rejects a larger keyword), and a foe is pushed **at most once per action**, so a chained pincer or a multi-hit skill doesn't stack it.
+- **A recovering foe recovers longer** (*GG-T318*): a foe still off the bar ([§2.12](#212-recovery-and-spacing-gg-t318)) has the push added to its recovery. It re-enters later but still at its Speed's entry, and the tray's ring grows.
 - **A held cast slips instead.** A target with no turn icon but a cast in flight has the cast's remaining ticks raised by the same amount (`CastStaggeredEvent`); Pushback never cancels a cast.
 - **Content:** the knockback and disruption skills carry 0.5–1.25 s (Shield Bash, Shove, Bamboo Slam, Juggernaut Charge, Covering Volley, Stasis 0.75; War Stomp, Haymaker, Phalanx Strike, Guard Break, Wide Cleave 0.5; Riposte, Overrun, Disrupt 1; Pinning Shot 1.25) and the Hinder spell the full 2 s. The old `DelayU` field is this keyword now ([§6.7](#67-movement-timeline-and-drain-gg-t183)).
 - **Cast stagger is separate and unchanged** ([§13.4](#134-the-interrupt-path)): any landing hit on a caster still staggers (and can cancel) its cast.
@@ -777,9 +813,60 @@ Owner 2026-11-05: hero haste "slows enemy motion down the timeline, thus you are
 - **Seen and heard.** `TempoChangedEvent` updates a "Tempo +2" / "Tempo −1" readout above the timeline's left end. The track tints cool (Haste) while foes are slowed and red while the party is, with a rising or falling cue and a feed line giving the multiplier. The InspectCard of a haste ability states the tempo it grants.
 - *(Tests: `TempoTests`.)*
 
+### 2.12 Recovery and spacing (GG-T318)
+
+Owner 2026-11-06: "a 'respawn interval' which takes place after the enemy attacks but before they appear back on the
+bar, the idea is to distribute enemies so that the player can fight back and have time to push back dangerous enemies
+or to cast spells that will provide healing or shielding … there would be instances when enemies would cluster, and in
+those cases the player would either try to pull off a really quick move, or sacrifice their move for a defensive bonus
+and convert the remaining time into a portion of mana orb." The cluster fallback is GG-T311's forced Guard ([§2.0](#20-the-held-turn)).
+
+- **Recovery.** When a foe's turn resolves (`BattleRunner.ScheduleReentry`), its icon leaves the bar.
+  - It sits in recovery for `RecoverBaseSeconds` **1 s**, plus the largest `AbilityDef.RecoverSeconds` keyword it used
+    that turn (0–3 s, validated), plus the spacer's delay, ± the difficulty row's jitter.
+  - Then it re-enters at its entry ([§2.1](#21-speed-and-pace)).
+  - Recovery is **not** scaled by Slow, Haste, Rally or the dial. Frozen holds it. It counts in `TicksUntilAct`, so
+    the window, the badge and the bots all see it.
+  - Heavy, telegraphed charges recover longer:
+    - **1.5 s:** fireball, temporal drag.
+    - **1.0 s:** miasma, thunder, ice, enrage.
+    - **0.5 s:** smite, rally, mend.
+    - A wolf pack's howl recovers 0, so a pack keeps its pressure.
+- **The spacer.** `TimelineSpacing.Delay` (pure) takes the foe's natural next turn and the turns of every other foe and
+  every enemy charge in flight.
+  - It holds the foe up to `MaxSpreadSeconds` longer, so its turn lands at least `MinGapSeconds` from all of them.
+  - When nothing in that range fits, it takes the widest gap on offer. A crowded bar still clusters: big waves, eggs,
+    remains, and a pushback or Slow that reshuffles the order.
+  - The extra time goes into recovery, never into the entry, so the bar always reads Speed honestly.
+  - The columns live on the difficulty dial ([§22.9](#229-difficulty-settings-scaffolding-added-2026-10-11-owner-direction)):
+    1.6/2.0 s at level 1 down to **1.0/1.0 s** at 10, where a spaced gap always fits one skill. Every row adds ±0.25 s
+    of seeded jitter.
+  - The neutral row (rules tests) has no spacing and no jitter. Test stages use the neutral row.
+- **Spawns.** A wave is scheduled one foe at a time in entry order (`OpenPartyWindow`), with the 3 s opening floor.
+  Reinforcements, eggs and risen remains are spaced when they arrive. Tamed allies enter at their entry and are never
+  spaced.
+- **Pushback and haste.** A push on a recovering foe adds to its recovery (§2.3). A Hasten/Quicken on one eats its
+  recovery first, then moves it along the bar.
+- **Seen.** A recovering foe waits in the **recovery tray** between the track's right end and GUARD, dimmed, with a
+  countdown ring, then slides onto the bar at its entry (GG-T319).
+- **Tuning (GG-T321)** — `Tests/Core.Tests/TimelineTuningSoak.cs`, all runs in `docs/research/TimelineTuning.md`.
+  - At difficulty 10 with campaign parties:
+
+    | | Smart | Casual |
+    |---|---|---|
+    | Wins | 100% | 90% |
+    | Forced Guard share | 14% | 22% |
+
+    The median gap is 2.1 s and 22% of gaps are under a minimum drag.
+  - This fixes GG-T316. Green Valley I with the real three heroes was 6%/0% with 35–50% forced Guards; it is now 4/4
+    smart, 0/4 casual, with 18–24% forced Guards.
+  - At an average 4 s, no timeline setting moves the smart bot below 97%. Challenge at the top of the dial is an open
+    owner decision: enemy strength, a human ceiling for the smart bot, or encounter design.
+- *(Tests: `TimelineSpacingTests`.)*
+
 ### 2.10 Countdown badge
 
-**Amended 2026-10-09 (new, Terra Battle–style):** every enemy shows a number on its tile — `BattleEngine.ActionsUntilTurn` = `(TicksUntilTurn − 1) / 20`: the actions you get before it acts (**0** = it acts during your next action, drawn red). **Amended 2026-10-21 (GG-T188):** a turn now ends at each enemy arrival, so the number counts the distinct arrival ticks of the *other* enemies (each re-loading from IP 0) before this one's — the turns you get before it acts (**0** = it acts at the end of your next turn). Since GG-T308 a "turn" is the party's window (every hero acts once in it), so the number counts windows, not hero actions. `TicksUntilTurn` simulates its icon with stun at its one linear rate (no Zone crawl since GG-T286) but no future pushback/hasten; Frozen enemies show no number. The actor panel says "Acts in N moves", "Acts after your next move!", "Frozen in time" or "Charging X!".
+**Amended 2026-10-09 (new, Terra Battle–style):** every enemy shows a number on its tile — `BattleEngine.ActionsUntilTurn` = `(TicksUntilTurn − 1) / 20`: the actions you get before it acts (**0** = it acts during your next action, drawn red). **Amended 2026-10-21 (GG-T188):** a turn now ends at each enemy arrival, so the number counts the distinct arrival ticks of the *other* enemies (each re-loading from IP 0) before this one's — the turns you get before it acts (**0** = it acts at the end of your next turn). Since GG-T308 a "turn" is the party's window (every hero acts once in it), so the number counts windows, not hero actions. **GG-T318:** each other foe's next lap is estimated as base recovery plus the trip from its entry, not a reload from IP 0. `TicksUntilTurn` simulates its icon with stun at its one linear rate (no Zone crawl since GG-T286) but no future pushback/hasten; Frozen enemies show no number. The actor panel says "Acts in N moves", "Acts after your next move!", "Frozen in time" or "Charging X!".
 
 ---
 
@@ -2233,21 +2320,26 @@ superseded) are gone.
   reward column strictly rising, and level 10's enemy side exactly 1.0 / offset 0. **Level 10 is the designed game**:
   every balance number in this bible is tuned at 10, and lowering the dial only ever softens it.
 
-  | Level | Name | Enemy HP | Enemy damage | Enemy Lv | Enemy speed (GG-T311) | Rewards (gold, XP, drop chance) |
-  |---|---|---|---|---|---|---|
-  | 1 | Gentle | ×0.55 | ×0.60 | −2 | ×0.60 | ×0.6 |
-  | 2 | Gentle | ×0.60 | ×0.65 | −2 | ×0.65 | ×0.7 |
-  | 3 | Easy | ×0.65 | ×0.70 | −1 | ×0.70 | ×0.8 |
-  | 4 | Easy | ×0.70 | ×0.75 | −1 | ×0.75 | ×0.9 |
-  | 5 | Moderate | ×0.75 | ×0.80 | −1 | ×0.80 | ×1.0 |
-  | 6 | Moderate | ×0.80 | ×0.85 | 0 | ×0.85 | ×1.1 |
-  | 7 | Hard | ×0.85 | ×0.90 | 0 | ×0.90 | ×1.2 |
-  | 8 | Hard | ×0.90 | ×0.93 | 0 | ×0.93 | ×1.3 |
-  | 9 | Very hard | ×0.95 | ×0.97 | 0 | ×0.97 | ×1.4 |
-  | 10 | Intended | ×1.00 | ×1.00 | 0 | ×1.00 | ×1.5 |
+  | Level | Name | Enemy HP | Enemy damage | Enemy Lv | Enemy speed (GG-T311) | MinGap / MaxSpread (GG-T318) | Rewards (gold, XP, drop chance) |
+  |---|---|---|---|---|---|---|---|
+  | 1 | Gentle | ×0.55 | ×0.60 | −2 | ×0.60 | 1.60 / 2.00 s | ×0.6 |
+  | 2 | Gentle | ×0.60 | ×0.65 | −2 | ×0.65 | 1.55 / 1.90 s | ×0.7 |
+  | 3 | Easy | ×0.65 | ×0.70 | −1 | ×0.70 | 1.50 / 1.80 s | ×0.8 |
+  | 4 | Easy | ×0.70 | ×0.75 | −1 | ×0.75 | 1.45 / 1.70 s | ×0.9 |
+  | 5 | Moderate | ×0.75 | ×0.80 | −1 | ×0.80 | 1.40 / 1.60 s | ×1.0 |
+  | 6 | Moderate | ×0.80 | ×0.85 | 0 | ×0.85 | 1.30 / 1.45 s | ×1.1 |
+  | 7 | Hard | ×0.85 | ×0.90 | 0 | ×0.90 | 1.25 / 1.35 s | ×1.2 |
+  | 8 | Hard | ×0.90 | ×0.93 | 0 | ×0.93 | 1.15 / 1.20 s | ×1.3 |
+  | 9 | Very hard | ×0.95 | ×0.97 | 0 | ×0.97 | 1.10 / 1.10 s | ×1.4 |
+  | 10 | Intended | ×1.00 | ×1.00 | 0 | ×1.00 | 1.00 / 1.00 s | ×1.5 |
+
+  **Amended 2026-11-06 (GG-T318): the spacing columns.** `MinGapSeconds` / `MaxSpreadSeconds` drive the timeline spacer
+  ([§2.12](#212-recovery-and-spacing-gg-t318)), and every row adds a ±0.25 s `JitterSeconds`. Less spacing is more
+  pressure, so the validator lets these columns only fall as the level rises. The neutral row (level 0, rules tests)
+  has no spacing and no jitter.
 
 - **What it scales.** Enemy MaxHP and armor plates at spawn (on top of `BattleConfig.EnemyHpScale`); the damage an
-  enemy's blow deals a hero (after the hero's own reductions start, min 1); every enemy's turn-icon pace (`EnemySpeed`, GG-T311: slower foes leave wider gaps for the party, §2.0); every non-test enemy spawn level
+  enemy's blow deals a hero (after the hero's own reductions start, min 1); every enemy's turn-icon pace (`EnemySpeed`, GG-T311: slower foes leave wider gaps for the party, §2.0); how far apart foes are spaced on the timeline (`MinGap`/`MaxSpread`, GG-T318, §2.12); every non-test enemy spawn level
   (`EnemyLevelOffset`, never below 1, which also lowers that foe's stats and XP); and per kill the coins, the XP and
   every drop-table entry's chance (capped at 100%), after New Game+'s coin bonus. Test stages (`StageDef.IsTest`) keep
   the enemy side unscaled. Level 0 (`DifficultyTable.Neutral`) is the raw rules with no scaling at all — what a

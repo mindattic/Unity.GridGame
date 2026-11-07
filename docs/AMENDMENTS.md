@@ -971,3 +971,21 @@ Owner: "the heroes and enemies with 'Pincer' keyword not only line themselves an
 - **Rebalance:** `PincerPushbackSeconds` 1 → 1.5 s. Soak, smart/casual, difficulty 10: 79/33% → 76/31%; difficulty 5: 99/85% → 99/78%; difficulty 1: 100/98% → 100/98%. Without the push change, difficulty 10 was 72/22%.
 - **Stall fixes found by the soak:** a fleeing foe avoids corners (−3; a corner can't be pincered). The smart bot hurries after 4 windows without damage, even when its bar offers buffs.
 - *(Tests: `PincerPlannerTests`.)*
+
+## 2026-11-06 — Speed sets where a foe re-enters; a recovery beat spaces the foes (owner, GG-T318 – GG-T322)
+
+Owner: "I want the 'average' time to move to be 4 seconds … when an enemy restarts on the bar they start 4 seconds away on the far right but their speed is calculated so that they start a little more to the left the faster they are, that's the main point of the speed stat for enemies; there would also need to be a 'respawn interval' which takes place after the enemy attacks but before they appear back on the bar, the idea is to distribute enemies so that the player can fight back." And: "this is the lifeblood of the entire game, this is what sets it apart from Terra Battle's fixed 4 seconds … it would be affected by the Difficulty multiplier which also adjusts the rewards multiplier so it's an intricately interconnected system."
+
+- **Was (GG-T286/GG-T311):** after acting, an icon reloaded from IP 0, and Speed set how fast it travelled (`IpPerTickPerSpeed` 4.2, so Speed 10 lapped in 2.4 s). Nothing spread foes apart. For the real 3-hero start at difficulty 10, 35–50% of the party's actions were forced Guards (GG-T313/GG-T316).
+- **Now:** see BIBLE §2.1 and §2.12.
+  - One rate for every icon (`BaseIpPerTick` 20 against `BarLength` 2000). `BarSeconds` is 6 s.
+  - Speed sets the entry: 4 s × (ReferenceEnemySpeed(level) / Speed)^0.6, clamped 2–6 s.
+  - After acting, a foe recovers off the bar for 1 s + its turn's `RecoverSeconds` keyword. A spacer on the difficulty dial (MinGap/MaxSpread 1.6/2.0 s at level 1 down to 1.0/1.0 s at 10, ±0.25 s jitter) holds it longer so its turn lands clear of the others'. Then it slides on at its entry.
+  - Heavy charges recover 0.5–1.5 s longer.
+  - The recovery tray shows it all (GG-T319).
+- **Why no Grandia-style ACT zone:** heroes have no icons, enemy charges already are the visible, cancellable commitment, and a band would break "position = seconds until acting". Grandia's action-dependent cost lives on as the recovery. A target telegraph in an enemy's last seconds is a candidate follow-up.
+- **Measured (GG-T321, `docs/research/TimelineTuning.md`):**
+  - At difficulty 10 with campaign parties: smart 100%, casual 90%; forced Guards 14% (smart) / 22% (casual); median gap 2.1 s.
+  - Green Valley I with the real three heroes: smart 6% → 4/4, casual 0/4.
+  - At this pace no timeline setting moves the smart bot below 97%. Challenge at the top of the dial is an open owner decision (enemy strength, a human ceiling for the smart bot, or encounter design).
+- *(Tests: `TimelineSpacingTests`; old-model tests rewritten.)*
