@@ -570,7 +570,7 @@ No change was needed in `PincerDetector`/`PincerGeometry`/`BoardView.GroupRect`:
 
 **Amended 2026-11-06 (owner, GG-T303): the Pincer keyword.** `Unit.CanPincer` = hero team **or** `Sentient` **or** the **Pincer** keyword (`Unit.HasPincerKeyword`: a tamed or domesticated monster, or a class tagged `Pincer`). A tamed beast is on the hero team, so it ends and supports *hero* pincers with the party; once its tame wears off it is a mindless enemy again and never pincers ([§25.11.3](#25113-taming-and-domestication-added-2026-11-06-owner-gg-t303)).
 
-Multi-tile actors are never attackers. Sentient 1×1 enemies **seek** pincers (+50 move score, [§14.1.2](#1412-score-weight-cheat-sheet)) and, **Amended 2026-10-09**, **resolve** them on their turn: after moving, if the enemy is one end of an enemy-team pincer, every such pincer resolves against the trapped heroes (no orbs are minted for enemies); otherwise it melees ([§14.1](#141-enemy-planning)).
+Multi-tile actors are never attackers. Sentient 1×1 enemies **seek** pincers (+50 move score, [§14.1.2](#1412-score-weight-cheat-sheet)) — **Amended 2026-11-06 (owner, GG-T306):** and actively **engineer** them, swapping places with monsters and heroes to complete a pincer, set up an end or slot a supporter into the chain ([§14.1.3](#1413-pincer-planning-gg-t306)) — and, **Amended 2026-10-09**, **resolve** them on their turn: after moving, if the enemy is one end of an enemy-team pincer, every such pincer resolves against the trapped heroes (no orbs are minted for enemies); otherwise it melees ([§14.1](#141-enemy-planning)).
 
 ### 1.4 A full action, end-to-end (worked example)
 
@@ -675,7 +675,7 @@ Turns and casts share the one axis, so a cast is a racer like any turn: it is bo
 
 **Amended 2026-11-06 (owner, GG-T286, inspired by Final Fantasy Resonance): Pushback is a keyword, not a property of every hit.** ~~Any hero hit on an enemy in the Pushback Zone shoved its icon back by a depth × STR formula (`PushbackBaseU`/`PushbackMaxU`, 2026-10-11 tuning) and stunned it by AGI.~~ The Zone, the STR/AGI formula and the AGI stun are gone.
 - **Only the keyword pushes.** An ability or item carrying `Pushback` (`AbilityDef.Pushback`, seconds) pushes each foe it reaches; **plain hits never push** — pincer strikes aside (below), supporter strikes, spells without the keyword, Mug, damage items, DOT, traps and shatter move no icon.
-- **A hero pincer carries it.** Every trapped foe a hero pincer lands a blow on is pushed `BattleConfig.PincerPushbackSeconds` = **1 s** (once, after the supporters act). Enemy pincers push nothing.
+- **A hero pincer carries it.** Every trapped foe a hero pincer lands a blow on is pushed `BattleConfig.PincerPushbackSeconds` = ~~**1 s**~~ **1.5 s** (GG-T306 rebalance, [§14.1.3](#1413-pincer-planning-gg-t306)) (once, after the supporters act). Enemy pincers push nothing.
 - **Anywhere on the bar.** The foe acts that many seconds later wherever its icon sits (`BattleRunner.Pushback`): it loses `ticks × its current rate` IP; whatever IP 0 can't absorb (an icon that just acted) becomes stun ticks, so the delay is always the full amount.
 - **Capped and once.** One push is at most `PushbackMaxSeconds` = **2 s** (`ContentLoader.Validate` rejects a larger keyword), and a foe is pushed **at most once per action**, so a chained pincer or a multi-hit skill doesn't stack it.
 - **A held cast slips instead.** A target with no turn icon but a cast in flight has the cast's remaining ticks raised by the same amount (`CastStaggeredEvent`); Pushback never cancels a cast.
@@ -728,7 +728,7 @@ Icons advance independently. Within a tick, arrivals resolve one at a time: **ca
 
 ### 2.7 Worked example: pushback math
 
-**Amended 2026-11-06 (GG-T286):** ~~the depth × STR example (IP 920, STR 18 → 0.275 u plus a 7-tick AGI stun)~~ is replaced.
+**Amended 2026-11-06 (GG-T286):** ~~the depth × STR example (IP 920, STR 18 → 0.275 u plus a 7-tick AGI stun)~~ is replaced. *(The example below keeps the GG-T286 numbers: 1.6 IP/tick per Speed and a 1 s pincer push. With 4.2 IP/tick (GG-T311) and 1.5 s (GG-T306) the method is the same: seconds × the foe's current rate.)*
 
 A goblin (Speed 10 → 16 IP/tick) sits at IP 920: 80 IP to go → 5 ticks → **0.5 s** from acting (u 0.05, nearly at the left edge). Two heroes pincer it.
 
@@ -1672,9 +1672,10 @@ Order per hit:
 3. **Immobile** → skip the turn (end-of-turn ticks still run).
 4. **Charge**: if not already casting, `PlanCast` → queue a charge and end the turn.
 5. **Trap**: a trap-layer with no hero adjacent rolls `LayChance` (0.45) to arm a free, trap-free cardinal tile, ending the turn.
-6. **Move** up to `MoveRange` steps (all content: 1), re-planning each step with `PlanStep`; a multi-tile step shoves heroes ([§1.5](#15-multi-tile-actors-22-bosses)); a snake head drags its chain.
-7. **Attack**: a Sentient 1×1 enemy (`Unit.CanPincer`, [§1.3](#13-sentient-restriction); was Humanoid before GG-T289) that is now an end of an enemy pincer resolves those pincers ("X pincers!"); otherwise it melees the adjacent hero its **targeting personality** picks (below). No adjacent hero → no attack.
-8. End of turn: its non-halting turn buffs tick; battle-end check.
+6. **Pincer plan** (GG-T306, [§14.1.3](#1413-pincer-planning-gg-t306)): a pincer-capable 1×1 foe first asks `EnemyPlanner.PlanPincer`. A walk that **completes** a pincer is taken at once, before step 4's charge; a walk that **sets up** an end or **joins** an ally pincer as a supporter is taken here, after the charge and trap checks. Either way it then goes straight to step 8's attack.
+7. **Move** up to `MoveRange` steps (all content: 1 or 2), re-planning each step with `PlanStep`; a multi-tile step shoves heroes ([§1.5](#15-multi-tile-actors-22-bosses)); a snake head drags its chain.
+8. **Attack**: a Sentient 1×1 enemy (`Unit.CanPincer`, [§1.3](#13-sentient-restriction); was Humanoid before GG-T289) that is now an end of an enemy pincer resolves those pincers ("X pincers!"); otherwise it melees the adjacent hero its **targeting personality** picks (below). No adjacent hero → no attack.
+9. End of turn: its non-halting turn buffs tick; battle-end check.
 
 **Targeting personalities (amended 2026-10-10, owner direction: "smarter enemies attack the weakest, dumb enemies the closest").** `ClassDef.Targeting` drives movement (`PlanStep`), melee choice, ranged choice and charge targets (`EnemyPlanner.PickFrom`); ties fall back to distance, then HP, then id:
 
@@ -1725,6 +1726,39 @@ The −100 sandwich avoidance (two heroes directly on opposite sides) outweighs 
 
 Constants live in `EnemyPlanner` and `BattleConfig.RetreatHpThreshold`.
 
+#### 14.1.3 Pincer planning (GG-T306)
+
+**Added 2026-11-06 (owner):** "The heroes and enemies with 'Pincer' keyword not only line themselves and complete pincers, they actively try to make pincers by swapping with monsters or heroes to set up a beneficial situation with enemies, themselves, and their supporters — so every monster needs support abilities."
+
+`PincerPlanner` (Core/Rules) is one shared, pure planner for any unit that can pincer (`Unit.CanPincer`: heroes, Sentient foes, tamed or domesticated monsters).
+- **Search.** It tries every walk of up to `min(steps, MaxSearchSteps = 3)` cardinal steps, never revisiting a tile. Each step either enters an empty walkable tile or **swaps** with the one-tile unit standing there, friend or foe. The occupant takes the tile just left, exactly like a hero drag ([§1.1](#11-sliding-and-displacement)). Units that can't be swapped: multi-tile actors, snake members, remains, corpses and neutrals. A hero-team walk never steps on a trap. That is at most 52 walks per unit, each scored on the board it leaves. The planner moves `Pos` to look and restores it, never draws from the Rng, and tries walks in `Coord.Cardinals` order; the first of equal scores wins, so it is deterministic.
+- **Score** (`Evaluate`, the board after the walk):
+
+| Outcome | Kind | Worth |
+|---|---|---|
+| The mover is an end of a pincer with live opponents (a commanded hero: any hero pincer, since its drop resolves them all) | **Complete** | `OpponentValue` 10 per live, unarmored opponent, +3 for one below 40% HP, plus each supporter's `SupportWorth` (so an ally swapped into the chain counts) |
+| No pincer, but it stands at one end of an unbroken opponent line whose far tile is open (empty, or a non-pincer ally that can be swapped out) and a pincer-capable ally can reach that tile on its next action (a foe or tamed beast: its `MoveRange`; a commanded hero: the drag that fits the window) | **Setup** | `SetupBase` 6 + 1 per opponent in the line |
+| It joins the chain of an ally pincer already on the board | **Support** | 0.6 × its `SupportWorth` (added to the other kinds too) |
+| Each ally newly trapped in an opponent pincer | — | −12; the mover itself trapped −40 (a Berserker or Bomber foe ignores the −40) |
+| Each step / each swap | — | −0.25 / −0.25 |
+
+- **`SupportWorth`** prices a supporter by its class's `SupportDef` ([§1.2.3](#123-supporters)): Strike 2 + 4×magnitude, Heal 2 + 10×, Buff 3, Haste 2 + seconds, Mana 2 + charge/25, Cleanse 2, Crit 2 + 6×, Cast 2 + 4×, Status 2 + 3×chance, Pushback 2 + 2×seconds. This is why a healer behind an attacker can beat a second striker. Every enemy class must carry its own `Support`: `ContentLoader.Validate` rejects one that doesn't ("an enemy needs its own Support"), and all 115 do since GG-T307.
+- **Foes** (`EnemyPlanner.PlanPincer`): a Sentient 1×1 foe that isn't immobile and isn't wounded enough to retreat plans with its `MoveRange`. A Sentinel, an Ambusher still lying in wait, or a Sluggish foe on its rest turn plans with 0 steps (it only pincers in place). An evasive brain (Kiter, Commander, Trapper, Medic) takes only a **Complete** walk. A walk is taken only when its score is positive. `BattleRunner.FollowPincerPlan` walks it with `SwapStepEnemy` (an empty tile is an ordinary step; an occupied one swaps, `DisplacedEvent` by the foe, and a hero shoved onto a trap springs it). With a swap it announces "X maneuvers!". Then it attacks, closing the pincer if it now stands at an end. Mindless foes (beasts, slimes, yetis…) keep the plain `PlanStep`: they never swap.
+- **Tamed monsters** (`RunAllyTurn`, [§25.11.3](#25113-taming-and-domestication-added-2026-11-06-owner-gg-t303)) plan with the same planner on the hero side and walk the plan with the hero drag's `WalkPath`. They complete a hero pincer, stand at an end a hero can close, or slot into a chain. They still act on their own and shove heroes aside to do it, which can wreck a setup the player had in mind. With nothing to engineer, a tamed monster falls back to charging the nearest foe. A ranged one that already has a shot takes only a Complete walk.
+- **The smart bot** (`HeroBot`, timeline-aware) adds the planner's walk to its drag candidates whenever it is not one of the straight L-drags it already previews. The walk is capped at the drag that fits the gap (`MaxDragSteps` with think time, GG-T311), and is previewed and scored like any other drag. The bot also weighs each supporter of a previewed pincer by 0.6 × `SupportWorth` instead of a flat 2.
+- *(Tests: `PincerPlannerTests` — `A_sentient_enemy_swaps_with_an_ally_to_complete_a_pincer`, `A_sentient_enemy_swaps_to_set_up_an_end_an_ally_can_close`, `A_mindless_enemy_never_swaps_to_pincer`, `A_tamed_monster_moves_to_close_a_hero_pincer`, `The_hero_planner_finds_the_walk_that_closes_a_pincer`, `Planning_and_the_turns_it_drives_replay_identically`, `Every_real_enemy_class_brings_its_own_support`.)*
+
+- **Balance (GG-T306).** Per-stage 8 soak (`AbilityUsageSoak`, 15 campaign stages, same seeds), smart / casual bot wins, before → after:
+
+| Difficulty | Before (GG-T311) | Planner only (pincer push 1 s) | Shipped (pincer push 1.5 s) |
+|---|---|---|---|
+| 10 | 79% / 33% | 72% / 22% | **76% / 31%** |
+| 5 | 99% / 85% | — | **99% / 78%** |
+| 1 | 100% / 98% | — | **100% / 98%** |
+
+  Engineered enemy pincers alone cost the casual bot 11 points at difficulty 10, which put it below the 30–45% band. `PincerPushbackSeconds` 1 → **1.5 s** brings it back: every hero pincer buys the party half a second more against foes that now set up their own pincers. Difficulty 10 by theme, smart bot: greenvalley 83 → 71, desert 92 → 92, swamp 67 → 62, cave 88 → 79, cityruins 67 → 75. The smart bot wins at least one battle on every stage. Casual, by theme: greenvalley 25, desert 42, swamp 25, cave 58 → 46, cityruins 17.
+  The soak also exposed two stalls, fixed here. A wounded foe fleeing into a **corner** can't be pincered on either axis, so a buff-only pair could never finish it; a fleeing step now scores −`FleeCornerPenalty` (3) for a corner tile. And a smart bot whose bar held only buffs never counted as locked out, so with 1 s gaps it never dragged; it now also hurries (no think time) after `StallHurry` (4) windows without drawing blood. `BattleConfig.EnemyPincerSetups` and `EnemyPincerSwapsHeroes` (both on) are soak knobs (`GAIDEN_TUNE`). Turning both off measured casual 31% at difficulty 10 with a 1 s push.
+
 #### 14.1.1 Taunt
 
 Added 2026-10-11 (owner: "a tank should be able to taunt enemies"). While any hero carries a buff with `Taunts` (Taunting, 2 turns, −25 % damage taken), `EnemyPlanner.PickFrom` only considers taunting heroes among those in reach — so walking, charging and ranged foes all go for the tank, and a taunter out of reach doesn't save an adjacent ally. Synergy: a hit staggers a hero's cast, so a taunting tank keeps the mages' spells charging. *(Tests: `A_taunting_hero_draws_every_enemy_that_can_choose`, `Taunt_only_overrides_among_heroes_in_reach`.)*
@@ -1752,7 +1786,7 @@ Added 2026-10-11 (owner: "a tank should be able to taunt enemies"). While any he
 ### 14.3 AI hooks
 
 - **Casting enemies** — [§13.4](#134-the-interrupt-path).
-- **Supporter positioning** — `WouldSupportAllyPincer` (+25), reusing `PincerDetector` supporters.
+- **Supporter positioning** — `WouldSupportAllyPincer` (+25), reusing `PincerDetector` supporters; since GG-T306 the pincer planner also swaps allies into a chain ([§14.1.3](#1413-pincer-planning-gg-t306)).
 - **Boss scripted phases** — **Amended 2026-10-09:** `ClassDef.BossPhases` is data (`HpThreshold`, `PrefersCharge`, `OnEnterAbility`, `Announce`). At the **start of the boss's own turn**, every phase whose threshold the HP fraction has dropped to is entered in order: `BossPhaseEvent`, its announcement, and its on-enter ability resolved on itself. `cyclops00`: phase 0 at ≤ 100% ("Cyclops", on its first turn), phase 1 at ≤ 50% ("ENRAGED!" + `enrage`, self-Hasten 0.35). `PrefersCharge` lets a phase charge even in melee range (no content uses it yet).
 - **Threat tracking** — `Unit.DamageDealt` (hero damage dealt this battle) feeds `PickTarget`.
 - **Retreat** — below 30% HP.
@@ -2855,7 +2889,7 @@ Owner: a Monster Tamer can tame an enemy monster so it fights for the party for 
 - **Who** (`Taming.WhyNot`): a living enemy with no society: not `Sentient` (so frog folk, soldiers, hags never), not a boss (tag `Boss`, boss phases or a rule-break), not remains, an egg or a corpse, one tile and not a snake, not tagged `Untameable`. Today that is the bats, wolves, werewolf, yeti, flying monkey, vulture, scorpion, slimes, sandmaw, tree golems, skelepedes, the mindless undead, cyber-zombies and the ghost. `TargetResolver.IsValidPick` offers only these, so a refused pick spends nothing.
 - **Odds** (`Taming.Chance`, one Rng draw): base x (1.5 - the monster's HP fraction, so x0.5 fresh to x1.5 nearly dead) x level factor (1 + 0.05 per level the user is above it, x0.5..x1.5) + 0.4% per point of the user's Luck and of its Wisdom, clamped to **5-95%**. A failure is a `TameFailedEvent` ("Resisted (n%)").
 - **Tamed** (`TamedEvent`): the unit flips to `Team.Hero` with `Unit.Tamed` where it stands; any charge it was casting fizzles (`CastCancelledEvent` "tamed"); it keeps (or gets) its own turn icon. It is **independent** (`Unit.IsIndependent`): never commanded (no drag, no bar; `CanMove` and `GetSlotStatus` refuse; not one of `HeroesLeftToAct`). Its own turn **doesn't end the party's window** (only enemy turns do, §2.0), its buffs tick on its own turns, and party tempo doesn't move its icon. Enemies treat it as a hero: they target it and pincer it. A tamed beast alone doesn't keep the party in the fight: when every commanded hero is down, it is a defeat.
-- **Its turn** (`BattleRunner.RunAllyTurn`): start-of-turn triggers, then it charges the nearest foe on the shortest cardinal path **through anyone one tile big**. Friend or foe swap into the tile it leaves, exactly like a hero drag, up to its `MoveRange`. It is deliberately not clever about your setup. Then it closes any hero pincer it stands at the end of (it carries the **Pincer** keyword, §1.3), else hits the weakest adjacent foe, else shoots one in range. Its own class `Support` backs the party's pincers (§1.2.3). End-of-turn triggers and buff ticks follow.
+- **Its turn** (`BattleRunner.RunAllyTurn`): start-of-turn triggers. **Amended 2026-11-06 (GG-T306):** first it asks the shared pincer planner for a walk that completes a hero pincer, sets up an end a hero can close, or slots it into a chain ([§14.1.3](#1413-pincer-planning-gg-t306)), swapping through friend and foe. Otherwise it charges the nearest foe on the shortest cardinal path **through anyone one tile big**. Friend or foe swap into the tile it leaves, exactly like a hero drag, up to its `MoveRange`. ~~It is deliberately not clever about your setup.~~ It still acts on its own, so it can disrupt your setup. Then it closes any hero pincer it stands at the end of (it carries the **Pincer** keyword, §1.3), else hits the weakest adjacent foe, else shoots one in range. Its own class `Support` backs the party's pincers (§1.2.3). End-of-turn triggers and buff ticks follow.
 - **Bond** (`Unit.Bond`/`BondNeeded`, `BondGrewEvent`): each own turn fought while tamed adds 1. `BondNeeded` is the class's `TameBond` (yeti and werewolf 6), else 3 + level/5. While the bond isn't full, each turn also spends one tame turn; at 0 it **breaks free** (`TameEndedEvent`): back on `Team.Enemy` where it stands, its bond kept for a re-tame. A **full bond** ("Bonded!") stops the countdown: it stays for the rest of the battle.
 - **Domestication** (`Meta/Domestication.cs`): a tamed monster still standing at a victory with a full bond asks to join (`BattleReport.TameOffers`). The results screen shows "X wants to join you!" with **Accept** and **Decline**. Accepted, it becomes a roster member (`HeroSave.Domesticated`, keyed by its enemy class, so one of each) at its battle level: in the party if a slot is free, else the reserve. In battle it spawns with the party as an independent ally (`HeroSpec.Domesticated`) with the Pincer keyword. Drawbacks: no gear (`Equipment.Equip` refuses), no learned skills or Tomes, **no skill tree** (an enemy class has no `HomeTree`), half XP (`Domestication.XpFactor`) and no growth past **Lv 30** (`LevelCap`). Camp shows a TAMED badge in place of a role.
 - **Look:** a tamed or domesticated unit wears a chartreuse keyline and a TAMED tag on the board, and its timeline icon has the same `Palette.Tamed` border. A "Tamed!" float with a power-up cue; "Bond n/m" each turn; "Bonded!" with a war-cry cue; "Breaks free!" with the debuff cue. The InspectCard shows a bond meter and the turns left.

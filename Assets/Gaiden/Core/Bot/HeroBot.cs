@@ -60,6 +60,8 @@ namespace GridGame.Core.Bot
         /// eventually just moves.</summary>
         public const int HurryAfterLockouts = 2;
         private int lockouts;
+        /// <summary>GG-T306: windows in a row without drawing blood after which the smart bot drags with no think time.</summary>
+        public const int StallHurry = 4;
         private bool lockedOut;
 
         public HeroBot(int seed, float randomness = 0f)
@@ -108,7 +110,9 @@ namespace GridGame.Core.Bot
             // (forced drop), and a gap too short for pickup + think + one tile offers no drag at all.
             // A short hop (QuickDragTiles or fewer) is half the deliberation, so a ~1 s gap still fits one.
             float window = BattleEngine.TurnWindowSeconds(s);
-            float thinkNow = lockouts >= HurryAfterLockouts ? 0f : ThinkSeconds;
+            // GG-T306: a stalled smart bot hurries too — a party with only buffs on its bars never counted as locked out,
+            // so against a fast regenerating foe (1 s gaps) it buffed for ever instead of walking one tile at a time.
+            float thinkNow = lockouts >= HurryAfterLockouts || stalled >= StallHurry ? 0f : ThinkSeconds;
             int fullSteps = BattleEngine.MaxDragSteps(s, thinkNow);
             int quickSteps = Math.Min(QuickDragTiles, BattleEngine.MaxDragSteps(s, thinkNow * QuickThinkFactor));
             int maxSteps = Math.Max(fullSteps, quickSteps);
@@ -117,28 +121,38 @@ namespace GridGame.Core.Bot
             {
                 // GG-T311: a gap too short to drag in still leaves this hero's bar (no `continue` past the slots).
                 bool canDrag = BattleEngine.CanMove(s, h.Id) && maxSteps > 0;
+                void AddDrag(List<Coord> full)
+                {
+                    var path = full.Count > maxSteps ? full.GetRange(0, maxSteps) : full;
+                    var pv = BattleEngine.PreviewMove(s, h.Id, path);
+                    if (pv.StepsTaken.Count == 0) return;
+                    int walked = pv.StepsTaken.Count;
+                    float think = walked <= quickSteps && full.Count <= quickSteps ? thinkNow * QuickThinkFactor : thinkNow;
+                    float held = full.Count > maxSteps ? window : think + BattleEngine.DragSeconds(walked);
+                    if (window > 0f) held = Math.Min(held, window);
+                    float score = ScoreMove(s, pv, h);
+                    if (ReadsBar) score += MoveTimeValue(s, pv, h, held);
+                    if (!pincerAvailable && HasRealPincer(s, pv)) pincerAvailable = true;
+                    float push = lone ? 0f : DisplacementScore(s, pv, h, TimelineAware);
+                    if (push > 0f) displacement.Add((candidates.Count, push));
+                    candidates.Add((new MoveCommand { HeroId = h.Id, Path = new List<Coord>(pv.StepsTaken), HeldSeconds = held }, score));
+                }
                 for (int y = 0; canDrag && y < BattleConfig.Rows; y++)
                     for (int x = 0; x < BattleConfig.Cols; x++)
                     {
                         var dest = new Coord(x, y);
                         if (dest == h.Pos) continue;
-                        foreach (var full in LPaths(h.Pos, dest))
-                        {
-                            var path = full.Count > maxSteps ? full.GetRange(0, maxSteps) : full;
-                            var pv = BattleEngine.PreviewMove(s, h.Id, path);
-                            if (pv.StepsTaken.Count == 0) continue;
-                            int walked = pv.StepsTaken.Count;
-                            float think = walked <= quickSteps && full.Count <= quickSteps ? thinkNow * QuickThinkFactor : thinkNow;
-                            float held = full.Count > maxSteps ? window : think + BattleEngine.DragSeconds(walked);
-                            if (window > 0f) held = Math.Min(held, window);
-                            float score = ScoreMove(s, pv, h);
-                            if (ReadsBar) score += MoveTimeValue(s, pv, h, held);
-                            if (!pincerAvailable && HasRealPincer(s, pv)) pincerAvailable = true;
-                            float push = lone ? 0f : DisplacementScore(s, pv, h, TimelineAware);
-                            if (push > 0f) displacement.Add((candidates.Count, push));
-                            candidates.Add((new MoveCommand { HeroId = h.Id, Path = new List<Coord>(pv.StepsTaken), HeldSeconds = held }, score));
-                        }
+                        foreach (var full in LPaths(h.Pos, dest)) AddDrag(full);
                     }
+                // GG-T306 (§14.1.3): the smart bot also asks the shared pincer planner for a short winding walk (swapping
+                // through allies and foes) that the straight L-drags miss: one that completes a pincer, sets up an end
+                // or slots a supporter into a chain. It is previewed and scored like any other drag, inside the same
+                // minimum-action-time limit (maxSteps, the drag that fits the gap).
+                if (canDrag && TimelineAware && !lone)
+                {
+                    var plan = PincerPlanner.Plan(s, h, Math.Min(maxSteps, PincerPlanner.MaxSearchSteps));
+                    if (plan.Kind != PincerPlanKind.None && plan.Path.Count > 0 && !IsLPath(h.Pos, plan.Path)) AddDrag(plan.Path);
+                }
 
                 for (int slot = 0; slot < h.Bar.Count && !movesOnly; slot++)
                 {
@@ -214,6 +228,19 @@ namespace GridGame.Core.Bot
             return candidates[candidates.Count - 1].cmd;
         }
 
+        /// <summary>True when <paramref name="path"/> is one of <see cref="LPaths"/> to its own end (already a candidate).</summary>
+        private static bool IsLPath(Coord from, List<Coord> path)
+        {
+            foreach (var l in LPaths(from, path[path.Count - 1]))
+            {
+                if (l.Count != path.Count) continue;
+                bool same = true;
+                for (int i = 0; i < l.Count && same; i++) same = l[i] == path[i];
+                if (same) return true;
+            }
+            return false;
+        }
+
         public static IEnumerable<List<Coord>> LPaths(Coord from, Coord to)
         {
             yield return Path(from, to, true);
@@ -257,7 +284,9 @@ namespace GridGame.Core.Bot
                     if (o.HpFraction < 0.4f) score += 3f;
                     if (ChargesTempoDrain(s, o)) score += 6f; // GG-T275: staggering a Temporal Drag keeps the party's tempo
                 }
-                score += 2f * (p.SupportersA.Count + p.SupportersB.Count);
+                // GG-T306: the smart bot weighs each supporter by what its support effect brings (PincerPlanner.SupportWorth).
+                if (TimelineAware) { foreach (var su in p.SupportersA) score += 0.6f * PincerPlanner.SupportWorth(su); foreach (var su in p.SupportersB) score += 0.6f * PincerPlanner.SupportWorth(su); }
+                else score += 2f * (p.SupportersA.Count + p.SupportersB.Count);
                 // Power Amplifier (owner direction 2026-10-11): a pincer attacker (never a supporter)
                 // who ends this move standing on the amplifier strikes amplified — worth real priority.
                 if (s.Amplifier.HasValue)

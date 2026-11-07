@@ -957,3 +957,17 @@ Owner: "Heroes go first in the round, but unless they can get in a pincer betwee
 - Rally: each forced Guard slows every enemy icon a tempo step (stacking to 5, ≈ ×0.33, outside the tempo clamp) until the next hero action — so a lock of too-short gaps always opens (found by the Crucible soak: foes lapping so fast that every gap was under 0.85 s held the party out for 6000 commands). The bots hurry (no think time) after 2 Guards in a row, so a window a human could use never locks a bot out either.
 - Bots drag on the human model plus think time (smart 0.4 s, casual 1 s); `BotSecondsPerStep` 0.25 s/tile is gone.
 - `IpPerTickPerSpeed` 1.6 → 4.2 and the difficulty dial gains an `EnemySpeed` column (×0.60 at 1 … ×1.00 at 10). Soak (per-stage 8): difficulty 10 smart/casual 100/100% → 79/33%, 5 → 99/85%, 1 → 100/98%. Bots drag on think + 0.5 s + 0.35 s a tile (a hop of 1–2 tiles thinks half as long). The campaign pacing report now requires only the camp-managing greedy bot to finish.
+
+## 2026-11-06 — Pincer-keyword units engineer pincers: the shared pincer planner (owner, GG-T306)
+
+Owner: "the heroes and enemies with 'Pincer' keyword not only line themselves and complete pincers they actively try to make pincers by swapping with monsters or heroes to setup a beneficial situation with enemies, themselves, and their supporters - so every monster needs support abilities."
+
+- **Was:** a Sentient foe stepped one free tile at a time (`PlanStep`, +50 for a tile that formed a pincer, +25 for a supporter tile) and never swapped. A tamed monster charged the nearest foe and was "deliberately not clever". The smart bot previewed only straight L-drags.
+- **Now:** see BIBLE §14.1.3. `PincerPlanner` is one shared, pure, deterministic planner. It searches up to 3-step walks that swap through one-tile friends and foes like a hero drag, and scores what each walk leaves: Complete, Setup (an end an ally can reach), or Support (joining a chain). Supporters are priced by their own `SupportDef` effect, and walks that leave allies trapped are penalised.
+  - Sentient foes use it within their `MoveRange`. A completing walk beats a charge. Evasive brains take only completing walks. A swap announces "X maneuvers!".
+  - Tamed monsters use it on the hero side before falling back to their charge.
+  - The smart bot adds the planner's walk to its drag candidates (inside the GG-T311 drag limit) and weighs supporters by effect.
+  - `ContentLoader.Validate` now requires every enemy class to carry its own `Support`.
+- **Rebalance:** `PincerPushbackSeconds` 1 → 1.5 s. Soak, smart/casual, difficulty 10: 79/33% → 76/31%; difficulty 5: 99/85% → 99/78%; difficulty 1: 100/98% → 100/98%. Without the push change, difficulty 10 was 72/22%.
+- **Stall fixes found by the soak:** a fleeing foe avoids corners (−3; a corner can't be pincered). The smart bot hurries after 4 windows without damage, even when its bar offers buffs.
+- *(Tests: `PincerPlannerTests`.)*

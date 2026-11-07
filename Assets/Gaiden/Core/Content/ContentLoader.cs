@@ -220,6 +220,9 @@ namespace GridGame.Core.Content
             foreach (var c in db.Classes.Values)
             {
                 if (c.Team == Team.Hero && (c.Role == null || !HeroRoles.Contains(c.Role))) p.Add($"class {c.Id}: hero needs a Role (Tank/Healer/Mage/Striker/Support/Ranged), has '{c.Role}'");
+                // GG-T306 (§14.1.3): pincer-capable foes engineer pincers with their kin as supporters, and any monster can be
+                // tamed into the party's chains, so every enemy class brings its own support (no silent default strike).
+                if (c.Team == Team.Enemy && c.Support == null) p.Add($"class {c.Id}: an enemy needs its own Support (every monster supports a pincer)");
                 // GG-T187 (§1.2.3): a class's support action must be playable.
                 if (c.Support != null)
                 {

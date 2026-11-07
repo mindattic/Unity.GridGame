@@ -7,9 +7,9 @@ namespace GridGame.Core.Battle
 {
     /// <summary>
     /// Taming (§25.11.3, GG-T303): a Tame effect turns a wild, non-Sentient monster to the party's side for a few of its
-    /// own turns. Like Umaro in FF VI it is never commanded — it keeps its own timeline icon and, on its turn, charges the
-    /// nearest foe on its own simple AI (walking straight through friend and foe, shoving them aside: it may well wreck
-    /// a pincer you were setting up). It carries the Pincer keyword, so it ends and supports pincers with the party.
+    /// own turns. Like Umaro in FF VI it is never commanded — it keeps its own timeline icon and, on its turn, engineers a
+    /// pincer with the party through the shared <see cref="PincerPlanner"/> (GG-T306), else charges the nearest foe
+    /// (walking straight through friend and foe, shoving them aside: it may well wreck a pincer you were setting up). It carries the Pincer keyword, so it ends and supports pincers with the party.
     /// Every own turn it fights for you fills its bond; once full the tame no longer wears off, and standing at a victory
     /// it asks to join (domestication, Meta). Domesticated monsters spawn as the same independent allies.
     /// </summary>
@@ -89,7 +89,21 @@ namespace GridGame.Core.Battle
                 return;
             }
 
-            if (!(u.IsRanged && RangedFoe(u) != null))
+            // GG-T306 (§14.1.3): the Pincer keyword makes it engineer pincers with the party through the shared planner —
+            // completing one, setting up an end a hero can close, or joining a chain as a supporter — on its own
+            // initiative (it still shoves heroes aside to do it). With nothing to engineer it charges as before.
+            var plan = u.CanPincer ? PincerPlanner.Plan(S, u, Math.Max(0, u.Def.MoveRange)) : null;
+            if (plan != null && (plan.Kind == PincerPlanKind.None || plan.Score <= 0f || (plan.Kind != PincerPlanKind.Complete && u.IsRanged && RangedFoe(u) != null))) plan = null;
+            if (plan != null)
+            {
+                if (plan.Path.Count > 0)
+                {
+                    var taken = new List<Coord>();
+                    WalkPath(u, plan.Path, taken);
+                    if (taken.Count > 0 && u.Alive && BreaksOnMove(u)) RemoveBuffsWhere(u, b => b.Def.BreaksOnMove, "moved");
+                }
+            }
+            else if (!(u.IsRanged && RangedFoe(u) != null))
             {
                 var path = AllyPath(u);
                 int steps = Math.Max(0, u.Def.MoveRange);

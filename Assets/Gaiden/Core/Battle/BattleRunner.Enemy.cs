@@ -46,6 +46,10 @@ namespace GridGame.Core.Battle
             if (RuleBreakBeforeTurn(enemy)) return;
             if (BrainTurn(enemy)) return;
 
+            // GG-T306 (§14.1.3): a pincer-capable foe engineers pincers — a walk that completes one now beats a charge.
+            var pincerPlan = EnemyPlanner.PlanPincer(S, enemy);
+            if (pincerPlan != null && pincerPlan.Kind == PincerPlanKind.Complete) { FollowPincerPlan(enemy, pincerPlan); return; }
+
             bool alreadyCasting = S.CastEntryOf(enemy.Id) != null;
             var charge = alreadyCasting ? null : EnemyPlanner.PlanCast(S, enemy, phase?.PrefersCharge ?? false);
             if (charge != null)
@@ -56,6 +60,7 @@ namespace GridGame.Core.Battle
             }
 
             if (TryLayTrap(enemy)) { EndEnemyTurn(enemy); return; }
+            if (pincerPlan != null) { FollowPincerPlan(enemy, pincerPlan); return; } // set up an end or join as a supporter
 
             int steps = Math.Max(0, enemy.Def.MoveRange);
             for (int i = 0; i < steps && enemy.Alive && !S.IsOver; i++)
@@ -114,6 +119,40 @@ namespace GridGame.Core.Battle
                 return true;
             }
             return false;
+        }
+
+        /// <summary>
+        /// GG-T306: walk a <see cref="PincerPlan"/> step by step — into an empty tile like any step, or swapping with the
+        /// one-tile unit there (ally or hero), which takes the tile just left, exactly like a hero drag (§1.1) — then
+        /// strike (closing the pincer if it now stands at an end) and end the turn.
+        /// </summary>
+        private void FollowPincerPlan(Unit enemy, PincerPlan plan)
+        {
+            if (plan.Swapped.Count > 0) Announce($"{enemy.Name} maneuvers!", enemy.Id);
+            foreach (var next in plan.Path)
+                if (!enemy.Alive || S.IsOver || !SwapStepEnemy(enemy, next)) break;
+            if (!enemy.Alive || S.IsOver) return;
+            EnemyAttack(enemy);
+            if (CheckEnd()) return;
+            EndEnemyTurn(enemy);
+        }
+
+        /// <summary>One cardinal step for a 1×1 foe that may swap: an empty tile is an ordinary <see cref="StepEnemy"/>;
+        /// an occupied one swaps the occupant into the tile just left (the only tile this step frees, §1.1.3).</summary>
+        private bool SwapStepEnemy(Unit enemy, Coord next)
+        {
+            var occ = S.UnitAt(next);
+            if (occ == null) return StepEnemy(enemy, next);
+            if (enemy.IsMultiTile || !enemy.Pos.IsCardinalNeighbor(next) || !PincerPlanner.Swappable(occ, enemy)) return false;
+            var from = enemy.Pos;
+            if (!Relocate(enemy, next, o => o == occ)) return false;
+            Emit(new SteppedEvent { UnitId = enemy.Id, From = from, To = next });
+            if (!Relocate(occ, from)) return true;
+            Emit(new DisplacedEvent { UnitId = occ.Id, From = next, To = from, ByUnitId = enemy.Id });
+            ShovePickupsUnder(occ, next);
+            if (BreaksOnMove(occ)) RemoveBuffsWhere(occ, b => b.Def.BreaksOnMove, "moved");
+            TriggerTrap(occ); // a hero shoved onto a trap springs it (§14.2), as when a drag displaces it
+            return true;
         }
 
         /// <summary>A Hopper's two-tile leap (over a unit, a block or nothing).</summary>

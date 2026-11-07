@@ -82,8 +82,9 @@ namespace GridGame.Core.Battle
 
         // ── Pushback (§2.3, GG-T286): only an ability/item carrying the Pushback keyword (seconds) moves an icon, anywhere
         //    on the bar; plain hits never push. One push per foe per action, capped. ──
-        /// <summary>Seconds a pincer shoves back every foe it lands a blow on (the pincer attack carries the keyword).</summary>
-        public static float PincerPushbackSeconds = 1f;
+        /// <summary>Seconds a pincer shoves back every foe it lands a blow on (the pincer attack carries the keyword).
+        /// GG-T306: 1 → 1.5 s, paying the party back for foes that now engineer their own pincers.</summary>
+        public static float PincerPushbackSeconds = 1.5f;
         /// <summary>Cap on one push, whatever its source.</summary>
         public static float PushbackMaxSeconds = 2f;
 
@@ -138,6 +139,12 @@ namespace GridGame.Core.Battle
 
         // ── Enemy AI (§14.1) ────────────────────────────────────────────────────────
         public const float RetreatHpThreshold = 0.30f;
+        /// <summary>GG-T306 (§14.1.3) tuning, static so a soak can sweep them (GAIDEN_TUNE): a foe's pincer planner takes Setup
+        /// and Support walks (not only Complete ones), and may swap places with a hero on its walk.</summary>
+        public static bool EnemyPincerSetups = true;
+        public static bool EnemyPincerSwapsHeroes = true;
+        /// <summary>GG-T306: a wounded, fleeing foe's step score against a corner tile (no pincer axis reaches it).</summary>
+        public static float FleeCornerPenalty = 3f;
 
         // ── Voluntary retreat (§22.2, FFIV-style partial loss, owner direction 2026-10-11) ──
         /// <summary>A voluntary Retreat (BattlePhase.Retreated) keeps this fraction of the battle's

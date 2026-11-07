@@ -270,6 +270,9 @@ namespace GridGame.Core.Rules
                     if (enemy.IsAdjacentTo(target)) score -= 2f;
                 }
                 if (!wounded && enemy.IsAdjacentTo(target)) score += 2f;
+                // GG-T306: a fleeing foe never holes up in a corner, the one tile no pincer can reach (no axis has two
+                // sides) — a cornered 8-HP phantom outlasted a buff-only party for 3000 actions.
+                if (wounded && !enemy.IsMultiTile && IsCorner(c)) score -= BattleConfig.FleeCornerPenalty;
                 if (!wounded) score += BrainScore(s, enemy, brain, target, ward, patient);
                 if (!enemy.IsMultiTile && brain != Brain.Berserker && brain != Brain.Bomber && WouldBeFlanked(s, c)) score -= 100f;
                 if (c == original) score -= 0.5f;
@@ -283,6 +286,30 @@ namespace GridGame.Core.Rules
             }
             enemy.Pos = original;
             return best;
+        }
+
+        /// <summary>
+        /// GG-T306 (§14.1.3): a pincer-capable foe (Sentient, or the Pincer keyword) engineers pincers. It asks the shared
+        /// <see cref="PincerPlanner"/> for the best walk of up to its MoveRange steps — swapping through allies and heroes
+        /// like a hero drag — that completes a pincer now, sets up an end an ally can close next, or joins an ally pincer
+        /// as a supporter. Null when it can't plan (mindless, multi-tile, immobile, wounded and retreating) or nothing
+        /// is worth it; an evasive brain (Kiter, Commander, Trapper, Medic) only takes a walk that completes a pincer, a
+        /// Sentinel never moves, an Ambusher still lying in wait or a Sluggish foe on its rest turn only pincers in place.
+        /// </summary>
+        public static PincerPlan PlanPincer(BattleState s, Unit e)
+        {
+            if (e == null || !e.Alive || e.Team != Team.Enemy || !e.CanPincer || e.IsMultiTile || e.IsSnakeMember || e.IsImmobile) return null;
+            if (PickTarget(s, e) == null) return null;
+            var brain = EffectiveBrain(s, e);
+            if (e.HpFraction < RetreatThreshold(e) && !LoneHero(s)) return null; // wounded: it retreats (PlanStep)
+            int steps = Math.Max(0, e.Def.MoveRange);
+            if (brain == Brain.Sentinel) steps = 0;
+            if (brain == Brain.Ambusher && NearestHeroDistance(s, e) > 2 && e.TurnsTaken < BattleConfig.AmbushPatienceTurns) steps = 0;
+            if (brain == Brain.Sluggish && e.TurnsTaken % 2 == 0) steps = 0;
+            var plan = PincerPlanner.Plan(s, e, steps);
+            if (plan.Kind == PincerPlanKind.None || plan.Score <= 0f) return null;
+            if (plan.Kind != PincerPlanKind.Complete && (Evasive(brain) || !BattleConfig.EnemyPincerSetups)) return null;
+            return plan;
         }
 
         /// <summary>Each brain's taste in tiles, scored with the enemy standing on the candidate tile (§14.6).</summary>
@@ -428,6 +455,9 @@ namespace GridGame.Core.Rules
                 }
             return true;
         }
+
+        private static bool IsCorner(Coord c) =>
+            (c.X == 0 || c.X == BattleConfig.Cols - 1) && (c.Y == 0 || c.Y == BattleConfig.Rows - 1);
 
         private static bool WouldBeFlanked(BattleState s, Coord loc)
         {
