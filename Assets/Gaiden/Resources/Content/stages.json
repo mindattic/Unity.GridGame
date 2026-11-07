@@ -192,19 +192,19 @@
       {
         "Enemies": [
           {
-            "Class": "goblinthug00",
+            "Class": "harpy01",
             "Level": 1,
             "X": -1,
             "Y": -1
           },
           {
-            "Class": "goblinthug00",
+            "Class": "harpy02",
             "Level": 1,
             "X": -1,
             "Y": -1
           },
           {
-            "Class": "ganger02",
+            "Class": "harpy03",
             "Level": 1,
             "X": -1,
             "Y": -1

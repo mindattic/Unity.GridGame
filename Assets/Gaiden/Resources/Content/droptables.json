@@ -2474,5 +2474,60 @@
         "Max": 1
       }
     ]
+  },
+  {
+    "Id": "harpy",
+    "CoinsMin": 0,
+    "CoinsMax": 0,
+    "Entries": [
+      {
+        "Item": "mat_enchanted_feather",
+        "Chance": 0.5,
+        "Min": 1,
+        "Max": 2
+      },
+      {
+        "Item": "mat_leather",
+        "Chance": 0.3,
+        "Min": 1,
+        "Max": 1
+      },
+      {
+        "Item": "mat_essence_spark",
+        "Chance": 0.1,
+        "Min": 1,
+        "Max": 1
+      },
+      {
+        "Item": "eq_earring_feather",
+        "Chance": 0.05,
+        "Min": 1,
+        "Max": 1
+      },
+      {
+        "Item": "eq_boots_wind",
+        "Chance": 0.04,
+        "Min": 1,
+        "Max": 1
+      },
+      {
+        "Item": "eq_wand_feather",
+        "Chance": 0.03,
+        "Min": 1,
+        "Max": 1
+      },
+      {
+        "Item": "eq_scepter_veilwind",
+        "Chance": 0.006,
+        "Min": 1,
+        "Max": 1
+      },
+      {
+        "Item": "chest_wooden",
+        "Chance": 0.015,
+        "Min": 1,
+        "Max": 1
+      }
+    ]
   }
 ]

@@ -733,5 +733,12 @@
       "Beasts"
     ],
     "Text": "A wild animal monster: wolves, bats, the yeti. Beasts have no society, so they never make a [pincer] on their own, but a Monster Tamer can turn one [Tamed]."
+  },
+  {
+    "Id": "gale_shriek",
+    "Term": "Gale Shriek",
+    "Text": "A Harpy Shrieker's charge: a whirling gale that hits one hero and every hero beside it and drags each up to 2 tiles toward the harpy, out of formation. [Interrupt] it, or spread out.",
+    "LinkKind": "Ability",
+    "LinkId": "charge_gale_shriek"
   }
 ]

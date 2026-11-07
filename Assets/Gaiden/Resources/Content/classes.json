@@ -22899,5 +22899,370 @@
       "Label": "Whip Crack"
     },
     "HomeTree": "alchemist"
+  },
+  {
+    "Id": "harpy01",
+    "Name": "Harpy Raider",
+    "Team": "Enemy",
+    "Tags": [
+      "Flying",
+      "Sentient"
+    ],
+    "Description": "A Murder runner spliced with black wings: it dives on the weakest hero, rakes it and is gone again.",
+    "Lore": "The Murder: Street kids spliced with black wings, who fly contraband (and people) past Concord checkpoints. They never land for long.",
+    "Card": "Swift [Flanker]: strikes, then darts a tile away. Its talons can [Slow] a hero, costing the party [tempo]. [Pincer] it before it lifts off, or [cleanse] the Slow.",
+    "Portrait": "harpy01",
+    "Thumbnail": {
+      "Zoom": 2.4,
+      "X": 0.4,
+      "Y": 0.1
+    },
+    "Footprint": {
+      "W": 1,
+      "H": 1
+    },
+    "Support": {
+      "Effect": "Crit",
+      "Magnitude": 0.25,
+      "Target": "Attacker",
+      "Range": 1,
+      "Label": "Diving Strike"
+    },
+    "BaseStats": {
+      "Strength": 12,
+      "Vitality": 8,
+      "Agility": 17,
+      "Speed": 18,
+      "Stamina": 12,
+      "Intelligence": 8,
+      "Wisdom": 9,
+      "Luck": 13
+    },
+    "Growth": {
+      "Strength": 0.75,
+      "Vitality": 0.6,
+      "Agility": 0.95,
+      "Speed": 0.85,
+      "Stamina": 0.8,
+      "Intelligence": 0.4,
+      "Wisdom": 0.45,
+      "Luck": 0.6
+    },
+    "Milestones": [
+      {
+        "Level": 5,
+        "Growth": {
+          "Strength": 0.26,
+          "Vitality": 0.21,
+          "Agility": 0.33,
+          "Speed": 0.3,
+          "Stamina": 0.28,
+          "Intelligence": 0.14,
+          "Wisdom": 0.16,
+          "Luck": 0.21
+        }
+      },
+      {
+        "Level": 10,
+        "Growth": {
+          "Strength": 0.34,
+          "Vitality": 0.27,
+          "Agility": 0.43,
+          "Speed": 0.38,
+          "Stamina": 0.36,
+          "Intelligence": 0.18,
+          "Wisdom": 0.2,
+          "Luck": 0.27
+        }
+      },
+      {
+        "Level": 20,
+        "Growth": {
+          "Strength": 0.45,
+          "Vitality": 0.36,
+          "Agility": 0.57,
+          "Speed": 0.51,
+          "Stamina": 0.48,
+          "Intelligence": 0.24,
+          "Wisdom": 0.27,
+          "Luck": 0.36
+        }
+      },
+      {
+        "Level": 40,
+        "Growth": {
+          "Strength": 0.6,
+          "Vitality": 0.48,
+          "Agility": 0.76,
+          "Speed": 0.68,
+          "Stamina": 0.64,
+          "Intelligence": 0.32,
+          "Wisdom": 0.36,
+          "Luck": 0.48
+        }
+      }
+    ],
+    "Resistances": {
+      "Lightning": 1.5
+    },
+    "Abilities": [
+      "talon_rake"
+    ],
+    "DefaultLoadout": [],
+    "DropTable": "harpy",
+    "MoveRange": 2,
+    "Targeting": "Weakest",
+    "AttackRange": 1,
+    "XpReward": 12,
+    "BossPhases": [],
+    "ChargeAbility": null,
+    "ChargeShape": "Single",
+    "Trap": null,
+    "SnakeSegments": 0,
+    "Brain": "Skirmisher"
+  },
+  {
+    "Id": "harpy02",
+    "Name": "Harpy Shrieker",
+    "Team": "Enemy",
+    "Tags": [
+      "Flying",
+      "Sentient"
+    ],
+    "Description": "A Murder lookout whose spliced throat shrieks a gale that drags runaways out of formation.",
+    "Lore": "The Murder: Street kids spliced with black wings, who fly contraband (and people) past Concord checkpoints. They never land for long.",
+    "Card": "Charges a [Gale Shriek] that blows heroes apart and breaks your [pincer] lines. [Interrupt] the charge or keep the party spread out. Hastens the harpy it backs as a [Supporter].",
+    "Portrait": "harpy02",
+    "Thumbnail": {
+      "Zoom": 2.4,
+      "X": 0.5,
+      "Y": 0.09
+    },
+    "Footprint": {
+      "W": 1,
+      "H": 1
+    },
+    "Support": {
+      "Effect": "Haste",
+      "Magnitude": 1.0,
+      "Target": "Attacker",
+      "Range": 1,
+      "Label": "Tailwind"
+    },
+    "BaseStats": {
+      "Strength": 10,
+      "Vitality": 9,
+      "Agility": 15,
+      "Speed": 18,
+      "Stamina": 12,
+      "Intelligence": 13,
+      "Wisdom": 11,
+      "Luck": 12
+    },
+    "Growth": {
+      "Strength": 0.6,
+      "Vitality": 0.65,
+      "Agility": 0.85,
+      "Speed": 0.85,
+      "Stamina": 0.8,
+      "Intelligence": 0.8,
+      "Wisdom": 0.6,
+      "Luck": 0.6
+    },
+    "Milestones": [
+      {
+        "Level": 5,
+        "Growth": {
+          "Strength": 0.21,
+          "Vitality": 0.23,
+          "Agility": 0.3,
+          "Speed": 0.3,
+          "Stamina": 0.28,
+          "Intelligence": 0.28,
+          "Wisdom": 0.21,
+          "Luck": 0.21
+        }
+      },
+      {
+        "Level": 10,
+        "Growth": {
+          "Strength": 0.27,
+          "Vitality": 0.29,
+          "Agility": 0.38,
+          "Speed": 0.38,
+          "Stamina": 0.36,
+          "Intelligence": 0.36,
+          "Wisdom": 0.27,
+          "Luck": 0.27
+        }
+      },
+      {
+        "Level": 20,
+        "Growth": {
+          "Strength": 0.36,
+          "Vitality": 0.39,
+          "Agility": 0.51,
+          "Speed": 0.51,
+          "Stamina": 0.48,
+          "Intelligence": 0.48,
+          "Wisdom": 0.36,
+          "Luck": 0.36
+        }
+      },
+      {
+        "Level": 40,
+        "Growth": {
+          "Strength": 0.48,
+          "Vitality": 0.52,
+          "Agility": 0.68,
+          "Speed": 0.68,
+          "Stamina": 0.64,
+          "Intelligence": 0.64,
+          "Wisdom": 0.48,
+          "Luck": 0.48
+        }
+      }
+    ],
+    "Resistances": {
+      "Lightning": 1.5
+    },
+    "Abilities": [
+      "charge_gale_shriek",
+      "blur"
+    ],
+    "DefaultLoadout": [],
+    "DropTable": "harpy",
+    "MoveRange": 2,
+    "Targeting": "Weakest",
+    "AttackRange": 1,
+    "XpReward": 13,
+    "BossPhases": [],
+    "ChargeAbility": "charge_gale_shriek",
+    "ChargeShape": "Single",
+    "Trap": null,
+    "SnakeSegments": 0,
+    "Brain": "Kiter"
+  },
+  {
+    "Id": "harpy03",
+    "Name": "Harpy Spotter",
+    "Team": "Enemy",
+    "Tags": [
+      "Flying",
+      "Sentient"
+    ],
+    "Description": "A Murder smuggler rigged with signal jammers: it hangs back and snipes the party's casters.",
+    "Lore": "The Murder: Street kids spliced with black wings, who fly contraband (and people) past Concord checkpoints. They never land for long.",
+    "Card": "Hangs back and fires [shots] at your casters; its darts can [Silence]. It is frail up close: close in and [pincer] it.",
+    "Portrait": "harpy03",
+    "Thumbnail": {
+      "Zoom": 2.5,
+      "X": 0.43,
+      "Y": 0.12
+    },
+    "Footprint": {
+      "W": 1,
+      "H": 1
+    },
+    "Support": {
+      "Effect": "Status",
+      "Magnitude": 0.3,
+      "Target": "Attacker",
+      "Range": 2,
+      "Buff": "silenced",
+      "Label": "Jammer Drone"
+    },
+    "BaseStats": {
+      "Strength": 9,
+      "Vitality": 8,
+      "Agility": 16,
+      "Speed": 18,
+      "Stamina": 11,
+      "Intelligence": 11,
+      "Wisdom": 10,
+      "Luck": 14
+    },
+    "Growth": {
+      "Strength": 0.55,
+      "Vitality": 0.6,
+      "Agility": 0.9,
+      "Speed": 0.85,
+      "Stamina": 0.75,
+      "Intelligence": 0.6,
+      "Wisdom": 0.5,
+      "Luck": 0.65
+    },
+    "Milestones": [
+      {
+        "Level": 5,
+        "Growth": {
+          "Strength": 0.19,
+          "Vitality": 0.21,
+          "Agility": 0.32,
+          "Speed": 0.3,
+          "Stamina": 0.26,
+          "Intelligence": 0.21,
+          "Wisdom": 0.17,
+          "Luck": 0.23
+        }
+      },
+      {
+        "Level": 10,
+        "Growth": {
+          "Strength": 0.25,
+          "Vitality": 0.27,
+          "Agility": 0.41,
+          "Speed": 0.38,
+          "Stamina": 0.34,
+          "Intelligence": 0.27,
+          "Wisdom": 0.23,
+          "Luck": 0.29
+        }
+      },
+      {
+        "Level": 20,
+        "Growth": {
+          "Strength": 0.33,
+          "Vitality": 0.36,
+          "Agility": 0.54,
+          "Speed": 0.51,
+          "Stamina": 0.45,
+          "Intelligence": 0.36,
+          "Wisdom": 0.3,
+          "Luck": 0.39
+        }
+      },
+      {
+        "Level": 40,
+        "Growth": {
+          "Strength": 0.44,
+          "Vitality": 0.48,
+          "Agility": 0.72,
+          "Speed": 0.68,
+          "Stamina": 0.6,
+          "Intelligence": 0.48,
+          "Wisdom": 0.4,
+          "Luck": 0.52
+        }
+      }
+    ],
+    "Resistances": {
+      "Lightning": 1.5
+    },
+    "Abilities": [
+      "jammer_darts"
+    ],
+    "DefaultLoadout": [],
+    "DropTable": "harpy",
+    "MoveRange": 2,
+    "Targeting": "Caster",
+    "AttackRange": 3,
+    "XpReward": 13,
+    "BossPhases": [],
+    "ChargeAbility": null,
+    "ChargeShape": "Single",
+    "Trap": null,
+    "SnakeSegments": 0,
+    "Brain": "Kiter"
   }
 ]

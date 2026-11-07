@@ -1997,6 +1997,26 @@ Owner: "Stack haste, while a Chronomancer casts slow on you would be an interest
 - **Placement.** Frostmaw Caverns II, wave 2 (behind two ceramic knights). On the same 12 casual-bot seeds and parties it wins 9 of 12 (75%) with the Chronomancer and 8 of 12 without, inside the POL-G1 55–85% band. The wave was already long (36 actions without it, about 43 with it): the knights' tough hide is the slog, and that's left to the balance loop (GG-T276).
 - *(Tests: `ChronomancerTests`. Content validates and is placed; one Drag on two heroes is −1 tempo with both Slowed; cleansing the last Slowed hero restores tempo; Drag is held while tempo is negative and cast when level or hasted; Rewind is self-only.)*
 
+### 14.11 The Murder — harpies (added 2026-11-07, owner art, GG-T329)
+
+The Murder (docs/STORY.md §3.2): Street kids spliced with black wings, rooftop smugglers. Three swift (Speed 18,
+re-entering ≈3 s out), frail, `Sentient` flyers (`Flying`), one family (`harpy` drop table), three roles:
+
+| Class | Role | Brain / targeting | Kit | Support |
+|---|---|---|---|---|
+| `harpy01` Harpy Raider | striker | Skirmisher (strike, dart a tile away) / Weakest, moves 2 | **Talon Rake** (`talon_rake`): a landed blow, 25%: [Slowed] on the target, so the party loses a point of tempo (§2.11) | Crit +25% (*Diving Strike*) |
+| `harpy02` Harpy Shrieker | disruptor | Kiter / Weakest, moves 2 | **Gale Shriek** (`charge_gale_shriek`): 2 s charge, a 3×3 around one hero, 4 Arcane and `Pull` 2 — each hero caught is dragged toward the harpy, out of the formation the party built; rests a turn, recovers 0.5 s. Blur | Haste its attacker 1 s (*Tailwind*) |
+| `harpy03` Harpy Spotter | ranged | Kiter / Caster, shoots 3, moves 2 | **Jammer Darts** (`jammer_darts`): a landed blow, 25%: [Silenced] | Silence 30%, reach 2 (*Jammer Drone*) |
+
+- **Counterplay** (on their cards): they are frail, so [pincer] them when they land; cleanse the Slow; interrupt the
+  shriek or keep heroes spread; close in on the spotter. Weak to Lightning (×1.5).
+- **Design note.** The gale first knocked heroes *away* (Knockback 1). A hero blown into the board's edge takes the
+  18-damage wall slam, and the casual bot fell from 8/12 to 1/12 on the trial stage, so the gale pulls instead: same
+  "breaks your lines" identity, no slam.
+- **Placement.** Tithe Moors II (`greenvalley-02`), wave 4: the three harpies replace two goblin thugs and a Redline
+  ganger. Casual bot, 24 seeds, campaign parties: 11/24 with them and 11/24 without; smart bot 23/24 vs 24/24.
+- *(Tests: `HarpyTests`.)*
+
 ## 15. Save
 
 ### 15.1 Data model
