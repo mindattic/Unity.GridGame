@@ -461,6 +461,7 @@ namespace GridGame.Tests
             Assert.That(Abilities.IsHeroUsable(c.Ability("double_attack")), Is.False); // Passive
             Assert.That(Abilities.IsHeroUsable(c.Ability("charge_fireball")), Is.False); // charge_ prefix
             Assert.That(Abilities.IsHeroUsable(c.Ability("enrage")), Is.False);
+            Assert.That(Abilities.IsHeroUsable(c.Ability("chrono_rewind")), Is.False); // the Chronomancer's free boss-phase Rewind
             Assert.That(Abilities.IsHeroUsable(c.Ability("shield_bash")), Is.True);
             Assert.That(Abilities.IsHeroUsable(c.Ability("fireball")), Is.True);
         }

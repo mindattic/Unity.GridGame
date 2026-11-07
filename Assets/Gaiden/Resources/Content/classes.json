@@ -22748,7 +22748,7 @@
       "Range": 2,
       "Label": "Time Skip"
     },
-    "BaseStats": { "Strength": 10, "Vitality": 8, "Agility": 12, "Speed": 14, "Stamina": 8, "Intelligence": 15, "Wisdom": 13, "Luck": 12 },
+    "BaseStats": { "Strength": 10, "Vitality": 8, "Agility": 12, "Speed": 15, "Stamina": 8, "Intelligence": 15, "Wisdom": 13, "Luck": 12 },
     "Growth": { "Strength": 0.6, "Vitality": 0.7, "Agility": 0.7, "Speed": 0.7, "Stamina": 0.7, "Intelligence": 0.8, "Wisdom": 0.7, "Luck": 0.7 },
     "Milestones": [],
     "Resistances": {},

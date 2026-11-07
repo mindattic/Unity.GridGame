@@ -1965,8 +1965,11 @@ namespace GridGame.Meta
             return set.OrderBy(a => Price(a)).ThenBy(a => a.Name).ToList();
         }
 
+        /// <summary>Boss-phase abilities only an enemy fires (an <c>OnEnterAbility</c>): free, so never learnable.</summary>
+        private static readonly HashSet<string> EnemyOnly = new HashSet<string> { "enrage", "chrono_rewind" };
+
         public static bool IsHeroUsable(AbilityDef a) => a.Kind != AbilityKind.Passive &&
-            (a.Kind == AbilityKind.Spell || a.Kind == AbilityKind.Skill) && !a.Id.StartsWith("charge_") && a.Id != "enrage";
+            (a.Kind == AbilityKind.Spell || a.Kind == AbilityKind.Skill) && !a.Id.StartsWith("charge_") && !EnemyOnly.Contains(a.Id);
 
         public static int Price(AbilityDef a) => a.Kind == AbilityKind.Skill ? 300 : 120 + 80 * a.Cost;
 
