@@ -194,7 +194,31 @@ def compare_sheet(src, results, path):
     sheet.save(path)
 
 
+def trim_bars(im):
+    """Crop away solid dark letterbox/pillarbox bars (some renders frame the white panel in black, with a logo in the
+    bar), so the background is measured on the real panel."""
+    a = np.asarray(im.convert("RGB")).astype(np.float32)
+    lum = a.mean(axis=2)
+    def dark(v):
+        return v.mean() < 40 and np.percentile(v, 90) < 90
+    h, w = lum.shape
+    l, r, t, b = 0, w, 0, h
+    while l < w // 3 and dark(lum[:, l]): l += 1
+    while r > w - w // 3 and dark(lum[:, r - 1]): r -= 1
+    while t < h // 3 and dark(lum[t, l:r]): t += 1
+    while b > h - h // 3 and dark(lum[b - 1, l:r]): b -= 1
+    if (l, r, t, b) == (0, w, 0, h):
+        return im
+    inset = 3  # the bar's anti-aliased edge
+    return im.crop((l + inset if l else 0, t + inset if t else 0, r - inset if r < w else w, b - inset if b < h else h))
+
+
 def load(args):
+    im, name = _load(args)
+    return trim_bars(im), name
+
+
+def _load(args):
     if args.clipboard:
         clip = ImageGrab.grabclipboard()
         if isinstance(clip, list) and clip:
