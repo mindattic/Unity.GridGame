@@ -35,8 +35,8 @@ namespace GridGame.Meta
         public const int StartingGold = 200;
         /// <summary>
         /// The party cap (§25.14). Owner 2026-11-06 (GG-T291): six — "two attackers and two supporters for each
-        /// attacker". Slots fill at the story beats (GG-T118): the 4th after Green Valley I, the 5th at Sandsea
-        /// Reaches, the 6th at Frostmaw Caverns; later recruits, guests and summons wait in reserve when it's full.
+        /// attacker". Slots fill at the story beats (GG-T118): the 4th after the first stage, the 5th at The
+        /// Shardfall, the 6th at The Anchor Wastes; later recruits, guests and summons wait in reserve when it's full.
         /// </summary>
         public const int MaxPartySize = 6;
         public const int MaxBarSlots = 5;
@@ -1966,7 +1966,7 @@ namespace GridGame.Meta
         }
 
         /// <summary>Boss-phase abilities only an enemy fires (an <c>OnEnterAbility</c>): free, so never learnable.</summary>
-        private static readonly HashSet<string> EnemyOnly = new HashSet<string> { "enrage", "chrono_rewind" };
+        private static readonly HashSet<string> EnemyOnly = new HashSet<string> { "enrage", "chrono_rewind", "lich_soul_harvest" };
 
         public static bool IsHeroUsable(AbilityDef a) => a.Kind != AbilityKind.Passive &&
             (a.Kind == AbilityKind.Spell || a.Kind == AbilityKind.Skill) && !a.Id.StartsWith("charge_") && !EnemyOnly.Contains(a.Id);

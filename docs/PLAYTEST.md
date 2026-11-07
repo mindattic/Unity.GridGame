@@ -8,7 +8,7 @@ Mouse = finger. `Esc` = back / pause.
 
 ## 1. First five minutes
 - [ ] Title → **New Game** → Slot 1 → you land at the **Camp** menu (party, commands, gold/time).
-- [ ] **Adventure** → **Green Valley I** → the story crawl plays (tap or Skip).
+- [ ] **Adventure** → **Tithe Moors I** → the story crawl plays (tap or Skip).
 
 ## 2. The battle (the part that matters most)
 - [ ] Press and drag a hero. It follows your cursor; every tile you cross is one step. Anyone in the way
@@ -26,7 +26,7 @@ Mouse = finger. `Esc` = back / pause.
 ## 3. Camp
 - [ ] **Items**: tabs, rarity colors, item detail; use a potion on a wounded hero.
 - [ ] **Merchant**: buy/sell carts with − / + steppers, Pay/Receive total, Buy/Sell commits.
-- [ ] **Blacksmith**: Forge (needs materials from battles — farm Green Valley), Upgrade, Salvage, Repair.
+- [ ] **Blacksmith**: Forge (needs materials from battles — farm the Tithe Moors), Upgrade, Salvage, Repair.
 - [ ] **Equip**: pick a slot, tap an item once to preview stat changes, tap again to equip.
 - [ ] **Abilities**: pick a bar slot, assign Known spells or Items; **Learn** new spells for gold.
 - [ ] **Party / Summon Circle / Bounties / Bestiary / Inn / Settings** all open and do what they say.

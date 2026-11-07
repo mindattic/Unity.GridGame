@@ -123,7 +123,7 @@ namespace GridGame.Meta
             return Result.Success($"{q.Name} complete!" + (paid.Count > 0 ? " " + string.Join(" + ", paid) : ""));
         }
 
-        /// <summary>The objective in one line ("Defeat 6× Wolf", "Clear Green Valley III with 3 heroes or fewer").</summary>
+        /// <summary>The objective in one line ("Defeat 6× Wolf", "Clear &lt;stage&gt; with 3 heroes or fewer").</summary>
         public static string Describe(ContentDb c, QuestDef q)
         {
             var o = q.Objective;

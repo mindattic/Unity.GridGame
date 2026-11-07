@@ -1001,3 +1001,12 @@ Owner: "you decide how difficulty 10 gets its challenge back (GG-T321)."
 - **Skilled-human probe:** `HeroBot.Skilled` (SkillLevel 80, 0.8 s think) joins the tuning soak. It scored the same as the smart bot, so a real skilled player's rate needs a human playtest.
 - **Measured** at difficulty 10, campaign parties: smart/skilled/casual 100/100/45%; six heroes 100/98/38%. Difficulty 5: 100/100/97%. Difficulty 1: 100% for every bot. Green Valley I unchanged. Full runs: `docs/research/TimelineTuning.md`.
 - *(Tests: `Foes_grow_with_every_hero_fielded_beyond_the_starting_three`.)*
+
+## 2026-11-07 — The story is reinvented: *Under Morrow* (owner, GG-T341)
+
+Owner: *"flush out all story in the entire game … completely reinvent the story based on the characters and artwork of the world that exist in the repo; it's distinctive enough that all these different groups and their styles means there is a story already built into the artwork and different clothing and environments."*
+
+- **Deviation:** the GG-T120 story (the walking spider-town, its soured ground and its oath) is retired in full. [`STORY.md`](STORY.md) is the new single source: Saltmoss runaways in a stolen Concord caravan, under a moon (Morrow) that hangs too low, against a Pale Concord whose aether tithe feeds the Hierarch.
+- **Phase 1 (this change):** `campaign.json` (prologue "Tithe Day", ending "Still Here", every theme's name and crawl), all 111 `dialogues.json` dialogues (join scenes, party talks, boss intros, the Lv 10 "Why We Ran" interlude, quest offers, Camp chats, and every Advice quiz with a fresh faction voice and blind spot), quest, bounty, mercenary and caravan-bark text, the credits coda, and the Frostmaw armor set's display name (now Anchorwatch). Ids, triggers, conditions, effects, flags and node graphs are unchanged; the Merchant's speaker name is now "Lantern Merchant".
+- **Retired docs:** `docs/story-draft-spider-town.md`, `docs/ppp-universe/` and `docs/design-draft-overworld-and-dialogue.md` are deleted (git keeps them).
+- **Still to come (phase 2):** stage display names, unit `Description`/`Lore`, and a separate `hierarch` boss class (the finale still fields the hero class `vampire`).

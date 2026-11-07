@@ -99,7 +99,7 @@ Status values: ❌ fails, 🟡 partly passes or partly measured, ✅ passes, ⬜
 
 | ID | Rule | Why | Source | Measured by | Status |
 |---|---|---|---|---|---|
-| POL-G1 | Per campaign stage, the **casual bot wins 55–85%** with **20–60% HP left** | Hard enough to matter, fair enough to finish | Flow (Csikszentmihalyi); difficulty-curve practice | records (BalanceReport) | 🟡 Green Valley I 80% / 61%; rule-break finales unmeasured |
+| POL-G1 | Per campaign stage, the **casual bot wins 55–85%** with **20–60% HP left** | Hard enough to matter, fair enough to finish | Flow (Csikszentmihalyi); difficulty-curve practice | records (BalanceReport) | 🟡 Tithe Moors I 80% / 61%; rule-break finales unmeasured |
 | POL-G2 | No stage's casual win rate is **> 20 points** below the stage before it | No difficulty spikes | Difficulty-curve practice | records | ⬜ |
 | POL-G3 | The mana bank is full on ≤ **8%** of turns; ≤ **20%** of minted orbs are wasted | A full bar should be an earned peak (owner, GG-T247) | Resource-economy design | records | ✅ 0% full / 0% wasted on every campaign stage, cityruins-03 included (GG-T265, 206 bot battles). GG-T247's "casual bot holds 2+ orbs on ≥ 30% of turns" is **not** a rule: it measured hoarding, and lifting the earn rate to buy it flooded the stages where the casual bot doesn't spend (BIBLE §3.1.9) |
 | POL-G4 | Every equipped ability fires in ≥ **25%** of the battles where it could be used | Every ability earns its slot | Content-usefulness balance practice | records `--abilities` | 🟡 73.4: 33 of 124 under 25%, none never-fired outside haste-only skills (GG-T263; BIBLE §7.2) |

@@ -36,7 +36,7 @@ namespace GridGame.Meta
         /// <summary>The locked workshop tab's hint.</summary>
         public const string SmithWorkshopHint = "Opens once the Alchemist joins";
 
-        /// <summary>"After Green Valley II" — the stage whose clear opens a milestone station.</summary>
+        /// <summary>"After &lt;second stage&gt;" — the stage whose clear opens a milestone station.</summary>
         public static string MilestoneHint(ContentDb c, int clears)
         {
             var stages = c.CampaignStages();
@@ -44,7 +44,7 @@ namespace GridGame.Meta
             return "After " + stages[System.Math.Min(clears, stages.Count) - 1].Name;
         }
 
-        /// <summary>"Joins at Sandsea Reaches" / "Joins after Green Valley II" / "Joins when gear wears below 60%" / "Joins once you've looted enough to brew" — read from the story beat whose
+        /// <summary>"Joins at The Shardfall" / "Joins after &lt;a stage&gt;" / "Joins when gear wears below 60%" / "Joins once you've looted enough to brew" — read from the story beat whose
         /// JoinNpc recruits this keeper, so the hint follows the content.</summary>
         public static string JoinHint(ContentDb c, string npc)
         {

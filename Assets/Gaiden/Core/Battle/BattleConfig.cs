@@ -205,7 +205,7 @@ namespace GridGame.Core.Battle
         /// <summary>…and how much stronger (strike and MaxHP) foes get for each hero fielded beyond it (<see cref="BattleEngine.PartyScale"/>).</summary>
         public static float EnemyScalePerExtraHero = 0.3f;
         /// <summary>An Ambusher lies in wait for at most this many of its own turns, then comes out (GG-T262: a lone
-        /// ambushing naga held Mireholt Fens II's last wave to a median 116 player actions).</summary>
+        /// ambushing naga held the Arkgrave's second stage's last wave to a median 116 player actions).</summary>
         public const int AmbushPatienceTurns = 3;
 
         // ── Masterwork crafting (§24.6.2, GG-T46) ────────────────────────────────────
@@ -218,7 +218,7 @@ namespace GridGame.Core.Battle
         /// <summary>Player actions a corpse lies on the board before it rots away.</summary>
         public const int CorpseDecayActions = 6;
         /// <summary>Gravestone/bone-pile HP as a share of the slain owner's MaxHP (§14.5, GG-T261): a marker to break,
-        /// not a second body; at the owner's own level they out-lasted the party in every Veshker Ruins wave.</summary>
+        /// not a second body; at the owner's own level they out-lasted the party in every Halcyon wave.</summary>
         public const float RemainsHpFraction = 0.25f;
         /// <summary>Remains rise on this many of their own turns, not the first (GG-T261): every action runs the clock to
         /// the next enemy turn (§2.0), so a marker left by the last foe standing used to rise inside the killing action.</summary>

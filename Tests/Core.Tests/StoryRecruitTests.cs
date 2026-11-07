@@ -122,7 +122,7 @@ namespace GridGame.Tests
             DialogueRunner.PlayPendingBeatsHeadless(c, s, "desert-01");
             Assert.That(s.Party.Count, Is.EqualTo(5));
             Assert.That(DialogueRunner.PlayPendingBeatsHeadless(c, s, "desert-01"), Is.Empty, "a beat plays once");
-            // GG-T291: the sixth slot fills at the start of the third theme (Frostmaw Caverns).
+            // GG-T291: the sixth slot fills at the start of the third theme (The Anchor Wastes).
             s.ClearedStages.Add("desert-01"); s.ClearedStages.Add("desert-02"); s.ClearedStages.Add("desert-03"); s.HighestClearedStage = 5;
             DialogueRunner.PlayPendingBeatsHeadless(c, s, "cave-01");
             Assert.That(s.Party.Count, Is.EqualTo(Progression.MaxPartySize));

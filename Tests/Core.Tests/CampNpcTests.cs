@@ -81,9 +81,9 @@ namespace GridGame.Tests
         }
 
         /// <summary>Launching the campaign in order (every pending beat per launch, as StageLauncher does) meets every NPC
-        /// early: the Merchant before battle 1, the Innkeeper and Blacksmith inside the Green Valley expedition (the
+        /// early: the Merchant before battle 1, the Innkeeper and Blacksmith inside the Tithe Moors expedition (the
         /// Blacksmith once a hero's gear first wears below 60%, GG-T175 — here after two stages), the Alchemist at the
-        /// Sandsea and the Enchantress at the Fens — well before the end of the first act.</summary>
+        /// Shardfall and the Enchantress at the Arkgrave — well before the end of the first act.</summary>
         [Test]
         public void Playing_the_campaign_in_order_meets_everyone_by_the_third_expedition()
         {
@@ -117,7 +117,7 @@ namespace GridGame.Tests
             s.Flags.Add(Forging.FirstArmorFlag);
             int dust = s.Count("mat_arcane_dust");
             DialogueRunner.PlayPendingBeatsHeadless(c, s, "greenvalley-02");
-            Assert.That(CampNpcs.Joined(s, CampNpcs.Enchantress), Is.True, "joins after the first armor, still in Green Valley");
+            Assert.That(CampNpcs.Joined(s, CampNpcs.Enchantress), Is.True, "joins after the first armor, still in the Tithe Moors");
             Assert.That(s.Count("mat_arcane_dust"), Is.EqualTo(dust + 1), "she brings an Arcane Dust");
             Assert.That(CampUnlocks.JoinHint(c, CampNpcs.Enchantress), Is.EqualTo("Joins once you've forged your first armor"));
         }
@@ -149,11 +149,11 @@ namespace GridGame.Tests
 
             var never = Progression.NewGame(c, "T");
             DialogueRunner.PlayPendingBeatsHeadless(c, never, "desert-01");
-            Assert.That(CampNpcs.Joined(never, CampNpcs.Blacksmith), Is.True, "a party that never wears gear still meets him at the Sandsea");
+            Assert.That(CampNpcs.Joined(never, CampNpcs.Blacksmith), Is.True, "a party that never wears gear still meets him at the Shardfall");
         }
 
         /// <summary>GG-T176 (§25.0.5): the Alchemist's beat fires once the bag holds the loot for a first bottle brew,
-        /// hands over an Empty Bottle so that brew can happen, and still fires at the Sandsea for a party that never loots.</summary>
+        /// hands over an Empty Bottle so that brew can happen, and still fires at the Shardfall for a party that never loots.</summary>
         [Test]
         public void The_alchemist_joins_once_the_loot_for_a_first_brew_is_in_the_bag()
         {
@@ -173,7 +173,7 @@ namespace GridGame.Tests
 
             var never = Progression.NewGame(c, "T");
             DialogueRunner.PlayPendingBeatsHeadless(c, never, "desert-01");
-            Assert.That(CampNpcs.Joined(never, CampNpcs.Alchemist), Is.True, "a party that never loots still meets him at the Sandsea");
+            Assert.That(CampNpcs.Joined(never, CampNpcs.Alchemist), Is.True, "a party that never loots still meets him at the Shardfall");
         }
 
         [Test]

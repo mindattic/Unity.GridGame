@@ -151,7 +151,7 @@ namespace GridGame.Tests
         }
 
         /// <summary>GG-T179 (§25.0.8): armor enchants grant real Passive abilities; the Apprentice ones take Arcane Dust and
-        /// first-theme drops only, so the guided first enchant is reachable from Green Valley.</summary>
+        /// first-theme drops only, so the guided first enchant is reachable from the Tithe Moors.</summary>
         [Test]
         public void Armor_enchants_grant_passives_and_the_first_ones_take_first_theme_drops()
         {
@@ -245,7 +245,7 @@ namespace GridGame.Tests
         }
 
         /// <summary>GG-T178: an Apprentice set piece every starting hero can wear takes only first-theme drops, so the
-        /// guided first armor is reachable from Green Valley; bots and New Game+ skip the gate.</summary>
+        /// guided first armor is reachable from the Tithe Moors; bots and New Game+ skip the gate.</summary>
         [Test]
         public void A_first_armor_piece_is_forgeable_from_first_theme_drops()
         {
