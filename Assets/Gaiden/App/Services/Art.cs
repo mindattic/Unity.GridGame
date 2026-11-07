@@ -50,7 +50,22 @@ namespace GridGame.App
 
         /// <summary>A unit's one piece of art (full portrait). Every thumbnail is this texture framed by the class's
         /// Thumbnail (Ui.PortraitThumb, BIBLE §12.1.1); there are no separate thumb images.</summary>
-        public static Texture2D Portrait(string classId) => Load("Portraits/" + classId);
+        /// A class with no portrait yet shows the mannequin placeholder art (owner 2026-11-07, GG-T351).
+        public static Texture2D Portrait(string classId)
+        {
+            string path = "Portraits/" + classId;
+            if (cache.TryGetValue(path, out var t) && t != null) return t;
+            t = string.IsNullOrEmpty(classId) ? null : Resources.Load<Texture2D>(path);
+            if (t == null)
+            {
+                if (warned.Add(path)) Debug.LogWarning($"[Art] missing portrait '{path}', using the mannequin");
+                t = Load("Portraits/" + MannequinPortrait);
+            }
+            return cache[path] = t;
+        }
+
+        /// <summary>The placeholder portrait every class without art falls back to.</summary>
+        public const string MannequinPortrait = "mannequin";
         /// <summary>The board tile for a campaign theme (tools/make_tiles.py); the original slate tile when a theme has none.</summary>
         private static Texture2D Pixelled(string folder, string id)
         {
