@@ -30,14 +30,21 @@
 .PARAMETER Force
     Rebuild and republish even when the deployed commit is up to date. It skips only that check.
 
+.PARAMETER Headless
+    Launch the deployed player with no window, in the shared headless mode (GG-T323, Unity.Shared MAU-T18). It runs
+    through Unity.Shared\tools\Start-Headless.ps1 (--headless -batchmode -nographics -logFile ...) and waits for its
+    MINDATTIC_HEADLESS_READY line. The game skips its menus into a fresh session at the Hub. Implies -Launch.
+
 .EXAMPLE
     powershell -ExecutionPolicy Bypass -File tools\run.ps1
     powershell -ExecutionPolicy Bypass -File tools\run.ps1 -Launch
     powershell -ExecutionPolicy Bypass -File tools\run.ps1 -Force -Launch
+    powershell -ExecutionPolicy Bypass -File tools\run.ps1 -Headless
 #>
 param(
     [switch]$Launch,
-    [switch]$Force
+    [switch]$Force,
+    [switch]$Headless
 )
 
 $ErrorActionPreference = 'Stop'
@@ -49,6 +56,16 @@ $exeName  = 'GridGameGaiden.exe'
 $buildDir = Join-Path $repoDir 'Build\WindowsRelease'
 $runBat = Join-Path $repoDir 'run.bat'
 $marker    = Join-Path $out '.deploy-commit'
+$startHeadless = Join-Path $repoDir '..\Unity.Shared\tools\Start-Headless.ps1'
+
+function Start-Deployed([string]$exePath) {
+    if ($Headless) {
+        if (-not (Test-Path $startHeadless)) { Write-Host "Unity.Shared's Start-Headless.ps1 not found at $startHeadless." -ForegroundColor Red; exit 1 }
+        & $startHeadless -Exe $exePath -Wait -StopOnTimeout
+        exit $LASTEXITCODE
+    }
+    Start-Process -FilePath $exePath -WorkingDirectory (Split-Path -Parent $exePath)
+}
 
 # ── Pull latest, skip the rebuild entirely if nothing changed ──────────────
 # Untracked files (e.g. .prose/ session state) don't block a pull; changes to tracked files (staged
@@ -74,7 +91,7 @@ if (-not $Force -and (Test-Path (Join-Path $out $exeName)) -and (Test-Path $mark
 }
 if ($upToDate) {
     Write-Host "  Already deployed at $head (no player source changed) - skipping rebuild." -ForegroundColor Green
-    if ($Launch) { Start-Process -FilePath (Join-Path $out $exeName) -WorkingDirectory $out }
+    if ($Launch -or $Headless) { Start-Deployed (Join-Path $out $exeName) }
     exit 0
 }
 
@@ -158,7 +175,7 @@ Write-Host '  Published successfully.' -ForegroundColor Green
 Write-Host "    Exe : $exe ($([math]::Round(((Get-Item $exe).Length / 1MB), 1)) MB)" -ForegroundColor Gray
 Write-Host ''
 
-if ($Launch) {
+if ($Launch -or $Headless) {
     Write-Host '  Launching...' -ForegroundColor Cyan
-    Start-Process $exe
+    Start-Deployed $exe
 }

@@ -103,11 +103,25 @@ namespace GridGame.App
             if (TestMode.Active) TestMode.Start();
             else if (DemoMode.Active) DemoMode.Start();
             else if (!string.IsNullOrEmpty(start) && Automation.StartScreens.TryGet(start, out var startScreen)) Router.ResetTo(startScreen);
+            else if (global::Unity.Shared.Core.Headless.IsActive) StartHeadlessSession();
             else Router.ResetTo(new TitleScreen());
 
 #if DEVELOPMENT_BUILD || UNITY_EDITOR
             Automation.AutomationServer.TryStart(this);
 #endif
+        }
+
+        /// <summary>
+        /// GG-T323: the shared <c>--headless</c> mode (Unity.Shared, MAU-T18) skips the title and the menus straight into a
+        /// normal session: a fresh game with the starting party on a throwaway save (slot -1, never written), at the Hub,
+        /// for a script to drive over automation. -testmode, -demo and -start still take precedence.
+        /// </summary>
+        private void StartHeadlessSession()
+        {
+            Save = Progression.NewGame(Content, "Headless");
+            Slot = -1;
+            Router.ResetTo(new HubScreen());
+            Debug.Log("[GameApp] headless: new game on a throwaway save, at the Hub");
         }
 
         private ContentDb LoadContent()
