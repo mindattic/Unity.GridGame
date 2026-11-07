@@ -2017,6 +2017,25 @@ re-entering ≈3 s out), frail, `Sentient` flyers (`Flying`), one family (`harpy
   ganger. Casual bot, 24 seeds, campaign parties: 11/24 with them and 11/24 without; smart bot 23/24 vs 24/24.
 - *(Tests: `HarpyTests`.)*
 
+### 14.12 The Void Sentinel (added 2026-11-07, owner art, GG-T330)
+
+What forms where an Anchor leaks (docs/STORY.md §3.5): smoke given a body around a cyan heart of stolen aether. An
+elite guardian, and the first enemy to use the Line charge built in §13.4.
+
+- **Class.** `voidsentinel`: `Construct`, `Magic`, not `Sentient` (it never makes a pincer, but supports one). Speed 8
+  (re-enters ≈4.8 s out), VIT 18, a 20-point front **armor plate** (§13.5), Guardian brain (stays beside its most
+  valuable ally) with Threat targeting. Resists Dark (×0.5), weak to Holy (×1.5).
+- **Void Beam** (`charge_void_beam`, `ChargeShape: Line`). A 2.5 s charge whose line, from beside it to the board's edge
+  toward its target, is marked when it starts. On landing, every hero still on the line takes a Dark spell (INT vs WIS)
+  and is [Silenced]. It rests a turn between beams and recovers 1.5 s.
+- **Void Core** (`void_core`): the first hit that drops it below half HP flares a [Ward] on it.
+- **Support:** *Void Aegis*, [Ward] on its attacker, reach 2.
+- **Counterplay** (its card): step off the marked line or interrupt the charge; pincer it from the flanks, not the plate.
+- **Placement.** Anchor Wastes I (`cave-01`) wave 5, added beside the two oni and the ice mauler it guards. Casual bot,
+  24 seeds, campaign parties: 15/24 with it, 18/24 without; smart bot 24/24 both. Of 178 beams the casual bot let
+  charge, 175 landed and caught 71 heroes: most beams hit an empty line because a hero had moved off it.
+- *(Tests: `VoidSentinelTests`.)*
+
 ## 15. Save
 
 ### 15.1 Data model

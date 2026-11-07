@@ -23264,5 +23264,130 @@
     "Trap": null,
     "SnakeSegments": 0,
     "Brain": "Kiter"
+  },
+  {
+    "Id": "voidsentinel",
+    "Name": "Void Sentinel",
+    "Team": "Enemy",
+    "Tags": [
+      "Construct",
+      "Magic"
+    ],
+    "Description": "A slow, plated guardian of smoke that fires beams of leaking aether down a line.",
+    "Lore": "What forms where an Anchor leaks: smoke given a body around a cyan heart of stolen aether. It guards whatever stands nearest, and does not know why.",
+    "Card": "Charges a [Void Beam] down a marked line that [Silences]: step off the line or [Interrupt] it. Its front is plated, so [pincer] it from the flanks. At half HP its core flares a [Ward].",
+    "Portrait": "voidsentinel",
+    "Thumbnail": {
+      "Zoom": 2.0,
+      "X": 0.48,
+      "Y": 0.13
+    },
+    "Footprint": {
+      "W": 1,
+      "H": 1
+    },
+    "Support": {
+      "Effect": "Buff",
+      "Magnitude": 1.0,
+      "Target": "Attacker",
+      "Range": 2,
+      "Buff": "ward",
+      "Label": "Void Aegis"
+    },
+    "BaseStats": {
+      "Strength": 13,
+      "Vitality": 18,
+      "Agility": 8,
+      "Speed": 8,
+      "Stamina": 14,
+      "Intelligence": 15,
+      "Wisdom": 14,
+      "Luck": 8
+    },
+    "Growth": {
+      "Strength": 0.7,
+      "Vitality": 0.95,
+      "Agility": 0.4,
+      "Speed": 0.5,
+      "Stamina": 0.8,
+      "Intelligence": 0.85,
+      "Wisdom": 0.75,
+      "Luck": 0.4
+    },
+    "Milestones": [
+      {
+        "Level": 5,
+        "Growth": {
+          "Strength": 0.24,
+          "Vitality": 0.33,
+          "Agility": 0.14,
+          "Speed": 0.17,
+          "Stamina": 0.28,
+          "Intelligence": 0.3,
+          "Wisdom": 0.26,
+          "Luck": 0.14
+        }
+      },
+      {
+        "Level": 10,
+        "Growth": {
+          "Strength": 0.32,
+          "Vitality": 0.43,
+          "Agility": 0.18,
+          "Speed": 0.23,
+          "Stamina": 0.36,
+          "Intelligence": 0.38,
+          "Wisdom": 0.34,
+          "Luck": 0.18
+        }
+      },
+      {
+        "Level": 20,
+        "Growth": {
+          "Strength": 0.42,
+          "Vitality": 0.57,
+          "Agility": 0.24,
+          "Speed": 0.3,
+          "Stamina": 0.48,
+          "Intelligence": 0.51,
+          "Wisdom": 0.45,
+          "Luck": 0.24
+        }
+      },
+      {
+        "Level": 40,
+        "Growth": {
+          "Strength": 0.56,
+          "Vitality": 0.76,
+          "Agility": 0.32,
+          "Speed": 0.4,
+          "Stamina": 0.64,
+          "Intelligence": 0.68,
+          "Wisdom": 0.6,
+          "Luck": 0.32
+        }
+      }
+    ],
+    "Resistances": {
+      "Dark": 0.5,
+      "Holy": 1.5
+    },
+    "Abilities": [
+      "charge_void_beam",
+      "void_core"
+    ],
+    "DefaultLoadout": [],
+    "DropTable": "voidsentinel",
+    "MoveRange": 1,
+    "Targeting": "Threat",
+    "AttackRange": 1,
+    "XpReward": 18,
+    "BossPhases": [],
+    "ChargeAbility": "charge_void_beam",
+    "ChargeShape": "Line",
+    "Trap": null,
+    "SnakeSegments": 0,
+    "Brain": "Guardian",
+    "ArmorPlate": 20
   }
 ]

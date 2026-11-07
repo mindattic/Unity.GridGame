@@ -1160,6 +1160,12 @@
             "Y": -1
           },
           {
+            "Class": "voidsentinel",
+            "Level": 1,
+            "X": -1,
+            "Y": -1
+          },
+          {
             "Class": "icemauler",
             "Level": 1,
             "X": -1,

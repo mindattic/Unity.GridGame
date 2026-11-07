@@ -2529,5 +2529,66 @@
         "Max": 1
       }
     ]
+  },
+  {
+    "Id": "voidsentinel",
+    "CoinsMin": 0,
+    "CoinsMax": 0,
+    "Entries": [
+      {
+        "Item": "mat_essence_shadow",
+        "Chance": 0.4,
+        "Min": 1,
+        "Max": 1
+      },
+      {
+        "Item": "mat_arcane_dust",
+        "Chance": 0.5,
+        "Min": 1,
+        "Max": 3
+      },
+      {
+        "Item": "mat_iron_ore",
+        "Chance": 0.3,
+        "Min": 1,
+        "Max": 2
+      },
+      {
+        "Item": "eq_amulet_stormglass",
+        "Chance": 0.03,
+        "Min": 1,
+        "Max": 1
+      },
+      {
+        "Item": "eq_sword_shadow",
+        "Chance": 0.015,
+        "Min": 1,
+        "Max": 1
+      },
+      {
+        "Item": "eq_amulet_voidlocket",
+        "Chance": 0.008,
+        "Min": 1,
+        "Max": 1
+      },
+      {
+        "Item": "chest_wooden",
+        "Chance": 0.015,
+        "Min": 1,
+        "Max": 1
+      },
+      {
+        "Item": "chest_iron",
+        "Chance": 0.2,
+        "Min": 1,
+        "Max": 1
+      },
+      {
+        "Item": "tome_steadfast",
+        "Chance": 0.1,
+        "Min": 1,
+        "Max": 1
+      }
+    ]
   }
 ]

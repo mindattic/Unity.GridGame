@@ -740,5 +740,12 @@
     "Text": "A Harpy Shrieker's charge: a whirling gale that hits one hero and every hero beside it and drags each up to 2 tiles toward the harpy, out of formation. [Interrupt] it, or spread out.",
     "LinkKind": "Ability",
     "LinkId": "charge_gale_shriek"
+  },
+  {
+    "Id": "void_beam",
+    "Term": "Void Beam",
+    "Text": "A Void Sentinel's charge: a beam down a marked line to the board's edge that hits and [Silences] every hero still on it. Step off the line, or [Interrupt] it.",
+    "LinkKind": "Ability",
+    "LinkId": "charge_void_beam"
   }
 ]

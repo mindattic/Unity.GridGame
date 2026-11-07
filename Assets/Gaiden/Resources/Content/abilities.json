@@ -8652,5 +8652,76 @@
    ],
    "Callout": "Jammed!"
   }
+ },
+ {
+  "Id": "charge_void_beam",
+  "Name": "Void Beam",
+  "Description": "Charges, then fires a beam of leaking aether straight down a line to the board's edge: a Dark spell on every hero still on the marked line, and each one hit is [Silenced]. Step off the line, or [Interrupt] the charge.",
+  "Kind": "Spell",
+  "Cost": 0,
+  "CastTime": 2.5,
+  "CooldownTurns": 1,
+  "Shape": "SingleActor",
+  "Radius": 0,
+  "Mode": "PickActor",
+  "Filter": "EnemyOnly",
+  "Motion": "None",
+  "DamageType": "Dark",
+  "BaseDamage": 0,
+  "BaseHeal": 0,
+  "ApplyBuff": "silenced",
+  "ApplyBuffChance": 1.0,
+  "RemovesDebuffs": false,
+  "StealsMana": false,
+  "HastenU": 0.0,
+  "IsTeleport": false,
+  "Icon": null,
+  "CastVfx": null,
+  "ProjectileVfx": null,
+  "ImpactVfx": null,
+  "LingerVfx": null,
+  "Sfx": null,
+  "RecoverSeconds": 1.5,
+  "Intensity": "Major"
+ },
+ {
+  "Id": "void_core",
+  "Name": "Void Core",
+  "Description": "When a hit drops it below half HP, its cyan core flares and it gains [Ward].",
+  "Kind": "Reactive",
+  "Cost": 0,
+  "CastTime": 0.0,
+  "CooldownTurns": 0,
+  "Shape": "Self",
+  "Radius": 0,
+  "Mode": "Auto",
+  "Filter": "Any",
+  "Motion": "None",
+  "DamageType": "Physical",
+  "BaseDamage": 0,
+  "BaseHeal": 0,
+  "ApplyBuff": null,
+  "ApplyBuffChance": 1.0,
+  "RemovesDebuffs": false,
+  "StealsMana": false,
+  "HastenU": 0.0,
+  "IsTeleport": false,
+  "Icon": null,
+  "CastVfx": null,
+  "ProjectileVfx": null,
+  "ImpactVfx": null,
+  "LingerVfx": null,
+  "Sfx": null,
+  "Trigger": {
+   "On": "OnLowHp",
+   "Threshold": 0.5,
+   "Effects": [
+    {
+     "Kind": "ApplyBuff",
+     "Buff": "ward"
+    }
+   ],
+   "Callout": "Core Flare!"
+  }
  }
 ]
