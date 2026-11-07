@@ -63,6 +63,13 @@
     "RewardGold": 600, "RewardItem": "tome_counter_attack", "RewardSkillPoints": 1
   },
   {
+    "Id": "q_hymn_stops", "Name": "The Hymn Stops Here", "Giver": "Enchantress", "Theme": "still", "Unlock": "still-01",
+    "Summary": "The Choir's Cantors lead the hymn that sings the holds into the Still's tanks. The Enchantress knows their parts by heart. Silence three of them, and she'll believe the hymn can stop.",
+    "TurnIn": "Three voices out of the hymn, and the tanks did not fill any faster. It can stop. It can actually stop.",
+    "Objective": { "Kind": "Defeat", "Id": "cultist01", "Count": 3 },
+    "RewardGold": 650, "RewardItem": "hi_ether", "RewardSkillPoints": 1
+  },
+  {
     "Id": "q_city_that_stopped", "Name": "The Ones Who Paid", "Giver": "Party", "Theme": "cityruins", "Unlock": "cityruins-01",
     "Summary": "Halcyon's ghosts are what's left of people tithed past Hollow -- nothing but the shape of someone. Lay five of them to rest. Somebody should.",
     "TurnIn": "Five laid down. Nobody in this city ever said their names. We did. That's the whole of it.",

@@ -24,7 +24,7 @@ namespace GridGame.Meta
 
     public sealed class SaveData
     {
-        public const int CurrentVersion = 4;
+        public const int CurrentVersion = 5;
 
         public int Version = CurrentVersion;
         public string Name = "Lightbearer";
@@ -375,6 +375,9 @@ namespace GridGame.Meta
     public static class SaveMigrations
     {
         /// <summary>Ability ids removed from content; a save still holding one drops it on load.</summary>
+        /// <summary>GG-T344: where The Still went into the campaign order, and how many stages it brought (save v5).</summary>
+        public const int StillInsertedAt = 12, StillStageCount = 3;
+
         public static readonly HashSet<string> RetiredAbilities = new HashSet<string>(StringComparer.OrdinalIgnoreCase) { "scan" };
 
         /// <summary>Upgrades an older save in place. Unknown future versions are rejected. <paramref name="c"/>
@@ -445,6 +448,15 @@ namespace GridGame.Meta
                 // A save from before that has been using every service all along, so everyone has already joined.
                 CampNpcs.JoinAll(s);
                 s.Version = 4;
+            }
+            if (s.Version < 5)
+            {
+                // GG-T344: The Still (three stages) was inserted between the Anchor Wastes and Halcyon, at campaign index
+                // StillInsertedAt. HighestClearedStage is a campaign index, so a save already past the Anchor Wastes moves
+                // up by the Still's stage count and keeps the same frontier (its Halcyon/postgame clears stay cleared;
+                // the Still opens behind it, replayable like any earlier stage).
+                if (s.HighestClearedStage >= StillInsertedAt) s.HighestClearedStage += StillStageCount;
+                s.Version = 5;
             }
             foreach (var h in s.Roster)
             {

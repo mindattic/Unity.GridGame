@@ -15,7 +15,7 @@ namespace GridGame.Tests
 {
     /// <summary>
     /// GG-T321: a measurement soak for the re-entry timeline (GG-T318), not a gate. With GAIDEN_TIMELINE_SOAK=&lt;out.md&gt;
-    /// it plays the first 15 campaign stages with the smart and casual bots and reports, per stage: wins, the gap between
+    /// it plays the main campaign stages with the smart and casual bots and reports, per stage: wins, the gap between
     /// consecutive enemy turns (median, share under a minimum drag), the forced-Guard share of hero actions and the
     /// actions per window. Unset, it does nothing.
     /// Knobs: GAIDEN_DIFFICULTY (1..10, default 10); GAIDEN_SOAK_PARTY = campaign (default: the party the campaign has at
@@ -57,7 +57,7 @@ namespace GridGame.Tests
 
             var c = TestKit.Real;
             var heroes = c.Classes.Values.Where(k => k.Team == Team.Hero).Select(k => k.Id).OrderBy(id => id, StringComparer.Ordinal).ToList();
-            var stages = c.CampaignStages().Take(15).ToList();
+            var stages = AbilityUsageSoak.MainStages(c);
             var sb = new StringBuilder();
             sb.AppendLine($"# Timeline soak — difficulty {difficulty}, party {partyMode}, {perStage}/stage");
             sb.AppendLine($"MinGap {row.MinGapSeconds}s, MaxSpread {row.MaxSpreadSeconds}s, Jitter {row.JitterSeconds}s, EntryBase {BattleConfig.EntryBaseSeconds}s, RecoverBase {BattleConfig.RecoverBaseSeconds}s, BarSeconds {BattleConfig.BarSeconds}s");

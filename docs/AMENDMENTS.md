@@ -1002,6 +1002,17 @@ Owner: "you decide how difficulty 10 gets its challenge back (GG-T321)."
 - **Measured** at difficulty 10, campaign parties: smart/skilled/casual 100/100/45%; six heroes 100/98/38%. Difficulty 5: 100/100/97%. Difficulty 1: 100% for every bot. Green Valley I unchanged. Full runs: `docs/research/TimelineTuning.md`.
 - *(Tests: `Foes_grow_with_every_hero_fielded_beyond_the_starting_three`.)*
 
+## 2026-11-07 — The Still: a sixth main theme between the Anchor Wastes and Halcyon (owner, GG-T344)
+
+Owner, with six new landscapes of a white Concord dome: *"I will generate more landscapes from which you can extrapolate more story, settings levels, etc"*.
+
+- **Was:** five main themes (Tithe Moors, Shardfall, Arkgrave, Anchor Wastes, Halcyon), 15 main stages, Halcyon at levels 13–15; every theme had exactly four backgrounds and `Art.Background` wrapped any index at 4.
+- **Now:** **The Still** (`still`, three stages) sits between the Anchor Wastes and Halcyon ([BIBLE §22.3.1](BIBLE.md), [STORY.md](STORY.md) §5.5): the great Still at the foot of Halcyon's spire, where the tanks hold the tithe — and the Hollow, stored. The Still runs at 13–15 and Halcyon moves to 16–18.
+  - A theme shows as many backgrounds as it has (`Backdrops.Resolve`; the Still has six). Owner rules for background files: kept at the art's original resolution (the Still's are the native 768×1536; the old 720×1440 downscale was an import choice, GG-T353 re-imports those), named after the story region and numbered from 01 (`still_01` … `still_06`). A campaign theme can name its set (`"Backgrounds": "still"`); the legacy `<theme>_0` sets keep loading until GG-T353 renames them. A postgame theme with none borrows its base theme's art (`cave2` → `cave`) instead of falling to the Tithe Moors' first image.
+  - The Still III boss is the Chronomancer with **TwinTurn**, so two finales now share a rule-break (§14.9 said "each a different one"). The owner made no new boss art, and the time-mage is the Still's timekeeper.
+  - Save v5 shifts `HighestClearedStage` up by three for saves already past the Anchor Wastes, so nobody's frontier moves.
+- *(Tests: `StillTests`.)*
+
 ## 2026-11-07 — The story is reinvented: *Under Morrow* (owner, GG-T341)
 
 Owner: *"flush out all story in the entire game … completely reinvent the story based on the characters and artwork of the world that exist in the repo; it's distinctive enough that all these different groups and their styles means there is a story already built into the artwork and different clothing and environments."*

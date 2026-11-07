@@ -25,12 +25,12 @@ namespace GridGame.Tests
         }
 
         [Test]
-        public void Quest_content_is_valid_and_spread_over_the_five_main_biomes()
+        public void Quest_content_is_valid_and_spread_over_every_main_biome()
         {
             var problems = ContentLoader.Validate(Real, PortraitOnDisk).Where(p => p.StartsWith("quest") || p.Contains("quest_")).ToList();
             Assert.That(problems, Is.Empty, string.Join("\n", problems));
             Assert.That(Real.QuestOrder.Count, Is.InRange(8, 12));
-            var main = Real.Campaign.Themes.Take(5).Select(t => t.Id);
+            var main = Real.Campaign.Themes.Where(t => t.Stages.All(id => Real.Stages[id].LevelOverride == null)).Select(t => t.Id); // GG-T344: six, with The Still
             Assert.That(main.All(t => Real.QuestOrder.Any(q => q.Theme == t)), Is.True, "every main biome has a quest");
             foreach (var q in Real.QuestOrder)
                 Assert.That(Real.DialogueOrder.Any(d => d.AllEffects().Any(e => e.Type == DialogueEffectType.StartQuest && e.Id == q.Id)), Is.True, $"{q.Id} has a giver");

@@ -3,7 +3,7 @@ Biome board tiles from GridGame2026's original tile (owner, 2026-10-10: "each ar
 style; reuse the original when the biome matches its colours"; owner, 2026-10-13: "the board tiles should be
 terrain textures that match the level biome you're in: desert, snow, dirt, wasteland, urban, etc").
 
-    python tools/make_tiles.py
+    python tools/make_tiles.py [theme ...]
 
 Reads Assets/Gaiden/Resources/Tiles/tile.png (the original slate tile, imported by tools/import_art.py) and writes
 Tiles/<themeId>.png per campaign theme. The outer bevel rim (the black edge + grey highlight BoardView's
@@ -127,19 +127,39 @@ def cityruins(arr, mask, h, w):
     return out
 
 
+def still(arr, mask, h, w):
+    """GG-T344 The Still: one polished white Concord floor slab (a board cell is one slab, so no inner seams), a
+    diagonal polish glare, and faint cyan aether pooled on the shine."""
+    r, yy, xx = rng_fields(h, w, SEED + 6)
+    slab = np.array([204, 216, 220], dtype=np.float32)
+    aether = np.array([96, 210, 212], dtype=np.float32)
+    sheen = smooth_noise(r, h, w, 28)
+    streak = 0.5 + 0.5 * np.sin((xx + yy) * 0.035 + sheen * 2.5)
+    grain = r.uniform(-4, 4, size=(h, w)).astype(np.float32)
+    body = slab[None, None, :] * (0.86 + 0.09 * streak[:, :, None] + 0.05 * sheen[:, :, None])
+    pool = np.clip((sheen - 0.66) / 0.22, 0, 1)[:, :, None] * 0.28
+    out = body * (1 - pool) + aether[None, None, :] * pool + grain[:, :, None]
+    return out
+
+
 BIOMES = {
     "greenvalley": greenvalley,
     "desert": desert,
     "swamp": swamp,
     "cave": cave,
     "cityruins": cityruins,
+    "still": still,
 }
 
 
 def main():
+    import sys
+    only = set(sys.argv[1:])  # `python tools/make_tiles.py still` writes just that theme's tile
     arr, mask = load_base()
     h, w = mask.shape
     for theme, fn in BIOMES.items():
+        if only and theme not in only:
+            continue
         out = arr.copy()
         painted = clamp_u8(fn(arr, mask, h, w))
         out[:, :, :3][mask] = painted[mask]

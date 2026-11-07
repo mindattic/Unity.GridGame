@@ -430,6 +430,21 @@
     ]
   },
   {
+    "Id": "still_party_talk",
+    "Title": "What the tanks hold",
+    "Trigger": { "Kind": "ThemeStart", "Id": "still" },
+    "Speakers": [
+      { "Id": "lead", "Class": "$lead" },
+      { "Id": "enchantress", "Name": "Enchantress", "Portrait": "whitewitch" }
+    ],
+    "Nodes": [
+      { "Id": "a", "Speaker": "lead", "Text": "They're just standing there. In a line, all the way to the tanks. I know that coat -- he sold us onions on the moor road.", "Next": "b" },
+      { "Id": "b", "Speaker": "enchantress", "Text": "They always come back to the Still. It's the last thing the hymn leaves them. I used to sing the line forward.", "Next": "c" },
+      { "Id": "c", "Speaker": "lead", "Text": "Forward to what?", "Next": "d" },
+      { "Id": "d", "Speaker": "enchantress", "Text": "To the tanks. When we're close enough, look inside one. Then tell me the Concord is holding up the moon." }
+    ]
+  },
+  {
     "Id": "cityruins_recruit_healer",
     "Title": "A healer in the underspire",
     "Trigger": { "Kind": "ThemeStart", "Id": "cityruins" },
@@ -2092,6 +2107,21 @@
     ]
   },
   {
+    "Id": "boss_intro_still",
+    "Title": "The Keeper of the Clocks",
+    "Trigger": { "Kind": "StageStart", "Id": "still-03" },
+    "Speakers": [
+      { "Id": "boss", "Class": "chronomancer" },
+      { "Id": "lead", "Class": "$lead" }
+    ],
+    "Nodes": [
+      { "Id": "a", "Speaker": "boss", "Text": "Mind the floor; it's polished on the hour. You came all this way to see the tithe? Very well. Look at tank nine.", "Next": "b" },
+      { "Id": "b", "Speaker": "lead", "Text": "There's... a street in it. Chimneys. A well. A garden wall. It's turning, like it's drowning slow.", "Next": "c" },
+      { "Id": "c", "Speaker": "boss", "Text": "Fennick's Rise. All of it -- the songs, the recipes, the names of the dogs. We keep it cold until the spire calls for it. I time the flow, and nobody leaves my clocks early. In here I take my turn, and then I take yours.", "Next": "d" },
+      { "Id": "d", "Speaker": "lead", "Text": "Then the Hollow aren't empty. They're in there. Stored. -- Close in on her, everyone. Don't give her the room to take two." }
+    ]
+  },
+  {
     "Id": "boss_intro_cityruins",
     "Title": "The Hierarch",
     "Trigger": { "Kind": "StageStart", "Id": "cityruins-03" },
@@ -2297,6 +2327,24 @@
       },
       { "Id": "yes", "Speaker": "with", "Text": "Thank you. I'll keep count." },
       { "Id": "no", "Speaker": "with", "Text": "Later, then. They've waited this long." }
+    ]
+  },
+  {
+    "Id": "quest_offer_hymn_stops",
+    "Title": "The hymn stops here",
+    "Trigger": { "Kind": "Talk", "Id": "npc:enchantress" },
+    "Conditions": [ { "Type": "QuestAvailable", "Id": "q_hymn_stops" } ],
+    "Speakers": [ { "Id": "enchantress", "Name": "Enchantress", "Portrait": "whitewitch" } ],
+    "Nodes": [
+      {
+        "Id": "ask", "Speaker": "enchantress", "Text": "I know the Cantors' parts by heart. Every one of them still singing is another hold sung into a tank. Silence three, and I will believe the hymn can stop.",
+        "Choices": [
+          { "Label": "Three Cantors. Done.", "Next": "yes", "Effects": [ { "Type": "StartQuest", "Id": "q_hymn_stops" } ] },
+          { "Label": "Not now.", "Next": "no" }
+        ]
+      },
+      { "Id": "yes", "Speaker": "enchantress", "Text": "Listen for the glyphs. When they go quiet, it's done." },
+      { "Id": "no", "Speaker": "enchantress", "Text": "The queue will still be there. That is the whole trouble." }
     ]
   }
 ]

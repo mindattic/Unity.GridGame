@@ -32,7 +32,9 @@ The old world tried three answers to the Nearing, and each answer is now a place
 
 Between them lie the **Tithe Moors** (`greenvalley`): grey-green moss country of farm-holds and standing stones,
 dotted with the white domes of the Concord's **Stills**. And at the end of every road is **Halcyon** (`cityruins`), the
-Spire City, neon under a pink sky, its towers drinking light from beams that run north to the Anchors.
+Spire City, neon under a pink sky, its towers drinking light from beams that run north to the Anchors. Where the beams
+come down, at the foot of the spire, stands the greatest of the domes: **the Still** (`still`), where all of it is
+collected into tanks before it climbs.
 
 ## 2. The tithe
 
@@ -162,7 +164,11 @@ New heroes from the owner's art:
 
 ## 5. The campaign
 
-Ten themes, in order. Each theme's crawl opens it; its party talk carries one piece of the plot.
+Eleven themes, in order: six in the main campaign, five in the postgame. Each theme's crawl opens it; its party talk
+carries one piece of the plot.
+
+Owner, 2026-11-07 (GG-T344): *"I will generate more landscapes from which you can extrapolate more story, settings
+levels, etc"* — new chapters are read out of the owner's landscapes the same way the factions are read out of the units.
 
 1. **The Tithe Moors** (`greenvalley`). Tithe day at Saltmoss. The crew runs with a Concord caravan. Moor roads full of
    wolves, Redline, militia and the first Hollow. *Boss (III): the **Captain**, who sold the holds and has come to
@@ -176,21 +182,41 @@ Ten themes, in order. Each theme's crawl opens it; its party talk carries one pi
 4. **The Anchor Wastes** (`cave`). North across the ice to the arches. Wraith Knights, Void Sentinels, vat-giants. The
    crew sees the beams running from the Anchors to Halcyon — and how little of the light the Anchors keep. *Boss: a
    **vat-giant** keeping the great Anchor.* Learned: the surplus goes to the Hierarch.
-5. **Halcyon** (`cityruins`). The Spire City. The Bulwark, the Choir, the Kiln Guard, the Chronomancer. Up the spire.
-   *Boss (finale): the **Hierarch**.* The crew breaks the Hierarch's reservoir; two centuries of stolen aether pour back
-   down the beams into the holds.
+5. **The Still** (`still`, GG-T344, from six landscapes the owner made). The crew follows the beams south to where they
+   meet: the **great Still** at the foot of Halcyon's spire, a white dome bigger than any hold. Every Anchor beam's tithe
+   is collected here, into the tanks, before it climbs to the Hierarch. The crew breaks in to see the tithe with their
+   own eyes. Inside: floors polished to mirrors, a moon-oculus that frames Morrow overhead, catwalks and rails, arched
+   gates, and rows of tall tanks glowing cyan. And the **queues** — Hollow from every hold, still in their white
+   tithe-shrouds, standing in line at the tanks to give what they no longer have, because it is the last thing they
+   remember. The Bulwark holds the gates, Red Seal wardens herd the queues, Chromed Hollow carry the cans, the Choir
+   sings the tanks full, and the vat-giants grown here from tithe-surplus do the heavy lifting.
+   - *I — The Queues.* Through the gate hall, past the lines. The crew sees faces they know from the moor roads.
+   - *II — The Tank Hall.* Close enough to the tanks to look inside. The aether isn't empty light: there are shapes
+     in it.
+   - *III — Under the Oculus.* The meter room under the moon-window, where the Still's clocks time the flow up the
+     spire.
+   *Boss: the **Chronomancer**, the Anchor engineer who keeps the Still's clocks.* She times everything here, so she
+   breaks the turn order (TwinTurn: two turns unless a hero stands beside her). She is one of the engineers who
+   half-knows, and she says it aloud because she thinks the crew won't live to repeat it.
+   **What the crew learns: what the tanks hold.** Not light, and not fuel. Look close and the aether has *shapes* in it:
+   a hold's chimneys, a well, a garden wall, a whole street, small and drowned and turning. The tithe carries what people
+   *were*. The Hollow are not empty — they are **stored**, here, in tanks, a hold to a tank, until the Hierarch drinks
+   them. Which means it can be given back. (This is why, at the ending, the Hollow begin to remember.)
+6. **Halcyon** (`cityruins`). Out of the Still's back gate and up into the Spire City. The Bulwark, the Choir, the Kiln
+   Guard, the Chronomancer. Up the spire. *Boss (finale): the **Hierarch**.* The crew breaks the Hierarch's reservoir;
+   two centuries of stolen aether pour back down the beams into the holds.
 
 **Ending** — *"Still Here."* The tithe stops. The Hollow begin, very slowly, to remember. Morrow still hangs exactly as
 low as yesterday; nobody has solved the Nearing. But where the stolen aether came down, the Bloom is growing, and the
 crew has a caravan, a road, and proof that giving works. Roll credits.
 
 **Postgame** (the road after the Hierarch — open on purpose, no final answer):
-6. **The Moors Beyond the Stills** (`greenvalley2`) — holds that never got their aether back, and Redline selling the
+7. **The Moors Beyond the Stills** (`greenvalley2`) — holds that never got their aether back, and Redline selling the
    Bloom as a drug.
-7. **Deep Shardfall** (`desert2`) — the Ember grows bolder with the Concord broken; the Infernalists march on the Anchors.
-8. **The Drowned Arks** (`swamp2`) — the *Long Patience* still flies, a little; the Lich offers passage to anyone.
-9. **Under the Anchors** (`cave2`) — what the arches are actually built on.
-10. **The Underspire** (`cityruins2`) — Halcyon without a Hierarch: the Choir, the Red Seal and the Street all want the
+8. **Deep Shardfall** (`desert2`) — the Ember grows bolder with the Concord broken; the Infernalists march on the Anchors.
+9. **The Drowned Arks** (`swamp2`) — the *Long Patience* still flies, a little; the Lich offers passage to anyone.
+10. **Under the Anchors** (`cave2`) — what the arches are actually built on.
+11. **The Underspire** (`cityruins2`) — Halcyon without a Hierarch: the Choir, the Red Seal and the Street all want the
     spire.
 
 **Prologue** — *"Tithe Day."* Saltmoss, the white dome on the hill, the crew's names in the ledger, the run.
@@ -211,6 +237,7 @@ tithe, each other).
 
 ## 7. Glossary of story words
 
-**Morrow** (the moon) · **the Nearing** · **aether** · **the tithe** · **Stills** (white tithe-domes) · **Hollow**
+**Morrow** (the moon) · **the Nearing** · **aether** · **the tithe** · **Stills** (white tithe-domes; **the Still**
+is the great one at the foot of Halcyon's spire) · **the queues** (Hollow lined up at the tanks) · **Hollow**
 (the over-tithed) · **the Anchors** · **the Arks** · **the Shardfall** · **the Ember** · **splicing** · **the Bloom** ·
 **Saltmoss** (the crew's home town) · **Halcyon** (the Spire City) · **the Hierarch**.

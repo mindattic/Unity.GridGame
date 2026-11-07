@@ -95,11 +95,25 @@ namespace GridGame.App
         public static Texture2D UiIcon(string id) => Pixelled("UI", id);
         public static Texture2D Icon(string key) => string.IsNullOrEmpty(key) ? null : Load("Icons/" + key);
 
+        private static readonly Dictionary<string, BackdropSet> backdropSets = new Dictionary<string, BackdropSet>(System.StringComparer.OrdinalIgnoreCase);
+
+        /// <summary>A background set as found in Resources (GG-T344: counted once, from <c>_01</c>, or the legacy <c>_0</c>).</summary>
+        public static BackdropSet BackgroundSet(string set)
+        {
+            if (string.IsNullOrEmpty(set)) return new BackdropSet(set, 0, true);
+            if (!backdropSets.TryGetValue(set, out var s))
+                backdropSets[set] = s = Backdrops.Probe(set, key => Resources.Load<Texture2D>(key) != null);
+            return s;
+        }
+
+        /// <summary>A theme's <paramref name="index"/>th backdrop from its campaign <c>Backgrounds</c> set (else the theme id),
+        /// wrapped over the set's own count; a postgame theme with no art of its own borrows its base theme's
+        /// (<see cref="Backdrops.Resolve"/>).</summary>
         public static Texture2D Background(string theme, int index = 0)
         {
-            var key = $"Backgrounds/{theme ?? "greenvalley"}_{index % 4}";
-            var t = Resources.Load<Texture2D>(key);
-            return t != null ? t : Load("Backgrounds/greenvalley_0");
+            var content = GameApp.I != null ? GameApp.I.Content : null;
+            var t = Resources.Load<Texture2D>(Backdrops.Resolve(theme, index, BackgroundSet, x => Backdrops.SetOf(content, x)));
+            return t != null ? t : Load(Backdrops.Fallback);
         }
 
         // ── Generated pieces ────────────────────────────────────────────────────────

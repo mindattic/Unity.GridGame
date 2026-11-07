@@ -71,6 +71,10 @@ namespace GridGame.Tests
             return Math.Min(Progression.MaxPartySize, Progression.StartingPartySize + joins);
         }
 
+        /// <summary>The main campaign, in order: every campaign stage up to the postgame (whose stages carry a LevelOverride).
+        /// GG-T344: was the first 15, which silently dropped Halcyon once The Still made the main campaign 18 stages.</summary>
+        internal static List<StageDef> MainStages(ContentDb c) => c.CampaignStages().TakeWhile(st => st.LevelOverride == null).ToList();
+
         private static int FirstStageOf(ContentDb c, string theme, List<string> order)
         {
             var t = c.Campaign.Themes.FirstOrDefault(x => x.Id == theme);
@@ -82,7 +86,7 @@ namespace GridGame.Tests
             Directory.CreateDirectory(dir);
             var c = Real;
             var heroes = c.Classes.Values.Where(k => k.Team == Team.Hero).Select(k => k.Id).OrderBy(id => id, StringComparer.Ordinal).ToList();
-            var stages = c.CampaignStages().Take(15).ToList();
+            var stages = MainStages(c);
             var plan = new List<(List<string> party, StageDef stage)>();
             if (perStage > 0)
             {
@@ -108,13 +112,14 @@ namespace GridGame.Tests
                     for (int start = 0; start < heroes.Count; start += 5, b++)
                         plan.Add((Enumerable.Range(0, 5).Select(i => heroes[(start + i + round * 2) % heroes.Count]).Distinct().ToList(), stages[b % stages.Count]));
             }
-            string onlyStage = Environment.GetEnvironmentVariable("GAIDEN_ABILITY_STAGE");
+            // GAIDEN_ABILITY_STAGE=<id>[,<id>...] fights only those stages (GG-T344: a comma list).
+            var onlyStages = Environment.GetEnvironmentVariable("GAIDEN_ABILITY_STAGE")?.Split(',', StringSplitOptions.RemoveEmptyEntries | StringSplitOptions.TrimEntries);
             int difficulty = BotDifficulty.FromEnv(); // GG-T309: GAIDEN_DIFFICULTY=1..10 (default 10, the designed game)
             int battle = 0;
             foreach (var (party, stage) in plan)
                 {
                     // GAIDEN_ABILITY_STAGE=<id> fights only that stage, with the same parties and seeds as the full run (GG-T274).
-                    if (onlyStage != null && stage.Id != onlyStage) { battle++; continue; }
+                    if (onlyStages != null && !onlyStages.Contains(stage.Id)) { battle++; continue; }
                     int seed = 1000 + battle;
                     var save = Progression.NewGame(c, "Usage", party);
                     // GG-T292: GAIDEN_LEVEL_OFFSET=-3 fights under-levelled, a stress test that shows how much skill matters.

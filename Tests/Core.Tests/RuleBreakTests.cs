@@ -189,6 +189,7 @@ namespace GridGame.Tests
                 ["desert-03"] = ("mechaarmor01", RuleBreak.AxisWard),
                 ["swamp-03"] = ("swampmistress00", RuleBreak.MireSwap),
                 ["cave-03"] = ("cyclops02", RuleBreak.GravityStamp),
+                ["still-03"] = ("chronomancer", RuleBreak.TwinTurn), // GG-T344: the keeper of the Still's clocks
                 ["cityruins-03"] = ("vampire", RuleBreak.Undying),
             };
             foreach (var kv in expected)
@@ -201,7 +202,7 @@ namespace GridGame.Tests
             }
             var others = Real.Stages.Values.Where(st => !expected.ContainsKey(st.Id))
                 .SelectMany(st => st.Waves).SelectMany(w => w.Enemies).Where(e => e.RuleBreak != RuleBreak.None);
-            Assert.That(others, Is.Empty, "rule-breakers are the five finales only");
+            Assert.That(others, Is.Empty, "rule-breakers are the main finales only");
             Assert.That(ContentLoader.Validate(Real).Where(p => p.Contains("RuleBreak") || p.Contains("MireSwap")), Is.Empty);
         }
 
