@@ -5458,5 +5458,107 @@
         "Y": 0
       }
     ]
+  },
+  {
+    "Id": "hellspawn-pair-2",
+    "Name": "Hellspawn Pair",
+    "Formation": "Pair",
+    "Level": 5,
+    "Enemies": [
+      {
+        "Class": "hellspawn01",
+        "X": 1,
+        "Y": 2
+      },
+      {
+        "Class": "hellspawn02",
+        "X": 4,
+        "Y": 1
+      }
+    ]
+  },
+  {
+    "Id": "hellspawn-delta-3",
+    "Name": "Hellspawn Delta",
+    "Formation": "Delta",
+    "Level": 6,
+    "Enemies": [
+      {
+        "Class": "hellspawn04",
+        "X": 2,
+        "Y": 2
+      },
+      {
+        "Class": "hellspawn01",
+        "X": 4,
+        "Y": 2
+      },
+      {
+        "Class": "hellspawn03",
+        "X": 3,
+        "Y": 0
+      }
+    ]
+  },
+  {
+    "Id": "hellspawn-phalanx-4",
+    "Name": "Hellspawn Phalanx",
+    "Formation": "Phalanx",
+    "Level": 7,
+    "Enemies": [
+      {
+        "Class": "hellspawn04",
+        "X": 1,
+        "Y": 2
+      },
+      {
+        "Class": "hellspawn01",
+        "X": 3,
+        "Y": 2
+      },
+      {
+        "Class": "hellspawn02",
+        "X": 5,
+        "Y": 1
+      },
+      {
+        "Class": "hellspawn03",
+        "X": 2,
+        "Y": 0
+      }
+    ]
+  },
+  {
+    "Id": "hellspawn-crown-5",
+    "Name": "Hellspawn Crown",
+    "Formation": "Crown",
+    "Level": 8,
+    "Enemies": [
+      {
+        "Class": "hellspawn02",
+        "X": 0,
+        "Y": 2
+      },
+      {
+        "Class": "hellspawn04",
+        "X": 2,
+        "Y": 3
+      },
+      {
+        "Class": "hellspawn01",
+        "X": 5,
+        "Y": 2
+      },
+      {
+        "Class": "hellspawn03",
+        "X": 1,
+        "Y": 0
+      },
+      {
+        "Class": "hellspawn01",
+        "X": 4,
+        "Y": 0
+      }
+    ]
   }
 ]

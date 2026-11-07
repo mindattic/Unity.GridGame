@@ -150,6 +150,9 @@ namespace GridGame.Core.Content
         public string OtherTag;
         /// <summary>GG-T338: the other unit carries this status (the Ember Executioner's blows on a [Burning] hero).</summary>
         public string OtherHasStatus;
+        /// <summary>GG-T340: the other unit's HP fraction is strictly below this (0 = unchecked) — the Hellspawn's
+        /// Bloodscent, its blows on a hero already bleeding.</summary>
+        public float OtherHpBelow;
         /// <summary>The damage in the context is of this type (null = any).</summary>
         public DamageType? DamageType;
     }

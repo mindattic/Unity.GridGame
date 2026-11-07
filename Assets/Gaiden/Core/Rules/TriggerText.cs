@@ -97,6 +97,7 @@ namespace GridGame.Core.Rules
             if (k.AdjacentFoesAtLeast > 0) parts.Add($"{k.AdjacentFoesAtLeast}+ foes are adjacent");
             if (k.OtherTag != null) parts.Add($"the foe is [{k.OtherTag}]");
             if (k.OtherHasStatus != null) parts.Add($"the foe has [{BuffName(c, k.OtherHasStatus)}]");
+            if (k.OtherHpBelow > 0f) parts.Add($"the foe is below {Pct(k.OtherHpBelow)} HP");
             if (k.DamageType.HasValue) parts.Add($"the damage is [{k.DamageType.Value}]");
             return parts.Count == 0 ? null : string.Join(" and ", parts);
         }

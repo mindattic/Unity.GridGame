@@ -650,13 +650,13 @@
       {
         "Enemies": [
           {
-            "Class": "soldier02",
+            "Class": "hellspawn01",
             "Level": 1,
             "X": -1,
             "Y": -1
           },
           {
-            "Class": "soldier03",
+            "Class": "hellspawn02",
             "Level": 1,
             "X": -1,
             "Y": -1
@@ -688,13 +688,13 @@
       {
         "Enemies": [
           {
-            "Class": "soldier00",
+            "Class": "hellspawn04",
             "Level": 1,
             "X": -1,
             "Y": -1
           },
           {
-            "Class": "soldier01",
+            "Class": "hellspawn03",
             "Level": 1,
             "X": -1,
             "Y": -1

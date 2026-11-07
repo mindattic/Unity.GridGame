@@ -852,5 +852,19 @@
     "Text": "A Herd Gorer's charge down a marked line to the board's edge: every hero still on the line is trampled. Step off it, or [Interrupt] it.",
     "LinkKind": "Ability",
     "LinkId": "charge_bull_rush"
+  },
+  {
+    "Id": "bloodscent",
+    "Term": "Bloodscent",
+    "Text": "The Hellspawn's hunger: their blows land 50% harder on a hero below half HP. Heal the wounded, or keep them out of reach.",
+    "LinkKind": "Ability",
+    "LinkId": "bloodscent"
+  },
+  {
+    "Id": "red_tide",
+    "Term": "Red Tide",
+    "Text": "A Hellspawn Emberheart's charge: the red river floods a hero's whole row, burning everyone in it. Leave the row, or [Interrupt] it.",
+    "LinkKind": "Ability",
+    "LinkId": "charge_red_tide"
   }
 ]

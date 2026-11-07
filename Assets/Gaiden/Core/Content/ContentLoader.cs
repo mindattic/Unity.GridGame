@@ -439,6 +439,7 @@ namespace GridGame.Core.Content
                 if (c.AdjacentFoesAtLeast < 0 || c.AdjacentFoesAtLeast > 4) p.Add($"{w}: condition AdjacentFoesAtLeast outside 0..4");
                 if (c.OtherTag != null && c.OtherTag.Trim().Length == 0) p.Add($"{w}: condition OtherTag is blank");
                 if (c.OtherHasStatus != null && !db.Buffs.ContainsKey(c.OtherHasStatus)) p.Add($"{w}: condition unknown status '{c.OtherHasStatus}'");
+                if (c.OtherHpBelow < 0f || c.OtherHpBelow >= 1f) p.Add($"{w}: condition OtherHpBelow outside 0..1");
             }
             if (t.Effects == null || t.Effects.Count == 0) { p.Add($"{w}: needs at least one effect"); return; }
             foreach (var e in t.Effects)

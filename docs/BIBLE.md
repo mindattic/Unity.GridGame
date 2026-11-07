@@ -2195,6 +2195,37 @@ falls (a bull or the crew that hired it), it casts the free `stampede_rush` on i
   Gorer rushed 134 times on greenvalley-03; on cityruins-01 the Boss fed its crew 118 times.
 - *(Tests: `HerdTests`.)*
 
+### 14.19 The Hellspawn (added 2026-11-07, owner art, GG-T340)
+
+What the Ember makes of a beast or a person who drinks from the Shardfall's red rivers (docs/STORY.md §3.6): red scale,
+black hooked claws, manes and tails of blood-light. Whatever they were is gone, so they are `Beast`s, not `Sentient` (they
+never plan a pincer). Four variants, one `hellspawn` family. Born of the Ember, they resist Fire (×0.5), all carry Infernal
+Hide (they can't be [Burned]) and are weak to Ice (×1.5). The family plays **the hunger**: every one carries
+**Bloodscent** (`bloodscent`, Passive `Always`): its blows land ×1.5 on a foe below half HP.
+
+| Class | Role | Speed / brain / targeting | Kit | Support |
+|---|---|---|---|---|
+| `hellspawn01` Ravager | the hunter | 15 / Hunter / Weakest | Bloodscent | Burning 50% (*Cinder Mane*) |
+| `hellspawn02` Drinker | the runner | 18 / Skirmisher / Weakest | Bloodscent and [Lifesteal]: strikes, drinks and darts away | Haste its attacker 1 s (*Blood Rush*) |
+| `hellspawn03` Emberheart | the tide | 11 / Stalker / Caster | **Red Tide** (`charge_red_tide`, Shape `Row`): 2.5 s charge, the red river floods its target's whole row, 5 Fire and [Burning] on every hero in it; rests a turn, recovers 1.5 s | Cast at 50%, reach 2 (*Red Spill*) |
+| `hellspawn04` Scaleback | the wall | 8 / Relentless / Threat, plate 20 | **Searing Scales** (`searing_scales`, Reactive `OnAttackedDirect`, 35%): [Burning] on the attacker | Protection on the chain (*Scale Wall*) |
+
+- **Engine (small).** Bloodscent needed a trigger condition on the *other* unit's HP, so `TriggerCondition` gains
+  `OtherHpBelow` (§4.1, like GG-T338's `OtherHasStatus`): checked against the context's other unit in
+  `Triggers.ConditionHolds` (strictly below the fraction), written "the foe is below 50% HP" by `TriggerText`, and
+  validated to 0..1 by `ContentLoader.Validate`.
+- **Red Tide** is the first enemy charge with the `Row` shape: it follows its target, so the hero it picked is always
+  caught, and the rest of a row the party lined up for a pincer can step out of it.
+- **Counterplay** (their cards): keep the party above half HP or keep the wounded out of reach; interrupt the tide or leave
+  the row; [pincer] the Drinker when it lands; strike the Scaleback from range or cleanse the burn; Ice.
+- **Placement.** Shardfall III (`desert-03`), the stage the Infernalists left untouched. Wave 2: Ravager and Drinker
+  beside the tech gremlin, in place of two militia soldiers. Wave 4: Scaleback and Emberheart beside the gremlin and the
+  vulture, in place of two more soldiers. Casual bot, 24 seeds, campaign parties, difficulty 10: 13/24 with them vs 8/24
+  without; smart bot 24/24 both. The stage gets easier: the four soldiers they replace are plated, countering, `Sentient`
+  Duelists that pincer, and the beasts are not; most losses are still at the Captain's wave 5 (7 of 11 with them, 11 of
+  16 without). In the casual runs the tide landed 103 times and the scales seared 19 attackers.
+- *(Tests: `HellspawnTests`.)*
+
 ## 15. Save
 
 ### 15.1 Data model

@@ -9443,5 +9443,118 @@
    ],
    "Callout": "Rocked!"
   }
+ },
+ {
+  "Id": "bloodscent",
+  "Name": "Bloodscent",
+  "Description": "Its blows land 50% harder on a foe below half HP. Keep the party topped up, or keep the wounded away.",
+  "Kind": "Passive",
+  "Cost": 0,
+  "CastTime": 0.0,
+  "CooldownTurns": 0,
+  "Shape": "Self",
+  "Radius": 0,
+  "Mode": "Auto",
+  "Filter": "Any",
+  "Motion": "None",
+  "DamageType": "Physical",
+  "BaseDamage": 0,
+  "BaseHeal": 0,
+  "ApplyBuff": null,
+  "ApplyBuffChance": 1.0,
+  "RemovesDebuffs": false,
+  "StealsMana": false,
+  "HastenU": 0.0,
+  "IsTeleport": false,
+  "Icon": null,
+  "CastVfx": null,
+  "ProjectileVfx": null,
+  "ImpactVfx": null,
+  "LingerVfx": null,
+  "Sfx": null,
+  "Trigger": {
+   "On": "Always",
+   "Condition": {
+    "OtherHpBelow": 0.5
+   },
+   "Effects": [
+    {
+     "Kind": "DamageMultiplier",
+     "Amount": 1.5
+    }
+   ]
+  }
+ },
+ {
+  "Id": "charge_red_tide",
+  "Name": "Red Tide",
+  "Description": "Charges, then pours the red river across a hero's whole row: 5 Fire to every hero in it, and each one hit is set [Burning]. Leave the row, or [Interrupt] the charge.",
+  "Kind": "Spell",
+  "Cost": 0,
+  "CastTime": 2.5,
+  "CooldownTurns": 1,
+  "Shape": "Row",
+  "Radius": 0,
+  "Mode": "PickActor",
+  "Filter": "EnemyOnly",
+  "Motion": "None",
+  "DamageType": "Fire",
+  "BaseDamage": 5,
+  "BaseHeal": 0,
+  "ApplyBuff": "burning",
+  "ApplyBuffChance": 1.0,
+  "RemovesDebuffs": false,
+  "StealsMana": false,
+  "HastenU": 0.0,
+  "IsTeleport": false,
+  "Icon": null,
+  "CastVfx": null,
+  "ProjectileVfx": null,
+  "ImpactVfx": null,
+  "LingerVfx": null,
+  "Sfx": null,
+  "RecoverSeconds": 1.5,
+  "Intensity": "Major"
+ },
+ {
+  "Id": "searing_scales",
+  "Name": "Searing Scales",
+  "Description": "Struck up close, it has a [fair] chance to set the attacker [Burning].",
+  "Kind": "Reactive",
+  "Cost": 0,
+  "CastTime": 0.0,
+  "CooldownTurns": 0,
+  "Shape": "Self",
+  "Radius": 0,
+  "Mode": "Auto",
+  "Filter": "Any",
+  "Motion": "None",
+  "DamageType": "Physical",
+  "BaseDamage": 0,
+  "BaseHeal": 0,
+  "ApplyBuff": null,
+  "ApplyBuffChance": 1.0,
+  "RemovesDebuffs": false,
+  "StealsMana": false,
+  "HastenU": 0.0,
+  "IsTeleport": false,
+  "Icon": null,
+  "CastVfx": null,
+  "ProjectileVfx": null,
+  "ImpactVfx": null,
+  "LingerVfx": null,
+  "Sfx": null,
+  "Trigger": {
+   "On": "OnAttackedDirect",
+   "Chance": 0.35,
+   "Effects": [
+    {
+     "Kind": "ApplyBuff",
+     "Buff": "burning",
+     "Who": "Attacker"
+    }
+   ],
+   "Callout": "Searing!"
+  }
  }
 ]

@@ -25757,5 +25757,499 @@
     "SnakeSegments": 0,
     "Brain": "Berserker",
     "Remains": "corpse"
+  },
+  {
+    "Id": "hellspawn01",
+    "Name": "Hellspawn Ravager",
+    "Team": "Enemy",
+    "Tags": [
+      "Beast"
+    ],
+    "Description": "A red-scaled hunter with a mane of blood-light and one great hooked claw.",
+    "Lore": "The Ember: what Morrow's hunger makes of a beast or a person who drinks from the Shardfall's red rivers. Whatever it was is gone; what is left can smell blood across the sand.",
+    "Card": "[Bloodscent]: hits a hero below half HP 50% harder, and goes for the weakest: keep the party topped up. Can't be [Burned].",
+    "Portrait": "hellspawn01",
+    "Thumbnail": {
+      "Zoom": 2.6,
+      "X": 0.3,
+      "Y": 0.15
+    },
+    "Footprint": {
+      "W": 1,
+      "H": 1
+    },
+    "Support": {
+      "Effect": "Status",
+      "Magnitude": 0.5,
+      "Target": "Attacker",
+      "Range": 1,
+      "Buff": "burning",
+      "Label": "Cinder Mane"
+    },
+    "BaseStats": {
+      "Strength": 15,
+      "Vitality": 12,
+      "Agility": 14,
+      "Speed": 15,
+      "Stamina": 12,
+      "Intelligence": 8,
+      "Wisdom": 9,
+      "Luck": 11
+    },
+    "Growth": {
+      "Strength": 0.85,
+      "Vitality": 0.7,
+      "Agility": 0.75,
+      "Speed": 0.8,
+      "Stamina": 0.7,
+      "Intelligence": 0.4,
+      "Wisdom": 0.5,
+      "Luck": 0.55
+    },
+    "Milestones": [
+      {
+        "Level": 5,
+        "Growth": {
+          "Strength": 0.3,
+          "Vitality": 0.24,
+          "Agility": 0.26,
+          "Speed": 0.28,
+          "Stamina": 0.24,
+          "Intelligence": 0.14,
+          "Wisdom": 0.17,
+          "Luck": 0.19
+        }
+      },
+      {
+        "Level": 10,
+        "Growth": {
+          "Strength": 0.38,
+          "Vitality": 0.32,
+          "Agility": 0.34,
+          "Speed": 0.36,
+          "Stamina": 0.32,
+          "Intelligence": 0.18,
+          "Wisdom": 0.23,
+          "Luck": 0.25
+        }
+      },
+      {
+        "Level": 20,
+        "Growth": {
+          "Strength": 0.51,
+          "Vitality": 0.42,
+          "Agility": 0.45,
+          "Speed": 0.48,
+          "Stamina": 0.42,
+          "Intelligence": 0.24,
+          "Wisdom": 0.3,
+          "Luck": 0.33
+        }
+      },
+      {
+        "Level": 40,
+        "Growth": {
+          "Strength": 0.68,
+          "Vitality": 0.56,
+          "Agility": 0.6,
+          "Speed": 0.64,
+          "Stamina": 0.56,
+          "Intelligence": 0.32,
+          "Wisdom": 0.4,
+          "Luck": 0.44
+        }
+      }
+    ],
+    "Resistances": {
+      "Fire": 0.5,
+      "Ice": 1.5
+    },
+    "Abilities": [
+      "bloodscent",
+      "infernal_hide"
+    ],
+    "DefaultLoadout": [],
+    "DropTable": "hellspawn",
+    "MoveRange": 1,
+    "Targeting": "Weakest",
+    "AttackRange": 1,
+    "XpReward": 15,
+    "BossPhases": [],
+    "ChargeAbility": null,
+    "ChargeShape": "Single",
+    "Trap": null,
+    "SnakeSegments": 0,
+    "Brain": "Hunter"
+  },
+  {
+    "Id": "hellspawn02",
+    "Name": "Hellspawn Drinker",
+    "Team": "Enemy",
+    "Tags": [
+      "Beast"
+    ],
+    "Description": "Still running with the red river it drank: it strikes, drinks, and is gone.",
+    "Lore": "The Ember: what Morrow's hunger makes of a beast or a person who drinks from the Shardfall's red rivers. Whatever it was is gone; what is left can smell blood across the sand.",
+    "Card": "[Bloodscent]: hits a hero below half HP 50% harder. Strikes then darts away, healing on every blow ([Lifesteal]): [pincer] it when it lands. Can't be [Burned].",
+    "Portrait": "hellspawn02",
+    "Thumbnail": {
+      "Zoom": 2.6,
+      "X": 0.3,
+      "Y": 0.13
+    },
+    "Footprint": {
+      "W": 1,
+      "H": 1
+    },
+    "Support": {
+      "Effect": "Haste",
+      "Magnitude": 1.0,
+      "Target": "Attacker",
+      "Range": 1,
+      "Label": "Blood Rush"
+    },
+    "BaseStats": {
+      "Strength": 13,
+      "Vitality": 10,
+      "Agility": 16,
+      "Speed": 18,
+      "Stamina": 11,
+      "Intelligence": 8,
+      "Wisdom": 9,
+      "Luck": 12
+    },
+    "Growth": {
+      "Strength": 0.75,
+      "Vitality": 0.6,
+      "Agility": 0.85,
+      "Speed": 0.9,
+      "Stamina": 0.65,
+      "Intelligence": 0.4,
+      "Wisdom": 0.5,
+      "Luck": 0.6
+    },
+    "Milestones": [
+      {
+        "Level": 5,
+        "Growth": {
+          "Strength": 0.26,
+          "Vitality": 0.21,
+          "Agility": 0.3,
+          "Speed": 0.32,
+          "Stamina": 0.23,
+          "Intelligence": 0.14,
+          "Wisdom": 0.17,
+          "Luck": 0.21
+        }
+      },
+      {
+        "Level": 10,
+        "Growth": {
+          "Strength": 0.34,
+          "Vitality": 0.27,
+          "Agility": 0.38,
+          "Speed": 0.41,
+          "Stamina": 0.29,
+          "Intelligence": 0.18,
+          "Wisdom": 0.23,
+          "Luck": 0.27
+        }
+      },
+      {
+        "Level": 20,
+        "Growth": {
+          "Strength": 0.45,
+          "Vitality": 0.36,
+          "Agility": 0.51,
+          "Speed": 0.54,
+          "Stamina": 0.39,
+          "Intelligence": 0.24,
+          "Wisdom": 0.3,
+          "Luck": 0.36
+        }
+      },
+      {
+        "Level": 40,
+        "Growth": {
+          "Strength": 0.6,
+          "Vitality": 0.48,
+          "Agility": 0.68,
+          "Speed": 0.72,
+          "Stamina": 0.52,
+          "Intelligence": 0.32,
+          "Wisdom": 0.4,
+          "Luck": 0.48
+        }
+      }
+    ],
+    "Resistances": {
+      "Fire": 0.5,
+      "Ice": 1.5
+    },
+    "Abilities": [
+      "bloodscent",
+      "lifesteal",
+      "infernal_hide"
+    ],
+    "DefaultLoadout": [],
+    "DropTable": "hellspawn",
+    "MoveRange": 1,
+    "Targeting": "Weakest",
+    "AttackRange": 1,
+    "XpReward": 14,
+    "BossPhases": [],
+    "ChargeAbility": null,
+    "ChargeShape": "Single",
+    "Trap": null,
+    "SnakeSegments": 0,
+    "Brain": "Skirmisher"
+  },
+  {
+    "Id": "hellspawn03",
+    "Name": "Hellspawn Emberheart",
+    "Team": "Enemy",
+    "Tags": [
+      "Beast"
+    ],
+    "Description": "Its arm has split to the ember inside, and the red river pours out of it.",
+    "Lore": "The Ember: what Morrow's hunger makes of a beast or a person who drinks from the Shardfall's red rivers. Whatever it was is gone; what is left can smell blood across the sand.",
+    "Card": "Charges a [Red Tide] that floods its target's whole row and sets everyone in it [Burning]: leave the row or [Interrupt] it. [Bloodscent]. Can't be [Burned].",
+    "Portrait": "hellspawn03",
+    "Thumbnail": {
+      "Zoom": 2.6,
+      "X": 0.29,
+      "Y": 0.15
+    },
+    "Footprint": {
+      "W": 1,
+      "H": 1
+    },
+    "Support": {
+      "Effect": "Cast",
+      "Magnitude": 0.5,
+      "Target": "Attacker",
+      "Range": 2,
+      "Label": "Red Spill"
+    },
+    "BaseStats": {
+      "Strength": 10,
+      "Vitality": 11,
+      "Agility": 11,
+      "Speed": 11,
+      "Stamina": 11,
+      "Intelligence": 15,
+      "Wisdom": 12,
+      "Luck": 10
+    },
+    "Growth": {
+      "Strength": 0.5,
+      "Vitality": 0.65,
+      "Agility": 0.6,
+      "Speed": 0.7,
+      "Stamina": 0.65,
+      "Intelligence": 0.9,
+      "Wisdom": 0.7,
+      "Luck": 0.5
+    },
+    "Milestones": [
+      {
+        "Level": 5,
+        "Growth": {
+          "Strength": 0.17,
+          "Vitality": 0.23,
+          "Agility": 0.21,
+          "Speed": 0.24,
+          "Stamina": 0.23,
+          "Intelligence": 0.32,
+          "Wisdom": 0.24,
+          "Luck": 0.17
+        }
+      },
+      {
+        "Level": 10,
+        "Growth": {
+          "Strength": 0.23,
+          "Vitality": 0.29,
+          "Agility": 0.27,
+          "Speed": 0.32,
+          "Stamina": 0.29,
+          "Intelligence": 0.41,
+          "Wisdom": 0.32,
+          "Luck": 0.23
+        }
+      },
+      {
+        "Level": 20,
+        "Growth": {
+          "Strength": 0.3,
+          "Vitality": 0.39,
+          "Agility": 0.36,
+          "Speed": 0.42,
+          "Stamina": 0.39,
+          "Intelligence": 0.54,
+          "Wisdom": 0.42,
+          "Luck": 0.3
+        }
+      },
+      {
+        "Level": 40,
+        "Growth": {
+          "Strength": 0.4,
+          "Vitality": 0.52,
+          "Agility": 0.48,
+          "Speed": 0.56,
+          "Stamina": 0.52,
+          "Intelligence": 0.72,
+          "Wisdom": 0.56,
+          "Luck": 0.4
+        }
+      }
+    ],
+    "Resistances": {
+      "Fire": 0.5,
+      "Ice": 1.5
+    },
+    "Abilities": [
+      "charge_red_tide",
+      "bloodscent",
+      "infernal_hide"
+    ],
+    "DefaultLoadout": [],
+    "DropTable": "hellspawn",
+    "MoveRange": 1,
+    "Targeting": "Caster",
+    "AttackRange": 1,
+    "XpReward": 16,
+    "BossPhases": [],
+    "ChargeAbility": "charge_red_tide",
+    "ChargeShape": "Single",
+    "Trap": null,
+    "SnakeSegments": 0,
+    "Brain": "Stalker"
+  },
+  {
+    "Id": "hellspawn04",
+    "Name": "Hellspawn Scaleback",
+    "Team": "Enemy",
+    "Tags": [
+      "Beast"
+    ],
+    "Description": "Grown a hide of hot red scales that sear whatever touches them.",
+    "Lore": "The Ember: what Morrow's hunger makes of a beast or a person who drinks from the Shardfall's red rivers. Whatever it was is gone; what is left can smell blood across the sand.",
+    "Card": "Strike it up close and it may set you [Burning] (Searing Scales); flank its scaled front. [Bloodscent]. Never retreats. Can't be [Burned].",
+    "Portrait": "hellspawn04",
+    "Thumbnail": {
+      "Zoom": 2.6,
+      "X": 0.28,
+      "Y": 0.15
+    },
+    "Footprint": {
+      "W": 1,
+      "H": 1
+    },
+    "Support": {
+      "Effect": "Buff",
+      "Magnitude": 0.5,
+      "Target": "Chain",
+      "Range": 1,
+      "Buff": "protection",
+      "Label": "Scale Wall"
+    },
+    "BaseStats": {
+      "Strength": 14,
+      "Vitality": 16,
+      "Agility": 9,
+      "Speed": 8,
+      "Stamina": 15,
+      "Intelligence": 8,
+      "Wisdom": 11,
+      "Luck": 9
+    },
+    "Growth": {
+      "Strength": 0.8,
+      "Vitality": 0.9,
+      "Agility": 0.5,
+      "Speed": 0.6,
+      "Stamina": 0.85,
+      "Intelligence": 0.4,
+      "Wisdom": 0.6,
+      "Luck": 0.45
+    },
+    "Milestones": [
+      {
+        "Level": 5,
+        "Growth": {
+          "Strength": 0.28,
+          "Vitality": 0.32,
+          "Agility": 0.17,
+          "Speed": 0.21,
+          "Stamina": 0.3,
+          "Intelligence": 0.14,
+          "Wisdom": 0.21,
+          "Luck": 0.16
+        }
+      },
+      {
+        "Level": 10,
+        "Growth": {
+          "Strength": 0.36,
+          "Vitality": 0.41,
+          "Agility": 0.23,
+          "Speed": 0.27,
+          "Stamina": 0.38,
+          "Intelligence": 0.18,
+          "Wisdom": 0.27,
+          "Luck": 0.2
+        }
+      },
+      {
+        "Level": 20,
+        "Growth": {
+          "Strength": 0.48,
+          "Vitality": 0.54,
+          "Agility": 0.3,
+          "Speed": 0.36,
+          "Stamina": 0.51,
+          "Intelligence": 0.24,
+          "Wisdom": 0.36,
+          "Luck": 0.27
+        }
+      },
+      {
+        "Level": 40,
+        "Growth": {
+          "Strength": 0.64,
+          "Vitality": 0.72,
+          "Agility": 0.4,
+          "Speed": 0.48,
+          "Stamina": 0.68,
+          "Intelligence": 0.32,
+          "Wisdom": 0.48,
+          "Luck": 0.36
+        }
+      }
+    ],
+    "Resistances": {
+      "Fire": 0.5,
+      "Ice": 1.5
+    },
+    "Abilities": [
+      "searing_scales",
+      "bloodscent",
+      "infernal_hide"
+    ],
+    "DefaultLoadout": [],
+    "DropTable": "hellspawn",
+    "MoveRange": 1,
+    "Targeting": "Threat",
+    "AttackRange": 1,
+    "XpReward": 16,
+    "BossPhases": [],
+    "ChargeAbility": null,
+    "ChargeShape": "Single",
+    "Trap": null,
+    "SnakeSegments": 0,
+    "Brain": "Relentless",
+    "ArmorPlate": 20
   }
 ]

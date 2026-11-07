@@ -110,6 +110,7 @@ namespace GridGame.Core.Rules
             if (c.AdjacentFoesAtLeast > 0 && AdjacentFoes(s, owner) < c.AdjacentFoesAtLeast) return false;
             if (c.OtherTag != null && (ctx?.Other == null || !ctx.Other.Def.HasTag(c.OtherTag))) return false;
             if (c.OtherHasStatus != null && (ctx?.Other == null || !ctx.Other.HasBuff(c.OtherHasStatus))) return false;
+            if (c.OtherHpBelow > 0f && (ctx?.Other == null || !(ctx.Other.HpFraction < c.OtherHpBelow))) return false;
             if (c.DamageType.HasValue && (ctx?.Type == null || ctx.Type.Value != c.DamageType.Value)) return false;
             return true;
         }
