@@ -2117,6 +2117,30 @@ and the Siphoner drinks the party's orbs.
   the Rifleman moved beside the gun) measured 14/24 and cost cityruins-03 three wins.
 - *(Tests: `BulwarkTests`.)*
 
+### 14.16 The Anchor Watch — wraith knights (added 2026-11-07, owner art, GG-T334)
+
+Knights sworn to guard the Anchors forever, kept going by the arches' own leaking aether long after they should have
+died (docs/STORY.md §3.5): grey plate, cloaks the colour of old fire. Three `Undead`, `Sentient` variants, one
+`anchorwatch` family. They resist Ice (×0.5) and Fire undoes them (×1.5). The family plays **undying**: every knight
+leaves a gravestone that raises it again unless smashed (§14.5), and each role adds a different way of refusing to fall.
+
+| Class | Role | Speed / brain / targeting | Kit | Support |
+|---|---|---|---|---|
+| `wraithknight01` Watch Sentry | the post | 8 / Sentinel (never moves) / Threat, plate 30 | **Rime Riposte** (`rime_riposte`, Reactive): attacked directly, 50%: a [Counterstrike] at 60% that also [Slows] the attacker. Steadfast | Ward on its attacker (*Oath Shield*) |
+| `wraithknight02` Watch Reaver | the hunter | 15 / Hunter / Weakest | **Oathbound** (`oathbound`, Reactive): the first time a hit drops it below 35% HP it heals 25% and gains [Ward] (trigger `Cooldown` 99: once a battle) | Slow 35% (*Rime Edge*) |
+| `wraithknight03` Watch Vigilant | the keeper | 11 / Commander / Weakest | **Ember Vigil** (`charge_ember_vigil`): 2 s charge, [Regen] on every ally within 2 tiles; rests a turn, recovers 0.5 s | Heal the chain 10%, reach 2 (*Old Fire*) |
+
+- **No engine code.** Sentinel brain, Reactive triggers, a trigger cooldown, an AllyOnly area charge and gravestone
+  remains are all existing data.
+- **Counterplay** (their cards): strike the Sentry from range or accept the riposte, and flank its plate; finish the
+  Reaver in one push once its oath has held; interrupt the Vigil or kill the Vigilant first; smash the graves; Fire.
+- **Placement.** The Anchor Wastes. Anchor Wastes I (`cave-01`) wave 2: a Reaver beside a skelepede, in place of the
+  second skelepede. Anchor Wastes II (`cave-02`) wave 3: Sentry and Vigilant beside the goblin thug, in place of an oni
+  and a skelepede. Casual bot, 24 seeds, campaign parties: cave-01 14/24 with them vs 15/24 without; cave-02 6/24 vs
+  7/24 (already below the band before them: most losses are still at the Chronomancer's wave 2); smart bot 24/24 on
+  both. In the casual runs the Reaver's oath held 29 times and the graves stirred 134 times.
+- *(Tests: `AnchorWatchTests`.)*
+
 ## 15. Save
 
 ### 15.1 Data model

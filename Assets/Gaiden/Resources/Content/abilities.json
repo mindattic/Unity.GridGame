@@ -9061,5 +9061,125 @@
   "Sfx": null,
   "RecoverSeconds": 2.0,
   "Intensity": "Major"
+ },
+ {
+  "Id": "rime_riposte",
+  "Name": "Rime Riposte",
+  "Description": "When [attacked directly], a [good] chance to answer with a chilling [Counterstrike] that [Slows] the attacker.",
+  "Kind": "Reactive",
+  "Cost": 0,
+  "CastTime": 0.0,
+  "CooldownTurns": 0,
+  "Shape": "Self",
+  "Radius": 0,
+  "Mode": "Auto",
+  "Filter": "Any",
+  "Motion": "None",
+  "DamageType": "Physical",
+  "BaseDamage": 0,
+  "BaseHeal": 0,
+  "ApplyBuff": null,
+  "ApplyBuffChance": 1.0,
+  "RemovesDebuffs": false,
+  "StealsMana": false,
+  "HastenU": 0.0,
+  "IsTeleport": false,
+  "Icon": null,
+  "CastVfx": null,
+  "ProjectileVfx": null,
+  "ImpactVfx": null,
+  "LingerVfx": null,
+  "Sfx": null,
+  "Trigger": {
+   "On": "OnAttackedDirect",
+   "Chance": 0.5,
+   "Effects": [
+    {
+     "Kind": "Counterstrike",
+     "Amount": 0.6
+    },
+    {
+     "Kind": "ApplyBuff",
+     "Buff": "slowed",
+     "Who": "Attacker"
+    }
+   ],
+   "Callout": "Rime Riposte!"
+  }
+ },
+ {
+  "Id": "oathbound",
+  "Name": "Oathbound",
+  "Description": "Once, when a hit drops it below a third of its HP, its oath holds: it heals a quarter of its HP and gains [Ward].",
+  "Kind": "Reactive",
+  "Cost": 0,
+  "CastTime": 0.0,
+  "CooldownTurns": 0,
+  "Shape": "Self",
+  "Radius": 0,
+  "Mode": "Auto",
+  "Filter": "Any",
+  "Motion": "None",
+  "DamageType": "Physical",
+  "BaseDamage": 0,
+  "BaseHeal": 0,
+  "ApplyBuff": null,
+  "ApplyBuffChance": 1.0,
+  "RemovesDebuffs": false,
+  "StealsMana": false,
+  "HastenU": 0.0,
+  "IsTeleport": false,
+  "Icon": null,
+  "CastVfx": null,
+  "ProjectileVfx": null,
+  "ImpactVfx": null,
+  "LingerVfx": null,
+  "Sfx": null,
+  "Trigger": {
+   "On": "OnLowHp",
+   "Threshold": 0.35,
+   "Cooldown": 99,
+   "Effects": [
+    {
+     "Kind": "Heal",
+     "Amount": 0.25
+    },
+    {
+     "Kind": "ApplyBuff",
+     "Buff": "ward"
+    }
+   ],
+   "Callout": "The Oath holds!"
+  }
+ },
+ {
+  "Id": "charge_ember_vigil",
+  "Name": "Ember Vigil",
+  "Description": "Charges, then lends the old fire in its cloak to the Watch: every ally within 2 tiles gains [Regen]. [Interrupt] it, or cut the Vigilant down first.",
+  "Kind": "Spell",
+  "Cost": 0,
+  "CastTime": 2.0,
+  "CooldownTurns": 1,
+  "Shape": "Square",
+  "Radius": 2,
+  "Mode": "Auto",
+  "Filter": "AllyOnly",
+  "Motion": "None",
+  "DamageType": "Fire",
+  "BaseDamage": 0,
+  "BaseHeal": 0,
+  "ApplyBuff": "regen",
+  "ApplyBuffChance": 1.0,
+  "RemovesDebuffs": false,
+  "StealsMana": false,
+  "HastenU": 0.0,
+  "IsTeleport": false,
+  "Icon": null,
+  "CastVfx": null,
+  "ProjectileVfx": null,
+  "ImpactVfx": null,
+  "LingerVfx": null,
+  "Sfx": null,
+  "RecoverSeconds": 0.5
  }
 ]

@@ -24515,5 +24515,381 @@
     "SnakeSegments": 0,
     "Brain": "Commander",
     "ArmorPlate": 24
+  },
+  {
+    "Id": "wraithknight01",
+    "Name": "Watch Sentry",
+    "Team": "Enemy",
+    "Tags": [
+      "Humanoid",
+      "Undead",
+      "Sentient"
+    ],
+    "Description": "A grey knight that has stood on the same stone under the same arch for longer than Halcyon has had a name. It does not leave its post.",
+    "Lore": "The Anchor Watch: knights sworn to guard the Anchors forever, kept going by the arches' own leaking aether long after they should have died. Grey plate, cloaks the colour of old fire, and an oath nobody is left to release.",
+    "Card": "Never leaves its post, and answers a blow from beside it with a chilling [Counterstrike] that can [Slow]: strike from range, or [pincer] it and take the hit. Its grave rises unless smashed.",
+    "Portrait": "wraithknight01",
+    "Thumbnail": {
+      "Zoom": 1.3,
+      "X": 0.62,
+      "Y": 0.06
+    },
+    "Footprint": {
+      "W": 1,
+      "H": 1
+    },
+    "Support": {
+      "Effect": "Buff",
+      "Magnitude": 1.0,
+      "Target": "Attacker",
+      "Range": 1,
+      "Buff": "ward",
+      "Label": "Oath Shield"
+    },
+    "BaseStats": {
+      "Strength": 15,
+      "Vitality": 18,
+      "Agility": 9,
+      "Speed": 8,
+      "Stamina": 17,
+      "Intelligence": 9,
+      "Wisdom": 12,
+      "Luck": 9
+    },
+    "Growth": {
+      "Strength": 0.75,
+      "Vitality": 0.95,
+      "Agility": 0.45,
+      "Speed": 0.55,
+      "Stamina": 0.9,
+      "Intelligence": 0.45,
+      "Wisdom": 0.65,
+      "Luck": 0.45
+    },
+    "Milestones": [
+      {
+        "Level": 5,
+        "Growth": {
+          "Strength": 0.26,
+          "Vitality": 0.33,
+          "Agility": 0.16,
+          "Speed": 0.19,
+          "Stamina": 0.32,
+          "Intelligence": 0.16,
+          "Wisdom": 0.23,
+          "Luck": 0.16
+        }
+      },
+      {
+        "Level": 10,
+        "Growth": {
+          "Strength": 0.34,
+          "Vitality": 0.43,
+          "Agility": 0.2,
+          "Speed": 0.25,
+          "Stamina": 0.41,
+          "Intelligence": 0.2,
+          "Wisdom": 0.29,
+          "Luck": 0.2
+        }
+      },
+      {
+        "Level": 20,
+        "Growth": {
+          "Strength": 0.45,
+          "Vitality": 0.57,
+          "Agility": 0.27,
+          "Speed": 0.33,
+          "Stamina": 0.54,
+          "Intelligence": 0.27,
+          "Wisdom": 0.39,
+          "Luck": 0.27
+        }
+      },
+      {
+        "Level": 40,
+        "Growth": {
+          "Strength": 0.6,
+          "Vitality": 0.76,
+          "Agility": 0.36,
+          "Speed": 0.44,
+          "Stamina": 0.72,
+          "Intelligence": 0.36,
+          "Wisdom": 0.52,
+          "Luck": 0.36
+        }
+      }
+    ],
+    "Resistances": {
+      "Ice": 0.5,
+      "Fire": 1.5
+    },
+    "Abilities": [
+      "rime_riposte",
+      "steadfast"
+    ],
+    "DefaultLoadout": [],
+    "DropTable": "anchorwatch",
+    "MoveRange": 1,
+    "Targeting": "Threat",
+    "AttackRange": 1,
+    "XpReward": 16,
+    "BossPhases": [],
+    "ChargeAbility": null,
+    "ChargeShape": "Single",
+    "Trap": null,
+    "SnakeSegments": 0,
+    "Brain": "Sentinel",
+    "ArmorPlate": 30,
+    "Remains": "gravestone"
+  },
+  {
+    "Id": "wraithknight02",
+    "Name": "Watch Reaver",
+    "Team": "Enemy",
+    "Tags": [
+      "Humanoid",
+      "Undead",
+      "Sentient"
+    ],
+    "Description": "The Watch's sword-arm: it walks the ice between the arches hunting anything that limps.",
+    "Lore": "The Anchor Watch: knights sworn to guard the Anchors forever, kept going by the arches' own leaking aether long after they should have died. Grey plate, cloaks the colour of old fire, and an oath nobody is left to release.",
+    "Card": "Hunts the weakest hero. The first time it drops low, its oath holds: it heals and gains [Ward]. Finish it in one push, and smash its grave.",
+    "Portrait": "wraithknight02",
+    "Thumbnail": {
+      "Zoom": 1.3,
+      "X": 0.56,
+      "Y": 0.05
+    },
+    "Footprint": {
+      "W": 1,
+      "H": 1
+    },
+    "Support": {
+      "Effect": "Status",
+      "Magnitude": 0.35,
+      "Target": "Attacker",
+      "Range": 1,
+      "Buff": "slowed",
+      "Label": "Rime Edge"
+    },
+    "BaseStats": {
+      "Strength": 16,
+      "Vitality": 13,
+      "Agility": 13,
+      "Speed": 15,
+      "Stamina": 13,
+      "Intelligence": 9,
+      "Wisdom": 10,
+      "Luck": 11
+    },
+    "Growth": {
+      "Strength": 0.9,
+      "Vitality": 0.7,
+      "Agility": 0.75,
+      "Speed": 0.75,
+      "Stamina": 0.7,
+      "Intelligence": 0.45,
+      "Wisdom": 0.5,
+      "Luck": 0.55
+    },
+    "Milestones": [
+      {
+        "Level": 5,
+        "Growth": {
+          "Strength": 0.32,
+          "Vitality": 0.24,
+          "Agility": 0.26,
+          "Speed": 0.26,
+          "Stamina": 0.24,
+          "Intelligence": 0.16,
+          "Wisdom": 0.17,
+          "Luck": 0.19
+        }
+      },
+      {
+        "Level": 10,
+        "Growth": {
+          "Strength": 0.41,
+          "Vitality": 0.32,
+          "Agility": 0.34,
+          "Speed": 0.34,
+          "Stamina": 0.32,
+          "Intelligence": 0.2,
+          "Wisdom": 0.23,
+          "Luck": 0.25
+        }
+      },
+      {
+        "Level": 20,
+        "Growth": {
+          "Strength": 0.54,
+          "Vitality": 0.42,
+          "Agility": 0.45,
+          "Speed": 0.45,
+          "Stamina": 0.42,
+          "Intelligence": 0.27,
+          "Wisdom": 0.3,
+          "Luck": 0.33
+        }
+      },
+      {
+        "Level": 40,
+        "Growth": {
+          "Strength": 0.72,
+          "Vitality": 0.56,
+          "Agility": 0.6,
+          "Speed": 0.6,
+          "Stamina": 0.56,
+          "Intelligence": 0.36,
+          "Wisdom": 0.4,
+          "Luck": 0.44
+        }
+      }
+    ],
+    "Resistances": {
+      "Ice": 0.5,
+      "Fire": 1.5
+    },
+    "Abilities": [
+      "oathbound"
+    ],
+    "DefaultLoadout": [],
+    "DropTable": "anchorwatch",
+    "MoveRange": 1,
+    "Targeting": "Weakest",
+    "AttackRange": 1,
+    "XpReward": 15,
+    "BossPhases": [],
+    "ChargeAbility": null,
+    "ChargeShape": "Single",
+    "Trap": null,
+    "SnakeSegments": 0,
+    "Brain": "Hunter",
+    "Remains": "gravestone"
+  },
+  {
+    "Id": "wraithknight03",
+    "Name": "Watch Vigilant",
+    "Team": "Enemy",
+    "Tags": [
+      "Humanoid",
+      "Undead",
+      "Sentient"
+    ],
+    "Description": "Keeps the old fire in its cloak lit, and lends it to every knight of the Watch that stands near.",
+    "Lore": "The Anchor Watch: knights sworn to guard the Anchors forever, kept going by the arches' own leaking aether long after they should have died. Grey plate, cloaks the colour of old fire, and an oath nobody is left to release.",
+    "Card": "Charges [Ember Vigil], [Regen] on every ally within 2 tiles: [Interrupt] it or cut it down first. Fire burns the Watch hardest.",
+    "Portrait": "wraithknight03",
+    "Thumbnail": {
+      "Zoom": 1.3,
+      "X": 0.6,
+      "Y": 0.06
+    },
+    "Footprint": {
+      "W": 1,
+      "H": 1
+    },
+    "Support": {
+      "Effect": "Heal",
+      "Magnitude": 0.1,
+      "Target": "Chain",
+      "Range": 2,
+      "Label": "Old Fire"
+    },
+    "BaseStats": {
+      "Strength": 12,
+      "Vitality": 14,
+      "Agility": 10,
+      "Speed": 11,
+      "Stamina": 14,
+      "Intelligence": 14,
+      "Wisdom": 14,
+      "Luck": 10
+    },
+    "Growth": {
+      "Strength": 0.6,
+      "Vitality": 0.75,
+      "Agility": 0.5,
+      "Speed": 0.7,
+      "Stamina": 0.75,
+      "Intelligence": 0.8,
+      "Wisdom": 0.8,
+      "Luck": 0.5
+    },
+    "Milestones": [
+      {
+        "Level": 5,
+        "Growth": {
+          "Strength": 0.21,
+          "Vitality": 0.26,
+          "Agility": 0.17,
+          "Speed": 0.24,
+          "Stamina": 0.26,
+          "Intelligence": 0.28,
+          "Wisdom": 0.28,
+          "Luck": 0.17
+        }
+      },
+      {
+        "Level": 10,
+        "Growth": {
+          "Strength": 0.27,
+          "Vitality": 0.34,
+          "Agility": 0.23,
+          "Speed": 0.32,
+          "Stamina": 0.34,
+          "Intelligence": 0.36,
+          "Wisdom": 0.36,
+          "Luck": 0.23
+        }
+      },
+      {
+        "Level": 20,
+        "Growth": {
+          "Strength": 0.36,
+          "Vitality": 0.45,
+          "Agility": 0.3,
+          "Speed": 0.42,
+          "Stamina": 0.45,
+          "Intelligence": 0.48,
+          "Wisdom": 0.48,
+          "Luck": 0.3
+        }
+      },
+      {
+        "Level": 40,
+        "Growth": {
+          "Strength": 0.48,
+          "Vitality": 0.6,
+          "Agility": 0.4,
+          "Speed": 0.56,
+          "Stamina": 0.6,
+          "Intelligence": 0.64,
+          "Wisdom": 0.64,
+          "Luck": 0.4
+        }
+      }
+    ],
+    "Resistances": {
+      "Ice": 0.5,
+      "Fire": 1.5
+    },
+    "Abilities": [
+      "charge_ember_vigil"
+    ],
+    "DefaultLoadout": [],
+    "DropTable": "anchorwatch",
+    "MoveRange": 1,
+    "Targeting": "Weakest",
+    "AttackRange": 1,
+    "XpReward": 16,
+    "BossPhases": [],
+    "ChargeAbility": "charge_ember_vigil",
+    "ChargeShape": "Single",
+    "Trap": null,
+    "SnakeSegments": 0,
+    "Brain": "Commander",
+    "Remains": "gravestone"
   }
 ]

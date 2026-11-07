@@ -5152,5 +5152,107 @@
         "Y": 0
       }
     ]
+  },
+  {
+    "Id": "anchorwatch-sentries-2",
+    "Name": "Watch Sentries",
+    "Formation": "Sentries",
+    "Level": 10,
+    "Enemies": [
+      {
+        "Class": "wraithknight01",
+        "X": 0,
+        "Y": 2
+      },
+      {
+        "Class": "wraithknight01",
+        "X": 5,
+        "Y": 2
+      }
+    ]
+  },
+  {
+    "Id": "anchorwatch-delta-3",
+    "Name": "Watch Delta",
+    "Formation": "Delta",
+    "Level": 11,
+    "Enemies": [
+      {
+        "Class": "wraithknight03",
+        "X": 2,
+        "Y": 0
+      },
+      {
+        "Class": "wraithknight02",
+        "X": 1,
+        "Y": 2
+      },
+      {
+        "Class": "wraithknight01",
+        "X": 3,
+        "Y": 2
+      }
+    ]
+  },
+  {
+    "Id": "anchorwatch-vanguard-4",
+    "Name": "Watch Vanguard",
+    "Formation": "Vanguard",
+    "Level": 12,
+    "Enemies": [
+      {
+        "Class": "wraithknight01",
+        "X": 1,
+        "Y": 3
+      },
+      {
+        "Class": "wraithknight01",
+        "X": 4,
+        "Y": 3
+      },
+      {
+        "Class": "wraithknight02",
+        "X": 2,
+        "Y": 1
+      },
+      {
+        "Class": "wraithknight03",
+        "X": 4,
+        "Y": 0
+      }
+    ]
+  },
+  {
+    "Id": "anchorwatch-crown-5",
+    "Name": "Watch Crown",
+    "Formation": "Crown",
+    "Level": 13,
+    "Enemies": [
+      {
+        "Class": "wraithknight03",
+        "X": 2,
+        "Y": 0
+      },
+      {
+        "Class": "wraithknight02",
+        "X": 0,
+        "Y": 2
+      },
+      {
+        "Class": "wraithknight02",
+        "X": 5,
+        "Y": 2
+      },
+      {
+        "Class": "wraithknight01",
+        "X": 1,
+        "Y": 4
+      },
+      {
+        "Class": "wraithknight01",
+        "X": 4,
+        "Y": 4
+      }
+    ]
   }
 ]

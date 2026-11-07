@@ -1106,13 +1106,13 @@
       {
         "Enemies": [
           {
-            "Class": "skelepede01",
+            "Class": "wraithknight02",
             "Level": 1,
             "X": -1,
             "Y": -1
           },
           {
-            "Class": "skelepede02",
+            "Class": "skelepede01",
             "Level": 1,
             "X": -1,
             "Y": -1
@@ -1254,13 +1254,13 @@
       {
         "Enemies": [
           {
-            "Class": "oni02",
+            "Class": "wraithknight01",
             "Level": 1,
             "X": -1,
             "Y": -1
           },
           {
-            "Class": "skelepede00",
+            "Class": "wraithknight03",
             "Level": 1,
             "X": -1,
             "Y": -1

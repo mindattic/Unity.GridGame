@@ -789,5 +789,12 @@
     "Text": "A Bulwark Siege Gunner's charge: one round down a marked line to the board's edge that hits every hero still on it. Step off the line, or [Interrupt] it.",
     "LinkKind": "Ability",
     "LinkId": "charge_siege_shot"
+  },
+  {
+    "Id": "ember_vigil",
+    "Term": "Ember Vigil",
+    "Text": "A Watch Vigilant's charge: every ally within 2 tiles of it gains [Regen]. [Interrupt] it, or cut the Vigilant down first.",
+    "LinkKind": "Ability",
+    "LinkId": "charge_ember_vigil"
   }
 ]
