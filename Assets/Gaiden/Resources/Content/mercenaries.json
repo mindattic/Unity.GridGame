@@ -4,7 +4,7 @@
     "Rate": 60,
     "Terms": [ 3, 5, 10 ],
     "Temperament": "Fair",
-    "Pitch": "I hold a line. You pay me by the fight, not by the hour, and I don't ask where the Longmother's walking.",
+    "Pitch": "I hold a line. You pay me by the fight, not by the hour, and I swear on my shield I don't ask which hold you've robbed.",
     "Renewal": "One more fight on the books and my shield's my own again. Want it for longer, or do we shake hands here?"
   },
   {
@@ -12,7 +12,7 @@
     "Rate": 55,
     "Terms": [ 3, 5, 10 ],
     "Temperament": "Greedy",
-    "Pitch": "Undefeated in three pit towns and two that don't exist anymore. Champions cost champion money.",
+    "Pitch": "Undefeated in three pit towns and two the Concord shut down. Champions cost champion money.",
     "Renewal": "Last bout on the card, boss. Champions get re-signed or they get scouted. Your call."
   },
   {
@@ -20,7 +20,7 @@
     "Rate": 50,
     "Terms": [ 3, 5, 10 ],
     "Temperament": "Easygoing",
-    "Pitch": "Coin up front and I'll go wherever the caravan rolls. I've walked worse ground than the blight.",
+    "Pitch": "Coin up front and I'll ride wherever the wagons roll. I've dodged worse than tithe-wardens.",
     "Renewal": "Contract's nearly spent. I'm easy either way, but I'd ride on with you if the purse is there."
   },
   {
@@ -28,7 +28,7 @@
     "Rate": 65,
     "Terms": [ 3, 5, 10 ],
     "Temperament": "Fair",
-    "Pitch": "The circles still answer me, even this close to the fused ground. That is rarer than you think, and priced to match.",
+    "Pitch": "My circles still answer me, even this close to a Still. That is rarer than you think, and priced to match.",
     "Renewal": "My circles run dry after one more working. Renew the pact, or let it lapse cleanly. Lapsed pacts never sour."
   },
   {
@@ -36,7 +36,7 @@
     "Rate": 70,
     "Terms": [ 3, 5, 10 ],
     "Temperament": "Easygoing",
-    "Pitch": "I set bones and draw out blight-rot, and I don't charge extra for screaming. Contract's by the battle.",
+    "Pitch": "I set bones and sit with the Hollow until they stop wandering, and I don't charge extra for screaming. Contract's by the battle.",
     "Renewal": "One battle left on my ledger. I've grown used to patching this lot. Shall we write another page?"
   },
   {
@@ -44,7 +44,7 @@
     "Rate": 45,
     "Terms": [ 3, 5, 10 ],
     "Temperament": "Greedy",
-    "Pitch": "Fastest legs on the Longmother's back. I run orders, I run interference, and I run the price up if you dawdle.",
+    "Pitch": "Fastest legs in the underspire. I run orders, I run checkpoints, and I run the price up if you dawdle.",
     "Renewal": "Last run on this contract. Fast legs don't stay unclaimed long, so make me an offer or I'm gone."
   }
 ]

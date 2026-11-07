@@ -1,71 +1,71 @@
 [
   {
     "Id": "q_wells_wolves", "Name": "Wolves at the Wells", "Giver": "Innkeeper", "Theme": "greenvalley", "Unlock": "greenvalley-01",
-    "Summary": "The wolves have learned the water carriers' route to the last sweet well. Thin the pack so the barrels come back full -- and the carriers come back at all.",
+    "Summary": "The moor wolves run bold under a full Morrow, and they've learned the water carriers' path to the last clean well. Thin the pack so the barrels come back full -- and the carriers come back at all.",
     "TurnIn": "The carriers made the round without a single howl behind them. Drinks are on the house -- well, these are.",
     "Objective": { "Kind": "Defeat", "Id": "wolf00", "Count": 5 },
     "RewardGold": 250, "RewardItem": "hi_potion"
   },
   {
-    "Id": "q_frog_glands", "Name": "A Taste in the Water", "Giver": "Wandering Merchant", "Theme": "greenvalley", "Unlock": "greenvalley-01",
-    "Summary": "The merchant swears the frogs coming up out of the marsh carry the well-taint in their glands. Bring three and they'll test the theory -- and pay for the privilege.",
-    "TurnIn": "Sour as I thought. It's in them before it's in the water. That's worth knowing, and worth paying for.",
+    "Id": "q_frog_glands", "Name": "What the Frogs Know", "Giver": "Lantern Merchant", "Theme": "greenvalley", "Unlock": "greenvalley-01",
+    "Summary": "The merchant swears the moor frogs glow brighter under a full Morrow, and that the glow is aether caught in their glands. Bring three and they'll test the theory -- and find someone to pay for it.",
+    "TurnIn": "Bright as a lantern, the lot of them. Aether, right in the gland. That's worth knowing, and worth paying for.",
     "Objective": { "Kind": "Bring", "Id": "mat_frog_gland", "Count": 3 },
     "RewardGold": 300, "RewardItem": "mana_potion_basic", "RewardItemCount": 2
   },
   {
     "Id": "q_travel_light", "Name": "Travel Light", "Giver": "Party", "Theme": "greenvalley", "Unlock": "greenvalley-02",
-    "Summary": "A small crew moves faster than the blight can follow. Prove it: clear Green Valley III with three heroes or fewer in the fight.",
-    "TurnIn": "Three of us, one valley, nobody carried. The Longmother doesn't need an army on her back. She needs people who keep moving.",
+    "Summary": "The Captain's patrols are hunting for a big caravan crew. A small one slips through. Prove it: clear the Captain's field with three heroes or fewer in the fight.",
+    "TurnIn": "Three of us, one field, nobody carried. The Concord counts heads. Turns out it can't count very well.",
     "Objective": { "Kind": "ClearStage", "Id": "greenvalley-03", "MaxHeroes": 3 },
     "RewardGold": 200, "RewardItem": "tome_steadfast", "RewardSkillPoints": 1
   },
   {
     "Id": "q_grown_not_forged", "Name": "Grown, Not Forged", "Giver": "Blacksmith", "Theme": "desert", "Unlock": "desert-01",
-    "Summary": "The gremlins' cogs have teeth no file ever cut. The blacksmith wants four of them on the bench to see how the blight learned to make a gear.",
-    "TurnIn": "Look at the grain -- it runs round the teeth like a tree ring. Nobody made this. It grew. I need to sit down.",
+    "Summary": "The gremlins at the Concord dig carry cogs with teeth no file ever cut. The blacksmith wants four of them on the bench to see how the Concord makes a gear without a forge.",
+    "TurnIn": "Look at the grain -- it runs round the teeth like a tree ring. Nobody forged this. It was grown. I need to sit down.",
     "Objective": { "Kind": "Bring", "Id": "mat_gremlin_cog", "Count": 4 },
     "RewardGold": 350, "RewardItem": "tome_mana_siphon", "RewardFlag": "quest:smith_cogs"
   },
   {
     "Id": "q_antivenom", "Name": "Antivenom", "Giver": "Alchemist", "Theme": "desert", "Unlock": "desert-02",
-    "Summary": "Scorpion venom is changing faster than the alchemist's cures. Put down four of them and the stingers' freshest batch can be studied before it changes again.",
+    "Summary": "The Shardfall scorpions drink from the red rivers, and the Ember changes their venom faster than the alchemist can brew. Put down four of them so this week's batch can be studied before it changes again.",
     "TurnIn": "Fresh enough. The new strain clots the old cure -- so I'll make a new cure. Take these, they're the last of the old ones that still work.",
     "Objective": { "Kind": "Defeat", "Id": "scorpion", "Count": 4 },
     "RewardGold": 300, "RewardItem": "hi_potion", "RewardItemCount": 2
   },
   {
     "Id": "q_hags_hand", "Name": "The Hag's Hand", "Giver": "Alchemist", "Theme": "swamp", "Unlock": "swamp-01",
-    "Summary": "The fen hags bind their workings into their own claws -- tight enough to hold near the blight. Three claws, and the alchemist might learn how.",
-    "TurnIn": "Bound in the bone itself. Ugly, but it holds. Here -- the first thing I've made that should survive the bad ground.",
+    "Summary": "The fen hags were Choir once. Now they sing aether into curses and bind them into their own claws, where they hold. Three claws, and the alchemist might learn how.",
+    "TurnIn": "Bound in the bone itself. Ugly, but it holds. Here -- the first thing I've made that'll survive the worst the fen can sing.",
     "Objective": { "Kind": "Bring", "Id": "mat_hag_claw", "Count": 3 },
     "RewardGold": 400, "RewardItem": "revival_charm"
   },
   {
-    "Id": "q_hold_the_ward", "Name": "Hold the Ward", "Giver": "Enchantress", "Theme": "swamp", "Unlock": "swamp-02",
-    "Summary": "A ward is only as strong as its weakest stone. The Enchantress wants proof the crew can hold together: clear Mireholt Fens III without anyone falling.",
-    "TurnIn": "Not one stone fell. That is what a ward looks like when people make it instead of runes. Keep this -- you've earned the harder lessons.",
+    "Id": "q_hold_the_ward", "Name": "Every Voice", "Giver": "Enchantress", "Theme": "swamp", "Unlock": "swamp-02",
+    "Summary": "The Choir taught that a hymn needs every voice or it falls apart. The Enchantress wants proof that can mean something kinder: clear the heart of the Arkgrave without anyone falling.",
+    "TurnIn": "Not one voice dropped. That is what a hymn sounds like when people sing it for each other. Keep this -- you've earned the harder lessons.",
     "Objective": { "Kind": "ClearStage", "Id": "swamp-03", "NoneFallen": true },
     "RewardItem": "hi_ether", "RewardSkillPoints": 1
   },
   {
     "Id": "q_long_cold", "Name": "Furs for the Long Cold", "Giver": "Innkeeper", "Theme": "cave", "Unlock": "cave-01",
-    "Summary": "Frostmaw's cold gets into the beds. Three yeti furs would line the bunks before somebody wakes up blue.",
-    "TurnIn": "Warm bunks, warm crew. The Longmother can walk all night if she likes -- we'll sleep through it.",
+    "Summary": "The cold off the Anchors gets into the beds. Three yeti furs would line the bunks before somebody wakes up blue.",
+    "TurnIn": "Warm bunks, warm crew. The arches can hum all night if they like -- we'll sleep through it.",
     "Objective": { "Kind": "Bring", "Id": "mat_yeti_fur", "Count": 3 },
     "RewardGold": 500, "RewardItem": "tent", "RewardItemCount": 2
   },
   {
     "Id": "q_cold_iron", "Name": "Cold Iron", "Giver": "Blacksmith", "Theme": "cave", "Unlock": "cave-02",
-    "Summary": "The ice maulers carry cores that never warm, whatever the forge does. Break three of them and bring the smith a story worth hammering.",
-    "TurnIn": "Three down, and the cores still cold in my hand. Whatever's under Frostmaw has had a long time to get good at this.",
+    "Summary": "The ice maulers drink what leaks from the arches, and their cores never warm, whatever the forge does. Break three of them and bring the smith something worth hammering.",
+    "TurnIn": "Three down, and the cores still cold in my hand. Whatever the Anchors leak, it isn't just light.",
     "Objective": { "Kind": "Defeat", "Id": "icemauler", "Count": 3 },
     "RewardGold": 600, "RewardItem": "tome_counter_attack", "RewardSkillPoints": 1
   },
   {
-    "Id": "q_city_that_stopped", "Name": "The City That Stopped", "Giver": "Party", "Theme": "cityruins", "Unlock": "cityruins-01",
-    "Summary": "Veshker's ghosts are what's left of people who stood still. Lay five of them to rest -- nobody should have to keep being stopped forever.",
-    "TurnIn": "Five walked on. That's more than this city ever managed in life. Keep going -- that's the whole of it.",
+    "Id": "q_city_that_stopped", "Name": "The Ones Who Paid", "Giver": "Party", "Theme": "cityruins", "Unlock": "cityruins-01",
+    "Summary": "Halcyon's ghosts are what's left of people tithed past Hollow -- nothing but the shape of someone. Lay five of them to rest. Somebody should.",
+    "TurnIn": "Five laid down. Nobody in this city ever said their names. We did. That's the whole of it.",
     "Objective": { "Kind": "Defeat", "Id": "ghost", "Count": 5 },
     "RewardGold": 700, "RewardItem": "holy_water", "RewardItemCount": 3, "RewardSkillPoints": 1
   }

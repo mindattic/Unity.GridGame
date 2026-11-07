@@ -17,7 +17,7 @@
   },
   {
     "Id": "bounty_restless_dead",
-    "Name": "Restless Dead",
+    "Name": "Shrouds on the Road",
     "TargetClass": "undead00",
     "Kills": 4,
     "RewardGold": 400,
@@ -25,7 +25,7 @@
   },
   {
     "Id": "bounty_cave_dweller",
-    "Name": "Cave Dweller",
+    "Name": "Vat-Giants",
     "TargetClass": "cyclops00",
     "Kills": 2,
     "RewardGold": 500,
@@ -34,7 +34,7 @@
   },
   {
     "Id": "bounty_vampire_lord",
-    "Name": "The Vampire Lord",
+    "Name": "The Hierarch",
     "TargetClass": "vampire",
     "Kills": 1,
     "RewardGold": 2000,
