@@ -179,6 +179,29 @@ namespace GridGame.Core.Rules
             return new AttackRoll { Damage = dmg, Hit = hit };
         }
 
+        /// <summary>GG-T356: the damage a landing, non-critical <see cref="Physical"/> blow does on average (no roll, no
+        /// Rng draw): for planners that weigh what a foe's next blow would do.</summary>
+        public static float ExpectedPhysical(Unit attacker, Unit defender, float multiplier = 1f)
+        {
+            float raw = Mitigate(attacker.Effective.Strength + attacker.WeaponPower + UnarmedPower(attacker), defender.Effective.Vitality);
+            float res = defender.ResistanceMultiplier(DamageType.Physical);
+            if (res <= 0f) return 0f;
+            float levelMult = (float)Math.Pow(DamageScalePerLevel, attacker.Level - defender.Level);
+            return Math.Max(1f, raw * res * levelMult * multiplier * defender.IncomingDamageMultiplier);
+        }
+
+        /// <summary>GG-T356: the same for an enemy charge landing on <paramref name="target"/>: the <see cref="Magic"/>
+        /// hit plus the ability's flat <see cref="SpellDamage"/>, as charge resolution adds them.</summary>
+        public static float ExpectedCharge(AbilityDef charge, Unit caster, Unit target)
+        {
+            if (charge == null) return 0f;
+            float res = target.ResistanceMultiplier(charge.DamageType);
+            if (res <= 0f) return 0f;
+            float levelMult = (float)Math.Pow(DamageScalePerLevel, caster.Level - target.Level);
+            float magic = Mitigate(caster.Effective.Intelligence, target.Effective.Wisdom) * res * levelMult * target.IncomingDamageMultiplier;
+            return magic + SpellDamage(charge, target, false);
+        }
+
         /// <summary>Enemy magic hit (charge resolution): INT vs WIS, same mitigation shape (§13.1).</summary>
         public static AttackRoll Magic(Unit caster, Unit target, DamageType type, Rng rng)
         {

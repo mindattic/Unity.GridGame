@@ -3,6 +3,7 @@ using System.IO;
 using System.Linq;
 using GridGame.Core;
 using GridGame.Core.Battle;
+using GridGame.Core.Bot;
 using GridGame.Core.Content;
 using GridGame.Core.Rules;
 using GridGame.Meta;
@@ -233,6 +234,44 @@ namespace GridGame.Tests
             var ev = BattleEngine.Apply(s, new UseSlotCommand { HeroId = Hero(s, "knight").Id, Slot = 0, Target = late.Pos });
             Assert.That(ev.OfType<PushedBackEvent>(), Is.Empty);
             Assert.That(ev.OfType<AnnounceEvent>().Any(a => a.Text == "Already last"), Is.True);
+        }
+
+        /// <summary>GG-T356: the goblin line of <see cref="Line"/> (one acts in 3 s, the other in 5.5 s), with the knight beside
+        /// the goblin about to act and the cleric where the caller puts it.</summary>
+        private static (BattleState s, Unit soon, Unit late) Engaged(Coord cleric)
+        {
+            var setup = new BattleSetup { Stage = Stage(("goblin", 3, 0), ("goblin", 5, 0)), Seed = 3, UnlockedSlots = 5 };
+            setup.Party.Add(new HeroSpec { ClassId = "knight", Start = new Coord(2, 0), Bar = new List<string> { "tactician_countermarch" } });
+            setup.Party.Add(new HeroSpec { ClassId = "cleric", Start = cleric });
+            var s = BattleEngine.Create(WithReal("tactician_countermarch"), setup, new List<BattleEvent>());
+            var soon = At(s, 3, 0); var late = At(s, 5, 0);
+            foreach (var e in s.Timeline.Where(e => e.Kind == TimelineKind.Turn)) { e.RecoverTicks = 0; e.StunTicks = 0; }
+            s.TurnEntryOf(soon.Id).Ip = BattleConfig.BarLength - 30 * BattleEngine.TurnRatePerTick(s, soon);
+            s.TurnEntryOf(late.Id).Ip = BattleConfig.BarLength - 55 * BattleEngine.TurnRatePerTick(s, late);
+            return (s, soon, late);
+        }
+
+        [Test]
+        public void Smart_bot_countermarches_only_to_avert_a_dangerous_imminent_blow()
+        {
+            // A healthy knight shrugs off the goblin's blow: the swap buys nothing worth a hero action.
+            var (s, soon, late) = Engaged(new Coord(5, 7));
+            Assert.That(HeroBot.NextTurnHarm(s, late), Is.EqualTo(0f), "the straggler reaches no one");
+            Assert.That(HeroBot.NextTurnHarm(s, soon), Is.GreaterThan(0f).And.LessThan(HeroBot.CountermarchMinValue));
+            Assert.That(HeroBot.CountermarchValue(s, soon), Is.LessThanOrEqualTo(0f), "skipped");
+
+            // The same blow would KO a knight on its last HP: sending that goblin to the back is worth the action.
+            Hero(s, "knight").Hp = 1;
+            Assert.That(HeroBot.NextTurnHarm(s, soon), Is.GreaterThan(20f), "a KO");
+            Assert.That(HeroBot.CountermarchValue(s, soon), Is.GreaterThanOrEqualTo(HeroBot.CountermarchMinValue));
+            Assert.That(HeroBot.CountermarchValue(s, late), Is.LessThan(0f), "the last foe has no one to trade with");
+
+            // Not when the straggler would land a KO of its own the moment it steps up.
+            var (s2, soon2, late2) = Engaged(new Coord(5, 1));
+            Hero(s2, "knight").Hp = 1;
+            Hero(s2, "cleric").Hp = 1;
+            Assert.That(HeroBot.NextTurnHarm(s2, late2), Is.GreaterThan(20f));
+            Assert.That(HeroBot.CountermarchValue(s2, soon2), Is.LessThanOrEqualTo(0f), "it only trades one KO for another, sooner");
         }
 
         [Test]

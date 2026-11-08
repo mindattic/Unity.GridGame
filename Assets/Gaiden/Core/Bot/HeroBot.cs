@@ -551,10 +551,24 @@ namespace GridGame.Core.Bot
             return v;
         }
 
-        /// <summary>GG-T336: what a Countermarch on <paramref name="f"/> is worth to the smart bot. The foe acts at the
-        /// straggler's time (its blow postponed, pending casts landing first) and the straggler at the foe's time (casts
-        /// that would have beaten it no longer do, and a threatening straggler now strikes next). Nothing to trade: -5.</summary>
-        internal static float CountermarchValue(BattleState s, Unit f)
+        /// <summary>GG-T356: seconds of delay at which a Countermarch has bought the party a full window to answer the
+        /// postponed foe (heal its prey, step out of reach, kill it); less delay buys proportionally less.</summary>
+        public const float CountermarchFullDelaySeconds = 3f;
+        /// <summary>GG-T356: a Countermarch spends a hero action, so it is only worth one when it averts at least this much
+        /// harm: a heavy blow (about 60% of a hero's HP), a completed enemy pincer or a KO. Below it the bot skips it.</summary>
+        public const float CountermarchMinValue = 6f;
+
+        /// <summary>
+        /// GG-T336/GG-T356: what a Countermarch on <paramref name="f"/> is worth to the smart bot, priced by the time it
+        /// buys. It is a trade, not a push: the window still ends at the same moment, but the foe acts at the straggler's
+        /// time and the straggler at the foe's. So it is worth the harm of the foe's next turn, scaled by how many seconds
+        /// it is delayed (<see cref="CountermarchFullDelaySeconds"/> buys all of it), less the harm the straggler now does
+        /// at that moment, plus the pending hero casts that now land before the foe (less those that no longer beat the
+        /// straggler). Full weight when the foe is the next to act, less for one further back (others act first anyway).
+        /// Under <see cref="CountermarchMinValue"/> it averts nothing dangerous and is skipped (non-positive).
+        /// Nothing to trade: -5.
+        /// </summary>
+        public static float CountermarchValue(BattleState s, Unit f)
         {
             var mine = Countermarch.OnBar(s, f);
             var theirs = mine == null ? null : Countermarch.Partner(s, f);
@@ -563,19 +577,41 @@ namespace GridGame.Core.Bot
             int myAt = BattleEngine.TicksUntilAct(s, mine), theirAt = BattleEngine.TicksUntilAct(s, theirs);
             // Turn icons only: a charge the foe already holds still lands when it would.
             float v = LandsFirstValue(s, f, myAt, theirAt) - LandsFirstValue(s, other, myAt, theirAt);
-            // The next blow of the window comes from the straggler instead: worth a hero action when that spares a threat.
-            bool next = true;
-            foreach (var e in s.Timeline)
-            {
-                if (e.Kind != TimelineKind.Turn || e == mine) continue;
-                var o = s.UnitById(e.OwnerId);
-                if (o == null || !o.Alive || o.Team != Team.Enemy || o.IsIndependent) continue;
-                int at = BattleEngine.TicksUntilAct(s, e);
-                if (at >= 0 && at < myAt) { next = false; break; }
-            }
-            if (next) v += 2f * ActionWorth * ((Threatens(s, f, null) && s.CastEntryOf(f.Id) == null ? 1 : 0) - (Threatens(s, other) ? 1 : 0));
-            return v;
+            float bought = Math.Min(1f, (theirAt - myAt) / (float)Formulas.SecondsToTicks(CountermarchFullDelaySeconds));
+            int window = BattleEngine.TurnTicks(s);
+            float weight = window < 0 || myAt <= window ? 1f : 0.4f;
+            v += weight * (bought * NextTurnHarm(s, f) - NextTurnHarm(s, other));
+            return v >= CountermarchMinValue ? v : Math.Min(v, 0f) - 2f;
         }
+
+        /// <summary>
+        /// GG-T356: how much harm foe <paramref name="f"/>'s next turn would do to the party, in score points: the worst
+        /// blow on a hero it can reach (10 for a blow of its whole HP, +12 when it would KO), doubled and +4 when its turn
+        /// completes an enemy pincer (both ends strike, undodgeable), or 0.7 of the charge it would start (the charge lands
+        /// later). Mirrors the enemy turn (RunEnemyTurn): a completing pincer, else a charge, else step and strike.
+        /// </summary>
+        public static float NextTurnHarm(BattleState s, Unit f)
+        {
+            if (f == null || !f.Alive || f.IsCorpse || f.IsNeutral || f.IsImmobile || f.IsRemains || f.IsEgg) return 0f;
+            var pincer = EnemyPlanner.PlanPincer(s, f);
+            bool completes = pincer != null && pincer.Kind == PincerPlanKind.Complete;
+            if (!completes && s.CastEntryOf(f.Id) == null)
+            {
+                var charge = EnemyPlanner.PlanCast(s, f, false);
+                if (charge != null)
+                    return charge.Target != null && charge.Target.IsHero ? 0.7f * BlowHarm(Formulas.ExpectedCharge(charge.Ability, f, charge.Target), charge.Target) : 0f;
+            }
+            float worst = 0f;
+            foreach (var h in s.LivingList(Team.Hero))
+            {
+                if (!Threatens(s, f, h)) continue;
+                float dmg = Formulas.ExpectedPhysical(f, h, f.OutgoingDamageMultiplier) * (completes ? 2f : 1f);
+                worst = Math.Max(worst, BlowHarm(dmg, h));
+            }
+            return worst > 0f && completes ? worst + 4f : worst;
+        }
+
+        private static float BlowHarm(float dmg, Unit h) => 10f * Math.Min(1f, dmg / Math.Max(1, h.Hp)) + (dmg >= h.Hp ? 12f : 0f);
 
         /// <summary>The same for a Slow (turn-icon rate × <paramref name="mult"/>): a charge isn't slowed, and a stun isn't.</summary>
         internal static float SlowValue(BattleState s, Unit f, float mult)
