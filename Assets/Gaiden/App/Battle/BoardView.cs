@@ -786,7 +786,8 @@ namespace GridGame.App
             var l = new Label(text) { pickingMode = PickingMode.Ignore };
             l.AddToClassList("shadow");
             l.style.position = Position.Absolute;
-            l.style.left = at.x - 150; l.style.top = at.y - 60;
+            // GG-T317: keep the label's box on the board so a unit in the edge column can't push it off-stage at ultratall aspects.
+            l.style.left = Mathf.Clamp(at.x - Size.Card / 2f, 0f, Tile * BattleConfig.Cols - Size.Card); l.style.top = at.y - 60;
             l.style.width = Size.Card;
             l.style.unityTextAlign = TextAnchor.MiddleCenter;
             l.style.fontSize = size;
