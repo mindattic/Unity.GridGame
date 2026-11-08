@@ -33,6 +33,7 @@ namespace GridGame.Tests
             ["cityruins"] = ("halcyon", 14, 1536, 3072),
             ["cathedral"] = ("cathedral", 4, 768, 1536), // GG-T350: the owner's four cathedral landscapes, native size
             ["bloom"] = ("bloom", 8, 768, 1536), // GG-T347: a new postgame chapter (no trailing digit, so it is its own base theme)
+            ["morrowsshadow"] = ("morrowsshadow", 10, 768, 1536), // GG-T348: the final postgame chapter, its own base theme too
         };
 
         /// <summary>Postgame themes (GG-T346/T349) that show a region set of their own instead of borrowing their base

@@ -534,7 +534,7 @@
     "Id": "reaper",
     "Name": "Reaper's",
     "Weight": "Light",
-    "Level": 29,
+    "Level": 30,
     "Description": "Cut from a reaper's own shroud. Its wearer moves like a rumor of death.",
     "Pieces": [
       "eq_reaper_head",
@@ -567,7 +567,7 @@
     "Id": "sanguine",
     "Name": "Sanguine",
     "Weight": "Medium",
-    "Level": 33,
+    "Level": 35,
     "Description": "Blood-dark leather and steel from a vampire's armory. It drinks to its wearer's health.",
     "Pieces": [
       "eq_sanguine_head",
@@ -597,7 +597,7 @@
     "Id": "dreadwyrm",
     "Name": "Dreadwyrm",
     "Weight": "Heavy",
-    "Level": 37,
+    "Level": 40,
     "Description": "Dragonscale over demon-forged plate: the last armor anyone in this land will need.",
     "Pieces": [
       "eq_dreadwyrm_head",

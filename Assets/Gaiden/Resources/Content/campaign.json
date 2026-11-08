@@ -170,6 +170,18 @@
         "cityruins-04",
         "cityruins-05"
       ]
+    },
+    {
+      "Id": "morrowsshadow",
+      "MilestoneReward": "chest_gilded",
+      "Name": "Morrow's Shadow",
+      "Backgrounds": "morrowsshadow",
+      "Crawl": "Far out past the last road, Morrow hangs so low it fills half the sky, and its pull lifts the ground: stones the size of houses drift over the cracked plain and never come down.\n\nThis is the Nearing, made visible.\n\nThe Ember has come here to welcome the moon home. The Void Sentinels gather where the light leaks. And everything that lives under that face has changed.\n\nNobody knows what Morrow wants. This is as close as anyone has come to asking.",
+      "Stages": [
+        "morrowsshadow-01",
+        "morrowsshadow-02",
+        "morrowsshadow-03"
+      ]
     }
   ]
 }

@@ -164,7 +164,7 @@ New heroes from the owner's art:
 
 ## 5. The campaign
 
-Fourteen themes, in order: eight in the main campaign, six in the postgame. Each theme's crawl opens it; its party talk
+Fifteen themes, in order: eight in the main campaign, seven in the postgame. Each theme's crawl opens it; its party talk
 carries one piece of the plot.
 
 Owner, 2026-11-07 (GG-T344): *"I will generate more landscapes from which you can extrapolate more story, settings
@@ -249,6 +249,14 @@ crew has a caravan, a road, and proof that giving works. Roll credits.
     Chromed Hollow still carrying cans for nobody, and the Choir come down to bargain. Stages *The Underspire I–II*.
     *Boss (II): the **Herd Boss** (`minotaur01`) beside a Choir Cantor and a Redline ganger — three claimants to the
     spire.*
+15. **Morrow's Shadow** (`morrowsshadow`, GG-T348, from ten landscapes the owner made; the final postgame chapter).
+    *Structural entry only; the chapter's story is authored in Prose (GG-T355) and its in-game text is placeholder
+    draft.* Where: far past the last road, where Morrow hangs lowest and fills half the sky, and its pull lifts stone —
+    house-sized rocks drifting over a cracked pale plain. The Nearing made visible; the road's last open question. Who:
+    Void Sentinels (`voidsentinel`) where the light leaks, the Ember (`infernalist01–04`, `hellspawn01–04`) come to
+    welcome the moon home, and the moon-changed Wild (wolves, a werewolf, a yeti, a vulture, a flying monkey). Stages
+    *Morrow's Shadow I–III*. *Boss (III): the **Demon Lord** (`demonlord`) with a Void Sentinel and an Infernalist
+    Bloodbinder — a stand-in until the owner makes a unique boss.*
 
 **Prologue** — *"Tithe Day."* Saltmoss, the white dome on the hill, the crew's names in the ledger, the run.
 

@@ -198,6 +198,23 @@ def bloom(arr, mask, h, w):
     return out + grain[:, :, None]
 
 
+def morrowsshadow(arr, mask, h, w):
+    """GG-T348 Morrow's Shadow: the cracked pale plain under the low moon, dry grey-tan earth split by dark fissures, a
+    cold blue cast from the moonlight."""
+    r, yy, xx = rng_fields(h, w, SEED + 10)
+    earth = np.array([184, 176, 158], dtype=np.float32)
+    shade = np.array([70, 74, 86], dtype=np.float32)
+    moon = np.array([170, 190, 214], dtype=np.float32)
+    cloud = smooth_noise(r, h, w, 20)
+    out = earth[None, None, :] * (0.84 + 0.18 * cloud[:, :, None])
+    crack = np.abs(smooth_noise(r, h, w, 22) - 0.5)
+    c = np.clip((0.03 - crack) / 0.03, 0, 1)[:, :, None] * 0.85
+    out = out * (1 - c) + shade[None, None, :] * c
+    cast = (0.12 + 0.08 * smooth_noise(r, h, w, 40))[:, :, None]
+    grain = r.uniform(-7, 7, size=(h, w)).astype(np.float32)
+    return out * (1 - cast) + moon[None, None, :] * cast + grain[:, :, None]
+
+
 BIOMES = {
     "greenvalley": greenvalley,
     "desert": desert,
@@ -208,6 +225,7 @@ BIOMES = {
     "lanternroad": lanternroad,
     "cathedral": cathedral,
     "bloom": bloom,
+    "morrowsshadow": morrowsshadow,
 }
 
 

@@ -583,6 +583,19 @@
     ]
   },
   {
+    "Id": "morrowsshadow_party_talk",
+    "Title": "Under the face",
+    "Trigger": { "Kind": "ThemeStart", "Id": "morrowsshadow" },
+    "Speakers": [
+      { "Id": "lead", "Class": "$lead" },
+      { "Id": "enchantress", "Name": "Enchantress", "Portrait": "whitewitch" }
+    ],
+    "Nodes": [
+      { "Id": "a", "Speaker": "lead", "Text": "The rocks are falling up. Is that the moon doing that?", "Next": "b" },
+      { "Id": "b", "Speaker": "enchantress", "Text": "That's the Nearing. The Ember came out here to sing it closer. Whatever we find under that face, we find it together." }
+    ]
+  },
+  {
     "Id": "swamp_enchantress",
     "Title": "A voice in the fog",
     "Trigger": { "Kind": "FirstArmor", "Id": "swamp" },

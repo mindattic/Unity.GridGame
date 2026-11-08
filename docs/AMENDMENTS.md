@@ -1132,3 +1132,15 @@ Owner, with eight landscapes of red blossom over broken white ruins: the Bloom t
   - The older postgame chapters stay at level 15, below the Cathedral's 22–24 and the Bloom's 25–27; that gap predates this change and is left to a balance pass.
   - Balance is unmeasured (no soak run), pending the owner's `/test`.
 - *(Tests: `BloomTests`, `CathedralTests`, `BackgroundsTests`.)*
+
+## 2026-11-07 — Morrow's Shadow: the final postgame chapter (owner, GG-T348)
+
+Owner, with ten landscapes of a colossal moon over cracked plains with floating rocks: the postgame ends where Morrow hangs lowest.
+
+- **Was:** the postgame ended with The Underspire (`cityruins2`); 37 stages in all.
+- **Now:** **Morrow's Shadow** (`morrowsshadow`, three stages, levels 28–30, `"Backgrounds": "morrowsshadow"`) is appended as the final chapter ([BIBLE §22.3.4](BIBLE.md)): Void Sentinels, the Ember and moon-changed Wild, ending on the Demon Lord with a Void Sentinel and an Infernalist Bloodbinder (a stand-in boss until the owner makes a unique one). 40 stages in all.
+  - Appended at the end, so no save migration.
+  - Story text is placeholder draft (Prose, GG-T355): crawl and `morrowsshadow_party_talk`; STORY.md has a structural entry (item 15).
+  - Armor sets: Reaper's 30, Sanguine 35, Dreadwyrm 40 (Templar's stays 25).
+  - Balance is unmeasured (no soak run), pending the owner's `/test`.
+- *(Tests: `MorrowsShadowTests`, `BackgroundsTests`.)*
