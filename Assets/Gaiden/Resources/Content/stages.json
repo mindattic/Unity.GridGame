@@ -2751,6 +2751,323 @@
     ]
   },
   {
+    "Id": "bloom-01",
+    "Name": "The Bloom I",
+    "Theme": "bloom",
+    "Background": null,
+    "Music": "Battle",
+    "IsTest": false,
+    "Blocks": [
+      {
+        "X": 1,
+        "Y": 3
+      },
+      {
+        "X": 4,
+        "Y": 4
+      }
+    ],
+    "Waves": [
+      {
+        "Enemies": [
+          {
+            "Class": "ganger00",
+            "Level": 1,
+            "X": -1,
+            "Y": -1
+          },
+          {
+            "Class": "ganger03",
+            "Level": 1,
+            "X": -1,
+            "Y": -1
+          }
+        ]
+      },
+      {
+        "Enemies": [
+          {
+            "Class": "treegolem00",
+            "Level": 1,
+            "X": -1,
+            "Y": -1
+          },
+          {
+            "Class": "treegolem02",
+            "Level": 1,
+            "X": -1,
+            "Y": -1
+          }
+        ]
+      },
+      {
+        "Enemies": [
+          {
+            "Class": "templar00",
+            "Level": 1,
+            "X": -1,
+            "Y": -1
+          },
+          {
+            "Class": "heavytrooper01",
+            "Level": 1,
+            "X": -1,
+            "Y": -1
+          }
+        ]
+      },
+      {
+        "Enemies": [
+          {
+            "Class": "ganger01",
+            "Level": 1,
+            "X": -1,
+            "Y": -1
+          },
+          {
+            "Class": "treegolem01",
+            "Level": 1,
+            "X": -1,
+            "Y": -1
+          }
+        ]
+      },
+      {
+        "Enemies": [
+          {
+            "Class": "templar01",
+            "Level": 1,
+            "X": -1,
+            "Y": -1
+          },
+          {
+            "Class": "heavytrooper02",
+            "Level": 1,
+            "X": -1,
+            "Y": -1
+          }
+        ]
+      }
+    ],
+    "LevelOverride": 25
+  },
+  {
+    "Id": "bloom-02",
+    "Name": "The Bloom II",
+    "Theme": "bloom",
+    "Background": null,
+    "Music": "Battle",
+    "IsTest": false,
+    "Blocks": [
+      {
+        "X": 1,
+        "Y": 2
+      },
+      {
+        "X": 4,
+        "Y": 2
+      },
+      {
+        "X": 2,
+        "Y": 5
+      }
+    ],
+    "Waves": [
+      {
+        "Enemies": [
+          {
+            "Class": "treegolem03",
+            "Level": 1,
+            "X": -1,
+            "Y": -1
+          },
+          {
+            "Class": "treegolem04",
+            "Level": 1,
+            "X": -1,
+            "Y": -1
+          }
+        ]
+      },
+      {
+        "Enemies": [
+          {
+            "Class": "ganger04",
+            "Level": 1,
+            "X": -1,
+            "Y": -1
+          },
+          {
+            "Class": "ganger05",
+            "Level": 1,
+            "X": -1,
+            "Y": -1
+          }
+        ]
+      },
+      {
+        "Enemies": [
+          {
+            "Class": "templar02",
+            "Level": 1,
+            "X": -1,
+            "Y": -1
+          },
+          {
+            "Class": "heavytrooper03",
+            "Level": 1,
+            "X": -1,
+            "Y": -1
+          }
+        ]
+      },
+      {
+        "Enemies": [
+          {
+            "Class": "werewolf00",
+            "Level": 1,
+            "X": -1,
+            "Y": -1
+          },
+          {
+            "Class": "wolf03",
+            "Level": 1,
+            "X": -1,
+            "Y": -1
+          }
+        ]
+      },
+      {
+        "Enemies": [
+          {
+            "Class": "templar03",
+            "Level": 1,
+            "X": -1,
+            "Y": -1
+          },
+          {
+            "Class": "heavytrooper04",
+            "Level": 1,
+            "X": -1,
+            "Y": -1
+          }
+        ]
+      }
+    ],
+    "LevelOverride": 26
+  },
+  {
+    "Id": "bloom-03",
+    "Name": "The Bloom III",
+    "Theme": "bloom",
+    "Background": null,
+    "Music": "Battle",
+    "IsTest": false,
+    "Blocks": [
+      {
+        "X": 0,
+        "Y": 4
+      },
+      {
+        "X": 5,
+        "Y": 4
+      },
+      {
+        "X": 2,
+        "Y": 2
+      }
+    ],
+    "Waves": [
+      {
+        "Enemies": [
+          {
+            "Class": "ganger06",
+            "Level": 1,
+            "X": -1,
+            "Y": -1
+          },
+          {
+            "Class": "ganger02",
+            "Level": 1,
+            "X": -1,
+            "Y": -1
+          }
+        ]
+      },
+      {
+        "Enemies": [
+          {
+            "Class": "treegolem06",
+            "Level": 1,
+            "X": -1,
+            "Y": -1
+          },
+          {
+            "Class": "treegolem01",
+            "Level": 1,
+            "X": -1,
+            "Y": -1
+          }
+        ]
+      },
+      {
+        "Enemies": [
+          {
+            "Class": "templar04",
+            "Level": 1,
+            "X": -1,
+            "Y": -1
+          },
+          {
+            "Class": "heavytrooper01",
+            "Level": 1,
+            "X": -1,
+            "Y": -1
+          }
+        ]
+      },
+      {
+        "Enemies": [
+          {
+            "Class": "ganger03",
+            "Level": 1,
+            "X": -1,
+            "Y": -1
+          },
+          {
+            "Class": "treegolem03",
+            "Level": 1,
+            "X": -1,
+            "Y": -1
+          }
+        ]
+      },
+      {
+        "Enemies": [
+          {
+            "Class": "templar05",
+            "Level": 1,
+            "X": -1,
+            "Y": -1
+          },
+          {
+            "Class": "heavytrooper02",
+            "Level": 1,
+            "X": -1,
+            "Y": -1
+          },
+          {
+            "Class": "heavytrooper03",
+            "Level": 1,
+            "X": -1,
+            "Y": -1
+          }
+        ]
+      }
+    ],
+    "LevelOverride": 27
+  },
+  {
     "Id": "test-00",
     "Name": "Test-00",
     "Theme": null,

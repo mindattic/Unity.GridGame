@@ -24,7 +24,7 @@ namespace GridGame.Meta
 
     public sealed class SaveData
     {
-        public const int CurrentVersion = 7;
+        public const int CurrentVersion = 8;
 
         public int Version = CurrentVersion;
         public string Name = "Lightbearer";
@@ -386,6 +386,10 @@ namespace GridGame.Meta
         /// many stages it brought (save v7).</summary>
         public const int CathedralInsertedAt = 21, CathedralStageCount = 3;
 
+        /// <summary>GG-T347: where The Bloom went into the campaign order (after the Cathedral, the first postgame chapter),
+        /// and how many stages it brought (save v8).</summary>
+        public const int BloomInsertedAt = 24, BloomStageCount = 3;
+
         public static readonly HashSet<string> RetiredAbilities = new HashSet<string>(StringComparer.OrdinalIgnoreCase) { "scan" };
 
         /// <summary>Upgrades an older save in place. Unknown future versions are rejected. <paramref name="c"/>
@@ -481,6 +485,14 @@ namespace GridGame.Meta
                 // count and keeps the same frontier. A save whose furthest clear is Halcyon III finds the cathedral next.
                 if (s.HighestClearedStage >= CathedralInsertedAt) s.HighestClearedStage += CathedralStageCount;
                 s.Version = 7;
+            }
+            if (s.Version < 8)
+            {
+                // GG-T347: The Bloom (three stages) was inserted after the Cathedral as the first postgame chapter, at campaign
+                // index BloomInsertedAt. Same rule as v5-v7: a save already into the old postgame moves up by its stage count
+                // and keeps the same frontier. A save whose furthest clear is the Cathedral III finds the Bloom next.
+                if (s.HighestClearedStage >= BloomInsertedAt) s.HighestClearedStage += BloomStageCount;
+                s.Version = 8;
             }
             foreach (var h in s.Roster)
             {

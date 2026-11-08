@@ -180,6 +180,24 @@ def cathedral(arr, mask, h, w):
     return out
 
 
+def bloom(arr, mask, h, w):
+    """GG-T347 The Bloom: broken Concord white stone with moss in the cracks and red blossom fallen across it."""
+    r, yy, xx = rng_fields(h, w, SEED + 9)
+    stone = np.array([206, 204, 196], dtype=np.float32)
+    moss = np.array([92, 112, 58], dtype=np.float32)
+    petal = np.array([196, 28, 44], dtype=np.float32)
+    cloud = smooth_noise(r, h, w, 16)
+    out = stone[None, None, :] * (0.88 + 0.14 * cloud[:, :, None])
+    crack = np.abs(smooth_noise(r, h, w, 12) - 0.5)
+    c = np.clip((0.035 - crack) / 0.035, 0, 1)[:, :, None]
+    out = out * (1 - c * 0.6) + moss[None, None, :] * (c * 0.6)
+    drift = smooth_noise(r, h, w, 6)
+    p = np.clip((drift - 0.72) / 0.1, 0, 1)[:, :, None] * 0.85
+    out = out * (1 - p) + petal[None, None, :] * p
+    grain = r.uniform(-6, 6, size=(h, w)).astype(np.float32)
+    return out + grain[:, :, None]
+
+
 BIOMES = {
     "greenvalley": greenvalley,
     "desert": desert,
@@ -189,6 +207,7 @@ BIOMES = {
     "still": still,
     "lanternroad": lanternroad,
     "cathedral": cathedral,
+    "bloom": bloom,
 }
 
 

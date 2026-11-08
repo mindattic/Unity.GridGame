@@ -30,7 +30,7 @@ namespace GridGame.Tests
             var db = Real;
             var ids = db.Campaign.Themes.Select(t => t.Id).ToList();
             Assert.That(ids.IndexOf("cathedral"), Is.EqualTo(ids.IndexOf("cityruins") + 1));
-            Assert.That(ids.IndexOf("greenvalley2"), Is.EqualTo(ids.IndexOf("cathedral") + 1), "the postgame starts after it");
+            Assert.That(ids.IndexOf("bloom"), Is.EqualTo(ids.IndexOf("cathedral") + 1), "the postgame starts after it (GG-T347: with The Bloom)");
             var cathedral = db.Campaign.Themes.Single(t => t.Id == "cathedral");
             Assert.That(cathedral.Name, Is.EqualTo("The Choir's Cathedral"));
             Assert.That(cathedral.Crawl, Is.Not.Null.And.Not.Empty);

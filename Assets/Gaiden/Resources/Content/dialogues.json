@@ -505,6 +505,19 @@
     ]
   },
   {
+    "Id": "bloom_party_talk",
+    "Title": "Where it came down",
+    "Trigger": { "Kind": "ThemeStart", "Id": "bloom" },
+    "Speakers": [
+      { "Id": "lead", "Class": "$lead" },
+      { "Id": "merchant", "Name": "Lantern Merchant", "Portrait": "courier" }
+    ],
+    "Nodes": [
+      { "Id": "a", "Speaker": "lead", "Text": "Red flowers on Concord stone. This is where the reservoir came down.", "Next": "b" },
+      { "Id": "b", "Speaker": "merchant", "Text": "And everyone's already here for it. Redline with knives, the Red Seal with torches. Pick a side before the Bloom picks for you." }
+    ]
+  },
+  {
     "Id": "greenvalley2_party_talk",
     "Title": "Where the rain missed",
     "Trigger": { "Kind": "ThemeStart", "Id": "greenvalley2" },

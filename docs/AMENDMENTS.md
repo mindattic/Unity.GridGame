@@ -1119,3 +1119,16 @@ Owner, with nine landscapes of neon underspire night markets: the postgame chapt
   - Story text unchanged (the crawl and party talk already fit); STORY.md has a structural entry only.
   - Balance is unmeasured (no soak run), pending the owner's `/test`.
 - *(Tests: `UnderspireTests`, `BackgroundsTests`.)*
+
+## 2026-11-07 — The Bloom: a new postgame chapter right after the ending (owner, GG-T347)
+
+Owner, with eight landscapes of red blossom over broken white ruins: the Bloom the ending promises becomes a place.
+
+- **Was:** the postgame was five chapters (`greenvalley2` … `cityruins2`, two stages each, all at level 15), starting right after the Cathedral; 34 stages in all.
+- **Now:** **The Bloom** (`bloom`, three stages, levels 25–27, `"Backgrounds": "bloom"`) is the first postgame chapter, right after the ending ([BIBLE §22.3.4](BIBLE.md)): Redline harvesters, Red Seal and Bulwark holdouts, moss golems and moon-changed Wild; the boss is the Red Seal's last warden (`templar05`) with two Bulwark. 37 stages in all.
+  - Story text is placeholder draft (Prose, GG-T355): crawl and `bloom_party_talk`; STORY.md has a structural entry (item 9; later postgame renumbered 10–14).
+  - Save v8 shifts `HighestClearedStage` by three for saves already in the old postgame.
+  - Armor sets: Reaper's 29, Sanguine 33, Dreadwyrm 37 (Templar's stays 25).
+  - The older postgame chapters stay at level 15, below the Cathedral's 22–24 and the Bloom's 25–27; that gap predates this change and is left to a balance pass.
+  - Balance is unmeasured (no soak run), pending the owner's `/test`.
+- *(Tests: `BloomTests`, `CathedralTests`, `BackgroundsTests`.)*

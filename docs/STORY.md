@@ -164,7 +164,7 @@ New heroes from the owner's art:
 
 ## 5. The campaign
 
-Thirteen themes, in order: eight in the main campaign, five in the postgame. Each theme's crawl opens it; its party talk
+Fourteen themes, in order: eight in the main campaign, six in the postgame. Each theme's crawl opens it; its party talk
 carries one piece of the plot.
 
 Owner, 2026-11-07 (GG-T344): *"I will generate more landscapes from which you can extrapolate more story, settings
@@ -226,16 +226,23 @@ low as yesterday; nobody has solved the Nearing. But where the stolen aether cam
 crew has a caravan, a road, and proof that giving works. Roll credits.
 
 **Postgame** (the road after the Hierarch — open on purpose, no final answer):
-9. **The Moors Beyond the Stills** (`greenvalley2`) — holds that never got their aether back, and Redline selling the
-   Bloom as a drug. *Region: **the Free Holds** (GG-T346, from seven landscapes the owner made; structural entry only,
-   story authored in Prose, GG-T355).* Where: walled hill-forts and wooden palisades over gold moorland under a pale
-   Morrow — the holds that still keep their own walls (§3.3). Who: hold militia (`soldier00–03`) at the gates, the
-   Captain's people still collecting for whoever pays, Redline, moor wolves, and a hold whose Hollow (`undead00–02`) never
-   got their aether back. Stages *The Free Holds I–II*. *Boss (II): the **Captain** with his militia.*
-10. **Deep Shardfall** (`desert2`) — the Ember grows bolder with the Concord broken; the Infernalists march on the Anchors.
-11. **The Drowned Arks** (`swamp2`) — the *Long Patience* still flies, a little; the Lich offers passage to anyone.
-12. **Under the Anchors** (`cave2`) — what the arches are actually built on.
-13. **The Underspire** (`cityruins2`) — Halcyon without a Hierarch: the Choir, the Red Seal and the Street all want the
+9. **The Bloom** (`bloom`, GG-T347, from eight landscapes the owner made; the first chapter after the ending).
+   *Structural entry only; the chapter's story is authored in Prose (GG-T355) and its in-game text is placeholder
+   draft.* Where: where the Hierarch's reservoir broke and the stolen aether came down hardest — red blossom and moss
+   grown over broken pillars of the Concord's white stone, under a pale Morrow. The Herald's home. Who: Redline
+   (`ganger`) harvesting the Bloom for the markets; Pale Concord holdouts — the Red Seal (`templar`) and the Bulwark
+   (`heavytrooper`) — come to burn it; moss golems (`treegolem`) and moon-changed Wild (a werewolf, wolves) guarding it.
+   Stages *The Bloom I–III*. *Boss (III): the Red Seal's last warden (`templar05`) with two of the Bulwark.*
+10. **The Moors Beyond the Stills** (`greenvalley2`) — holds that never got their aether back, and Redline selling the
+    Bloom as a drug. *Region: **the Free Holds** (GG-T346, from seven landscapes the owner made; structural entry only,
+    story authored in Prose, GG-T355).* Where: walled hill-forts and wooden palisades over gold moorland under a pale
+    Morrow — the holds that still keep their own walls (§3.3). Who: hold militia (`soldier00–03`) at the gates, the
+    Captain's people still collecting for whoever pays, Redline, moor wolves, and a hold whose Hollow (`undead00–02`) never
+    got their aether back. Stages *The Free Holds I–II*. *Boss (II): the **Captain** with his militia.*
+11. **Deep Shardfall** (`desert2`) — the Ember grows bolder with the Concord broken; the Infernalists march on the Anchors.
+12. **The Drowned Arks** (`swamp2`) — the *Long Patience* still flies, a little; the Lich offers passage to anyone.
+13. **Under the Anchors** (`cave2`) — what the arches are actually built on.
+14. **The Underspire** (`cityruins2`) — Halcyon without a Hierarch: the Choir, the Red Seal and the Street all want the
     spire. *Region: **the Street markets** (GG-T349, from nine landscapes the owner made; structural entry only, story
     authored in Prose, GG-T355).* Where: the underspire's night markets — the white spire behind tangled cables, pink
     neon signs, stalls and splice clinics in the rain (§3.2). Who: Redline, the Murder and the Herd on their home turf,

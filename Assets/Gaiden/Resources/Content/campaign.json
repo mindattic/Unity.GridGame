@@ -108,6 +108,18 @@
       ]
     },
     {
+      "Id": "bloom",
+      "MilestoneReward": "chest_gilded",
+      "Name": "The Bloom",
+      "Backgrounds": "bloom",
+      "Crawl": "Where the Hierarch's reservoir broke, the stolen aether came down hardest, and the Bloom came up through the Concord's white stone: red blossom over broken pillars, moss in every crack.\n\nRedline cuts it for the markets. The last Red Seal wardens want it burned. And the things the moon changed have started to guard it.\n\nSomeone has to decide what the Bloom is for.",
+      "Stages": [
+        "bloom-01",
+        "bloom-02",
+        "bloom-03"
+      ]
+    },
+    {
       "Id": "greenvalley2",
       "MilestoneReward": "chest_gilded",
       "Name": "The Moors Beyond the Stills",
