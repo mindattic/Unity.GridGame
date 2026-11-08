@@ -227,9 +227,19 @@ namespace GridGame.Core.Battle
             string rule = ctx.Rule ?? (C.TileStateRule.TryGetValue(def.Id, out var owner) ? owner : null);
             var ev0 = new RegionTilesEvent { RuleId = rule, State = def.Id, Change = "marked" };
             List<(Unit u, Coord at)> falls = null;
+            List<(Coord at, TileMark mark, TileReactionDef r)> reactions = null;
             foreach (var c in AreaOf(e, ctx))
             {
                 if (S.IsBlock(c)) continue;
+                // GG-T370: an element meets the mark already there (elements.json, GG-T371): the mark reacts and the
+                // incoming state is spent (fire melts ice, ice douses fire, fire burns slime away, fire sets a mine off).
+                var had = S.Region.At(c);
+                if (had != null && !StateMatches(had, def.Id))
+                {
+                    var react = ElementReaction(def, had);
+                    if (react != null) { (reactions ??= new List<(Coord, TileMark, TileReactionDef)>()).Add((c, had, react)); continue; }
+                    if (e.KeepMarks) continue;
+                }
                 // A blocking state is never painted under anyone or any board item: the board stays legal (§1.1, GG-T97).
                 // A hole (GG-T368) is the one exception: it opens under whoever stands there, and they fall.
                 bool hold = false;
@@ -239,9 +249,86 @@ namespace GridGame.Core.Battle
                 ev0.Tiles.Add(c);
                 if (faller != null) (falls ??= new List<(Unit, Coord)>()).Add((faller, c));
             }
-            if (ev0.Tiles.Count == 0) return;
-            Emit(ev0);
-            AfterMarked(def, rule, ev0.Tiles, falls);
+            if (ev0.Tiles.Count > 0)
+            {
+                EnsureRuleInPlay(rule);
+                Emit(ev0);
+                AfterMarked(def, rule, ev0.Tiles, falls);
+            }
+            if (reactions != null)
+                foreach (var (at, mark, r) in reactions)
+                    if (!S.IsOver) ReactTile(at, mark, r);
+        }
+
+        // ── Elements on tiles and hazard trails (GG-T370, §14.22) ────────────────────────────────
+
+        /// <summary>The elements.json reaction (GG-T371) a state carrying an element sets off on a tile holding
+        /// <paramref name="had"/>, or null.</summary>
+        private TileReactionDef ElementReaction(TileStateDef incoming, TileMark had)
+        {
+            if (incoming?.Element == null || C.Elements == null) return null;
+            var row = C.Elements.Of(incoming.Element.Value);
+            var r = row == null ? null : ElementCounters.Match(row.Tiles, had.State);
+            return TileReactions.UsableOnMark(C, r) ? r : null;
+        }
+
+        /// <summary>
+        /// One tile reaction on a painted tile (an element painted onto it, or a hero's element or tool covering it): Clear
+        /// washes the mark off; Becomes turns it into the Into state (a mine into an armed mine, whose OnMark queues its
+        /// blast), which brings that state's rule into play. A blocking Into waits under a unit or item, as ever.
+        /// </summary>
+        private void ReactTile(Coord c, TileMark m, TileReactionDef r)
+        {
+            if (S.Region.At(c) != m) return;
+            if (r.Kind == TileReactionKind.Clear)
+            {
+                S.Region.Tiles.Remove(c);
+                var cleared = new RegionTilesEvent { RuleId = m.Rule, State = m.State, Change = "cleared" };
+                cleared.Tiles.Add(c);
+                Emit(cleared);
+                return;
+            }
+            var next = C.TryTileState(r.Into);
+            if (next == null) return; // an Into that names a trap belongs to the trap system (GG-T371)
+            string rule = C.TileStateRule.TryGetValue(next.Id, out var owner) ? owner : m.Rule;
+            bool hold = false;
+            var faller = next.Blocks ? HoleFaller(next, rule, c, out hold) : null;
+            if (hold) return;
+            S.Region.Tiles[c] = NewMark(next, rule, 0);
+            EnsureRuleInPlay(rule);
+            var marked = new RegionTilesEvent { RuleId = rule, State = next.Id, Change = "marked" };
+            marked.Tiles.Add(c);
+            Emit(marked);
+            AfterMarked(next, rule, new List<Coord> { c }, faller != null ? new List<(Unit, Coord)> { (faller, c) } : null);
+        }
+
+        /// <summary>A rule whose state reaches the board (a monster's trail, its death, a reaction) comes into play on any
+        /// stage, announced like the stage's own, so its hooks run for the tiles it paints.</summary>
+        private void EnsureRuleInPlay(string ruleId)
+        {
+            if (ruleId == null || S.Region.Rules.Contains(ruleId) || !(C.TryRegionRule(ruleId) is RegionRuleDef r)) return;
+            S.Region.Rules.Add(r.Id);
+            Emit(new RegionRuleEvent { RuleId = r.Id, Name = r.Name, Description = r.Description });
+        }
+
+        /// <summary>A unit stepped off <paramref name="from"/>: its class's TrailRule runs there every TrailEvery-th step.</summary>
+        private void RegionTrail(Unit u, Coord from)
+        {
+            if (!RegionActive || u?.Def == null || u.Def.TrailRule.Count == 0 || !u.Alive) return;
+            if (++u.TrailSteps < Math.Max(1, u.Def.TrailEvery)) return;
+            u.TrailSteps = 0;
+            RunRuleEffects(u.Def.TrailRule, new RuleCtx { Subject = u, At = from });
+        }
+
+        /// <summary>The painted tiles in <paramref name="area"/> a hero's reactions work on (GG-T370).</summary>
+        private List<(Coord at, TileMark mark, TileReactionDef r)> MarkReactions(List<TileReactionDef> reactions, List<Coord> area)
+        {
+            var list = new List<(Coord, TileMark, TileReactionDef)>();
+            if (S.Region.Tiles.Count == 0) return list;
+            foreach (var c in area)
+                if (S.Region.At(c) is TileMark m && ElementCounters.Match(reactions, m.State) is TileReactionDef r && TileReactions.UsableOnMark(C, r))
+                    list.Add((c, m, r));
+            return list;
         }
 
         /// <summary>Can a blocking <paramref name="def"/> take tile <paramref name="c"/>? It waits (<paramref name="hold"/>)

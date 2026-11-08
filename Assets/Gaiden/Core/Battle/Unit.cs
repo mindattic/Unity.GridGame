@@ -59,6 +59,8 @@ namespace GridGame.Core.Battle
         public int Level = 1;
         /// <summary>Enemy turns this unit has started (brains with a rhythm: sluggish, blinkers, burrowers).</summary>
         public int TurnsTaken;
+        /// <summary>Steps taken toward the next <see cref="ClassDef.TrailRule"/> drop (GG-T370).</summary>
+        public int TrailSteps;
 
         /// <summary>Level-derived stats before equipment.</summary>
         public Stats LevelStats = new Stats();

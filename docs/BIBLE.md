@@ -2472,6 +2472,53 @@ use: holes (`TileStateDef.Pit`), state entry effects (`TileStateDef.OnMark`) and
   and description are the Prose text `rule:crackingfloor` (seeded placeholder).
 - *(Tests: `CrackingFloorTests`, written, not run.)*
 
+### 14.22 Hazard trails (added 2026-11-08, owner direction, GG-T370)
+
+Owner: *"some enemies drop slime trails when they move, some fire, some ice, some land mines... always a way to defeat
+them"*.
+
+Four region rules on the §14.20 framework, each one tile state laid by a monster as it moves, each with a counter from
+the GG-T371 elemental table (`elements.json`, [§3.3.1](#331-there-is-always-a-way-gg-t371-added-2026-11-08)), so no party is ever stuck.
+
+| Rule | Tile state | Laid by | Effect | Counters |
+|---|---|---|---|---|
+| `slimetrail` | `slime` (14 s) | Slimes (`slime02`, `slime03`) | stepping in it: Slowed | Fire burns it away; Purifying Salts; it dries up |
+| `firetrail` | `fire` (Fire, 10 s) | Hellspawn Emberheart (`hellspawn03`, the Ember) | stepping in: 6 Fire and Burning; ending a turn on it: 4 Fire | Ice douses it; Salts; it burns out |
+| `icetrail` | `ice` (Ice, 12 s) | Yeti (`yeti`, the Wild) | stepping on it: Slowed (the slip), and one step in three Frozen | Fire melts it; Salts; it thaws |
+| `landmines` | `mine` (40 s) | Bulwark Siege Gunner (`heavytrooper04`), every third step | stepping on it arms it (`armedmine`), whose blast (`mineblast`, 1.5 s on the timeline) deals 14 Fire to it and the tiles round it | a hit of any element sets it off from range; shove a foe onto it; the Disarm Kit pulls it |
+
+- **Trails** (`ClassDef.TrailRule`, new): region rule effects run on the tile a unit steps off (`Self`; it is their
+  subject), every `TrailEvery`-th step (`Unit.TrailSteps`), on every enemy step, leap and swap. Each trail paints with
+  `KeepMarks` (new on `RuleEffectDef`): it never paints over another mark (a crack, a barricade, another trail) unless
+  it reacts with it. Each layer is `RuleImmune` to its own state: it walks its own trail, and its planner reads no danger
+  there. The old slime trap trail (`slime_trail`) stays on the two early slimes; `slime02`/`slime03` lay the tile state
+  instead (never both).
+- **A monster brings its rule.** A state painted on a stage that doesn't list its rule brings that rule into play
+  (announced with its Prose name and description, `RegionRuleEvent`), so its hooks run wherever the monster fights.
+  The four rules are also listed on a fitting stage each, so they are announced as the battle opens: Tithe Moors II
+  (`greenvalley-02`, slime), Shardfall III (`desert-03`, fire), Frostmaw Caverns II (`cave-02`, ice), the Still III
+  (`still-03`, mines).
+- **Counters are the GG-T371 table, not a second one.** `TileStateDef.Element` (new) names the element a state carries
+  (fire is Fire, ice is Ice). Painted onto a tile whose mark its element's `elements.json` `Tiles` row reacts to, the
+  reaction runs (Clear, or Becomes another tile state) and the incoming state is spent: fire meeting ice melts it, ice
+  meeting fire douses it, fire meeting slime burns it away, fire meeting a mine sets it off. A hero's ability runs the
+  same reactions on the painted tiles it covers (its element's row when it deals damage, plus its tool set:
+  `ResolveTileReactions` now covers region tiles as well as traps), and a tile pick that only reaches a reacting tile is
+  a legal pick that never "misses". Every element's row arms a mine (`mine` → `armedmine`); Fire's clears `slime` and
+  `ice`, Ice's clears `fire`; the `disarm` set clears `mine`, the `cleanse` set (Purifying Salts) clears `slime`,
+  `fire` and `ice`. A Becomes into a state with an `OnMark` runs it (the armed mine queues its own blast).
+- **Mines are telegraphed.** Stepping on one (or being shoved onto it: a shoved or pulled foe runs `EnterTile`, §14.21)
+  never hurts at once: it arms, and the blast rides the timeline for 1.5 s over the mine and the four tiles beside it,
+  hitting whoever is still there (foes too). The armed mine itself isn't a `Hazard`; the queued blast is the danger.
+- **Always a way.** Every `Hazard` state (slime, fire, ice, mine) has a Merchant clearer (`ElementCounters.Validate`
+  passes: the flasks, the Salts, the Disarm Kit), each trail fades on its own, and the camp bot shops for the clearer
+  of a trail any of the next stage's foes lays (`ElementCounters.CountersFor` reads `TrailRule`).
+- **Bots.** Hazard states read as danger (`RegionBoard.DangerAt`), so the hero bot pays to cross them and won't end on
+  them, and foes don't walk into them unless immune; a queued blast reads as a telegraphed hazard.
+- Rule names and descriptions are the Prose texts `rule:slimetrail`, `rule:firetrail`, `rule:icetrail`,
+  `rule:landmines` (seeded placeholders).
+- *(Tests: `HazardTrailTests`, written, not run.)*
+
 ## 15. Save
 
 ### 15.1 Data model

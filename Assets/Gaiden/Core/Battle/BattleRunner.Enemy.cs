@@ -147,6 +147,7 @@ namespace GridGame.Core.Battle
             var from = enemy.Pos;
             if (!Relocate(enemy, next, o => o == occ)) return false;
             Emit(new SteppedEvent { UnitId = enemy.Id, From = from, To = next });
+            RegionTrail(enemy, from); // GG-T370 (the swapped occupant lands on it next)
             if (!Relocate(occ, from)) return true;
             Emit(new DisplacedEvent { UnitId = occ.Id, From = next, To = from, ByUnitId = enemy.Id });
             ShovePickupsUnder(occ, next);
@@ -165,6 +166,7 @@ namespace GridGame.Core.Battle
             Emit(new SteppedEvent { UnitId = enemy.Id, From = from, To = dest });
             ShovePickupsUnder(enemy, from);
             LeaveTrail(enemy, from);
+            RegionTrail(enemy, from); // GG-T370: a hazard trail on the tile it left
             RegionEnter(enemy); // GG-T359
             return true;
         }
@@ -360,6 +362,7 @@ namespace GridGame.Core.Battle
             if (pushedTile != null) ShoveMovable(pushedTile, vacated, enemy);
             ShovePickupsUnder(enemy, vacated); // a pickup is shoved exactly like the movable (GG-T228)
             LeaveTrail(enemy, from);
+            RegionTrail(enemy, from); // GG-T370: a hazard trail on the tile it left
             RegionEnter(enemy); // GG-T359
             return true;
         }

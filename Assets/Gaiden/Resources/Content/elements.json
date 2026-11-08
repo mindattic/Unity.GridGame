@@ -7,7 +7,9 @@
       "Status": null,
       "Breaks": [],
       "Exploits": [],
-      "Tiles": []
+      "Tiles": [
+        { "On": "mine", "Kind": "Becomes", "Into": "armedmine" }
+      ]
     },
     {
       "Type": "Fire",
@@ -18,7 +20,10 @@
       "Tiles": [
         { "On": "slime_trail", "Kind": "Clear" },
         { "On": "venom_snare", "Kind": "Clear" },
-        { "On": "miasma", "Kind": "Clear" }
+        { "On": "miasma", "Kind": "Clear" },
+        { "On": "slime", "Kind": "Clear" },
+        { "On": "ice", "Kind": "Clear" },
+        { "On": "mine", "Kind": "Becomes", "Into": "armedmine" }
       ]
     },
     {
@@ -29,7 +34,9 @@
       "Exploits": [],
       "Tiles": [
         { "On": "mire", "Kind": "Clear" },
-        { "On": "quicksand", "Kind": "Clear" }
+        { "On": "quicksand", "Kind": "Clear" },
+        { "On": "fire", "Kind": "Clear" },
+        { "On": "mine", "Kind": "Becomes", "Into": "armedmine" }
       ]
     },
     {
@@ -39,7 +46,8 @@
       "Breaks": [],
       "Exploits": ["wet"],
       "Tiles": [
-        { "On": "shock_mine", "Kind": "Clear" }
+        { "On": "shock_mine", "Kind": "Clear" },
+        { "On": "mine", "Kind": "Becomes", "Into": "armedmine" }
       ]
     },
     {
@@ -48,7 +56,9 @@
       "Status": "poisoned",
       "Breaks": [],
       "Exploits": [],
-      "Tiles": []
+      "Tiles": [
+        { "On": "mine", "Kind": "Becomes", "Into": "armedmine" }
+      ]
     },
     {
       "Type": "Holy",
@@ -57,7 +67,8 @@
       "Breaks": [],
       "Exploits": [],
       "Tiles": [
-        { "On": "miasma", "Kind": "Clear" }
+        { "On": "miasma", "Kind": "Clear" },
+        { "On": "mine", "Kind": "Becomes", "Into": "armedmine" }
       ]
     },
     {
@@ -66,7 +77,9 @@
       "Status": "blinded",
       "Breaks": [],
       "Exploits": [],
-      "Tiles": []
+      "Tiles": [
+        { "On": "mine", "Kind": "Becomes", "Into": "armedmine" }
+      ]
     },
     {
       "Type": "Arcane",
@@ -74,7 +87,9 @@
       "Status": "silenced",
       "Breaks": [],
       "Exploits": [],
-      "Tiles": []
+      "Tiles": [
+        { "On": "mine", "Kind": "Becomes", "Into": "armedmine" }
+      ]
     }
   ],
   "Reactions": [
@@ -83,7 +98,8 @@
       "Tiles": [
         { "On": "venom_snare", "Kind": "Clear" },
         { "On": "shock_mine", "Kind": "Clear" },
-        { "On": "caltrops", "Kind": "Clear" }
+        { "On": "caltrops", "Kind": "Clear" },
+        { "On": "mine", "Kind": "Clear" }
       ]
     },
     {
@@ -92,7 +108,10 @@
         { "On": "slime_trail", "Kind": "Clear" },
         { "On": "mire", "Kind": "Clear" },
         { "On": "quicksand", "Kind": "Clear" },
-        { "On": "miasma", "Kind": "Clear" }
+        { "On": "miasma", "Kind": "Clear" },
+        { "On": "slime", "Kind": "Clear" },
+        { "On": "fire", "Kind": "Clear" },
+        { "On": "ice", "Kind": "Clear" }
       ]
     }
   ],

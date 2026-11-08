@@ -185,6 +185,9 @@ namespace GridGame.Core.Content
                 if (NeedsCounter(db, c) && BestCounter(db, c, shelf) is ItemDef i && !list.Contains(i)) list.Add(i);
                 foreach (var trap in new[] { c.Trap, c.Trail })
                     if (trap != null && Clearer(db, trap, shelf) is ItemDef k && !list.Contains(k)) list.Add(k);
+                // GG-T370: the hazard trail states it paints (TrailRule MarkTiles) want a clearer too.
+                foreach (var fx in c.TrailRule)
+                    if (fx?.Kind == RuleEffectKind.MarkTiles && fx.State != null && Clearer(db, fx.State, shelf) is ItemDef h && !list.Contains(h)) list.Add(h);
             }
             return list.OrderBy(i => i.BaseCost).ThenBy(i => i.Id, StringComparer.Ordinal).ToList();
         }

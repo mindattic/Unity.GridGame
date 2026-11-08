@@ -481,6 +481,12 @@ namespace GridGame.Core.Content
         public List<string> RuleImmune = new List<string>();
         /// <summary>Region rule effects (GG-T359) run where a unit of this class falls (it is their subject).</summary>
         public List<RuleEffectDef> OnDeathRule = new List<RuleEffectDef>();
+        /// <summary>Hazard trails (GG-T370): region rule effects run on the tile this unit steps off (Self; it is their
+        /// subject), every <see cref="TrailEvery"/>th step: a slime, fire or ice trail, a mine. A state it paints brings its
+        /// rule into play on any stage.</summary>
+        public List<RuleEffectDef> TrailRule = new List<RuleEffectDef>();
+        /// <summary>Lays <see cref="TrailRule"/> every Nth step (1 = every step; a mine layer spaces its mines out).</summary>
+        public int TrailEvery = 1;
 
         public bool HasTag(string tag) => Tags != null && Tags.Contains(tag);
     }

@@ -130,6 +130,9 @@ namespace GridGame.Core.Content
         public float Seconds;
         public bool Cancel;
         public string Flag;
+        /// <summary>MarkTiles: leave a tile that already holds another state alone (after any elemental reaction), so a
+        /// monster's trail never paints over a crack, a barricade or another rule's mark (GG-T370).</summary>
+        public bool KeepMarks;
     }
 
     /// <summary>A persistent tile state a rule paints on the board (drawn on the tile; a mark lives until cleared or its LifeSeconds run out).</summary>
@@ -158,6 +161,10 @@ namespace GridGame.Core.Content
         /// <summary>Effects run on each tile as it takes this state (painted, or a counter turning into it): Self is that
         /// tile, the unit standing there (if any) the subject. A crumbling floor schedules its own cave-in this way.</summary>
         public List<RuleEffectDef> OnMark = new List<RuleEffectDef>();
+        /// <summary>The element this state carries (GG-T370: fire, ice). Painted onto a tile holding a state that its
+        /// elements.json row reacts to (GG-T371 <see cref="ElementDef.Tiles"/>: fire melts ice, ice douses fire, fire burns
+        /// slime away, fire sets a mine off), the reaction runs on that tile and the incoming state is spent.</summary>
+        public DamageType? Element;
     }
 
     /// <summary>A telegraphed event a rule puts on the timeline: its own icon rides the bar like a cast and resolves its Effects on arrival.</summary>
@@ -288,6 +295,8 @@ namespace GridGame.Core.Content
                 foreach (var id in c.RuleImmune)
                     if (!IsRuleSource(db, id)) p.Add($"class {c.Id}: RuleImmune '{id}' is no region rule, tile state, rule event or ability");
                 ValidateEffects(db, c.OnDeathRule, $"class {c.Id} OnDeathRule", p);
+                ValidateEffects(db, c.TrailRule, $"class {c.Id} TrailRule", p);
+                if (c.TrailEvery < 1) p.Add($"class {c.Id}: TrailEvery must be at least 1");
             }
             foreach (var a in db.Abilities.Values) ValidateEffects(db, a.RuleEffects, $"ability {a.Id} RuleEffects", p);
         }

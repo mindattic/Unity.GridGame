@@ -26,11 +26,14 @@ namespace GridGame.Core.Battle
         /// reach is still a fair pick then: throw the Disarm Kit at the mine, the fire flask at the slime trail.)</summary>
         public static bool ReachesTrap(BattleState s, AbilityDef a, Unit caster, Coord anchor)
         {
-            if (s?.Content == null || caster == null || !caster.IsHero || s.Traps.Count == 0) return false;
+            if (s?.Content == null || caster == null || !caster.IsHero || (s.Traps.Count == 0 && s.Region.Tiles.Count == 0)) return false;
             var reactions = ElementCounters.ReactionsOf(s.Content, a);
             if (reactions.Count == 0) return false;
             foreach (var c in Area(a, anchor))
+            {
                 if (s.TrapAt(c) is Trap t && Usable(s.Content, ElementCounters.Match(reactions, t.TrapId))) return true;
+                if (s.Region.At(c) is TileMark m && UsableOnMark(s.Content, ElementCounters.Match(reactions, m.State))) return true; // GG-T370
+            }
             return false;
         }
 
@@ -38,6 +41,10 @@ namespace GridGame.Core.Battle
         /// state is that system's to paint).</summary>
         public static bool Usable(ContentDb c, TileReactionDef r) =>
             r != null && (r.Kind == TileReactionKind.Clear || (r.Into != null && c.Traps.ContainsKey(r.Into)));
+
+        /// <summary>A reaction the battle can run on a painted region tile (GG-T370): Clear, or Becomes another tile state.</summary>
+        public static bool UsableOnMark(ContentDb c, TileReactionDef r) =>
+            r != null && (r.Kind == TileReactionKind.Clear || c.TryTileState(r.Into) != null);
 
         /// <summary>Does this ability do anything to the units it reaches? (A tool that only works on tiles does not.)</summary>
         public static bool TouchesUnits(AbilityDef a) =>
@@ -54,13 +61,14 @@ namespace GridGame.Core.Battle
         {
             if (caster == null || !caster.IsHero || a.IsTeleport || a.Escape || a.Revives) return false;
             var reactions = ElementCounters.ReactionsOf(C, a);
-            if (reactions.Count == 0 || S.Traps.Count == 0) return false;
+            if (reactions.Count == 0 || (S.Traps.Count == 0 && S.Region.Tiles.Count == 0)) return false;
             var area = TileReactions.Area(a, anchor);
             var hits = new List<(Trap Trap, TileReactionDef Reaction)>();
             foreach (var tile in area)
                 if (S.TrapAt(tile) is Trap t && ElementCounters.Match(reactions, t.TrapId) is TileReactionDef r && TileReactions.Usable(C, r))
                     hits.Add((t, r));
-            if (hits.Count == 0) return false;
+            var marks = MarkReactions(reactions, area); // GG-T370: painted tiles too (fire on ice, a hit on a mine, salts on slime)
+            if (hits.Count == 0 && marks.Count == 0) return false;
 
             bool boardOnly = !TileReactions.TouchesUnits(a) || TargetResolver.Collect(S, a, caster, anchor).Count == 0;
             if (boardOnly)
@@ -78,6 +86,8 @@ namespace GridGame.Core.Battle
                 else trap.TrapId = into;
                 Emit(new TrapClearedEvent { ById = caster.Id, At = trap.At, TrapId = was, Into = into });
             }
+            foreach (var (at, mark, r) in marks)
+                if (!S.IsOver) ReactTile(at, mark, r);
             return boardOnly;
         }
     }

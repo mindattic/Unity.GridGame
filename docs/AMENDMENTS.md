@@ -1234,3 +1234,13 @@ Owner: *"cracking floors which open up holes to fall into that takes off some li
 - **Framework additions** any rule can use: `TileStateDef.Pit` / `FallDamage`, `TileStateDef.OnMark` (effects as a tile takes a state), the `Hit` hook, `FellEvent`. The hero walk now refuses any blocking region tile, and a shoved or pulled foe runs `EnterTile` like a hero always did.
 - Balance unmeasured (no soak run), pending the owner's `/test`.
 - *(Tests: `CrackingFloorTests`, written, not run.)*
+
+## 2026-11-08 — Hazard trails: slime, fire, ice and mines laid by monsters as they move (owner, GG-T370)
+
+Owner: *"some enemies drop slime trails when they move, some fire, some ice, some land mines... always a way to defeat them"*.
+
+- **Was:** a trail was a trap (`ClassDef.Trail`: slime trail, mire, quicksand) left on the tile an enemy stepped off, hero-only, three per enemy; tile elements never met.
+- **Now:** four region rules ([BIBLE §14.22](BIBLE.md)): `slimetrail` (Slowed; slimes `slime02`/`slime03`, whose trap trail it replaces), `firetrail` (Fire damage and Burning; the Hellspawn Emberheart), `icetrail` (Slowed, a one-in-three freeze; the Yeti), `landmines` (a telegraphed 1.5 s blast; the Bulwark Siege Gunner, every third step). Laid by `ClassDef.TrailRule` with `KeepMarks`; a monster brings its rule into play on any stage; placed on `greenvalley-02`, `desert-03`, `cave-02`, `still-03`.
+- **Counters** come from the GG-T371 table (`elements.json` `Tiles` rows and tool sets, no second table): a state's `Element` reacts with the mark it is painted onto (fire melts ice, ice douses fire, fire burns slime, fire sets a mine off), and a hero's element or tool covering a painted tile runs the same reaction; any element's hit arms a mine from range, a shoved foe sets one off, the Disarm Kit pulls it, Purifying Salts wash slime, fire and ice. `ElementCounters.Validate` passes: every hazard state has a Merchant clearer.
+- Balance unmeasured (no soak run), pending the owner's `/test`.
+- *(Tests: `HazardTrailTests`, written, not run.)*

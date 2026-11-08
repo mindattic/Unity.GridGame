@@ -23166,6 +23166,20 @@
         "short": "Cracked tiles give under every step, every turn spent standing and every blow; a crumbling tile caves in when its icon reaches the edge of the timeline, and whoever stands on it falls."
       }
     },
+    "rule:firetrail": {
+      "key": "rule:firetrail",
+      "id": "description-rule-firetrail",
+      "guid": null,
+      "version": 0,
+      "source": "seed",
+      "hash": "sha256:ee90ce6ac3d1df4d910567aaff2b1fc125aeca4b56dc7eda8a14ae1a93dc52eb",
+      "about": [],
+      "speakers": [],
+      "payload": {
+        "name": "Fire Trail",
+        "short": "Ember beasts leave burning ground behind them; it scorches whoever steps in or stands on it. Ice douses it, and it burns out on its own."
+      }
+    },
     "rule:holds-barricades": {
       "key": "rule:holds-barricades",
       "id": "description-rule-holds-barricades",
@@ -23180,6 +23194,34 @@
         "short": "Every wave, the holds throw up barricades. Stand beside one to wear it down; when it falls, step onto the rubble to be Empowered."
       }
     },
+    "rule:icetrail": {
+      "key": "rule:icetrail",
+      "id": "description-rule-icetrail",
+      "guid": null,
+      "version": 0,
+      "source": "seed",
+      "hash": "sha256:e1f42e85d9b1d83e034ebbe7a51dd8cf54cae07bdc56cb9c5ffa235016ba03dc",
+      "about": [],
+      "speakers": [],
+      "payload": {
+        "name": "Ice Trail",
+        "short": "Frost beasts leave ice in their tracks; it slows whoever steps on it, and sometimes freezes them solid. Fire melts it."
+      }
+    },
+    "rule:landmines": {
+      "key": "rule:landmines",
+      "id": "description-rule-landmines",
+      "guid": null,
+      "version": 0,
+      "source": "seed",
+      "hash": "sha256:92d97bf95c71834c6e8f711bff131cb6ac1babaf33c7b175ec80906a83aaeef2",
+      "about": [],
+      "speakers": [],
+      "payload": {
+        "name": "Land Mines",
+        "short": "Bulwark gunners plant mines as they march. Step on one, shove a foe onto it, or hit it from range and it arms: the blast lands on the timeline a moment later. A Disarm Kit pulls it safely."
+      }
+    },
     "rule:shardfall-strikes": {
       "key": "rule:shardfall-strikes",
       "id": "description-rule-shardfall-strikes",
@@ -23192,6 +23234,20 @@
       "payload": {
         "name": "Shardfall",
         "short": "Shards fall on the party: each strike shows on the timeline and its tiles light up before it lands. Where one lands it leaves a crystal; end a turn on it for a Ward."
+      }
+    },
+    "rule:slimetrail": {
+      "key": "rule:slimetrail",
+      "id": "description-rule-slimetrail",
+      "guid": null,
+      "version": 0,
+      "source": "seed",
+      "hash": "sha256:063408424474cb825d82e59c05e24e9f5179695822062855e3b2a1debcbff382",
+      "about": [],
+      "speakers": [],
+      "payload": {
+        "name": "Slime Trail",
+        "short": "Slimes leave a sticky trail as they go; stepping in it slows you. Fire burns it away, and Purifying Salts wash it off."
       }
     },
     "skillnode:aegisguard_capstone": {
