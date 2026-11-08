@@ -1336,8 +1336,30 @@ namespace GridGame.App
                 App.StartCoroutine(ExtendRecovery(entry.Id, pb.RecoverTicks > 0 ? pb.RecoverTicks
                     : Mathf.Max(1, Mathf.RoundToInt((pb.ToU - pb.FromU) * BattleConfig.BarSeconds * BattleConfig.TicksPerSecond))));
             else if (entry != null && timelineIconViews.ContainsKey(entry.Id))
-                App.StartCoroutine(GlideOne(entry.Id, pb.FromU, pb.ToU, 0.3f));
+                App.StartCoroutine(TossOne(entry.Id, pb.FromU, pb.ToU, 0.38f));
             yield return FloatText(pb.UnitId, "Pushback!", Palette.Info, 0.12f, 46);
+        }
+
+        /// <summary>GG-T367: Pushback tosses the icon back down the bar: it travels linearly along the track (never off
+        /// its line) while spinning one full turn that slows as it lands, so the throw reads as a throw.</summary>
+        private IEnumerator TossOne(int entryId, float fromU, float toU, float seconds)
+        {
+            trayFlights.Remove(entryId); // a half-finished tray hop would pull it off the track's Y
+            var hold = new Dictionary<int, float>();
+            foreach (var e in State.Timeline) hold[e.Id] = lastAt != null && lastAt.TryGetValue(e.Id, out var u) ? u : BattleEngine.BarU(State, e);
+            timelineIconViews.TryGetValue(entryId, out var icon);
+            if (icon != null)
+            {
+                icon.style.transformOrigin = new TransformOrigin(Length.Percent(50), Length.Percent(50));
+                icon.BringToFront();
+            }
+            yield return Tween.Run(seconds, k =>
+            {
+                hold[entryId] = Mathf.Lerp(fromU, toU, k); // linear travel down the timeline
+                SyncTimeline(hold);
+                if (icon != null) icon.style.rotate = new Rotate(new Angle(360f * Tween.EaseOut(k)));
+            });
+            if (icon != null) icon.style.rotate = new Rotate(new Angle(0f));
         }
 
         /// <summary>A staggered cast slips right on the bar by its delay (GG-T287), with the knock's slide.</summary>
