@@ -2446,6 +2446,26 @@ The region rule `anchor-pull` (theme `cave2`, stages 36-37): the field itself mo
 - No collision damage yet (the framework moves a unit a free tile at a time and stops it when blocked). Balance unmeasured
   (owner rule: no soak). *(Tests: `UnderTheAnchorsTests`, written, not run.)*
 
+#### 14.20.4 The Drowned Arks: the rising tide (GG-T362)
+
+The region rule `rising-tide` (theme `swamp2`, stages 32-33): race the water, or fight in it.
+
+- **The tide.** Each wave drains the last wave's water, cancels its pending rises and queues three new ones on the
+  timeline: the bottom row floods at 8 s, the next at 16 s, the third at 24 s (`tide-1..3`, rule events whose tiles pulse
+  first). Flooded tiles are `floodwater`, a `Hazard` state (bots keep out of it unless immune).
+- **In the water.** A unit that starts its turn in floodwater, hero or foe, is `slowed` (its next timeline entry comes
+  later) and `wet`. Lightning exploits `wet` (elements.json), which is how shock conducts through the flood.
+- **Drowned monsters** (Mannequin placeholder art, words in Prose `class:<id>`):
+  - **Tidestrider** (Skirmisher, fast): immune to `rising-tide`, the flood never slows it.
+  - **Stormcaller** (Kiter, range 3): its charge `charge_conduct` strikes a hero with lightning and puts 30 Lightning
+    into every hero standing in floodwater.
+  - **Bloated Drowner** (Sluggish): where it falls it floods its tile and the four around it, and brings every pending
+    rise 6 s sooner.
+- **Waves.** Two foes a wave, three in the finale (the Swamp Mistress, a hag and a Bloated Drowner); the lurker and
+  tree-golem Group waves became explicit pairs; signatures stay unique.
+- Rows assume the party holds the bottom of the board. Balance unmeasured (owner rule: no soak). *(Tests:
+  `DrownedArksTests`, written, not run.)*
+
 ### 14.21 Cracking floors (added 2026-11-08, owner direction, GG-T368)
 
 Owner: *"cracking floors which open up holes to fall into that takes off some life and respawns actor next to hole (what

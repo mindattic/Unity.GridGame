@@ -478,6 +478,22 @@
         "long": "Disciplines of ink and flame taught that power begins in focus."
       }
     },
+    "class:bloatdrowner": {
+      "key": "class:bloatdrowner",
+      "id": "description-class-bloatdrowner",
+      "guid": null,
+      "version": 0,
+      "source": "seed",
+      "hash": "sha256:625e4dffffcca9103610aa47fc16caea3e257094fb572b416f4aa9f8b357edba",
+      "about": [
+        "class-bloatdrowner"
+      ],
+      "speakers": [],
+      "payload": {
+        "short": "A swollen drowned thing that bursts into floodwater and hurries the tide.",
+        "long": "It held its breath for a very long time. Do not be there when it lets go."
+      }
+    },
     "class:bluelion": {
       "key": "class:bluelion",
       "id": "description-class-bluelion",
@@ -3102,6 +3118,22 @@
         "long": "Walks many roads, never lost for lack of a single path."
       }
     },
+    "class:stormcaller": {
+      "key": "class:stormcaller",
+      "id": "description-class-stormcaller",
+      "guid": null,
+      "version": 0,
+      "source": "seed",
+      "hash": "sha256:1c20e0820956b865d31f5af6fb507fa72bd278149b8447f1a0e76f7b7b7e7863",
+      "about": [
+        "class-stormcaller"
+      ],
+      "speakers": [],
+      "payload": {
+        "short": "A drowned-ark caller who sends lightning through the floodwater.",
+        "long": "Water carries a voice a long way. It carries lightning further."
+      }
+    },
     "class:streetfighter": {
       "key": "class:streetfighter",
       "id": "description-class-streetfighter",
@@ -3372,6 +3404,22 @@
       "payload": {
         "short": "A swift combatant who wins through speed, angles, and precision strikes.",
         "long": "Years of quiet training forged a will that moves faster than thought."
+      }
+    },
+    "class:tidestrider": {
+      "key": "class:tidestrider",
+      "id": "description-class-tidestrider",
+      "guid": null,
+      "version": 0,
+      "source": "seed",
+      "hash": "sha256:5fcb9bdf44e00f87bb7db2ce652a10323d0b7b52b8d8c877d4e68942259e54c5",
+      "about": [
+        "class-tidestrider"
+      ],
+      "speakers": [],
+      "payload": {
+        "short": "A long-legged wader the flood never slows.",
+        "long": "When the Arks went down, most things drowned. This one learned to walk on the bottom."
       }
     },
     "class:tinkerer": {
@@ -23282,6 +23330,20 @@
       "payload": {
         "name": "Land Mines",
         "short": "Bulwark gunners plant mines as they march. Step on one, shove a foe onto it, or hit it from range and it arms: the blast lands on the timeline a moment later. A Disarm Kit pulls it safely."
+      }
+    },
+    "rule:rising-tide": {
+      "key": "rule:rising-tide",
+      "id": "description-rule-rising-tide",
+      "guid": null,
+      "version": 0,
+      "source": "seed",
+      "hash": "sha256:89eaaa072f8943812d11005b0a2b9c97dcf8de6776d55559cca3f3024fb0a76c",
+      "about": [],
+      "speakers": [],
+      "payload": {
+        "name": "The Rising Tide",
+        "short": "Each wave the water rises from the bottom row, one row at a time, and you can see each rise coming on the timeline. Anyone who starts a turn in the flood is Slowed and Wet, and lightning finds the Wet."
       }
     },
     "rule:shardfall-strikes": {

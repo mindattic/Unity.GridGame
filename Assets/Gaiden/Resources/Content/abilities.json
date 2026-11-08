@@ -10193,5 +10193,46 @@
   "DamageType": "Physical",
   "BaseDamage": 8,
   "Pull": 2
+ },
+ {
+  "IsTeleport": false,
+  "Icon": null,
+  "CastVfx": null,
+  "ProjectileVfx": null,
+  "ImpactVfx": null,
+  "LingerVfx": null,
+  "Sfx": null,
+  "ApplyBuff": null,
+  "ApplyBuffChance": 1.0,
+  "RemovesDebuffs": false,
+  "StealsMana": false,
+  "HastenU": 0.0,
+  "BaseHeal": 0,
+  "Id": "charge_conduct",
+  "RecoverSeconds": 1.5,
+  "Name": "Conduct",
+  "Description": "Strikes a hero with lightning that runs through the floodwater into every hero standing in it.",
+  "Kind": "Spell",
+  "Cost": 0,
+  "CastTime": 2.5,
+  "CooldownTurns": 0,
+  "Shape": "SingleActor",
+  "Radius": 0,
+  "Mode": "PickActor",
+  "Filter": "EnemyOnly",
+  "Motion": "None",
+  "DamageType": "Lightning",
+  "BaseDamage": 10,
+  "RuleEffects": [
+   {
+    "Kind": "Damage",
+    "Area": "WithState",
+    "State": "floodwater",
+    "Units": "OnArea",
+    "Team": "Hero",
+    "Amount": 30,
+    "DamageType": "Lightning"
+   }
+  ]
  }
 ]

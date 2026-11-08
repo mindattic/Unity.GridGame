@@ -485,5 +485,122 @@
         ]
       }
     ]
+  },
+  {
+    "Id": "rising-tide",
+    "TileStates": [
+      {
+        "Id": "floodwater",
+        "Hazard": true,
+        "Color": "#3B6FA0",
+        "Glyph": "~"
+      }
+    ],
+    "Events": [
+      {
+        "Id": "tide-1",
+        "Seconds": 8,
+        "Hazard": true,
+        "Glyph": "~",
+        "Color": "#4F8FCF",
+        "Effects": [
+          {
+            "Kind": "MarkTiles",
+            "Area": "EventTiles",
+            "State": "floodwater"
+          }
+        ]
+      },
+      {
+        "Id": "tide-2",
+        "Seconds": 16,
+        "Hazard": true,
+        "Glyph": "~",
+        "Color": "#4F8FCF",
+        "Effects": [
+          {
+            "Kind": "MarkTiles",
+            "Area": "EventTiles",
+            "State": "floodwater"
+          }
+        ]
+      },
+      {
+        "Id": "tide-3",
+        "Seconds": 24,
+        "Hazard": true,
+        "Glyph": "~",
+        "Color": "#4F8FCF",
+        "Effects": [
+          {
+            "Kind": "MarkTiles",
+            "Area": "EventTiles",
+            "State": "floodwater"
+          }
+        ]
+      }
+    ],
+    "Hooks": [
+      {
+        "On": "WaveSpawn",
+        "Effects": [
+          {
+            "Kind": "AdjustEvents",
+            "Event": "tide-1",
+            "Cancel": true
+          },
+          {
+            "Kind": "AdjustEvents",
+            "Event": "tide-2",
+            "Cancel": true
+          },
+          {
+            "Kind": "AdjustEvents",
+            "Event": "tide-3",
+            "Cancel": true
+          },
+          {
+            "Kind": "ClearTiles",
+            "Area": "WithState",
+            "State": "floodwater"
+          },
+          {
+            "Kind": "Schedule",
+            "Area": "Row",
+            "Index": 7,
+            "Event": "tide-1"
+          },
+          {
+            "Kind": "Schedule",
+            "Area": "Row",
+            "Index": 6,
+            "Event": "tide-2"
+          },
+          {
+            "Kind": "Schedule",
+            "Area": "Row",
+            "Index": 5,
+            "Event": "tide-3"
+          }
+        ]
+      },
+      {
+        "On": "TurnStart",
+        "Team": "Any",
+        "State": "floodwater",
+        "Effects": [
+          {
+            "Kind": "ApplyBuff",
+            "Units": "Subject",
+            "Buff": "slowed"
+          },
+          {
+            "Kind": "ApplyBuff",
+            "Units": "Subject",
+            "Buff": "wet"
+          }
+        ]
+      }
+    ]
   }
 ]

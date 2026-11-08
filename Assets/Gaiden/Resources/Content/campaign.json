@@ -138,6 +138,9 @@
       "Stages": [
         "swamp-04",
         "swamp-05"
+      ],
+      "Rules": [
+        "rising-tide"
       ]
     },
     {

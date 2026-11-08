@@ -3848,7 +3848,7 @@
             "Y": -1
           },
           {
-            "Class": "toad00",
+            "Class": "tidestrider",
             "Level": 1,
             "X": -1,
             "Y": -1
@@ -3856,7 +3856,20 @@
         ]
       },
       {
-        "Group": "lurker-diagonal-2"
+        "Enemies": [
+          {
+            "Class": "lurker02",
+            "Level": 1,
+            "X": -1,
+            "Y": -1
+          },
+          {
+            "Class": "stormcaller",
+            "Level": 1,
+            "X": -1,
+            "Y": -1
+          }
+        ]
       },
       {
         "Enemies": [
@@ -3875,7 +3888,20 @@
         ]
       },
       {
-        "Group": "treegolem-pair-2"
+        "Enemies": [
+          {
+            "Class": "treegolem02",
+            "Level": 1,
+            "X": -1,
+            "Y": -1
+          },
+          {
+            "Class": "bloatdrowner",
+            "Level": 1,
+            "X": -1,
+            "Y": -1
+          }
+        ]
       },
       {
         "Enemies": [
@@ -3913,7 +3939,7 @@
             "Y": -1
           },
           {
-            "Class": "frog02",
+            "Class": "stormcaller",
             "Level": 1,
             "X": -1,
             "Y": -1
@@ -3923,13 +3949,13 @@
       {
         "Enemies": [
           {
-            "Class": "treegolem02",
+            "Class": "treegolem04",
             "Level": 1,
             "X": -1,
             "Y": -1
           },
           {
-            "Class": "treegolem04",
+            "Class": "bloatdrowner",
             "Level": 1,
             "X": -1,
             "Y": -1
@@ -3945,7 +3971,7 @@
             "Y": -1
           },
           {
-            "Class": "marshshambler03",
+            "Class": "tidestrider",
             "Level": 1,
             "X": -1,
             "Y": -1
@@ -3961,7 +3987,7 @@
             "Y": -1
           },
           {
-            "Class": "lurker02",
+            "Class": "stormcaller",
             "Level": 1,
             "X": -1,
             "Y": -1
@@ -3977,13 +4003,13 @@
             "Y": -1
           },
           {
-            "Class": "hag00",
+            "Class": "hag01",
             "Level": 1,
             "X": -1,
             "Y": -1
           },
           {
-            "Class": "hag01",
+            "Class": "bloatdrowner",
             "Level": 1,
             "X": -1,
             "Y": -1
