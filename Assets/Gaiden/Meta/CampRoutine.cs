@@ -223,6 +223,9 @@ namespace GridGame.Meta
                 .FirstOrDefault();
         }
 
+        /// <summary>GG-T373: the dearest spell (half the base bank) the camp routine buys for an open slot before a big one.</summary>
+        public const int FillerMaxCost = ManaBank.DefaultCapacity / 2;
+
         /// <summary>Text in a camp log line that records a skill-tree purchase ("Paladin spent 2 SP on Aegisguard Core").</summary>
         public const string TalentMarker = " SP on ";
 
@@ -247,9 +250,6 @@ namespace GridGame.Meta
                 .ThenBy(x => x.i)
                 .Select(x => x.n).FirstOrDefault();
         }
-
-        /// <summary>GG-T373: the dearest spell (half the base bank) the camp routine buys for an open slot before a big one.</summary>
-        public const int FillerMaxCost = ManaBank.DefaultCapacity / 2;
 
         /// <summary>Spend every roster hero's banked skill points (GG-T54): the home tree first, by <see cref="NextTalent"/>;
         /// when that node costs more than the hero has, the points bank for it rather than leak into a cheaper sideline.

@@ -845,13 +845,6 @@ namespace GridGame.Core.Bot
             return 1.5f * (1f - 0.8f * fill);
         }
 
-        private static bool FightIsClose(BattleState s)
-        {
-            foreach (var ally in s.LivingList(Team.Hero))
-                foreach (var e in s.LivingList(Team.Enemy)) if (e.DistanceTo(ally) <= 2) return true;
-            return false;
-        }
-
         /// <summary>GG-T373: a spell of at least this many orbs is one the party saves for (the 5–12 band of the cost curve).</summary>
         public const int SaveForCost = 5;
         /// <summary>GG-T373: extra price per orb of a cheaper spell while saving — the smart bot saves harder than the casual one.</summary>
@@ -877,6 +870,13 @@ namespace GridGame.Core.Bot
                 }
             }
             return goal;
+        }
+
+        private static bool FightIsClose(BattleState s)
+        {
+            foreach (var ally in s.LivingList(Team.Hero))
+                foreach (var e in s.LivingList(Team.Enemy)) if (e.DistanceTo(ally) <= 2) return true;
+            return false;
         }
 
         /// <summary>GG-T246: a debuff on a foe, valued by what it actually does rather than a flat +3.</summary>

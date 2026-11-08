@@ -1159,13 +1159,13 @@ namespace GridGame.Core.Content
         /// <summary>Camp NPC ids a JoinNpc effect / NpcJoined condition / "npc:" Talk may name (GG-T119 gates services on them).</summary>
         public static readonly string[] Npcs = { "blacksmith", "alchemist", "enchantress", "merchant", "innkeeper" };
 
-        public string Id;
-        /// <summary>Talk row label (Talk dialogues); also a debugging name.</summary>
-        public string Title;
         /// <summary>Wanderer talks (GG-T342): the reply that speaks to them, the ones that don't, and the two endings the
         /// <see cref="OutcomeNext"/> marker resolves to.</summary>
         public const string HeardNode = "heard", UnheardNode = "unheard", JoinNode = "join", PartNode = "part", OutcomeNext = "$outcome";
 
+        public string Id;
+        /// <summary>Talk row label (Talk dialogues); also a debugging name.</summary>
+        public string Title;
         public DialogueTrigger Trigger = new DialogueTrigger();
         /// <summary>All must hold for the dialogue to be offered.</summary>
         public List<DialogueCondition> Conditions = new List<DialogueCondition>();

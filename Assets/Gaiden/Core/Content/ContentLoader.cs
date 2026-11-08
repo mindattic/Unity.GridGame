@@ -154,13 +154,13 @@ namespace GridGame.Core.Content
                     p.Add($"ability {a.Id}: DrainsOrbs {a.DrainsOrbs} outside 0..{AbilityDef.MaxDrainsOrbs} (GG-T332)");
                 else if (a.DrainsOrbs > 0 && (a.Id == null || !a.Id.StartsWith("charge_")))
                     p.Add($"ability {a.Id}: DrainsOrbs is an enemy charge's siphon; name it charge_… (GG-T332)");
-                ValidateTrigger(db, a, p);
                 // GG-T373: a spell has to be payable from a full base bank (bank gear only adds headroom), and skills,
                 // passives and items never spend orbs.
                 if (a.Cost < 0 || a.Cost > Battle.ManaBank.DefaultCapacity)
                     p.Add($"ability {a.Id}: Cost {a.Cost} outside 0..{Battle.ManaBank.DefaultCapacity} orbs, the base bank (GG-T373)");
                 else if (a.Cost > 0 && a.Kind != AbilityKind.Spell)
                     p.Add($"ability {a.Id}: only a Spell spends orbs; a {a.Kind} has Cost 0 (GG-T373)");
+                ValidateTrigger(db, a, p);
                 // GG-T303: a Tame is a picked single foe from a Skill or a consumable, with a sane chance and a duration.
                 if (a.Tame != 0f)
                 {
@@ -667,8 +667,8 @@ namespace GridGame.Core.Content
                 if (!speakers.Add(s.Id)) p.Add($"{w}: duplicate speaker '{s.Id}'");
                 if (s.Class == "$lead") { }
                 else if (s.Class == "$with") { if (!talkWithHero) p.Add($"{w} speaker {s.Id}: \"$with\" only fits a Talk with a party member"); }
-                else if (s.Class == "$recruit") { if (!joinsHero) p.Add($"{w} speaker {s.Id}: \"$recruit\" needs a JoinHero effect in this dialogue"); }
                 else if (s.Class == "$hero") { if (!wanderer) p.Add($"{w} speaker {s.Id}: \"$hero\" only fits a Wanderer talk"); }
+                else if (s.Class == "$recruit") { if (!joinsHero) p.Add($"{w} speaker {s.Id}: \"$recruit\" needs a JoinHero effect in this dialogue"); }
                 else if (s.Class != null) { if (db.TryClass(s.Class) == null) p.Add($"{w} speaker {s.Id}: unknown class '{s.Class}'"); }
                 else if (string.IsNullOrEmpty(s.Portrait) || string.IsNullOrEmpty(s.Name)) p.Add($"{w} speaker {s.Id}: needs a Class, or a Name and a Portrait");
                 var portrait = s.Portrait ?? (s.Class != null && !s.Class.StartsWith("$") ? s.Class : null);

@@ -3631,6 +3631,17 @@ Owner: "they stay for a negotiated amount of battles at a price; whether you use
 - **Bots** (Test Mode, `CampRoutine`, `BalanceReport`) never hire. This is its own contract system: the dialogue vocabulary still cannot remove a hero (AMENDMENTS 2026-11-05).
 - *(Tests: `MercenaryTests` — valid content apart from the summon pool, longer terms cheaper, seeded board that skips owned heroes and turns over, upfront payment at the roster's XP, countdown in reserve then departure with gear returned and rehire, a spent contract never fights, renewal at a loyalty discount and parting ways, seeded once-a-refresh haggle with walk-offs, save migration.)*
 
+#### 25.10.2 Random summon for Diamonds (added 2026-11-07, owner, GG-T343)
+
+Owner: *"another way is to simply summon them randomly with Diamonds monetized currency"*.
+
+- **The draw** (`Meta/DiamondSummon.cs`): a "Call a stranger" window at the top of the Summon Circle (`summon-random`) spends **`DiamondSummon.Price` = 1 Diamond** (`mat_diamond`; the one tuning constant, 1 for now like the other placeholder paywalls) and **no gold**. It brings one hero from the **wanderer pool** (`Wanderers.Pool`, [§25.11.2](#25112-random-rescues-added-2026-11-05-owner-the-random-character-recruitment-for-saving-them-gg-t236)) — unowned heroes with no other way in, the same pool a wanderer goes back to when it parts ways — never one of the gold summons.
+- **Who:** `DiamondSummon.Pick`, seeded from the save's creation time and its recruit count, fixed when the summoning starts (the job's `Arg`), so asking again doesn't reroll.
+- **Over time:** it rides the ordinary Summon paywall job (`PaywallJob.Kind = Summon`, `Diamonds` = what was spent, `Paid` = 0), one summoning at a time (gold or Diamond), `Paywall.Duration(Summon)` (1 s) long, through `TimedJobView` (coin cue, the filling bar, the confirm cue); then a **reveal** (`SummonReveal`, `summon-reveal`): the hero's portrait swells out of the light with a power-up cue, a fanfare and their name and role, and a tap closes it. The hero arrives exactly like a gold summon (`Summon.Arrive`: the roster at its average experience, the party if there's room). A summoning that fizzles (the hero joined some other way meanwhile) gives its Diamond back. A job left running survives a restart and lands at Camp like any other.
+- **Diamonds** still come only from the LuckyDiamond hook ([§24.6.5](#2465-lucky-craft--the-diamond-gg-t235)); with none, the window says they're bought for the lucky craft at the forge. **No store, no IAP UI.**
+- **Bots never draw:** `CampRoutine` only uses the gold summon, Test Mode saves are refused (`DiamondSummon.CanDraw`), and the soaks never touch it. The gold, deliberate summon (`Summon.Recruit`/`BeginRecruit`) is unchanged.
+- *(Tests: `SummonTests` — a draw costs one Diamond and no gold, it draws from the wanderer pool and the hero arrives only when the summoning lands, the pick is seeded, no Diamond no draw and one summoning at a time, a fizzled draw refunds, a running draw survives a save round trip, Test Mode and the camp routine never spend Diamonds, the gold summon is unchanged.)*
+
 ### 25.11 Bestiary
 
 `BestiaryScreen`: a grid of every enemy class's thumb (darkened silhouette until Seen), "Seen n/110"; the detail shows name, Defeated count, lore and its family's drops (rarity-colored item names, highest chance first) once **Seen** (added 2026-10-15, GG-T43). ~~Then base stats only once Scanned.~~
@@ -3644,17 +3655,6 @@ Owner: "they stay for a negotiated amount of battles at a price; whether you use
 | Stats | **3** defeats | HP at Lv 1 and every base stat |
 | Elements | **6** defeats | elemental weaknesses and resistances ("Immune to Poison · weak to Fire (×1.5)", `ElementLine`) |
 | Abilities | **10** defeats | its abilities (as chips — hold one to read it), kit traits, brain and targeting personality |
-
-#### 25.10.2 Random summon for Diamonds (added 2026-11-07, owner, GG-T343)
-
-Owner: *"another way is to simply summon them randomly with Diamonds monetized currency"*.
-
-- **The draw** (`Meta/DiamondSummon.cs`): a "Call a stranger" window at the top of the Summon Circle (`summon-random`) spends **`DiamondSummon.Price` = 1 Diamond** (`mat_diamond`; the one tuning constant, 1 for now like the other placeholder paywalls) and **no gold**. It brings one hero from the **wanderer pool** (`Wanderers.Pool`, [§25.11.2](#25112-random-rescues-added-2026-11-05-owner-the-random-character-recruitment-for-saving-them-gg-t236)) — unowned heroes with no other way in, the same pool a wanderer goes back to when it parts ways — never one of the gold summons.
-- **Who:** `DiamondSummon.Pick`, seeded from the save's creation time and its recruit count, fixed when the summoning starts (the job's `Arg`), so asking again doesn't reroll.
-- **Over time:** it rides the ordinary Summon paywall job (`PaywallJob.Kind = Summon`, `Diamonds` = what was spent, `Paid` = 0), one summoning at a time (gold or Diamond), `Paywall.Duration(Summon)` (1 s) long, through `TimedJobView` (coin cue, the filling bar, the confirm cue); then a **reveal** (`SummonReveal`, `summon-reveal`): the hero's portrait swells out of the light with a power-up cue, a fanfare and their name and role, and a tap closes it. The hero arrives exactly like a gold summon (`Summon.Arrive`: the roster at its average experience, the party if there's room). A summoning that fizzles (the hero joined some other way meanwhile) gives its Diamond back. A job left running survives a restart and lands at Camp like any other.
-- **Diamonds** still come only from the LuckyDiamond hook ([§24.6.5](#2465-lucky-craft--the-diamond-gg-t235)); with none, the window says they're bought for the lucky craft at the forge. **No store, no IAP UI.**
-- **Bots never draw:** `CampRoutine` only uses the gold summon, Test Mode saves are refused (`DiamondSummon.CanDraw`), and the soaks never touch it. The gold, deliberate summon (`Summon.Recruit`/`BeginRecruit`) is unchanged.
-- *(Tests: `SummonTests` — a draw costs one Diamond and no gold, it draws from the wanderer pool and the hero arrives only when the summoning lands, the pick is seeded, no Diamond no draw and one summoning at a time, a fizzled draw refunds, a running draw survives a save round trip, Test Mode and the camp routine never spend Diamonds, the gold summon is unchanged.)*
 
 - A locked row reads **"???"**, and a hint under the detail names the next one: **"Defeat N more to learn …"** (its speed / its HP and stats / its weaknesses / its abilities; `BestiaryKnowledge.Hint`).
 - **One rule everywhere:** the battle actor panel ([§9](#9-the-hud)) and the hold-to-inspect card read the same tier, so a foe shows in battle exactly what the Bestiary knows.
