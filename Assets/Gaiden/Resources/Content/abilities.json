@@ -9556,5 +9556,54 @@
    ],
    "Callout": "Searing!"
   }
+ },
+ {
+  "Kind": "Skill",
+  "Cost": 0,
+  "CastTime": 0.0,
+  "CooldownTurns": 2,
+  "Shape": "SingleActor",
+  "Radius": 0,
+  "Mode": "PickActor",
+  "Filter": "AllyOnly",
+  "Motion": "None",
+  "DamageType": "Holy",
+  "BaseDamage": 0,
+  "BaseHeal": 30,
+  "ApplyBuff": null,
+  "ApplyBuffChance": 1.0,
+  "RemovesDebuffs": false,
+  "StealsMana": false,
+  "HastenU": 0.0,
+  "IsTeleport": false,
+  "Icon": null,
+  "CastVfx": "BuffLife",
+  "ProjectileVfx": null,
+  "ImpactVfx": "HealAura",
+  "LingerVfx": "PinkDust",
+  "Sfx": null,
+  "Id": "herald_lifegift",
+  "Name": "Lifegift",
+  "Description": "Gives her own essence: an ally mends 30 HP, and the Herald pays 12% of her max HP for it ([Essence]).",
+  "LifeCost": 0.12
+ },
+ {
+  "Id": "herald_rebloom",
+  "Name": "Rebloom",
+  "Description": "At the start of its turn, below 60% HP, the blossoms grow back: it mends 5% of its HP.",
+  "Kind": "Passive",
+  "Trigger": {
+   "On": "TurnStart",
+   "Condition": {
+    "SelfHpBelow": 0.6
+   },
+   "Effects": [
+    {
+     "Kind": "Heal",
+     "Amount": 0.05
+    }
+   ],
+   "Callout": "Rebloom"
+  }
  }
 ]

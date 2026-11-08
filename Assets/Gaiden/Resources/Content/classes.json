@@ -23991,6 +23991,149 @@
     "HomeTree": "alchemist"
   },
   {
+    "Id": "herald",
+    "Name": "Herald",
+    "Team": "Hero",
+    "Tags": [
+      "Healer",
+      "Humanoid"
+    ],
+    "Description": "A flower-winged messenger of the Bloom who heals by giving her own essence.",
+    "Lore": "Where aether is given instead of taken, the Bloom grows. She is the proof.",
+    "Card": "Backline [healer]. Free, strong heals paid in her own HP ([Essence]).",
+    "Portrait": "herald",
+    "Thumbnail": {
+      "Zoom": 2.844,
+      "X": 0.4883,
+      "Y": 0.1592
+    },
+    "Figure": {
+      "X": 0.0752,
+      "Y": 0.0391,
+      "W": 0.8789,
+      "H": 0.9238
+    },
+    "Footprint": {
+      "W": 1,
+      "H": 1
+    },
+    "BaseStats": {
+      "Strength": 9,
+      "Vitality": 14,
+      "Agility": 12,
+      "Speed": 12,
+      "Stamina": 12,
+      "Intelligence": 13,
+      "Wisdom": 15,
+      "Luck": 12
+    },
+    "Growth": {
+      "Strength": 0.55,
+      "Vitality": 0.6,
+      "Agility": 0.6,
+      "Speed": 0.65,
+      "Stamina": 0.65,
+      "Intelligence": 0.95,
+      "Wisdom": 0.9,
+      "Luck": 0.6
+    },
+    "Milestones": [
+      {
+        "Level": 5,
+        "Growth": {
+          "Strength": 0.19,
+          "Vitality": 0.21,
+          "Agility": 0.21,
+          "Speed": 0.23,
+          "Stamina": 0.23,
+          "Intelligence": 0.33,
+          "Wisdom": 0.32,
+          "Luck": 0.21
+        }
+      },
+      {
+        "Level": 10,
+        "Growth": {
+          "Strength": 0.25,
+          "Vitality": 0.27,
+          "Agility": 0.27,
+          "Speed": 0.29,
+          "Stamina": 0.29,
+          "Intelligence": 0.43,
+          "Wisdom": 0.41,
+          "Luck": 0.27
+        }
+      },
+      {
+        "Level": 20,
+        "Growth": {
+          "Strength": 0.33,
+          "Vitality": 0.36,
+          "Agility": 0.36,
+          "Speed": 0.39,
+          "Stamina": 0.39,
+          "Intelligence": 0.57,
+          "Wisdom": 0.54,
+          "Luck": 0.36
+        }
+      },
+      {
+        "Level": 40,
+        "Growth": {
+          "Strength": 0.44,
+          "Vitality": 0.48,
+          "Agility": 0.48,
+          "Speed": 0.52,
+          "Stamina": 0.52,
+          "Intelligence": 0.76,
+          "Wisdom": 0.72,
+          "Luck": 0.48
+        }
+      }
+    ],
+    "Resistances": {},
+    "Abilities": [
+      "heal",
+      "mass_heal",
+      "antidote",
+      "regen",
+      "rejuvenate",
+      "silence",
+      "quicken",
+      "sleep",
+      "herald_lifegift",
+      "skirmishmenders_guardiansrush",
+      "skirmishmenders_flowingcurrent",
+      "skirmishmenders_coveringwithdrawal",
+      "herald_rebloom",
+      "mending_touch"
+    ],
+    "DefaultLoadout": [
+      "heal",
+      "skirmishmenders_guardiansrush",
+      "item:x_potion",
+      "herald_lifegift",
+      "skirmishmenders_coveringwithdrawal"
+    ],
+    "DropTable": null,
+    "MoveRange": 1,
+    "XpReward": 10,
+    "BossPhases": [],
+    "ChargeAbility": null,
+    "ChargeShape": "Single",
+    "Trap": null,
+    "SnakeSegments": 0,
+    "Role": "Healer",
+    "Support": {
+      "Effect": "Heal",
+      "Magnitude": 0.1,
+      "Target": "Chain",
+      "Range": 3,
+      "Label": "Petalfall"
+    },
+    "HomeTree": "cleric"
+  },
+  {
     "Id": "harpy01",
     "Name": "Harpy Raider",
     "Team": "Enemy",

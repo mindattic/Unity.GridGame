@@ -567,6 +567,10 @@ namespace GridGame.Core.Content
         public float Tame;
         /// <summary>Own turns a successful <see cref="Tame"/> lasts before the monster breaks free (a full bond keeps it).</summary>
         public int TameTurns;
+        /// <summary>Essence (GG-T333, the Herald): once the heal has landed, the caster pays this share of its own max HP
+        /// (at least 1 HP, never its last one). 0 = free. A heal only (BaseHeal &gt; 0, AllyOnly), 0..<see cref="MaxLifeCost"/>.</summary>
+        public float LifeCost;
+        public const float MaxLifeCost = 0.5f;
     }
 
     public sealed class BuffDef

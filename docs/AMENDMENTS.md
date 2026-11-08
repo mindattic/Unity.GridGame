@@ -1032,6 +1032,15 @@ Owner: *"so you will sometimes meet a hero while fighting a monster and they wil
 - Retired: `Rescues`, `CaptiveSpec`, `GuestJoinedEvent.Captive`, `BattleReport.Captive/Rescued`, the `Rescue` dialogue trigger and `rescue_freed`. A wanderer standing alone never staves off defeat; a fallen one is down, never lost.
 - *(Tests: `WanderTests`.)*
 
+## 2026-11-07 — New heroes from the art are recruited as wanderers (owner, GG-T333)
+
+Owner 2026-11-07: the Herald, Aetherist and Tactician from the owner's art are recruited through the wanderer system — "met mid-battle, earn their trust, say what they want to hear, and they join".
+
+- **Was:** a new hero joined through the Summon Circle's gold pool (the Monster Tamer, GG-T303), a story beat, an authored guest or recruitable, or a mercenary contract.
+- **Now:** these heroes have no other way in, so they are only met as wanderers ([BIBLE §25.11.2.1](BIBLE.md)) or drawn for a Diamond. The Herald belongs to the Bloom, which has no heroes of its own in `factions.json`, so she is filed with **the Wild**, the closest faction.
+- **Essence (new mechanic):** the Herald's Lifegift is the first heal paid in the caster's own HP instead of mana or a cooldown alone (`AbilityDef.LifeCost`); it never takes her last HP.
+- *(Tests: `WandererHeroesTests`.)*
+
 ## 2026-11-07 — A random summon for Diamonds (owner, GG-T343)
 
 Owner: *"another way is to simply summon them randomly with Diamonds monetized currency"*.

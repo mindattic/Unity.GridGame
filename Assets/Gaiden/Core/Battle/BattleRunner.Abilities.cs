@@ -286,7 +286,19 @@ namespace GridGame.Core.Battle
             }
 
             if (a.DrainsOrbs > 0 && targets.Exists(t => t.IsHero && t.Team != caster.Team)) DrainOrbs(caster, a);
+            if (a.LifeCost > 0f && caster.Alive && !S.IsOver) GiveEssence(caster, a);
             if (a.StepBack > 0 && caster.Alive && !S.IsOver) StepAway(caster, a.StepBack);
+        }
+
+        /// <summary>GG-T333 (§25.11.2.1): the Herald heals with her own essence. Once the heal has landed she pays
+        /// <see cref="AbilityDef.LifeCost"/> of her max HP — never her last one, so a gift can't kill her. It is a price,
+        /// not a blow: no attacker, no damage triggers, no cast stagger; the -N float and a debuff cue show it.</summary>
+        private void GiveEssence(Unit caster, AbilityDef a)
+        {
+            int cost = Formulas.LifeCostHp(a, caster);
+            if (cost <= 0) return;
+            caster.Hp -= cost;
+            Emit(new DamagedEvent { TargetId = caster.Id, SourceId = -1, Amount = cost, Hit = HitKind.Normal, Type = DamageType.Holy, HpAfter = caster.Hp, Note = "Essence" });
         }
 
         /// <summary>GG-T332 (§14.15): a foe's siphon that touched a hero draws up to <see cref="AbilityDef.DrainsOrbs"/>

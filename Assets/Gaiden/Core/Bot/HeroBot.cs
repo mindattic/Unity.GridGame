@@ -498,6 +498,13 @@ namespace GridGame.Core.Bot
             }
             // A lone hero's bar is its only way to hurt anything (no pincers with one hero): spend mana and items on
             // damage freely rather than hoarding them for a pincer that can never come (GG-T123).
+            // GG-T333: an essence heal costs the caster HP. Never bleed below 40% for it; otherwise price the HP given.
+            if (a.LifeCost > 0f && score > 0f)
+            {
+                int cost = Formulas.LifeCostHp(a, caster);
+                if (cost <= 0 || caster.Hp - cost < caster.MaxHp * 0.4f) return 0f;
+                score -= cost * 0.3f;
+            }
             bool lone = EnemyPlanner.LoneHero(s) && score > 0f && a.BaseDamage > 0;
             if (ReadsBar && castTicks > 0 && score > 0f) score -= LatePenalty(s, a, targets, castTicks);
             if (ReadsBar && score > 0f) score += AbilityTimeValue(s, caster, a, targets);

@@ -160,6 +160,13 @@ namespace GridGame.Core.Content
                     if (a.Shape != TargetShape.SingleActor || a.Mode != TargetMode.PickActor || a.Filter != TargetFilter.EnemyOnly)
                         p.Add($"ability {a.Id}: a Tame picks one foe (SingleActor, PickActor, EnemyOnly)");
                 }
+                // GG-T333: Essence is what the Herald pays for a heal, so it belongs on an ally heal, in a sane range.
+                if (a.LifeCost != 0f)
+                {
+                    if (!(a.LifeCost > 0f && a.LifeCost <= AbilityDef.MaxLifeCost)) p.Add($"ability {a.Id}: LifeCost {a.LifeCost} outside (0, {AbilityDef.MaxLifeCost}]");
+                    if (a.BaseHeal <= 0 || a.Filter != TargetFilter.AllyOnly) p.Add($"ability {a.Id}: a LifeCost pays for an ally heal (BaseHeal > 0, AllyOnly)");
+                    if (a.Kind != AbilityKind.Skill && a.Kind != AbilityKind.Spell) p.Add($"ability {a.Id}: a LifeCost is a Skill or a Spell");
+                }
                 // GG-T302: the generated "When [attacked directly]: ..." sentence only uses glossary terms.
                 if (a.Trigger != null && db.GlossaryIndex.Count > 0)
                     foreach (var t in Glossary.Terms(Rules.TriggerText.Describe(db, a)))

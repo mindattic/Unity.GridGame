@@ -1151,6 +1151,14 @@
   "beast_sense": [
    "skoll/fangs",
    "leather"
+  ],
+  "herald_lifegift": [
+   "zeromancer/heart-plus",
+   "coral"
+  ],
+  "herald_rebloom": [
+   "lorc/feather",
+   "moss"
   ]
  },
  "item": {

@@ -866,5 +866,10 @@
     "Text": "A Hellspawn Emberheart's charge: the red river floods a hero's whole row, burning everyone in it. Leave the row, or [Interrupt] it.",
     "LinkKind": "Ability",
     "LinkId": "charge_red_tide"
+  },
+  {
+    "Id": "essence",
+    "Term": "Essence",
+    "Text": "Healing paid for in the healer's own HP instead of mana: the Herald's gift. It never takes her last HP."
   }
 ]

@@ -1872,6 +1872,57 @@
     ]
   },
   {
+    "Id": "talk_quiz_herald",
+    "Title": "Advice",
+    "Trigger": {
+      "Kind": "Talk",
+      "Id": "herald"
+    },
+    "Speakers": [
+      {
+        "Id": "hero",
+        "Class": "$with"
+      }
+    ],
+    "Nodes": [
+      {
+        "Id": "ask",
+        "Speaker": "hero",
+        "Text": "The Concord says aether can only be taken. I give mine away every fight. Should I stop?",
+        "Choices": [
+          {
+            "Label": "Stop. You'll empty yourself out.",
+            "Next": "wrong"
+          },
+          {
+            "Label": "Give, but keep enough to stand. The Bloom needs you growing too.",
+            "Next": "right",
+            "Effects": [
+              {
+                "Type": "GrantSkillPoint",
+                "Id": "$with"
+              }
+            ]
+          },
+          {
+            "Label": "Give it all. That's what you're for.",
+            "Next": "wrong"
+          }
+        ]
+      },
+      {
+        "Id": "right",
+        "Speaker": "hero",
+        "Text": "Enough to stand. ...The blossoms do grow back faster when I rest."
+      },
+      {
+        "Id": "wrong",
+        "Speaker": "hero",
+        "Text": "...Maybe. It doesn't sound like something the Bloom would say."
+      }
+    ]
+  },
+  {
     "Id": "talk_quiz_dervish",
     "Title": "Advice",
     "Trigger": { "Kind": "Talk", "Id": "dervish" },

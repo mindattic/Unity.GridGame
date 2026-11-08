@@ -93,6 +93,11 @@ namespace GridGame.Tests
                 // GG-T292: GAIDEN_ABILITY_PARTY=campaign fields the party the campaign has at that stage (the starting three,
                 // plus a rotating hero for each story-beat join before it, up to the cap of six) instead of a flat five.
                 bool campaignParty = Environment.GetEnvironmentVariable("GAIDEN_ABILITY_PARTY") == "campaign";
+                // GG-T333: GAIDEN_ABILITY_WITH=<hero> fields that hero in every campaign party in place of
+                // GAIDEN_ABILITY_REPLACE (default the starting Cleric); the rotation never draws it, so the same seeds and
+                // joiners compare one hero against another of its role.
+                var with = Environment.GetEnvironmentVariable("GAIDEN_ABILITY_WITH");
+                var replace = Environment.GetEnvironmentVariable("GAIDEN_ABILITY_REPLACE") ?? "cleric";
                 for (int si = 0; si < stages.Count; si++)
                     for (int k = 0; k < perStage; k++)
                     {
@@ -101,7 +106,11 @@ namespace GridGame.Tests
                         // The campaign's own start (Tank, Striker, Healer) plus rotating joiners up to the stage's party size.
                         var p = Progression.StartingRoster.ToList();
                         for (int i = 0; p.Count < CampaignPartySize(c, stages[si]); i++)
-                            if (!p.Contains(heroes[(start + i) % heroes.Count])) p.Add(heroes[(start + i) % heroes.Count]);
+                        {
+                            var h = heroes[(start + i) % heroes.Count];
+                            if (!p.Contains(h) && (string.IsNullOrEmpty(with) || (h != with && h != replace))) p.Add(h);
+                        }
+                        if (!string.IsNullOrEmpty(with)) p[p.IndexOf(replace)] = with;
                         plan.Add((p, stages[si]));
                     }
             }

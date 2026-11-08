@@ -25,6 +25,6 @@
   },
   {
     "Id": "wild", "Name": "the Wild",
-    "Heroes": [ "wildchild", "monstertamer", "bluelion" ]
+    "Heroes": [ "wildchild", "monstertamer", "bluelion", "herald" ]
   }
 ]

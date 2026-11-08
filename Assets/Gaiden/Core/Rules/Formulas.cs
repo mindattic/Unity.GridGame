@@ -226,6 +226,15 @@ namespace GridGame.Core.Rules
             return Clamp(1f + (caster.Effective.Wisdom - 12f) * BattleConfig.CasterPowerPerPoint, BattleConfig.CasterPowerMin, BattleConfig.CasterPowerMax);
         }
 
+        /// <summary>Essence (GG-T333): the HP a <see cref="AbilityDef.LifeCost"/> heal takes from its caster, at least 1 and
+        /// never its last HP (0 when it has none to spare).</summary>
+        public static int LifeCostHp(AbilityDef a, Unit caster)
+        {
+            if (a == null || caster == null || !(a.LifeCost > 0f)) return 0;
+            int cost = Math.Max(1, (int)Math.Round(caster.MaxHp * a.LifeCost));
+            return Math.Max(0, Math.Min(cost, caster.Hp - 1));
+        }
+
         /// <summary>WIS+INT shortens cast time, floored at 25% of base (old Formulas.CastTime).</summary>
         public static float CastTime(float baseSeconds, Stats s)
         {
