@@ -602,5 +602,45 @@
         ]
       }
     ]
+  },
+  {
+    "Id": "morrows-dark",
+    "TileStates": [
+      {
+        "Id": "brazier-light",
+        "Lights": true,
+        "Color": "#F2B35B",
+        "Glyph": "o"
+      }
+    ],
+    "Hooks": [
+      {
+        "On": "BattleStart",
+        "Effects": [
+          {
+            "Kind": "SetFlag",
+            "Flag": "darkness"
+          }
+        ]
+      },
+      {
+        "On": "WaveSpawn",
+        "Effects": [
+          {
+            "Kind": "ClearTiles",
+            "Area": "WithState",
+            "State": "brazier-light"
+          },
+          {
+            "Kind": "MarkTiles",
+            "Area": "RandomFree",
+            "Count": 2,
+            "Radius": 1,
+            "State": "brazier-light",
+            "KeepMarks": true
+          }
+        ]
+      }
+    ]
   }
 ]

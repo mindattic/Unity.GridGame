@@ -75,6 +75,7 @@ namespace GridGame.App
                 try { anim = Animate(events[i]); }
                 catch (System.Exception e) { Debug.LogException(e); }
                 if (anim != null) yield return Safe(anim);
+                SyncDarkness();
                 // GG-T97: once a beat ends no two tokens may be drawn on one tile. The one legitimate in-between is a
                 // swap still finishing — the stepper has arrived and its partner's DisplacedEvent (or the amplifier's
                 // shove) is the very next beat — so the check waits for that beat.

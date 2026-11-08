@@ -317,7 +317,8 @@ namespace GridGame.App
             {
                 var owner = State.UnitById(e.OwnerId);
                 // GG-T359: a rule's MaskTimeline flag (darkness) hides who a foe's icon belongs to.
-                if (owner != null && owner.Team == Team.Enemy && RegionBoard.MasksTimeline(State))
+                // GG-T365: so does darkness, for a foe out of sight.
+                if (owner != null && owner.Team == Team.Enemy && (RegionBoard.MasksTimeline(State) || RegionBoard.Hidden(State, owner)))
                 {
                     art.style.backgroundColor = Palette.Ink;
                     var q = new Label("?") { pickingMode = PickingMode.Ignore };

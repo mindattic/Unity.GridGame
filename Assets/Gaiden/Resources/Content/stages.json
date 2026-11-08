@@ -4422,7 +4422,7 @@
             "Y": -1
           },
           {
-            "Class": "hellspawn02",
+            "Class": "duskstalker",
             "Level": 1,
             "X": -1,
             "Y": -1
@@ -4454,7 +4454,7 @@
             "Y": -1
           },
           {
-            "Class": "infernalist02",
+            "Class": "lampsnuffer",
             "Level": 1,
             "X": -1,
             "Y": -1
@@ -4470,7 +4470,7 @@
             "Y": -1
           },
           {
-            "Class": "vulture",
+            "Class": "gloommender",
             "Level": 1,
             "X": -1,
             "Y": -1
@@ -4523,7 +4523,7 @@
             "Y": -1
           },
           {
-            "Class": "wolf02",
+            "Class": "duskstalker",
             "Level": 1,
             "X": -1,
             "Y": -1
@@ -4555,7 +4555,7 @@
             "Y": -1
           },
           {
-            "Class": "flyingmonkey",
+            "Class": "lampsnuffer",
             "Level": 1,
             "X": -1,
             "Y": -1
@@ -4571,7 +4571,7 @@
             "Y": -1
           },
           {
-            "Class": "hellspawn03",
+            "Class": "gloommender",
             "Level": 1,
             "X": -1,
             "Y": -1
@@ -4628,7 +4628,7 @@
             "Y": -1
           },
           {
-            "Class": "wolf03",
+            "Class": "duskstalker",
             "Level": 1,
             "X": -1,
             "Y": -1
@@ -4660,7 +4660,7 @@
             "Y": -1
           },
           {
-            "Class": "hellspawn04",
+            "Class": "gloommender",
             "Level": 1,
             "X": -1,
             "Y": -1
@@ -4670,13 +4670,13 @@
       {
         "Enemies": [
           {
-            "Class": "infernalist03",
+            "Class": "werewolf00",
             "Level": 1,
             "X": -1,
             "Y": -1
           },
           {
-            "Class": "werewolf00",
+            "Class": "lampsnuffer",
             "Level": 1,
             "X": -1,
             "Y": -1

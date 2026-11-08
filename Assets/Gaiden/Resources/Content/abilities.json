@@ -10274,5 +10274,42 @@
     "KeepMarks": true
    }
   ]
+ },
+ {
+  "IsTeleport": false,
+  "Icon": null,
+  "CastVfx": null,
+  "ProjectileVfx": null,
+  "ImpactVfx": null,
+  "LingerVfx": null,
+  "Sfx": null,
+  "ApplyBuff": "blinded",
+  "ApplyBuffChance": 1.0,
+  "RemovesDebuffs": false,
+  "StealsMana": false,
+  "HastenU": 0.0,
+  "BaseHeal": 0,
+  "Id": "charge_snuff_lights",
+  "RecoverSeconds": 1.0,
+  "Name": "Snuff the Lights",
+  "Description": "Puts out every brazier on the field and blinds a hero.",
+  "Kind": "Spell",
+  "Cost": 0,
+  "CastTime": 2.5,
+  "CooldownTurns": 0,
+  "Shape": "SingleActor",
+  "Radius": 0,
+  "Mode": "PickActor",
+  "Filter": "EnemyOnly",
+  "Motion": "None",
+  "DamageType": "Dark",
+  "BaseDamage": 0,
+  "RuleEffects": [
+   {
+    "Kind": "ClearTiles",
+    "Area": "WithState",
+    "State": "brazier-light"
+   }
+  ]
  }
 ]

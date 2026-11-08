@@ -130,5 +130,25 @@ namespace GridGame.Core.Battle
 
         /// <summary>True when the timeline should mask enemy turn icons (a rule raised <see cref="RuleFlags.MaskTimeline"/>).</summary>
         public static bool MasksTimeline(BattleState s) => s.Region.HasFlag(RuleFlags.MaskTimeline);
+
+        /// <summary>How far (Manhattan) a hero sees under <see cref="RuleFlags.Darkness"/> (GG-T365).</summary>
+        public const int DarkSight = 2;
+
+        /// <summary>Under <see cref="RuleFlags.Darkness"/>, is foe <paramref name="u"/> out of sight: more than
+        /// <see cref="DarkSight"/> tiles from every living hero and on no lit tile (GG-T365)? The view hides it on the board
+        /// and masks its timeline icon; the rules of play don't change.</summary>
+        public static bool Hidden(BattleState s, Unit u)
+        {
+            if (u == null || !u.Alive || u.Team != Team.Enemy || !s.Region.HasFlag(RuleFlags.Darkness)) return false;
+            foreach (var t in u.Tiles())
+                if (s.Content?.TryTileState(s.Region.At(t)?.State)?.Lights == true) return false;
+            foreach (var h in s.Units)
+            {
+                if (!h.Alive || !h.IsHero) continue;
+                foreach (var t in u.Tiles())
+                    if (t.Manhattan(h.Pos) <= DarkSight) return false;
+            }
+            return true;
+        }
     }
 }

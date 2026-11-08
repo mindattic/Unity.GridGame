@@ -104,6 +104,27 @@ namespace GridGame.App
             v.Root.style.opacity = 1f;
         }
 
+        private readonly System.Collections.Generic.HashSet<int> darkHidden = new System.Collections.Generic.HashSet<int>();
+
+        /// <summary>
+        /// Darkness (GG-T365, §14.20.6): a foe out of every hero's sight and off any lit tile vanishes from the board and
+        /// its timeline icon turns to a "?" (RegionBoard.Hidden); it reappears the beat it comes into sight.
+        /// </summary>
+        private void SyncDarkness()
+        {
+            if (State == null || (darkHidden.Count == 0 && !State.Region.HasFlag(RuleFlags.Darkness))) return;
+            bool changed = false;
+            foreach (var kv in board.Units)
+            {
+                bool hide = RegionBoard.Hidden(State, State.UnitById(kv.Key));
+                if (hide == darkHidden.Contains(kv.Key)) continue;
+                changed = true;
+                if (hide) darkHidden.Add(kv.Key); else darkHidden.Remove(kv.Key);
+                kv.Value.Root.style.visibility = hide ? Visibility.Hidden : Visibility.Visible;
+            }
+            if (changed) RedrawTimelineArt();
+        }
+
         /// <summary>What a rule event is called on screen: its rule's Prose name, else the event id.</summary>
         private string HazardName(string eventId, string ruleId) =>
             App.Content.TryRegionRule(ruleId)?.Name ?? App.Content.TryRegionRule(App.Content.RuleEventRule.TryGetValue(eventId ?? "", out var r) ? r : null)?.Name ?? "Hazard";

@@ -25,7 +25,44 @@ namespace GridGame.Tests
         /// <summary>Void Sentinels, the Ember and the moon-changed Wild.</summary>
         private static bool ShadowFoe(string cls) =>
             cls == "voidsentinel" || cls == "demonlord" || cls.StartsWith("infernalist") || cls.StartsWith("hellspawn")
-            || cls.StartsWith("wolf") || cls.StartsWith("werewolf") || cls == "yeti" || cls == "vulture" || cls == "flyingmonkey";
+            || cls.StartsWith("wolf") || cls.StartsWith("werewolf") || cls == "yeti" || cls == "vulture" || cls == "flyingmonkey"
+            || DarkMonsters.Contains(cls); // GG-T365
+
+        private static readonly string[] DarkMonsters = { "lampsnuffer", "duskstalker", "gloommender" };
+
+        [Test]
+        public void Morrows_shadow_is_fought_in_the_dark_by_its_own_monsters()
+        {
+            var db = Real;
+            var rule = db.TryRegionRule("morrows-dark");
+            Assert.That(rule.Hooks.Single(h => h.On == RuleHook.BattleStart).Effects.Single().Flag, Is.EqualTo(RuleFlags.Darkness));
+            Assert.That(db.TryTileState("brazier-light").Lights, Is.True);
+            foreach (var id in Stages)
+            {
+                Assert.That(RegionRuleCatalog.ActiveFor(db, db.Stages[id]).Select(r => r.Id), Is.EqualTo(new[] { "morrows-dark" }), id);
+                var classes = db.Stages[id].Waves.SelectMany(w => w.Enemies).Select(e => e.Class).ToList();
+                foreach (var m in DarkMonsters) Assert.That(classes, Does.Contain(m), $"{id} fields the {m}");
+            }
+            Assert.That(db.TryAbility(db.Classes["lampsnuffer"].ChargeAbility).RuleEffects.Single().Kind, Is.EqualTo(RuleEffectKind.ClearTiles));
+            Assert.That(db.Classes["duskstalker"].OnDeathRule.Single().State, Is.EqualTo("brazier-light"));
+            foreach (var m in DarkMonsters)
+                Assert.That(db.Classes[m].Portrait, Is.EqualTo("mannequin"), $"{m}: placeholder art until its portrait lands");
+        }
+
+        [Test]
+        public void In_the_dark_a_foe_is_hidden_out_of_every_heros_sight_unless_it_stands_in_light()
+        {
+            var db = Real;
+            var (s, _) = Battle(db, db.Stages["morrowsshadow-01"], ("knight", 1, 7), ("cleric", 4, 7));
+            Assert.That(s.Region.HasFlag(RuleFlags.Darkness), Is.True, "the battle opens dark");
+            foreach (var foe in s.Units.Where(u => u.Alive && u.Team == Team.Enemy))
+            {
+                bool near = s.Units.Any(h => h.Alive && h.IsHero && foe.Tiles().Any(t => t.Manhattan(h.Pos) <= RegionBoard.DarkSight));
+                bool lit = foe.Tiles().Any(t => db.TryTileState(s.Region.At(t)?.State)?.Lights == true);
+                Assert.That(RegionBoard.Hidden(s, foe), Is.EqualTo(!near && !lit), foe.Def.Id);
+            }
+            Assert.That(s.Units.Where(u => u.IsHero).All(h => !RegionBoard.Hidden(s, h)), "heroes are never hidden");
+        }
 
         [Test]
         public void Morrows_shadow_is_the_last_chapter_of_the_campaign_and_validates()

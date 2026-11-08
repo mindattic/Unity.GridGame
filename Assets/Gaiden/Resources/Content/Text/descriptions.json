@@ -1134,6 +1134,22 @@
         "long": "Every scar is a lesson. Every lesson becomes an opening."
       }
     },
+    "class:duskstalker": {
+      "key": "class:duskstalker",
+      "id": "description-class-duskstalker",
+      "guid": null,
+      "version": 0,
+      "source": "seed",
+      "hash": "sha256:0de36655f172be964d0fb4f22ab6ac3c0ec55ae7976d824c94fcc30d178727d8",
+      "about": [
+        "class-duskstalker"
+      ],
+      "speakers": [],
+      "payload": {
+        "short": "A hunter that strikes from the dark; its eyes light the ground where it falls.",
+        "long": "You see it once: when it dies, and its eyes are still burning."
+      }
+    },
     "class:engineer": {
       "key": "class:engineer",
       "id": "description-class-engineer",
@@ -1388,6 +1404,22 @@
       "payload": {
         "short": "An unnatural entity that endures through grim resilience and dread.",
         "long": "Life ended. Purpose remained. The rest is hunger and memory."
+      }
+    },
+    "class:gloommender": {
+      "key": "class:gloommender",
+      "id": "description-class-gloommender",
+      "guid": null,
+      "version": 0,
+      "source": "seed",
+      "hash": "sha256:0dd25979ca58d3bff6ea70b02b863313f5f303bd99cd3ddc3ffa06a6ab962201",
+      "about": [
+        "class-gloommender"
+      ],
+      "speakers": [],
+      "payload": {
+        "short": "A mender that keeps its allies standing from somewhere out of sight.",
+        "long": "The wounded under Morrow do not know who heals them. They have stopped asking."
       }
     },
     "class:goblinthug00": {
@@ -1948,6 +1980,22 @@
       "payload": {
         "short": "A stalwart defender that anchors the line and absorbs pressure.",
         "long": "Built on vows and iron patience, they stand where others fall back."
+      }
+    },
+    "class:lampsnuffer": {
+      "key": "class:lampsnuffer",
+      "id": "description-class-lampsnuffer",
+      "guid": null,
+      "version": 0,
+      "source": "seed",
+      "hash": "sha256:8d6ebcd36fdaa4b53f4ce7ae538be2fd84395a4d9891e39cdf05b2ceb05e5b9f",
+      "about": [
+        "class-lampsnuffer"
+      ],
+      "speakers": [],
+      "payload": {
+        "short": "A shade that puts out the braziers and blinds whoever carries a light.",
+        "long": "Every light under Morrow is borrowed. It comes to collect."
       }
     },
     "class:lancer": {
@@ -23378,6 +23426,20 @@
       "payload": {
         "name": "Land Mines",
         "short": "Bulwark gunners plant mines as they march. Step on one, shove a foe onto it, or hit it from range and it arms: the blast lands on the timeline a moment later. A Disarm Kit pulls it safely."
+      }
+    },
+    "rule:morrows-dark": {
+      "key": "rule:morrows-dark",
+      "id": "description-rule-morrows-dark",
+      "guid": null,
+      "version": 0,
+      "source": "seed",
+      "hash": "sha256:1cadc3c8ba46b4c830550965ceeb35eaaf1631cb24738d4232fb326ef0b5cc25",
+      "about": [],
+      "speakers": [],
+      "payload": {
+        "name": "Morrow's Dark",
+        "short": "Under Morrow there is no light but the braziers. A foe more than two tiles from every hero, and off the brazier-light, is hidden on the field and its timeline icon is a question mark."
       }
     },
     "rule:rising-tide": {

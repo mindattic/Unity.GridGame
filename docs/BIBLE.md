@@ -2483,6 +2483,26 @@ each wave cracks three free tiles; a crack counts steps, turn ends and blows, cr
   family or one of the three; signatures stay unique.
 - Balance unmeasured (owner rule: no soak). *(Tests: `UnderspireTests.The_underspire_floor_cracks_under_its_own_monsters`, written, not run.)*
 
+#### 14.20.6 Morrow's Shadow: darkness (GG-T365)
+
+The region rule `morrows-dark` (theme `morrowsshadow`, stages 38-40): the finale chapter is fought half-blind.
+
+- **Darkness.** The battle opens by raising the `darkness` flag (`RuleFlags.Darkness`). A foe more than
+  `RegionBoard.DarkSight` (2) tiles from every living hero, and on no lit tile, is **hidden** (`RegionBoard.Hidden`): the
+  board doesn't draw it and its timeline icon is a "?" silhouette (the `mask-timeline` art), so the party knows a foe's
+  turn is coming but not whose. It reappears the beat it comes into sight (`BattleScreen.SyncDarkness`, after every
+  playback beat). The rules of play don't change: a hidden foe still blocks, acts and can be struck.
+- **Light.** Each wave puts out the last wave's braziers and lights two new patches (a free tile and the four around it,
+  never over another mark): `brazier-light`, a `Lights` tile state. A foe standing in brazier-light is always seen.
+- **Dark monsters** (Mannequin placeholder art, words in Prose `class:<id>`):
+  - **Lamp Snuffer** (Kiter, range 3): its charge `charge_snuff_lights` puts out every brazier and blinds a hero.
+  - **Dusk Stalker** (Stalker, fast, targets the squishy): where it falls, its tile and the four around it light up.
+  - **Gloom Mender** (Medic): heals its allies from out of sight.
+- **Waves.** Every stage keeps the Ember, the Sentinels and the moon-changed Wild, and fields all three; the finale is
+  unchanged (the Demon Lord, a Sentinel and a Bloodbinder); signatures stay unique.
+- Not yet: light-element hero abilities lighting tiles, and a mimic with a false timeline icon. Balance unmeasured (owner
+  rule: no soak). *(Tests: `MorrowsShadowTests.Morrows_shadow_is_fought_in_the_dark_by_its_own_monsters`, written, not run.)*
+
 ### 14.21 Cracking floors (added 2026-11-08, owner direction, GG-T368)
 
 Owner: *"cracking floors which open up holes to fall into that takes off some life and respawns actor next to hole (what

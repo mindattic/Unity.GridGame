@@ -179,6 +179,9 @@
         "morrowsshadow-01",
         "morrowsshadow-02",
         "morrowsshadow-03"
+      ],
+      "Rules": [
+        "morrows-dark"
       ]
     }
   ]

@@ -101,6 +101,9 @@ namespace GridGame.Core.Content
     {
         /// <summary>The view masks enemy turn icons on the timeline (GG-T365's darkness builds on it).</summary>
         public const string MaskTimeline = "mask-timeline";
+        /// <summary>Foes out of every hero's sight (<see cref="Battle.RegionBoard.DarkSight"/>) and off any lit tile are hidden on
+        /// the board and on the timeline (GG-T365).</summary>
+        public const string Darkness = "darkness";
     }
 
     /// <summary>One effect a hook, an event, an ability or a death runs.</summary>
@@ -165,6 +168,8 @@ namespace GridGame.Core.Content
         /// elements.json row reacts to (GG-T371 <see cref="ElementDef.Tiles"/>: fire melts ice, ice douses fire, fire burns
         /// slime away, fire sets a mine off), the reaction runs on that tile and the incoming state is spent.</summary>
         public DamageType? Element;
+        /// <summary>A light (GG-T365): under <see cref="RuleFlags.Darkness"/> a unit standing on it is never hidden.</summary>
+        public bool Lights;
     }
 
     /// <summary>A telegraphed event a rule puts on the timeline: its own icon rides the bar like a cast and resolves its Effects on arrival.</summary>
