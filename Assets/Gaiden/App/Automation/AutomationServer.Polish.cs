@@ -16,6 +16,10 @@ namespace GridGame.App.Automation
     {
         private const float MinTarget = 132f, MinTargetGap = 24f, CaptionFloor = 30f, MaxMeasure = 60f;
 
+        /// <summary>GG-T284: +/-2 design px (plus float slop) for gaps and gutters: layout snaps to physical
+        /// pixels, so a correct 24-px gap can render as 23 or 26.</summary>
+        private const float GapTolerance = 2.05f;
+
         private object PolishAudit()
         {
             var app = GameApp.I;
@@ -104,15 +108,20 @@ namespace GridGame.App.Automation
             {
                 string subj = TargetName(e);
                 Tally("POL-C2", r.width >= MinTarget - 0.5f && r.height >= MinTarget - 0.5f, subj, $"{r.width:0}x{r.height:0} < {MinTarget:0}x{MinTarget:0}");
+                // GG-T284: the gap is read in design px (divided by the scale the pair is drawn at) with the
+                // pixel-snap tolerance, so a correct 24-px gap that renders as 23 does not fail.
                 float gap = float.MaxValue;
+                float se = LayoutScale(e) * k;
                 foreach (var (o, q) in targets)
                 {
                     if (o == e || e.Contains(o) || o.Contains(e) || r.Overlaps(q)) continue;
                     float dx = Mathf.Max(0, Mathf.Max(r.xMin, q.xMin) - Mathf.Min(r.xMax, q.xMax));
                     float dy = Mathf.Max(0, Mathf.Max(r.yMin, q.yMin) - Mathf.Min(r.yMax, q.yMax));
-                    gap = Mathf.Min(gap, dx > 0 && dy > 0 ? Mathf.Sqrt(dx * dx + dy * dy) : Mathf.Max(dx, dy));
+                    float scale = 0.5f * (se + LayoutScale(o) * k);
+                    float g = dx > 0 && dy > 0 ? Mathf.Sqrt(dx * dx + dy * dy) : Mathf.Max(dx, dy);
+                    gap = Mathf.Min(gap, scale > 0.01f ? g / scale : g);
                 }
-                if (gap < float.MaxValue) Tally("POL-C3", gap >= MinTargetGap - 0.5f, subj, $"{gap:0}px from the next target");
+                if (gap < float.MaxValue) Tally("POL-C3", gap >= MinTargetGap - GapTolerance, subj, $"{gap:0}px from the next target");
             }
 
             // Sibling overlap among in-flow children: flex layout never overlaps them unless something is wrong.
@@ -134,32 +143,34 @@ namespace GridGame.App.Automation
 
             // POL-C8 gutters: a row or wrapping grid of like-sized items has equal left, right and between gaps, on the
             // spacing scale (owner 2026-11-05: "gutters and spacing are important").
+            // GG-T284: measured in design px from the children's layout rects (the parent's own space, before any
+            // scale transform on it or an ancestor), with the pixel-snap tolerance, so a 24-px gutter never reads 26.
             foreach (var parent in stage.Query<VisualElement>().Where(Shown).ToList())
             {
                 var dir = parent.resolvedStyle.flexDirection;
                 if (dir != FlexDirection.Row && dir != FlexDirection.RowReverse) continue;
-                var kids = parent.Children().Where(c => c.resolvedStyle.position == Position.Relative && Shown(c) && c.worldBound.width >= 1 && c.worldBound.height >= 1).ToList();
+                if (parent.layout.width < 1) continue;
+                var kids = parent.Children().Where(c => c.resolvedStyle.position == Position.Relative && Shown(c) && c.layout.width >= 1 && c.layout.height >= 1).ToList();
                 if (kids.Count < 3) continue;
-                float mw = Median(kids.Select(c => c.worldBound.width)), mh = Median(kids.Select(c => c.worldBound.height));
-                if (kids.Any(c => Mathf.Abs(c.worldBound.width - mw) > mw * 0.1f || Mathf.Abs(c.worldBound.height - mh) > mh * 0.1f)) continue;
-                var pb = parent.worldBound;
+                float mw = Median(kids.Select(c => c.layout.width)), mh = Median(kids.Select(c => c.layout.height));
+                if (kids.Any(c => Mathf.Abs(c.layout.width - mw) > mw * 0.1f || Mathf.Abs(c.layout.height - mh) > mh * 0.1f)) continue;
                 var ps = parent.resolvedStyle;
-                float innerL = pb.xMin + ps.borderLeftWidth, innerR = pb.xMax - ps.borderRightWidth;
-                var lines = kids.GroupBy(c => Mathf.RoundToInt(c.worldBound.yMin / 4f)).Select(g => g.OrderBy(c => c.worldBound.xMin).ToList()).ToList();
+                float innerL = ps.borderLeftWidth, innerR = parent.layout.width - ps.borderRightWidth;
+                var lines = kids.GroupBy(c => Mathf.RoundToInt(c.layout.yMin / 4f)).Select(g => g.OrderBy(c => c.layout.xMin).ToList()).ToList();
                 int full = lines.Max(l => l.Count);
                 var between = new List<float>(); var lefts = new List<float>(); var rights = new List<float>();
                 foreach (var line in lines)
                 {
-                    lefts.Add((line[0].worldBound.xMin - innerL) * k);
-                    for (int i = 1; i < line.Count; i++) between.Add((line[i].worldBound.xMin - line[i - 1].worldBound.xMax) * k);
-                    if (line.Count == full) rights.Add((innerR - line[line.Count - 1].worldBound.xMax) * k);
+                    lefts.Add(line[0].layout.xMin - innerL);
+                    for (int i = 1; i < line.Count; i++) between.Add(line[i].layout.xMin - line[i - 1].layout.xMax);
+                    if (line.Count == full) rights.Add(innerR - line[line.Count - 1].layout.xMax);
                 }
                 var issues = new List<string>();
                 float gap = between.Count > 0 ? Median(between) : -1;
-                if (between.Count > 0 && between.Max() - between.Min() > 2) issues.Add($"uneven gaps {between.Min():0}..{between.Max():0}");
+                if (between.Count > 0 && between.Max() - between.Min() > GapTolerance) issues.Add($"uneven gaps {between.Min():0}..{between.Max():0}");
                 float left = Median(lefts), right = rights.Count > 0 ? Median(rights) : left;
-                if (Mathf.Abs(left - right) > 2) issues.Add($"ragged edges: left {left:0} vs right {right:0}");
-                if (gap >= 0 && Mathf.Abs(left - gap) > 2 && Mathf.Abs(right - gap) > 2) issues.Add($"edge {left:0}/{right:0} vs gap {gap:0}");
+                if (Mathf.Abs(left - right) > GapTolerance) issues.Add($"ragged edges: left {left:0} vs right {right:0}");
+                if (gap >= 0 && Mathf.Abs(left - gap) > GapTolerance && Mathf.Abs(right - gap) > GapTolerance) issues.Add($"edge {left:0}/{right:0} vs gap {gap:0}");
                 if (gap >= 0 && !OnSpaceScale(gap)) issues.Add($"gap {gap:0}px is off the space scale");
                 Tally("POL-C8", issues.Count == 0, TargetName(parent), string.Join("; ", issues));
             }
@@ -212,7 +223,16 @@ namespace GridGame.App.Automation
         private static readonly HashSet<string> ArtLed = new HashSet<string> { "title", "credits", "storycrawl", "crawl", "dialogue" };
 
         private static readonly float[] SpaceScale = { 0, 8, 16, 24, 32, 48, 64, 96 };
-        private static bool OnSpaceScale(float v) => SpaceScale.Any(s => Mathf.Abs(v - s) <= 1.5f);
+        private static bool OnSpaceScale(float v) => SpaceScale.Any(s => Mathf.Abs(v - s) <= GapTolerance);
+
+        /// <summary>GG-T284: how many panel px one design px of this element's layout is drawn at (the parent's
+        /// world size over its layout size, which folds in every scale transform above it).</summary>
+        private static float LayoutScale(VisualElement e)
+        {
+            var p = e.parent;
+            if (p == null || p.layout.width < 1 || p.worldBound.width < 1) return 1f;
+            return p.worldBound.width / p.layout.width;
+        }
 
         private static float Median(IEnumerable<float> xs)
         {
