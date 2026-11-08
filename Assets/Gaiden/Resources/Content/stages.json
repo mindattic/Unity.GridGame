@@ -3488,12 +3488,6 @@
             "Level": 1,
             "X": -1,
             "Y": -1
-          },
-          {
-            "Class": "ganger02",
-            "Level": 1,
-            "X": -1,
-            "Y": -1
           }
         ]
       },
@@ -3501,12 +3495,6 @@
         "Enemies": [
           {
             "Class": "wolf00",
-            "Level": 1,
-            "X": -1,
-            "Y": -1
-          },
-          {
-            "Class": "wolf01",
             "Level": 1,
             "X": -1,
             "Y": -1
@@ -3521,12 +3509,6 @@
       },
       {
         "Enemies": [
-          {
-            "Class": "undead00",
-            "Level": 1,
-            "X": -1,
-            "Y": -1
-          },
           {
             "Class": "undead01",
             "Level": 1,
@@ -3554,23 +3536,11 @@
             "Level": 1,
             "X": -1,
             "Y": -1
-          },
-          {
-            "Class": "ganger03",
-            "Level": 1,
-            "X": -1,
-            "Y": -1
-          },
-          {
-            "Class": "ganger04",
-            "Level": 1,
-            "X": -1,
-            "Y": -1
           }
         ]
       }
     ],
-    "LevelOverride": 15
+    "LevelOverride": 28
   },
   {
     "Id": "greenvalley-05",
@@ -3581,21 +3551,41 @@
     "IsTest": false,
     "Waves": [
       {
-        "Group": "frog-line-3"
-      },
-      {
-        "Group": "ganger-wedge-3"
-      },
-      {
         "Enemies": [
           {
-            "Class": "wolf02",
+            "Class": "frog00",
             "Level": 1,
             "X": -1,
             "Y": -1
           },
           {
-            "Class": "wolf03",
+            "Class": "frog01",
+            "Level": 1,
+            "X": -1,
+            "Y": -1
+          }
+        ]
+      },
+      {
+        "Enemies": [
+          {
+            "Class": "ganger01",
+            "Level": 1,
+            "X": -1,
+            "Y": -1
+          },
+          {
+            "Class": "ganger02",
+            "Level": 1,
+            "X": -1,
+            "Y": -1
+          }
+        ]
+      },
+      {
+        "Enemies": [
+          {
+            "Class": "wolf02",
             "Level": 1,
             "X": -1,
             "Y": -1
@@ -3610,12 +3600,6 @@
       },
       {
         "Enemies": [
-          {
-            "Class": "soldier00",
-            "Level": 1,
-            "X": -1,
-            "Y": -1
-          },
           {
             "Class": "soldier01",
             "Level": 1,
@@ -3649,17 +3633,11 @@
             "Level": 1,
             "X": -1,
             "Y": -1
-          },
-          {
-            "Class": "soldier02",
-            "Level": 1,
-            "X": -1,
-            "Y": -1
           }
         ]
       }
     ],
-    "LevelOverride": 15
+    "LevelOverride": 29
   },
   {
     "Id": "desert-04",
@@ -3686,7 +3664,20 @@
         ]
       },
       {
-        "Group": "soldier-wedge-3"
+        "Enemies": [
+          {
+            "Class": "captain",
+            "Level": 1,
+            "X": -1,
+            "Y": -1
+          },
+          {
+            "Class": "soldier00",
+            "Level": 1,
+            "X": -1,
+            "Y": -1
+          }
+        ]
       },
       {
         "Enemies": [
@@ -3705,7 +3696,20 @@
         ]
       },
       {
-        "Group": "desertflyer-spread-3"
+        "Enemies": [
+          {
+            "Class": "flyingmonkey",
+            "Level": 1,
+            "X": -1,
+            "Y": -1
+          },
+          {
+            "Class": "vulture",
+            "Level": 1,
+            "X": -1,
+            "Y": -1
+          }
+        ]
       },
       {
         "Enemies": [
@@ -3720,17 +3724,11 @@
             "Level": 1,
             "X": -1,
             "Y": -1
-          },
-          {
-            "Class": "techgremlin02",
-            "Level": 1,
-            "X": -1,
-            "Y": -1
           }
         ]
       }
     ],
-    "LevelOverride": 15
+    "LevelOverride": 34
   },
   {
     "Id": "desert-05",
@@ -3753,12 +3751,6 @@
             "Level": 1,
             "X": -1,
             "Y": -1
-          },
-          {
-            "Class": "purpleprototype02",
-            "Level": 1,
-            "X": -1,
-            "Y": -1
           }
         ]
       },
@@ -3775,17 +3767,24 @@
             "Level": 1,
             "X": -1,
             "Y": -1
+          }
+        ]
+      },
+      {
+        "Enemies": [
+          {
+            "Class": "scorpion",
+            "Level": 1,
+            "X": -1,
+            "Y": -1
           },
           {
-            "Class": "soldier03",
+            "Class": "purpleprototype02",
             "Level": 1,
             "X": -1,
             "Y": -1
           }
         ]
-      },
-      {
-        "Group": "scorpion-rearguard-3"
       },
       {
         "Enemies": [
@@ -3797,12 +3796,6 @@
           },
           {
             "Class": "purpleprototype04",
-            "Level": 1,
-            "X": -1,
-            "Y": -1
-          },
-          {
-            "Class": "techgremlin00",
             "Level": 1,
             "X": -1,
             "Y": -1
@@ -3824,12 +3817,6 @@
             "Y": -1
           },
           {
-            "Class": "soldier01",
-            "Level": 1,
-            "X": -1,
-            "Y": -1
-          },
-          {
             "Class": "sandmaw",
             "Level": 1,
             "X": -1,
@@ -3838,7 +3825,7 @@
         ]
       }
     ],
-    "LevelOverride": 15
+    "LevelOverride": 35
   },
   {
     "Id": "swamp-04",
@@ -3849,7 +3836,20 @@
     "IsTest": false,
     "Waves": [
       {
-        "Group": "frog-wedge-3"
+        "Enemies": [
+          {
+            "Class": "frog03",
+            "Level": 1,
+            "X": -1,
+            "Y": -1
+          },
+          {
+            "Class": "toad00",
+            "Level": 1,
+            "X": -1,
+            "Y": -1
+          }
+        ]
       },
       {
         "Group": "lurker-diagonal-2"
@@ -3867,12 +3867,6 @@
             "Level": 1,
             "X": -1,
             "Y": -1
-          },
-          {
-            "Class": "hag02",
-            "Level": 1,
-            "X": -1,
-            "Y": -1
           }
         ]
       },
@@ -3881,12 +3875,6 @@
       },
       {
         "Enemies": [
-          {
-            "Class": "marshshambler00",
-            "Level": 1,
-            "X": -1,
-            "Y": -1
-          },
           {
             "Class": "marshshambler01",
             "Level": 1,
@@ -3902,7 +3890,7 @@
         ]
       }
     ],
-    "LevelOverride": 15
+    "LevelOverride": 32
   },
   {
     "Id": "swamp-05",
@@ -3913,18 +3901,25 @@
     "IsTest": false,
     "Waves": [
       {
-        "Group": "frog-line-4"
-      },
-      {
         "Enemies": [
           {
-            "Class": "treegolem02",
+            "Class": "frog01",
             "Level": 1,
             "X": -1,
             "Y": -1
           },
           {
-            "Class": "treegolem03",
+            "Class": "frog02",
+            "Level": 1,
+            "X": -1,
+            "Y": -1
+          }
+        ]
+      },
+      {
+        "Enemies": [
+          {
+            "Class": "treegolem02",
             "Level": 1,
             "X": -1,
             "Y": -1
@@ -3946,12 +3941,6 @@
             "Y": -1
           },
           {
-            "Class": "hag03",
-            "Level": 1,
-            "X": -1,
-            "Y": -1
-          },
-          {
             "Class": "marshshambler03",
             "Level": 1,
             "X": -1,
@@ -3960,7 +3949,20 @@
         ]
       },
       {
-        "Group": "lurker-echelon-3"
+        "Enemies": [
+          {
+            "Class": "lurker01",
+            "Level": 1,
+            "X": -1,
+            "Y": -1
+          },
+          {
+            "Class": "lurker02",
+            "Level": 1,
+            "X": -1,
+            "Y": -1
+          }
+        ]
       },
       {
         "Enemies": [
@@ -3985,7 +3987,7 @@
         ]
       }
     ],
-    "LevelOverride": 15
+    "LevelOverride": 33
   },
   {
     "Id": "cave-04",
@@ -4005,12 +4007,6 @@
           },
           {
             "Class": "skelepede01",
-            "Level": 1,
-            "X": -1,
-            "Y": -1
-          },
-          {
-            "Class": "skelepede02",
             "Level": 1,
             "X": -1,
             "Y": -1
@@ -4037,16 +4033,23 @@
         ]
       },
       {
-        "Group": "cyclops-echelon-3"
-      },
-      {
         "Enemies": [
           {
-            "Class": "goblinthug00",
+            "Class": "cyclops04",
             "Level": 1,
             "X": -1,
             "Y": -1
           },
+          {
+            "Class": "cyclops06",
+            "Level": 1,
+            "X": -1,
+            "Y": -1
+          }
+        ]
+      },
+      {
+        "Enemies": [
           {
             "Class": "icemauler",
             "Level": 1,
@@ -4062,7 +4065,7 @@
         ]
       }
     ],
-    "LevelOverride": 15
+    "LevelOverride": 36
   },
   {
     "Id": "cave-05",
@@ -4085,12 +4088,6 @@
             "Level": 1,
             "X": -1,
             "Y": -1
-          },
-          {
-            "Class": "ceramicknight04",
-            "Level": 1,
-            "X": -1,
-            "Y": -1
           }
         ]
       },
@@ -4107,9 +4104,19 @@
             "Level": 1,
             "X": -1,
             "Y": -1
+          }
+        ]
+      },
+      {
+        "Enemies": [
+          {
+            "Class": "goblinthug00",
+            "Level": 1,
+            "X": -1,
+            "Y": -1
           },
           {
-            "Class": "cyclops04",
+            "Class": "oni02",
             "Level": 1,
             "X": -1,
             "Y": -1
@@ -4117,18 +4124,9 @@
         ]
       },
       {
-        "Group": "oni-pincer-3"
-      },
-      {
         "Enemies": [
           {
             "Class": "ceramicknight05",
-            "Level": 1,
-            "X": -1,
-            "Y": -1
-          },
-          {
-            "Class": "ceramicknight06",
             "Level": 1,
             "X": -1,
             "Y": -1
@@ -4164,7 +4162,7 @@
         ]
       }
     ],
-    "LevelOverride": 15
+    "LevelOverride": 37
   },
   {
     "Id": "cityruins-04",
@@ -4176,12 +4174,6 @@
     "Waves": [
       {
         "Enemies": [
-          {
-            "Class": "ganger00",
-            "Level": 1,
-            "X": -1,
-            "Y": -1
-          },
           {
             "Class": "ganger02",
             "Level": 1,
@@ -4225,12 +4217,6 @@
             "Level": 1,
             "X": -1,
             "Y": -1
-          },
-          {
-            "Class": "ganger03",
-            "Level": 1,
-            "X": -1,
-            "Y": -1
           }
         ]
       },
@@ -4263,17 +4249,11 @@
             "Level": 1,
             "X": -1,
             "Y": -1
-          },
-          {
-            "Class": "ganger04",
-            "Level": 1,
-            "X": -1,
-            "Y": -1
           }
         ]
       }
     ],
-    "LevelOverride": 15
+    "LevelOverride": 30
   },
   {
     "Id": "cityruins-05",
@@ -4285,12 +4265,6 @@
     "Waves": [
       {
         "Enemies": [
-          {
-            "Class": "cyberzombie02",
-            "Level": 1,
-            "X": -1,
-            "Y": -1
-          },
           {
             "Class": "cyberzombie03",
             "Level": 1,
@@ -4308,12 +4282,6 @@
       {
         "Enemies": [
           {
-            "Class": "minotaur02",
-            "Level": 1,
-            "X": -1,
-            "Y": -1
-          },
-          {
             "Class": "minotaur03",
             "Level": 1,
             "X": -1,
@@ -4329,12 +4297,6 @@
       },
       {
         "Enemies": [
-          {
-            "Class": "harpy01",
-            "Level": 1,
-            "X": -1,
-            "Y": -1
-          },
           {
             "Class": "harpy03",
             "Level": 1,
@@ -4359,12 +4321,6 @@
           },
           {
             "Class": "cultist03",
-            "Level": 1,
-            "X": -1,
-            "Y": -1
-          },
-          {
-            "Class": "cyberzombie00",
             "Level": 1,
             "X": -1,
             "Y": -1
@@ -4394,7 +4350,7 @@
         ]
       }
     ],
-    "LevelOverride": 15
+    "LevelOverride": 31
   },
   {
     "Id": "morrowsshadow-01",
@@ -4495,7 +4451,7 @@
         ]
       }
     ],
-    "LevelOverride": 28
+    "LevelOverride": 38
   },
   {
     "Id": "morrowsshadow-02",
@@ -4596,7 +4552,7 @@
         ]
       }
     ],
-    "LevelOverride": 29
+    "LevelOverride": 39
   },
   {
     "Id": "morrowsshadow-03",
@@ -4707,6 +4663,6 @@
         ]
       }
     ],
-    "LevelOverride": 30
+    "LevelOverride": 40
   }
 ]

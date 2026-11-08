@@ -33,7 +33,7 @@ namespace GridGame.Tests
             var db = Real;
             var themes = db.Campaign.Themes;
             Assert.That(themes.Last().Id, Is.EqualTo("morrowsshadow"), "the final postgame chapter");
-            Assert.That(themes[themes.Count - 2].Id, Is.EqualTo("cityruins2"), "after the Underspire");
+            Assert.That(themes[themes.Count - 2].Id, Is.EqualTo("cave2"), "after Under the Anchors (GG-T357: the postgame in story order)");
 
             var t = themes.Last();
             Assert.That(t.Name, Is.EqualTo("Morrow's Shadow"));
@@ -46,8 +46,8 @@ namespace GridGame.Tests
             Assert.That(problems, Is.Empty, string.Join("\n", problems));
 
             var save = Progression.NewGame(db, "T");
-            Assert.That(Stages.Select(id => Progression.StageRecommendedLevel(db, save, db.Stages[id])), Is.EqualTo(new[] { 28, 29, 30 }),
-                "past the Bloom's 25-27");
+            Assert.That(Stages.Select(id => Progression.StageRecommendedLevel(db, save, db.Stages[id])), Is.EqualTo(new[] { 38, 39, 40 }),
+                "the top of the postgame curve (GG-T357: past Under the Anchors' 36-37)");
             var order = db.CampaignStages().Select(s => s.Id).ToList();
             Assert.That(order.Skip(order.Count - 3), Is.EqualTo(Stages), "appended at the end, so no save index shifts");
 

@@ -61,6 +61,9 @@ namespace GridGame.Tests
             int campaignLevels = c.CampaignStages().Count;
             Assert.That(c.ArmorSetOrder.Min(s => s.Level), Is.EqualTo(1));
             Assert.That(c.ArmorSetOrder.Max(s => s.Level), Is.EqualTo(campaignLevels));
+            // GG-T357: the top set also tracks the campaign's last level (Morrow's Shadow III), not just its length.
+            var lastStage = c.CampaignStages().Last();
+            Assert.That(c.ArmorSetOrder.Max(s => s.Level), Is.EqualTo(Progression.StageRecommendedLevel(c, Progression.NewGame(c, "T"), lastStage)));
             // No stretch of the campaign more than five levels long without a new set.
             var levels = c.ArmorSetOrder.Select(s => s.Level).OrderBy(x => x).ToList();
             for (int i = 1; i < levels.Count; i++) Assert.That(levels[i] - levels[i - 1], Is.LessThanOrEqualTo(5));

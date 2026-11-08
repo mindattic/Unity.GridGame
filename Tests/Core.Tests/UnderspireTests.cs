@@ -47,12 +47,15 @@ namespace GridGame.Tests
         {
             var db = Real;
             var all = new[] { "cityruins-04", "cityruins-05" }.SelectMany(id => db.Stages[id].Waves).SelectMany(w => w.Enemies).Select(e => e.Class).ToList();
-            foreach (var id in new[] { "cityruins-04", "cityruins-05" })
+            var levels = new[] { 30, 31 }; // GG-T357: after the Free Holds' 28-29 on the postgame curve (was 15)
+            var ids = new[] { "cityruins-04", "cityruins-05" };
+            for (int i = 0; i < ids.Length; i++)
             {
+                var id = ids[i];
                 var st = db.Stages[id];
                 Assert.That(st.Theme, Is.EqualTo("cityruins2"), $"{id}: the battle shows the underspire's backdrop");
                 Assert.That(st.Name, Does.StartWith("The Underspire"), id);
-                Assert.That(st.LevelOverride, Is.EqualTo(15), $"{id}: postgame level unchanged");
+                Assert.That(st.LevelOverride, Is.EqualTo(levels[i]), $"{id}: the postgame level curve");
                 Assert.That(st.Waves, Has.Count.EqualTo(5), id);
                 foreach (var e in st.Waves.SelectMany(w => w.Enemies))
                 {

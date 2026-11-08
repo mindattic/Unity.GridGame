@@ -1152,3 +1152,13 @@ Owner: *"the Game handles gameplay, and Prose handles narrative"*; *"everything 
 - **Was:** story text authored in this repo (docs/STORY.md as the source, text inside classes/dialogues/campaign/quests/glossary JSON).
 - **Now:** Prose (universe `gridgame`, Prose RFC 0017) is the only store of story; this repo keeps gameplay. Phase 1 adds the conduit: `Data/Prose/prose.config.json`, the mapper `tools/prose_map.py` (1697 game entities with travel geography), the applier `tools/prose_apply.py` (Content/Text/<kind>.json keyed by key, with the Prose GUID slot), the shared key scheme `tools/prose_keys.py`, the seed `tools/prose_seed.py` (today's 1976 texts drafted into Prose, none approved: RFC 0009), and a build-time pull (`tools/prose-sync.ps1`, `tools/build.ps1 -SkipProse`, `GaidenBuild.SyncProse`) that never fails a build when Prose is down. The owner's War in Heaven canon is Prose-authored entities tagged DECIDED/PROPOSED/RETIRED. Details: [PROSE.md](PROSE.md).
 - **Not yet:** the game still reads text from gameplay JSON. Phase 2 strips it out, applies the approved text and adds the ContentLoader join and its tests.
+
+## 2026-11-07 — The postgame in story order on one rising level curve (GG-T357)
+
+- **Was:** the Bloom (25–27), then the five older postgame chapters in their base themes' order (Free Holds, Deep Shardfall, Drowned Arks, Under the Anchors, Underspire), all at level 15 with three- and four-foe waves built for that level, then Morrow's Shadow (28–30).
+- **Now:** the Bloom 25–27, the Free Holds 28–29, the Underspire 30–31, the Drowned Arks 32–33, Deep Shardfall 34–35, Under the Anchors 36–37, Morrow's Shadow 38–40: one level a stage, continuing the main campaign's `i + 1` curve ([BIBLE §22.3.4](BIBLE.md), *The postgame curve*).
+  - The ten re-levelled stages take the endgame wave shape (two foes a wave, three in a finale wave), by analogy with the Cathedral, the Bloom and Morrow's Shadow and the Cathedral's measured first cut (three-foe waves at 22–24: casual 4/0/3 of 24). Each wave keeps two of its old foes; four-foe and three-foe catalog groups became two-foe explicit waves of the same family.
+  - Save v9 remaps `HighestClearedStage` to the furthest new index among the stages a save had cleared (`SaveMigrations.ReorderedPostgameFrontier`).
+  - Armor sets unchanged (Templar's 25, Reaper's 30, Sanguine 35, Dreadwyrm 40): the last level is now 40, the same as the campaign's length.
+  - Balance is unmeasured (no soak run), pending the owner's `/test`.
+- *(Tests: `PostgameCurveTests`, `FreeHoldsTests`, `UnderspireTests`, `MorrowsShadowTests`, `ArmorSetTests`.)*

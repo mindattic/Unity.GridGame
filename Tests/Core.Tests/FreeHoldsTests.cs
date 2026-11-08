@@ -42,19 +42,22 @@ namespace GridGame.Tests
         public void Its_stages_are_the_free_holds_militia_redline_and_the_hollow()
         {
             var db = Real;
-            foreach (var id in new[] { "greenvalley-04", "greenvalley-05" })
+            var levels = new[] { 28, 29 }; // GG-T357: right after the Bloom's 25-27 on the postgame curve (was 15)
+            var ids = new[] { "greenvalley-04", "greenvalley-05" };
+            for (int i = 0; i < ids.Length; i++)
             {
+                var id = ids[i];
                 var st = db.Stages[id];
                 Assert.That(st.Theme, Is.EqualTo("greenvalley2"), $"{id}: the battle shows the Free Holds' backdrop");
                 Assert.That(st.Name, Does.StartWith("The Free Holds"), id);
-                Assert.That(st.LevelOverride, Is.EqualTo(15), $"{id}: postgame level unchanged");
+                Assert.That(st.LevelOverride, Is.EqualTo(levels[i]), $"{id}: the postgame level curve");
                 Assert.That(st.Waves, Has.Count.EqualTo(5), id);
                 var classes = st.Waves.SelectMany(w => w.Enemies).Select(e => e.Class).ToList();
                 Assert.That(classes.Count(c => c.StartsWith("soldier")), Is.GreaterThanOrEqualTo(4), $"{id}: hold militia");
                 Assert.That(classes.Any(c => c.StartsWith("ganger")), $"{id}: Redline, selling the Bloom");
                 Assert.That(st.Waves.SelectMany(w => w.Enemies).All(e => e.RuleBreak == RuleBreak.None), $"{id}: rule-breakers are main finales only");
             }
-            Assert.That(db.Stages["greenvalley-04"].Waves.SelectMany(w => w.Enemies).Count(e => e.Class.StartsWith("undead")), Is.EqualTo(3),
+            Assert.That(db.Stages["greenvalley-04"].Waves.SelectMany(w => w.Enemies).Count(e => e.Class.StartsWith("undead")), Is.EqualTo(2), // GG-T357: two-foe waves at 28
                 "a hold whose Hollow never got their aether back");
             Assert.That(db.Stages["greenvalley-05"].Waves.Last().Enemies.Select(e => e.Class), Does.Contain("captain"), "the Captain's people, and the Captain");
 

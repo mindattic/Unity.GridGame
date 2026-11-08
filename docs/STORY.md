@@ -225,7 +225,7 @@ levels, etc"* — new chapters are read out of the owner's landscapes the same w
 low as yesterday; nobody has solved the Nearing. But where the stolen aether came down, the Bloom is growing, and the
 crew has a caravan, a road, and proof that giving works. Roll credits.
 
-**Postgame** (the road after the Hierarch — open on purpose, no final answer):
+**Postgame** (the road after the Hierarch — open on purpose, no final answer; in play order since GG-T357, levels 25–40):
 9. **The Bloom** (`bloom`, GG-T347, from eight landscapes the owner made; the first chapter after the ending).
    *Structural entry only; the chapter's story is authored in Prose (GG-T355) and its in-game text is placeholder
    draft.* Where: where the Hierarch's reservoir broke and the stolen aether came down hardest — red blossom and moss
@@ -239,16 +239,16 @@ crew has a caravan, a road, and proof that giving works. Roll credits.
     Morrow — the holds that still keep their own walls (§3.3). Who: hold militia (`soldier00–03`) at the gates, the
     Captain's people still collecting for whoever pays, Redline, moor wolves, and a hold whose Hollow (`undead00–02`) never
     got their aether back. Stages *The Free Holds I–II*. *Boss (II): the **Captain** with his militia.*
-11. **Deep Shardfall** (`desert2`) — the Ember grows bolder with the Concord broken; the Infernalists march on the Anchors.
-12. **The Drowned Arks** (`swamp2`) — the *Long Patience* still flies, a little; the Lich offers passage to anyone.
-13. **Under the Anchors** (`cave2`) — what the arches are actually built on.
-14. **The Underspire** (`cityruins2`) — Halcyon without a Hierarch: the Choir, the Red Seal and the Street all want the
+11. **The Underspire** (`cityruins2`) — Halcyon without a Hierarch: the Choir, the Red Seal and the Street all want the
     spire. *Region: **the Street markets** (GG-T349, from nine landscapes the owner made; structural entry only, story
     authored in Prose, GG-T355).* Where: the underspire's night markets — the white spire behind tangled cables, pink
     neon signs, stalls and splice clinics in the rain (§3.2). Who: Redline, the Murder and the Herd on their home turf,
     Chromed Hollow still carrying cans for nobody, and the Choir come down to bargain. Stages *The Underspire I–II*.
     *Boss (II): the **Herd Boss** (`minotaur01`) beside a Choir Cantor and a Redline ganger — three claimants to the
     spire.*
+12. **The Drowned Arks** (`swamp2`) — the *Long Patience* still flies, a little; the Lich offers passage to anyone.
+13. **Deep Shardfall** (`desert2`) — the Ember grows bolder with the Concord broken; the Infernalists march on the Anchors.
+14. **Under the Anchors** (`cave2`) — what the arches are actually built on.
 15. **Morrow's Shadow** (`morrowsshadow`, GG-T348, from ten landscapes the owner made; the final postgame chapter).
     *Structural entry only; the chapter's story is authored in Prose (GG-T355) and its in-game text is placeholder
     draft.* Where: far past the last road, where Morrow hangs lowest and fills half the sky, and its pull lifts stone —

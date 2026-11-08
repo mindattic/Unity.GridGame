@@ -24,7 +24,7 @@ namespace GridGame.Meta
 
     public sealed class SaveData
     {
-        public const int CurrentVersion = 8;
+        public const int CurrentVersion = 9;
 
         public int Version = CurrentVersion;
         public string Name = "Lightbearer";
@@ -390,6 +390,24 @@ namespace GridGame.Meta
         /// and how many stages it brought (save v8).</summary>
         public const int BloomInsertedAt = 24, BloomStageCount = 3;
 
+        /// <summary>GG-T357: the ten stages of the five older postgame chapters were reordered in place (save v9). Old order
+        /// from <see cref="PostgameReorderedFrom"/>: the Free Holds, Deep Shardfall, the Drowned Arks, Under the Anchors, the
+        /// Underspire; new order: the Free Holds, the Underspire, the Drowned Arks, Deep Shardfall, Under the Anchors.
+        /// <see cref="PostgameReorderMap"/>[i] is the new campaign index of the stage that sat at old index
+        /// <c>PostgameReorderedFrom + i</c>. The Bloom before them and Morrow's Shadow after them did not move.</summary>
+        public const int PostgameReorderedFrom = 27;
+        public static readonly int[] PostgameReorderMap = { 27, 28, 33, 34, 31, 32, 35, 36, 29, 30 };
+
+        /// <summary>The v9 frontier: the furthest new index among every stage at or below the old
+        /// <paramref name="highestCleared"/>, so each save keeps its furthest clear and nothing it cleared locks again.</summary>
+        public static int ReorderedPostgameFrontier(int highestCleared)
+        {
+            int frontier = highestCleared;
+            for (int i = 0; i < PostgameReorderMap.Length && PostgameReorderedFrom + i <= highestCleared; i++)
+                frontier = Math.Max(frontier, PostgameReorderMap[i]);
+            return frontier;
+        }
+
         public static readonly HashSet<string> RetiredAbilities = new HashSet<string>(StringComparer.OrdinalIgnoreCase) { "scan" };
 
         /// <summary>Upgrades an older save in place. Unknown future versions are rejected. <paramref name="c"/>
@@ -493,6 +511,15 @@ namespace GridGame.Meta
                 // and keeps the same frontier. A save whose furthest clear is the Cathedral III finds the Bloom next.
                 if (s.HighestClearedStage >= BloomInsertedAt) s.HighestClearedStage += BloomStageCount;
                 s.Version = 8;
+            }
+            if (s.Version < 9)
+            {
+                // GG-T357: the five older postgame chapters were put in story order and onto a rising level curve, which
+                // moved six of their ten stages (no stage was added or removed). HighestClearedStage is a single frontier,
+                // so it becomes the furthest new index among everything the save had cleared: its furthest clear is
+                // still cleared, and any chapter that moved behind it opens there, replayable like any earlier stage.
+                s.HighestClearedStage = ReorderedPostgameFrontier(s.HighestClearedStage);
+                s.Version = 9;
             }
             foreach (var h in s.Roster)
             {

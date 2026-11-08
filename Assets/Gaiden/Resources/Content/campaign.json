@@ -131,13 +131,14 @@
       ]
     },
     {
-      "Id": "desert2",
+      "Id": "cityruins2",
       "MilestoneReward": "chest_gilded",
-      "Name": "Deep Shardfall",
-      "Crawl": "With the Concord broken, nobody is digging in the Shardfall anymore. Nobody is guarding it, either.\n\nThe Ember noticed.\n\nDeep in the red country the Infernalists are mustering -- more black armour than anyone has seen in one place, and Hellspawn in herds behind it. They are marching north. They mean to reach the Anchors, break them, and bring Morrow home.\n\nThe Anchors still need feeding. They just never needed a Hierarch to do it.\n\nSomeone has to stand between the Ember and the arches. It might as well be people who know what the arches cost.",
+      "Name": "The Underspire",
+      "Backgrounds": "underspire",
+      "Crawl": "Halcyon without a Hierarch is a city holding its breath.\n\nThe Choir wants the spire back, to sing the tithe again -- honestly this time, they swear. The Red Seal wants it because order has to come from somewhere. The Street wants it because they've lived under it for two hundred years and it's their turn.\n\nEveryone has a speech. Everyone has soldiers. Everyone is certain.\n\nDown in the underspire, where the city's real business has always been done, the deals are being struck that will decide who sits where the Hierarch sat -- or whether anyone does.\n\nNobody is going to hand the spire to the people who broke the reservoir. Which is a shame. You're the only ones who've seen what's at the top.",
       "Stages": [
-        "desert-04",
-        "desert-05"
+        "cityruins-04",
+        "cityruins-05"
       ]
     },
     {
@@ -151,6 +152,16 @@
       ]
     },
     {
+      "Id": "desert2",
+      "MilestoneReward": "chest_gilded",
+      "Name": "Deep Shardfall",
+      "Crawl": "With the Concord broken, nobody is digging in the Shardfall anymore. Nobody is guarding it, either.\n\nThe Ember noticed.\n\nDeep in the red country the Infernalists are mustering -- more black armour than anyone has seen in one place, and Hellspawn in herds behind it. They are marching north. They mean to reach the Anchors, break them, and bring Morrow home.\n\nThe Anchors still need feeding. They just never needed a Hierarch to do it.\n\nSomeone has to stand between the Ember and the arches. It might as well be people who know what the arches cost.",
+      "Stages": [
+        "desert-04",
+        "desert-05"
+      ]
+    },
+    {
       "Id": "cave2",
       "MilestoneReward": "chest_gilded",
       "Name": "Under the Anchors",
@@ -158,17 +169,6 @@
       "Stages": [
         "cave-04",
         "cave-05"
-      ]
-    },
-    {
-      "Id": "cityruins2",
-      "MilestoneReward": "chest_gilded",
-      "Name": "The Underspire",
-      "Backgrounds": "underspire",
-      "Crawl": "Halcyon without a Hierarch is a city holding its breath.\n\nThe Choir wants the spire back, to sing the tithe again -- honestly this time, they swear. The Red Seal wants it because order has to come from somewhere. The Street wants it because they've lived under it for two hundred years and it's their turn.\n\nEveryone has a speech. Everyone has soldiers. Everyone is certain.\n\nDown in the underspire, where the city's real business has always been done, the deals are being struck that will decide who sits where the Hierarch sat -- or whether anyone does.\n\nNobody is going to hand the spire to the people who broke the reservoir. Which is a shame. You're the only ones who've seen what's at the top.",
-      "Stages": [
-        "cityruins-04",
-        "cityruins-05"
       ]
     },
     {
