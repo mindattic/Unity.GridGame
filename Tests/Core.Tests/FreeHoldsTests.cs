@@ -65,5 +65,32 @@ namespace GridGame.Tests
             Assert.That((talk.Trigger.Kind, talk.Trigger.Id), Is.EqualTo((DialogueTriggerKind.ThemeStart, "greenvalley2")));
             Assert.That(db.ThemeOf("greenvalley-04").Id, Is.EqualTo("greenvalley2"));
         }
+
+        [Test]
+        public void The_free_holds_fight_behind_barricades_with_their_own_builders_rams_and_marksmen()
+        {
+            var db = Real;
+            foreach (var id in new[] { "greenvalley-04", "greenvalley-05" })
+                Assert.That(RegionRuleCatalog.ActiveFor(db, db.Stages[id]).Select(r => r.Id), Is.EqualTo(new[] { "holds-barricades" }), id);
+
+            var barricade = db.TryTileState("barricade");
+            Assert.That((barricade.Blocks, barricade.Threshold, barricade.Becomes), Is.EqualTo((true, 3, "rubble")), "three hero turns beside it break it");
+            var pickup = db.TryRegionRule("holds-barricades").Hooks.Single(h => h.On == RuleHook.EnterTile);
+            Assert.That((pickup.Team, pickup.State, pickup.Effects[0].Buff), Is.EqualTo((RuleTeam.Hero, "rubble", "empowered")), "the rubble is the pickup");
+
+            Assert.That(db.TryAbility(db.Classes["holdwright"].ChargeAbility).RuleEffects.Select(e => e.Kind),
+                Is.EqualTo(new[] { RuleEffectKind.MarkTiles, RuleEffectKind.ModifyTiles }), "raises and repairs");
+            Assert.That(db.TryAbility(db.Classes["holdram"].ChargeAbility).RuleEffects.Single().Amount, Is.EqualTo(3), "one charge smashes a barricade outright");
+            Assert.That(db.Classes["holdmarksman"].OnDeathRule.Single().State, Is.EqualTo("barricade"), "a wall where they fall");
+            foreach (var id in new[] { "holdwright", "holdram", "holdmarksman" })
+                Assert.That(db.Classes[id].Portrait, Is.EqualTo("mannequin"), $"{id}: placeholder art until its portrait lands");
+
+            foreach (var id in new[] { "greenvalley-04", "greenvalley-05" })
+            {
+                var classes = db.Stages[id].Waves.SelectMany(w => w.Enemies).Select(e => e.Class).ToList();
+                foreach (var m in new[] { "holdwright", "holdram", "holdmarksman" })
+                    Assert.That(classes, Does.Contain(m), $"{id} fields the {m}");
+            }
+        }
     }
 }

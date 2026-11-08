@@ -9990,5 +9990,89 @@
   "LingerVfx": null,
   "Sfx": null,
   "TileReaction": "disarm"
+ },
+ {
+  "Id": "charge_raise_barricade",
+  "RecoverSeconds": 1.0,
+  "Name": "Raise Barricade",
+  "Description": "Throws up two barricades and shores up every one still standing; allies within 1 tile gain Protection.",
+  "Kind": "Spell",
+  "Cost": 0,
+  "CastTime": 2.5,
+  "CooldownTurns": 0,
+  "Shape": "Square",
+  "Radius": 1,
+  "Mode": "Auto",
+  "Filter": "AllyOnly",
+  "Motion": "None",
+  "DamageType": "Physical",
+  "BaseDamage": 0,
+  "BaseHeal": 0,
+  "ApplyBuff": "protection",
+  "ApplyBuffChance": 1.0,
+  "RemovesDebuffs": false,
+  "StealsMana": false,
+  "HastenU": 0.0,
+  "IsTeleport": false,
+  "Icon": null,
+  "CastVfx": null,
+  "ProjectileVfx": null,
+  "ImpactVfx": null,
+  "LingerVfx": null,
+  "Sfx": null,
+  "RuleEffects": [
+   {
+    "Kind": "MarkTiles",
+    "Area": "RandomFree",
+    "Count": 2,
+    "State": "barricade"
+   },
+   {
+    "Kind": "ModifyTiles",
+    "Area": "WithState",
+    "State": "barricade",
+    "Amount": -1
+   }
+  ]
+ },
+ {
+  "Id": "charge_ram_smash",
+  "RecoverSeconds": 1.5,
+  "Name": "Battering Charge",
+  "Description": "A battering charge that knocks its target back and smashes every barricade within 2 tiles to rubble.",
+  "Kind": "Spell",
+  "Cost": 0,
+  "CastTime": 2.5,
+  "CooldownTurns": 0,
+  "Shape": "SingleActor",
+  "Radius": 0,
+  "Mode": "PickActor",
+  "Filter": "EnemyOnly",
+  "Motion": "None",
+  "DamageType": "Physical",
+  "BaseDamage": 14,
+  "BaseHeal": 0,
+  "Knockback": 1,
+  "ApplyBuff": null,
+  "ApplyBuffChance": 1.0,
+  "RemovesDebuffs": false,
+  "StealsMana": false,
+  "HastenU": 0.0,
+  "IsTeleport": false,
+  "Icon": null,
+  "CastVfx": null,
+  "ProjectileVfx": null,
+  "ImpactVfx": null,
+  "LingerVfx": null,
+  "Sfx": null,
+  "RuleEffects": [
+   {
+    "Kind": "ModifyTiles",
+    "Area": "Self",
+    "Radius": 2,
+    "State": "barricade",
+    "Amount": 3
+   }
+  ]
  }
 ]

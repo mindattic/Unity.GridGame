@@ -1710,6 +1710,54 @@
         "long": "Called Hierarch by the faithful and the Leech by everyone else."
       }
     },
+    "class:holdmarksman": {
+      "key": "class:holdmarksman",
+      "id": "description-class-holdmarksman",
+      "guid": null,
+      "version": 0,
+      "source": "seed",
+      "hash": "sha256:b9813d7448abbe517213e2650e5fee3390c678a01a2d290c616906931be6c08b",
+      "about": [
+        "class-holdmarksman"
+      ],
+      "speakers": [],
+      "payload": {
+        "short": "A hold sharpshooter who fires from behind cover and leaves a wall where they fall.",
+        "long": "They shoot from the walls, and when they drop, the hold drags their cart into the gap."
+      }
+    },
+    "class:holdram": {
+      "key": "class:holdram",
+      "id": "description-class-holdram",
+      "guid": null,
+      "version": 0,
+      "source": "seed",
+      "hash": "sha256:da9a7277bb063efaa885f44cfb2850c0c57cc951599690dc5baf2ef03855610b",
+      "about": [
+        "class-holdram"
+      ],
+      "speakers": [],
+      "payload": {
+        "short": "A hold bruiser who goes through barricades rather than around them.",
+        "long": "Doors are suggestions. Palisades are suggestions. Your line is a suggestion."
+      }
+    },
+    "class:holdwright": {
+      "key": "class:holdwright",
+      "id": "description-class-holdwright",
+      "guid": null,
+      "version": 0,
+      "source": "seed",
+      "hash": "sha256:7c3fb2a399c4d275d3c6ace9ea738f9852dd914db70e7d0a854e01398813ee74",
+      "about": [
+        "class-holdwright"
+      ],
+      "speakers": [],
+      "payload": {
+        "short": "A hold carpenter who builds faster than a siege can break.",
+        "long": "Every hold has one: the woman with nails in her teeth and a wall going up behind her."
+      }
+    },
     "class:icemauler": {
       "key": "class:icemauler",
       "id": "description-class-icemauler",
@@ -23054,6 +23102,20 @@
       "speakers": [],
       "payload": {
         "short": "A Lantern Road trader who follows the caravan; sells to everyone, informs on no one."
+      }
+    },
+    "rule:holds-barricades": {
+      "key": "rule:holds-barricades",
+      "id": "description-rule-holds-barricades",
+      "guid": null,
+      "version": 0,
+      "source": "seed",
+      "hash": "sha256:62e9974edc7992b42c11b1d9e0b8d6c55e0800e577ab8f106df2e46d97c2afb3",
+      "about": [],
+      "speakers": [],
+      "payload": {
+        "name": "Hold Barricades",
+        "short": "Every wave, the holds throw up barricades. Stand beside one to wear it down; when it falls, step onto the rubble to be Empowered."
       }
     },
     "skillnode:aegisguard_capstone": {

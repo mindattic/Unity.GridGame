@@ -2386,6 +2386,26 @@ art first) built around its rule. GG-T359 is the framework; the regions' own rul
   areas and a hook's `Chance` draw from the battle Rng. Hooks inside hooks stop four deep. Nothing runs in a preview.
 - *(Tests: `RegionRuleTests`, written, not run.)*
 
+#### 14.20.1 The Free Holds: hold barricades (GG-T360)
+
+The first region rule (`holds-barricades`, theme `greenvalley2`, stages 28-29): a siege.
+
+- **Barricades.** Every wave clears the last wave's barricades and throws up four new ones on free tiles (`barricade`, a
+  `Blocks` state: a wall to movement, spawns and every planner, so it splits pincer lines).
+- **Breaking one.** A hero ending their turn beside a barricade (Manhattan 1) wears it down by one; at 3 it falls to
+  `rubble`: the barricade's pickup. The first hero to step onto it is `empowered` and clears it (an `EnterTile` hook);
+  unclaimed rubble lasts 20 clock seconds.
+- **Hold monsters** (Mannequin placeholder art, words in Prose `class:<id>`):
+  - **Holdwright** (Guardian brain): its charge `charge_raise_barricade` raises two barricades, shores up every standing
+    one (counter -1, one more hero turn to break) and gives allies within 1 tile Protection.
+  - **Hold Ram** (Berserker brain): its charge `charge_ram_smash` knocks its target back and smashes every barricade within
+    2 tiles to rubble, which the heroes can then claim: a double-edged foe.
+  - **Hold Marksman** (Kiter brain, range 3, targets the squishy): leaves a barricade where it falls (`OnDeathRule`).
+- **Waves.** Each Free Holds stage keeps its militia (4+ soldiers), Redline (a ganger), Free Holds I's two Hollow and Free
+  Holds II's Captain finale, and fields all three hold monsters, two foes a wave and three in the finale; every wave
+  signature stays unique.
+- Balance unmeasured (owner rule: no soak). *(Tests: `FreeHoldsTests.The_free_holds_fight_behind_barricades_with_their_own_builders_rams_and_marksmen`, written, not run.)*
+
 ## 15. Save
 
 ### 15.1 Data model

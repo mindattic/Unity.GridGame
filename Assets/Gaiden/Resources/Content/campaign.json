@@ -116,6 +116,9 @@
       "Stages": [
         "greenvalley-04",
         "greenvalley-05"
+      ],
+      "Rules": [
+        "holds-barricades"
       ]
     },
     {

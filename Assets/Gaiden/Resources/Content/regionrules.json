@@ -1,1 +1,171 @@
-[]
+[
+  {
+    "Id": "crackingfloor",
+    "TileStates": [
+      {
+        "Id": "cracked",
+        "Threshold": 3,
+        "Becomes": "crumbling",
+        "Color": "#b39b72",
+        "Glyph": "⁂"
+      },
+      {
+        "Id": "crumbling",
+        "Color": "#d9822b",
+        "Glyph": "✸",
+        "OnMark": [
+          {
+            "Kind": "Schedule",
+            "Area": "Self",
+            "Event": "cavein"
+          }
+        ]
+      },
+      {
+        "Id": "hole",
+        "Blocks": true,
+        "Pit": true,
+        "FallDamage": 0.15,
+        "LifeSeconds": 16,
+        "Color": "#6b5a44",
+        "Glyph": "◌"
+      }
+    ],
+    "Events": [
+      {
+        "Id": "cavein",
+        "Seconds": 3,
+        "Glyph": "☄",
+        "Color": "#d9822b",
+        "Effects": [
+          {
+            "Kind": "MarkTiles",
+            "Area": "EventTiles",
+            "State": "hole"
+          },
+          {
+            "Kind": "ClearTiles",
+            "Area": "EventTiles",
+            "State": "crumbling"
+          }
+        ]
+      }
+    ],
+    "Hooks": [
+      {
+        "On": "WaveSpawn",
+        "Effects": [
+          {
+            "Kind": "MarkTiles",
+            "Area": "RandomFree",
+            "Count": 3,
+            "State": "cracked"
+          }
+        ]
+      },
+      {
+        "On": "EnterTile",
+        "State": "cracked",
+        "Effects": [
+          {
+            "Kind": "ModifyTiles",
+            "Area": "Self",
+            "State": "cracked",
+            "Amount": 1
+          }
+        ]
+      },
+      {
+        "On": "TurnEnd",
+        "State": "cracked",
+        "Effects": [
+          {
+            "Kind": "ModifyTiles",
+            "Area": "Self",
+            "State": "cracked",
+            "Amount": 1
+          }
+        ]
+      },
+      {
+        "On": "Hit",
+        "State": "cracked",
+        "Effects": [
+          {
+            "Kind": "ModifyTiles",
+            "Area": "Self",
+            "State": "cracked",
+            "Amount": 1
+          }
+        ]
+      }
+    ]
+  },
+  {
+    "Id": "holds-barricades",
+    "TileStates": [
+      {
+        "Id": "barricade",
+        "Blocks": true,
+        "Threshold": 3,
+        "Becomes": "rubble",
+        "Color": "#8A6A3F",
+        "Glyph": "#"
+      },
+      {
+        "Id": "rubble",
+        "LifeSeconds": 20,
+        "Color": "#6F675C",
+        "Glyph": ":"
+      }
+    ],
+    "Hooks": [
+      {
+        "On": "WaveSpawn",
+        "Effects": [
+          {
+            "Kind": "ClearTiles",
+            "Area": "All",
+            "State": "barricade"
+          },
+          {
+            "Kind": "MarkTiles",
+            "Area": "RandomFree",
+            "Count": 4,
+            "State": "barricade"
+          }
+        ]
+      },
+      {
+        "On": "TurnEnd",
+        "Team": "Hero",
+        "Effects": [
+          {
+            "Kind": "ModifyTiles",
+            "Area": "Self",
+            "Radius": 1,
+            "State": "barricade",
+            "Amount": 1
+          }
+        ]
+      },
+      {
+        "On": "EnterTile",
+        "Team": "Hero",
+        "State": "rubble",
+        "Effects": [
+          {
+            "Kind": "ApplyBuff",
+            "Units": "Subject",
+            "Buff": "empowered"
+          },
+          {
+            "Kind": "ClearTiles",
+            "Area": "Self",
+            "State": "rubble"
+          }
+        ]
+      }
+    ]
+  }
+]

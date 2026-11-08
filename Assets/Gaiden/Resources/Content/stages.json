@@ -1629,6 +1629,7 @@
   },
   {
     "Id": "cave-03",
+    "Rules": [ "crackingfloor" ],
     "Name": "Frostmaw Caverns III",
     "Theme": "cave",
     "Background": null,
@@ -2535,6 +2536,7 @@
   },
   {
     "Id": "cathedral-02",
+    "Rules": [ "crackingfloor" ],
     "Name": "The Choir's Cathedral II",
     "Theme": "cathedral",
     "Background": null,
@@ -3466,7 +3468,7 @@
             "Y": -1
           },
           {
-            "Class": "soldier01",
+            "Class": "holdwright",
             "Level": 1,
             "X": -1,
             "Y": -1
@@ -3482,23 +3484,7 @@
             "Y": -1
           },
           {
-            "Class": "ganger01",
-            "Level": 1,
-            "X": -1,
-            "Y": -1
-          }
-        ]
-      },
-      {
-        "Enemies": [
-          {
-            "Class": "wolf00",
-            "Level": 1,
-            "X": -1,
-            "Y": -1
-          },
-          {
-            "Class": "wolf02",
+            "Class": "soldier01",
             "Level": 1,
             "X": -1,
             "Y": -1
@@ -3514,7 +3500,7 @@
             "Y": -1
           },
           {
-            "Class": "undead02",
+            "Class": "holdmarksman",
             "Level": 1,
             "X": -1,
             "Y": -1
@@ -3524,13 +3510,29 @@
       {
         "Enemies": [
           {
-            "Class": "soldier02",
+            "Class": "undead02",
             "Level": 1,
             "X": -1,
             "Y": -1
           },
           {
+            "Class": "soldier02",
+            "Level": 1,
+            "X": -1,
+            "Y": -1
+          }
+        ]
+      },
+      {
+        "Enemies": [
+          {
             "Class": "soldier03",
+            "Level": 1,
+            "X": -1,
+            "Y": -1
+          },
+          {
+            "Class": "holdram",
             "Level": 1,
             "X": -1,
             "Y": -1
@@ -3551,13 +3553,13 @@
       {
         "Enemies": [
           {
-            "Class": "frog00",
+            "Class": "soldier00",
             "Level": 1,
             "X": -1,
             "Y": -1
           },
           {
-            "Class": "frog01",
+            "Class": "holdmarksman",
             "Level": 1,
             "X": -1,
             "Y": -1
@@ -3573,23 +3575,7 @@
             "Y": -1
           },
           {
-            "Class": "ganger02",
-            "Level": 1,
-            "X": -1,
-            "Y": -1
-          }
-        ]
-      },
-      {
-        "Enemies": [
-          {
-            "Class": "wolf02",
-            "Level": 1,
-            "X": -1,
-            "Y": -1
-          },
-          {
-            "Class": "soldier00",
+            "Class": "holdwright",
             "Level": 1,
             "X": -1,
             "Y": -1
@@ -3605,7 +3591,23 @@
             "Y": -1
           },
           {
+            "Class": "holdram",
+            "Level": 1,
+            "X": -1,
+            "Y": -1
+          }
+        ]
+      },
+      {
+        "Enemies": [
+          {
             "Class": "soldier02",
+            "Level": 1,
+            "X": -1,
+            "Y": -1
+          },
+          {
+            "Class": "holdmarksman",
             "Level": 1,
             "X": -1,
             "Y": -1
@@ -3627,7 +3629,7 @@
             "Y": -1
           },
           {
-            "Class": "werewolf00",
+            "Class": "holdwright",
             "Level": 1,
             "X": -1,
             "Y": -1
