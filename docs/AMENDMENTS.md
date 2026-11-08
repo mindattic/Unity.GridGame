@@ -1098,3 +1098,14 @@ Owner, with four landscapes of a cathedral (aether organ pipes glowing cyan, ros
   - Armor sets: Templar's 25, Reaper's 28, Sanguine 31, Dreadwyrm 34 (spread rather than shifted, to keep a set at least every five levels).
   - Balance (24 seeds, campaign parties, difficulty 10): Cathedral casual 17, 19 and 16/24, smart 24/24; Halcyon casual 9/17/15 → 9/17/16, smart 24/24 (the Reaper left Halcyon III's finale wave with the Hierarch).
 - *(Tests: `CathedralTests`.)*
+
+## 2026-11-07 — The Free Holds: The Moors Beyond the Stills get the owner's own landscapes (owner, GG-T346)
+
+Owner, with seven landscapes of walled hill-forts over gold moorland: the postgame chapter `greenvalley2` gets a Free Holds identity.
+
+- **Was:** every postgame theme borrowed its base theme's backgrounds (`greenvalley2` showed `tithemoors`), and its stages carried the base theme id (`"Theme": "greenvalley"`), named Green Valley IV–V.
+- **Now:** `greenvalley2` names `"Backgrounds": "freeholds"` (`freeholds_01..07`, native 768×1536); its stages carry `"Theme": "greenvalley2"` (the battle backdrop reads the stage's theme) and are renamed **The Free Holds I–II** ([BIBLE §22.3.4](BIBLE.md)). `Art.BoardTile` falls back to the base theme's tile, so the board keeps the moors' tile.
+  - Light re-cast, same foe count per wave: militia in place of the slimes, the goblin thugs, a skelepede and a toad; a Hollow hold (`undead00–02`) in place of a skelepede wave. Level 15 unchanged.
+  - Story text is placeholder draft (Prose, GG-T355): one added crawl line; STORY.md has a structural entry only.
+  - Balance is unmeasured (no soak run), pending the owner's `/test`.
+- *(Tests: `FreeHoldsTests`, `BackgroundsTests`.)*

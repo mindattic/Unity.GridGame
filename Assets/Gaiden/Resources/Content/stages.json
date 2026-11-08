@@ -3136,14 +3136,27 @@
   },
   {
     "Id": "greenvalley-04",
-    "Name": "Green Valley IV",
-    "Theme": "greenvalley",
+    "Name": "The Free Holds I",
+    "Theme": "greenvalley2",
     "Background": null,
     "Music": "Battle",
     "IsTest": false,
     "Waves": [
       {
-        "Group": "slime-stagger-2"
+        "Enemies": [
+          {
+            "Class": "soldier00",
+            "Level": 1,
+            "X": -1,
+            "Y": -1
+          },
+          {
+            "Class": "soldier01",
+            "Level": 1,
+            "X": -1,
+            "Y": -1
+          }
+        ]
       },
       {
         "Enemies": [
@@ -3190,18 +3203,37 @@
         ]
       },
       {
-        "Group": "skelepede-spread-3"
-      },
-      {
         "Enemies": [
           {
-            "Class": "goblinthug00",
+            "Class": "undead00",
             "Level": 1,
             "X": -1,
             "Y": -1
           },
           {
-            "Class": "goblinthug00",
+            "Class": "undead01",
+            "Level": 1,
+            "X": -1,
+            "Y": -1
+          },
+          {
+            "Class": "undead02",
+            "Level": 1,
+            "X": -1,
+            "Y": -1
+          }
+        ]
+      },
+      {
+        "Enemies": [
+          {
+            "Class": "soldier02",
+            "Level": 1,
+            "X": -1,
+            "Y": -1
+          },
+          {
+            "Class": "soldier03",
             "Level": 1,
             "X": -1,
             "Y": -1
@@ -3225,8 +3257,8 @@
   },
   {
     "Id": "greenvalley-05",
-    "Name": "Green Valley V",
-    "Theme": "greenvalley",
+    "Name": "The Free Holds II",
+    "Theme": "greenvalley2",
     "Background": null,
     "Music": "Battle",
     "IsTest": false,
@@ -3252,7 +3284,7 @@
             "Y": -1
           },
           {
-            "Class": "skelepede00",
+            "Class": "soldier00",
             "Level": 1,
             "X": -1,
             "Y": -1
@@ -3302,7 +3334,7 @@
             "Y": -1
           },
           {
-            "Class": "toad00",
+            "Class": "soldier02",
             "Level": 1,
             "X": -1,
             "Y": -1

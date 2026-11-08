@@ -111,7 +111,8 @@
       "Id": "greenvalley2",
       "MilestoneReward": "chest_gilded",
       "Name": "The Moors Beyond the Stills",
-      "Crawl": "The aether came down like rain. But rain never falls everywhere.\n\nPast the last domes lie holds the beams never reached. Their Hollow are still Hollow. Their wells still taste of tithe. Some haven't heard the Hierarch is gone, and some of them don't believe it.\n\nAnd Redline has found a new product. They're cutting the Bloom, drying it, and selling it in twists of paper with a promise that it brings back whoever you lost.\n\nIt doesn't. It only makes people hope, which is worse.\n\nThe moors are wider than the map you stole. Time to finish what you started.",
+      "Backgrounds": "freeholds",
+      "Crawl": "The aether came down like rain. But rain never falls everywhere.\n\nPast the last domes lie holds the beams never reached. Their Hollow are still Hollow. Their wells still taste of tithe. Some haven't heard the Hierarch is gone, and some of them don't believe it.\n\nAnd Redline has found a new product. They're cutting the Bloom, drying it, and selling it in twists of paper with a promise that it brings back whoever you lost.\n\nIt doesn't. It only makes people hope, which is worse.\n\nOut here the Free Holds keep their own walls. Militia in green hoods watch from the palisades, and the Captain's people still collect at the gates, for whoever pays.\n\nThe moors are wider than the map you stole. Time to finish what you started.",
       "Stages": [
         "greenvalley-04",
         "greenvalley-05"

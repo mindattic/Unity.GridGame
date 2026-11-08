@@ -34,25 +34,51 @@ namespace GridGame.Tests
             ["cathedral"] = ("cathedral", 4, 768, 1536), // GG-T350: the owner's four cathedral landscapes, native size
         };
 
+        /// <summary>Postgame themes (GG-T346/T349) that show a region set of their own instead of borrowing their base
+        /// theme's: theme id → (set, image count, source size).</summary>
+        private static readonly Dictionary<string, (string set, int count, int w, int h)> OwnPostgame = new Dictionary<string, (string, int, int, int)>
+        {
+            ["greenvalley2"] = ("freeholds", 7, 768, 1536), // GG-T346: the owner's seven Free Holds landscapes, native size
+        };
+
+        private static IEnumerable<(string set, int count, int w, int h)> AllSets => Expected.Values.Concat(OwnPostgame.Values);
+
         private static IEnumerable<ThemeDef> MainThemes => Real.Campaign.Themes.Where(t => Backdrops.BaseTheme(t.Id) == t.Id);
+
+        private static void AssertSet(ThemeDef t, (string set, int count, int w, int h) e)
+        {
+            var (set, count, w, h) = e;
+            Assert.That(t.Backgrounds, Is.EqualTo(set), $"{t.Id} names its region's set");
+            var s = Backdrops.Probe(t.Backgrounds, OnDisk);
+            Assert.That(s.Padded, Is.True, $"{set}: numbered from 01");
+            Assert.That(s.Count, Is.EqualTo(count).And.AtLeast(4), $"{set}: every image the art gives it");
+            for (int i = 0; i < s.Count; i++)
+            {
+                var file = Path.Combine(Folder, $"{set}_{i + 1:00}.jpg");
+                Assert.That(JpegSize(file), Is.EqualTo((w, h)), $"{Path.GetFileName(file)}: the original resolution, not downscaled");
+            }
+            Assert.That(OnDisk(Backdrops.Key(set, count, true)), Is.False, $"{set} has exactly {count}");
+        }
 
         [Test]
         public void Every_main_theme_names_a_region_set_of_at_least_four_backgrounds_at_full_size()
         {
             Assert.That(MainThemes.Select(t => t.Id), Is.EquivalentTo(Expected.Keys));
-            foreach (var t in MainThemes)
+            foreach (var t in MainThemes) AssertSet(t, Expected[t.Id]);
+        }
+
+        [Test]
+        public void A_postgame_theme_with_its_own_landscapes_names_its_region_set()
+        {
+            foreach (var kv in OwnPostgame)
             {
-                var (set, count, w, h) = Expected[t.Id];
-                Assert.That(t.Backgrounds, Is.EqualTo(set), $"{t.Id} names its region's set");
-                var s = Backdrops.Probe(t.Backgrounds, OnDisk);
-                Assert.That(s.Padded, Is.True, $"{set}: numbered from 01");
-                Assert.That(s.Count, Is.EqualTo(count).And.AtLeast(4), $"{set}: every image the art gives it");
-                for (int i = 0; i < s.Count; i++)
-                {
-                    var file = Path.Combine(Folder, $"{set}_{i + 1:00}.jpg");
-                    Assert.That(JpegSize(file), Is.EqualTo((w, h)), $"{Path.GetFileName(file)}: the original resolution, not downscaled");
-                }
-                Assert.That(OnDisk(Backdrops.Key(set, count, true)), Is.False, $"{set} has exactly {count}");
+                var t = Real.Campaign.Themes.Single(x => x.Id == kv.Key);
+                Assert.That(Backdrops.BaseTheme(t.Id), Is.Not.EqualTo(t.Id), $"{t.Id} is a postgame theme");
+                AssertSet(t, kv.Value);
+                foreach (var id in t.Stages)
+                    Assert.That(Real.Stages[id].Theme, Is.EqualTo(t.Id), $"{id}: the battle backdrop reads the stage's theme, so it names the postgame theme");
+                Assert.That(Backdrops.Resolve(t.Id, kv.Value.count, s => Backdrops.Probe(s, OnDisk), x => Backdrops.SetOf(Real, x)),
+                    Is.EqualTo($"Backgrounds/{kv.Value.set}_01"), $"{t.Id}: wraps over its own set");
             }
         }
 
@@ -61,7 +87,7 @@ namespace GridGame.Tests
         {
             BackdropSet Probe(string set) => Backdrops.Probe(set, OnDisk);
             string SetOf(string theme) => Backdrops.SetOf(Real, theme);
-            foreach (var t in Real.Campaign.Themes.Where(t => Backdrops.BaseTheme(t.Id) != t.Id))
+            foreach (var t in Real.Campaign.Themes.Where(t => Backdrops.BaseTheme(t.Id) != t.Id && !OwnPostgame.ContainsKey(t.Id)))
             {
                 var set = Expected[Backdrops.BaseTheme(t.Id)].set;
                 for (int i = 0; i < 6; i++)
@@ -74,9 +100,9 @@ namespace GridGame.Tests
         [Test]
         public void Every_background_file_is_region_named_with_a_unique_meta_and_no_legacy_names_remain()
         {
-            var themeIds = new HashSet<string>(Real.Campaign.Themes.Select(t => t.Id).Where(id => !Expected.Values.Any(e => e.set == id)));
+            var themeIds = new HashSet<string>(Real.Campaign.Themes.Select(t => t.Id).Where(id => !AllSets.Any(e => e.set == id)));
             var files = Directory.GetFiles(Folder).Where(f => !f.EndsWith(".meta")).Select(Path.GetFileName).ToList();
-            Assert.That(files, Has.Count.EqualTo(Expected.Values.Sum(e => e.count)), "nothing but the region sets");
+            Assert.That(files, Has.Count.EqualTo(AllSets.Sum(e => e.count)), "nothing but the region sets");
             var guids = new HashSet<string>();
             foreach (var f in files)
             {

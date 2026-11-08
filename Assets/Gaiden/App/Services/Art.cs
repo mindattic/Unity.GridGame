@@ -141,7 +141,14 @@ namespace GridGame.App
             return cache[path] = Resources.Load<Texture2D>(path);
         }
 
-        public static Texture2D BoardTile(string theme) => !string.IsNullOrEmpty(theme) && Exists("Tiles/" + theme) ? Load("Tiles/" + theme) : Load("Tiles/tile");
+        /// <summary>A theme's board tile: <c>Tiles/&lt;theme&gt;</c>, else its base theme's (a postgame theme with its own
+        /// stages, like <c>greenvalley2</c>, keeps the moors' tile, GG-T346), else the plain tile.</summary>
+        public static Texture2D BoardTile(string theme)
+        {
+            foreach (var t in new[] { theme, Backdrops.BaseTheme(theme) })
+                if (!string.IsNullOrEmpty(t) && Exists("Tiles/" + t)) return Load("Tiles/" + t);
+            return Load("Tiles/tile");
+        }
         /// <summary>A UI-group pixel icon (tools/icons.json "ui": cursor, pickups), or null.</summary>
         public static Texture2D UiIcon(string id) => Pixelled("UI", id);
         public static Texture2D Icon(string key) => string.IsNullOrEmpty(key) ? null : Load("Icons/" + key);

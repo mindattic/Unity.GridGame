@@ -227,7 +227,11 @@ crew has a caravan, a road, and proof that giving works. Roll credits.
 
 **Postgame** (the road after the Hierarch — open on purpose, no final answer):
 9. **The Moors Beyond the Stills** (`greenvalley2`) — holds that never got their aether back, and Redline selling the
-   Bloom as a drug.
+   Bloom as a drug. *Region: **the Free Holds** (GG-T346, from seven landscapes the owner made; structural entry only,
+   story authored in Prose, GG-T355).* Where: walled hill-forts and wooden palisades over gold moorland under a pale
+   Morrow — the holds that still keep their own walls (§3.3). Who: hold militia (`soldier00–03`) at the gates, the
+   Captain's people still collecting for whoever pays, Redline, moor wolves, and a hold whose Hollow (`undead00–02`) never
+   got their aether back. Stages *The Free Holds I–II*. *Boss (II): the **Captain** with his militia.*
 10. **Deep Shardfall** (`desert2`) — the Ember grows bolder with the Concord broken; the Infernalists march on the Anchors.
 11. **The Drowned Arks** (`swamp2`) — the *Long Patience* still flies, a little; the Lich offers passage to anyone.
 12. **Under the Anchors** (`cave2`) — what the arches are actually built on.
