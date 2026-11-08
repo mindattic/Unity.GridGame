@@ -3851,14 +3851,33 @@
   },
   {
     "Id": "cityruins-04",
-    "Name": "Veshker Ruins IV",
-    "Theme": "cityruins",
+    "Name": "The Underspire I",
+    "Theme": "cityruins2",
     "Background": null,
     "Music": "Battle",
     "IsTest": false,
     "Waves": [
       {
-        "Group": "undead-spread-3"
+        "Enemies": [
+          {
+            "Class": "ganger00",
+            "Level": 1,
+            "X": -1,
+            "Y": -1
+          },
+          {
+            "Class": "ganger02",
+            "Level": 1,
+            "X": -1,
+            "Y": -1
+          },
+          {
+            "Class": "ganger05",
+            "Level": 1,
+            "X": -1,
+            "Y": -1
+          }
+        ]
       },
       {
         "Enemies": [
@@ -3879,19 +3898,19 @@
       {
         "Enemies": [
           {
-            "Class": "templar00",
+            "Class": "harpy01",
             "Level": 1,
             "X": -1,
             "Y": -1
           },
           {
-            "Class": "templar01",
+            "Class": "harpy02",
             "Level": 1,
             "X": -1,
             "Y": -1
           },
           {
-            "Class": "templar02",
+            "Class": "ganger03",
             "Level": 1,
             "X": -1,
             "Y": -1
@@ -3899,12 +3918,25 @@
         ]
       },
       {
-        "Group": "bat-delta-3"
+        "Enemies": [
+          {
+            "Class": "minotaur02",
+            "Level": 1,
+            "X": -1,
+            "Y": -1
+          },
+          {
+            "Class": "minotaur04",
+            "Level": 1,
+            "X": -1,
+            "Y": -1
+          }
+        ]
       },
       {
         "Enemies": [
           {
-            "Class": "mannequin",
+            "Class": "cultist01",
             "Level": 1,
             "X": -1,
             "Y": -1
@@ -3916,7 +3948,7 @@
             "Y": -1
           },
           {
-            "Class": "undead02",
+            "Class": "ganger04",
             "Level": 1,
             "X": -1,
             "Y": -1
@@ -3928,8 +3960,8 @@
   },
   {
     "Id": "cityruins-05",
-    "Name": "Veshker Ruins V",
-    "Theme": "cityruins",
+    "Name": "The Underspire II",
+    "Theme": "cityruins2",
     "Background": null,
     "Music": "Battle",
     "IsTest": false,
@@ -3959,19 +3991,19 @@
       {
         "Enemies": [
           {
-            "Class": "templar03",
+            "Class": "minotaur02",
             "Level": 1,
             "X": -1,
             "Y": -1
           },
           {
-            "Class": "templar04",
+            "Class": "minotaur03",
             "Level": 1,
             "X": -1,
             "Y": -1
           },
           {
-            "Class": "templar05",
+            "Class": "minotaur04",
             "Level": 1,
             "X": -1,
             "Y": -1
@@ -3981,19 +4013,19 @@
       {
         "Enemies": [
           {
-            "Class": "undead04",
+            "Class": "harpy01",
             "Level": 1,
             "X": -1,
             "Y": -1
           },
           {
-            "Class": "ghost",
+            "Class": "harpy03",
             "Level": 1,
             "X": -1,
             "Y": -1
           },
           {
-            "Class": "phantom",
+            "Class": "ganger05",
             "Level": 1,
             "X": -1,
             "Y": -1
@@ -4003,19 +4035,19 @@
       {
         "Enemies": [
           {
-            "Class": "bat00",
+            "Class": "cultist02",
             "Level": 1,
             "X": -1,
             "Y": -1
           },
           {
-            "Class": "bat01",
+            "Class": "cultist03",
             "Level": 1,
             "X": -1,
             "Y": -1
           },
           {
-            "Class": "mannequin",
+            "Class": "cyberzombie00",
             "Level": 1,
             "X": -1,
             "Y": -1
@@ -4025,19 +4057,19 @@
       {
         "Enemies": [
           {
-            "Class": "vampire",
+            "Class": "minotaur01",
             "Level": 1,
             "X": -1,
             "Y": -1
           },
           {
-            "Class": "reaper",
+            "Class": "cultist01",
             "Level": 1,
             "X": -1,
             "Y": -1
           },
           {
-            "Class": "demonlord",
+            "Class": "ganger06",
             "Level": 1,
             "X": -1,
             "Y": -1

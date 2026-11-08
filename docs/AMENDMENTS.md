@@ -1109,3 +1109,13 @@ Owner, with seven landscapes of walled hill-forts over gold moorland: the postga
   - Story text is placeholder draft (Prose, GG-T355): one added crawl line; STORY.md has a structural entry only.
   - Balance is unmeasured (no soak run), pending the owner's `/test`.
 - *(Tests: `FreeHoldsTests`, `BackgroundsTests`.)*
+
+## 2026-11-07 — The Street markets: The Underspire gets the owner's own landscapes and the Street's cast (owner, GG-T349)
+
+Owner, with nine landscapes of neon underspire night markets: the postgame chapter `cityruins2` becomes the Street's home turf.
+
+- **Was:** `cityruins2` borrowed Halcyon's backgrounds; its stages (Veshker Ruins IV–V, `"Theme": "cityruins"`) fielded undead, ghosts, Red Seal templars, bats, the mannequin, and a finale of the playable Vampire with the Reaper and the Demon Lord.
+- **Now:** `"Backgrounds": "underspire"` (`underspire_01..09`, native 768×1536); stages carry `"Theme": "cityruins2"` and are renamed **The Underspire I–II** ([BIBLE §22.3.4](BIBLE.md)), cast only from Redline, the Murder, the Herd, the Chromed Hollow and the Choir; the finale is the Herd Boss beside a Choir Cantor and a Redline ganger. Same foe count per wave except Underspire I wave 4 (three bats became two Herd); level 15 unchanged.
+  - Story text unchanged (the crawl and party talk already fit); STORY.md has a structural entry only.
+  - Balance is unmeasured (no soak run), pending the owner's `/test`.
+- *(Tests: `UnderspireTests`, `BackgroundsTests`.)*

@@ -39,6 +39,7 @@ namespace GridGame.Tests
         private static readonly Dictionary<string, (string set, int count, int w, int h)> OwnPostgame = new Dictionary<string, (string, int, int, int)>
         {
             ["greenvalley2"] = ("freeholds", 7, 768, 1536), // GG-T346: the owner's seven Free Holds landscapes, native size
+            ["cityruins2"] = ("underspire", 9, 768, 1536), // GG-T349: the owner's nine underspire night-market landscapes, native size
         };
 
         private static IEnumerable<(string set, int count, int w, int h)> AllSets => Expected.Values.Concat(OwnPostgame.Values);

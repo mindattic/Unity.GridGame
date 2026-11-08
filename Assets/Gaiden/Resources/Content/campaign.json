@@ -152,6 +152,7 @@
       "Id": "cityruins2",
       "MilestoneReward": "chest_gilded",
       "Name": "The Underspire",
+      "Backgrounds": "underspire",
       "Crawl": "Halcyon without a Hierarch is a city holding its breath.\n\nThe Choir wants the spire back, to sing the tithe again -- honestly this time, they swear. The Red Seal wants it because order has to come from somewhere. The Street wants it because they've lived under it for two hundred years and it's their turn.\n\nEveryone has a speech. Everyone has soldiers. Everyone is certain.\n\nDown in the underspire, where the city's real business has always been done, the deals are being struck that will decide who sits where the Hierarch sat -- or whether anyone does.\n\nNobody is going to hand the spire to the people who broke the reservoir. Which is a shame. You're the only ones who've seen what's at the top.",
       "Stages": [
         "cityruins-04",

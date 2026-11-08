@@ -236,7 +236,12 @@ crew has a caravan, a road, and proof that giving works. Roll credits.
 11. **The Drowned Arks** (`swamp2`) — the *Long Patience* still flies, a little; the Lich offers passage to anyone.
 12. **Under the Anchors** (`cave2`) — what the arches are actually built on.
 13. **The Underspire** (`cityruins2`) — Halcyon without a Hierarch: the Choir, the Red Seal and the Street all want the
-    spire.
+    spire. *Region: **the Street markets** (GG-T349, from nine landscapes the owner made; structural entry only, story
+    authored in Prose, GG-T355).* Where: the underspire's night markets — the white spire behind tangled cables, pink
+    neon signs, stalls and splice clinics in the rain (§3.2). Who: Redline, the Murder and the Herd on their home turf,
+    Chromed Hollow still carrying cans for nobody, and the Choir come down to bargain. Stages *The Underspire I–II*.
+    *Boss (II): the **Herd Boss** (`minotaur01`) beside a Choir Cantor and a Redline ganger — three claimants to the
+    spire.*
 
 **Prologue** — *"Tithe Day."* Saltmoss, the white dome on the hill, the crew's names in the ledger, the run.
 
