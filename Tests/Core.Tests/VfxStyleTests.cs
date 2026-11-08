@@ -66,8 +66,10 @@ namespace GridGame.Tests
             Assert.That(minor.Count, Is.LessThan(major.Count)); Assert.That(major.Count, Is.LessThan(ult.Count));
             Assert.That(minor.HitStop, Is.LessThan(major.HitStop)); Assert.That(major.HitStop, Is.LessThan(ult.HitStop));
             Assert.That(VfxStyleSheet.TierOf(new AbilityDef { Cost = 1 }), Is.EqualTo(VfxTier.Minor));
-            Assert.That(VfxStyleSheet.TierOf(new AbilityDef { Cost = 2 }), Is.EqualTo(VfxTier.Major));
-            Assert.That(VfxStyleSheet.TierOf(new AbilityDef { Cost = 3 }), Is.EqualTo(VfxTier.Ultimate));
+            Assert.That(VfxStyleSheet.TierOf(new AbilityDef { Cost = 2 }), Is.EqualTo(VfxTier.Minor)); // GG-T373: the 1–12 curve
+            Assert.That(VfxStyleSheet.TierOf(new AbilityDef { Cost = 3 }), Is.EqualTo(VfxTier.Major));
+            Assert.That(VfxStyleSheet.TierOf(new AbilityDef { Cost = 5 }), Is.EqualTo(VfxTier.Major));
+            Assert.That(VfxStyleSheet.TierOf(new AbilityDef { Cost = 6 }), Is.EqualTo(VfxTier.Ultimate));
             Assert.That(VfxStyleSheet.TierOf(new AbilityDef { CooldownTurns = 5 }), Is.EqualTo(VfxTier.Ultimate));
             Assert.That(VfxStyleSheet.TierOf(new AbilityDef { Cost = 3, Intensity = "Minor" }), Is.EqualTo(VfxTier.Minor));
             Assert.That(c.Abilities.Values.Select(VfxStyleSheet.TierOf).Distinct().Count(), Is.EqualTo(3), "real content spans all three tiers");

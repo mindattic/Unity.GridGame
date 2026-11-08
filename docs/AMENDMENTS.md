@@ -1172,3 +1172,41 @@ Owner: *"all dialog/conversations, descriptions, screen crawls, everything is so
   - Armor sets unchanged (Templar's 25, Reaper's 30, Sanguine 35, Dreadwyrm 40): the last level is now 40, the same as the campaign's length.
   - Balance is unmeasured (no soak run), pending the owner's `/test`.
 - *(Tests: `PostgameCurveTests`, `FreeHoldsTests`, `UnderspireTests`, `MorrowsShadowTests`, `ArmorSetTests`.)*
+
+## 2026-11-08 — Spell costs run 1–12 on a curve (owner, GG-T373)
+
+Owner: *"with 12 mana slots that means some of these spells need to get much more expensive, need to consider balance."* [BIBLE §3.1.1](BIBLE.md) amended.
+
+- **Was:** costs of 1–3 orbs (Stasis 5 and Haste Field 4 aside). A bank holding 12 left nothing worth saving for: Meteor (a 13-tile 22 Fire + Burning) cost 2, the same as a single Fireball.
+- **Now:** costs follow a convex curve, from 1 (single-target utility, spot heals) through 3–4 (strong single target, small areas) and 5–7 (strong area, party-wide) to 8–12 (ultimates; Meteor 10).
+  - The guide is effect points per target × the targets the shape expects, priced at `0.9 × raw^1.5`. Every hero spell sits within 2 orbs of it.
+  - *Why:* power in one cast ends a wave before it acts, and saved orbs risk overflow and siphons. So big spells cost more than the sum of their parts and become decisions.
+  - **Income it was priced against:** measured (GG-T265) at 8–9 orbs a battle for the greedy bot and 4–5 for the casual bot (about 1.7 and 0.9 a wave). The analytic cross-check gives 6–8 from play. Ethers, Meditate, gear, Mana Casks and expedition carry come on top.
+- **Kept cheap:** the early kits. The two starting slots hold spells of at most 3 orbs, and the Cleric's and the tutorial's Heal and Pre-emptive Ward stay at 1. The Drifter opens with Frost Nova (3) in place of Frost (now 7, moved to slot 4).
+- **Follow-ons:**
+  - `ContentLoader.Validate` refuses a cost above the base bank, or any cost on a non-Spell.
+  - The VFX tier reads the new scale: 6+ orbs is Ultimate, 3–5 Major.
+  - The spellbook price follows the cost (Meteor 920 g).
+  - `HeroBot` saves for a 5+ orb spell on the bar (`SavingFor`, plus 0.6 per orb on cheaper spells, casual bot 0.3).
+  - `CampRoutine.BestLearnable` buys a spell above 6 orbs only after every cheaper affordable choice.
+- **Unmeasured** (no soak run), pending the owner's `/test`. It should measure:
+  - casts per battle by cost band
+  - whether the 5+ orb spells fire at all for both bots
+  - win rate and actions per wave against the GG-T265 baseline
+  - mana wasted at the cap and drained by siphons
+  - whether casters' slot-1 spells still go off every wave or two
+- *(Tests: `ManaCostCurveTests`, written and not run.)*
+
+| Spell | Was | Now |
+|---|---|---|
+| Hexmenders Mirror Curse, Harbinger Omen, Operative Shock, Thorned Hex, Festering Mark, Shadowbolt, Bloodrite, Quicken | 1 | 2 |
+| Tempoweave Shortcut | 1 | 3 |
+| Poison, Undertow, Frost Nova, Field Mine, Rejuvenate, Hinder, Trapline, Fireball | 2 | 3 |
+| Harm into Hope | 2 | 4 |
+| Bolt, Ward Grid | 3 | 4 |
+| Mass Heal, Warden Barrier | 2 | 5 |
+| Flame Lance, Red Mage Fury, Curse of Fate | 3 | 5 |
+| Cleansing Vigil | 2 | 6 |
+| Sanctuary Rite, Frost | 2 | 7 |
+| Meteor | 2 | 10 |
+| *(unchanged)* Heal, Antidote, Sleep, Silence, Regen, Drench, Runeward, Marked for Warband, Swap, Hands of Mercy, Dark Communion, Pre-emptive Ward, Overdrive (1); Flowing Current, Slow, Stumble, Spellshield, Overchannel, Drain Life, Den Mother, Blood Harvest (2); Shock Wave, Cross Hit (3); Haste Field (4); Stasis (5) | | |

@@ -116,6 +116,7 @@ GridGame Gaiden is **NOT**:
     - revive with someone down, ethers only into a bank with room, single-buff cures (the first-scan-per-class score went with Scan, GG-T290)
 
     A clean pincer stays the strongest move, so abilities win only on real value. Measured with `AbilityUsageSoak` + `records.py --abilities` (§22.6, `docs/research/AbilityUsage.md`).
+  - **It saves for a big spell (GG-T373, [§3.1.1](#311-costs)):** while a living hero's unlocked bar holds a spell of 5+ orbs that the bank can hold but not yet pay for (`HeroBot.SavingFor`, the nearest such cost), every cheaper spell pays an extra 0.6 per orb (casual bot 0.3). Only a cheap spell worth clearly more than its price goes off, and the bank climbs to the big one. The base `OrbPenalty` keeps the big spell itself affordable to the bot: at most about 5.5 for any cost once it can be paid. Unmeasured, pending `/test`.
 - `CampRoutine.Run` (Meta) + `MetaHeuristics` (Core/Bot/MetaBot.cs) — "what a sensible player does at Camp" (repair, rest, claim/accept bounties, recruit into an open party slot, forge/equip better gear, learn a spell, fill empty slots, restock potions) through the same services the screens call; drives the campaign balance simulation.
 
 ### 4.4 Content is data {#GG-§4.4}
@@ -892,7 +893,33 @@ and convert the remaining time into a portion of mana orb." The cluster fallback
 
 #### 3.1.1 Costs
 
-A spell's cost is a whole number of orbs (`AbilityDef.Cost`, an int in `abilities.json`); the UI renders it as that many orb pips (`Ui.CostPips`). Content costs are 1–3 (the former letter counts: Fireball 2, Bolt 3, Heal 1, …). Skills and items cost 0.
+A spell's cost is a whole number of orbs (`AbilityDef.Cost`, an int in `abilities.json`); the UI renders it as that many orb pips (`Ui.CostPips`; above 3, one orb and "×N", GG-T372). Skills and items cost 0. ~~Content costs are 1–3 (the former letter counts: Fireball 2, Bolt 3, Heal 1, …).~~
+
+**Amended 2026-11-08 (GG-T373, owner: "with 12 mana slots that means some of these spells need to get much more expensive, need to consider balance"): costs run 1–12 on a curve.** `ContentLoader.Validate` refuses a cost outside 0..`ManaBank.DefaultCapacity` (12), and any cost on a non-Spell. Bank gear (up to +4, §3.1.4) only adds headroom; no spell needs it. **The balance is unmeasured, pending the owner's `/test` soaks.**
+
+- **What a party earns.** Measured (GG-T265, 206 bot battles, before the BRAVE merge): about 0.09–0.11 orbs per player action for the greedy bot and 0.05 for the casual bot. A battle is 5 waves of about 2.5 foes and about 86 player actions, so that's **8–9 orbs a battle (about 1.7 a wave) greedy, and 4–5 (about 0.9 a wave) casual**.
+  - Analytic cross-check from `BattleConfig`: 12–13 foes × 105 charge × the share of their HP that pincers take (about 0.7), ÷ 1.5 for a typical three-hero pincer, × about 1.1 for chains ≈ 6 orbs. Fullness damping at a bank of 2–3 takes that to about 5. Crits, Guard (at most 0.4 a turn) and interrupts add 1–3, so play earns **6–8 orbs a battle**.
+  - On top of play come whole orbs: Meditate +1 (cooldown 5), Aether Pour +1 (cooldown 4), Steal/Mug, a Mana Potion 2, an Ether 3, a Hi-Ether 6, battle-start gear 2–3, Mana Casks 1–3, and orbs carried on an expedition. So a well-stocked party can reach 15 or more.
+- **The tiers.**
+
+| Orbs | What it buys | Examples |
+|---|---|---|
+| 1 | single-target utility, spot heals, wards | Heal, Sleep, Silence, Antidote, Regen, Pre-emptive Ward, Hands of Mercy, Overdrive, Swap, Drench |
+| 2 | single-target damage with a status rider; small heals with riders; Quicken | Shadowbolt, Omen, Thorned Hex, Drain Life, Den Mother, Slow, Flowing Current |
+| 3–4 | strong single target; small-area damage; one long line | Fireball 3, Frost Nova 3, Poison 3, Hinder 3, Shock Wave 3, Bolt 4, Ward Grid 4 |
+| 5–7 | strong area or party-wide effects: save for a wave or two | Red Mage Fury 5, Curse of Fate 5, Mass Heal 5, Barrier 5, Stasis 5, Cleansing Vigil 6, Sanctuary Rite 7, Frost 7 |
+| 8–12 | ultimates: save most of a battle | Meteor 10 (11–12 left as headroom) |
+
+- **The guide** (`ManaCostCurveTests.Guide`; every hero spell must sit within 2 orbs of it):
+  - **Effect points per target:** 10 damage = 1 and 20 healing = 1. A status adds its strength × its chance: Frozen 1.5; Sleep 1; Burning 0.8; Poisoned and Ward 0.7; Silenced, Slowed, Regen and Empowered 0.6; Blinded 0.5; Wet and Protection 0.3. A cleanse adds 0.4, Pull 0.25 a tile, a swap 0.5, and Pushback 1.6 a second (the timeline is the game's lifeblood).
+  - **Times the targets the shape expects to catch:** 1 for a single target or self, 1.6 for a radius-1 cross or diamond, 1.9 for a radius-1 square, 1.8 for a row or column, 2.4 for a plus or a radius-2 square, 2.6 for a radius-2 diamond, 2.5 for all foes and 4.5 for all allies.
+  - **Flat additions:** a drain's heal, and party haste (0.8 a tempo point, capped at the 3 points of the tempo floor).
+  - **Adjustments:** × 1.25 for an instant cast, × 0.8 for AdjacentOnly, × 0.85 for a 3+ turn cooldown.
+  - **Priced convexly:** `cost = clamp(round(0.9 × raw^1.5), 1, 12)`.
+  - *Why convex:* a burst that hits a whole wave ends it before the foes act, and saving orbs risks losing them to overflow and to a siphon (`DrainsOrbs`). So power in one cast costs more than its parts: single-target damage runs about 7–13 per orb, Meteor about 11 per orb only when it catches 2–3 foes, and Bolt or Ward Grid about 6 per orb.
+- **Early kits.** The two slots open from the start (§4.7) hold spells of at most 3 orbs. The starting Cleric's and the tutorial's Heal and Pre-emptive Ward cost 1. The Drifter now opens with Frost Nova (3) and keeps Frost (7) in slot 4.
+- **What reads the cost.** The spellbook price (`Abilities.Price` = 120 + 80 × cost, so Meteor costs 920 g). The VFX tier (`VfxStyleSheet.TierOf`: 6+ orbs is Ultimate, 3–5 Major). The bots (§4.3): `HeroBot.SavingFor`, and `CampRoutine.BestLearnable`, which buys a spell above 6 orbs only after every cheaper affordable choice.
+- *(Tests: `ManaCostCurveTests`, `Every_hero_spell_costs_between_one_orb_and_a_full_bank`.)*
 
 #### 3.1.2 Harvesting
 
@@ -1259,7 +1286,7 @@ Earlier note (2026-10-09, superseded): **Amended 2026-10-09:** there are no part
 - **Elements** (every `DamageType`, plus the `Heal` and `Water` families): a palette (`Core`, `Glow`, `Accent`), a particle **shape** (spark, shard, ember, bubble, mote, smoke, rune, ray, glyph, droplet), a **motion** (burst, rise, fall, implode, spiral, pulse, contract, bolt, rays, drift, billow), a timing token, count, size, reach, an optional ring and the sound family (`Cue`). `Palette.Element` reads its hue from here.
 - **Statuses** (every buff id) name the element they come from and inherit everything they leave empty: Burning reads as Fire, Frozen as Ice (converging, with a held frost tint), Wet as Water, Poisoned as Poison (with a passing green tint), Regen as Heal. The rest have their own look (Sleep's drifting "z" glyph, Slowed's spiral, Silenced's closing rune ring, Blinded's smoke, Protection's and Ward's pulse, Empowered's rising embers and swell). Taunt keeps its shockwave and threat lines (a readout of who is being pulled), drawn in its style's red. `LingerEvery` sets how often a lasting status sheds a wisp.
 - **Routing:** `ElementBurst`, `StatusBurst`, `TickLinger`, `HealBurst`, the spell trail and the named `ImpactVfx` flourishes all draw through one emitter (`BattleScreen.VfxStyle.cs`, `Emit`). A named flourish family (Explosion, Cloud, Sparkle, Beam, Aura, Drift, Slash, Strike) is now only a *motion* played in the ability's own element style, so Fireball and Frost share a gesture but never a look.
-- **Intensity tiers** (`Tiers`: Minor, Major, Ultimate) scale particle count, size, screen shake and hit-stop (0 / 40 / 90 ms). An ability's tier is its optional `Intensity`, else derived from its price (3+ orbs or a 5+ turn cooldown = Ultimate; 2 orbs or 3+ turns = Major; `VfxStyleSheet.TierOf`). A pincer's hits are Major; a crit, or a hit for a quarter of the target's HP, lands one tier higher.
+- **Intensity tiers** (`Tiers`: Minor, Major, Ultimate) scale particle count, size, screen shake and hit-stop (0 / 40 / 90 ms). An ability's tier is its optional `Intensity`, else derived from its price (~~3+ orbs … 2 orbs~~ — GG-T373, on the 1–12 curve: 6+ orbs or a 5+ turn cooldown = Ultimate; 3–5 orbs or 3+ turns = Major; `VfxStyleSheet.TierOf`). A pincer's hits are Major; a crit, or a hit for a quarter of the target's HP, lands one tier higher.
 - **Every hit is anticipation → impact → follow-through:** the target braces (an Instant squash), the element bursts while the frame holds for the tier's hit-stop, then the target recoils past rest and settles (`Ease.Back`). Durations come only from the timing tokens and easing only from the easing tokens (`Ease.Arc` replaces the hand-written `Sin(k·π)` curves); no duration is random.
 - Reduce Motion halves particle counts and drops the anticipation, follow-through, hit-stop and shakes.
 - **Prefab-ready (owner direction 2026-11-05):** every element style and every tier carries an optional `Prefab` id (null today; a status inherits its element's). A follow-up brings back real effect prefabs (GridGame2026's VisualEffects/Particles plus free/CC0 packs) on an effects-camera overlay: when set, the prefab replaces the code-drawn burst (a tier's `Prefab` overrides its element's), and the code-drawn burst stays the fallback. Nothing reads the field yet.
@@ -1303,23 +1330,23 @@ Added 2026-10-22 so abilities can differ in more than damage and status ([§7.1]
 
 ## 7. The Spell Catalog
 
-All entries in `abilities.json`. Every spell has base cast time **1.5 s** (scaled by WIS+INT, [§13.1.4](#1314-cast-time)).
+All entries in `abilities.json`. Every spell has base cast time **1.5 s** (scaled by WIS+INT, [§13.1.4](#1314-cast-time)). Costs follow the 1–12 orb curve of [§3.1.1](#311-costs) (GG-T373).
 
 | Spell | Cost | Shape / Mode / Filter | Motion | Effect | Role |
 |---|---|---|---|---|---|
 | **Heal** | 1 | SingleActor / PickActor / AllyOnly | None | +25 HP | spot heal |
-| **Mass Heal** | 2 | AllAllies / Auto / AllyOnly | None | +12 HP each | emergency top-up (cost 1 → 2, GG-T247: a party-wide heal for one orb) |
+| **Mass Heal** | 5 | AllAllies / Auto / AllyOnly | None | +12 HP each | emergency top-up (cost 1 → 2, GG-T247: a party-wide heal for one orb; 2 → 5, GG-T373) |
 | **Antidote** | 1 | SingleActor / PickActor / AllyOnly | None | removes all debuffs | cleanse |
 | ~~**Scan**~~ | — | — | — | **Retired 2026-11-06 (owner, GG-T290):** Bestiary knowledge comes from defeats ([§25.11](#2511-bestiary)). Save migration drops Scan from every hero's Known list and bar; in class kits healers got Quicken instead, supports Silence, tanks Cleave | — |
-| **Fireball** | 2 | SingleActor / PickActor / EnemyOnly | Twist | 18 Fire + Burning | burst + DOT |
-| **Frost** | 2 | Square(1) / PickTile / EnemyOnly | Bezier | 10 Ice + Frozen | AoE control |
-| **Bolt** | 3 | Row / PickActor / EnemyOnly | Strike | 14 Lightning (×1.5 Wet), 30% Blind | row clear |
-| **Poison** | 2 | Cross(1) / PickTile / EnemyOnly | Bezier | 6 Poison + Poisoned | long tail |
+| **Fireball** | 3 | SingleActor / PickActor / EnemyOnly | Twist | 18 Fire + Burning | burst + DOT |
+| **Frost** | 7 | Square(1) / PickTile / EnemyOnly | Bezier | 10 Ice + Frozen | AoE control |
+| **Bolt** | 4 | Row / PickActor / EnemyOnly | Strike | 14 Lightning (×1.5 Wet), 30% Blind | row clear |
+| **Poison** | 3 | Cross(1) / PickTile / EnemyOnly | Bezier | 6 Poison + Poisoned | long tail |
 | **Sleep** | 1 | SingleActor / PickActor / EnemyOnly | Homing | Asleep (breaks on damage/move) | hard CC |
 | **Slow** | 2 | Row / PickActor / EnemyOnly | Bezier | Slowed (icon ×0.5) | row tempo |
-| **Quicken** | 1 | SingleActor / PickActor / Any | Straight | +0.30 u (or rush a cast) + Empowered (GG-T263: heroes have no turn icons, so haste alone was inert; GG-T268) | tempo |
+| **Quicken** | 2 | SingleActor / PickActor / Any | Straight | +0.30 u (or rush a cast) + Empowered (GG-T263: heroes have no turn icons, so haste alone was inert; GG-T268) | tempo |
 | **Silence** | 1 | SingleActor / PickActor / EnemyOnly | Straight | Silenced | see note |
-| **Meteor** | 2 | Diamond(2) / PickTile / EnemyOnly | Strike | 22 Fire + Burning | big AoE |
+| **Meteor** | 10 | Diamond(2) / PickTile / EnemyOnly | Strike | 22 Fire + Burning | big AoE |
 | **ShockWave** | 3 | Column / PickActor / EnemyOnly | Strike | 10 Lightning | column cleave |
 | **CrossHit** | 3 | Plus / PickTile / EnemyOnly | Strike | 8 Lightning | row + column |
 | **Steal** (Skill, CD 3) | free | Cross(1) / Auto / EnemyOnly | Homing | per adjacent enemy: LCK+AGI roll → orb | resource grab |

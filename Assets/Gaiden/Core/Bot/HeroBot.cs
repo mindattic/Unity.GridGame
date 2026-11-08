@@ -519,7 +519,14 @@ namespace GridGame.Core.Bot
             bool lone = EnemyPlanner.LoneHero(s) && score > 0f && a.BaseDamage > 0;
             if (ReadsBar && castTicks > 0 && score > 0f) score -= LatePenalty(s, a, targets, castTicks);
             if (ReadsBar && score > 0f) score += AbilityTimeValue(s, caster, a, targets);
-            if (a.Kind == AbilityKind.Spell) score -= a.Cost * OrbPenalty(s, lone);
+            if (a.Kind == AbilityKind.Spell)
+            {
+                score -= a.Cost * OrbPenalty(s, lone);
+                // GG-T373: while the party saves for a big spell it can't yet afford, a cheaper spell's orbs also cost the
+                // turns they push that spell back, so only a cheap spell worth clearly more than its price is cast.
+                int goal = lone ? 0 : SavingFor(s);
+                if (goal > a.Cost) score -= a.Cost * (TimelineAware ? SaveSurchargeSmart : SaveSurchargeCasual);
+            }
             if (a.Kind == AbilityKind.Item) score -= lone ? 1f : 4f;
             return score;
         }
@@ -838,6 +845,33 @@ namespace GridGame.Core.Bot
         /// <summary>GG-T246: a debuff on a foe, valued by what it actually does rather than a flat +3.</summary>
         private static float DebuffValue(BuffDef d)
         {
+        /// <summary>GG-T373: a spell of at least this many orbs is one the party saves for (the 5–12 band of the cost curve).</summary>
+        public const int SaveForCost = 5;
+        /// <summary>GG-T373: extra price per orb of a cheaper spell while saving — the smart bot saves harder than the casual one.</summary>
+        public const float SaveSurchargeSmart = 0.6f, SaveSurchargeCasual = 0.3f;
+
+        /// <summary>GG-T373: the orb price of the nearest big spell (<see cref="SaveForCost"/>+) on a living hero's unlocked bar
+        /// that the bank can hold but can't pay for yet, or 0 when there's nothing to save for. The nearest, so a party with a
+        /// 5- and a 10-orb spell saves up to the 5 first; once the bank holds it, the 10 becomes the goal.</summary>
+        public static int SavingFor(BattleState s)
+        {
+            int goal = 0;
+            foreach (var h in s.LivingList(Team.Hero))
+            {
+                if (h.IsIndependent) continue;
+                for (int i = 0; i < h.Bar.Count && i < h.UnlockedSlots; i++)
+                {
+                    var sl = h.Bar[i];
+                    if (sl == null || sl.IsEmpty || sl.IsItem || sl.IsWeapon) continue;
+                    var a = s.Content.TryAbility(sl.AbilityId);
+                    if (a == null || a.Kind != AbilityKind.Spell || a.Cost < SaveForCost) continue;
+                    if (a.Cost <= s.Bank.Count || a.Cost > s.Bank.Capacity) continue;
+                    if (goal == 0 || a.Cost < goal) goal = a.Cost;
+                }
+            }
+            return goal;
+        }
+
             if (d.Kind != BuffKind.Debuff) return 0f;
             float v = 1f;
             if (d.HaltsTimeline || d.Immobile) v += 6f;

@@ -113,14 +113,18 @@ namespace GridGame.Core.Content
             };
         }
 
-        /// <summary>An ability's tier: its <see cref="AbilityDef.Intensity"/> if set, else from its price — 3+ orbs or a
-        /// 5+ turn cooldown is an ultimate, 2 orbs or a 3+ turn cooldown a major, anything cheaper a minor.</summary>
+        /// <summary>GG-T373: the orb prices where an ability's look steps up, on the 1–12 cost curve (BIBLE §3.1.1):
+        /// 6+ orbs (the saved-for spells) is an ultimate, 3–5 (area and strong single-target) a major.</summary>
+        public const int UltimateCost = 6, MajorCost = 3;
+
+        /// <summary>An ability's tier: its <see cref="AbilityDef.Intensity"/> if set, else from its price — <see cref="UltimateCost"/>+
+        /// orbs or a 5+ turn cooldown is an ultimate, <see cref="MajorCost"/>+ orbs or a 3+ turn cooldown a major, anything cheaper a minor.</summary>
         public static VfxTier TierOf(AbilityDef a)
         {
             if (a == null) return VfxTier.Minor;
             if (a.Intensity != null && Enum.TryParse(a.Intensity, true, out VfxTier set)) return set;
-            if (a.Cost >= 3 || a.CooldownTurns >= 5) return VfxTier.Ultimate;
-            if (a.Cost >= 2 || a.CooldownTurns >= 3) return VfxTier.Major;
+            if (a.Cost >= UltimateCost || a.CooldownTurns >= 5) return VfxTier.Ultimate;
+            if (a.Cost >= MajorCost || a.CooldownTurns >= 3) return VfxTier.Major;
             return VfxTier.Minor;
         }
 

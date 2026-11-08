@@ -154,6 +154,12 @@ namespace GridGame.Core.Content
                 else if (a.DrainsOrbs > 0 && (a.Id == null || !a.Id.StartsWith("charge_")))
                     p.Add($"ability {a.Id}: DrainsOrbs is an enemy charge's siphon; name it charge_… (GG-T332)");
                 ValidateTrigger(db, a, p);
+                // GG-T373: a spell has to be payable from a full base bank (bank gear only adds headroom), and skills,
+                // passives and items never spend orbs.
+                if (a.Cost < 0 || a.Cost > Battle.ManaBank.DefaultCapacity)
+                    p.Add($"ability {a.Id}: Cost {a.Cost} outside 0..{Battle.ManaBank.DefaultCapacity} orbs, the base bank (GG-T373)");
+                else if (a.Cost > 0 && a.Kind != AbilityKind.Spell)
+                    p.Add($"ability {a.Id}: only a Spell spends orbs; a {a.Kind} has Cost 0 (GG-T373)");
                 // GG-T303: a Tame is a picked single foe from a Skill or a consumable, with a sane chance and a duration.
                 if (a.Tame != 0f)
                 {

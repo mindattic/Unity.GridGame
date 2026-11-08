@@ -175,7 +175,9 @@ namespace GridGame.Meta
 
         /// <summary>The ability a sensible player buys for an open slot (GG-T100): the priciest (highest-tier)
         /// affordable one from the hero's own class list, in list order on ties; only once the class list is
-        /// fully learned does it reach into the general catalog.</summary>
+        /// fully learned does it reach into the general catalog. GG-T373: a slot filler should fire most battles, so a
+        /// spell above <see cref="FillerMaxCost"/> orbs (one the party saves several waves for) comes only after every
+        /// affordable cheaper choice.</summary>
         public static AbilityDef BestLearnable(ContentDb c, HeroSave h, int gold)
         {
             var learnable = Abilities.Learnable(c, h);
@@ -183,7 +185,8 @@ namespace GridGame.Meta
             var own = learnable.Where(a => classList.Contains(a.Id)).ToList();
             var pool = own.Count > 0 ? own : learnable;
             return pool.Where(a => Abilities.Price(a) <= gold)
-                .OrderByDescending(Abilities.Price).ThenBy(a => classList.IndexOf(a.Id))
+                .OrderBy(a => a.Kind == AbilityKind.Spell && a.Cost > FillerMaxCost)
+                .ThenByDescending(Abilities.Price).ThenBy(a => classList.IndexOf(a.Id))
                 .FirstOrDefault();
         }
 
@@ -220,6 +223,9 @@ namespace GridGame.Meta
         /// call, not the routine's.</summary>
         private static void SpendSkillPoints(ContentDb c, SaveData s, List<string> log)
         {
+        /// <summary>GG-T373: the dearest spell (half the base bank) the camp routine buys for an open slot before a big one.</summary>
+        public const int FillerMaxCost = ManaBank.DefaultCapacity / 2;
+
             foreach (var h in s.Roster)
             {
                 if (h == null || h.SkillPoints <= 0) continue;

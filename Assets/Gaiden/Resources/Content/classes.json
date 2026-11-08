@@ -5304,10 +5304,10 @@
       "chill_aura"
     ],
     "DefaultLoadout": [
-      "frost",
+      "drifter_frostnova",
       "fieldcaster_trapline",
       "item:x_potion",
-      "drifter_frostnova",
+      "frost",
       "fieldcaster_resupplydrone"
     ],
     "DropTable": null,
