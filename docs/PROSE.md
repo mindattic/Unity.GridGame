@@ -48,6 +48,7 @@ $kit = 'D:\Projects\MindAttic\Prose\consumer-kit\kit.ps1'
 
 python tools/prose_seed.py <dir>          # draft the game's current words (Content/Text joined on) for Prose
 python tools/prose_text.py check         # no story text in gameplay JSON, every key has a text, no orphans
+python tools/prose_text.py seed-missing --drafts <dir>   # seed only keys with no text yet; drafts for Prose
 prose --texts-draft gridgame <dir>        # drafts; identical content changes nothing
 python -m unittest tools/test_prose_apply.py   # the applier's tests (run only when the owner asks)
 ```
@@ -77,6 +78,10 @@ applier tells an orphan from a text to apply.
 | description | `armorset:<setId>` | `description-armorset-<id>` | armorsets.json Description |
 | description | `skilltree:<treeId>`, `skillnode:<nodeId>` | `description-skilltree-…`, `description-skillnode-…` | skilltrees.json |
 | description | `npc:<npcId>` | `description-npc-<id>` | the camp NPC's blurb (innkeeper, blacksmith, alchemist, enchantress, merchant) |
+| description | `place:<themeId>` | `description-place-<id>` | a campaign region (GG-T374), shown under its expedition header on the stage select; seeded from the crawl's first paragraph |
+| description | `place:<stageId>` | `description-place-<id>` | a campaign stage (in a theme's Stages, not `IsTest`); seeded "A battlefield of <region>." |
+| description | `faction:<factionId>` | `description-faction-<id>` | factions.json, every faction; shown in the post-battle wanderer box; seeded from the mapper's summary |
+| description | `character:<crew>` | `description-character-<crew>` | caravan.json `Crew`, a named character with no class or npc key; `<crew>` is the crew name slugged (its entity id without `character-`); shown on the Caravan card |
 | quest | `quest:<questId>` | `quest-<id>` | quests.json Name, Giver, Summary, TurnIn |
 | glossary | `glossary:<glossaryId>` | `glossary-<id>` | glossary.json Term, Aliases, Text |
 | bark | `bark:caravan/<upgradeId>` | `bark-caravan-<id>` | caravan.json Barks (the wagon's crew) |
@@ -115,6 +120,14 @@ Choice **tags** carry the meaning the game's logic keys on:
 - `character-<id>` for the camp NPCs and the caravan crew.
 - `concept-<id>` for each glossary term.
 - `armorset-<id>` for each armor set, and `item-<id>` for every item (a set piece is `part-of` its set).
+
+**Every place, faction and character has a description** (GG-T374). Prose's verifier raises `TEXT-OBLIGATION
+[undescribed]` when a story text names an entity that no `description` text is `about`. `prose_keys.description_keys`
+gives each place, faction and character entity its key (`place:`, `faction:`, `npc:` for camp NPCs, `character:` for the
+crew); the mapper refuses to write an entity without one, and `prose_text.py check` reports it. The game joins them into
+`ContentDb.PlaceBlurbs`, `FactionBlurbs` and `CrewBlurbs` (a missing key shows the placeholder). New keys get their seed
+with `python tools/prose_text.py seed-missing --drafts <dir>`, which only fills keys that have no text yet, then
+`prose --texts-draft gridgame <dir> --batch <tag>`.
 
 The universe record's setting, logline and rules are the owner's DECIDED premise, "A War in Heaven" (v4, 2026-11-07),
 which retires docs/STORY.md's "Under Morrow".

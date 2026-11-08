@@ -104,6 +104,14 @@ namespace GridGame.Core.Content
         public readonly List<string> TextProblems = new List<string>();
         /// <summary>The camp NPCs' blurbs (Prose "npc:&lt;id&gt;" descriptions), by NPC id.</summary>
         public readonly Dictionary<string, string> NpcBlurbs = new Dictionary<string, string>(StringComparer.OrdinalIgnoreCase);
+        /// <summary>GG-T374: each campaign region's and stage's description (Prose "place:&lt;theme|stage&gt;"), by theme or stage id.</summary>
+        public readonly Dictionary<string, string> PlaceBlurbs = new Dictionary<string, string>(StringComparer.OrdinalIgnoreCase);
+        /// <summary>GG-T374: each hero faction's description (Prose "faction:&lt;id&gt;"), by faction id.</summary>
+        public readonly Dictionary<string, string> FactionBlurbs = new Dictionary<string, string>(StringComparer.OrdinalIgnoreCase);
+        /// <summary>GG-T374: each caravan crew member's description (Prose "character:&lt;slug&gt;"), by caravan upgrade id.</summary>
+        public readonly Dictionary<string, string> CrewBlurbs = new Dictionary<string, string>(StringComparer.OrdinalIgnoreCase);
+        /// <summary>A described thing's words, or null when the map has none (a hand-built fixture).</summary>
+        public static string Blurb(Dictionary<string, string> map, string id) => id != null && map.TryGetValue(id, out var b) ? b : null;
 
         private static T Get<T>(Dictionary<string, T> map, string id, string kind)
         {

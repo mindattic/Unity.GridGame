@@ -302,6 +302,111 @@
         "short": "Cloth spun from captured wisps. It glows faintly and feeds its wearer's magic."
       }
     },
+    "character:brannoc": {
+      "key": "character:brannoc",
+      "id": "description-character-brannoc",
+      "guid": null,
+      "version": 0,
+      "source": "seed",
+      "hash": "sha256:6400c685b049dfdc3cac9481a12f1df37a7e114b1ba5ef918f304ed7aab55169",
+      "about": [
+        "character-brannoc"
+      ],
+      "speakers": [],
+      "payload": {
+        "short": "The caravan's cask-keeper, who keeps the Mana Casks wagon."
+      }
+    },
+    "character:lio": {
+      "key": "character:lio",
+      "id": "description-character-lio",
+      "guid": null,
+      "version": 0,
+      "source": "seed",
+      "hash": "sha256:458ed789b2e61ab830b58e2eb67c2207bd29ea1e9bf0f73cbeef457266680555",
+      "about": [
+        "character-lio"
+      ],
+      "speakers": [],
+      "payload": {
+        "short": "The caravan's rune apprentice, who keeps the Enchanter's Wagon wagon."
+      }
+    },
+    "character:old-hask": {
+      "key": "character:old-hask",
+      "id": "description-character-old-hask",
+      "guid": null,
+      "version": 0,
+      "source": "seed",
+      "hash": "sha256:783e71ae9bdb9623248cca5df12d566c50212ed51c284e0112c79963c5794906",
+      "about": [
+        "character-old-hask"
+      ],
+      "speakers": [],
+      "payload": {
+        "short": "The caravan's wagon farrier, who keeps the Armory Wagon wagon."
+      }
+    },
+    "character:osk": {
+      "key": "character:osk",
+      "id": "description-character-osk",
+      "guid": null,
+      "version": 0,
+      "source": "seed",
+      "hash": "sha256:cda5f841f2ad316aa67abc9896e2be29b2d65e54a200a57ef7751c30e2ee5ee1",
+      "about": [
+        "character-osk"
+      ],
+      "speakers": [],
+      "payload": {
+        "short": "The caravan's quartermaster, who keeps the Quartermaster's Ledger wagon."
+      }
+    },
+    "character:penny-tallow": {
+      "key": "character:penny-tallow",
+      "id": "description-character-penny-tallow",
+      "guid": null,
+      "version": 0,
+      "source": "seed",
+      "hash": "sha256:eea8a641d12a696d31299549234438bb6f019887927560c41e37c8ca36f7e90d",
+      "about": [
+        "character-penny-tallow"
+      ],
+      "speakers": [],
+      "payload": {
+        "short": "The caravan's purser, who keeps the Strongbox wagon."
+      }
+    },
+    "character:sister-ilsabet": {
+      "key": "character:sister-ilsabet",
+      "id": "description-character-sister-ilsabet",
+      "guid": null,
+      "version": 0,
+      "source": "seed",
+      "hash": "sha256:ffe9bc33bbde080a71315fa84d27adfba5c37f27b5509eabf724f4d1cecb72a8",
+      "about": [
+        "character-sister-ilsabet"
+      ],
+      "speakers": [],
+      "payload": {
+        "short": "The caravan's wagon medic, who keeps the Medic Wagon wagon."
+      }
+    },
+    "character:wren-and-dace": {
+      "key": "character:wren-and-dace",
+      "id": "description-character-wren-and-dace",
+      "guid": null,
+      "version": 0,
+      "source": "seed",
+      "hash": "sha256:3d0780c49d34134a8aec66d3d9131563885294003e9e1565572087ed9aa49ee7",
+      "about": [
+        "character-wren-and-dace"
+      ],
+      "speakers": [],
+      "payload": {
+        "short": "The caravan's outriders, who keeps the Scouts wagon."
+      }
+    },
     "class:aetherist": {
       "key": "class:aetherist",
       "id": "description-class-aetherist",
@@ -3996,6 +4101,96 @@
       "payload": {
         "short": "A feral threat that overwhelms foes with instinct and power.",
         "long": "Born to the deep places, it runs by instinct and strikes without doubt."
+      }
+    },
+    "faction:ember": {
+      "key": "faction:ember",
+      "id": "description-faction-ember",
+      "guid": null,
+      "version": 0,
+      "source": "seed",
+      "hash": "sha256:0c270d6d743127ceeceb28858de2fa41ad4d7b78f460928f79b092f3f507100d",
+      "about": [
+        "faction-ember"
+      ],
+      "speakers": [],
+      "payload": {
+        "short": "The Ember: a hero faction; its people can join the caravan as wanderers and recruits."
+      }
+    },
+    "faction:fendark": {
+      "key": "faction:fendark",
+      "id": "description-faction-fendark",
+      "guid": null,
+      "version": 0,
+      "source": "seed",
+      "hash": "sha256:65b1884d01f2f6531534b36af8a074cba4ffa6301fff62bc4828838fab3355a6",
+      "about": [
+        "faction-fendark"
+      ],
+      "speakers": [],
+      "payload": {
+        "short": "The Fen-dark: a hero faction; its people can join the caravan as wanderers and recruits."
+      }
+    },
+    "faction:holds": {
+      "key": "faction:holds",
+      "id": "description-faction-holds",
+      "guid": null,
+      "version": 0,
+      "source": "seed",
+      "hash": "sha256:3472f53f7ee46c6064c140c2d2a63e50527e1e7b1518ab57e900cf34ae4bb8f9",
+      "about": [
+        "faction-holds"
+      ],
+      "speakers": [],
+      "payload": {
+        "short": "The Free Holds: a hero faction; its people can join the caravan as wanderers and recruits."
+      }
+    },
+    "faction:lantern": {
+      "key": "faction:lantern",
+      "id": "description-faction-lantern",
+      "guid": null,
+      "version": 0,
+      "source": "seed",
+      "hash": "sha256:69128ed07be8b686cadbbce64c536dc58d4e17fe80bba19dc431d7bb3d2af1b9",
+      "about": [
+        "faction-lantern"
+      ],
+      "speakers": [],
+      "payload": {
+        "short": "The Lantern Road: a hero faction; its people can join the caravan as wanderers and recruits."
+      }
+    },
+    "faction:street": {
+      "key": "faction:street",
+      "id": "description-faction-street",
+      "guid": null,
+      "version": 0,
+      "source": "seed",
+      "hash": "sha256:eba951771fcb4e35a594520071ceed0c74cb0c243b5ed583d052a5d5ee01cc0d",
+      "about": [
+        "faction-street"
+      ],
+      "speakers": [],
+      "payload": {
+        "short": "The Street: a hero faction; its people can join the caravan as wanderers and recruits."
+      }
+    },
+    "faction:wild": {
+      "key": "faction:wild",
+      "id": "description-faction-wild",
+      "guid": null,
+      "version": 0,
+      "source": "seed",
+      "hash": "sha256:8395f579e926d075cd46813d74da9de1fb17d3e517af53b2149c86953acd8f54",
+      "about": [
+        "faction-wild"
+      ],
+      "speakers": [],
+      "payload": {
+        "short": "The Wild: a hero faction; its people can join the caravan as wanderers and recruits."
       }
     },
     "item:antidote": {
@@ -23358,6 +23553,831 @@
       "speakers": [],
       "payload": {
         "short": "A Lantern Road trader who follows the caravan; sells to everyone, informs on no one."
+      }
+    },
+    "place:bloom": {
+      "key": "place:bloom",
+      "id": "description-place-bloom",
+      "guid": null,
+      "version": 0,
+      "source": "seed",
+      "hash": "sha256:b2df1ecff5d37a2508a38754b4c39dea5e8bd7a5463dc651cfe4c59247807a9b",
+      "about": [
+        "place-bloom"
+      ],
+      "speakers": [],
+      "payload": {
+        "short": "Where the Hierarch's reservoir broke, the stolen aether came down hardest, and the Bloom came up through the Concord's white stone: red blossom over broken pillars, moss in every crack."
+      }
+    },
+    "place:bloom-01": {
+      "key": "place:bloom-01",
+      "id": "description-place-bloom-01",
+      "guid": null,
+      "version": 0,
+      "source": "seed",
+      "hash": "sha256:9e62373a4ca5bc80aa385a20cde579293d172b905c8ebc15c28cb618726f6444",
+      "about": [
+        "place-bloom-01"
+      ],
+      "speakers": [],
+      "payload": {
+        "short": "A battlefield of The Bloom."
+      }
+    },
+    "place:bloom-02": {
+      "key": "place:bloom-02",
+      "id": "description-place-bloom-02",
+      "guid": null,
+      "version": 0,
+      "source": "seed",
+      "hash": "sha256:9e62373a4ca5bc80aa385a20cde579293d172b905c8ebc15c28cb618726f6444",
+      "about": [
+        "place-bloom-02"
+      ],
+      "speakers": [],
+      "payload": {
+        "short": "A battlefield of The Bloom."
+      }
+    },
+    "place:bloom-03": {
+      "key": "place:bloom-03",
+      "id": "description-place-bloom-03",
+      "guid": null,
+      "version": 0,
+      "source": "seed",
+      "hash": "sha256:9e62373a4ca5bc80aa385a20cde579293d172b905c8ebc15c28cb618726f6444",
+      "about": [
+        "place-bloom-03"
+      ],
+      "speakers": [],
+      "payload": {
+        "short": "A battlefield of The Bloom."
+      }
+    },
+    "place:cathedral": {
+      "key": "place:cathedral",
+      "id": "description-place-cathedral",
+      "guid": null,
+      "version": 0,
+      "source": "seed",
+      "hash": "sha256:ad28fe9fe878c02efc5cab57073882dca6e6d91503652e7eb05acaa60c4cefac",
+      "about": [
+        "place-cathedral"
+      ],
+      "speakers": [],
+      "payload": {
+        "short": "At the top of Halcyon's spire, above the neon, stands the Choir's cathedral: rose windows, pews by the hundred, a moon in the vault, and an organ of aether pipes glowing the colour of a cold sky."
+      }
+    },
+    "place:cathedral-01": {
+      "key": "place:cathedral-01",
+      "id": "description-place-cathedral-01",
+      "guid": null,
+      "version": 0,
+      "source": "seed",
+      "hash": "sha256:0d7ca0577387b48d6dd2832a5de449393c5c2a1158209e26f17784dc311c9e44",
+      "about": [
+        "place-cathedral-01"
+      ],
+      "speakers": [],
+      "payload": {
+        "short": "A battlefield of The Choir's Cathedral."
+      }
+    },
+    "place:cathedral-02": {
+      "key": "place:cathedral-02",
+      "id": "description-place-cathedral-02",
+      "guid": null,
+      "version": 0,
+      "source": "seed",
+      "hash": "sha256:0d7ca0577387b48d6dd2832a5de449393c5c2a1158209e26f17784dc311c9e44",
+      "about": [
+        "place-cathedral-02"
+      ],
+      "speakers": [],
+      "payload": {
+        "short": "A battlefield of The Choir's Cathedral."
+      }
+    },
+    "place:cathedral-03": {
+      "key": "place:cathedral-03",
+      "id": "description-place-cathedral-03",
+      "guid": null,
+      "version": 0,
+      "source": "seed",
+      "hash": "sha256:0d7ca0577387b48d6dd2832a5de449393c5c2a1158209e26f17784dc311c9e44",
+      "about": [
+        "place-cathedral-03"
+      ],
+      "speakers": [],
+      "payload": {
+        "short": "A battlefield of The Choir's Cathedral."
+      }
+    },
+    "place:cave": {
+      "key": "place:cave",
+      "id": "description-place-cave",
+      "guid": null,
+      "version": 0,
+      "source": "seed",
+      "hash": "sha256:43b82ead19856baae30bc36a65786eb78964406fcba36385ad994bb2f337b7c4",
+      "about": [
+        "place-cave"
+      ],
+      "speakers": [],
+      "payload": {
+        "short": "North of the last hold the world goes white. Across the ice stand the Anchors -- stone arches bigger than mountains, humming so deep you feel it in your teeth."
+      }
+    },
+    "place:cave-01": {
+      "key": "place:cave-01",
+      "id": "description-place-cave-01",
+      "guid": null,
+      "version": 0,
+      "source": "seed",
+      "hash": "sha256:21e5c61f99f138ed6a79b1666329018b7ff9d95e9f12f0536b749a219522b9a5",
+      "about": [
+        "place-cave-01"
+      ],
+      "speakers": [],
+      "payload": {
+        "short": "A battlefield of The Anchor Wastes."
+      }
+    },
+    "place:cave-02": {
+      "key": "place:cave-02",
+      "id": "description-place-cave-02",
+      "guid": null,
+      "version": 0,
+      "source": "seed",
+      "hash": "sha256:21e5c61f99f138ed6a79b1666329018b7ff9d95e9f12f0536b749a219522b9a5",
+      "about": [
+        "place-cave-02"
+      ],
+      "speakers": [],
+      "payload": {
+        "short": "A battlefield of The Anchor Wastes."
+      }
+    },
+    "place:cave-03": {
+      "key": "place:cave-03",
+      "id": "description-place-cave-03",
+      "guid": null,
+      "version": 0,
+      "source": "seed",
+      "hash": "sha256:21e5c61f99f138ed6a79b1666329018b7ff9d95e9f12f0536b749a219522b9a5",
+      "about": [
+        "place-cave-03"
+      ],
+      "speakers": [],
+      "payload": {
+        "short": "A battlefield of The Anchor Wastes."
+      }
+    },
+    "place:cave-04": {
+      "key": "place:cave-04",
+      "id": "description-place-cave-04",
+      "guid": null,
+      "version": 0,
+      "source": "seed",
+      "hash": "sha256:098a90755fe48f48e865dce247f7fb40a75a809b4558ec7b5e56fb7898860798",
+      "about": [
+        "place-cave-04"
+      ],
+      "speakers": [],
+      "payload": {
+        "short": "A battlefield of Under the Anchors."
+      }
+    },
+    "place:cave-05": {
+      "key": "place:cave-05",
+      "id": "description-place-cave-05",
+      "guid": null,
+      "version": 0,
+      "source": "seed",
+      "hash": "sha256:098a90755fe48f48e865dce247f7fb40a75a809b4558ec7b5e56fb7898860798",
+      "about": [
+        "place-cave-05"
+      ],
+      "speakers": [],
+      "payload": {
+        "short": "A battlefield of Under the Anchors."
+      }
+    },
+    "place:cave2": {
+      "key": "place:cave2",
+      "id": "description-place-cave2",
+      "guid": null,
+      "version": 0,
+      "source": "seed",
+      "hash": "sha256:d69ff26b53754162fb7e6b6fb372e51adfc4eb5b684a5de6c4f80343bdf77aae",
+      "about": [
+        "place-cave2"
+      ],
+      "speakers": [],
+      "payload": {
+        "short": "The arches were built on something."
+      }
+    },
+    "place:cityruins": {
+      "key": "place:cityruins",
+      "id": "description-place-cityruins",
+      "guid": null,
+      "version": 0,
+      "source": "seed",
+      "hash": "sha256:9b9979d61baecde509a1d8a86400a0f924034298b154dae618a372c4203f3361",
+      "about": [
+        "place-cityruins"
+      ],
+      "speakers": [],
+      "payload": {
+        "short": "Out of the Still's back gate and up into the Spire City: neon under a pink sky, towers stacked on towers, and above them all the Hierarch's spire, drinking the beams that run north to the Anchors."
+      }
+    },
+    "place:cityruins-01": {
+      "key": "place:cityruins-01",
+      "id": "description-place-cityruins-01",
+      "guid": null,
+      "version": 0,
+      "source": "seed",
+      "hash": "sha256:bee24fea3cf33d014ff7096902345b23ab652fca213d87e824f78e473b922dc0",
+      "about": [
+        "place-cityruins-01"
+      ],
+      "speakers": [],
+      "payload": {
+        "short": "A battlefield of Halcyon."
+      }
+    },
+    "place:cityruins-02": {
+      "key": "place:cityruins-02",
+      "id": "description-place-cityruins-02",
+      "guid": null,
+      "version": 0,
+      "source": "seed",
+      "hash": "sha256:bee24fea3cf33d014ff7096902345b23ab652fca213d87e824f78e473b922dc0",
+      "about": [
+        "place-cityruins-02"
+      ],
+      "speakers": [],
+      "payload": {
+        "short": "A battlefield of Halcyon."
+      }
+    },
+    "place:cityruins-03": {
+      "key": "place:cityruins-03",
+      "id": "description-place-cityruins-03",
+      "guid": null,
+      "version": 0,
+      "source": "seed",
+      "hash": "sha256:bee24fea3cf33d014ff7096902345b23ab652fca213d87e824f78e473b922dc0",
+      "about": [
+        "place-cityruins-03"
+      ],
+      "speakers": [],
+      "payload": {
+        "short": "A battlefield of Halcyon."
+      }
+    },
+    "place:cityruins-04": {
+      "key": "place:cityruins-04",
+      "id": "description-place-cityruins-04",
+      "guid": null,
+      "version": 0,
+      "source": "seed",
+      "hash": "sha256:8b4a173e41f4dd936599fa83ab2e283af9a5755dcaef6faa80ac1d523117b122",
+      "about": [
+        "place-cityruins-04"
+      ],
+      "speakers": [],
+      "payload": {
+        "short": "A battlefield of The Underspire."
+      }
+    },
+    "place:cityruins-05": {
+      "key": "place:cityruins-05",
+      "id": "description-place-cityruins-05",
+      "guid": null,
+      "version": 0,
+      "source": "seed",
+      "hash": "sha256:8b4a173e41f4dd936599fa83ab2e283af9a5755dcaef6faa80ac1d523117b122",
+      "about": [
+        "place-cityruins-05"
+      ],
+      "speakers": [],
+      "payload": {
+        "short": "A battlefield of The Underspire."
+      }
+    },
+    "place:cityruins2": {
+      "key": "place:cityruins2",
+      "id": "description-place-cityruins2",
+      "guid": null,
+      "version": 0,
+      "source": "seed",
+      "hash": "sha256:2628d41539641442ae64f17facc2c497f4c2971869c6d7628ee1216b72b5d561",
+      "about": [
+        "place-cityruins2"
+      ],
+      "speakers": [],
+      "payload": {
+        "short": "Halcyon without a Hierarch is a city holding its breath."
+      }
+    },
+    "place:desert": {
+      "key": "place:desert",
+      "id": "description-place-desert",
+      "guid": null,
+      "version": 0,
+      "source": "seed",
+      "hash": "sha256:0d1453a8cd3167968153d0758e58df1f8b2963283bca27341db82adb4eefaf1b",
+      "about": [
+        "place-desert"
+      ],
+      "speakers": [],
+      "payload": {
+        "short": "South of the moors the grass gives out and the ground turns red. This is where the pieces of Morrow came down."
+      }
+    },
+    "place:desert-01": {
+      "key": "place:desert-01",
+      "id": "description-place-desert-01",
+      "guid": null,
+      "version": 0,
+      "source": "seed",
+      "hash": "sha256:2f9d3af9be73519e1f8006a1ad155f355d7edd692614305c31360a4b0ff76ac0",
+      "about": [
+        "place-desert-01"
+      ],
+      "speakers": [],
+      "payload": {
+        "short": "A battlefield of The Shardfall."
+      }
+    },
+    "place:desert-02": {
+      "key": "place:desert-02",
+      "id": "description-place-desert-02",
+      "guid": null,
+      "version": 0,
+      "source": "seed",
+      "hash": "sha256:2f9d3af9be73519e1f8006a1ad155f355d7edd692614305c31360a4b0ff76ac0",
+      "about": [
+        "place-desert-02"
+      ],
+      "speakers": [],
+      "payload": {
+        "short": "A battlefield of The Shardfall."
+      }
+    },
+    "place:desert-03": {
+      "key": "place:desert-03",
+      "id": "description-place-desert-03",
+      "guid": null,
+      "version": 0,
+      "source": "seed",
+      "hash": "sha256:2f9d3af9be73519e1f8006a1ad155f355d7edd692614305c31360a4b0ff76ac0",
+      "about": [
+        "place-desert-03"
+      ],
+      "speakers": [],
+      "payload": {
+        "short": "A battlefield of The Shardfall."
+      }
+    },
+    "place:desert-04": {
+      "key": "place:desert-04",
+      "id": "description-place-desert-04",
+      "guid": null,
+      "version": 0,
+      "source": "seed",
+      "hash": "sha256:6b942c0b6e51b8ce98101fc88ac7321b4219d3dfe97896d848faebc880a5c603",
+      "about": [
+        "place-desert-04"
+      ],
+      "speakers": [],
+      "payload": {
+        "short": "A battlefield of Deep Shardfall."
+      }
+    },
+    "place:desert-05": {
+      "key": "place:desert-05",
+      "id": "description-place-desert-05",
+      "guid": null,
+      "version": 0,
+      "source": "seed",
+      "hash": "sha256:6b942c0b6e51b8ce98101fc88ac7321b4219d3dfe97896d848faebc880a5c603",
+      "about": [
+        "place-desert-05"
+      ],
+      "speakers": [],
+      "payload": {
+        "short": "A battlefield of Deep Shardfall."
+      }
+    },
+    "place:desert2": {
+      "key": "place:desert2",
+      "id": "description-place-desert2",
+      "guid": null,
+      "version": 0,
+      "source": "seed",
+      "hash": "sha256:f5512be5a0f65f8acbaaee22dabfee720249e6b59b294ab60a2cde0a620d3405",
+      "about": [
+        "place-desert2"
+      ],
+      "speakers": [],
+      "payload": {
+        "short": "With the Concord broken, nobody is digging in the Shardfall anymore. Nobody is guarding it, either."
+      }
+    },
+    "place:greenvalley": {
+      "key": "place:greenvalley",
+      "id": "description-place-greenvalley",
+      "guid": null,
+      "version": 0,
+      "source": "seed",
+      "hash": "sha256:d5c721cbfb5e9d3833c4ba0b3e9e1a42381a2be804d4278565a6706de5451127",
+      "about": [
+        "place-greenvalley"
+      ],
+      "speakers": [],
+      "payload": {
+        "short": "Grey-green moss country, cut by stone walls older than the Concord and dotted with the white domes of the Stills. Morrow sits on the horizon like a second sky."
+      }
+    },
+    "place:greenvalley-01": {
+      "key": "place:greenvalley-01",
+      "id": "description-place-greenvalley-01",
+      "guid": null,
+      "version": 0,
+      "source": "seed",
+      "hash": "sha256:6b3e394782a779a3b7e5aa10d9fc099efd4e9b1d905c976b51d5ccb710846717",
+      "about": [
+        "place-greenvalley-01"
+      ],
+      "speakers": [],
+      "payload": {
+        "short": "A battlefield of The Tithe Moors."
+      }
+    },
+    "place:greenvalley-02": {
+      "key": "place:greenvalley-02",
+      "id": "description-place-greenvalley-02",
+      "guid": null,
+      "version": 0,
+      "source": "seed",
+      "hash": "sha256:6b3e394782a779a3b7e5aa10d9fc099efd4e9b1d905c976b51d5ccb710846717",
+      "about": [
+        "place-greenvalley-02"
+      ],
+      "speakers": [],
+      "payload": {
+        "short": "A battlefield of The Tithe Moors."
+      }
+    },
+    "place:greenvalley-03": {
+      "key": "place:greenvalley-03",
+      "id": "description-place-greenvalley-03",
+      "guid": null,
+      "version": 0,
+      "source": "seed",
+      "hash": "sha256:6b3e394782a779a3b7e5aa10d9fc099efd4e9b1d905c976b51d5ccb710846717",
+      "about": [
+        "place-greenvalley-03"
+      ],
+      "speakers": [],
+      "payload": {
+        "short": "A battlefield of The Tithe Moors."
+      }
+    },
+    "place:greenvalley-04": {
+      "key": "place:greenvalley-04",
+      "id": "description-place-greenvalley-04",
+      "guid": null,
+      "version": 0,
+      "source": "seed",
+      "hash": "sha256:4ea3e1e36e4c349af7ad67edd24703d18b482effb4434585e4545eab41a6bb38",
+      "about": [
+        "place-greenvalley-04"
+      ],
+      "speakers": [],
+      "payload": {
+        "short": "A battlefield of The Moors Beyond the Stills."
+      }
+    },
+    "place:greenvalley-05": {
+      "key": "place:greenvalley-05",
+      "id": "description-place-greenvalley-05",
+      "guid": null,
+      "version": 0,
+      "source": "seed",
+      "hash": "sha256:4ea3e1e36e4c349af7ad67edd24703d18b482effb4434585e4545eab41a6bb38",
+      "about": [
+        "place-greenvalley-05"
+      ],
+      "speakers": [],
+      "payload": {
+        "short": "A battlefield of The Moors Beyond the Stills."
+      }
+    },
+    "place:greenvalley2": {
+      "key": "place:greenvalley2",
+      "id": "description-place-greenvalley2",
+      "guid": null,
+      "version": 0,
+      "source": "seed",
+      "hash": "sha256:054094d8d2b2807f9f05eaafcd0f04336385a004cab327b27d3fc7bb43fe4bb3",
+      "about": [
+        "place-greenvalley2"
+      ],
+      "speakers": [],
+      "payload": {
+        "short": "The aether came down like rain. But rain never falls everywhere."
+      }
+    },
+    "place:lanternroad": {
+      "key": "place:lanternroad",
+      "id": "description-place-lanternroad",
+      "guid": null,
+      "version": 0,
+      "source": "seed",
+      "hash": "sha256:8d776b893828b975299ca135975ea254f2e6967635961842ed2b22c35cb46b53",
+      "about": [
+        "place-lanternroad"
+      ],
+      "speakers": [],
+      "payload": {
+        "short": "Out of the moors, the pilgrim road climbs into the gorges, stair after stone stair, lit by lanterns nobody admits to hanging."
+      }
+    },
+    "place:lanternroad-01": {
+      "key": "place:lanternroad-01",
+      "id": "description-place-lanternroad-01",
+      "guid": null,
+      "version": 0,
+      "source": "seed",
+      "hash": "sha256:589ef036c54435c21cf06af5b3d8756997a36696e6f300e4fa5a5e0fcb606db8",
+      "about": [
+        "place-lanternroad-01"
+      ],
+      "speakers": [],
+      "payload": {
+        "short": "A battlefield of The Lantern Road."
+      }
+    },
+    "place:lanternroad-02": {
+      "key": "place:lanternroad-02",
+      "id": "description-place-lanternroad-02",
+      "guid": null,
+      "version": 0,
+      "source": "seed",
+      "hash": "sha256:589ef036c54435c21cf06af5b3d8756997a36696e6f300e4fa5a5e0fcb606db8",
+      "about": [
+        "place-lanternroad-02"
+      ],
+      "speakers": [],
+      "payload": {
+        "short": "A battlefield of The Lantern Road."
+      }
+    },
+    "place:lanternroad-03": {
+      "key": "place:lanternroad-03",
+      "id": "description-place-lanternroad-03",
+      "guid": null,
+      "version": 0,
+      "source": "seed",
+      "hash": "sha256:589ef036c54435c21cf06af5b3d8756997a36696e6f300e4fa5a5e0fcb606db8",
+      "about": [
+        "place-lanternroad-03"
+      ],
+      "speakers": [],
+      "payload": {
+        "short": "A battlefield of The Lantern Road."
+      }
+    },
+    "place:morrowsshadow": {
+      "key": "place:morrowsshadow",
+      "id": "description-place-morrowsshadow",
+      "guid": null,
+      "version": 0,
+      "source": "seed",
+      "hash": "sha256:96dcef608a4a21f648f0d4483ce85db859aae1c32abf0abf96757c45d2183588",
+      "about": [
+        "place-morrowsshadow"
+      ],
+      "speakers": [],
+      "payload": {
+        "short": "Far out past the last road, Morrow hangs so low it fills half the sky, and its pull lifts the ground: stones the size of houses drift over the cracked plain and never come down."
+      }
+    },
+    "place:morrowsshadow-01": {
+      "key": "place:morrowsshadow-01",
+      "id": "description-place-morrowsshadow-01",
+      "guid": null,
+      "version": 0,
+      "source": "seed",
+      "hash": "sha256:735b58529cc215a296c8d3ef648553df27550d9c0093bbc936ffd83b1c26f639",
+      "about": [
+        "place-morrowsshadow-01"
+      ],
+      "speakers": [],
+      "payload": {
+        "short": "A battlefield of Morrow's Shadow."
+      }
+    },
+    "place:morrowsshadow-02": {
+      "key": "place:morrowsshadow-02",
+      "id": "description-place-morrowsshadow-02",
+      "guid": null,
+      "version": 0,
+      "source": "seed",
+      "hash": "sha256:735b58529cc215a296c8d3ef648553df27550d9c0093bbc936ffd83b1c26f639",
+      "about": [
+        "place-morrowsshadow-02"
+      ],
+      "speakers": [],
+      "payload": {
+        "short": "A battlefield of Morrow's Shadow."
+      }
+    },
+    "place:morrowsshadow-03": {
+      "key": "place:morrowsshadow-03",
+      "id": "description-place-morrowsshadow-03",
+      "guid": null,
+      "version": 0,
+      "source": "seed",
+      "hash": "sha256:735b58529cc215a296c8d3ef648553df27550d9c0093bbc936ffd83b1c26f639",
+      "about": [
+        "place-morrowsshadow-03"
+      ],
+      "speakers": [],
+      "payload": {
+        "short": "A battlefield of Morrow's Shadow."
+      }
+    },
+    "place:still": {
+      "key": "place:still",
+      "id": "description-place-still",
+      "guid": null,
+      "version": 0,
+      "source": "seed",
+      "hash": "sha256:a08fbaa4fa5cc61cbed189c9ca70cdad339dc772afb5c6269e3382dfa8f10472",
+      "about": [
+        "place-still"
+      ],
+      "speakers": [],
+      "payload": {
+        "short": "Follow the beams south off the ice and they all come down in one place: a white dome at the foot of Halcyon's spire, bigger than any hold, clean as a plate."
+      }
+    },
+    "place:still-01": {
+      "key": "place:still-01",
+      "id": "description-place-still-01",
+      "guid": null,
+      "version": 0,
+      "source": "seed",
+      "hash": "sha256:a958b0be49f411e688413f12bc81a2fa0e328686faf41d78a791972a80ad73c4",
+      "about": [
+        "place-still-01"
+      ],
+      "speakers": [],
+      "payload": {
+        "short": "A battlefield of The Still."
+      }
+    },
+    "place:still-02": {
+      "key": "place:still-02",
+      "id": "description-place-still-02",
+      "guid": null,
+      "version": 0,
+      "source": "seed",
+      "hash": "sha256:a958b0be49f411e688413f12bc81a2fa0e328686faf41d78a791972a80ad73c4",
+      "about": [
+        "place-still-02"
+      ],
+      "speakers": [],
+      "payload": {
+        "short": "A battlefield of The Still."
+      }
+    },
+    "place:still-03": {
+      "key": "place:still-03",
+      "id": "description-place-still-03",
+      "guid": null,
+      "version": 0,
+      "source": "seed",
+      "hash": "sha256:a958b0be49f411e688413f12bc81a2fa0e328686faf41d78a791972a80ad73c4",
+      "about": [
+        "place-still-03"
+      ],
+      "speakers": [],
+      "payload": {
+        "short": "A battlefield of The Still."
+      }
+    },
+    "place:swamp": {
+      "key": "place:swamp",
+      "id": "description-place-swamp",
+      "guid": null,
+      "version": 0,
+      "source": "seed",
+      "hash": "sha256:d101268ebc1f1abe3e0ac14221aeb8ef1ff075f4a103e4fe51cabbad982900b8",
+      "about": [
+        "place-swamp"
+      ],
+      "speakers": [],
+      "payload": {
+        "short": "The road west drops into fog -- warm, golden, smelling of rot and old varnish. Out of it rise the ribs of ships the size of towns."
+      }
+    },
+    "place:swamp-01": {
+      "key": "place:swamp-01",
+      "id": "description-place-swamp-01",
+      "guid": null,
+      "version": 0,
+      "source": "seed",
+      "hash": "sha256:f284776de3aa8e4d547f07f1a47e25b3dc55f5a1f5a59764c47ecd143b52da83",
+      "about": [
+        "place-swamp-01"
+      ],
+      "speakers": [],
+      "payload": {
+        "short": "A battlefield of The Arkgrave."
+      }
+    },
+    "place:swamp-02": {
+      "key": "place:swamp-02",
+      "id": "description-place-swamp-02",
+      "guid": null,
+      "version": 0,
+      "source": "seed",
+      "hash": "sha256:f284776de3aa8e4d547f07f1a47e25b3dc55f5a1f5a59764c47ecd143b52da83",
+      "about": [
+        "place-swamp-02"
+      ],
+      "speakers": [],
+      "payload": {
+        "short": "A battlefield of The Arkgrave."
+      }
+    },
+    "place:swamp-03": {
+      "key": "place:swamp-03",
+      "id": "description-place-swamp-03",
+      "guid": null,
+      "version": 0,
+      "source": "seed",
+      "hash": "sha256:f284776de3aa8e4d547f07f1a47e25b3dc55f5a1f5a59764c47ecd143b52da83",
+      "about": [
+        "place-swamp-03"
+      ],
+      "speakers": [],
+      "payload": {
+        "short": "A battlefield of The Arkgrave."
+      }
+    },
+    "place:swamp-04": {
+      "key": "place:swamp-04",
+      "id": "description-place-swamp-04",
+      "guid": null,
+      "version": 0,
+      "source": "seed",
+      "hash": "sha256:33842d4d46397b3855bd4a6bfad62509764be18400977612c5a1ea985bcdc61f",
+      "about": [
+        "place-swamp-04"
+      ],
+      "speakers": [],
+      "payload": {
+        "short": "A battlefield of The Drowned Arks."
+      }
+    },
+    "place:swamp-05": {
+      "key": "place:swamp-05",
+      "id": "description-place-swamp-05",
+      "guid": null,
+      "version": 0,
+      "source": "seed",
+      "hash": "sha256:33842d4d46397b3855bd4a6bfad62509764be18400977612c5a1ea985bcdc61f",
+      "about": [
+        "place-swamp-05"
+      ],
+      "speakers": [],
+      "payload": {
+        "short": "A battlefield of The Drowned Arks."
+      }
+    },
+    "place:swamp2": {
+      "key": "place:swamp2",
+      "id": "description-place-swamp2",
+      "guid": null,
+      "version": 0,
+      "source": "seed",
+      "hash": "sha256:7f6f8759b1a63faa84d7b539836ff1cf107ef24553e423d4596f22eba89f169a",
+      "about": [
+        "place-swamp2"
+      ],
+      "speakers": [],
+      "payload": {
+        "short": "The Long Patience still flies. A little. Its keel drags through the fog an arm's length above the fen, and its captain -- the Lich, horned and flame-lit -- has hung lanterns from the rails."
       }
     },
     "rule:anchor-pull": {

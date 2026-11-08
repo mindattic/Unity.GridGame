@@ -310,6 +310,13 @@ namespace GridGame.App
             Ui.Text($"Trust {offer.Trust}/{offer.TrustNeeded}", "small", trust).style.marginRight = Space.S16;
             Ui.Gauge(offer.TrustNeeded <= 0 ? 1f : Mathf.Clamp01(offer.Trust / (float)offer.TrustNeeded), trust, 220).name = "wanderer-trust";
             var faction = c.FactionOf(def.Id);
+            var factionBlurb = ContentDb.Blurb(c.FactionBlurbs, faction?.Id); // GG-T374: Prose "faction:<id>"
+            if (!string.IsNullOrEmpty(factionBlurb))
+            {
+                var fb = Ui.Text(factionBlurb, "tiny dim", text);
+                fb.name = "wanderer-faction";
+                fb.style.whiteSpace = WhiteSpace.Normal;
+            }
             var rule = Ui.Text(Wanderers.Outlook(c, offer, null), "tiny dim", text);
             rule.name = "wanderer-outlook";
             rule.style.whiteSpace = WhiteSpace.Normal;

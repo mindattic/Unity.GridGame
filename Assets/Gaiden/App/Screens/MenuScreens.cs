@@ -667,6 +667,15 @@ namespace GridGame.App
                 var head = Ui.MenuRow((onIt ? "▶ " : "") + theme.Name + " Expedition", status, null, list.contentContainer, null, true);
                 head.Q<Label>("label").AddToClassList("gold");
                 head.name = "expedition-" + theme.Id;
+                // GG-T374: the region's description (Prose "place:<theme>"), under its expedition header.
+                var region = ContentDb.Blurb(C.PlaceBlurbs, theme.Id);
+                if (!string.IsNullOrEmpty(region))
+                {
+                    var rd = Ui.Text(region, "tiny dim", list.contentContainer);
+                    rd.name = "region-" + theme.Id;
+                    rd.style.whiteSpace = WhiteSpace.Normal;
+                    rd.style.marginLeft = Space.S48; rd.style.marginBottom = Space.S8;
+                }
                 for (int k = 0; k < theme.Stages.Count; k++)
                 {
                     var st = C.TryStage(theme.Stages[k]);

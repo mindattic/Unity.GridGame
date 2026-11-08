@@ -212,6 +212,20 @@ class TextSourcingTests(unittest.TestCase):
         self.assertEqual(sorted(k for k in keys if k not in texts), [])
         self.assertEqual(sorted(k for k in texts if k not in keys), [])
 
+    def test_every_place_faction_and_character_the_mapper_emits_has_a_description_key(self):
+        # GG-T374: Prose's TEXT-OBLIGATION [undescribed]
+        import prose_map
+        import prose_text
+        content_dir = os.path.join(os.path.dirname(HERE), prose_keys.CONTENT_DIR)
+        content = prose_text.load_content_with_text(content_dir)
+        doc = prose_map.build(content)
+        self.assertEqual(prose_map.undescribed_entities(doc, content), [])
+        keys = prose_keys.game_keys(content)
+        for eid, key in prose_keys.description_keys(content).items():
+            self.assertEqual(keys.get(key), "description", key)
+        self.assertEqual(prose_keys.text_id("description", "place:greenvalley-01"), "description-place-greenvalley-01")
+        self.assertEqual(prose_keys.text_id("description", "character:sister-ilsabet"), "description-character-sister-ilsabet")
+
 
 if __name__ == "__main__":
     unittest.main()

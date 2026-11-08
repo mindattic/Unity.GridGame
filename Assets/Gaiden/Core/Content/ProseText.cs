@@ -105,6 +105,7 @@ namespace GridGame.Core.Content
                 foreach (var n in t.Nodes) k["skillnode:" + n.Id] = "description";
             }
             foreach (var npc in DialogueDef.Npcs) k["npc:" + npc] = "description";
+            foreach (var key in DescribedKeys(db).Values) k[key] = "description"; // GG-T374
             foreach (var r in db.RegionRuleOrder) k["rule:" + r.Id] = "description"; // GG-T359: payload name + short
             foreach (var s in db.StageOrder)
                 for (int w = 0; w < s.Waves.Count; w++)
@@ -117,6 +118,42 @@ namespace GridGame.Core.Content
                 k[$"bark:merc/{m.Class}/pitch"] = "bark";
                 k[$"bark:merc/{m.Class}/renewal"] = "bark";
             }
+            return k;
+        }
+
+        /// <summary>A stable id piece, as tools/prose_keys.py slug: lowercase, each run of other characters one '-', no
+        /// edge dashes ("Sister Ilsabet" → "sister-ilsabet").</summary>
+        public static string Slug(string s)
+        {
+            var sb = new System.Text.StringBuilder();
+            bool dash = false;
+            foreach (var ch in (s ?? "").ToLowerInvariant())
+            {
+                if ((ch >= 'a' && ch <= 'z') || (ch >= '0' && ch <= '9')) { if (dash && sb.Length > 0) sb.Append('-'); sb.Append(ch); dash = false; }
+                else dash = true;
+            }
+            return sb.ToString();
+        }
+
+        /// <summary>Prefix of the GG-T374 description keys (tools/prose_keys.py description_keys).</summary>
+        public const string PlaceKey = "place:", FactionKey = "faction:", CharacterKey = "character:";
+
+        /// <summary>GG-T374: the description key of every place (campaign region, and each campaign stage that is not a
+        /// test stage), hero faction and caravan crew member, keyed "theme:&lt;id&gt;", "stage:&lt;id&gt;", "faction:&lt;id&gt;",
+        /// "crew:&lt;upgradeId&gt;" → its Prose key. Mirrors tools/prose_keys.py description_keys, which the mapper checks every
+        /// place, faction and character entity against.</summary>
+        public static Dictionary<string, string> DescribedKeys(ContentDb db)
+        {
+            var k = new Dictionary<string, string>(StringComparer.Ordinal);
+            var places = new HashSet<string>(StringComparer.Ordinal);
+            foreach (var t in db.Campaign.Themes)
+                if (!string.IsNullOrEmpty(t.Id) && places.Add(t.Id)) k["theme:" + t.Id] = PlaceKey + t.Id;
+            foreach (var t in db.Campaign.Themes)
+                foreach (var sid in t.Stages)
+                    if (sid != null && db.Stages.TryGetValue(sid, out var s) && !s.IsTest && places.Add(sid)) k["stage:" + sid] = PlaceKey + sid;
+            foreach (var f in db.Factions) if (!string.IsNullOrEmpty(f.Id)) k["faction:" + f.Id] = FactionKey + f.Id;
+            foreach (var u in db.Caravan.Values)
+                if (!string.IsNullOrEmpty(u.Crew)) k["crew:" + u.Id] = CharacterKey + Slug(u.Crew);
             return k;
         }
 
@@ -266,6 +303,15 @@ namespace GridGame.Core.Content
             }
             foreach (var npc in DialogueDef.Npcs)
                 db.NpcBlurbs[npc] = Need(Get("npc:" + npc, "description"), "short", "npc:" + npc);
+            foreach (var kv in DescribedKeys(db))
+            {
+                // GG-T374: places, factions and the caravan crew; a missing key shows the placeholder like any other.
+                var words = Need(Get(kv.Value, "description"), "short", kv.Value);
+                int colon = kv.Key.IndexOf(':');
+                string what = kv.Key.Substring(0, colon), id = kv.Key.Substring(colon + 1);
+                var map = what == "faction" ? db.FactionBlurbs : what == "crew" ? db.CrewBlurbs : db.PlaceBlurbs;
+                map[id] = words;
+            }
             foreach (var r in db.RegionRuleOrder)
             {
                 // GG-T359: a region rule's name and description are its Prose description ("name", "short").

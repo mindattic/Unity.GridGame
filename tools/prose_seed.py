@@ -95,6 +95,38 @@ def conversation(d: dict, known: set):
     return text("conversation", "dialogue:" + d["Id"], payload, about, speakers)
 
 
+def faction_short(f: dict) -> str:
+    name = (f.get("Name") or f["Id"]).strip()
+    return f"{name[:1].upper()}{name[1:]}: {prose_map.FACTION_SUMMARY[:1].lower()}{prose_map.FACTION_SUMMARY[1:]}"
+
+
+def entity_descriptions(content: dict, known: set) -> list:
+    """GG-T374: the place (region, stage), faction and caravan-crew descriptions, placeholder words from what the game
+    already says of them (a region's crawl opening, the mapper's summaries); Prose's author writes the real ones."""
+    out = []
+    camp = content["campaign"] if isinstance(content["campaign"], dict) else {}
+    themes = {t["Id"]: t for t in camp.get("Themes") or [] if t.get("Id")}
+
+    def add(key, short, eid):
+        out.append(text("description", key, {"short": short}, [eid] if eid in known else []))
+
+    for tid, t in themes.items():
+        add("place:" + tid, prose_map.first_paragraph(t.get("Crawl")) or t.get("Name") or tid, K.place_entity(tid))
+    seen = set()
+    for tid, sid in K.campaign_stage_ids(content):
+        if sid not in seen:
+            seen.add(sid)
+            add("place:" + sid, prose_map.stage_summary(themes[tid]), K.place_entity(sid))
+    for f in content.get("factions") or []:
+        if isinstance(f, dict) and f.get("Id"):
+            add("faction:" + f["Id"], faction_short(f), K.faction_entity(f["Id"]))
+    for u in content["caravan"]:
+        if u.get("Crew") and "character:" + K.slug(u["Crew"]) not in seen:
+            seen.add("character:" + K.slug(u["Crew"]))
+            add("character:" + K.slug(u["Crew"]), prose_map.crew_summary(u), K.character_entity(u["Crew"]))
+    return out
+
+
 def build(content: dict, known: set) -> list:
     out = []
     for d in content["dialogues"]:
@@ -149,6 +181,7 @@ def build(content: dict, known: set) -> list:
     for npc in K.NPCS:
         eid = K.character_entity(npc)
         out.append(text("description", "npc:" + npc, {"short": prose_map.NPC_SUMMARY[npc]}, [eid] if eid in known else []))
+    out.extend(entity_descriptions(content, known))
     for q in content["quests"]:
         if not q.get("Id"):
             continue

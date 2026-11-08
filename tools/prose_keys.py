@@ -19,6 +19,11 @@
     description   skilltree:<treeId>               description-skilltree-<treeId>       skilltrees.json Description
     description   skillnode:<nodeId>               description-skillnode-<nodeId>       skilltrees.json Nodes[].Description
     description   npc:<npcId>                      description-npc-<npcId>              the camp NPC's blurb (no gameplay field yet)
+    description   place:<themeId>                  description-place-<themeId>          a campaign region (GG-T374: chapter select)
+    description   place:<stageId>                  description-place-<stageId>          a campaign stage (not test stages)
+    description   faction:<factionId>              description-faction-<factionId>      factions.json (wanderer talk, recruits)
+    description   character:<crew>                 description-character-<crew>         caravan.json Crew (a named character with
+                                                                                        no class; <crew> is its entity slug)
     quest         quest:<questId>                  quest-<questId>                      quests.json Name/Giver/Summary/TurnIn
     glossary      glossary:<glossaryId>            glossary-<glossaryId>                glossary.json Term/Aliases/Text
     bark          bark:caravan/<upgradeId>         bark-caravan-<upgradeId>             caravan.json Barks (the wagon's crew)
@@ -169,6 +174,8 @@ def game_keys(content: dict) -> dict:
                     keys["skillnode:" + n["Id"]] = "description"
     for npc in NPCS:
         keys["npc:" + npc] = "description"
+    for key in description_keys(content).values():  # GG-T374: places, factions, crew
+        keys[key] = "description"
     for r in content.get("regionrules") or []:  # GG-T359: a region rule's name and description
         if isinstance(r, dict) and r.get("Id"):
             keys["rule:" + r["Id"]] = "description"
@@ -190,6 +197,41 @@ def game_keys(content: dict) -> dict:
             keys[f"bark:merc/{m['Class']}/pitch"] = "bark"
             keys[f"bark:merc/{m['Class']}/renewal"] = "bark"
     return keys
+
+
+def campaign_stage_ids(content: dict) -> list:
+    """(theme id, stage id) for every campaign stage the mapper emits as a place: in a theme's Stages, defined in
+    stages.json, not a test stage. Campaign order."""
+    camp = content.get("campaign") or {}
+    stages = {s["Id"]: s for s in content.get("stages") or [] if isinstance(s, dict) and s.get("Id")}
+    out = []
+    for t in (camp.get("Themes") or []) if isinstance(camp, dict) else []:
+        for sid in t.get("Stages") or []:
+            if t.get("Id") and sid in stages and not stages[sid].get("IsTest"):
+                out.append((t["Id"], sid))
+    return out
+
+
+def description_keys(content: dict) -> dict:
+    """GG-T374: the description key of every place, faction and named character entity (entity id -> key), so each
+    one the mapper emits has a text the player can look up (Prose's TEXT-OBLIGATION [undescribed]). Camp NPCs keep
+    their npc:<id> key; classes, items and armor sets have their own."""
+    out = {}
+    camp = content.get("campaign") or {}
+    for t in (camp.get("Themes") or []) if isinstance(camp, dict) else []:
+        if t.get("Id"):
+            out[place_entity(t["Id"])] = "place:" + t["Id"]
+    for _, sid in campaign_stage_ids(content):
+        out.setdefault(place_entity(sid), "place:" + sid)
+    for f in content.get("factions") or []:
+        if isinstance(f, dict) and f.get("Id"):
+            out[faction_entity(f["Id"])] = "faction:" + f["Id"]
+    for npc in NPCS:
+        out[character_entity(npc)] = "npc:" + npc
+    for u in content.get("caravan") or []:
+        if isinstance(u, dict) and u.get("Crew"):
+            out.setdefault(character_entity(u["Crew"]), "character:" + slug(u["Crew"]))
+    return out
 
 
 def text_id(kind: str, key: str) -> str:

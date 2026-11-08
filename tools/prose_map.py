@@ -16,6 +16,9 @@ Entities (ids are the game's, stable and type-prefixed; a rename changes `name`,
                      and ADJACENCY's stated facts (the Still foot-of Halcyon, the Cathedral top-of it)
     place-<stage>    every campaign stage, part-of its theme (test stages are left out)
     character-<id>   the camp NPCs (innkeeper, blacksmith, alchemist, enchantress, merchant) and the caravan crew
+
+Every place, faction and character entity has a description key (prose_keys.description_keys, GG-T374): its
+description text is `about` it, the way a class's is; main() refuses to write a file with one that has none.
     concept-<id>     every glossary term
     armorset-<id>    every armor set in armorsets.json
     item-<id>        every item in items.json (gear, consumables, materials); a set piece is part-of its armorset
@@ -97,6 +100,17 @@ def first_paragraph(text: str) -> str:
     return (text or "").strip().split("\n\n", 1)[0].strip()
 
 
+FACTION_SUMMARY = "A hero faction; its people can join the caravan as wanderers and recruits."
+
+
+def stage_summary(theme: dict) -> str:
+    return f"A battlefield of {theme.get('Name') or theme['Id']}."
+
+
+def crew_summary(u: dict) -> str:
+    return f"The caravan's {u.get('CrewRole') or 'crew'}, who keeps the {u.get('Name') or u.get('Id')} wagon."
+
+
 def is_boss(c: dict) -> bool:
     return "Boss" in (c.get("Tags") or []) or bool(c.get("BossPhases"))
 
@@ -163,7 +177,7 @@ def build(content: dict) -> dict:
                 continue
             entities.append({
                 "id": K.place_entity(sid), "type": "place", "name": s.get("Name") or sid,
-                "summary": f"A battlefield of {t.get('Name') or t['Id']}.",
+                "summary": stage_summary(t),
                 "details": {"kind": "stage", "theme": t["Id"], "order": i + 1},
                 "relations": [{"to": K.place_entity(t["Id"]), "kind": "part-of"}],
                 "tags": ["stage"],
@@ -197,7 +211,7 @@ def build(content: dict) -> dict:
             faction_of.setdefault(h, f["Id"])
         entities.append({
             "id": K.faction_entity(f["Id"]), "type": "faction", "name": f.get("Name") or f["Id"],
-            "summary": f"A hero faction; its people can join the caravan as wanderers and recruits.",
+            "summary": FACTION_SUMMARY,
             "details": {"heroFaction": True},
             "tags": ["faction"],
         })
@@ -245,7 +259,7 @@ def build(content: dict) -> dict:
             continue
         entities.append({
             "id": K.character_entity(u["Crew"]), "type": "character", "name": u["Crew"],
-            "summary": f"The caravan's {u.get('CrewRole') or 'crew'}, who keeps the {u.get('Name') or u.get('Id')} wagon.",
+            "summary": crew_summary(u),
             "details": {"role": "caravan crew", "crewRole": u.get("CrewRole") or "", "upgrade": u.get("Id") or ""},
             "tags": ["caravan-crew"],
         })
@@ -308,6 +322,17 @@ def build(content: dict) -> dict:
     }
 
 
+DESCRIBED_TYPES = ("place", "faction", "character")
+
+
+def undescribed_entities(doc: dict, content: dict) -> list:
+    """GG-T374: every place, faction and character entity this mapper emits must have a description key
+    (place:<theme|stage>, faction:<id>, npc:<id>, character:<crew>), the text a player can look the entity up by;
+    the ones without one, sorted (should be empty)."""
+    keys = K.description_keys(content)
+    return sorted(e["id"] for e in doc["entities"] if e["type"] in DESCRIBED_TYPES and e["id"] not in keys)
+
+
 def main(argv=None) -> int:
     ap = argparse.ArgumentParser(description="GridGame's Prose mapper (docs/PROSE.md).")
     ap.add_argument("--content", default=K.CONTENT_DIR)
@@ -317,7 +342,13 @@ def main(argv=None) -> int:
     if not os.path.isdir(args.content):
         print(f"prose_map: no content folder at {args.content}", file=sys.stderr)
         return 2
-    doc = build(prose_text.load_content_with_text(args.content))  # Phase 2: story text comes from Content/Text
+    content = prose_text.load_content_with_text(args.content)  # Phase 2: story text comes from Content/Text
+    doc = build(content)
+    undescribed = undescribed_entities(doc, content)
+    if undescribed:
+        print("prose_map: entities with no description key (tools/prose_keys.py description_keys): "
+              + ", ".join(undescribed[:20]), file=sys.stderr)
+        return 1
     os.makedirs(os.path.dirname(os.path.abspath(args.out)), exist_ok=True)
     with open(args.out, "w", encoding="utf-8", newline="\n") as f:
         json.dump(doc, f, ensure_ascii=False, indent=2)

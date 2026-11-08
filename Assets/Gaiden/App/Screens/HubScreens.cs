@@ -1293,6 +1293,8 @@ namespace GridGame.App
                 Ui.Text(d.Name, "h2 grow", top);
                 Ui.Text($"Lv {lv}/{d.Levels.Count}", "small gold", top);
                 if (!string.IsNullOrEmpty(d.Crew)) Ui.Text("Crew: " + CaravanUpgrades.CrewName(d), "tiny gold", col);
+                var crewBlurb = ContentDb.Blurb(C.CrewBlurbs, d.Id); // GG-T374: Prose "character:<crew>"
+                if (!string.IsNullOrEmpty(crewBlurb)) Ui.Text(crewBlurb, "tiny dim", col).style.whiteSpace = WhiteSpace.Normal;
                 Ui.Text(d.Description, "tiny dim", col).style.whiteSpace = WhiteSpace.Normal;
                 if (lv > 0) Ui.Text("Now: " + d.Levels[lv - 1].Text, "tiny good", col);
                 if (next != null) Ui.Text("Next: " + next.Text, "tiny", col);

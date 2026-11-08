@@ -63,8 +63,44 @@ namespace GridGame.Tests
             foreach (var m in db.Mercenaries) { Need(m.Pitch, $"merc {m.Class} pitch"); Need(m.Renewal, $"merc {m.Class} renewal"); }
             foreach (var s in db.StageOrder) foreach (var w in s.Waves) if (w.SurpriseSpeaker != null) Need(w.SurpriseLine, $"stage {s.Id} surprise");
             foreach (var npc in DialogueDef.Npcs) Need(db.NpcBlurbs.TryGetValue(npc, out var b) ? b : null, $"npc {npc}");
+            foreach (var t in db.Campaign.Themes) Need(ContentDb.Blurb(db.PlaceBlurbs, t.Id), $"region {t.Id}");
+            foreach (var s in db.CampaignStages().Where(s => !s.IsTest)) Need(ContentDb.Blurb(db.PlaceBlurbs, s.Id), $"stage {s.Id}");
+            foreach (var f in db.Factions) Need(ContentDb.Blurb(db.FactionBlurbs, f.Id), $"faction {f.Id}");
+            foreach (var u in db.Caravan.Values.Where(u => !string.IsNullOrEmpty(u.Crew))) Need(ContentDb.Blurb(db.CrewBlurbs, u.Id), $"crew {u.Crew}");
             Assert.That(bad, Is.Empty, string.Join("\n", bad.Take(40)));
             Assert.That(db.Dialogues.Values.Count(d => d.HasCrawl), Is.GreaterThan(0), "the level-10 interlude keeps its crawl marker");
+        }
+
+        [Test]
+        public void Places_factions_and_the_crew_each_have_a_description_key()
+        {
+            // GG-T374: Prose's TEXT-OBLIGATION [undescribed] — every place, faction and named character a story text names
+            // needs a description the player can look up; the keys mirror tools/prose_keys.py description_keys.
+            var db = Real;
+            var keys = ProseText.Keys(db);
+            foreach (var t in db.Campaign.Themes) Assert.That(keys.ContainsKey("place:" + t.Id), $"region {t.Id}");
+            foreach (var s in db.CampaignStages().Where(s => !s.IsTest)) Assert.That(keys.ContainsKey("place:" + s.Id), $"stage {s.Id}");
+            foreach (var f in db.Factions) Assert.That(keys.ContainsKey("faction:" + f.Id), $"faction {f.Id}");
+            foreach (var u in db.Caravan.Values.Where(u => !string.IsNullOrEmpty(u.Crew)))
+                Assert.That(keys.ContainsKey("character:" + ProseText.Slug(u.Crew)), $"crew {u.Crew}");
+            Assert.That(ProseText.Slug("Sister Ilsabet"), Is.EqualTo("sister-ilsabet"));
+            Assert.That(ProseText.Slug("Wren and Dace"), Is.EqualTo("wren-and-dace"));
+            Assert.That(db.TryText("place:" + db.Campaign.Themes[0].Id)?.Id, Is.EqualTo("description-place-" + ProseText.Slug(db.Campaign.Themes[0].Id)));
+        }
+
+        [Test]
+        public void A_missing_place_key_shows_the_placeholder()
+        {
+            var theme = Real.Campaign.Themes[0];
+            string key = "place:" + theme.Id;
+            var db = ContentLoader.Load(Patched("Text/descriptions", raw =>
+            {
+                var doc = JObject.Parse(raw);
+                ((JObject)doc["texts"]).Remove(key);
+                return doc.ToString();
+            }));
+            Assert.That(db.PlaceBlurbs[theme.Id], Is.EqualTo(ProseText.Placeholder(key)));
+            Assert.That(ContentLoader.Validate(db), Has.Some.Contains(key));
         }
 
         [Test]

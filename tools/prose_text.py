@@ -9,6 +9,8 @@ the owner approves a text, by the one-time SEED this tool made from the text the
     python tools/prose_text.py snapshot               ONE-TIME migration (done 2026-11-07): seed Content/Text from the
                                                       in-JSON text, record the seed in Data/Prose/applied.jsonl, strip
                                                       the fields; refuses once there is nothing left to strip
+    python tools/prose_text.py seed-missing [--drafts DIR]   seed ONLY the keys with no text yet (GG-T374), never
+                                                      touching an existing one; DIR gets the drafts for Prose
 
 Library (the mapper, the seed and the content generators import it):
 
@@ -502,26 +504,58 @@ def cmd_check(args) -> int:
     missing = sorted(k for k in keys if k not in texts)
     wrong = sorted(k for k in keys if k in texts and texts[k].get("id") != K.text_id(keys[k], k))
     orphans = sorted(k for k in texts if k not in keys)
+    import prose_map  # noqa: E402  (imports this module)
+    hydrated = load_content_with_text(args.content, args.out)
+    undescribed = prose_map.undescribed_entities(prose_map.build(hydrated), hydrated)  # GG-T374
     for label, rows in (("narrative field left in gameplay JSON", left), ("key without a text", missing),
-                        ("text id does not match its key", wrong), ("text no gameplay record uses", orphans)):
+                        ("text id does not match its key", wrong), ("text no gameplay record uses", orphans),
+                        ("place/faction/character entity with no description key", undescribed)):
         for r in rows[:50]:
             print(f"  {label}: {r}")
     seeds = sum(1 for e in texts.values() if e.get("source") == SEED)
     print(f"prose_text check: {len(keys)} keys, {len(texts)} texts ({seeds} seed, {len(texts) - seeds} from Prose); "
-          f"{len(left)} leftover, {len(missing)} missing, {len(wrong)} mismatched, {len(orphans)} orphan")
-    return 1 if left or missing or wrong else 0
+          f"{len(left)} leftover, {len(missing)} missing, {len(wrong)} mismatched, {len(orphans)} orphan, "
+          f"{len(undescribed)} undescribed")
+    return 1 if left or missing or wrong or undescribed else 0
+
+
+def cmd_seed_missing(args) -> int:
+    """GG-T374: gives every game key that has NO text yet its seed (the words prose_seed would draft) and writes those
+    drafts for `prose --texts-draft gridgame <drafts>`. Only missing keys: an existing text, seed or Prose-applied, is
+    never touched (the snapshot's no-reseed rule)."""
+    import prose_seed  # noqa: E402  (imports this module)
+    content = load_content_with_text(args.content, args.out)
+    keys = K.game_keys(content)
+    held = load_texts(args.out)
+    universe = os.path.join("Data", "Prose", "gridgame.universe.json")
+    known = {e["id"] for e in K.load(universe).get("entities") or []} if os.path.isfile(universe) else set()
+    docs = [d for d in prose_seed.build(content, known) if d["key"] in keys and d["key"] not in held]
+    no_seed = sorted(k for k in keys if k not in held and k not in {d["key"] for d in docs})
+    if args.dry_run:
+        print(f"prose_text seed-missing (dry run): {len(docs)} keys to seed; {len(no_seed)} missing keys have no seed words")
+        return 0
+    counts = upsert_seed(docs, args.out, args.drafts)
+    for k in no_seed[:50]:
+        print(f"  no seed words for: {k}")
+    print(f"prose_text seed-missing: {counts['seeded']} seeded into {args.out}"
+          f"{' (drafts in ' + args.drafts + ')' if args.drafts else ''}; {len(no_seed)} missing keys have no seed words")
+    return 0
 
 
 def main(argv=None) -> int:
     ap = argparse.ArgumentParser(description="GridGame's Content/Text (Prose) snapshot and checks (docs/PROSE.md).")
     sub = ap.add_subparsers(dest="cmd", required=True)
-    for name in ("snapshot", "check"):
+    for name in ("snapshot", "check", "seed-missing"):
         p = sub.add_parser(name)
         p.add_argument("--content", default=K.CONTENT_DIR)
         p.add_argument("--out", default=TEXT_DIR)
         p.add_argument("--applied", default=APPLIED)
         p.add_argument("--dry-run", action="store_true")
+        if name == "seed-missing":
+            p.add_argument("--drafts", default=None, help="also write each new seed as a prose-text/1 draft here")
     args = ap.parse_args(argv)
+    if args.cmd == "seed-missing":
+        return cmd_seed_missing(args)
     return cmd_snapshot(args) if args.cmd == "snapshot" else cmd_check(args)
 
 
