@@ -45,6 +45,11 @@ namespace GridGame.Tests
             }
             Assert.That(db.TryAbility(db.Classes["lampsnuffer"].ChargeAbility).RuleEffects.Single().Kind, Is.EqualTo(RuleEffectKind.ClearTiles));
             Assert.That(db.Classes["duskstalker"].OnDeathRule.Single().State, Is.EqualTo("brazier-light"));
+            // GG-T377: Holy power lights the ground in a rule of its own (painting it never brings Morrow's dark elsewhere).
+            Assert.That(db.TryTileState("holy-light").Lights, Is.True);
+            Assert.That(db.TileStateRule["holy-light"], Is.EqualTo("holy-light"));
+            foreach (var a in new[] { "aegisguard_judgment_of_warding", "flask_holy_burst" })
+                Assert.That(db.TryAbility(a).RuleEffects.Single().State, Is.EqualTo("holy-light"), a);
             foreach (var m in DarkMonsters)
                 Assert.That(db.Classes[m].Portrait, Is.EqualTo("mannequin"), $"{m}: placeholder art until its portrait lands");
         }

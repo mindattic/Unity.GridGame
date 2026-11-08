@@ -2501,8 +2501,10 @@ The region rule `morrows-dark` (theme `morrowsshadow`, stages 38-40): the finale
   - **Gloom Mender** (Medic): heals its allies from out of sight.
 - **Waves.** Every stage keeps the Ember, the Sentinels and the moon-changed Wild, and fields all three; the finale is
   unchanged (the Demon Lord, a Sentinel and a Bloodbinder); signatures stay unique.
-- Not yet: light-element hero abilities lighting tiles, and a mimic with a false timeline icon. Balance unmeasured (owner
-  rule: no soak). *(Tests: `MorrowsShadowTests.Morrows_shadow_is_fought_in_the_dark_by_its_own_monsters`, written, not run.)*
+- **Holy light** (GG-T377): the Aegisguard's Judgment of Warding lights the tiles around its target and the Merchant's
+  Holy Burst flask a wider patch: `holy-light`, a `Lights` state lasting 12 s. It is its own rule (`holy-light`), so
+  painting it elsewhere never brings Morrow's dark along; a foe starting its turn in holy light is Blinded.
+- Not yet: a mimic with a false timeline icon. Balance unmeasured (owner rule: no soak). *(Tests: `MorrowsShadowTests.Morrows_shadow_is_fought_in_the_dark_by_its_own_monsters`, written, not run.)*
 
 ### 14.21 Cracking floors (added 2026-11-08, owner direction, GG-T368)
 

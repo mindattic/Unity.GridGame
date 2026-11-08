@@ -648,5 +648,31 @@
         ]
       }
     ]
+  },
+  {
+    "Id": "holy-light",
+    "TileStates": [
+      {
+        "Id": "holy-light",
+        "Lights": true,
+        "LifeSeconds": 12,
+        "Color": "#FFF1B8",
+        "Glyph": "+"
+      }
+    ],
+    "Hooks": [
+      {
+        "On": "TurnStart",
+        "Team": "Enemy",
+        "State": "holy-light",
+        "Effects": [
+          {
+            "Kind": "ApplyBuff",
+            "Units": "Subject",
+            "Buff": "blinded"
+          }
+        ]
+      }
+    ]
   }
 ]
