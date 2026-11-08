@@ -248,6 +248,9 @@ namespace GridGame.Meta
                 .Select(x => x.n).FirstOrDefault();
         }
 
+        /// <summary>GG-T373: the dearest spell (half the base bank) the camp routine buys for an open slot before a big one.</summary>
+        public const int FillerMaxCost = ManaBank.DefaultCapacity / 2;
+
         /// <summary>Spend every roster hero's banked skill points (GG-T54): the home tree first, by <see cref="NextTalent"/>;
         /// when that node costs more than the hero has, the points bank for it rather than leak into a cheaper sideline.
         /// Only once the home tree has nothing left to buy do points go off-tree — into a tree the hero is already in
@@ -256,9 +259,6 @@ namespace GridGame.Meta
         /// call, not the routine's.</summary>
         private static void SpendSkillPoints(ContentDb c, SaveData s, List<string> log)
         {
-        /// <summary>GG-T373: the dearest spell (half the base bank) the camp routine buys for an open slot before a big one.</summary>
-        public const int FillerMaxCost = ManaBank.DefaultCapacity / 2;
-
             foreach (var h in s.Roster)
             {
                 if (h == null || h.SkillPoints <= 0) continue;

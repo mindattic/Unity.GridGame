@@ -842,9 +842,6 @@ namespace GridGame.Core.Bot
             return false;
         }
 
-        /// <summary>GG-T246: a debuff on a foe, valued by what it actually does rather than a flat +3.</summary>
-        private static float DebuffValue(BuffDef d)
-        {
         /// <summary>GG-T373: a spell of at least this many orbs is one the party saves for (the 5–12 band of the cost curve).</summary>
         public const int SaveForCost = 5;
         /// <summary>GG-T373: extra price per orb of a cheaper spell while saving — the smart bot saves harder than the casual one.</summary>
@@ -872,6 +869,9 @@ namespace GridGame.Core.Bot
             return goal;
         }
 
+        /// <summary>GG-T246: a debuff on a foe, valued by what it actually does rather than a flat +3.</summary>
+        private static float DebuffValue(BuffDef d)
+        {
             if (d.Kind != BuffKind.Debuff) return 0f;
             float v = 1f;
             if (d.HaltsTimeline || d.Immobile) v += 6f;
