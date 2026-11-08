@@ -304,7 +304,7 @@ namespace GridGame.App
         private void SetChargeBubble(float frac)
         {
             foreach (var o in orbViews) o.Q("charge")?.RemoveFromHierarchy();
-            int next = State.Bank.Count;
+            int next = shownOrbs; // GG-T366: the slot right after the orbs drawn full, not State's end-of-action count
             if (next >= orbViews.Count || frac <= 0.001f) return;
             var orb = orbViews[next];
             var fill = new VisualElement { name = "charge", pickingMode = PickingMode.Ignore };

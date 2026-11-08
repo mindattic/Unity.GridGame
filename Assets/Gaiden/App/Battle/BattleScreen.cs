@@ -55,6 +55,10 @@ namespace GridGame.App
         private BoardView board;
         private readonly List<VisualElement> slotViews = new List<VisualElement>();
         private readonly List<VisualElement> orbViews = new List<VisualElement>();
+        /// <summary>How many orbs the bar currently draws full (GG-T366). Orbs fill left to right and are spent right to
+        /// left, so slots [0, shownOrbs) are full and the charge bubble always sits in slot shownOrbs, never past an
+        /// empty slot, even mid-playback when State.Bank already holds the action's final count.</summary>
+        private int shownOrbs;
         private VisualElement panel;
         private VisualElement feed;
         private VisualElement bannerViewport;
@@ -508,6 +512,7 @@ namespace GridGame.App
         private void SyncOrbs(int upTo = -1)
         {
             int filled = upTo >= 0 ? Mathf.Min(upTo, State.Bank.Count) : State.Bank.Count;
+            shownOrbs = filled; // GG-T366: the charge bubble sits right after the orbs the bar shows, not the final count
             shownCharge = State.ManaCharge;
             if (orbViews.Count > 0 && !playing) SetChargeBubble(State.ManaCharge / (float)BattleConfig.ManaChargePerOrb);
             for (int i = 0; i < orbViews.Count; i++)
