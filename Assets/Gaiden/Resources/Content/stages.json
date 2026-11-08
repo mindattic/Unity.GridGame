@@ -4224,7 +4224,7 @@
             "Y": -1
           },
           {
-            "Class": "ganger05",
+            "Class": "spireburrower",
             "Level": 1,
             "X": -1,
             "Y": -1
@@ -4240,7 +4240,7 @@
             "Y": -1
           },
           {
-            "Class": "cyberzombie01",
+            "Class": "pitlurker",
             "Level": 1,
             "X": -1,
             "Y": -1
@@ -4256,7 +4256,7 @@
             "Y": -1
           },
           {
-            "Class": "harpy02",
+            "Class": "spireshover",
             "Level": 1,
             "X": -1,
             "Y": -1
@@ -4315,7 +4315,7 @@
             "Y": -1
           },
           {
-            "Class": "cyberzombie04",
+            "Class": "spireshover",
             "Level": 1,
             "X": -1,
             "Y": -1
@@ -4331,7 +4331,7 @@
             "Y": -1
           },
           {
-            "Class": "minotaur04",
+            "Class": "spireburrower",
             "Level": 1,
             "X": -1,
             "Y": -1
@@ -4347,7 +4347,7 @@
             "Y": -1
           },
           {
-            "Class": "ganger05",
+            "Class": "pitlurker",
             "Level": 1,
             "X": -1,
             "Y": -1

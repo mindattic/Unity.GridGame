@@ -10234,5 +10234,45 @@
     "DamageType": "Lightning"
    }
   ]
+ },
+ {
+  "IsTeleport": false,
+  "Icon": null,
+  "CastVfx": null,
+  "ProjectileVfx": null,
+  "ImpactVfx": null,
+  "LingerVfx": null,
+  "Sfx": null,
+  "ApplyBuff": null,
+  "ApplyBuffChance": 1.0,
+  "RemovesDebuffs": false,
+  "StealsMana": false,
+  "HastenU": 0.0,
+  "BaseHeal": 0,
+  "Id": "charge_floor_shove",
+  "RecoverSeconds": 1.5,
+  "Name": "Floor Breaker",
+  "Description": "Stamps the floor around a hero into cracks, then shoves them two tiles across it.",
+  "Kind": "Spell",
+  "Cost": 0,
+  "CastTime": 2.5,
+  "CooldownTurns": 0,
+  "Shape": "SingleActor",
+  "Radius": 0,
+  "Mode": "PickActor",
+  "Filter": "EnemyOnly",
+  "Motion": "None",
+  "DamageType": "Physical",
+  "BaseDamage": 10,
+  "Knockback": 2,
+  "RuleEffects": [
+   {
+    "Kind": "MarkTiles",
+    "Area": "Target",
+    "Radius": 1,
+    "State": "cracked",
+    "KeepMarks": true
+   }
+  ]
  }
 ]

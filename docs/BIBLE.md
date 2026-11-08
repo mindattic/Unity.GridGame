@@ -2466,6 +2466,23 @@ The region rule `rising-tide` (theme `swamp2`, stages 32-33): race the water, or
 - Rows assume the party holds the bottom of the board. Balance unmeasured (owner rule: no soak). *(Tests:
   `DrownedArksTests`, written, not run.)*
 
+#### 14.20.5 The Underspire: crumbling floor (GG-T361)
+
+The Underspire (theme `cityruins2`, stages 30-31) plays under GG-T368's `crackingfloor` rule (§14.21) on every stage:
+each wave cracks three free tiles; a crack counts steps, turn ends and blows, crumbles at three, and caves in to a hole
+(a pit: whoever stands there falls) a timeline-telegraphed 3 s later. The board shrinks as the fight goes on.
+
+- **Underspire monsters** (Mannequin placeholder art, words in Prose `class:<id>`), built to make more floor crack:
+  - **Spire Burrower** (Burrower brain): its trail (`TrailRule`, every step) cracks each tile it leaves, never painting
+    over another mark; immune to `crackingfloor`, so it never falls.
+  - **Pit Lurker** (Ambusher, targets the squishy): immune to `crackingfloor`; where it dies its tile and the four around
+    it start to crumble, so the heroes who pinned it have 3 s to step off.
+  - **Floorbreaker** (`spireshover`, Berserker): its charge `charge_floor_shove` cracks the tiles around a hero and
+    knocks them two tiles back across the floor.
+- **Waves.** Two foes a wave, the unchanged finale (the Herd Boss, the Choir and Redline); every foe is an underspire
+  family or one of the three; signatures stay unique.
+- Balance unmeasured (owner rule: no soak). *(Tests: `UnderspireTests.The_underspire_floor_cracks_under_its_own_monsters`, written, not run.)*
+
 ### 14.21 Cracking floors (added 2026-11-08, owner direction, GG-T368)
 
 Owner: *"cracking floors which open up holes to fall into that takes off some life and respawns actor next to hole (what

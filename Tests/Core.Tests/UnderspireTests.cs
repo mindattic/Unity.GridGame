@@ -22,7 +22,10 @@ namespace GridGame.Tests
 
         /// <summary>The Street (Redline, the Murder, the Herd), the Concord's Chromed Hollow and the Choir.</summary>
         private static bool UnderspireFoe(string cls) =>
-            cls.StartsWith("ganger") || cls.StartsWith("harpy") || cls.StartsWith("minotaur") || cls.StartsWith("cyberzombie") || cls.StartsWith("cultist");
+            cls.StartsWith("ganger") || cls.StartsWith("harpy") || cls.StartsWith("minotaur") || cls.StartsWith("cyberzombie") || cls.StartsWith("cultist")
+            || UnderspireMonsters.Contains(cls); // GG-T361
+
+        private static readonly string[] UnderspireMonsters = { "spireburrower", "pitlurker", "spireshover" };
 
         [Test]
         public void The_underspire_shows_the_street_markets()
@@ -71,6 +74,26 @@ namespace GridGame.Tests
 
             var talk = db.DialogueOrder.Single(d => d.Id == "cityruins2_party_talk");
             Assert.That((talk.Trigger.Kind, talk.Trigger.Id), Is.EqualTo((DialogueTriggerKind.ThemeStart, "cityruins2")));
+        }
+
+        [Test]
+        public void The_underspire_floor_cracks_under_its_own_monsters()
+        {
+            var db = Real;
+            foreach (var id in new[] { "cityruins-04", "cityruins-05" })
+            {
+                Assert.That(RegionRuleCatalog.ActiveFor(db, db.Stages[id]).Select(r => r.Id), Does.Contain("crackingfloor"), id);
+                var classes = db.Stages[id].Waves.SelectMany(w => w.Enemies).Select(e => e.Class).ToList();
+                foreach (var m in UnderspireMonsters) Assert.That(classes, Does.Contain(m), $"{id} fields the {m}");
+            }
+            Assert.That(db.Classes["spireburrower"].TrailRule.Single().State, Is.EqualTo("cracked"));
+            Assert.That(db.Classes["spireburrower"].RuleImmune, Does.Contain("crackingfloor"));
+            Assert.That(db.Classes["pitlurker"].RuleImmune, Does.Contain("crackingfloor"));
+            Assert.That(db.Classes["pitlurker"].OnDeathRule.Single().State, Is.EqualTo("crumbling"), "it caves the floor in where it dies");
+            var shove = db.TryAbility(db.Classes["spireshover"].ChargeAbility);
+            Assert.That((shove.Knockback, shove.RuleEffects.Single().State), Is.EqualTo((2, "cracked")));
+            foreach (var m in UnderspireMonsters)
+                Assert.That(db.Classes[m].Portrait, Is.EqualTo("mannequin"), $"{m}: placeholder art until its portrait lands");
         }
     }
 }

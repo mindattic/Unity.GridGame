@@ -129,6 +129,9 @@
       "Stages": [
         "cityruins-04",
         "cityruins-05"
+      ],
+      "Rules": [
+        "crackingfloor"
       ]
     },
     {

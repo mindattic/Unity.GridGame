@@ -2478,6 +2478,22 @@
         "long": "Walks many roads, never lost for lack of a single path."
       }
     },
+    "class:pitlurker": {
+      "key": "class:pitlurker",
+      "id": "description-class-pitlurker",
+      "guid": null,
+      "version": 0,
+      "source": "seed",
+      "hash": "sha256:a161c7fcb2cd540bb9519d8211247877e773d48e2e09c8c3f1e3346b90246e62",
+      "about": [
+        "class-pitlurker"
+      ],
+      "speakers": [],
+      "payload": {
+        "short": "A pit-dweller that never falls and caves the floor in where it dies.",
+        "long": "It lives in the holes. When it dies, it makes one more."
+      }
+    },
     "class:prizefighter": {
       "key": "class:prizefighter",
       "id": "description-class-prizefighter",
@@ -3036,6 +3052,38 @@
       "payload": {
         "short": "A swift combatant who wins through speed, angles, and precision strikes.",
         "long": "Years of quiet training forged a will that moves faster than thought."
+      }
+    },
+    "class:spireburrower": {
+      "key": "class:spireburrower",
+      "id": "description-class-spireburrower",
+      "guid": null,
+      "version": 0,
+      "source": "seed",
+      "hash": "sha256:30d7b52d6a02ed128eeb8437a31368c47f75d69e75efe9cf4cdce4dfb5b6fba7",
+      "about": [
+        "class-spireburrower"
+      ],
+      "speakers": [],
+      "payload": {
+        "short": "A tunneller under the spire that leaves cracked floor wherever it goes.",
+        "long": "Halcyon built down as well as up. Something has been building further down."
+      }
+    },
+    "class:spireshover": {
+      "key": "class:spireshover",
+      "id": "description-class-spireshover",
+      "guid": null,
+      "version": 0,
+      "source": "seed",
+      "hash": "sha256:449d9f8fc33cc50c6c05b731a96a1cee088449814a45fe9e9569ac611ecf8126",
+      "about": [
+        "class-spireshover"
+      ],
+      "speakers": [],
+      "payload": {
+        "short": "A bruiser who cracks the floor under a hero and shoves them across it.",
+        "long": "Every floor under the spire is a trap if you hit it hard enough."
       }
     },
     "class:steppinrazor00": {
