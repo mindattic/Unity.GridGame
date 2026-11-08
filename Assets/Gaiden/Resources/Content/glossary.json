@@ -871,5 +871,10 @@
     "Id": "essence",
     "Term": "Essence",
     "Text": "Healing paid for in the healer's own HP instead of mana: the Herald's gift. It never takes her last HP."
+  },
+  {
+    "Id": "countermarch",
+    "Term": "Countermarch",
+    "Text": "The Tactician's order: a foe's timeline icon trades places with the foe whose turn is furthest off. The one about to act goes to the back; the straggler steps up."
   }
 ]

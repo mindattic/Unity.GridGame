@@ -7,7 +7,7 @@
   },
   {
     "Id": "holds", "Name": "the Free Holds",
-    "Heroes": [ "knight", "paladin", "defender", "shieldmaiden", "tank", "jadeknight", "myrmidon", "warchief", "barbarian", "bruiser" ]
+    "Heroes": [ "knight", "paladin", "defender", "shieldmaiden", "tank", "jadeknight", "myrmidon", "warchief", "barbarian", "bruiser", "tactician" ]
   },
   {
     "Id": "lantern", "Name": "the Lantern Road",

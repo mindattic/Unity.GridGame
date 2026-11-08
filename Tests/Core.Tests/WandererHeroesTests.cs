@@ -178,6 +178,72 @@ namespace GridGame.Tests
             Assert.That(ev.OfType<OrbMintedEvent>().Count(), Is.EqualTo(1));
         }
 
+        // ── GG-T336 the Tactician ───────────────────────────────────────────────────
+
+        [Test]
+        public void Tactician_is_a_support_with_a_valid_kit() => AssertKit("tactician", "Support", "tactician_countermarch", "alchemist");
+
+        [Test]
+        public void Tactician_is_recruited_as_a_wanderer_of_the_free_holds() => AssertWanderer("tactician", "holds");
+
+        [Test]
+        public void Tactician_has_an_advice_quiz() => AssertQuiz("tactician");
+
+        [Test]
+        public void Tactician_has_her_figure_and_thumbnail() =>
+            AssertArt("tactician", (0.2314f, 0.0078f, 0.5205f, 0.9854f), (2.690f, 0.4917f, 0.1162f));
+
+        /// <summary>Goblin at (3,0) acting next (3 s), goblin at (5,0) far off (5.5 s); both on the bar.</summary>
+        private static (BattleState s, Unit soon, Unit late) Line()
+        {
+            var s = Board(WithReal("tactician_countermarch"), "tactician_countermarch");
+            var soon = At(s, 3, 0); var late = At(s, 5, 0);
+            foreach (var e in s.Timeline.Where(e => e.Kind == TimelineKind.Turn)) { e.RecoverTicks = 0; e.StunTicks = 0; }
+            s.TurnEntryOf(soon.Id).Ip = BattleConfig.BarLength - 30 * BattleEngine.TurnRatePerTick(s, soon); // 3 s off: room for a hero action
+            s.TurnEntryOf(late.Id).Ip = BattleConfig.BarLength - 55 * BattleEngine.TurnRatePerTick(s, late);
+            return (s, soon, late);
+        }
+
+        [Test]
+        public void Countermarch_trades_the_foe_s_turn_with_the_furthest_off_foe_exactly()
+        {
+            var (s, soon, late) = Line();
+            int soonAt = BattleEngine.TicksUntilAct(s, s.TurnEntryOf(soon.Id)), lateAt = BattleEngine.TicksUntilAct(s, s.TurnEntryOf(late.Id));
+            Assert.That(soonAt, Is.LessThan(lateAt));
+            Assert.That(Countermarch.Partner(s, soon), Is.SameAs(s.TurnEntryOf(late.Id)));
+            var ev = BattleEngine.Apply(s, new UseSlotCommand { HeroId = Hero(s, "knight").Id, Slot = 0, Target = soon.Pos });
+            var pushed = ev.OfType<PushedBackEvent>().Single(e => e.UnitId == soon.Id);
+            var hastened = ev.OfType<HastenedEvent>().Single(e => e.UnitId == late.Id);
+            Assert.That(pushed.ToU, Is.GreaterThan(pushed.FromU), "the one about to act goes to the back");
+            Assert.That(hastened.ToU, Is.LessThan(hastened.FromU), "the straggler steps up");
+            Assert.That(pushed.ToU, Is.EqualTo(hastened.FromU).Within(1e-3f), "they trade places exactly");
+            Assert.That(hastened.ToU, Is.EqualTo(pushed.FromU).Within(1e-3f));
+            Assert.That(ev.OfType<AnnounceEvent>().Any(a => a.Text == "Countermarch!"), Is.True);
+            AssertEventInvariants(ev);
+        }
+
+        [Test]
+        public void Countermarch_on_the_last_foe_or_one_off_the_bar_changes_nothing()
+        {
+            var (s, soon, late) = Line();
+            Assert.That(Countermarch.Partner(s, late), Is.Null, "already furthest off");
+            s.TurnEntryOf(soon.Id).RecoverTicks = 50;
+            Assert.That(Countermarch.OnBar(s, soon), Is.Null, "recovering, off the bar");
+            Assert.That(Countermarch.Partner(s, late), Is.Null, "a recovering foe is no partner");
+            var ev = BattleEngine.Apply(s, new UseSlotCommand { HeroId = Hero(s, "knight").Id, Slot = 0, Target = late.Pos });
+            Assert.That(ev.OfType<PushedBackEvent>(), Is.Empty);
+            Assert.That(ev.OfType<AnnounceEvent>().Any(a => a.Text == "Already last"), Is.True);
+        }
+
+        [Test]
+        public void A_countermarch_must_pick_one_foe()
+        {
+            var db = Mini();
+            db.Abilities["bad_march"] = new AbilityDef { Id = "bad_march", Name = "Bad March", Kind = AbilityKind.Skill, SwapsTurns = true, Shape = TargetShape.AllEnemies, Mode = TargetMode.Auto, Filter = TargetFilter.EnemyOnly };
+            Assert.That(ContentLoader.Validate(db), Has.Some.Contains("a Countermarch (SwapsTurns)"));
+            Assert.That(ContentLoader.Validate(WithReal("tactician_countermarch")).Where(x => x.Contains("SwapsTurns")), Is.Empty);
+        }
+
         [Test]
         public void A_life_cost_must_pay_for_an_ally_heal()
         {

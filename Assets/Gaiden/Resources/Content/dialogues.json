@@ -1974,6 +1974,57 @@
     ]
   },
   {
+    "Id": "talk_quiz_tactician",
+    "Title": "Advice",
+    "Trigger": {
+      "Kind": "Talk",
+      "Id": "tactician"
+    },
+    "Speakers": [
+      {
+        "Id": "hero",
+        "Class": "$with"
+      }
+    ],
+    "Nodes": [
+      {
+        "Id": "ask",
+        "Speaker": "hero",
+        "Text": "I wrote the Concord's tithe routes for six years. Some of them ran through holds like yours. Does that make me one of them?",
+        "Choices": [
+          {
+            "Label": "Yes. Some things don't wash off.",
+            "Next": "wrong"
+          },
+          {
+            "Label": "You read the ledgers and walked. What you plan now is what counts.",
+            "Next": "right",
+            "Effects": [
+              {
+                "Type": "GrantSkillPoint",
+                "Id": "$with"
+              }
+            ]
+          },
+          {
+            "Label": "Doesn't matter. You're useful.",
+            "Next": "wrong"
+          }
+        ]
+      },
+      {
+        "Id": "right",
+        "Speaker": "hero",
+        "Text": "What I plan now. ...Then I'd better plan well."
+      },
+      {
+        "Id": "wrong",
+        "Speaker": "hero",
+        "Text": "...Noted. I'll keep that in the file."
+      }
+    ]
+  },
+  {
     "Id": "talk_quiz_dervish",
     "Title": "Advice",
     "Trigger": { "Kind": "Talk", "Id": "dervish" },

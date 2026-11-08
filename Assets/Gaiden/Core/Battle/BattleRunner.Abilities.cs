@@ -269,6 +269,7 @@ namespace GridGame.Core.Battle
 
                 if (a.HastenU > 0f && t.Alive) Hasten(t, a.HastenU, a.Id, a.TempoTurns);
                 if (a.Pushback > 0f && t.Alive && !friend) Pushback(t, a.Pushback); // the Pushback keyword (GG-T286)
+                if (a.SwapsTurns && t.Alive && !friend) DoCountermarch(t); // GG-T336: the Tactician reorders the foes' turns
 
                 var buff = C.TryBuff(a.ApplyBuff);
                 if (buff != null && buff.Kind == BuffKind.Buff && !friend)
@@ -290,6 +291,24 @@ namespace GridGame.Core.Battle
             // GG-T337: the Aetherist pours aether in — an orb grant riding a heal lands once it has reached someone.
             if (a.PoursOrbs && !S.IsOver) for (int i = 0; i < a.GrantsOrbs; i++) MintOrb(caster.Id, "aether");
             if (a.StepBack > 0 && caster.Alive && !S.IsOver) StepAway(caster, a.StepBack);
+        }
+
+        /// <summary>GG-T336 (§25.11.2.1): Countermarch. The foe's turn icon and the furthest-off foe's trade their times to
+        /// act exactly: the one about to act goes to the back, the straggler steps up. Played back with the existing
+        /// Pushback and Haste glides (both icons are on the bar), so each move has its float and its cue.</summary>
+        private void DoCountermarch(Unit foe)
+        {
+            var mine = Countermarch.OnBar(S, foe);
+            var theirs = mine == null ? null : Countermarch.Partner(S, foe);
+            if (theirs == null) { Announce(mine == null ? "Not on the line" : "Already last", foe.Id); return; }
+            var other = S.UnitById(theirs.OwnerId);
+            int myAt = BattleEngine.TicksUntilAct(S, mine), theirAt = BattleEngine.TicksUntilAct(S, theirs);
+            float myFrom = BattleEngine.BarU(S, mine), theirFrom = BattleEngine.BarU(S, theirs);
+            Countermarch.SetTicksUntilAct(S, mine, foe, theirAt);
+            Countermarch.SetTicksUntilAct(S, theirs, other, myAt);
+            Emit(new PushedBackEvent { UnitId = foe.Id, FromU = myFrom, ToU = BattleEngine.BarU(S, mine), StunTicks = mine.StunTicks });
+            Emit(new HastenedEvent { EntryId = theirs.Id, UnitId = other.Id, FromU = theirFrom, ToU = BattleEngine.BarU(S, theirs) });
+            Announce("Countermarch!", foe.Id);
         }
 
         /// <summary>GG-T333 (§25.11.2.1): the Herald heals with her own essence. Once the heal has landed she pays

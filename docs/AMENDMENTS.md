@@ -1040,6 +1040,7 @@ Owner 2026-11-07: the Herald, Aetherist and Tactician from the owner's art are r
 - **Now:** these heroes have no other way in, so they are only met as wanderers ([BIBLE §25.11.2.1](BIBLE.md)) or drawn for a Diamond. The Herald belongs to the Bloom, which has no heroes of its own in `factions.json`, so she is filed with **the Wild**, the closest faction.
 - **Essence (new mechanic):** the Herald's Lifegift is the first heal paid in the caster's own HP instead of mana or a cooldown alone (`AbilityDef.LifeCost`); it never takes her last HP.
 - **Orbs that ride a heal (GG-T337):** an orb grant used to be a whole ability on its own (Meditate, ethers). The Aetherist's Aether Pour heals an ally and then pours one orb into the bank (`AbilityDef.PoursOrbs`); she is filed with the Fen-dark, where the Choir's runaways go.
+- **Countermarch, a trade on the timeline (GG-T336):** every timeline tool so far pushed foes back (capped at 2 s) or hastened the party. The Tactician's Countermarch swaps one foe's time to act with the furthest-off foe's, so it is not bound by the Pushback cap: nothing is gained on the bar, only who acts next. The Concord has no hero faction, so the ex-Concord officer is filed with the Free Holds.
 - *(Tests: `WandererHeroesTests`.)*
 
 ## 2026-11-07 — A random summon for Diamonds (owner, GG-T343)

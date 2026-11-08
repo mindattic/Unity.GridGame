@@ -167,6 +167,10 @@ namespace GridGame.Core.Content
                     if (a.BaseHeal <= 0 || a.Filter != TargetFilter.AllyOnly) p.Add($"ability {a.Id}: a LifeCost pays for an ally heal (BaseHeal > 0, AllyOnly)");
                     if (a.Kind != AbilityKind.Skill && a.Kind != AbilityKind.Spell) p.Add($"ability {a.Id}: a LifeCost is a Skill or a Spell");
                 }
+                // GG-T336: a Countermarch reorders one foe's turn, so it picks exactly one foe.
+                if (a.SwapsTurns && (a.Shape != TargetShape.SingleActor || a.Mode != TargetMode.PickActor || a.Filter != TargetFilter.EnemyOnly
+                                     || (a.Kind != AbilityKind.Skill && a.Kind != AbilityKind.Spell)))
+                    p.Add($"ability {a.Id}: a Countermarch (SwapsTurns) is a Skill or Spell that picks one foe (SingleActor, PickActor, EnemyOnly)");
                 // GG-T302: the generated "When [attacked directly]: ..." sentence only uses glossary terms.
                 if (a.Trigger != null && db.GlossaryIndex.Count > 0)
                     foreach (var t in Glossary.Terms(Rules.TriggerText.Describe(db, a)))

@@ -575,6 +575,9 @@ namespace GridGame.Core.Content
         /// being the whole ability (Meditate, an ether). It resolves on its targets first, then pours
         /// <see cref="GrantsOrbs"/> into the bank.</summary>
         public bool PoursOrbs => GrantsOrbs > 0 && (BaseHeal > 0 || BaseDamage > 0 || ApplyBuff != null);
+        /// <summary>Countermarch (GG-T336, the Tactician): the picked foe's turn icon trades places on the timeline with the
+        /// foe whose turn is furthest off (<see cref="Battle.Countermarch"/>). A picked single foe from a Skill or Spell.</summary>
+        public bool SwapsTurns;
     }
 
     public sealed class BuffDef

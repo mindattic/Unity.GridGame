@@ -447,6 +447,9 @@ namespace GridGame.Core.Bot
                         if (curse != null && curse.TimelineSpeedMultiplier < 1f && !t.HasBuff(curse.Id))
                             score += landsFirst * Math.Max(0.25f, a.ApplyBuffChance) * SlowValue(s, t, curse.TimelineSpeedMultiplier);
                     }
+                    // GG-T336: a Countermarch trades this foe's turn with the furthest-off foe's: worth what postponing it buys,
+                    // less what the straggler brings forward; the casual bot only sends a threatening foe to the back.
+                    if (a.SwapsTurns) score += ReadsBar ? CountermarchValue(s, t) : (Countermarch.Partner(s, t) != null && Threatens(s, t) ? 3f : -5f);
                     if ((a.BaseDamage > 0 || a.Pushback > 0f) && ChargesTempoDrain(s, t)) score += 5f; // GG-T275: stagger a Temporal Drag
                     if (a.BaseHeal > 0 && a.Filter == TargetFilter.EnemyOnly) score += Math.Min(caster.MaxHp - caster.Hp, a.BaseHeal) * 0.3f; // drain
                     if (a.Knockback > 0)
@@ -545,6 +548,32 @@ namespace GridGame.Core.Bot
             float v = LandsFirstValue(s, f, before, before + ticks);
             if (s.CastEntryOf(f.Id) != null) v += 2f;
             else if (Threatens(s, f) && before == BattleEngine.TurnTicks(s)) v += 1.5f;
+            return v;
+        }
+
+        /// <summary>GG-T336: what a Countermarch on <paramref name="f"/> is worth to the smart bot. The foe acts at the
+        /// straggler's time (its blow postponed, pending casts landing first) and the straggler at the foe's time (casts
+        /// that would have beaten it no longer do, and a threatening straggler now strikes next). Nothing to trade: -5.</summary>
+        internal static float CountermarchValue(BattleState s, Unit f)
+        {
+            var mine = Countermarch.OnBar(s, f);
+            var theirs = mine == null ? null : Countermarch.Partner(s, f);
+            if (theirs == null) return -5f;
+            var other = s.UnitById(theirs.OwnerId);
+            int myAt = BattleEngine.TicksUntilAct(s, mine), theirAt = BattleEngine.TicksUntilAct(s, theirs);
+            // Turn icons only: a charge the foe already holds still lands when it would.
+            float v = LandsFirstValue(s, f, myAt, theirAt) - LandsFirstValue(s, other, myAt, theirAt);
+            // The next blow of the window comes from the straggler instead: worth a hero action when that spares a threat.
+            bool next = true;
+            foreach (var e in s.Timeline)
+            {
+                if (e.Kind != TimelineKind.Turn || e == mine) continue;
+                var o = s.UnitById(e.OwnerId);
+                if (o == null || !o.Alive || o.Team != Team.Enemy || o.IsIndependent) continue;
+                int at = BattleEngine.TicksUntilAct(s, e);
+                if (at >= 0 && at < myAt) { next = false; break; }
+            }
+            if (next) v += 2f * ActionWorth * ((Threatens(s, f, null) && s.CastEntryOf(f.Id) == null ? 1 : 0) - (Threatens(s, other) ? 1 : 0));
             return v;
         }
 
