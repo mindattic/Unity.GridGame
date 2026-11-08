@@ -162,6 +162,12 @@ namespace GridGame.Core.Battle
         /// <summary>The dispatcher (§6): per target, cleanse → fire×wet/frozen → steal → damage → blind roll → heal → hasten → buff.</summary>
         private void ResolveAbility(Unit caster, AbilityDef a, Coord anchor, Unit pickedUnit)
         {
+            ResolveAbilityEffects(caster, a, anchor, pickedUnit);
+            RegionAbility(caster, a, anchor); // GG-T359: its region rule effects, once it has resolved
+        }
+
+        private void ResolveAbilityEffects(Unit caster, AbilityDef a, Coord anchor, Unit pickedUnit)
+        {
             NoteRecover(caster, a);
             if (a.IsTeleport)
             {
@@ -204,7 +210,7 @@ namespace GridGame.Core.Battle
                 resolved.Tiles.AddRange(TargetResolver.Tiles(anchor, a.Shape, a.Radius));
             foreach (var t in targets) resolved.Targets.Add(t.Id);
             Emit(resolved);
-            if (targets.Count == 0) { Announce("Missed!", caster.Id); return; }
+            if (targets.Count == 0) { if (a.RuleEffects.Count == 0) Announce("Missed!", caster.Id); return; } // a board-only ability (GG-T359) misses nobody
 
             // A beneficial buff on a foe-targeting ability is the caster's own (War Stomp/Battle Cry taunt, Opening Jab
             // empowers the next strike), granted once per cast however many foes are caught (GG-T266).
@@ -514,6 +520,12 @@ namespace GridGame.Core.Battle
                 ResolveAbility(caster, a, anchor, t != null && t.Alive ? t : null);
                 return;
             }
+            ResolveDirectCharge(caster, a, cast);
+            RegionAbility(caster, a, cast.TargetTile); // GG-T359
+        }
+
+        private void ResolveDirectCharge(Unit caster, AbilityDef a, TimelineEntry cast)
+        {
             var victims = new List<Unit>();
             if (cast.ChargeShape == ChargeShape.Line && cast.LineTiles != null)
             {

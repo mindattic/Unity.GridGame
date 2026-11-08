@@ -390,6 +390,7 @@ namespace GridGame.App
                 else v.SetGlow(Color.white, 0f);
             }
             board.SyncTraps(State);
+            board.SyncRegion(State); // GG-T359
             board.SyncBlocks(State.Blocks);
             board.SyncAmplifier(State.Amplifier);
             board.SyncPickups(State);

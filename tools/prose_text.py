@@ -61,6 +61,7 @@ NARRATIVE = {
     "caravan": [("*", "Barks")],
     "mercenaries": [("*", "Pitch"), ("*", "Renewal")],
     "stages": [("*", "Waves", "*", "SurpriseLine")],
+    "regionrules": [("*", "Name"), ("*", "Description")],  # GG-T359: rule:<id> (payload name + short)
 }
 
 
@@ -209,6 +210,10 @@ def hydrate(content: dict, texts: dict) -> dict:
             p = pay(f"bark:surprise/{s.get('Id')}/{w}")
             if p is not None and isinstance(wave, dict):
                 wave["SurpriseLine"] = _line(p)
+    for r in content.get("regionrules") or []:  # GG-T359
+        p = pay("rule:" + r.get("Id", "")) if isinstance(r, dict) else None
+        if p is not None:
+            r["Name"], r["Description"] = p.get("name"), p.get("short")
     return content
 
 

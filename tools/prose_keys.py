@@ -82,7 +82,7 @@ def load_content(content_dir: str = CONTENT_DIR) -> dict:
     (campaign: an empty object), so a partial fixture still loads."""
     out = {}
     for name in ("classes", "factions", "campaign", "stages", "dialogues", "quests", "glossary", "caravan",
-                 "mercenaries", "items", "armorsets", "skilltrees"):
+                 "mercenaries", "items", "armorsets", "skilltrees", "regionrules"):
         path = os.path.join(content_dir, name + ".json")
         if os.path.isfile(path):
             out[name] = load(path)
@@ -169,6 +169,9 @@ def game_keys(content: dict) -> dict:
                     keys["skillnode:" + n["Id"]] = "description"
     for npc in NPCS:
         keys["npc:" + npc] = "description"
+    for r in content.get("regionrules") or []:  # GG-T359: a region rule's name and description
+        if isinstance(r, dict) and r.get("Id"):
+            keys["rule:" + r["Id"]] = "description"
     for s in content.get("stages") or []:
         for w, wave in enumerate(s.get("Waves") or []):
             if s.get("Id") and isinstance(wave, dict) and (wave.get("SurpriseSpeaker") or wave.get("SurpriseLine")):

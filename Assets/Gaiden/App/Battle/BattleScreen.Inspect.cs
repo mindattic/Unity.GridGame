@@ -50,6 +50,7 @@ namespace GridGame.App
         /// <summary>The hold card for a timeline entry (an icon or the prominence slot): a cast's ability, else its owner.</summary>
         private bool BuildTimelineCard(VisualElement body, TimelineEntry e)
         {
+            if (e.Kind == TimelineKind.Hazard) return BuildHazardCard(body, e); // GG-T359
             var owner = State.UnitById(e.OwnerId);
             if (e.Kind == TimelineKind.Cast)
                 return InspectCard.Ability(body, App.Content.TryAbility(e.AbilityId),

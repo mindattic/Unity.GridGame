@@ -476,6 +476,11 @@ namespace GridGame.Core.Content
         /// <summary>Bond a tamed monster of this class needs before it asks to join (§25.11.3, GG-T303); 0 = derived from its
         /// level (<c>Taming.BondFor</c>). Rarer, stronger monsters author more.</summary>
         public int TameBond;
+        /// <summary>Region rules (GG-T359): rule, tile state, rule event or ability ids whose rule effects this class
+        /// shrugs off (a flier over a crumbled floor, a water-born foe in the flood). Hooks don't fire for it either.</summary>
+        public List<string> RuleImmune = new List<string>();
+        /// <summary>Region rule effects (GG-T359) run where a unit of this class falls (it is their subject).</summary>
+        public List<RuleEffectDef> OnDeathRule = new List<RuleEffectDef>();
 
         public bool HasTag(string tag) => Tags != null && Tags.Contains(tag);
     }
@@ -578,6 +583,9 @@ namespace GridGame.Core.Content
         /// <summary>Countermarch (GG-T336, the Tactician): the picked foe's turn icon trades places on the timeline with the
         /// foe whose turn is furthest off (<see cref="Battle.Countermarch"/>). A picked single foe from a Skill or Spell.</summary>
         public bool SwapsTurns;
+        /// <summary>Region rule effects (GG-T359) run once this resolves: the caster is their subject and the anchor
+        /// their Target (mark/clear/modify tiles, queue or retime events, move anchors, raise flags).</summary>
+        public List<RuleEffectDef> RuleEffects = new List<RuleEffectDef>();
     }
 
     public sealed class BuffDef
@@ -830,6 +838,8 @@ namespace GridGame.Core.Content
         /// <summary>Physical blocks (rocks, pillars, wreckage): tiles no unit may enter, land on, be pushed into or spawn on (§1.1.1).</summary>
         public List<Coord> Blocks = new List<Coord>();
         public List<WaveDef> Waves = new List<WaveDef>();
+        /// <summary>Region rule ids (regionrules.json, GG-T359) this stage plays under, on top of its theme's.</summary>
+        public List<string> Rules = new List<string>();
     }
 
     /// <summary>A caravan upgrade (§25.12): bought with gold, one value per level.</summary>
@@ -867,6 +877,8 @@ namespace GridGame.Core.Content
         /// <summary>GG-T344: the theme's background set, <c>Backgrounds/&lt;set&gt;_01..NN</c> (owner rule: named after the
         /// story region, numbered from 01). Null = the theme id (<see cref="Backdrops.SetOf"/>).</summary>
         public string Backgrounds;
+        /// <summary>Region rule ids (regionrules.json, GG-T359) every stage of this theme plays under.</summary>
+        public List<string> Rules = new List<string>();
     }
 
     public sealed class CampaignDef

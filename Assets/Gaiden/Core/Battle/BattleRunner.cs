@@ -427,6 +427,7 @@ namespace GridGame.Core.Battle
                 if (h.RegenPerTurn > 0 && h.Hp < h.MaxHp) Heal(h, h.RegenPerTurn, h);
                 // TurnEnd passives (GG-T296): a hero's turn ends each time control returns (Regenerate knits 6%).
                 if (h.Alive) Fire(TriggerOn.TurnEnd, h, new TriggerContext());
+                if (h.Alive) RegionTurn(RuleHook.TurnEnd, h); // GG-T359
                 if (!h.Alive) continue;
                 TickTurnBuffs(h, false);
                 var keys = new List<string>(h.Cooldowns.Keys);
@@ -439,7 +440,8 @@ namespace GridGame.Core.Battle
             TickTempo();
             // The party's new turn begins: hero trigger cooldowns tick, TurnStart and OnSurrounded fire (GG-T296).
             foreach (var h in S.LivingList(Team.Hero))
-                if (!S.IsOver && h.Alive && !h.IsIndependent) TriggersTurnStart(h);
+                if (!S.IsOver && h.Alive && !h.IsIndependent) { TriggersTurnStart(h); if (h.Alive) RegionTurn(RuleHook.TurnStart, h); } // GG-T359
+            if (!S.IsOver && S.Region.Rules.Count > 0) CheckEnd(); // a region rule's turn hook may have felled someone
             if (S.IsOver) return;
             Emit(new PlayerControlEvent());
         }
@@ -621,6 +623,8 @@ namespace GridGame.Core.Battle
             if (u.Team == Team.Enemy && !u.NoLoot) AwardLoot(u);
             if (u.Team == Team.Enemy) LeaveRemains(u, at);
             if (u.Team == Team.Enemy && !u.NoLoot && !u.IsRemains && !u.IsSnakeSegment) MaybeDropPickup(u, at, killer);
+            // GG-T359: the class's OnDeathRule effects and the region rules' UnitDeath hooks, where it fell.
+            if (!u.IsEgg && !u.IsSnakeSegment) RegionDeath(u, at);
             // Death triggers (GG-T296): the killer's OnKill, then each living ally's OnAllyKO in unit-id order.
             if (u.IsEgg) return;
             if (killer != null && killer.Alive && Triggers.Foes(killer, u)) Fire(TriggerOn.OnKill, killer, new TriggerContext { Target = u });

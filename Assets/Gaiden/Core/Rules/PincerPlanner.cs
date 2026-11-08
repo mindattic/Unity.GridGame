@@ -86,6 +86,7 @@ namespace GridGame.Core.Rules
                     if (occ != null && !Swappable(occ, mover)) continue;
                     if (occ != null && occ.IsHero && mover.Team == Team.Enemy && !BattleConfig.EnemyPincerSwapsHeroes) continue;
                     if (mover.Team == Team.Hero && s.TrapAt(next) != null) continue; // traps bite the hero team only
+                    if (s.Region.Rules.Count > 0 && RegionBoard.DangerAt(s, next, mover) > 0f) continue; // GG-T359: no walk through a rule's hazard
                     var from = mover.Pos;
                     undo.Add((mover, from));
                     if (occ != null) { undo.Add((occ, occ.Pos)); occ.Pos = from; swapped.Add(occ.Id); }

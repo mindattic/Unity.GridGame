@@ -308,6 +308,14 @@ namespace GridGame.Core.Bot
                 s.Content.Pickups.TryGetValue(pk.PickupId, out var def);
                 score += 4f + (def != null && def.HealFraction > 0f ? 8f * (1f - hero.HpFraction) : 1f);
             }
+            // Region rules (GG-T359): crossing a hazardous painted tile costs a little, ending on one (or under a
+            // telegraphed hazard about to land) costs a lot, so soaks walk around barricade fires and out of strike zones.
+            if (s.Region.Tiles.Count > 0 || s.Timeline.Exists(x => x.Kind == TimelineKind.Hazard))
+            {
+                foreach (var step in pv.StepsTaken) score -= 1.5f * RegionBoard.DangerAt(s, step, hero);
+                if (pv.Positions.TryGetValue(hero.Id, out var end)) score -= 6f * RegionBoard.DangerAt(s, end, hero);
+                else if (RegionBoard.DangerAt(s, hero.Pos, hero) > 0f) score -= 6f; // stepping off a danger tile is worth it
+            }
             // Mild preference for staying out of melee range of soon-acting enemies when nothing else is on offer.
             if (pv.Positions.TryGetValue(hero.Id, out var at))
             {

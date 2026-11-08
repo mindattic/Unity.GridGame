@@ -43,6 +43,7 @@ namespace GridGame.Core.Battle
             var prot = C.TryBuff(BattleConfig.ShieldBuffId);
             if (prot != null)
                 foreach (var id in startProtected) { var h = S.UnitById(id); if (h != null) ApplyBuff(h, prot, prot.Duration); }
+            RegionBattleStart(); // GG-T359: the stage's region rules come into play before wave 1 spawns
             SpawnWave(0);
         }
 
@@ -279,6 +280,7 @@ namespace GridGame.Core.Battle
             OpenPartyWindow();
             Emit(started);
             AnnounceRuleBreaks(started.Spawned);
+            RegionHooks(RuleHook.WaveSpawn, null); // GG-T359
         }
 
         /// <summary>

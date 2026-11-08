@@ -63,6 +63,18 @@ namespace GridGame.Core.Content
         /// <summary>The entry a bracketed <c>[term]</c> names, or null.</summary>
         public GlossaryEntry TryTerm(string term) => term != null && GlossaryIndex.TryGetValue(term.Trim(), out var g) ? g : null;
 
+        /// <summary>regionrules.json (GG-T359), in file order, and by id; their tile states and events by id (ids are
+        /// shared across rules), each with the rule that owns it.</summary>
+        public readonly List<RegionRuleDef> RegionRuleOrder = new List<RegionRuleDef>();
+        public readonly Dictionary<string, RegionRuleDef> RegionRules = new Dictionary<string, RegionRuleDef>(StringComparer.OrdinalIgnoreCase);
+        public readonly Dictionary<string, TileStateDef> TileStates = new Dictionary<string, TileStateDef>(StringComparer.OrdinalIgnoreCase);
+        public readonly Dictionary<string, RuleEventDef> RuleEvents = new Dictionary<string, RuleEventDef>(StringComparer.OrdinalIgnoreCase);
+        public readonly Dictionary<string, string> TileStateRule = new Dictionary<string, string>(StringComparer.OrdinalIgnoreCase);
+        public readonly Dictionary<string, string> RuleEventRule = new Dictionary<string, string>(StringComparer.OrdinalIgnoreCase);
+        public RegionRuleDef TryRegionRule(string id) => id != null && RegionRules.TryGetValue(id, out var r) ? r : null;
+        public TileStateDef TryTileState(string id) => id != null && TileStates.TryGetValue(id, out var t) ? t : null;
+        public RuleEventDef TryRuleEvent(string id) => id != null && RuleEvents.TryGetValue(id, out var e) ? e : null;
+
         public ArmorSetDef TryArmorSetOf(string itemId) => itemId != null && SetByItem.TryGetValue(itemId, out var a) ? a : null;
 
         public ClassDef Class(string id) => Get(Classes, id, "class");

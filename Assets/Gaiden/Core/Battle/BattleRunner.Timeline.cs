@@ -73,6 +73,7 @@ namespace GridGame.Core.Battle
 
             foreach (var e in S.Timeline)
             {
+                if (e.Kind == TimelineKind.Hazard) { if (e.RemainingTicks > 0) e.RemainingTicks--; continue; } // GG-T359: no owner, never halted
                 var owner = S.UnitById(e.OwnerId);
                 if (owner == null || !owner.Alive) continue;
                 if (e.Kind == TimelineKind.Turn)
@@ -91,29 +92,35 @@ namespace GridGame.Core.Battle
 
             TickTimedBuffs(1);
             if (S.IsOver) return;
+            if (S.Region.Tiles.Count > 0) TickRegionTiles(); // GG-T359: painted tiles with a lifetime fade
+            if (S.IsOver) return;
 
-            // Arrivals this tick, resolved in arrival order: casts that hit 0, then full turn icons; ties by id.
+            // Arrivals this tick, resolved in arrival order: casts that hit 0, then rule hazards, then full turn icons; ties by id.
             for (int guard = 0; guard < 64 && !S.IsOver; guard++)
             {
                 TimelineEntry next = null;
                 foreach (var e in S.Timeline)
                 {
-                    bool arrived = e.Kind == TimelineKind.Cast ? e.RemainingTicks <= 0 : e.Ip >= BattleConfig.BarLength;
+                    bool arrived = e.Kind != TimelineKind.Turn ? e.RemainingTicks <= 0 : e.Ip >= BattleConfig.BarLength;
                     if (!arrived) continue;
                     if (next == null || Earlier(e, next)) next = e;
                 }
                 if (next == null) break;
                 ReportAdvance();
                 if (next.Kind == TimelineKind.Cast) { ResolveCast(next); CheckTilesStrict("cast " + next.AbilityId); }
+                else if (next.Kind == TimelineKind.Hazard) { ResolveHazard(next); CheckTilesStrict("rule event " + next.RuleEvent); }
                 else
                 {
                     next.Ip = 0;
                     var owner = S.UnitById(next.OwnerId);
                     recoverActorId = owner?.Id ?? -1;
                     turnRecoverSeconds = 0f;
+                    // GG-T359: region rules' TurnStart hooks run as the icon arrives, before the unit acts.
+                    if (owner != null && owner.Alive) RegionTurn(RuleHook.TurnStart, owner);
                     // A tamed or domesticated monster (GG-T303) acts on its own icon but doesn't end the party's window.
                     if (owner != null && owner.Alive && owner.IsIndependent) { RunAllyTurn(owner); CheckTilesStrict("ally turn of " + owner); }
                     else if (owner != null && owner.Alive) { RunEnemyTurn(owner); RuleBreakAfterTurn(owner); enemyTurnResolved = true; CheckTilesStrict("turn of " + owner); }
+                    if (owner != null && owner.Alive && !S.IsOver) RegionTurn(RuleHook.TurnEnd, owner);
                     recoverActorId = -1;
                     // GG-T318: the turn is done, so its recovery cost is known. Off the bar, then back on at its Speed's entry.
                     if (owner != null && owner.Alive && S.Timeline.Contains(next))
@@ -172,9 +179,12 @@ namespace GridGame.Core.Battle
 
         private static bool Earlier(TimelineEntry a, TimelineEntry b)
         {
-            if (a.Kind != b.Kind) return a.Kind == TimelineKind.Cast;
+            if (a.Kind != b.Kind) return ArrivalRank(a.Kind) < ArrivalRank(b.Kind);
             return a.Id < b.Id;
         }
+
+        /// <summary>Tie order on one tick: casts, then rule hazards (GG-T359), then turns.</summary>
+        internal static int ArrivalRank(TimelineKind k) => k == TimelineKind.Cast ? 0 : k == TimelineKind.Hazard ? 1 : 2;
 
         /// <summary>Time-banked orbs (§3.1.8): drag-timer seconds left at the last drop convert to orbs at the enemy handoff.</summary>
         private void MintTimeBank()

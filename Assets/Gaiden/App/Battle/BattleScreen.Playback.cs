@@ -200,6 +200,13 @@ namespace GridGame.App
                 case DodgedEvent dg: return DodgeAnim(dg);
                 case TrapPlacedEvent tp: board.SyncTraps(State); App.Audio.Sfx("battle.trap"); return FloatText(tp.ById, "Snare!", Palette.Boss, 0.3f);
                 case TrapTriggeredEvent tt: board.SyncTraps(State); App.Audio.Sfx("battle.trap"); return FloatText(tt.UnitId, "Trap!", Palette.Boss, 0.25f);
+                case RegionRuleEvent rgr: return RegionRuleAnim(rgr); // GG-T359
+                case RegionTilesEvent rgt: return RegionTilesAnim(rgt);
+                case RegionAnchorEvent rga: return RegionAnchorAnim(rga);
+                case RegionFlagEvent rgf: return RegionFlagAnim(rgf);
+                case HazardQueuedEvent hzq: return HazardQueuedAnim(hzq);
+                case HazardRetimedEvent hzr: return HazardRetimedAnim(hzr);
+                case HazardLandedEvent hzl: return HazardLandedAnim(hzl);
                 case WeaponWornEvent _: return null;
                 case WeaponShatteredEvent ws: App.Audio.Sfx("battle.shatter"); return FloatText(ws.UnitId, "SHATTER!", Palette.Buff, 0.5f, 80);
                 case ArmorBrokenEvent ab: App.Audio.Sfx("battle.shatter", 0.7f); return FloatText(ab.UnitId, "Armor broken!", new Color(1f, 0.6f, 0.4f), 0.4f, 64);

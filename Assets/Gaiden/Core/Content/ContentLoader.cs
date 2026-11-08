@@ -66,6 +66,7 @@ namespace GridGame.Core.Content
             AddAll(db.ArmorSets, sets, x => x.Id);
             db.ArmorSetOrder.AddRange(sets);
             db.GlossaryOrder.AddRange(ReadList<GlossaryEntry>(readText, "glossary"));
+            RegionRuleCatalog.Index(db, ReadList<RegionRuleDef>(readText, "regionrules")); // GG-T359
             // GG-T355: the story words come from Prose (Content/Text/<kind>.json), joined onto the records by key.
             ProseText.Join(db, readText);
             Glossary.Index(db);
@@ -234,6 +235,7 @@ namespace GridGame.Core.Content
             ValidateCrawl(db, db.Campaign.Prologue, "campaign Prologue", false, p);
             ValidateCrawl(db, db.Campaign.Ending, "campaign Ending", true, p);
             foreach (var t in db.Traps.Values) NeedBuff(t.ApplyBuff, $"trap {t.Id}");
+            RegionRuleCatalog.Validate(db, p); // GG-T359
             foreach (var pk in db.Pickups.Values)
             {
                 NeedBuff(pk.ApplyBuff, $"pickup {pk.Id}");

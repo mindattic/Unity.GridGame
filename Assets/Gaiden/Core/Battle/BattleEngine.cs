@@ -264,6 +264,7 @@ namespace GridGame.Core.Battle
         /// </summary>
         public static int TicksUntilAct(BattleState s, TimelineEntry e, bool ignoreHalt = false)
         {
+            if (e.Kind == TimelineKind.Hazard) return System.Math.Max(0, e.RemainingTicks); // a rule event has no owner (GG-T359)
             var u = s.UnitById(e.OwnerId);
             if (u == null || !u.Alive) return -1;
             if (!ignoreHalt && u.IsTimelineHalted) return -1;
@@ -449,7 +450,7 @@ namespace GridGame.Core.Battle
             {
                 var o = s.UnitById(e.OwnerId);
                 int left = TicksUntilAct(s, e, ignoreHalt: true);
-                if (left >= 0 && !o.IsTimelineHalted) left = System.Math.Max(0, left - System.Math.Max(0, ticks));
+                if (left >= 0 && (o == null || !o.IsTimelineHalted)) left = System.Math.Max(0, left - System.Math.Max(0, ticks));
                 at[e.Id] = UForTicks(left);
             }
             return at;

@@ -240,6 +240,7 @@ namespace GridGame.Core.Rules
                     var occ = s.UnitAt(c);
                     if (occ != null && occ != enemy) continue;
                 }
+                if (s.Region.Rules.Count > 0 && RegionBoard.DangerAt(s, c, enemy) > 0f) continue; // GG-T359: foes don't walk into a rule's hazard either
                 candidates.Add(c);
             }
             if (brain == Brain.Hopper && !enemy.IsMultiTile)

@@ -131,7 +131,15 @@ namespace GridGame.Core.Battle
             return true;
         }
 
+        /// <summary>A unit entered a tile: a hero collects and springs what lies there, then (any unit) the region rules'
+        /// EnterTile hooks run (GG-T359).</summary>
         private void TriggerTrap(Unit u)
+        {
+            SpringTrap(u);
+            RegionEnter(u);
+        }
+
+        private void SpringTrap(Unit u)
         {
             if (!u.Alive || u.Team != Team.Hero) return;
             CollectPickup(u);

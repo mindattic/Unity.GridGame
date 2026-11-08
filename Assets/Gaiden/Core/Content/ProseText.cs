@@ -43,6 +43,7 @@ namespace GridGame.Core.Content
             ["caravan"] = new[] { "*/Barks" },
             ["mercenaries"] = new[] { "*/Pitch", "*/Renewal" },
             ["stages"] = new[] { "*/Waves/*/SurpriseLine" },
+            ["regionrules"] = new[] { "*/Name", "*/Description" },
         };
 
         /// <summary>The choice tag a conversation puts on the answer the game's logic rewards: a wanderer's "heard" reply
@@ -104,6 +105,7 @@ namespace GridGame.Core.Content
                 foreach (var n in t.Nodes) k["skillnode:" + n.Id] = "description";
             }
             foreach (var npc in DialogueDef.Npcs) k["npc:" + npc] = "description";
+            foreach (var r in db.RegionRuleOrder) k["rule:" + r.Id] = "description"; // GG-T359: payload name + short
             foreach (var s in db.StageOrder)
                 for (int w = 0; w < s.Waves.Count; w++)
                     if (!string.IsNullOrEmpty(s.Waves[w].SurpriseSpeaker)) k[$"bark:surprise/{s.Id}/{w}"] = "bark";
@@ -264,6 +266,16 @@ namespace GridGame.Core.Content
             }
             foreach (var npc in DialogueDef.Npcs)
                 db.NpcBlurbs[npc] = Need(Get("npc:" + npc, "description"), "short", "npc:" + npc);
+            foreach (var r in db.RegionRuleOrder)
+            {
+                // GG-T359: a region rule's name and description are its Prose description ("name", "short").
+                string key = "rule:" + r.Id;
+                Leftover(r.Name, $"regionrules.json {r.Id} Name");
+                Leftover(r.Description, $"regionrules.json {r.Id} Description");
+                var p = Get(key, "description");
+                r.Name = Need(p, "name", key);
+                r.Description = Need(p, "short", key);
+            }
             foreach (var s in db.StageOrder)
                 for (int w = 0; w < s.Waves.Count; w++)
                 {

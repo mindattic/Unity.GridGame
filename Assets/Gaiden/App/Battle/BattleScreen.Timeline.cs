@@ -312,7 +312,26 @@ namespace GridGame.App
             art.style.left = art.style.top = (inner - s) / 2f;
             art.style.rotate = new Rotate(-45f);
             frame.Add(art);
-            if (e.Kind == TimelineKind.Turn) { Ui.PortraitThumb(art, State.UnitById(e.OwnerId)?.Def.Id); return; }
+            if (e.Kind == TimelineKind.Hazard) { HazardArt(art, e); return; } // GG-T359: a rule event's own icon
+            if (e.Kind == TimelineKind.Turn)
+            {
+                var owner = State.UnitById(e.OwnerId);
+                // GG-T359: a rule's MaskTimeline flag (darkness) hides who a foe's icon belongs to.
+                if (owner != null && owner.Team == Team.Enemy && RegionBoard.MasksTimeline(State))
+                {
+                    art.style.backgroundColor = Palette.Ink;
+                    var q = new Label("?") { pickingMode = PickingMode.Ignore };
+                    q.style.position = Position.Absolute;
+                    q.style.left = q.style.top = q.style.right = q.style.bottom = 0;
+                    q.style.unityTextAlign = TextAnchor.MiddleCenter;
+                    q.style.fontSize = 72;
+                    q.style.color = Palette.TextDim;
+                    art.Add(q);
+                    return;
+                }
+                Ui.PortraitThumb(art, owner?.Def.Id);
+                return;
+            }
             art.style.backgroundColor = EntryColor(e).WithA(0.22f);
             var tex = Art.AbilityIcon(App.Content.TryAbility(e.AbilityId));
             if (tex == null) return;
@@ -330,7 +349,8 @@ namespace GridGame.App
 
         /// <summary>An icon's own colour: enemy red, boss purple, hero cast teal, enemy charge amber.</summary>
         private Color EntryColor(TimelineEntry e) =>
-            e.Kind == TimelineKind.Cast ? (e.CasterTeam == Team.Hero ? Palette.CastHero : Palette.CastEnemy) : TurnRing(State.UnitById(e.OwnerId));
+            e.Kind == TimelineKind.Hazard ? HazardColor(e) // GG-T359
+            : e.Kind == TimelineKind.Cast ? (e.CasterTeam == Team.Hero ? Palette.CastHero : Palette.CastEnemy) : TurnRing(State.UnitById(e.OwnerId));
 
         private VisualElement MakeTimelineIcon(TimelineEntry e)
         {
@@ -363,7 +383,7 @@ namespace GridGame.App
             foreach (var e in State.Timeline)
             {
                 if (e.Kind == TimelineKind.Cast && unplayedCasts.Contains(e.Id)) continue; // its CastQueued beat hasn't played
-                if (!board.Units.TryGetValue(e.OwnerId, out var ov) || ov.Dead) continue;
+                if (e.Kind != TimelineKind.Hazard && (!board.Units.TryGetValue(e.OwnerId, out var ov) || ov.Dead)) continue; // a rule event has no owner (GG-T359)
                 drawn[e.Id] = e;
                 at[e.Id] = Mathf.Clamp01(uOverride != null && uOverride.TryGetValue(e.Id, out var ou) ? ou : BattleEngine.BarU(State, e));
             }
@@ -403,7 +423,15 @@ namespace GridGame.App
         }
 
         /// <summary>Arrival order on a tie (BattleRunner.Tick): casts before turns, then by id.</summary>
-        private static bool Earlier(TimelineEntry a, TimelineEntry b) => a.Kind != b.Kind ? a.Kind == TimelineKind.Cast : a.Id < b.Id;
+        private static bool Earlier(TimelineEntry a, TimelineEntry b) => a.Kind != b.Kind ? Rank(a.Kind) < Rank(b.Kind) : a.Id < b.Id;
+        private static int Rank(TimelineKind k) => k == TimelineKind.Cast ? 0 : k == TimelineKind.Hazard ? 1 : 2; // casts, rule hazards, turns (GG-T359)
+
+        /// <summary>GG-T359: a rule flag changed how icons read (darkness masks foes): redraw every icon's art.</summary>
+        private void RedrawTimelineArt()
+        {
+            foreach (var kv in timelineIconViews)
+                if (drawn.TryGetValue(kv.Key, out var de) && kv.Value.Q("tl-frame") is VisualElement fr) SetDiamondArt(fr, IconSide, IconBorder, de);
+        }
 
         private bool Halted(TimelineEntry e) => State.UnitById(e.OwnerId) is Unit o && o.IsTimelineHalted;
 

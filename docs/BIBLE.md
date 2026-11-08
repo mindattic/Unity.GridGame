@@ -2246,6 +2246,61 @@ Hide (they can't be [Burned]) and are weak to Ice (×1.5). The family plays **th
   16 without). In the casual runs the tide landed 103 times and the scales seared 19 attackers.
 - *(Tests: `HellspawnTests`.)*
 
+### 14.20 Region rules (added 2026-11-08, owner direction, GG-T359)
+
+Each region of the campaign plays under its own board rules, and every region gets new monsters (Mannequin placeholder
+art first) built around its rule. GG-T359 is the framework; the regions' own rules are GG-T360 (barricades), GG-T361
+(crumbling floor), GG-T362 (rising water), GG-T363 (telegraphed shard strikes), GG-T364 (anchor pull) and GG-T365
+(darkness that masks timeline icons).
+
+- **Data, not code.** A rule is a `regionrules.json` record (`RegionRuleDef`): the **tile states** it can paint
+  (`TileStates`), the **events** it can put on the timeline (`Events`) and the **hooks** that run its effects (`Hooks`).
+  A campaign theme names the rules every one of its stages plays under (`campaign.json` theme `Rules`), and a stage can
+  add its own (`stages.json` `Rules`); the theme's come first, each once (`RegionRuleCatalog.ActiveFor`). Everything is
+  checked by `ContentLoader.Validate` (`RegionRuleCatalog.Validate`): ids unique across all rules, every state, event,
+  buff, rule and immunity reference known, areas complete, events with a positive `Seconds`.
+- **Words live in Prose.** A rule's name and description are the Prose text `rule:<id>` (kind `description`, payload
+  `name` and `short`), joined by `ProseText.Join`; `regionrules.json` may not carry `Name` or `Description`
+  (`ProseText.NarrativeFields`, `tools/prose_text.py NARRATIVE`, `tools/prose_keys.py game_keys`). Each rule in play is
+  announced with its name and description as the battle opens (`RegionRuleEvent`).
+- **Hooks** (`RuleHookDef.On`): `BattleStart` (before wave 1 spawns), `WaveSpawn` (every wave, after its foes are on the
+  board), `TurnStart` / `TurnEnd` (a unit's own timeline turn: a foe's or an independent ally's icon arrives; a hero's
+  at each party window), `EnterTile` (any unit stepping, being shoved or pulled into a tile) and `UnitDeath`. Filters:
+  `Team`, `State` (the subject stands on that tile state), `Wave`, `Every` (every Nth match) and `Chance`.
+- **Effects** (`RuleEffectDef.Kind`): `MarkTiles`, `ClearTiles`, `ModifyTiles` (a counter; at the state's `Threshold`
+  it becomes its `Becomes` state, or clears), `Damage`, `Heal`, `ApplyBuff`, `MoveUnits` (toward/away from an anchor or
+  a point, or a direction, a free tile at a time), `Schedule` (a timeline event), `AdjustEvents` (later, sooner, or
+  `Cancel`: the rule timers), `PlaceAnchor` / `MoveAnchor` (named board points) and `SetFlag` / `ClearFlag` (board-wide
+  flags; `mask-timeline` makes the view hide whose foe icon is whose). An effect's tiles are its `Area` (`Self`,
+  `Target`, `Anchor`, `EventTiles`, `Tiles`, `Row`, `Column`, `RandomFree`, `RandomUnits`, `WithState`, `All`, grown by
+  `Radius`); unit effects reach the units on the area, the subject, or everyone, filtered by `Team`.
+- **Persistent tile state.** A painted tile (`TileMark`) keeps its state, the rule that painted it, a counter and an
+  optional lifetime (`LifeSeconds` on the clock). The board draws every one as a wash in its state's colour with its
+  glyph and its counter (`BoardView.SyncRegion`). A `Blocks` state is a block (`BattleState.Walkable`): nothing enters,
+  lands or spawns there, and it is never painted, nor does a counter turn a tile into one, under a unit or a board item,
+  so the board stays legal (§1.1). A `Hazard` state is harmful to stand on.
+- **The timeline is the warning.** A rule never hurts the party out of nowhere: every hazard a rule makes is first a
+  `Schedule`d **rule event**, its own icon on the timeline (`TimelineKind.Hazard`, no owner unit), counting down like a
+  cast, its glyph or icon in its own colour, and its telegraphed tiles pulse on the board from the moment it is queued.
+  It lands when it reaches the left edge (ties on one tick: casts, then rule events, then turns), runs its effects on
+  those tiles (`EventTiles`) and leaves the bar, or re-arms for the same time (`Repeat`, a rule's heartbeat). A held
+  icon reads the rule's name, description and when it lands. Retiming never brings one in under a tick, so it is always
+  seen first.
+- **Monsters play with the rules.** A monster's ability (`AbilityDef.RuleEffects`, any skill, spell or enemy charge,
+  run once it resolves with the caster as subject and the anchor as `Target`) and its death (`ClassDef.OnDeathRule`, run
+  where it fell) use the same effects: create, change or clear tile states, queue or retime events, move anchors, raise
+  flags. A board-only ability doesn't announce a miss. These work on any stage, rules in play or not.
+- **Immunity.** `ClassDef.RuleImmune` lists rule, tile state, rule event or ability ids the class shrugs off: their
+  unit effects skip it, a rule's hooks don't fire for it, and a state's danger doesn't count for it (a flier over a
+  collapsed floor, a water-born foe in the flood). It never makes a `Blocks` tile walkable.
+- **Bots and soaks.** `RegionBoard.DangerAt` scores a tile's danger for a unit (a hazardous state, and more for a
+  telegraphed rule event, the sooner the more). The hero bot pays for crossing danger and pays a lot to end on it
+  (`HeroBot.ScoreMove`); the pincer planner never walks through it and foes don't step into it (`EnemyPlanner.PlanStep`)
+  unless immune, so soaks keep working on ruled stages. Blocking tiles are plain blocks to every planner.
+- **Determinism.** Rules in their listed order, hooks in file order, effects in order; only `RandomFree`/`RandomUnits`
+  areas and a hook's `Chance` draw from the battle Rng. Hooks inside hooks stop four deep. Nothing runs in a preview.
+- *(Tests: `RegionRuleTests`, written, not run.)*
+
 ## 15. Save
 
 ### 15.1 Data model

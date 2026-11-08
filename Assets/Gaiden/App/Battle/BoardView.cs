@@ -780,6 +780,89 @@ namespace GridGame.App
             }
         }
 
+        private readonly List<VisualElement> regionMarks = new List<VisualElement>();
+        private readonly HashSet<string> regionSeen = new HashSet<string>();
+
+        /// <summary>
+        /// Region rules (GG-T359): every painted tile as a wash in its state's colour with its glyph, every tile a queued
+        /// hazard telegraphs as a pulsing warning in its event's colour (it shows from the moment it is queued until it
+        /// lands), and every rule anchor. A mark that wasn't drawn last sync fades in.
+        /// </summary>
+        public void SyncRegion(BattleState s)
+        {
+            foreach (var m in regionMarks) m.RemoveFromHierarchy();
+            regionMarks.Clear();
+            if (s?.Region == null) return;
+            var seen = new HashSet<string>();
+            foreach (var kv in s.Region.Tiles)
+            {
+                var def = s.Content?.TryTileState(kv.Value.State);
+                var col = Art.HexColor(def?.Color, kv.Value.Hazard ? Palette.Bad : Palette.Info);
+                string key = "m" + kv.Key + kv.Value.State;
+                seen.Add(key);
+                var e = RegionCell(kv.Key, col.WithA(kv.Value.Blocks ? 0.55f : 0.3f), col, def?.Glyph, kv.Value.Blocks ? 6f : 3f, !regionSeen.Contains(key));
+                if (kv.Value.Counter > 0 && def != null && def.Threshold > 0)
+                {
+                    var n = new Label($"{kv.Value.Counter}/{def.Threshold}") { pickingMode = PickingMode.Ignore };
+                    n.style.position = Position.Absolute;
+                    n.style.right = Space.S8; n.style.bottom = Space.S4;
+                    n.style.fontSize = 36;
+                    n.style.color = Palette.Text;
+                    e.Add(n);
+                }
+            }
+            foreach (var t in s.Timeline)
+            {
+                if (t.Kind != TimelineKind.Hazard || t.HazardTiles == null) continue;
+                var ev = s.Content?.TryRuleEvent(t.RuleEvent);
+                var col = Art.HexColor(ev?.Color, Palette.CastEnemy);
+                foreach (var c in t.HazardTiles)
+                {
+                    string key = "h" + t.Id + c;
+                    seen.Add(key);
+                    var w = RegionCell(c, col.WithA(ev == null || ev.Hazard ? 0.22f : 0.1f), col, string.IsNullOrEmpty(ev?.Glyph) ? "⚠" : ev.Glyph, 5f, !regionSeen.Contains(key));
+                    w.schedule.Execute(() => w.style.opacity = 0.55f + 0.45f * Mathf.Abs(Mathf.Sin(Tween.Clock * 4f))).Every(50);
+                }
+            }
+            foreach (var a in s.Region.Anchors)
+            {
+                string key = "a" + a.Key + a.Value;
+                seen.Add(key);
+                RegionCell(a.Value, Color.clear, Palette.Gold, "◎", 4f, !regionSeen.Contains(key));
+            }
+            regionSeen.Clear();
+            regionSeen.UnionWith(seen);
+        }
+
+        private VisualElement RegionCell(Coord at, Color fill, Color border, string glyph, float borderWidth, bool fadeIn)
+        {
+            var e = new VisualElement { pickingMode = PickingMode.Ignore };
+            e.style.position = Position.Absolute;
+            e.style.left = at.X * Tile; e.style.top = at.Y * Tile;
+            e.style.width = Tile; e.style.height = Tile;
+            e.style.backgroundColor = fill;
+            e.style.borderTopWidth = e.style.borderBottomWidth = e.style.borderLeftWidth = e.style.borderRightWidth = borderWidth;
+            e.style.borderTopColor = e.style.borderBottomColor = e.style.borderLeftColor = e.style.borderRightColor = border.WithA(0.85f);
+            if (!string.IsNullOrEmpty(glyph))
+            {
+                var l = new Label(glyph) { pickingMode = PickingMode.Ignore };
+                l.style.position = Position.Absolute;
+                l.style.left = l.style.top = l.style.right = l.style.bottom = 0;
+                l.style.unityTextAlign = TextAnchor.MiddleCenter;
+                l.style.fontSize = 80;
+                l.style.color = border.WithA(0.9f);
+                e.Add(l);
+            }
+            if (fadeIn)
+            {
+                e.style.opacity = 0f;
+                e.schedule.Execute(() => e.style.opacity = Mathf.Min(1f, e.style.opacity.value + 0.12f)).Every(16).Until(() => e.style.opacity.value >= 1f);
+            }
+            MarkLayer.Add(e);
+            regionMarks.Add(e);
+            return e;
+        }
+
         /// <summary>Floating combat text (damage numbers etc.), rising and fading.</summary>
         public Label Float(string text, Vector2 at, Color color, float size = 64)
         {

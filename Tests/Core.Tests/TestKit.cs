@@ -181,6 +181,7 @@ namespace GridGame.Tests
             Assert.That(s.Bank.Count, Is.InRange(0, s.Bank.Capacity));
             foreach (var e in s.Timeline)
             {
+                if (e.Kind == TimelineKind.Hazard) { Assert.That(e.RemainingTicks, Is.GreaterThan(0), $"rule event {e.Id} sits at the edge unresolved"); continue; } // GG-T359: no owner
                 var owner = s.UnitById(e.OwnerId);
                 Assert.That(owner != null && owner.Alive, Is.True, $"Timeline entry {e.Id} owned by dead/missing unit {e.OwnerId}");
             }

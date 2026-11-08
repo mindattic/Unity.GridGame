@@ -533,4 +533,55 @@ namespace GridGame.Core.Battle
         public int PickupEntryId; public string PickupId; public Coord At;
         public override string ToString() => $"Pickup {PickupId} faded at {At}";
     }
+
+    // ── Region rules (GG-T359, §14.20) ──────────────────────────────────────────────────────────────
+
+    /// <summary>A region rule is in play this battle (its Prose name and description, for the opening banner).</summary>
+    public sealed class RegionRuleEvent : BattleEvent
+    {
+        public string RuleId; public string Name; public string Description;
+        public override string ToString() => $"RegionRule {RuleId}";
+    }
+
+    /// <summary>Painted tiles changed: Change is "marked", "cleared" or "changed" (a counter or a Becomes).</summary>
+    public sealed class RegionTilesEvent : BattleEvent
+    {
+        public string RuleId; public string State; public string Change; public List<Coord> Tiles = new List<Coord>();
+        public override string ToString() => $"RegionTiles {Change} {State} x{Tiles.Count}";
+    }
+
+    /// <summary>A named rule anchor was placed (From null) or moved.</summary>
+    public sealed class RegionAnchorEvent : BattleEvent
+    {
+        public string RuleId; public string Anchor; public Coord? From; public Coord To;
+        public override string ToString() => $"RegionAnchor {Anchor} {From}->{To}";
+    }
+
+    /// <summary>A board-wide rule flag went up or down.</summary>
+    public sealed class RegionFlagEvent : BattleEvent
+    {
+        public string RuleId; public string Flag; public bool On;
+        public override string ToString() => $"RegionFlag {Flag} {(On ? "on" : "off")}";
+    }
+
+    /// <summary>A rule event went on the timeline as its own icon, telegraphing <see cref="Tiles"/>.</summary>
+    public sealed class HazardQueuedEvent : BattleEvent
+    {
+        public int EntryId; public string EventId; public string RuleId; public List<Coord> Tiles = new List<Coord>(); public float Seconds;
+        public override string ToString() => $"HazardQueued {EventId} #{EntryId} in {Seconds:0.0}s on {Tiles.Count} tiles";
+    }
+
+    /// <summary>A queued rule event's timer changed (TicksLeft after), or it was called off.</summary>
+    public sealed class HazardRetimedEvent : BattleEvent
+    {
+        public int EntryId; public string EventId; public int TicksLeft; public bool Cancelled;
+        public override string ToString() => $"HazardRetimed {EventId} #{EntryId} {(Cancelled ? "cancelled" : TicksLeft + " ticks")}";
+    }
+
+    /// <summary>A rule event reached the left edge and resolves on its tiles (its effects follow as their own events).</summary>
+    public sealed class HazardLandedEvent : BattleEvent
+    {
+        public int EntryId; public string EventId; public string RuleId; public List<Coord> Tiles = new List<Coord>(); public bool Rearmed;
+        public override string ToString() => $"HazardLanded {EventId} #{EntryId}";
+    }
 }

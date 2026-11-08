@@ -152,6 +152,7 @@ namespace GridGame.Core.Battle
             ShovePickupsUnder(occ, next);
             if (BreaksOnMove(occ)) RemoveBuffsWhere(occ, b => b.Def.BreaksOnMove, "moved");
             TriggerTrap(occ); // a hero shoved onto a trap springs it (§14.2), as when a drag displaces it
+            RegionEnter(enemy); // GG-T359
             return true;
         }
 
@@ -164,6 +165,7 @@ namespace GridGame.Core.Battle
             Emit(new SteppedEvent { UnitId = enemy.Id, From = from, To = dest });
             ShovePickupsUnder(enemy, from);
             LeaveTrail(enemy, from);
+            RegionEnter(enemy); // GG-T359
             return true;
         }
 
@@ -344,6 +346,7 @@ namespace GridGame.Core.Battle
                     if (BreaksOnMove(hero)) RemoveBuffsWhere(hero, b => b.Def.BreaksOnMove, "moved");
                     TriggerTrap(hero);
                 }
+                RegionEnter(enemy); // GG-T359
                 return true;
             }
 
@@ -357,6 +360,7 @@ namespace GridGame.Core.Battle
             if (pushedTile != null) ShoveMovable(pushedTile, vacated, enemy);
             ShovePickupsUnder(enemy, vacated); // a pickup is shoved exactly like the movable (GG-T228)
             LeaveTrail(enemy, from);
+            RegionEnter(enemy); // GG-T359
             return true;
         }
 

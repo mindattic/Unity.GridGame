@@ -277,6 +277,16 @@ namespace GridGame.App
             return true;
         }
 
+        /// <summary>A region rule's queued event (GG-T359): the rule's name and description and when/where it lands.</summary>
+        public static bool Hazard(VisualElement body, string name, string description, string note, Color color)
+        {
+            var head = Header(body, null, name, "Hazard", color);
+            head.parent.style.marginBottom = Space.S8;
+            if (!string.IsNullOrEmpty(description)) Line(body, description, "t-body");
+            if (!string.IsNullOrEmpty(note)) { var n = Line(body, note, "t-caption", Palette.TextDim); n.style.marginTop = Space.S8; }
+            return true;
+        }
+
         /// <summary>A buff or debuff: what it does, from its own numbers, and how long it has left.</summary>
         public static bool Buff(VisualElement body, BuffDef d, int remaining = -1)
         {

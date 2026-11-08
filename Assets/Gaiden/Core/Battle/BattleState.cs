@@ -284,8 +284,12 @@ namespace GridGame.Core.Battle
 
         public bool IsBlock(Coord c) => Blocks.Contains(c);
 
-        /// <summary>The collider check: on the board and not a physical block. Every enter/land/displace/spawn goes through it.</summary>
-        public bool Walkable(Coord c) => InBounds(c) && !Blocks.Contains(c);
+        /// <summary>Region rules in play (GG-T359): painted tiles, anchors, flags. A blocking tile state is a block too.</summary>
+        public RegionState Region = new RegionState();
+
+        /// <summary>The collider check: on the board, not a physical block and not a blocking region tile (GG-T359). Every
+        /// enter/land/displace/spawn goes through it.</summary>
+        public bool Walkable(Coord c) => InBounds(c) && !Blocks.Contains(c) && !Region.BlocksAt(c);
 
         public IEnumerable<Unit> Living(Team team)
         {
@@ -347,6 +351,7 @@ namespace GridGame.Core.Battle
             s.Results = Results.Clone();
             s.Tempo = new List<TempoEffect>(Tempo.Count);
             foreach (var t in Tempo) s.Tempo.Add(t.Clone());
+            s.Region = Region.Clone();
             return s;
         }
     }
