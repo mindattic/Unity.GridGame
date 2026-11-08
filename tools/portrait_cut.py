@@ -17,6 +17,13 @@ The four methods (research summary in the GG-T327 ticket):
   hybrid     The AI matte decides figure vs background, the tolerance flood guarantees pure background is gone,
              and the colour unmix refines only the semi-transparent rim (and removes the white fringe).
   smoke      hybrid, plus translucent effects outside the figure (smoke, flame, glow) kept at their real translucency.
+  matte      (GG-T369) an analytic re-cut of an existing cut-out's edge: composite over the known background,
+             colour-to-alpha + two-colour projection on a trimap band, guided-filter refinement, contour coverage for
+             hard cuts, colour decontamination. Fixes jaggies, leftover white fringe blocks and false holes; see the
+             comment block above matte() for the maths. Run via --pick matte (an opaque original gets smoke first).
+
+    python tools/portrait_cut.py --score [dir|file.png ...]          # jaggy metrics, worst first (jaggy_metrics)
+    python tools/portrait_cut.py Portraits/x.png --pick matte --import x   # re-cut a committed portrait in place
 The comparison sheet shows tolerance, ai, hybrid and smoke; unmix (the weakest on the samples) runs only via --pick.
 
 Each variation is written as <name>.<method>.png beside --out, plus <name>.compare.png showing all four over dark and
@@ -147,8 +154,213 @@ def method_smoke(im):
     return rgba(defringe(rgb, alpha, bg), alpha), "hybrid + translucent smoke/flame kept"
 
 
+# ---------------------------------------------------------------------------------------------------------------------
+# matte: an analytic re-cut of an existing cut-out (GG-T369). Owner 2026-11-08: "find portraits with 'jaggies' reapply a
+# white background then use your smarts to remove all background again, maybe you can calculate a better cut out than
+# trial and error".
+#
+# Every step is a formula, not a tuned try-and-look:
+#  1. Composite.  I = a*F + (1-a)*B over the known background B (white for a cut-out; the measured panel colour for an
+#     RGB original). Where the cut-out's transparent pixels still hold the original light background with its
+#     anti-aliased tail (several GG2026 originals only zeroed the alpha), those raw pixels are kept: they ARE the
+#     original render.
+#  2. Colour-to-alpha.  For a known B, the least alpha that explains pixel I as some colour F over B is, per channel,
+#     (I-B)/(255-B) above B and (B-I)/B below it, maxed over channels (the per-pixel largest achievable distance,
+#     GIMP's colour-to-alpha / Porter-Duff unmixing). It is exact where the art was anti-aliased against B.
+#  3. Trimap.  The old silhouette S (a >= 0.5) gives the trimap: deeper than BAND px inside S is certain figure, pixels
+#     already transparent and background-coloured (u < BG_U) are certain background, and only the band between is
+#     solved. In the band, background is what is reachable from certain background through background-coloured pixels
+#     (4-connected, so a closed line-art outline protects white cloth). That removes the old cut's leftover white
+#     blocks and fringes, and turns enclosed false holes (transparent, but figure-coloured) back into figure.
+#  4. Edge-aware refinement.  The band's colour alpha is smoothed with a guided filter (He et al., the local-linear
+#     closed-form-matting approximation; grey guide, r=1) to drop JPEG noise without crossing image edges. Where the
+#     art carries no mixing at all (a hard 0/255 cut whose rim pixels are pure figure colour), alpha is the coverage of
+#     the silhouette's smoothed contour: supersampled x4, Gaussian (sigma 0.5 px), thresholded at 0.5 and box-averaged
+#     back, so a straight edge stays crisp and a diagonal or curve gets its sub-pixel coverage.
+#  5. Decontamination.  Edge colour is un-premultiplied: F = (I - (1-u)*B)/u, blended toward the nearest certain
+#     figure colour where u is too small for that to be stable. Transparent pixels near the figure take the nearest
+#     figure colour too, so bilinear sampling and mips bleed figure colour, not white.
+#  6. Specks of fewer than SPECK px not touching the figure are dropped. Soft regions away from any hard pixel (smoke,
+#     flame, glow kept by the smoke cut) are left exactly as they were.
+# Pixels outside the band are untouched, so interior detail and placement stay pixel for pixel.
+
+MATTE_BAND = 10     # px inside the old silhouette that may still be background (the old cut's leftover white blocks)
+MATTE_BG_U = 0.12   # colour alpha below this reads as background
+MATTE_SPECK = 3     # px: isolated specks smaller than this are dropped
+
+
+def guided_filter(guide, p, r=1, eps=1e-3):
+    """He, Sun & Tang's guided filter (grey guide): the edge-preserving local-linear fit q = a*I + b."""
+    k = 2 * r + 1
+    box = lambda x: ndimage.uniform_filter(x, k, mode="nearest")
+    mi, mp = box(guide), box(p)
+    var = box(guide * guide) - mi * mi
+    cov = box(guide * p) - mi * mp
+    a = cov / (var + eps)
+    b = mp - a * mi
+    return box(a) * guide + box(b)
+
+
+def contour_coverage(mask, up=4, sigma=0.5):
+    """Sub-pixel coverage of a binary mask's smoothed contour: supersample, smooth by sigma px, threshold, box-average."""
+    h, w = mask.shape
+    big = ndimage.zoom(mask.astype(np.float32), up, order=1)
+    big = ndimage.gaussian_filter(big, sigma * up) >= 0.5
+    return big.reshape(h, up, w, up).mean(axis=(1, 3))
+
+
+def matte(im, source=None, bg=None):
+    """Analytic re-cut of an RGBA cut-out `im` (its alpha is the prior silhouette). source: optionally the original art
+    on its flat background, pixel-aligned with im (same size); it then supplies the composite I and the background is
+    measured from it. Without it, im is composited over bg (default white). Returns (RGBA image, info)."""
+    arr = np.asarray(im.convert("RGBA")).astype(np.float32)
+    raw = arr[..., :3]
+    a0 = arr[..., 3] / 255.0
+    if source is None:
+        B = np.array(bg if bg is not None else (255, 255, 255), np.float32)
+        I = raw * a0[..., None] + B * (1 - a0[..., None])
+        lightraw = unmix_alpha(raw, B) < 0.35
+        I = np.where(((a0 < 0.5) & lightraw)[..., None], raw, I)   # an un-erased original background is the render
+    else:
+        I = np.asarray(source.convert("RGB")).astype(np.float32)
+        B = np.array(bg if bg is not None else remove_bg.background_colour(I.astype(np.uint8)), np.float32)
+    u = unmix_alpha(I, B)
+    solid = a0 >= 0.5
+    hard = a0 >= 0.96
+    # Soft regions with no hard pixel within 2 px: translucent smoke/glow the old cut kept on purpose. Leave them.
+    smoke = (a0 > 0.04) & ~hard & ~ndimage.binary_dilation(hard, iterations=2)
+    core = ndimage.binary_erosion(solid, iterations=MATTE_BAND, border_value=1)
+    band = ~core & ndimage.binary_dilation(solid | (a0 > 0.04), iterations=2) & ~smoke
+    # Certain background: already transparent and background-coloured. Flood through background-coloured band pixels.
+    seeds = (a0 <= 0.04) & (u < MATTE_BG_U)
+    bgc = (u < MATTE_BG_U) & ~smoke & ~core & (band | seeds)
+    lab, _ = ndimage.label(bgc)
+    hit = np.unique(lab[seeds & bgc])
+    bgr = np.isin(lab, hit[hit != 0])
+    # The figure in the band: everything not background. Its edge is the transition to solve.
+    fig = (core | (band & ~bgr) | smoke | ((a0 > 0.04) & ~band & ~bgr))
+    trans = band & (ndimage.binary_dilation(bgr, iterations=2) | ndimage.binary_dilation(~fig, iterations=1))
+    trans &= ndimage.binary_dilation(fig, iterations=2)
+    # Known foreground: the nearest certain-figure colour F. With F and B both known, the edge pixel I = a*F + (1-a)*B
+    # is solved by projection, a = (I-B).(F-B) / |F-B|^2 (two-colour unmixing). Plain colour-to-alpha would read a
+    # pale figure colour (a pale leaf, light fur) as a translucent dark one and paint a dark rim on it.
+    sure0 = fig & ~trans & ~smoke
+    _, idx = ndimage.distance_transform_edt(~sure0, return_indices=True)
+    near = I[idx[0], idx[1]]
+    fb = near - B
+    fb2 = (fb * fb).sum(axis=2)
+    ap = np.clip(((I - B) * fb).sum(axis=2) / np.maximum(fb2, 1.0), 0, 1)
+    ap = np.where(fb2 < 40.0 ** 2, np.where(u < MATTE_BG_U, u, 1.0), ap)  # F too close to B to separate by colour
+    grey = I.mean(axis=2) / 255.0
+    ug = np.clip(guided_filter(grey, ap, 1, 1e-3), 0, 1)
+    ug = np.where(ap < 0.02, ap, ug)  # the filter must not lift clean background
+    cov = contour_coverage(fig & ~smoke | core)
+    # Where the art itself carries mixing (a partial alpha within 1 px), the solved alpha is the answer; where it
+    # carries none (a hard cut), the contour coverage is.
+    has_mix = ndimage.binary_dilation((ug > 0.04) & (ug < 0.96) & trans, structure=np.ones((3, 3)))
+    hard_src = False
+    if source is None:
+        # A cut-out whose transparent ring does not hold the light background it was cut from (zeroed to black, say)
+        # carries no record of how its rim mixed with that background: only the contour geometry is left.
+        ring = (a0 <= 0.04) & ndimage.binary_dilation(solid, iterations=3)
+        if ring.any() and lightraw[ring].mean() < 0.5 and (a0[(a0 > 0.04)] < 0.96).mean() < 0.01:
+            has_mix[:] = False
+            hard_src = True
+    a_new = np.where(has_mix, ug, cov)
+    # Thin structures (strands, whiskers, hair tips: under 42% figure in their 5x5 window, where a big shape's edge has
+    # about half) would be thinned or broken by contour smoothing: they keep their solved colour alpha, or stay solid.
+    figm = fig & ~smoke | core
+    thin = figm & (ndimage.uniform_filter(figm.astype(np.float32), 5) < 0.42)
+    a_new = np.where(thin, 1.0 if hard_src else np.maximum(ug, np.where(has_mix, 0.0, 1.0)), a_new)
+    alpha = a0.copy()
+    alpha[band] = np.where(fig[band], 1.0, 0.0)
+    alpha[trans] = a_new[trans]
+    alpha[bgr & ~trans] = 0.0
+    alpha = np.where(alpha < 0.02, 0.0, alpha)
+    # Specks.
+    lab, n = ndimage.label(alpha > 0, structure=np.ones((3, 3)))
+    if n:
+        sizes = ndimage.sum(np.ones_like(alpha), lab, index=np.arange(1, n + 1))
+        drop = np.isin(lab, np.where(sizes < MATTE_SPECK)[0] + 1) & band
+        alpha[drop] = 0.0
+    # Decontaminate: un-premultiply the background out of edge colour with the solved alpha; a pixel that solved as
+    # pure figure keeps its colour, and tiny-alpha pixels take the nearest figure colour.
+    aa = np.maximum(ap, 1e-3)[..., None]
+    unm = np.clip((I - (1 - aa) * B) / aa, 0, 255)
+    wgt = np.clip((ap - 0.08) / 0.3, 0, 1)[..., None]
+    edge_rgb = np.where((ap >= 0.96)[..., None], I, unm * wgt + near * (1 - wgt))
+    if hard_src:  # no mixing to undo: figure pixels keep their colour, new coverage outside takes the nearest figure's
+        edge_rgb = np.where(fig[..., None], I, near)
+    out = raw.copy()                       # outside the band: the cut-out's own colours, untouched
+    out[trans] = edge_rgb[trans]
+    solidb = band & ~trans & fig & (alpha >= 0.99)
+    out[solidb] = I[solidb]                # band pixels now solid (fringe blocks resolved, false holes filled)
+    nearfig = (alpha == 0) & ndimage.binary_dilation(alpha > 0, iterations=8)
+    out[nearfig] = near[nearfig]
+    changed = int((np.abs(alpha - a0) > 0.02).sum())
+    info = f"matte: band {MATTE_BAND}px, bg {tuple(int(v) for v in B)}, {changed} px re-solved"
+    return rgba(out, alpha), info
+
+
+def method_matte(im):
+    """An existing cut-out is re-cut as it stands; an opaque original first gets the smoke cut as its silhouette."""
+    if im.mode == "RGBA" and np.asarray(im)[..., 3].min() < 250:
+        return matte(im)
+    cut, _ = method_smoke(im)
+    return matte(cut, source=im.convert("RGB"))
+
+
+def jaggy_metrics(im):
+    """Objective jaggy measures for an RGBA cut-out (GG-T369).
+    hard   fraction of 4-neighbour pairs across the alpha 0.5 contour that jump >= 85% of full alpha in one pixel
+           (an anti-aliased edge spreads that over an intermediate pixel)
+    stair  sub-pixel roughness of the alpha 0.5 iso-contour: mean |turning angle - its 7-step running mean| (rad); a
+           hard edge snaps the contour to the pixel grid so its direction jitters between 0/45/90 degrees
+    specks visible components under 40 px; holes: enclosed transparent components under 60 px
+    halo   fraction of rim pixels (visible, touching transparency) that are near-white and >= 80 levels lighter than the
+           darkest figure pixel 1-2 px inward: the old background's fringe left outside the outline
+    score  50*hard + 25*min(stair/0.6, 1) + 100*halo + 0.3*min(specks+holes, 50)"""
+    from skimage import measure
+    a8 = np.asarray(im.convert("RGBA"))
+    rgb = a8[..., :3].astype(np.float32)
+    a = a8[..., 3].astype(np.float32) / 255.0
+    solid = a >= 0.5
+    dh = np.abs(a[:, 1:] - a[:, :-1])[solid[:, 1:] != solid[:, :-1]]
+    dv = np.abs(a[1:] - a[:-1])[solid[1:] != solid[:-1]]
+    cross = np.concatenate([dh, dv])
+    hard = float((cross >= 0.85).mean()) if cross.size else 0.0
+    rough = []
+    for c in measure.find_contours(a, 0.5):
+        if len(c) < 40:
+            continue
+        d = np.diff(c, axis=0)
+        ang = np.unwrap(np.arctan2(d[:, 0], d[:, 1]))
+        sm = np.convolve(ang, np.ones(7) / 7, mode="valid")
+        rough.append(np.abs(ang[3:3 + sm.size] - sm))
+    stair = float(np.concatenate(rough).mean()) if rough else 0.0
+    lab, n = ndimage.label(a > 0.02)
+    sizes = ndimage.sum(np.ones_like(a), lab, index=np.arange(1, n + 1)) if n else np.zeros(0)
+    specks = int((sizes < 40).sum())
+    bgm = a <= 0.02
+    hl, hn = ndimage.label(bgm)
+    border = np.unique(np.concatenate([hl[0], hl[-1], hl[:, 0], hl[:, -1]]))
+    hs = ndimage.sum(np.ones_like(a), hl, index=np.arange(1, hn + 1)) if hn else np.zeros(0)
+    enclosed = np.ones(hn, bool)
+    enclosed[border[border > 0] - 1] = False
+    holes = int((enclosed & (hs < 60)).sum())
+    lum = rgb.mean(axis=2)
+    rim = (a > 0.05) & ndimage.binary_dilation(bgm)
+    inner = np.where(solid & ~rim, lum, 255.0)
+    darkest_in = ndimage.minimum_filter(inner, size=5)
+    halo_px = rim & (lum > 200) & (rgb.min(axis=2) > 185) & (darkest_in < lum - 80)
+    halo = float(halo_px.sum() / max(rim.sum(), 1))
+    score = 50 * hard + 25 * min(stair / 0.6, 1) + 100 * halo + 0.3 * min(specks + holes, 50)
+    return {"hard": round(hard, 3), "stair": round(stair, 3), "specks": specks, "holes": holes,
+            "halo": round(halo, 3), "score": round(score, 1)}
+
+
 RUN = {"tolerance": method_tolerance, "unmix": method_unmix, "ai": method_ai, "hybrid": method_hybrid,
-       "smoke": method_smoke}
+       "smoke": method_smoke, "matte": method_matte}
 
 
 def over(img, a, b, cell=16):
@@ -218,6 +430,8 @@ def trim_bars(im):
 
 def load(args):
     im, name = _load(args)
+    if np.asarray(im)[..., 3].min() < 250:
+        return im, name  # already a cut-out: its transparent pixels' RGB is not a letterbox
     return trim_bars(im), name
 
 
@@ -241,7 +455,16 @@ def main():
     ap.add_argument("--out", help="output folder (default beside the input, or the current folder)")
     ap.add_argument("--pick", choices=list(RUN), help="run only this method")
     ap.add_argument("--import", dest="class_id", help="save the --pick'd result as Portraits/<classId>.png")
+    ap.add_argument("--score", nargs="*", metavar="PATH", help="print jaggy metrics (default: every portrait)")
     args = ap.parse_args()
+    if args.score is not None:
+        import glob
+        paths = args.score or [os.path.join(ROOT, "Assets", "Gaiden", "Resources", "Portraits")]
+        files = [f for p in paths for f in (sorted(glob.glob(os.path.join(p, "*.png"))) if os.path.isdir(p) else [p])]
+        rows = [(os.path.splitext(os.path.basename(f))[0], jaggy_metrics(Image.open(f))) for f in files]
+        for name, m in sorted(rows, key=lambda r: -r[1]["score"]):
+            print(f"{name:20s} " + " ".join(f"{k} {v}" for k, v in m.items()))
+        return
     if args.class_id and not args.pick:
         args.pick = "smoke"  # the method that held up on every GG-T327 sample
 
