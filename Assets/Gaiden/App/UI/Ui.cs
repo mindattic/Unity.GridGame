@@ -336,16 +336,30 @@ namespace GridGame.App
             return art;
         }
 
-        /// <summary>Mana cost as orb pips: 3 → three orbs.</summary>
+        /// <summary>Most orb pips a cost draws before it switches to one orb and a count (GG-T372).</summary>
+        public const int MaxCostPips = 3;
+
+        /// <summary>Mana cost as orb pips: 3 → three orbs; above <see cref="MaxCostPips"/> one orb and "×N" (out of space).</summary>
         public static VisualElement CostPips(int cost, VisualElement parent, float size = 34)
         {
             var row = El("row", parent);
             row.pickingMode = PickingMode.Ignore;
-            for (int i = 0; i < cost; i++)
+            row.style.alignItems = Align.Center;
+            int pips = cost > MaxCostPips ? 1 : cost;
+            for (int i = 0; i < pips; i++)
             {
                 var p = Text("", "pip pip--mana", row);
                 p.style.width = size; p.style.height = size; p.style.borderTopLeftRadius = p.style.borderTopRightRadius = p.style.borderBottomLeftRadius = p.style.borderBottomRightRadius = size / 2;
                 p.style.fontSize = size * 0.6f;
+            }
+            if (cost > MaxCostPips)
+            {
+                var n = Text("×" + cost, "", row);
+                n.pickingMode = PickingMode.Ignore;
+                n.style.fontSize = size * 0.8f;
+                n.style.marginLeft = size * 0.15f;
+                n.style.color = Palette.Text;
+                Fonts.UseHeavy(n);
             }
             return row;
         }
