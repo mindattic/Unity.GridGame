@@ -81,8 +81,25 @@ namespace GridGame.App
         private readonly ConcurrentQueue<CaptureResult> clips = new ConcurrentQueue<CaptureResult>();
         private readonly ConcurrentQueue<string> trips = new ConcurrentQueue<string>();
         private readonly List<Encounter> encounters = new List<Encounter>();
-        private readonly HashSet<ICapture> hooked = new HashSet<ICapture>();
-        private readonly List<ICapture> ownEngines = new List<ICapture>();
+        /// <summary>The engine whose events are wired up (only ever the current one). GG-T375: this used to be a set
+        /// of every engine ever hooked, plus a list of every engine restarted here, and a valve-stopped engine keeps its
+        /// tape and the tape's frame pool (about 7 full lossless frames, ~22 MB at 584x1266), so each restart pinned
+        /// ~22 MB for the rest of the run: 25 restarts by encounter 60 were most of the GG-T61 run's 568 MB managed
+        /// growth. A stopped engine disposes itself (the valve does it) and its pending exports keep it alive on
+        /// their own until they report through <see cref="ICapture.Captured"/>; nothing here needs to hold it.</summary>
+        private ICapture hookedEngine;
+        /// <summary>The engine let go of at the last stop, held weakly so it is never hooked again.</summary>
+        private WeakReference<ICapture> released;
+        private bool everHooked;
+        /// <summary>The engine this restarted (null while the package's own is running); disposed at quit.</summary>
+        private ICapture ownEngine;
+        private int restarts;
+
+        /// <summary>For the -leakprobe line: capture engines this component still references (at most 2).</summary>
+        internal static int EnginesHeld => instance == null ? 0 : (instance.hookedEngine != null ? 1 : 0) + (instance.ownEngine != null && !ReferenceEquals(instance.ownEngine, instance.hookedEngine) ? 1 : 0);
+        /// <summary>For the -leakprobe line: encounters waiting for (or holding) clip bookkeeping.</summary>
+        internal static int EncountersHeld => instance == null ? 0 : instance.encounters.Count;
+        internal static int Restarts => instance == null ? 0 : instance.restarts;
         private ScreenRouter router;
         private Encounter current;
         private int encounterCount;
@@ -147,8 +164,12 @@ namespace GridGame.App
         private void HookEngine()
         {
             var engine = Capture.Current;
-            if (engine == null || !engine.Enabled || hooked.Contains(engine)) return;
-            hooked.Add(engine);
+            if (engine == null || !engine.Enabled || ReferenceEquals(engine, hookedEngine)) return;
+            // A tripped engine stays Capture.Current (and Enabled) for a moment until its valve disposes it: never hook it twice.
+            if (released != null && released.TryGetTarget(out var gone) && ReferenceEquals(engine, gone)) return;
+            // The previous engine (if any) has stopped; its handlers stay on it, so its last exports still arrive here.
+            hookedEngine = engine;
+            everHooked = true;
             engine.Captured += r => clips.Enqueue(r); // background thread: handled in Update
             if (engine is CaptureEngine ce) ce.LimitReached += reason => trips.Enqueue(reason);
         }
@@ -161,8 +182,8 @@ namespace GridGame.App
             if (engine != null && engine.Enabled) return;
             // Before the package's engine is up (it starts asynchronously on the first frame) nothing is down yet —
             // unless it never came up at all and encounters are already being played.
-            if (hooked.Count == 0 && (encounterCount == 0 || Time.realtimeSinceStartup < 30f)) return;
-            GoDown(hooked.Count == 0 ? "the capture engine never started"
+            if (!everHooked && (encounterCount == 0 || Time.realtimeSinceStartup < 30f)) return;
+            GoDown(!everHooked ? "the capture engine never started"
                 : engine?.Diagnostics?.StoppedBy ?? "the capture engine stopped (no valve reason given)", tripped: false);
         }
 
@@ -176,6 +197,7 @@ namespace GridGame.App
             nextRecoveryCheck = Time.unscaledTime + RecoveryPollSeconds;
             nextReminder = Time.unscaledTime + DownReminderSeconds;
             if (current != null && current.EndedAt == null) current.CaptureLostDuring = true;
+            ReleaseDeadEngine();
             var mem = AvailableMemoryMB();
             Debug.LogError($"[EndlessCapture] !!! CAPTURE STOPPED (#{downTrips}) during encounter {encounterCount}: {reason}. " +
                            $"RAM available {Fmt(mem)} MB. The endless run KEEPS PLAYING; encounters are NOT RECORDED until capture restarts, " +
@@ -188,6 +210,28 @@ namespace GridGame.App
                 ["encounter"] = encounterCount,
                 ["availableMemoryMB"] = mem.HasValue ? Math.Round(mem.Value) : (double?)null,
             });
+        }
+
+        /// <summary>
+        /// GG-T375: lets go of the engine that just stopped, so its tape and frame pool can be collected. A valve trip
+        /// has already started its shutdown (the valve disposes it); one restarted here that ended any other way is
+        /// disposed now (DisposeAsync is idempotent: a second call shares the first one's task). The package's own
+        /// engine stays the package's to dispose. Its handlers stay attached, so exports it finishes still report here.
+        /// </summary>
+        private void ReleaseDeadEngine()
+        {
+            var dead = ownEngine;
+            if (hookedEngine != null) released = new WeakReference<ICapture>(hookedEngine);
+            ownEngine = null;
+            hookedEngine = null;
+            if (dead == null) return;
+            try
+            {
+                dead.DisposeAsync().AsTask().ContinueWith(t =>
+                    Debug.LogWarning("[EndlessCapture] a stopped capture engine did not shut down cleanly: " + t.Exception?.GetBaseException().Message),
+                    TaskContinuationOptions.OnlyOnFaulted);
+            }
+            catch (Exception e) { Debug.LogWarning("[EndlessCapture] a stopped capture engine did not shut down cleanly: " + e.Message); }
         }
 
         // ------------------------------------------------------------ recovery
@@ -267,7 +311,8 @@ namespace GridGame.App
                 return;
             }
             // Continues on the main thread (Unity's synchronization context).
-            ownEngines.Add(engine);
+            ownEngine = engine;
+            restarts++;
             HookEngine();
             var minutes = (DateTimeOffset.Now - downSince).TotalMinutes;
             down = false;
@@ -486,7 +531,10 @@ namespace GridGame.App
                 Debug.LogError($"[EndlessCapture] !!! quitting with capture DOWN ({downReason}); {unrecorded} encounter(s) went unrecorded this run.");
             else if (unrecorded > 0)
                 Debug.LogWarning($"[EndlessCapture] {unrecorded} encounter(s) went unrecorded this run across {downTrips} capture stop(s).");
-            foreach (var engine in ownEngines)
+            // Earlier restarted engines were released (and disposed) when they stopped; only the live one is left.
+            var engine = ownEngine;
+            ownEngine = null;
+            if (engine != null)
             {
                 try
                 {
@@ -498,7 +546,6 @@ namespace GridGame.App
                     Debug.LogError("[EndlessCapture] restarted capture shutdown failed: " + ex.GetBaseException().Message);
                 }
             }
-            ownEngines.Clear();
         }
 
         // ------------------------------------------------------------ system stats

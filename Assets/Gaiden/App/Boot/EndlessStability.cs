@@ -75,6 +75,11 @@ namespace GridGame.App
         private float nextHeartbeat;
         private string lastSampleLine = "(none yet)";
 
+        // GG-T375 `-leakprobe`: every screen shown and every battle state built, held weakly, counted after each encounter.
+        private bool leakProbe;
+        private readonly List<WeakReference> probeScreens = new List<WeakReference>();
+        private readonly List<WeakReference> probeStates = new List<WeakReference>();
+
         private static readonly string[] Metrics =
         {
             "managedMB", "monoMB", "nativeAllocMB", "nativeReservedMB", "gfxMB", "privateMB", "workingSetMB",
@@ -105,6 +110,8 @@ namespace GridGame.App
                 File.WriteAllText(csvPath, "encounter,minutes,stalls," + string.Join(",", Metrics) + "\n");
             }
             catch (Exception e) { Debug.LogWarning("[EndlessStability] can't write to " + dir + ": " + e.Message); csvPath = heartbeatPath = null; }
+            leakProbe = CommandLine.Has("-leakprobe");
+            if (leakProbe) Debug.Log("[LeakProbe] on: after each encounter, a full GC and one [LeakProbe] line of live screens/battle states and the likely-culprit collections");
             Application.lowMemory += OnLowMemory;
             Application.quitting += OnQuitting;
             AppDomain.CurrentDomain.UnhandledException += OnUnhandled;
@@ -138,6 +145,11 @@ namespace GridGame.App
 
         private void OnScreenChanged(GameScreen shown)
         {
+            if (leakProbe && shown != null && !probeScreens.Exists(w => ReferenceEquals(w.Target, shown)))
+            {
+                probeScreens.Add(new WeakReference(shown));
+                if (shown is BattleScreen b && b.State != null) probeStates.Add(new WeakReference(b.State));
+            }
             if (shown is not BattleScreen battle || ReferenceEquals(battle, current)) return;
             if (current != null) Retire(current);
             current = battle;
@@ -156,6 +168,39 @@ namespace GridGame.App
             GameApp.I?.Audio?.StopSfx();
             finished.Add(new WeakReference(old));
             if (finished.Count > 64) finished.RemoveAll(w => !w.IsAlive);
+            if (leakProbe) StartCoroutine(Probe(EndlessDemo.Completed));
+        }
+
+        /// <summary>
+        /// GG-T375 `-leakprobe`: one line per encounter, after a full GC, of what is still alive — screens by type (the
+        /// one on screen and the battle just retired are expected; anything older is a leak), battle states, the capture
+        /// engines EndlessCapture holds (it used to keep every restarted engine and its ~22 MB frame pool), and the
+        /// bounded caches (Art by path, the SFX cue log, the BoardAudit tail, Overlay children).
+        /// </summary>
+        private IEnumerator Probe(int encounter)
+        {
+            yield return null; // let the teardown and the new screen's first frame settle
+            GC.Collect();
+            GC.WaitForPendingFinalizers();
+            GC.Collect();
+            probeScreens.RemoveAll(w => !w.IsAlive);
+            probeStates.RemoveAll(w => !w.IsAlive);
+            var byType = new SortedDictionary<string, int>(StringComparer.Ordinal);
+            foreach (var w in probeScreens)
+            {
+                var t = w.Target;
+                if (t == null) continue;
+                var n = t.GetType().Name;
+                byType[n] = byType.TryGetValue(n, out var c) ? c + 1 : 1;
+            }
+            var app = GameApp.I;
+            var screens = new StringBuilder();
+            foreach (var kv in byType) screens.Append(screens.Length == 0 ? "" : ",").Append(kv.Key).Append('=').Append(kv.Value);
+            Debug.Log($"[LeakProbe] encounter {encounter}: managedMB={GC.GetTotalMemory(false) / 1048576.0:0.0} " +
+                      $"screens{{{screens}}} battleStates={probeStates.Count} " +
+                      $"captureEngines={EndlessCapture.EnginesHeld} captureRestarts={EndlessCapture.Restarts} captureEncounters={EndlessCapture.EncountersHeld} " +
+                      $"artTextures={Art.CachedTextures} sfxCueLog={app?.Audio?.CueLog.Count ?? 0} boardAuditRecent={BoardAudit.Recent.Count} " +
+                      $"overlayChildren={app?.Overlay?.childCount ?? 0} visualElements={CountElements(app?.Document != null ? app.Document.rootVisualElement : null)}");
         }
 
         // ── Stall guard ──────────────────────────────────────────────────────────────

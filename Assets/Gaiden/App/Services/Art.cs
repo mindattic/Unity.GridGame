@@ -31,6 +31,9 @@ namespace GridGame.App
 
         public static bool Exists(string path) => Resources.Load<Texture2D>(path) != null;
 
+        /// <summary>Textures held by path (the `-leakprobe` line, GG-T375): bounded by the art on disk, never per battle.</summary>
+        internal static int CachedTextures => cache.Count;
+
         private static readonly Dictionary<string, int> spellIndex = new Dictionary<string, int>(System.StringComparer.OrdinalIgnoreCase);
 
         /// <summary>Called once content loads: every ability gets an ordinal, so every spell gets its own colour.</summary>
