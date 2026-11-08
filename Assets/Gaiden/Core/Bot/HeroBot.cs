@@ -466,8 +466,18 @@ namespace GridGame.Core.Bot
                         bool peel = false;
                         foreach (var h in s.LivingList(Team.Hero)) if (h.IsAdjacentTo(t) && h.HpFraction < 0.5f) peel = true;
                         score += 1.5f * a.Knockback + (peel ? 3f : 0f);
+                        // GG-T368: a shove into an open hole (or onto a floor about to give) is worth a lot more.
+                        var d = new Coord(t.Pos.X - caster.Pos.X, t.Pos.Y - caster.Pos.Y);
+                        var dir = Math.Abs(d.X) >= Math.Abs(d.Y) ? new Coord(Math.Sign(d.X), 0) : new Coord(0, Math.Sign(d.Y));
+                        score += 12f * RegionBoard.ShoveFloorValue(s, t, dir, a.Knockback);
                     }
-                    if (a.Pull > 0) score += 2.5f;
+                    if (a.Pull > 0)
+                    {
+                        score += 2.5f;
+                        int px = caster.Pos.X - t.Pos.X, py = caster.Pos.Y - t.Pos.Y;
+                        var pdir = Math.Abs(px) >= Math.Abs(py) ? new Coord(Math.Sign(px), 0) : new Coord(0, Math.Sign(py));
+                        score += 12f * RegionBoard.ShoveFloorValue(s, t, pdir, a.Pull, caster); // GG-T368: drag a foe into a hole
+                    }
                     if (a.SwapsPlaces) score += 2f;
                 }
                 else

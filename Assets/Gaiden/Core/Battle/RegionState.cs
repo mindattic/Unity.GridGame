@@ -78,6 +78,7 @@ namespace GridGame.Core.Battle
             float d = 0f;
             var m = s.Region.At(c);
             if (m != null && m.Hazard && !Immune(u, m.Rule, m.State)) d += 1f;
+            else if (m != null && AboutToGive(s, m) && !Immune(u, m.Rule, m.State)) d += 0.5f; // GG-T368: one more crack and it gives
             foreach (var e in s.Timeline)
             {
                 if (e.Kind != TimelineKind.Hazard || e.HazardTiles == null || !e.HazardTiles.Contains(c)) continue;
@@ -86,6 +87,45 @@ namespace GridGame.Core.Battle
                 d += 2f + 2f * soon;
             }
             return d;
+        }
+
+        /// <summary>Is <paramref name="m"/> one count from turning into a hazard or a hole (a crack about to give, GG-T368)?</summary>
+        public static bool AboutToGive(BattleState s, TileMark m)
+        {
+            var def = s.Content?.TryTileState(m?.State);
+            if (def == null || def.Threshold <= 0 || def.Becomes == null || m.Counter + 1 < def.Threshold) return false;
+            var next = s.Content.TryTileState(def.Becomes);
+            return next != null && (next.Hazard || next.Pit);
+        }
+
+        /// <summary>Is <paramref name="c"/> an open hole <paramref name="u"/> would fall into (GG-T368)?</summary>
+        public static bool IsPitFor(BattleState s, Coord c, Unit u)
+        {
+            var m = s.Region.At(c);
+            if (m == null || !m.Blocks || u == null || u.IsMultiTile || u.IsSnakeMember || u.IsRemains || u.IsCorpse || u.IsEgg) return false;
+            return (s.Content?.TryTileState(m.State)?.Pit ?? false) && !Immune(u, m.Rule, m.State);
+        }
+
+        /// <summary>
+        /// What shoving <paramref name="u"/> up to <paramref name="tiles"/> tiles along <paramref name="dir"/> does with the
+        /// floor (GG-T368, for the bot): 1 when it would go into an open hole, 0.5 when it would end on a dangerous tile (a
+        /// crumbling floor, a crack about to give, a telegraphed strike), else 0. A <paramref name="stopBeside"/> unit ends
+        /// the shove beside it (a pull stops next to the puller).
+        /// </summary>
+        public static float ShoveFloorValue(BattleState s, Unit u, Coord dir, int tiles, Unit stopBeside = null)
+        {
+            if (s.Region.Tiles.Count == 0 && !s.Timeline.Exists(x => x.Kind == TimelineKind.Hazard)) return 0f;
+            if (u == null || u.IsMultiTile || u.IsSnakeMember || u.IsRemains || (dir.X == 0 && dir.Y == 0)) return 0f;
+            var c = u.Pos;
+            for (int i = 0; i < tiles; i++)
+            {
+                if (stopBeside != null && c.Manhattan(stopBeside.Pos) <= 1) break;
+                var next = c + dir;
+                if (IsPitFor(s, next, u)) return 1f;
+                if (!s.FreeToEnter(next)) break;
+                c = next;
+            }
+            return c != u.Pos && DangerAt(s, c, u) > 0f ? 0.5f : 0f;
         }
 
         /// <summary>True when the timeline should mask enemy turn icons (a rule raised <see cref="RuleFlags.MaskTimeline"/>).</summary>

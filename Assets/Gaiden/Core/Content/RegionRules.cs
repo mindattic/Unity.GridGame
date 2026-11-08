@@ -26,6 +26,8 @@ namespace GridGame.Core.Content
         EnterTile,
         /// <summary>A unit fell.</summary>
         UnitDeath,
+        /// <summary>A unit was struck by a foe's blow or ability and lives (GG-T368: a cracked floor cracks under the blow).</summary>
+        Hit,
     }
 
     /// <summary>What one rule effect does.</summary>
@@ -148,6 +150,14 @@ namespace GridGame.Core.Content
         public string Color;
         /// <summary>A short glyph drawn on the tile.</summary>
         public string Glyph;
+        /// <summary>A hole (GG-T368; needs <see cref="Blocks"/>): a unit caught on the tile as it opens, or knocked or pulled
+        /// into it, falls: it loses <see cref="FallDamage"/> of its max HP and climbs out on the nearest free tile.</summary>
+        public bool Pit;
+        /// <summary>The share of max HP a fall into this <see cref="Pit"/> costs (environmental, at least 1).</summary>
+        public float FallDamage = 0.15f;
+        /// <summary>Effects run on each tile as it takes this state (painted, or a counter turning into it): Self is that
+        /// tile, the unit standing there (if any) the subject. A crumbling floor schedules its own cave-in this way.</summary>
+        public List<RuleEffectDef> OnMark = new List<RuleEffectDef>();
     }
 
     /// <summary>A telegraphed event a rule puts on the timeline: its own icon rides the bar like a cast and resolves its Effects on arrival.</summary>
@@ -245,6 +255,9 @@ namespace GridGame.Core.Content
                     if (t.Becomes != null && db.TryTileState(t.Becomes) == null) p.Add($"{w} state {t.Id}: unknown Becomes state '{t.Becomes}'");
                     if (t.Becomes != null && t.Threshold <= 0) p.Add($"{w} state {t.Id}: Becomes needs a Threshold");
                     if (!(t.LifeSeconds >= 0f)) p.Add($"{w} state {t.Id}: LifeSeconds can't be negative");
+                    if (t.Pit && !t.Blocks) p.Add($"{w} state {t.Id}: a Pit must also Block (nothing stands in a hole)");
+                    if (t.Pit && !(t.FallDamage >= 0f && t.FallDamage <= 1f)) p.Add($"{w} state {t.Id}: FallDamage outside 0..1");
+                    ValidateEffects(db, t.OnMark, $"{w} state {t.Id} OnMark", p);
                 }
                 foreach (var e in r.Events)
                 {

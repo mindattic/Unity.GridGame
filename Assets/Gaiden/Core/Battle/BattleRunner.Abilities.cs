@@ -361,12 +361,13 @@ namespace GridGame.Core.Battle
                 var dir = AxisToward(t.Pos, caster.Pos);
                 if (dir.X == 0 && dir.Y == 0) return;
                 var next = t.Pos + dir;
+                if (TryShoveIntoPit(t, next)) return; // GG-T368: dragged into an open hole
                 if (!S.FreeToEnter(next)) return;
                 var from = t.Pos;
                 if (!Relocate(t, next)) return;
                 Emit(new DisplacedEvent { UnitId = t.Id, From = from, To = next, ByUnitId = caster.Id });
                 ShovePickupsUnder(t, from);
-                if (t.IsHero) TriggerTrap(t);
+                TriggerTrap(t); // a hero springs traps; anyone runs the region rules' EnterTile hooks (GG-T368)
             }
         }
 
@@ -379,8 +380,8 @@ namespace GridGame.Core.Battle
             t.Pos = a;
             Emit(new DisplacedEvent { UnitId = caster.Id, From = a, To = b, ByUnitId = caster.Id });
             Emit(new DisplacedEvent { UnitId = t.Id, From = b, To = a, ByUnitId = caster.Id });
-            if (caster.IsHero) TriggerTrap(caster);
-            if (t.Alive && t.IsHero) TriggerTrap(t);
+            TriggerTrap(caster); // heroes spring traps; anyone runs the EnterTile hooks (GG-T368)
+            if (t.Alive) TriggerTrap(t);
         }
 
         /// <summary>Step back (GG-T183): the caster backs straight away from the nearest foe onto free, trap-free ground.</summary>

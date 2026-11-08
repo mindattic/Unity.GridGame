@@ -578,6 +578,19 @@ namespace GridGame.Core.Battle
         public override string ToString() => $"HazardRetimed {EventId} #{EntryId} {(Cancelled ? "cancelled" : TicksLeft + " ticks")}";
     }
 
+    /// <summary>
+    /// A unit fell into a hole (GG-T368, §14.21): it was on <see cref="From"/> (the hole itself when it opened underfoot,
+    /// the tile it was shoved or pulled from otherwise) and climbs out on <see cref="To"/>; <see cref="Damage"/> follows as
+    /// its own DamagedEvent. On a full board it traded places with <see cref="SwappedId"/>, who now stands where the hole
+    /// was, and the hole filled in (<see cref="Filled"/>).
+    /// </summary>
+    public sealed class FellEvent : BattleEvent
+    {
+        public int UnitId; public Coord From; public Coord Hole; public Coord To; public string RuleId; public int Damage;
+        public int SwappedId = -1; public bool Filled;
+        public override string ToString() => $"Fell {UnitId} into {Hole} -> {To}{(SwappedId >= 0 ? $" swapping {SwappedId}" : "")}";
+    }
+
     /// <summary>A rule event reached the left edge and resolves on its tiles (its effects follow as their own events).</summary>
     public sealed class HazardLandedEvent : BattleEvent
     {

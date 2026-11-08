@@ -2386,6 +2386,52 @@ art first) built around its rule. GG-T359 is the framework; the regions' own rul
   areas and a hook's `Chance` draw from the battle Rng. Hooks inside hooks stop four deep. Nothing runs in a preview.
 - *(Tests: `RegionRuleTests`, written, not run.)*
 
+### 14.21 Cracking floors (added 2026-11-08, owner direction, GG-T368)
+
+Owner: *"cracking floors which open up holes to fall into that takes off some life and respawns actor next to hole (what
+if there are no free spaces? figure it out)"*.
+
+A region rule on the §14.20 framework (`regionrules.json` `crackingfloor`), plus three framework additions any rule can
+use: holes (`TileStateDef.Pit`), state entry effects (`TileStateDef.OnMark`) and the `Hit` hook.
+
+- **Cracks.** Each wave paints three `cracked` tiles on free floor (`WaveSpawn`, `RandomFree`). A cracked tile's counter
+  goes up by one each time a unit **steps, is shoved or pulled onto it** (`EnterTile`), **ends its turn on it**
+  (`TurnEnd`), or **is struck on it** by a foe's blow or ability and lives (`Hit`, new: it runs from `Damage` for every
+  landed foe-on-foe blow). The board draws the crack with its glyph and its count (`1/3`).
+- **The timeline warns first.** At 3 the crack becomes `crumbling`, whose `OnMark` queues a **cave-in** (`cavein`, 3 s)
+  on that tile: its own icon on the timeline and a pulsing tile, exactly like any rule hazard (§14.20). Nobody falls the
+  moment a counter ticks over; the floor gives when the icon reaches the left edge.
+- **Holes.** The cave-in paints `hole` (`Blocks`, `Pit`): a block to every walk, shove, spawn and item placement, drawn
+  as a near-black pit with a rim (`BoardView.SyncRegion`). The hero walk refuses it like a rock (`WalkPath` now checks
+  `Walkable`, so barricades and holes stop a drag too). **This rule's holes close** after 16 clock seconds (`LifeSeconds`,
+  about two rounds) and the tile is plain floor again; a rule that wants holes to stay open for the fight (the
+  Underspire, GG-T361) leaves `LifeSeconds` at 0.
+- **Falling.** A one-tile unit on the tile as a hole opens (`MarkTiles`, or a counter whose `Becomes` is a pit), or
+  shoved or pulled into an open hole (`Knockback`, `Pull`, a rule's `MoveUnits`: it goes in rather than slamming), falls
+  (`FellEvent`): it loses `FallDamage` of its max HP (15%, environmental, at least 1; it can kill) and climbs out. Bosses
+  and other multi-tile units, snakes, remains, corpses and eggs never fall, and neither does a class immune to the rule
+  or the state (`RuleImmune`); under them the cave-in can't open and the crumbling tile settles back to floor.
+- **Where it climbs out** (the owner's question, decided): breadth-first outward from the hole, ring by ring by tile
+  distance. Ring 1 is "next to the hole"; the first ring holding a tile the unit's footprint may land on wins: free for
+  something to appear (no unit, block, item or trap: the GG-T227 spawn rule, `FreeForSpawn`; the faller's own old tile
+  counts as free when it was shoved in), preferring a tile no rule makes dangerous, then drawn from the battle Rng. A
+  second pass accepts a trap or pickup tile (a hero springs and collects it on landing). **On a board with no such tile
+  anywhere**, the faller trades places with the **nearest unit** that can be moved (ties: lowest id): it climbs out where
+  that unit stood, and that unit is jostled onto the hole, which **fills in** under it (no fall, no damage). With nobody
+  to trade with, the hole fills in under the faller. A unit is never lost off the board to a hole.
+- **Landing** springs what lies there (a trap, a pickup, the new tile's `EnterTile` hooks: a faller can land on another
+  crack and count it).
+- **Bots.** A crack one count from crumbling reads as half a danger (`RegionBoard.AboutToGive`), a crumbling tile under
+  its cave-in as a telegraphed hazard, and an open hole as a block, so the hero bot, the pincer planner and the foes walk
+  around them. The hero bot pays 12 for a shove or pull that drops a foe into an open hole, 6 for one that leaves it on
+  a dangerous tile (`RegionBoard.ShoveFloorValue`).
+- **View.** The fall plays as its own beat (`FellAnim`): carried to the hole if shoved, the token shrinks and fades into
+  it with the shatter cue, a swap partner steps onto the filled hole, and it pops back up on its landing tile with the
+  dash cue; the fall's damage follows as its own beat.
+- **Placed in** Frostmaw Caverns III (`cave-03`) and The Choir's Cathedral II (`cathedral-02`), stage `Rules`. Its name
+  and description are the Prose text `rule:crackingfloor` (seeded placeholder).
+- *(Tests: `CrackingFloorTests`, written, not run.)*
+
 #### 14.20.1 The Free Holds: hold barricades (GG-T360)
 
 The first region rule (`holds-barricades`, theme `greenvalley2`, stages 28-29): a siege.

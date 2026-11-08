@@ -89,7 +89,7 @@ namespace GridGame.Core.Battle
                     Emit(new StepBlockedEvent { UnitId = hero.Id, At = next, Reason = "edge" });
                     return false;
                 }
-                if (S.IsBlock(next))
+                if (!S.Walkable(next)) // a stage block, or a blocking region tile (a barricade, an open hole: GG-T359/T368)
                 {
                     Emit(new StepBlockedEvent { UnitId = hero.Id, At = next, Reason = "block" });
                     return false;
@@ -127,6 +127,8 @@ namespace GridGame.Core.Battle
                 }
                 if (!PreviewOnly) TriggerTrap(hero);
                 if (!PreviewOnly && !hero.Alive) return false;
+                if (!PreviewOnly && hero.Pos != next) return false; // fell through the floor (GG-T368) or was moved: the walk ends
+
             }
             return true;
         }
@@ -395,6 +397,7 @@ namespace GridGame.Core.Battle
             for (int i = 0; i < tiles && t.Alive && !S.IsOver; i++)
             {
                 var next = t.Pos + dir;
+                if (TryShoveIntoPit(t, next)) { Announce("Into the pit!", t.Id); return; } // GG-T368: shoved into an open hole
                 if (!S.Walkable(next))
                 {
                     Announce("Slam!", t.Id);
@@ -420,7 +423,7 @@ namespace GridGame.Core.Battle
                 if (!Relocate(t, next)) return;
                 Emit(new DisplacedEvent { UnitId = t.Id, From = from, To = next, ByUnitId = caster.Id });
                 ShovePickupsUnder(t, from); // knocked onto a pickup: a non-hero shoves it back to the tile it left (GG-T228)
-                if (t.IsHero) TriggerTrap(t);
+                TriggerTrap(t); // a hero springs traps; anyone runs the region rules' EnterTile hooks (GG-T368: a foe cracks the floor too)
             }
         }
 

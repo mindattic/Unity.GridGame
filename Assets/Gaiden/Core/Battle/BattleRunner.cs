@@ -571,6 +571,7 @@ namespace GridGame.Core.Battle
             if (source == null || hit == HitKind.Miss) return;
 
             StaggerCasts(target, source);
+            if (Triggers.Foes(source, target)) RegionHit(target); // GG-T368: the rules' Hit hooks (a cracked floor cracks)
         }
 
         /// <summary>Enemies whose death burst is still to go off (resolved after the blow that killed them).</summary>

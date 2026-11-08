@@ -70,6 +70,40 @@ namespace GridGame.App
             SyncTimeline(null);
         }
 
+        /// <summary>
+        /// A unit falls into a hole (GG-T368, §14.21): carried to the hole if it was shoved or pulled in, it shrinks and fades
+        /// into the dark, a full board's swap partner steps onto the filled hole, then it climbs out on its landing tile
+        /// (the fall's damage is its own beat after this one).
+        /// </summary>
+        private IEnumerator FellAnim(FellEvent f)
+        {
+            if (!board.Units.TryGetValue(f.UnitId, out var v)) { board.SyncRegion(State); yield break; }
+            if (v.Tile != f.Hole)
+            {
+                App.Audio.Sfx("battle.slide", 0.6f);
+                var from = BoardView.PosOf(v.Tile);
+                v.Tile = f.Hole;
+                yield return Tween.Move(v.Root, from, BoardView.PosOf(f.Hole), 0.14f);
+            }
+            App.Audio.Sfx("battle.shatter", 0.8f, 0.7f);
+            yield return Tween.Run(Timing.Standard, t =>
+            {
+                v.Root.style.scale = new Scale(Vector3.one * Mathf.Lerp(1f, 0.25f, t));
+                v.Root.style.opacity = 1f - t;
+            });
+            if (f.SwappedId >= 0) { board.SyncRegion(State); yield return StepAnim(f.SwappedId, f.Hole, 0.14f, "battle.slide"); }
+            board.Place(v, f.To);
+            board.SyncRegion(State);
+            App.Audio.Sfx("battle.dash", 0.6f);
+            yield return Tween.Run(Timing.Quick, t =>
+            {
+                v.Root.style.scale = new Scale(Vector3.one * Mathf.Lerp(0.6f, 1f, t));
+                v.Root.style.opacity = t;
+            });
+            v.Root.style.scale = new Scale(Vector3.one);
+            v.Root.style.opacity = 1f;
+        }
+
         /// <summary>What a rule event is called on screen: its rule's Prose name, else the event id.</summary>
         private string HazardName(string eventId, string ruleId) =>
             App.Content.TryRegionRule(ruleId)?.Name ?? App.Content.TryRegionRule(App.Content.RuleEventRule.TryGetValue(eventId ?? "", out var r) ? r : null)?.Name ?? "Hazard";

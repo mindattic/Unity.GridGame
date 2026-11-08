@@ -800,7 +800,9 @@ namespace GridGame.App
                 var col = Art.HexColor(def?.Color, kv.Value.Hazard ? Palette.Bad : Palette.Info);
                 string key = "m" + kv.Key + kv.Value.State;
                 seen.Add(key);
-                var e = RegionCell(kv.Key, col.WithA(kv.Value.Blocks ? 0.55f : 0.3f), col, def?.Glyph, kv.Value.Blocks ? 6f : 3f, !regionSeen.Contains(key));
+                // A hole (GG-T368) is a near-black pit with its rim in the state's colour; other blocks a heavy wash.
+                var fill = def != null && def.Pit ? new Color(0.03f, 0.02f, 0.02f, 0.92f) : col.WithA(kv.Value.Blocks ? 0.55f : 0.3f);
+                var e = RegionCell(kv.Key, fill, col, def?.Glyph, kv.Value.Blocks ? 6f : 3f, !regionSeen.Contains(key));
                 if (kv.Value.Counter > 0 && def != null && def.Threshold > 0)
                 {
                     var n = new Label($"{kv.Value.Counter}/{def.Threshold}") { pickingMode = PickingMode.Ignore };

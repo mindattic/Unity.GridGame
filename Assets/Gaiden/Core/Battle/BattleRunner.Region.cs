@@ -226,15 +226,196 @@ namespace GridGame.Core.Battle
             if (def == null) return;
             string rule = ctx.Rule ?? (C.TileStateRule.TryGetValue(def.Id, out var owner) ? owner : null);
             var ev0 = new RegionTilesEvent { RuleId = rule, State = def.Id, Change = "marked" };
+            List<(Unit u, Coord at)> falls = null;
             foreach (var c in AreaOf(e, ctx))
             {
                 if (S.IsBlock(c)) continue;
                 // A blocking state is never painted under anyone or any board item: the board stays legal (§1.1, GG-T97).
-                if (def.Blocks && (S.UnitAt(c) != null || !S.ItemFree(c))) continue;
+                // A hole (GG-T368) is the one exception: it opens under whoever stands there, and they fall.
+                bool hold = false;
+                var faller = def.Blocks ? HoleFaller(def, rule, c, out hold) : null;
+                if (hold) continue;
                 S.Region.Tiles[c] = NewMark(def, rule, e.Amount);
                 ev0.Tiles.Add(c);
+                if (faller != null) (falls ??= new List<(Unit, Coord)>()).Add((faller, c));
             }
-            if (ev0.Tiles.Count > 0) Emit(ev0);
+            if (ev0.Tiles.Count == 0) return;
+            Emit(ev0);
+            AfterMarked(def, rule, ev0.Tiles, falls);
+        }
+
+        /// <summary>Can a blocking <paramref name="def"/> take tile <paramref name="c"/>? It waits (<paramref name="hold"/>)
+        /// under a board item or a unit, except a hole, which opens under a unit that can fall (returned).</summary>
+        private Unit HoleFaller(TileStateDef def, string rule, Coord c, out bool hold)
+        {
+            hold = false;
+            var who = S.UnitAt(c);
+            if (who == null && S.ItemFree(c)) return null;
+            if (def.Pit && who != null && S.ItemFree(c) && CanFall(who, rule, def.Id)) return who;
+            hold = true;
+            return null;
+        }
+
+        /// <summary>After tiles took <paramref name="def"/>: whoever stood on a hole falls, then the state's OnMark runs on
+        /// each tile still holding it.</summary>
+        private void AfterMarked(TileStateDef def, string rule, List<Coord> tiles, List<(Unit u, Coord at)> falls)
+        {
+            if (falls != null)
+                foreach (var (u, at) in falls)
+                    if (u.Alive && !S.IsOver) Fall(u, at, u.Pos, def, rule);
+            if (def.OnMark.Count == 0) return;
+            foreach (var c in tiles.ToArray())
+            {
+                if (S.IsOver) return;
+                if (!StateMatches(S.Region.At(c), def.Id)) continue;
+                RunRuleEffects(def.OnMark, new RuleCtx { Rule = rule, State = def.Id, Subject = S.UnitAt(c), At = c });
+            }
+        }
+
+        // ── Holes (GG-T368, §14.21) ──────────────────────────────────────────────────────────────
+
+        /// <summary>Only a one-tile, living, ordinary unit falls (bosses, snakes, remains, corpses and eggs don't), and
+        /// never one immune to the hole's rule or state.</summary>
+        private static bool CanFall(Unit u, string rule, string state) =>
+            u != null && u.Alive && u.OnBoard && !u.IsMultiTile && !u.IsSnakeMember && !u.IsRemains && !u.IsCorpse && !u.IsEgg
+            && !RegionBoard.Immune(u, rule, state);
+
+        /// <summary>The open hole on <paramref name="c"/> <paramref name="u"/> would fall into, or null.</summary>
+        private TileStateDef PitFor(Unit u, Coord c, out TileMark mark)
+        {
+            mark = S.Region.At(c);
+            if (mark == null || !mark.Blocks) return null;
+            var def = C.TryTileState(mark.State);
+            return def != null && def.Pit && CanFall(u, mark.Rule, mark.State) ? def : null;
+        }
+
+        /// <summary>A shove, pull or rule move would carry <paramref name="u"/> into an open hole on <paramref name="next"/>:
+        /// it goes in and falls (true), instead of slamming into it as a wall.</summary>
+        private bool TryShoveIntoPit(Unit u, Coord next)
+        {
+            if (PreviewOnly || S.Region.Tiles.Count == 0 || !BattleState.InBounds(next)) return false;
+            var def = PitFor(u, next, out var mark);
+            if (def == null) return false;
+            Fall(u, next, u.Pos, def, mark.Rule);
+            return true;
+        }
+
+        /// <summary>
+        /// <paramref name="u"/> fell into the hole at <paramref name="hole"/> (it stood there as it opened, or was carried in
+        /// from <paramref name="from"/>): it climbs out on the nearest free tile (<see cref="FallLanding"/>), then loses the
+        /// hole's FallDamage share of its max HP. On a board with no free tile at all it trades places with the nearest unit
+        /// that can be moved, who is jostled onto the hole and fills it in; with nobody to trade with, the hole fills in
+        /// under the faller (a full board never loses a unit to a hole).
+        /// </summary>
+        private void Fall(Unit u, Coord hole, Coord from, TileStateDef def, string rule)
+        {
+            var fell = new FellEvent { UnitId = u.Id, From = from, Hole = hole, RuleId = rule, SwappedId = -1 };
+            var land = FallLanding(u, hole);
+            if (land.HasValue)
+            {
+                if (!Relocate(u, land.Value)) return;
+                fell.To = land.Value;
+            }
+            else
+            {
+                var other = NearestSwap(u, hole);
+                FillHole(hole);
+                fell.Filled = true;
+                if (other != null)
+                {
+                    var at = other.Pos;
+                    other.Pos = hole;
+                    u.Pos = at;
+                    fell.SwappedId = other.Id;
+                }
+                fell.To = u.Pos;
+            }
+            int dmg = def.FallDamage > 0f ? Math.Max(1, (int)Math.Round(u.MaxHp * def.FallDamage)) : 0;
+            fell.Damage = dmg;
+            Emit(fell);
+            if (u.Pos != from) ShovePickupsUnder(u, hole);
+            if (BreaksOnMove(u)) RemoveBuffsWhere(u, b => b.Def.BreaksOnMove, "moved");
+            if (def.FallDamage > 0f) Damage(u, dmg, null, HitKind.Normal, DamageType.Physical, "Fell!");
+            if (u.Alive && u.Pos != from) TriggerTrap(u); // it lands somewhere new: a trap, a pickup, a tile's hooks
+            if (fell.SwappedId >= 0 && S.UnitById(fell.SwappedId) is Unit o && o.Alive) TriggerTrap(o);
+        }
+
+        /// <summary>
+        /// Where a faller climbs out (GG-T368): breadth-first outward from the hole, ring by ring (Manhattan distance 1 is
+        /// "next to the hole", then 2, ...), the first ring with a tile its whole footprint may land on: free for something
+        /// to appear (no unit, block, item or trap: <see cref="BattleState.FreeForSpawn"/>, the GG-T227 spawn rule; its own
+        /// old tile counts as free). A ring's safe tiles (no rule danger) are preferred, then one is drawn from the battle
+        /// Rng. A second pass accepts traps and pickups. Null on a board with no such tile anywhere.
+        /// </summary>
+        private Coord? FallLanding(Unit u, Coord hole)
+        {
+            for (int pass = 0; pass < 2; pass++)
+            {
+                int maxRing = BattleConfig.Cols + BattleConfig.Rows;
+                for (int d = 1; d <= maxRing; d++)
+                {
+                    var safe = new List<Coord>();
+                    var any = new List<Coord>();
+                    for (int y = 0; y < BattleConfig.Rows; y++)
+                        for (int x = 0; x < BattleConfig.Cols; x++)
+                        {
+                            var c = new Coord(x, y);
+                            if (c.Manhattan(hole) != d || !LandingOpen(u, c, pass == 1)) continue;
+                            any.Add(c);
+                            if (RegionBoard.DangerAt(S, c, u) <= 0f) safe.Add(c);
+                        }
+                    var pool = safe.Count > 0 ? safe : any;
+                    if (pool.Count > 0) return pool[S.Rng.Range(0, pool.Count)];
+                }
+            }
+            return null;
+        }
+
+        /// <summary>Can <paramref name="u"/>'s footprint land with its anchor on <paramref name="anchor"/>? Pass one wants a
+        /// tile free for something to appear (no trap either); <paramref name="loose"/> lets a trap or pickup be there.</summary>
+        private bool LandingOpen(Unit u, Coord anchor, bool loose)
+        {
+            for (int dy = 0; dy < u.H; dy++)
+                for (int dx = 0; dx < u.W; dx++)
+                {
+                    var t = new Coord(anchor.X + dx, anchor.Y + dy);
+                    if (!S.Walkable(t) || S.MovableAt(t) != null) return false;
+                    var occ = S.UnitAt(t);
+                    if (occ != null && occ != u) return false;
+                    if (!loose && (S.PickupAt(t) != null || S.TrapAt(t) != null)) return false;
+                }
+            return true;
+        }
+
+        /// <summary>The unit a faller trades places with on a full board: the nearest one-tile unit that can be moved
+        /// (ties: lowest id), never the faller.</summary>
+        private Unit NearestSwap(Unit u, Coord hole)
+        {
+            Unit best = null; int bestD = int.MaxValue;
+            foreach (var o in S.Units)
+            {
+                if (o == u || !o.Alive || !o.OnBoard || o.IsMultiTile || o.IsSnakeMember || o.IsRemains || o.IsCorpse || o.IsEgg) continue;
+                int d = o.Pos.Manhattan(hole);
+                if (d < bestD || (d == bestD && best != null && o.Id < best.Id)) { bestD = d; best = o; }
+            }
+            return best;
+        }
+
+        private void FillHole(Coord hole)
+        {
+            var m = S.Region.At(hole);
+            if (m == null) return;
+            S.Region.Tiles.Remove(hole);
+            var ev0 = new RegionTilesEvent { RuleId = m.Rule, State = m.State, Change = "cleared" };
+            ev0.Tiles.Add(hole);
+            Emit(ev0);
+        }
+
+        /// <summary>A unit was struck by a foe and lives: the rules' Hit hooks run (a cracked floor cracks, GG-T368).</summary>
+        private void RegionHit(Unit u)
+        {
+            if (S.Region.Rules.Count == 0 || u == null || !u.Alive || !u.OnBoard || PreviewOnly) return;
+            RegionHooks(RuleHook.Hit, u);
         }
 
         private static TileMark NewMark(TileStateDef def, string rule, int counter) => new TileMark
@@ -261,10 +442,12 @@ namespace GridGame.Core.Battle
         }
 
         /// <summary>Counters move; at its Threshold a state becomes its Becomes (or clears). A tile that would turn blocking
-        /// under someone holds at its threshold until they step off (the next modify retries).</summary>
+        /// under someone holds at its threshold until they step off (the next modify retries); a hole opens under them and
+        /// they fall (GG-T368).</summary>
         private void ModifyTiles(RuleEffectDef e, RuleCtx ctx)
         {
             var byState = new Dictionary<string, RegionTilesEvent>();
+            var turned = new List<(TileStateDef def, string rule, Coord at, Unit faller)>();
             void Note(string rule, string state, string change, Coord c)
             {
                 string k = state + "|" + change;
@@ -280,11 +463,19 @@ namespace GridGame.Core.Battle
                 if (def == null || def.Threshold <= 0 || m.Counter < def.Threshold) { Note(m.Rule, m.State, "changed", c); continue; }
                 var next = C.TryTileState(def.Becomes);
                 if (next == null) { S.Region.Tiles.Remove(c); Note(m.Rule, m.State, "cleared", c); continue; }
-                if (next.Blocks && (S.UnitAt(c) != null || !S.ItemFree(c))) { m.Counter = def.Threshold; Note(m.Rule, m.State, "changed", c); continue; }
+                bool hold = false;
+                var faller = next.Blocks ? HoleFaller(next, m.Rule, c, out hold) : null;
+                if (hold) { m.Counter = def.Threshold; Note(m.Rule, m.State, "changed", c); continue; }
                 S.Region.Tiles[c] = NewMark(next, m.Rule, 0);
                 Note(m.Rule, next.Id, "marked", c);
+                turned.Add((next, m.Rule, c, faller));
             }
             foreach (var x in byState.Values) Emit(x);
+            foreach (var (def, rule, at, faller) in turned)
+            {
+                if (S.IsOver) return;
+                AfterMarked(def, rule, new List<Coord> { at }, faller != null ? new List<(Unit, Coord)> { (faller, at) } : null);
+            }
         }
 
         /// <summary>Moves each unit up to Amount tiles, a free tile at a time (bosses, snakes and remains don't budge);
@@ -301,6 +492,7 @@ namespace GridGame.Core.Battle
                     var dir = Direction(e.Move, u.Pos, point);
                     if (dir == null) break;
                     var next = u.Pos + dir.Value;
+                    if (TryShoveIntoPit(u, next)) break; // carried into an open hole (GG-T368)
                     if (!S.FreeToEnter(next)) break;
                     var from = u.Pos;
                     if (!Relocate(u, next)) break;

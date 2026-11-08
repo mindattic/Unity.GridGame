@@ -1224,3 +1224,13 @@ Owner: *"always a way to defeat them (cast fire against ice, be able to buy a co
   - The camp bot buys the next stage's counters.
 - **Unmeasured** (no soak run): the bot's extra spend and any flask use, pending the owner's `/test`.
 - *(Tests: `AlwaysAWayTests`, written and not run.)*
+
+## 2026-11-08 — Cracking floors: holes you fall into, and where you climb out (owner, GG-T368)
+
+Owner: *"cracking floors which open up holes to fall into that takes off some life and respawns actor next to hole (what if there are no free spaces? figure it out)"*.
+
+- **Was:** the board's floor never changed under a unit (GG-T359 region rules could paint blocking tiles, but never under anyone: a blocking state waited for the tile to empty), and a shove into a blocked tile was always a slam.
+- **Now:** the `crackingfloor` rule ([BIBLE §14.21](BIBLE.md)): cracked tiles count steps, turns and blows; at 3 they crumble and a cave-in rides the timeline; the hole it opens drops whoever stands there (or is shoved or pulled in) for 15% of max HP. A hole is the one blocking state that opens under a unit (`TileStateDef.Pit`). The faller climbs out on the nearest free tile, breadth-first by distance from the hole (the GG-T227 spawn rule); on a board with no free tile at all it trades places with the nearest movable unit and the hole fills in. These holes close after 16 s; a rule may keep them open. Placed in `cave-03` and `cathedral-02`.
+- **Framework additions** any rule can use: `TileStateDef.Pit` / `FallDamage`, `TileStateDef.OnMark` (effects as a tile takes a state), the `Hit` hook, `FellEvent`. The hero walk now refuses any blocking region tile, and a shoved or pulled foe runs `EnterTile` like a hero always did.
+- Balance unmeasured (no soak run), pending the owner's `/test`.
+- *(Tests: `CrackingFloorTests`, written, not run.)*

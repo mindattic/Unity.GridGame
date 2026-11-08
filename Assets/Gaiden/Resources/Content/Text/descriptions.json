@@ -23104,6 +23104,20 @@
         "short": "A Lantern Road trader who follows the caravan; sells to everyone, informs on no one."
       }
     },
+    "rule:crackingfloor": {
+      "key": "rule:crackingfloor",
+      "id": "description-rule-crackingfloor",
+      "guid": null,
+      "version": 0,
+      "source": "seed",
+      "hash": "sha256:05800f793952b8fc035eeb12d9fbc3c6e73db06a3e405296161e05271ff49cad",
+      "about": [],
+      "speakers": [],
+      "payload": {
+        "name": "Cracking Floor",
+        "short": "Cracked tiles give under every step, every turn spent standing and every blow; a crumbling tile caves in when its icon reaches the edge of the timeline, and whoever stands on it falls."
+      }
+    },
     "rule:holds-barricades": {
       "key": "rule:holds-barricades",
       "id": "description-rule-holds-barricades",
