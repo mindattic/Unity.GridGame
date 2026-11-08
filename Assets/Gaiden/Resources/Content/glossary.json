@@ -5,7 +5,6 @@
     "Aliases": [
       "Protected"
     ],
-    "Text": "Takes less damage for a short while.",
     "LinkKind": "Buff",
     "LinkId": "protection"
   },
@@ -16,7 +15,6 @@
       "Warded",
       "Wards"
     ],
-    "Text": "A magic shield: the next blows land much softer.",
     "LinkKind": "Buff",
     "LinkId": "ward"
   },
@@ -28,7 +26,6 @@
       "Burned",
       "Burns"
     ],
-    "Text": "On fire: takes damage over time. Stacks up to three times.",
     "LinkKind": "Buff",
     "LinkId": "burning"
   },
@@ -39,7 +36,6 @@
       "Freeze",
       "Freezes"
     ],
-    "Text": "Encased in ice: can't move or act, and its timeline icon stops until it thaws. A [Stun].",
     "LinkKind": "Buff",
     "LinkId": "frozen"
   },
@@ -51,14 +47,12 @@
       "Soaked",
       "Soaks"
     ],
-    "Text": "Soaked: Lightning hits it for x1.5, and Ice freezes it more easily.",
     "LinkKind": "Buff",
     "LinkId": "wet"
   },
   {
     "Id": "warm",
     "Term": "Warm",
-    "Text": "Heated: the next Ice hit turns to Steam instead of freezing.",
     "LinkKind": "Buff",
     "LinkId": "warm"
   },
@@ -69,7 +63,6 @@
       "Sleep",
       "Sleeping"
     ],
-    "Text": "Can't move or act until something hits or moves it. A [Stun].",
     "LinkKind": "Buff",
     "LinkId": "sleep"
   },
@@ -80,7 +73,6 @@
       "Poison",
       "Poisons"
     ],
-    "Text": "Takes Poison damage over time.",
     "LinkKind": "Buff",
     "LinkId": "poisoned"
   },
@@ -92,7 +84,6 @@
       "Slows",
       "Slowing"
     ],
-    "Text": "Its timeline icon moves at half speed, so it acts later. On a hero it also costs the party [tempo].",
     "LinkKind": "Buff",
     "LinkId": "slowed"
   },
@@ -103,7 +94,6 @@
       "Silence",
       "Silences"
     ],
-    "Text": "Can't cast spells; skills and items still work.",
     "LinkKind": "Buff",
     "LinkId": "silenced"
   },
@@ -114,7 +104,6 @@
       "Blind",
       "Blinds"
     ],
-    "Text": "Its attacks miss far more often.",
     "LinkKind": "Buff",
     "LinkId": "blinded"
   },
@@ -124,7 +113,6 @@
     "Aliases": [
       "Regenerating"
     ],
-    "Text": "Heals a little every second for a while.",
     "LinkKind": "Buff",
     "LinkId": "regen"
   },
@@ -135,7 +123,6 @@
       "Taunt",
       "Taunts"
     ],
-    "Text": "Every enemy that can reach the taunter must attack it, which keeps casters safe.",
     "LinkKind": "Buff",
     "LinkId": "taunting"
   },
@@ -146,7 +133,6 @@
       "Empower",
       "Empowers"
     ],
-    "Text": "Deals more damage with every pincer, skill and spell for a few turns.",
     "LinkKind": "Buff",
     "LinkId": "empowered"
   },
@@ -156,7 +142,6 @@
     "Aliases": [
       "STR"
     ],
-    "Text": "STR. Raises the damage of pincers and physical skills.",
     "LinkKind": "Stat",
     "LinkId": "Strength"
   },
@@ -166,7 +151,6 @@
     "Aliases": [
       "VIT"
     ],
-    "Text": "VIT. Raises max HP and softens physical blows.",
     "LinkKind": "Stat",
     "LinkId": "Vitality"
   },
@@ -176,7 +160,6 @@
     "Aliases": [
       "AGI"
     ],
-    "Text": "AGI. Quick hands: better unarmed strikes and better odds when stealing.",
     "LinkKind": "Stat",
     "LinkId": "Agility"
   },
@@ -186,7 +169,6 @@
     "Aliases": [
       "SPD"
     ],
-    "Text": "SPD. How fast the unit's timeline icon fills, and a little accuracy.",
     "LinkKind": "Stat",
     "LinkId": "Speed"
   },
@@ -196,7 +178,6 @@
     "Aliases": [
       "STA"
     ],
-    "Text": "STA. Staying power for long fights.",
     "LinkKind": "Stat",
     "LinkId": "Stamina"
   },
@@ -206,7 +187,6 @@
     "Aliases": [
       "INT"
     ],
-    "Text": "INT. Raises spell damage.",
     "LinkKind": "Stat",
     "LinkId": "Intelligence"
   },
@@ -216,7 +196,6 @@
     "Aliases": [
       "WIS"
     ],
-    "Text": "WIS. Raises healing, resists spells and statuses, and holds a cast together when hit.",
     "LinkKind": "Stat",
     "LinkId": "Wisdom"
   },
@@ -226,7 +205,6 @@
     "Aliases": [
       "LCK"
     ],
-    "Text": "LCK. Critical hits, accuracy, steals and the rare Clutch.",
     "LinkKind": "Stat",
     "LinkId": "Luck"
   },
@@ -236,8 +214,7 @@
     "Aliases": [
       "Pushes back",
       "Knocks back"
-    ],
-    "Text": "Shoves a foe's timeline icon back by seconds so it acts later: at most 2 s per action. Every hero [pincer] pushes each foe it hits back 1 s."
+    ]
   },
   {
     "Id": "guard",
@@ -245,8 +222,7 @@
     "Aliases": [
       "Guards",
       "Guarding"
-    ],
-    "Text": "Ends your turn early; the turn time you didn't use fills the mana bubble."
+    ]
   },
   {
     "Id": "cast_time",
@@ -256,8 +232,7 @@
       "Charge",
       "Charging",
       "Charges"
-    ],
-    "Text": "Seconds a spell charges on the timeline before it goes off. Hitting the caster meanwhile can push the cast back or break it."
+    ]
   },
   {
     "Id": "haste",
@@ -268,8 +243,7 @@
       "Quicken",
       "Quickens",
       "out-haste"
-    ],
-    "Text": "Slides a timeline icon forward so it acts sooner; the opposite of [Pushback]."
+    ]
   },
   {
     "Id": "stun",
@@ -277,13 +251,11 @@
     "Aliases": [
       "Stunned",
       "Stuns"
-    ],
-    "Text": "Anything that stops a unit acting, like [Frozen] or [Asleep]; its turn waits until the status ends."
+    ]
   },
   {
     "Id": "sentient",
-    "Term": "Sentient",
-    "Text": "An enemy with a society or that plans ahead. Only Sentient foes (and every hero) can make [pincer] attacks."
+    "Term": "Sentient"
   },
   {
     "Id": "pincer",
@@ -291,8 +263,7 @@
     "Aliases": [
       "Pincers",
       "Pincered"
-    ],
-    "Text": "Two allies in one row or column with foes and nothing else between them: both strike every foe in the line. Heroes' main source of damage."
+    ]
   },
   {
     "Id": "supporter",
@@ -300,21 +271,18 @@
     "Aliases": [
       "Supporters",
       "Support"
-    ],
-    "Text": "An ally joined to a pincer attacker by an unbroken chain of allies. It adds its class's support action: a 50% strike, a heal, a buff."
+    ]
   },
   {
     "Id": "prominence",
     "Term": "Prominence",
     "Aliases": [
       "Prominence diamond"
-    ],
-    "Text": "The big diamond at the timeline's left end: who acts next, and in how many seconds."
+    ]
   },
   {
     "Id": "tempo",
-    "Term": "Tempo",
-    "Text": "The party's pace. Each point of tempo slows every foe's icon; losing tempo brings their turns sooner."
+    "Term": "Tempo"
   },
   {
     "Id": "interrupt",
@@ -322,33 +290,27 @@
     "Aliases": [
       "Interrupts",
       "Interrupting"
-    ],
-    "Text": "Hitting a charging caster: the cast can be pushed back on the timeline or broken outright."
+    ]
   },
   {
     "Id": "slight",
-    "Term": "slight",
-    "Text": "A slight chance: about 10% (up to 15%)."
+    "Term": "slight"
   },
   {
     "Id": "small",
-    "Term": "small",
-    "Text": "A small chance: about 20% (16 to 27%)."
+    "Term": "small"
   },
   {
     "Id": "fair",
-    "Term": "fair",
-    "Text": "A fair chance: about 35% (28 to 42%)."
+    "Term": "fair"
   },
   {
     "Id": "good",
-    "Term": "good",
-    "Text": "A good chance: about 50% (43 to 62%)."
+    "Term": "good"
   },
   {
     "Id": "likely",
-    "Term": "likely",
-    "Text": "Likely: about 75% (63% and up)."
+    "Term": "likely"
   },
   {
     "Id": "directly",
@@ -358,8 +320,7 @@
       "in melee",
       "melee",
       "attacked directly"
-    ],
-    "Text": "Struck in melee by a foe standing next to you (a pincer, supporter or melee hit), not by a spell or a shot from range."
+    ]
   },
   {
     "Id": "adjacent",
@@ -367,13 +328,11 @@
     "Aliases": [
       "next to",
       "beside"
-    ],
-    "Text": "On one of the four tiles touching this one: up, down, left or right."
+    ]
   },
   {
     "Id": "surrounded",
-    "Term": "surrounded",
-    "Text": "With foes on two or more of the four tiles around it."
+    "Term": "surrounded"
   },
   {
     "Id": "counterstrike",
@@ -383,29 +342,25 @@
       "Counters",
       "counter-strike",
       "Counter Attack"
-    ],
-    "Text": "An instant hit back at the attacker, at half power. Counterstrikes never chain."
+    ]
   },
   {
     "Id": "reactive",
-    "Term": "Reactive",
-    "Text": "Goes off by itself when something happens (being hit, an ally falling): no slot, no mana, no turn."
+    "Term": "Reactive"
   },
   {
     "Id": "passive",
     "Term": "Passive",
     "Aliases": [
       "Passives"
-    ],
-    "Text": "Always on. A passive never takes a slot, mana or a turn."
+    ]
   },
   {
     "Id": "active",
     "Term": "Active",
     "Aliases": [
       "Actives"
-    ],
-    "Text": "Used from the ability bar on your turn, paying its mana or cooldown."
+    ]
   },
   {
     "Id": "dodge",
@@ -414,8 +369,7 @@
       "Dodges",
       "Miss",
       "Misses"
-    ],
-    "Text": "When an attack misses or is slipped. Hit chance starts at 80%, rises with the attacker's SPD and LCK, and stays between 5% and 95%; the defender's [Evasion] takes its share off the top, and [Blinded] attackers miss more."
+    ]
   },
   {
     "Id": "evasion",
@@ -424,8 +378,7 @@
       "Evade",
       "Evades",
       "Evasive"
-    ],
-    "Text": "Points shaved off a foe's hit chance: AGI × 0.2 + LCK × 0.1 (at most 25), plus gear and [Blurred], capped at 40. A blow it slips is a [Dodge]. [Pincer] and [Supporter] blows can't be dodged."
+    ]
   },
   {
     "Id": "blurred",
@@ -434,7 +387,6 @@
       "Blur",
       "Blurs"
     ],
-    "Text": "A brief afterimage: +15 [Evasion] for 2 turns.",
     "LinkKind": "Buff",
     "LinkId": "blurred"
   },
@@ -444,8 +396,7 @@
     "Aliases": [
       "Cleanses",
       "Cleansing"
-    ],
-    "Text": "Removes debuffs."
+    ]
   },
   {
     "Id": "crit",
@@ -454,16 +405,14 @@
       "Critical",
       "Crits",
       "Critical hit"
-    ],
-    "Text": "A critical hit: extra damage. The chance grows with LCK."
+    ]
   },
   {
     "Id": "aoe",
     "Term": "AoE",
     "Aliases": [
       "Area"
-    ],
-    "Text": "Area of effect: hits every target in a shape, not just one."
+    ]
   },
   {
     "Id": "stagger",
@@ -471,86 +420,70 @@
     "Aliases": [
       "Staggers",
       "Staggering"
-    ],
-    "Text": "A hit on a charging caster that pushes its cast back on the timeline."
+    ]
   },
   {
     "Id": "fighter",
-    "Term": "Fighter",
-    "Text": "A frontline all-rounder: steady melee damage and staying power."
+    "Term": "Fighter"
   },
   {
     "Id": "guardian",
-    "Term": "Guardian",
-    "Text": "A protector that stands in front and takes hits for the party."
+    "Term": "Guardian"
   },
   {
     "Id": "bruiser",
-    "Term": "Bruiser",
-    "Text": "A tough melee hitter that trades blows head-on."
+    "Term": "Bruiser"
   },
   {
     "Id": "controller",
-    "Term": "Controller",
-    "Text": "Bends the fight with statuses and the timeline more than raw damage."
+    "Term": "Controller"
   },
   {
     "Id": "engineer",
-    "Term": "Engineer",
-    "Text": "Fights with gadgets: turrets, traps and devices placed on the board."
+    "Term": "Engineer"
   },
   {
     "Id": "cleaver",
-    "Term": "Cleaver",
-    "Text": "Swings wide, hitting several foes at once."
+    "Term": "Cleaver"
   },
   {
     "Id": "brawler",
-    "Term": "Brawler",
-    "Text": "Close-quarters fists and grapples."
+    "Term": "Brawler"
   },
   {
     "Id": "striker",
-    "Term": "Striker",
-    "Text": "Pincer damage first: grows with STR."
+    "Term": "Striker"
   },
   {
     "Id": "flanker",
-    "Term": "Flanker",
-    "Text": "Wins from the sides and behind, where foes are open."
+    "Term": "Flanker"
   },
   {
     "Id": "healer",
-    "Term": "Healer",
-    "Text": "Mends and cleanses; heals grow with WIS."
+    "Term": "Healer"
   },
   {
     "Id": "buffer",
-    "Term": "Buffer",
-    "Text": "Makes allies stronger with buffs."
+    "Term": "Buffer"
   },
   {
     "Id": "debuffer",
-    "Term": "Debuffer",
-    "Text": "Weakens foes with debuffs."
+    "Term": "Debuffer"
   },
   {
     "Id": "pouncer",
-    "Term": "Pouncer",
-    "Text": "Leaps onto prey from a distance."
+    "Term": "Pouncer"
   },
   {
     "Id": "mauler",
-    "Term": "Mauler",
-    "Text": "Tears into foes up close with claws and fangs."
+    "Term": "Mauler"
   },
   {
     "Id": "openings",
     "Term": "Openings",
     "Aliases": [
       "Opening"
-    ],
-    "Text": "A foe left exposed by a status or a missed blow: the moment to strike."
+    ]
   },
   {
     "Id": "combo_finishes",
@@ -558,84 +491,72 @@
     "Aliases": [
       "Combo finish",
       "Combo"
-    ],
-    "Text": "Follow-up blows that hit hardest after an opener."
+    ]
   },
   {
     "Id": "roar",
     "Term": "Roar",
     "Aliases": [
       "Roars"
-    ],
-    "Text": "A cry that rattles foes or rallies allies."
+    ]
   },
   {
     "Id": "knockdown",
     "Term": "Knockdown",
     "Aliases": [
       "Knockdowns"
-    ],
-    "Text": "Puts a foe on the ground, costing it time."
+    ]
   },
   {
     "Id": "turrets",
     "Term": "Turrets",
     "Aliases": [
       "Turret"
-    ],
-    "Text": "Placed guns that fire on their own."
+    ]
   },
   {
     "Id": "traps",
     "Term": "Traps",
     "Aliases": [
       "Trap"
-    ],
-    "Text": "Hidden hazards on tiles that hurt or hinder whoever steps there."
+    ]
   },
   {
     "Id": "rot",
-    "Term": "Rot",
-    "Text": "Decay that eats at foes over time."
+    "Term": "Rot"
   },
   {
     "Id": "gadgets",
     "Term": "Gadgets",
     "Aliases": [
       "Gadget"
-    ],
-    "Text": "Devices and tricks used on the board."
+    ]
   },
   {
     "Id": "fear",
-    "Term": "Fear",
-    "Text": "Dread that weakens a foe's will to fight."
+    "Term": "Fear"
   },
   {
     "Id": "drain",
     "Term": "Drain",
     "Aliases": [
       "Drains"
-    ],
-    "Text": "Steals health or power from a foe."
+    ]
   },
   {
     "Id": "attrition",
-    "Term": "Attrition",
-    "Text": "Winning slowly: damage over time and outlasting the foe."
+    "Term": "Attrition"
   },
   {
     "Id": "backstab",
     "Term": "Backstab",
     "Aliases": [
       "Backstabs"
-    ],
-    "Text": "A strike from behind for extra damage."
+    ]
   },
   {
     "Id": "aid",
-    "Term": "Aid",
-    "Text": "Help for allies: heals, cures and boosts."
+    "Term": "Aid"
   },
   {
     "Id": "curse",
@@ -643,46 +564,38 @@
     "Aliases": [
       "Curses",
       "Hex"
-    ],
-    "Text": "A hex that lingers on a foe and weakens it."
+    ]
   },
   {
     "Id": "shots",
     "Term": "Shots",
     "Aliases": [
       "Shot"
-    ],
-    "Text": "Attacks from range."
+    ]
   },
   {
     "Id": "piercing_shot",
-    "Term": "Piercing shot",
-    "Text": "A shot that passes through to hit the targets behind."
+    "Term": "Piercing shot"
   },
   {
     "Id": "patience",
-    "Term": "Patience",
-    "Text": "Waiting for the right moment rather than rushing in."
+    "Term": "Patience"
   },
   {
     "Id": "footwork",
-    "Term": "Footwork",
-    "Text": "Moving well: repositioning to set up pincers and avoid harm."
+    "Term": "Footwork"
   },
   {
     "Id": "distance",
-    "Term": "Distance",
-    "Text": "Keeping foes away, fighting from range."
+    "Term": "Distance"
   },
   {
     "Id": "crowd_control",
-    "Term": "Crowd control",
-    "Text": "Stopping or slowing several foes at once."
+    "Term": "Crowd control"
   },
   {
     "Id": "temporal_drag",
     "Term": "Temporal Drag",
-    "Text": "An enemy charge that Slows every hero and costs the party [tempo]. Interrupt it or cleanse the Slow.",
     "LinkKind": "Ability",
     "LinkId": "charge_temporal_drag"
   },
@@ -691,8 +604,7 @@
     "Term": "Lifesteal",
     "Aliases": [
       "Lifesteals"
-    ],
-    "Text": "Heals the attacker a share of the damage its blow deals."
+    ]
   },
   {
     "Id": "reflect",
@@ -700,21 +612,18 @@
     "Aliases": [
       "Reflects",
       "Reflected"
-    ],
-    "Text": "Sends a share of the damage it just took back at the attacker."
+    ]
   },
   {
     "Id": "mana_charge",
-    "Term": "mana charge",
-    "Text": "Fills the party's mana meter; every 100 is one orb for spells."
+    "Term": "mana charge"
   },
   {
     "Id": "physical",
     "Term": "Physical",
     "Aliases": [
       "Physical damage"
-    ],
-    "Text": "Weapon damage: blades, fists, claws and arrows, as opposed to fire, ice and other magic."
+    ]
   },
   {
     "Id": "tamed",
@@ -723,8 +632,7 @@
       "Tame",
       "Tames",
       "Taming"
-    ],
-    "Text": "A wild monster fighting for you on its own: it keeps its own turn icon, attacks your foes, carries the [Pincer] keyword and grows its bond each turn. A full bond keeps it for the battle; standing at victory, it asks to join."
+    ]
   },
   {
     "Id": "wanderer",
@@ -732,149 +640,127 @@
     "Aliases": [
       "Wanderers",
       "Wandering"
-    ],
-    "Text": "A hero you meet mid-battle who fights the monsters on their own: their own turn icon, never commanded, but they close [Pincer] attacks with you. Earn their [Trust]; standing at victory, a party member of your choice talks with them, and they may join."
+    ]
   },
   {
     "Id": "trust",
-    "Term": "Trust",
-    "Text": "A [Wanderer]'s gauge (full at 6): +2 for each hero pincer they're part of, as an end or a flanker, and +1 each time a hero heals them. After the battle they join only if your companion says what they want to hear, and they trust you fully, or half, with a companion from their own faction."
+    "Term": "Trust"
   },
   {
     "Id": "beast",
     "Term": "Beast",
     "Aliases": [
       "Beasts"
-    ],
-    "Text": "A wild animal monster: wolves, bats, the yeti. Beasts have no society, so they never make a [pincer] on their own, but a Monster Tamer can turn one [Tamed]."
+    ]
   },
   {
     "Id": "gale_shriek",
     "Term": "Gale Shriek",
-    "Text": "A Harpy Shrieker's charge: a whirling gale that hits one hero and every hero beside it and drags each up to 2 tiles toward the harpy, out of formation. [Interrupt] it, or spread out.",
     "LinkKind": "Ability",
     "LinkId": "charge_gale_shriek"
   },
   {
     "Id": "void_beam",
     "Term": "Void Beam",
-    "Text": "A Void Sentinel's charge: a beam down a marked line to the board's edge that hits and [Silences] every hero still on it. Step off the line, or [Interrupt] it.",
     "LinkKind": "Ability",
     "LinkId": "charge_void_beam"
   },
   {
     "Id": "soulfire",
     "Term": "Soulfire",
-    "Text": "The Lich's charge: magenta fire on one hero and every hero in the 3×3 around it, which [Burns] each one hit. Spread out, or [Interrupt] it.",
     "LinkKind": "Ability",
     "LinkId": "charge_soulfire"
   },
   {
     "Id": "hellfire",
     "Term": "Hellfire",
-    "Text": "An Infernalist Pyromancer's charge: fire on one hero and the four tiles beside it, which [Burns] each one hit. Spread out, or [Interrupt] it.",
     "LinkKind": "Ability",
     "LinkId": "charge_hellfire"
   },
   {
     "Id": "blood_rite",
     "Term": "Blood Rite",
-    "Text": "An Infernalist Bloodbinder's charge: it heals its most wounded ally and turns it [Empowered]. [Interrupt] it, or kill the binder first.",
     "LinkKind": "Ability",
     "LinkId": "charge_blood_rite"
   },
   {
     "Id": "aegis_field",
     "Term": "Aegis Field",
-    "Text": "A Bulwark Shieldbearer's charge: every ally within 2 tiles of it gains [Ward]. [Interrupt] it, or pull the soldiers apart.",
     "LinkKind": "Ability",
     "LinkId": "charge_aegis_field"
   },
   {
     "Id": "aether_siphon",
     "Term": "Aether Siphon",
-    "Text": "A Bulwark Siphoner's charge: it hits one hero, and an orb leaves the party's bank when it lands. Spend your orbs first, or [Interrupt] it.",
     "LinkKind": "Ability",
     "LinkId": "charge_aether_siphon"
   },
   {
     "Id": "siege_shot",
     "Term": "Siege Shot",
-    "Text": "A Bulwark Siege Gunner's charge: one round down a marked line to the board's edge that hits every hero still on it. Step off the line, or [Interrupt] it.",
     "LinkKind": "Ability",
     "LinkId": "charge_siege_shot"
   },
   {
     "Id": "ember_vigil",
     "Term": "Ember Vigil",
-    "Text": "A Watch Vigilant's charge: every ally within 2 tiles of it gains [Regen]. [Interrupt] it, or cut the Vigilant down first.",
     "LinkKind": "Ability",
     "LinkId": "charge_ember_vigil"
   },
   {
     "Id": "tithe_hymn",
     "Term": "Tithe Hymn",
-    "Text": "A Choir Cantor's charge: 3 Arcane to every hero, each with a [good] chance to be [Silenced]. Cast your spells before it lands, or [Interrupt] it.",
     "LinkKind": "Ability",
     "LinkId": "charge_tithe_hymn"
   },
   {
     "Id": "psalm_of_certainty",
     "Term": "Psalm of Certainty",
-    "Text": "A Choir Psalmist's charge: every ally within 2 tiles of it turns [Empowered]. [Interrupt] it, or draw its allies away.",
     "LinkKind": "Ability",
     "LinkId": "charge_psalm_of_certainty"
   },
   {
     "Id": "absolution",
     "Term": "Absolution",
-    "Text": "A Choir Confessor's charge on its most wounded ally: a heal, a [Cleanse] of its debuffs, and a [Ward]. Kill it first, or [Interrupt] it.",
     "LinkKind": "Ability",
     "LinkId": "charge_absolution"
   },
   {
     "Id": "stampede",
     "Term": "Stampede",
-    "Text": "The Herd's loyalty: when any of their crew falls, every bull still standing charges, and its next turn comes sooner. Watch the bar, or [Pushback] them after.",
     "LinkKind": "Ability",
     "LinkId": "herd_stampede"
   },
   {
     "Id": "feed_the_herd",
     "Term": "Feed the Herd",
-    "Text": "A Herd Boss's charge: every ally within 2 tiles heals and rushes its next turn. [Interrupt] it, or kill the Boss first.",
     "LinkKind": "Ability",
     "LinkId": "charge_feed_the_herd"
   },
   {
     "Id": "bull_rush",
     "Term": "Bull Rush",
-    "Text": "A Herd Gorer's charge down a marked line to the board's edge: every hero still on the line is trampled. Step off it, or [Interrupt] it.",
     "LinkKind": "Ability",
     "LinkId": "charge_bull_rush"
   },
   {
     "Id": "bloodscent",
     "Term": "Bloodscent",
-    "Text": "The Hellspawn's hunger: their blows land 50% harder on a hero below half HP. Heal the wounded, or keep them out of reach.",
     "LinkKind": "Ability",
     "LinkId": "bloodscent"
   },
   {
     "Id": "red_tide",
     "Term": "Red Tide",
-    "Text": "A Hellspawn Emberheart's charge: the red river floods a hero's whole row, burning everyone in it. Leave the row, or [Interrupt] it.",
     "LinkKind": "Ability",
     "LinkId": "charge_red_tide"
   },
   {
     "Id": "essence",
-    "Term": "Essence",
-    "Text": "Healing paid for in the healer's own HP instead of mana: the Herald's gift. It never takes her last HP."
+    "Term": "Essence"
   },
   {
     "Id": "countermarch",
-    "Term": "Countermarch",
-    "Text": "The Tactician's order: a foe's timeline icon trades places with the foe whose turn is furthest off. The one about to act goes to the back; the straggler steps up."
+    "Term": "Countermarch"
   }
 ]

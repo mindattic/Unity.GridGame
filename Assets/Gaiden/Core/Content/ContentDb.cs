@@ -79,6 +79,18 @@ namespace GridGame.Core.Content
         public RecipeDef TryRecipe(string id) => id != null && Recipes.TryGetValue(id, out var a) ? a : null;
         public SkillTreeDef TrySkillTree(string id) => id != null && SkillTrees.TryGetValue(id, out var a) ? a : null;
 
+        /// <summary>GG-T355: every story text key the join resolved (key → its Prose id, GUID, version, source), for
+        /// debugging and telemetry. Empty when no Content/Text was loaded (a hand-built fixture).</summary>
+        public readonly Dictionary<string, TextRef> Texts = new Dictionary<string, TextRef>(StringComparer.Ordinal);
+        public TextRef TryText(string key) => key != null && Texts.TryGetValue(key, out var t) ? t : null;
+        /// <summary>Whether Content/Text was joined onto the records (<see cref="ProseText.Join"/>).</summary>
+        public bool TextJoined;
+        /// <summary>What the join found wrong (missing keys, orphans, story text left in gameplay JSON, tag drift);
+        /// <see cref="ContentLoader.Validate"/> reports them.</summary>
+        public readonly List<string> TextProblems = new List<string>();
+        /// <summary>The camp NPCs' blurbs (Prose "npc:&lt;id&gt;" descriptions), by NPC id.</summary>
+        public readonly Dictionary<string, string> NpcBlurbs = new Dictionary<string, string>(StringComparer.OrdinalIgnoreCase);
+
         private static T Get<T>(Dictionary<string, T> map, string id, string kind)
         {
             if (id != null && map.TryGetValue(id, out var v)) return v;

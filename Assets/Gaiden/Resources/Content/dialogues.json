@@ -8,9 +8,9 @@
       { "Id": "hero", "Class": "$with" }
     ],
     "Nodes": [
-      { "Id": "ask", "Speaker": "ronin", "Text": "Keep driving. A sword that owes nothing walks fastest -- and a Concord caravan draws Concord trouble.", "Next": "ask2" },
-      { "Id": "ask2", "Speaker": "hero", "Text": "You're bleeding into the moss. Let us bind that, and stand with us till this field is clear.", "Next": "join" },
-      { "Id": "join", "Speaker": "ronin", "Text": "...You mended a stranger and asked nothing back. The proverb says that's a fool's trade. Fine. My blade walks with yours." }
+      { "Id": "ask", "Speaker": "ronin", "Next": "ask2" },
+      { "Id": "ask2", "Speaker": "hero", "Next": "join" },
+      { "Id": "join", "Speaker": "ronin" }
     ]
   },
   {
@@ -22,8 +22,8 @@
       { "Id": "hero", "Class": "$with" }
     ],
     "Nodes": [
-      { "Id": "ask", "Speaker": "merc", "Text": "Red sand in my boots, nothing in my purse. A hundred and fifty gold and I'm yours till the shards stop falling.", "Next": "join" },
-      { "Id": "join", "Speaker": "merc", "Text": "Coin's counted. Point me at whatever's crawling out of the red." }
+      { "Id": "ask", "Speaker": "merc", "Next": "join" },
+      { "Id": "join", "Speaker": "merc" }
     ]
   },
   {
@@ -35,20 +35,20 @@
       { "Id": "with", "Class": "$with" }
     ],
     "Nodes": [
-      { "Id": "meet", "Speaker": "hero", "Text": "You fought well. I'm not in the habit of thanking strangers, so take the nod and keep it.", "Next": "reply" },
-      { "Id": "reply", "Speaker": "with", "Text": "We saw you holding that field alone. You don't have to walk off alone too.", "Next": "ask" },
+      { "Id": "meet", "Speaker": "hero", "Next": "reply" },
+      { "Id": "reply", "Speaker": "with", "Next": "ask" },
       {
-        "Id": "ask", "Speaker": "hero", "Text": "Walk with a stolen Concord caravan? Tell me one reason that isn't a debt.",
+        "Id": "ask", "Speaker": "hero",
         "Choices": [
-          { "Label": "Because you're good, and we'd be fools not to want you.", "Next": "heard" },
-          { "Label": "Because you owe us for the help.", "Next": "unheard" },
-          { "Label": "Because the road will kill you otherwise.", "Next": "unheard" }
+          { "Next": "heard" },
+          { "Next": "unheard" },
+          { "Next": "unheard" }
         ]
       },
-      { "Id": "heard", "Speaker": "hero", "Text": "...Huh. Nobody's put it that plainly in a long time. Wanted, not owed.", "Next": "$outcome" },
-      { "Id": "unheard", "Speaker": "hero", "Text": "That's the tithe-man's arithmetic. I've heard it before.", "Next": "$outcome" },
-      { "Id": "join", "Speaker": "hero", "Text": "Fine. Find me a wagon with a dry corner. I'm yours." },
-      { "Id": "part", "Speaker": "hero", "Text": "No hard feelings. Maybe our roads cross again, once we know each other better." }
+      { "Id": "heard", "Speaker": "hero", "Next": "$outcome" },
+      { "Id": "unheard", "Speaker": "hero", "Next": "$outcome" },
+      { "Id": "join", "Speaker": "hero" },
+      { "Id": "part", "Speaker": "hero" }
     ]
   },
   {
@@ -60,20 +60,20 @@
       { "Id": "with", "Class": "$with" }
     ],
     "Nodes": [
-      { "Id": "meet", "Speaker": "hero", "Text": "Yo. Nice pincer. Didn't need the help, but -- nice pincer.", "Next": "reply" },
-      { "Id": "reply", "Speaker": "with", "Text": "You ran the Concord's lines solo out there? That's stupid. That's also kind of great.", "Next": "ask" },
+      { "Id": "meet", "Speaker": "hero", "Next": "reply" },
+      { "Id": "reply", "Speaker": "with", "Next": "ask" },
       {
-        "Id": "ask", "Speaker": "hero", "Text": "So what's the pitch? Quick. I got places to not be.",
+        "Id": "ask", "Speaker": "hero",
         "Choices": [
-          { "Label": "We could use a lookout who knows the rules.", "Next": "unheard" },
-          { "Label": "Nobody tithes you while you're with us. Nobody. You keep every drop.", "Next": "heard" },
-          { "Label": "We pay well, half up front.", "Next": "unheard" }
+          { "Next": "unheard" },
+          { "Next": "heard" },
+          { "Next": "unheard" }
         ]
       },
-      { "Id": "heard", "Speaker": "hero", "Text": "...Every drop. Say that again slow. -- Nah, don't, I heard it.", "Next": "$outcome" },
-      { "Id": "unheard", "Speaker": "hero", "Text": "Rules, pay, sure. Everyone's got a pitch. Mine's \"no\".", "Next": "$outcome" },
-      { "Id": "join", "Speaker": "hero", "Text": "Alright. Alright! Which wagon? I call the one with the roof." },
-      { "Id": "part", "Speaker": "hero", "Text": "Catch you round the underspire. Or not. Probably not." }
+      { "Id": "heard", "Speaker": "hero", "Next": "$outcome" },
+      { "Id": "unheard", "Speaker": "hero", "Next": "$outcome" },
+      { "Id": "join", "Speaker": "hero" },
+      { "Id": "part", "Speaker": "hero" }
     ]
   },
   {
@@ -85,20 +85,20 @@
       { "Id": "with", "Class": "$with" }
     ],
     "Nodes": [
-      { "Id": "meet", "Speaker": "hero", "Text": "By my hold's old oath, I stood that field as long as it stood. You stood it with me. That counts for something.", "Next": "reply" },
-      { "Id": "reply", "Speaker": "with", "Text": "You fight like someone who remembers when the holds kept their own.", "Next": "ask" },
+      { "Id": "meet", "Speaker": "hero", "Next": "reply" },
+      { "Id": "reply", "Speaker": "with", "Next": "ask" },
       {
-        "Id": "ask", "Speaker": "hero", "Text": "My hold sold its oath to the Concord. What would I swear to now?",
+        "Id": "ask", "Speaker": "hero",
         "Choices": [
-          { "Label": "Swear to the road. It goes everywhere.", "Next": "unheard" },
-          { "Label": "Swear to us, and we'll keep your oath as you kept it -- every hold that pays the tithe will see it broken.", "Next": "heard" },
-          { "Label": "Don't swear to anything. Oaths got you here.", "Next": "unheard" }
+          { "Next": "unheard" },
+          { "Next": "heard" },
+          { "Next": "unheard" }
         ]
       },
-      { "Id": "heard", "Speaker": "hero", "Text": "...Kept as I kept it. That is how my grandmother said it. Word for word.", "Next": "$outcome" },
-      { "Id": "unheard", "Speaker": "hero", "Text": "Words without weight. My hold had plenty of those, at the end.", "Next": "$outcome" },
-      { "Id": "join", "Speaker": "hero", "Text": "Then hear it: my shield is your caravan's, until the tithe is broken or I am." },
-      { "Id": "part", "Speaker": "hero", "Text": "I'll keep walking the moor roads. An oath shouldn't be given to the first wagon that asks." }
+      { "Id": "heard", "Speaker": "hero", "Next": "$outcome" },
+      { "Id": "unheard", "Speaker": "hero", "Next": "$outcome" },
+      { "Id": "join", "Speaker": "hero" },
+      { "Id": "part", "Speaker": "hero" }
     ]
   },
   {
@@ -110,20 +110,20 @@
       { "Id": "with", "Class": "$with" }
     ],
     "Nodes": [
-      { "Id": "meet", "Speaker": "hero", "Text": "'The lantern lights one step at a time.' Tonight it lit yours. Strange coincidence.", "Next": "reply" },
-      { "Id": "reply", "Speaker": "with", "Text": "You fought like you'd done it a thousand times and never once for anyone.", "Next": "ask" },
+      { "Id": "meet", "Speaker": "hero", "Next": "reply" },
+      { "Id": "reply", "Speaker": "with", "Next": "ask" },
       {
-        "Id": "ask", "Speaker": "hero", "Text": "The Road owes nothing and keeps nothing. Why should I walk your way?",
+        "Id": "ask", "Speaker": "hero",
         "Choices": [
-          { "Label": "Because we need a blade.", "Next": "unheard" },
-          { "Label": "Because a road needs walkers, and you're the best walker I've seen on it. Walk where you like -- just walk it with us.", "Next": "heard" },
-          { "Label": "Because the Concord will find you alone.", "Next": "unheard" }
+          { "Next": "unheard" },
+          { "Next": "heard" },
+          { "Next": "unheard" }
         ]
       },
-      { "Id": "heard", "Speaker": "hero", "Text": "Walk where I like. ...The proverb says flattery is a trap. The proverb never met you.", "Next": "$outcome" },
-      { "Id": "unheard", "Speaker": "hero", "Text": "Need, fear. Those are chains with a nicer shape.", "Next": "$outcome" },
-      { "Id": "join", "Speaker": "hero", "Text": "Then the lantern walks with the caravan. For a while. Which is how every forever starts." },
-      { "Id": "part", "Speaker": "hero", "Text": "The Road calls. If it bends back to you, I'll know it meant something." }
+      { "Id": "heard", "Speaker": "hero", "Next": "$outcome" },
+      { "Id": "unheard", "Speaker": "hero", "Next": "$outcome" },
+      { "Id": "join", "Speaker": "hero" },
+      { "Id": "part", "Speaker": "hero" }
     ]
   },
   {
@@ -135,20 +135,20 @@
       { "Id": "with", "Class": "$with" }
     ],
     "Nodes": [
-      { "Id": "meet", "Speaker": "hero", "Text": "You didn't flinch when I started singing. Most do. The hex goes the other way -- it's the Choir's hymn, turned.", "Next": "reply" },
-      { "Id": "reply", "Speaker": "with", "Text": "We saw. Whatever you sang, it hit the right things.", "Next": "ask" },
+      { "Id": "meet", "Speaker": "hero", "Next": "reply" },
+      { "Id": "reply", "Speaker": "with", "Next": "ask" },
       {
-        "Id": "ask", "Speaker": "hero", "Text": "People call what I do a curse. What do you call it?",
+        "Id": "ask", "Speaker": "hero",
         "Choices": [
-          { "Label": "Dangerous. We'd want you to keep it on a leash.", "Next": "unheard" },
-          { "Label": "A curse. But a useful one.", "Next": "unheard" },
-          { "Label": "Justice. You took their hymn and turned it on them. Nobody else had the nerve.", "Next": "heard" }
+          { "Next": "unheard" },
+          { "Next": "unheard" },
+          { "Next": "heard" }
         ]
       },
-      { "Id": "heard", "Speaker": "hero", "Text": "...Justice. They called it rot in the Stills. You call it nerve. Keep talking like that.", "Next": "$outcome" },
-      { "Id": "unheard", "Speaker": "hero", "Text": "Ah. Yes. I've heard that tone before, usually through a Still's door.", "Next": "$outcome" },
-      { "Id": "join", "Speaker": "hero", "Text": "Then I'll sing for your caravan. Mind your ears when the hymn turns." },
-      { "Id": "part", "Speaker": "hero", "Text": "Back to the fog, then. It doesn't ask what I am." }
+      { "Id": "heard", "Speaker": "hero", "Next": "$outcome" },
+      { "Id": "unheard", "Speaker": "hero", "Next": "$outcome" },
+      { "Id": "join", "Speaker": "hero" },
+      { "Id": "part", "Speaker": "hero" }
     ]
   },
   {
@@ -160,20 +160,20 @@
       { "Id": "with", "Class": "$with" }
     ],
     "Nodes": [
-      { "Id": "meet", "Speaker": "hero", "Text": "You fought beside something with blood-light in it and didn't run. Why?", "Next": "reply" },
-      { "Id": "reply", "Speaker": "with", "Text": "Because you were fighting the same things we were.", "Next": "ask" },
+      { "Id": "meet", "Speaker": "hero", "Next": "reply" },
+      { "Id": "reply", "Speaker": "with", "Next": "ask" },
       {
-        "Id": "ask", "Speaker": "hero", "Text": "The Ember says the moon is coming home. Part of me still believes it. Does that frighten you?",
+        "Id": "ask", "Speaker": "hero",
         "Choices": [
-          { "Label": "Yes. Keep it under control.", "Next": "unheard" },
-          { "Label": "No. You drank it and chose to stand with people anyway. That's stronger than the Ember ever was.", "Next": "heard" },
-          { "Label": "Doesn't matter what you believe, as long as you fight.", "Next": "unheard" }
+          { "Next": "unheard" },
+          { "Next": "heard" },
+          { "Next": "unheard" }
         ]
       },
-      { "Id": "heard", "Speaker": "hero", "Text": "...Stronger than the Ember. I've been waiting a long time for someone to say that.", "Next": "$outcome" },
-      { "Id": "unheard", "Speaker": "hero", "Text": "Everyone wants the sword. No one wants what's burning in the hand that holds it.", "Next": "$outcome" },
-      { "Id": "join", "Speaker": "hero", "Text": "Then the red stays sheathed until you need it. And it answers to me, not the moon." },
-      { "Id": "part", "Speaker": "hero", "Text": "Keep your distance. I'll keep mine. It's safer that way for both of us." }
+      { "Id": "heard", "Speaker": "hero", "Next": "$outcome" },
+      { "Id": "unheard", "Speaker": "hero", "Next": "$outcome" },
+      { "Id": "join", "Speaker": "hero" },
+      { "Id": "part", "Speaker": "hero" }
     ]
   },
   {
@@ -185,20 +185,20 @@
       { "Id": "with", "Class": "$with" }
     ],
     "Nodes": [
-      { "Id": "meet", "Speaker": "hero", "Text": "*sniffs* You fight in a pack. Loud. Good pack.", "Next": "reply" },
-      { "Id": "reply", "Speaker": "with", "Text": "You fought like the wolves were your family. Were they?", "Next": "ask" },
+      { "Id": "meet", "Speaker": "hero", "Next": "reply" },
+      { "Id": "reply", "Speaker": "with", "Next": "ask" },
       {
-        "Id": "ask", "Speaker": "hero", "Text": "Packs eat strays. Why would yours not?",
+        "Id": "ask", "Speaker": "hero",
         "Choices": [
-          { "Label": "Because you're stronger than any of us, and a pack that has you never goes hungry.", "Next": "heard" },
-          { "Label": "Because we have rules about that.", "Next": "unheard" },
-          { "Label": "We'll feed you first. You'll be fine.", "Next": "unheard" }
+          { "Next": "heard" },
+          { "Next": "unheard" },
+          { "Next": "unheard" }
         ]
       },
-      { "Id": "heard", "Speaker": "hero", "Text": "*a low, pleased growl* Stronger. Yes. You see right.", "Next": "$outcome" },
-      { "Id": "unheard", "Speaker": "hero", "Text": "Rules. Food. Words for leashes.", "Next": "$outcome" },
-      { "Id": "join", "Speaker": "hero", "Text": "Then I run with your pack. I eat second. Maybe." },
-      { "Id": "part", "Speaker": "hero", "Text": "I go back to the long grass. I will smell you on the wind, pack." }
+      { "Id": "heard", "Speaker": "hero", "Next": "$outcome" },
+      { "Id": "unheard", "Speaker": "hero", "Next": "$outcome" },
+      { "Id": "join", "Speaker": "hero" },
+      { "Id": "part", "Speaker": "hero" }
     ]
   },
   {
@@ -210,20 +210,20 @@
       { "Id": "with", "Class": "$with" }
     ],
     "Nodes": [
-      { "Id": "meet", "Speaker": "hero", "Text": "I wore the Red Seal once. I collected the tithe from holds like yours. Then they tithed me, and I drank the Ember to keep from going Hollow.", "Next": "reply" },
-      { "Id": "reply", "Speaker": "with", "Text": "And now you're out here alone, cutting down the things the Concord leaves behind.", "Next": "ask" },
+      { "Id": "meet", "Speaker": "hero", "Next": "reply" },
+      { "Id": "reply", "Speaker": "with", "Next": "ask" },
       {
-        "Id": "ask", "Speaker": "hero", "Text": "So which am I to you? A tithe-taker, or a demon?",
+        "Id": "ask", "Speaker": "hero",
         "Choices": [
-          { "Label": "Both. We'll be watching.", "Next": "unheard" },
-          { "Label": "Neither. You're the only templar who ever paid the tithe back.", "Next": "heard" },
-          { "Label": "Doesn't matter, so long as the sword's on our side.", "Next": "unheard" }
+          { "Next": "unheard" },
+          { "Next": "heard" },
+          { "Next": "unheard" }
         ]
       },
-      { "Id": "heard", "Speaker": "hero", "Text": "...Paid it back. I have been trying to, a field at a time. I didn't know it showed.", "Next": "$outcome" },
-      { "Id": "unheard", "Speaker": "hero", "Text": "Yes. That's what everyone decides, sooner or later.", "Next": "$outcome" },
-      { "Id": "join", "Speaker": "hero", "Text": "Then take the sword, and the man who still owes. I'll keep paying, beside you." },
-      { "Id": "part", "Speaker": "hero", "Text": "I'll keep the debt by myself, then. It's mine to carry." }
+      { "Id": "heard", "Speaker": "hero", "Next": "$outcome" },
+      { "Id": "unheard", "Speaker": "hero", "Next": "$outcome" },
+      { "Id": "join", "Speaker": "hero" },
+      { "Id": "part", "Speaker": "hero" }
     ]
   },
   {
@@ -235,30 +235,30 @@
       { "Id": "lead", "Class": "$lead" }
     ],
     "Nodes": [
-      { "Id": "hail", "Speaker": "merchant", "Text": "Hold up -- a Concord supply caravan, driven by kids in hoodies, going the wrong way down the moor road at a gallop. That's either a robbery or a story.", "Next": "reply" },
-      { "Id": "reply", "Speaker": "lead", "Text": "...It's both. What do you want?", "Next": "ask" },
+      { "Id": "hail", "Speaker": "merchant", "Next": "reply" },
+      { "Id": "reply", "Speaker": "lead", "Next": "ask" },
       {
-        "Id": "ask", "Speaker": "merchant", "Text": "Only to sell. I walk the Lantern Road -- I sell to the Concord, the holds, the Street, anyone. I inform on no one. A caravan like yours needs a trader who can say that. Let me ride along?",
+        "Id": "ask", "Speaker": "merchant",
         "Choices": [
-          { "Label": "Welcome aboard.", "Next": "joined", "Effects": [ { "Type": "JoinNpc", "Id": "merchant" } ] },
+          { "Next": "joined", "Effects": [ { "Type": "JoinNpc", "Id": "merchant" } ] },
           {
-            "Label": "First, sell us a map. (20 G)", "Next": "map",
+            "Next": "map",
             "Conditions": [ { "Type": "GoldAtLeast", "Amount": 20 } ],
             "Effects": [ { "Type": "GrantGold", "Amount": -20 }, { "Type": "SetFlag", "Id": "bought_map" } ]
           },
-          { "Label": "We travel alone.", "Next": "snubbed", "Effects": [ { "Type": "SetFlag", "Id": "merchant_snubbed" } ] }
+          { "Next": "snubbed", "Effects": [ { "Type": "SetFlag", "Id": "merchant_snubbed" } ] }
         ]
       },
       {
-        "Id": "map", "Speaker": "merchant", "Text": "Wise. The moor roads, the Concord checkpoints, and the back ways round them, marked true. And a tonic for the nerves -- yours are showing.",
+        "Id": "map", "Speaker": "merchant",
         "Effects": [ { "Type": "GrantItem", "Id": "healing_potion_basic", "Amount": 1 } ],
         "Choices": [
-          { "Label": "Then ride with us.", "Next": "joined", "Effects": [ { "Type": "JoinNpc", "Id": "merchant" } ] },
-          { "Label": "Safe travels.", "Next": "snubbed", "Effects": [ { "Type": "SetFlag", "Id": "merchant_snubbed" } ] }
+          { "Next": "joined", "Effects": [ { "Type": "JoinNpc", "Id": "merchant" } ] },
+          { "Next": "snubbed", "Effects": [ { "Type": "SetFlag", "Id": "merchant_snubbed" } ] }
         ]
       },
-      { "Id": "snubbed", "Speaker": "merchant", "Text": "Suit yourselves. I'll follow a lantern or two behind all the same -- somebody has to sell you rope when you run out.", "Effects": [ { "Type": "JoinNpc", "Id": "merchant" } ] },
-      { "Id": "joined", "Speaker": "merchant", "Text": "Good. Find my wagon at camp whenever you need supplies. And if anyone asks, I've never seen you. I never have." }
+      { "Id": "snubbed", "Speaker": "merchant", "Effects": [ { "Type": "JoinNpc", "Id": "merchant" } ] },
+      { "Id": "joined", "Speaker": "merchant" }
     ]
   },
   {
@@ -270,8 +270,8 @@
       { "Id": "merchant", "Name": "Lantern Merchant", "Portrait": "courier" }
     ],
     "Nodes": [
-      { "Id": "a", "Speaker": "lead", "Text": "I grabbed this off the tithe-taker's desk on the way out. It's Saltmoss's quota. In their own handwriting. They took three times this.", "Next": "b" },
-      { "Id": "b", "Speaker": "merchant", "Text": "Every hold says the same thing, if you buy them a drink. The Anchors need what they need. Nobody ever asks where the rest goes. Asking is a good way to come home Hollow." }
+      { "Id": "a", "Speaker": "lead", "Next": "b" },
+      { "Id": "b", "Speaker": "merchant" }
     ]
   },
   {
@@ -283,16 +283,16 @@
       { "Id": "recruit", "Class": "$recruit" }
     ],
     "Nodes": [
-      { "Id": "meet", "Speaker": "recruit", "Text": "You're the ones who stole the Concord wagons? I watched from the ridge. Didn't think three of you would still be standing.", "Next": "reply" },
+      { "Id": "meet", "Speaker": "recruit", "Next": "reply" },
       {
-        "Id": "reply", "Speaker": "lead", "Text": "We nearly weren't. We could use another pair of hands, if you're offering.",
+        "Id": "reply", "Speaker": "lead",
         "Choices": [
-          { "Label": "Join us.", "Next": "joined" },
-          { "Label": "The road is dangerous.", "Next": "warned" }
+          { "Next": "joined" },
+          { "Next": "warned" }
         ]
       },
-      { "Id": "warned", "Speaker": "recruit", "Text": "Dangerous is why I'm out here instead of in a queue outside a Still. I can handle it.", "Next": "joined" },
-      { "Id": "joined", "Speaker": "recruit", "Text": "Then that's settled. Where you're headed, you'll want someone who can still throw a spell without asking the Choir's leave.", "Effects": [ { "Type": "JoinHero", "Id": "redmage", "Role": "Mage" } ] }
+      { "Id": "warned", "Speaker": "recruit", "Next": "joined" },
+      { "Id": "joined", "Speaker": "recruit", "Effects": [ { "Type": "JoinHero", "Id": "redmage", "Role": "Mage" } ] }
     ]
   },
   {
@@ -304,17 +304,17 @@
       { "Id": "innkeeper", "Name": "Innkeeper", "Portrait": "pandagirl" }
     ],
     "Nodes": [
-      { "Id": "one", "Speaker": "lead", "Text": "That's the road clear behind us, for now. First time any of us has stopped moving since the dome.", "Next": "two" },
-      { "Id": "two", "Speaker": "innkeeper", "Text": "And you look it. You left without paying your tab, by the way. All of you. I hid you in my cellar and you didn't even say goodbye.", "Next": "ask" },
+      { "Id": "one", "Speaker": "lead", "Next": "two" },
+      { "Id": "two", "Speaker": "innkeeper", "Next": "ask" },
       {
-        "Id": "ask", "Speaker": "innkeeper", "Text": "They came back for the tavern after you ran. There's nothing left in Saltmoss to keep. So -- my wagon's got real beds. Shall I hitch it to yours?",
+        "Id": "ask", "Speaker": "innkeeper",
         "Choices": [
-          { "Label": "Please do.", "Next": "joined", "Effects": [ { "Type": "JoinNpc", "Id": "innkeeper" } ] },
-          { "Label": "We can't pay much.", "Next": "cheap", "Effects": [ { "Type": "JoinNpc", "Id": "innkeeper" } ] }
+          { "Next": "joined", "Effects": [ { "Type": "JoinNpc", "Id": "innkeeper" } ] },
+          { "Next": "cheap", "Effects": [ { "Type": "JoinNpc", "Id": "innkeeper" } ] }
         ]
       },
-      { "Id": "cheap", "Speaker": "innkeeper", "Text": "You never could. I kept a tab anyway. Some habits are worth keeping.", "Next": "joined" },
-      { "Id": "joined", "Speaker": "innkeeper", "Text": "Good. Rest at camp whenever the road wears you down. Running is a long business. You're allowed to sit." }
+      { "Id": "cheap", "Speaker": "innkeeper", "Next": "joined" },
+      { "Id": "joined", "Speaker": "innkeeper" }
     ]
   },
   {
@@ -326,17 +326,17 @@
       { "Id": "lead", "Class": "$lead" }
     ],
     "Nodes": [
-      { "Id": "hail", "Speaker": "smith", "Text": "That gear of yours is chewed half through. Whatever you've been fighting, it's eating your steel faster than you can swing it.", "Next": "reply" },
-      { "Id": "reply", "Speaker": "lead", "Text": "Faster than we'd like. Can it be mended?", "Next": "ask" },
+      { "Id": "hail", "Speaker": "smith", "Next": "reply" },
+      { "Id": "reply", "Speaker": "lead", "Next": "ask" },
       {
-        "Id": "ask", "Speaker": "smith", "Text": "By me? Yes. The Captain wanted my anvil for his militia, and I swore on my hold's shield I'd never forge for a man who sold us. Take me along and you'll never fight on a notched blade again.",
+        "Id": "ask", "Speaker": "smith",
         "Choices": [
-          { "Label": "Bring your anvil.", "Next": "joined", "Effects": [ { "Type": "JoinNpc", "Id": "blacksmith" } ] },
-          { "Label": "Prove it first.", "Next": "proof" }
+          { "Next": "joined", "Effects": [ { "Type": "JoinNpc", "Id": "blacksmith" } ] },
+          { "Next": "proof" }
         ]
       },
-      { "Id": "proof", "Speaker": "smith", "Text": "Fair. Bring the worst of it to my forge-cart at camp and watch. It'll come back whole before your stew's cold.", "Effects": [ { "Type": "JoinNpc", "Id": "blacksmith" } ], "Next": "joined" },
-      { "Id": "joined", "Speaker": "smith", "Text": "Good. Find me at the forge-cart before something breaks. Once it shatters, there's nothing left to mend." }
+      { "Id": "proof", "Speaker": "smith", "Effects": [ { "Type": "JoinNpc", "Id": "blacksmith" } ], "Next": "joined" },
+      { "Id": "joined", "Speaker": "smith" }
     ]
   },
   {
@@ -348,16 +348,16 @@
       { "Id": "recruit", "Class": "$recruit" }
     ],
     "Nodes": [
-      { "Id": "meet", "Speaker": "recruit", "Text": "Oh, thank every working gear. The sand took my rig two days back, and the Concord dig out there isn't hiring.", "Next": "reply" },
+      { "Id": "meet", "Speaker": "recruit", "Next": "reply" },
       {
-        "Id": "reply", "Speaker": "lead", "Text": "Ride with us, then. We're crossing the Shardfall ourselves.",
+        "Id": "reply", "Speaker": "lead",
         "Choices": [
-          { "Label": "Join us.", "Next": "joined" },
-          { "Label": "The road is dangerous.", "Next": "warned" }
+          { "Next": "joined" },
+          { "Next": "warned" }
         ]
       },
-      { "Id": "warned", "Speaker": "recruit", "Text": "I've rebuilt worse than danger out of spare parts. Danger I can work with.", "Next": "joined" },
-      { "Id": "joined", "Speaker": "recruit", "Text": "Then my tools are yours. Fair warning -- I fix things that are already broken way better than I avoid breaking them.", "Effects": [ { "Type": "JoinHero", "Id": "engineer", "Role": "Support" } ] }
+      { "Id": "warned", "Speaker": "recruit", "Next": "joined" },
+      { "Id": "joined", "Speaker": "recruit", "Effects": [ { "Type": "JoinHero", "Id": "engineer", "Role": "Support" } ] }
     ]
   },
   {
@@ -369,17 +369,17 @@
       { "Id": "lead", "Class": "$lead" }
     ],
     "Nodes": [
-      { "Id": "hail", "Speaker": "alchemist", "Text": "Hold on -- what's that hanging off your packs? Pelts, wings, glands... Most crews sell those for coppers. Bottled right, they close a wound.", "Next": "reply" },
-      { "Id": "reply", "Speaker": "lead", "Text": "What are you doing all the way out here?", "Next": "ask" },
+      { "Id": "hail", "Speaker": "alchemist", "Next": "reply" },
+      { "Id": "reply", "Speaker": "lead", "Next": "ask" },
       {
-        "Id": "ask", "Speaker": "alchemist", "Text": "Hiding, mostly. I cut splices in the underspire. I know what a graft costs, and I'm done charging it. Potions cost less. Need a brewer?",
+        "Id": "ask", "Speaker": "alchemist",
         "Choices": [
-          { "Label": "Join us.", "Next": "joined", "Effects": [ { "Type": "JoinNpc", "Id": "alchemist" } ] },
-          { "Label": "Is it safe?", "Next": "safe" }
+          { "Next": "joined", "Effects": [ { "Type": "JoinNpc", "Id": "alchemist" } ] },
+          { "Next": "safe" }
         ]
       },
-      { "Id": "safe", "Speaker": "alchemist", "Text": "Safer than a splice. I'm coming either way -- the Shardfall's no place to brew alone, and the Ember wants my old clients back.", "Effects": [ { "Type": "JoinNpc", "Id": "alchemist" } ], "Next": "joined" },
-      { "Id": "joined", "Speaker": "alchemist", "Text": "Good. Here -- a clean bottle for your first brew. Find me at camp with those trophies; the Merchant sells more bottles for a few coins.", "Effects": [ { "Type": "GrantItem", "Id": "empty_bottle", "Amount": 1 } ] }
+      { "Id": "safe", "Speaker": "alchemist", "Effects": [ { "Type": "JoinNpc", "Id": "alchemist" } ], "Next": "joined" },
+      { "Id": "joined", "Speaker": "alchemist", "Effects": [ { "Type": "GrantItem", "Id": "empty_bottle", "Amount": 1 } ] }
     ]
   },
   {
@@ -391,8 +391,8 @@
       { "Id": "merchant", "Name": "Lantern Merchant", "Portrait": "courier" }
     ],
     "Nodes": [
-      { "Id": "a", "Speaker": "lead", "Text": "Who keeps all these lanterns lit?", "Next": "b" },
-      { "Id": "b", "Speaker": "merchant", "Text": "Nobody, and everybody. Keep to the light, keep the wagon moving, and don't stop where the stairs narrow. That's where the masks wait." }
+      { "Id": "a", "Speaker": "lead", "Next": "b" },
+      { "Id": "b", "Speaker": "merchant" }
     ]
   },
   {
@@ -404,8 +404,8 @@
       { "Id": "alchemist", "Name": "Alchemist", "Portrait": "alchemist" }
     ],
     "Nodes": [
-      { "Id": "a", "Speaker": "lead", "Text": "The Concord's not mining stone out here. Those packs fill straight from the shard. It's aether. The whole thing's full of it.", "Next": "b" },
-      { "Id": "b", "Speaker": "alchemist", "Text": "Then the moon's made of what it pulls. Every life it's ever tugged on, packed in like honey. ...I'd rather not know that, thanks." }
+      { "Id": "a", "Speaker": "lead", "Next": "b" },
+      { "Id": "b", "Speaker": "alchemist" }
     ]
   },
   {
@@ -417,16 +417,16 @@
       { "Id": "recruit", "Class": "$recruit" }
     ],
     "Nodes": [
-      { "Id": "meet", "Speaker": "recruit", "Text": "Who rides the ice so close to the arches? Answer slow. I've had worse than bandits on this pass.", "Next": "reply" },
+      { "Id": "meet", "Speaker": "recruit", "Next": "reply" },
       {
-        "Id": "reply", "Speaker": "lead", "Text": "Runaways from the tithe, with a stolen caravan. If you'll have us.",
+        "Id": "reply", "Speaker": "lead",
         "Choices": [
-          { "Label": "Join us.", "Next": "joined" },
-          { "Label": "The road is dangerous.", "Next": "warned" }
+          { "Next": "joined" },
+          { "Next": "warned" }
         ]
       },
-      { "Id": "warned", "Speaker": "recruit", "Text": "I've held this pass alone a full winter. Danger and I are on first-name terms.", "Next": "joined" },
-      { "Id": "joined", "Speaker": "recruit", "Text": "Then my shield rides with you. I swore to guard the holds, and nobody said the holds were only stone.", "Effects": [ { "Type": "JoinHero", "Id": "knight", "Role": "Tank" } ] }
+      { "Id": "warned", "Speaker": "recruit", "Next": "joined" },
+      { "Id": "joined", "Speaker": "recruit", "Effects": [ { "Type": "JoinHero", "Id": "knight", "Role": "Tank" } ] }
     ]
   },
   {
@@ -438,8 +438,8 @@
       { "Id": "smith", "Name": "Blacksmith", "Portrait": "tinkerer" }
     ],
     "Nodes": [
-      { "Id": "a", "Speaker": "lead", "Text": "Look at the beams. The arch keeps a thread of it. The rest keeps going. All the way south.", "Next": "b" },
-      { "Id": "b", "Speaker": "smith", "Text": "I've built enough to know a forge from a pipe. That arch isn't using the light. It's carrying it. Straight to Halcyon. Straight up the Hierarch's spire." }
+      { "Id": "a", "Speaker": "lead", "Next": "b" },
+      { "Id": "b", "Speaker": "smith" }
     ]
   },
   {
@@ -451,10 +451,10 @@
       { "Id": "enchantress", "Name": "Enchantress", "Portrait": "whitewitch" }
     ],
     "Nodes": [
-      { "Id": "a", "Speaker": "lead", "Text": "They're just standing there. In a line, all the way to the tanks. I know that coat -- he sold us onions on the moor road.", "Next": "b" },
-      { "Id": "b", "Speaker": "enchantress", "Text": "They always come back to the Still. It's the last thing the hymn leaves them. I used to sing the line forward.", "Next": "c" },
-      { "Id": "c", "Speaker": "lead", "Text": "Forward to what?", "Next": "d" },
-      { "Id": "d", "Speaker": "enchantress", "Text": "To the tanks. When we're close enough, look inside one. Then tell me the Concord is holding up the moon." }
+      { "Id": "a", "Speaker": "lead", "Next": "b" },
+      { "Id": "b", "Speaker": "enchantress", "Next": "c" },
+      { "Id": "c", "Speaker": "lead", "Next": "d" },
+      { "Id": "d", "Speaker": "enchantress" }
     ]
   },
   {
@@ -466,16 +466,16 @@
       { "Id": "recruit", "Class": "$recruit" }
     ],
     "Nodes": [
-      { "Id": "meet", "Speaker": "recruit", "Text": "Hold still. You're bleeding from that last stretch of street and you don't even know it.", "Next": "reply" },
+      { "Id": "meet", "Speaker": "recruit", "Next": "reply" },
       {
-        "Id": "reply", "Speaker": "lead", "Text": "Mend us, and come with us. We won't say no to either.",
+        "Id": "reply", "Speaker": "lead",
         "Choices": [
-          { "Label": "Join us.", "Next": "joined" },
-          { "Label": "The road is dangerous.", "Next": "warned" }
+          { "Next": "joined" },
+          { "Next": "warned" }
         ]
       },
-      { "Id": "warned", "Speaker": "recruit", "Text": "The spire is worse than anything on the road behind you. I'd rather climb it with company.", "Next": "joined" },
-      { "Id": "joined", "Speaker": "recruit", "Text": "Then I'll keep you standing. Whoever's been living off this city's blood, we'll see them sit down for once.", "Effects": [ { "Type": "JoinHero", "Id": "sage", "Role": "Healer" } ] }
+      { "Id": "warned", "Speaker": "recruit", "Next": "joined" },
+      { "Id": "joined", "Speaker": "recruit", "Effects": [ { "Type": "JoinHero", "Id": "sage", "Role": "Healer" } ] }
     ]
   },
   {
@@ -487,8 +487,8 @@
       { "Id": "innkeeper", "Name": "Innkeeper", "Portrait": "pandagirl" }
     ],
     "Nodes": [
-      { "Id": "a", "Speaker": "lead", "Text": "There it is. The spire. Every tithe from every hold, all of it pouring into one tower.", "Next": "b" },
-      { "Id": "b", "Speaker": "innkeeper", "Text": "Then let's go and get Saltmoss's share back. I left a tab open at home. I'd like the town there when I go to close it." }
+      { "Id": "a", "Speaker": "lead", "Next": "b" },
+      { "Id": "b", "Speaker": "innkeeper" }
     ]
   },
   {
@@ -500,8 +500,8 @@
       { "Id": "enchantress", "Name": "Enchantress", "Portrait": "whitewitch" }
     ],
     "Nodes": [
-      { "Id": "a", "Speaker": "lead", "Text": "Listen. The whole spire is humming.", "Next": "b" },
-      { "Id": "b", "Speaker": "enchantress", "Text": "That's the organ. The Choir sings the tithe up into the pipes, and he drinks from them. Silence the Choir and the pipes run dry." }
+      { "Id": "a", "Speaker": "lead", "Next": "b" },
+      { "Id": "b", "Speaker": "enchantress" }
     ]
   },
   {
@@ -513,8 +513,8 @@
       { "Id": "merchant", "Name": "Lantern Merchant", "Portrait": "courier" }
     ],
     "Nodes": [
-      { "Id": "a", "Speaker": "lead", "Text": "Red flowers on Concord stone. This is where the reservoir came down.", "Next": "b" },
-      { "Id": "b", "Speaker": "merchant", "Text": "And everyone's already here for it. Redline with knives, the Red Seal with torches. Pick a side before the Bloom picks for you." }
+      { "Id": "a", "Speaker": "lead", "Next": "b" },
+      { "Id": "b", "Speaker": "merchant" }
     ]
   },
   {
@@ -526,8 +526,8 @@
       { "Id": "merchant", "Name": "Lantern Merchant", "Portrait": "courier" }
     ],
     "Nodes": [
-      { "Id": "a", "Speaker": "lead", "Text": "The light came down all over. I saw it. So why are these holds still Hollow?", "Next": "b" },
-      { "Id": "b", "Speaker": "merchant", "Text": "Rain never falls everywhere. And Redline's selling dried Bloom out here like it's a cure. Hope's a good product. It always sells twice." }
+      { "Id": "a", "Speaker": "lead", "Next": "b" },
+      { "Id": "b", "Speaker": "merchant" }
     ]
   },
   {
@@ -539,8 +539,8 @@
       { "Id": "alchemist", "Name": "Alchemist", "Portrait": "alchemist" }
     ],
     "Nodes": [
-      { "Id": "a", "Speaker": "lead", "Text": "No digs, no walkers, no Concord. The Shardfall's just... open now.", "Next": "b" },
-      { "Id": "b", "Speaker": "alchemist", "Text": "And the Ember's noticed. They're marching for the Anchors. I used to sell them splices. Believe me -- they mean the 'coming home' part." }
+      { "Id": "a", "Speaker": "lead", "Next": "b" },
+      { "Id": "b", "Speaker": "alchemist" }
     ]
   },
   {
@@ -552,8 +552,8 @@
       { "Id": "enchantress", "Name": "Enchantress", "Portrait": "whitewitch" }
     ],
     "Nodes": [
-      { "Id": "a", "Speaker": "lead", "Text": "The Lich is offering passage on the Long Patience. Away from Morrow. Anyone who wants it.", "Next": "b" },
-      { "Id": "b", "Speaker": "enchantress", "Text": "The Choir taught me one hymn for holding on and one for letting go. Nobody ever told me which was right. I don't think anyone knows." }
+      { "Id": "a", "Speaker": "lead", "Next": "b" },
+      { "Id": "b", "Speaker": "enchantress" }
     ]
   },
   {
@@ -565,8 +565,8 @@
       { "Id": "smith", "Name": "Blacksmith", "Portrait": "tinkerer" }
     ],
     "Nodes": [
-      { "Id": "a", "Speaker": "lead", "Text": "Stairs. Under the Anchors. Cut before the Anchors were.", "Next": "b" },
-      { "Id": "b", "Speaker": "smith", "Text": "Then the arches weren't built to push the moon away. Not only that. They were built to hold something down. I'd like to know what." }
+      { "Id": "a", "Speaker": "lead", "Next": "b" },
+      { "Id": "b", "Speaker": "smith" }
     ]
   },
   {
@@ -578,8 +578,8 @@
       { "Id": "innkeeper", "Name": "Innkeeper", "Portrait": "pandagirl" }
     ],
     "Nodes": [
-      { "Id": "a", "Speaker": "lead", "Text": "The Choir, the Red Seal, the Street. Every one of them wants the top of that spire now.", "Next": "b" },
-      { "Id": "b", "Speaker": "innkeeper", "Text": "And every one of them has a speech. Nobody wants the job the spire actually needs. Funny how that goes." }
+      { "Id": "a", "Speaker": "lead", "Next": "b" },
+      { "Id": "b", "Speaker": "innkeeper" }
     ]
   },
   {
@@ -591,8 +591,8 @@
       { "Id": "enchantress", "Name": "Enchantress", "Portrait": "whitewitch" }
     ],
     "Nodes": [
-      { "Id": "a", "Speaker": "lead", "Text": "The rocks are falling up. Is that the moon doing that?", "Next": "b" },
-      { "Id": "b", "Speaker": "enchantress", "Text": "That's the Nearing. The Ember came out here to sing it closer. Whatever we find under that face, we find it together." }
+      { "Id": "a", "Speaker": "lead", "Next": "b" },
+      { "Id": "b", "Speaker": "enchantress" }
     ]
   },
   {
@@ -604,17 +604,17 @@
       { "Id": "lead", "Class": "$lead" }
     ],
     "Nodes": [
-      { "Id": "hail", "Speaker": "enchantress", "Text": "You heard me humming in the fog and came looking. Brave. That armor's honest work -- but it's only leather and stitching. It could hold more.", "Next": "reply" },
-      { "Id": "reply", "Speaker": "lead", "Text": "Hold more how? Who are you?", "Next": "ask" },
+      { "Id": "hail", "Speaker": "enchantress", "Next": "reply" },
+      { "Id": "reply", "Speaker": "lead", "Next": "ask" },
       {
-        "Id": "ask", "Speaker": "enchantress", "Text": "I sang in the Choir, once. I still hear the hymn. I won't sing it. But a note bound into what you wear doesn't take -- it guards. Knits wounds. Keeps venom out. Bites back.",
+        "Id": "ask", "Speaker": "enchantress",
         "Choices": [
-          { "Label": "Then come with us.", "Next": "joined", "Effects": [ { "Type": "JoinNpc", "Id": "enchantress" } ] },
-          { "Label": "Show us a rune.", "Next": "rune" }
+          { "Next": "joined", "Effects": [ { "Type": "JoinNpc", "Id": "enchantress" } ] },
+          { "Next": "rune" }
         ]
       },
-      { "Id": "rune", "Speaker": "enchantress", "Text": "Fair enough. There. Bound into the stitch, not sung into the air. The Choir would call that a waste. I call it a coat.", "Effects": [ { "Type": "JoinNpc", "Id": "enchantress" } ], "Next": "joined" },
-      { "Id": "joined", "Speaker": "enchantress", "Text": "Good. Take this pinch of Arcane Dust -- bring it to my table with a few trophies from the road, and I'll bind your first rune into that armor for nothing.", "Effects": [ { "Type": "GrantItem", "Id": "mat_arcane_dust", "Amount": 1 } ] }
+      { "Id": "rune", "Speaker": "enchantress", "Effects": [ { "Type": "JoinNpc", "Id": "enchantress" } ], "Next": "joined" },
+      { "Id": "joined", "Speaker": "enchantress", "Effects": [ { "Type": "GrantItem", "Id": "mat_arcane_dust", "Amount": 1 } ] }
     ]
   },
   {
@@ -626,8 +626,8 @@
       { "Id": "enchantress", "Name": "Enchantress", "Portrait": "whitewitch" }
     ],
     "Nodes": [
-      { "Id": "a", "Speaker": "lead", "Text": "The log's still legible. Last entry: 'Concord frigates off the bow. Ordered to land. Captain refuses.' ...Then nothing.", "Next": "b" },
-      { "Id": "b", "Speaker": "enchantress", "Text": "They told us the Arks fell because Morrow pulled too hard. The Concord grounded them. Nobody was allowed to leave the tithe. Not then. Not now." }
+      { "Id": "a", "Speaker": "lead", "Next": "b" },
+      { "Id": "b", "Speaker": "enchantress" }
     ]
   },
   {
@@ -639,26 +639,26 @@
     ],
     "Nodes": [
       {
-        "Id": "greet", "Speaker": "merchant", "Text": "Welcome back. Wares, news, or just killing time before the next road?",
+        "Id": "greet", "Speaker": "merchant",
         "Choices": [
-          { "Label": "About that map...", "Next": "map", "Conditions": [ { "Type": "FlagSet", "Id": "bought_map" } ] },
+          { "Next": "map", "Conditions": [ { "Type": "FlagSet", "Id": "bought_map" } ] },
           {
-            "Label": "Sorry we turned you away.", "Next": "forgiven",
+            "Next": "forgiven",
             "Conditions": [ { "Type": "FlagSet", "Id": "merchant_snubbed" } ],
             "Effects": [ { "Type": "ClearFlag", "Id": "merchant_snubbed" } ]
           },
           {
-            "Label": "Can your guard join us? (300 G)", "Next": "hired",
+            "Next": "hired",
             "Conditions": [ { "Type": "GoldAtLeast", "Amount": 300 }, { "Type": "RosterLacks", "Id": "sellsword" } ],
             "Effects": [ { "Type": "GrantGold", "Amount": -300 }, { "Type": "RecruitHero", "Id": "sellsword" } ]
           },
-          { "Label": "Just passing by.", "Next": "bye" }
+          { "Next": "bye" }
         ]
       },
-      { "Id": "map", "Speaker": "merchant", "Text": "Good as far as the Shardfall. Past that, you're trusting the same ruts I am.", "Next": "greet" },
-      { "Id": "forgiven", "Speaker": "merchant", "Text": "Already forgotten. A crew that turns away strangers on a tithe road isn't wrong to, most days." },
-      { "Id": "hired", "Speaker": "merchant", "Text": "Good. Treat my guard well -- he's saved my hide more often than that map has." },
-      { "Id": "bye", "Speaker": "merchant", "Text": "Safe roads. Keep your lantern low near the domes." }
+      { "Id": "map", "Speaker": "merchant", "Next": "greet" },
+      { "Id": "forgiven", "Speaker": "merchant" },
+      { "Id": "hired", "Speaker": "merchant" },
+      { "Id": "bye", "Speaker": "merchant" }
     ]
   },
   {
@@ -668,14 +668,14 @@
     "Speakers": [ { "Id": "innkeeper", "Name": "Innkeeper", "Portrait": "pandagirl" } ],
     "Nodes": [
       {
-        "Id": "greet", "Speaker": "innkeeper", "Text": "Beds are made, water's hot. What's keeping you up?",
+        "Id": "greet", "Speaker": "innkeeper",
         "Choices": [
-          { "Label": "Any news from the road?", "Next": "news" },
-          { "Label": "Goodnight.", "Next": "bye" }
+          { "Next": "news" },
+          { "Next": "bye" }
         ]
       },
-      { "Id": "news", "Speaker": "innkeeper", "Text": "Travelers talk when they're warm and fed. I just listen. You'd be surprised how many tithe-wardens hate the tithe.", "Next": "greet" },
-      { "Id": "bye", "Speaker": "innkeeper", "Text": "Sleep while you can. Morrow's not going anywhere -- that's the whole trouble -- but you've earned the night." }
+      { "Id": "news", "Speaker": "innkeeper", "Next": "greet" },
+      { "Id": "bye", "Speaker": "innkeeper" }
     ]
   },
   {
@@ -685,14 +685,14 @@
     "Speakers": [ { "Id": "smith", "Name": "Blacksmith", "Portrait": "tinkerer" } ],
     "Nodes": [
       {
-        "Id": "greet", "Speaker": "smith", "Text": "Mind the sparks. What do you need -- mended, or melted down?",
+        "Id": "greet", "Speaker": "smith",
         "Choices": [
-          { "Label": "Where did you learn the trade?", "Next": "trade" },
-          { "Label": "Carry on.", "Next": "bye" }
+          { "Next": "trade" },
+          { "Next": "bye" }
         ]
       },
-      { "Id": "trade", "Speaker": "smith", "Text": "My mother's forge, in a hold that kept its own militia. She made shields for people, not for whoever paid the Concord. I'm trying to be her.", "Next": "greet" },
-      { "Id": "bye", "Speaker": "smith", "Text": "Bring me something broken. There's always something broken." }
+      { "Id": "trade", "Speaker": "smith", "Next": "greet" },
+      { "Id": "bye", "Speaker": "smith" }
     ]
   },
   {
@@ -702,14 +702,14 @@
     "Speakers": [ { "Id": "alchemist", "Name": "Alchemist", "Portrait": "alchemist" } ],
     "Nodes": [
       {
-        "Id": "greet", "Speaker": "alchemist", "Text": "Don't touch the green one. What do you need?",
+        "Id": "greet", "Speaker": "alchemist",
         "Choices": [
-          { "Label": "What does the green one do?", "Next": "green" },
-          { "Label": "I'll leave you to it.", "Next": "bye" }
+          { "Next": "green" },
+          { "Next": "bye" }
         ]
       },
-      { "Id": "green", "Speaker": "alchemist", "Text": "Not entirely sure yet. In the underspire I'd have sold it anyway. Out here, it stays in the flask until I am.", "Next": "greet" },
-      { "Id": "bye", "Speaker": "alchemist", "Text": "Bring me reagents. The good kind come off the things that still twitch after you've killed them." }
+      { "Id": "green", "Speaker": "alchemist", "Next": "greet" },
+      { "Id": "bye", "Speaker": "alchemist" }
     ]
   },
   {
@@ -719,14 +719,14 @@
     "Speakers": [ { "Id": "enchantress", "Name": "Enchantress", "Portrait": "whitewitch" } ],
     "Nodes": [
       {
-        "Id": "greet", "Speaker": "enchantress", "Text": "The hymn's loud tonight. What do you need?",
+        "Id": "greet", "Speaker": "enchantress",
         "Choices": [
-          { "Label": "Loud how?", "Next": "runes" },
-          { "Label": "Goodnight.", "Next": "bye" }
+          { "Next": "runes" },
+          { "Next": "bye" }
         ]
       },
-      { "Id": "runes", "Speaker": "enchantress", "Text": "There's a Still somewhere near. I can hear it singing someone out. I hum over it. It doesn't help them. It helps me.", "Next": "greet" },
-      { "Id": "bye", "Speaker": "enchantress", "Text": "Sleep lightly. I'll be listening." }
+      { "Id": "runes", "Speaker": "enchantress", "Next": "greet" },
+      { "Id": "bye", "Speaker": "enchantress" }
     ]
   },
   {
@@ -738,16 +738,16 @@
     ],
     "Nodes": [
       {
-        "Id": "open", "Speaker": "hero", "Text": "Didn't think I'd ever leave Saltmoss, if I'm honest. Now I can't picture going back. Strange how fast normal changes.",
+        "Id": "open", "Speaker": "hero",
         "Choices": [
-          { "Label": "How are you holding up?", "Next": "holding" },
-          { "Label": "What do you make of the merchant?", "Next": "merchant", "Conditions": [ { "Type": "NpcJoined", "Id": "merchant" } ] },
-          { "Label": "Rest well.", "Next": "rest" }
+          { "Next": "holding" },
+          { "Next": "merchant", "Conditions": [ { "Type": "NpcJoined", "Id": "merchant" } ] },
+          { "Next": "rest" }
         ]
       },
-      { "Id": "holding", "Speaker": "hero", "Text": "Tired. Everyone's tired. But we're still us. Nobody sang us out. That counts for something.", "Next": "open" },
-      { "Id": "merchant", "Speaker": "hero", "Text": "Sells to the Concord, sells to us, never says a word about either. I don't trust it. I'm glad of it, though." },
-      { "Id": "rest", "Speaker": "hero", "Text": "You too. Try to actually sleep. The moon'll still be up there in the morning. Unfortunately." }
+      { "Id": "holding", "Speaker": "hero", "Next": "open" },
+      { "Id": "merchant", "Speaker": "hero" },
+      { "Id": "rest", "Speaker": "hero" }
     ]
   },
   {
@@ -759,15 +759,15 @@
     ],
     "Nodes": [
       {
-        "Id": "ask", "Speaker": "hero", "Text": "By my hold's oath, I keep this tile. I kept it all fight. The wagons are fine. So why do I feel like I lost?",
+        "Id": "ask", "Speaker": "hero",
         "Choices": [
-          { "Label": "Because a kept tile isn't a won fight. Step out and hit when the gap opens.", "Next": "right", "Effects": [ { "Type": "GrantSkillPoint", "Id": "$with" } ] },
-          { "Label": "You didn't lose. An oath kept to the letter is a victory.", "Next": "wrong" },
-          { "Label": "Keep it harder. Dig in and let them break on you.", "Next": "wrong" }
+          { "Next": "right", "Effects": [ { "Type": "GrantSkillPoint", "Id": "$with" } ] },
+          { "Next": "wrong" },
+          { "Next": "wrong" }
         ]
       },
-      { "Id": "right", "Speaker": "hero", "Text": "Step out when the gap opens. ...The oath said 'keep.' It never said 'stand there.'" },
-      { "Id": "wrong", "Speaker": "hero", "Text": "Kept to the letter. Aye. The letter's cold company, though." }
+      { "Id": "right", "Speaker": "hero" },
+      { "Id": "wrong", "Speaker": "hero" }
     ]
   },
   {
@@ -779,15 +779,15 @@
     ],
     "Nodes": [
       {
-        "Id": "ask", "Speaker": "hero", "Text": "I swore to my hold's lord. He took the Concord's exemption and sold us. Is a knight still bound to a sold oath?",
+        "Id": "ask", "Speaker": "hero",
         "Choices": [
-          { "Label": "No. Swear yourself to the Concord -- at least they keep their word.", "Next": "wrong" },
-          { "Label": "The oath was to the people, not the man who sold them. Keep it for them.", "Next": "right", "Effects": [ { "Type": "GrantSkillPoint", "Id": "$with" } ] },
-          { "Label": "Oaths are for fools. Look after yourself now.", "Next": "wrong" }
+          { "Next": "wrong" },
+          { "Next": "right", "Effects": [ { "Type": "GrantSkillPoint", "Id": "$with" } ] },
+          { "Next": "wrong" }
         ]
       },
-      { "Id": "right", "Speaker": "hero", "Text": "For the people, not the man. ...Then I am still sworn. That steadies the arm." },
-      { "Id": "wrong", "Speaker": "hero", "Text": "Perhaps. Yet the sword sits strangely in a hand that owes no one." }
+      { "Id": "right", "Speaker": "hero" },
+      { "Id": "wrong", "Speaker": "hero" }
     ]
   },
   {
@@ -799,15 +799,15 @@
     ],
     "Nodes": [
       {
-        "Id": "ask", "Speaker": "hero", "Text": "The Barbarian broke three skulls today. I broke none. By the holds, should I trade my mending for a heavier swing?",
+        "Id": "ask", "Speaker": "hero",
         "Choices": [
-          { "Label": "Yes. A paladin who can't out-hit a barbarian is just a nurse in mail.", "Next": "wrong" },
-          { "Label": "Drop the mending and let the healers handle it.", "Next": "wrong" },
-          { "Label": "Keep the mending. Your oath is to keep them standing, not to win the skull count.", "Next": "right", "Effects": [ { "Type": "GrantSkillPoint", "Id": "$with" } ] }
+          { "Next": "wrong" },
+          { "Next": "wrong" },
+          { "Next": "right", "Effects": [ { "Type": "GrantSkillPoint", "Id": "$with" } ] }
         ]
       },
-      { "Id": "right", "Speaker": "hero", "Text": "Keep them standing. Aye -- that's the vow. Now hold still, that cut's mine first." },
-      { "Id": "wrong", "Speaker": "hero", "Text": "Mayhap. Hold still while we argue -- you're bleeding on my tabard." }
+      { "Id": "right", "Speaker": "hero" },
+      { "Id": "wrong", "Speaker": "hero" }
     ]
   },
   {
@@ -819,15 +819,15 @@
     ],
     "Nodes": [
       {
-        "Id": "ask", "Speaker": "hero", "Text": "Drilled with the hold militia twelve years. Wait for the horn, then advance. Out here there's no horn. So I wait.",
+        "Id": "ask", "Speaker": "hero",
         "Choices": [
-          { "Label": "Be your own horn. When the moment's there, you sound it.", "Next": "right", "Effects": [ { "Type": "GrantSkillPoint", "Id": "$with" } ] },
-          { "Label": "Waiting is discipline. The horn will come.", "Next": "wrong" },
-          { "Label": "Ask the Captain's men. They still have horns.", "Next": "wrong" }
+          { "Next": "right", "Effects": [ { "Type": "GrantSkillPoint", "Id": "$with" } ] },
+          { "Next": "wrong" },
+          { "Next": "wrong" }
         ]
       },
-      { "Id": "right", "Speaker": "hero", "Text": "My own horn. ...Advance on my mark. Mark. Huh. That felt good." },
-      { "Id": "wrong", "Speaker": "hero", "Text": "Hold for the horn, then. Steady. ...Any moment now." }
+      { "Id": "right", "Speaker": "hero" },
+      { "Id": "wrong", "Speaker": "hero" }
     ]
   },
   {
@@ -839,15 +839,15 @@
     ],
     "Nodes": [
       {
-        "Id": "ask", "Speaker": "hero", "Text": "Back in the hold they called me 'the Door.' Stand in it, take the hits. Is that all I'm sworn to be?",
+        "Id": "ask", "Speaker": "hero",
         "Choices": [
-          { "Label": "That's all. Doors don't need to think.", "Next": "wrong" },
-          { "Label": "A door also decides who gets through. Choose where you stand, not just how long.", "Next": "right", "Effects": [ { "Type": "GrantSkillPoint", "Id": "$with" } ] },
-          { "Label": "Get a new name. 'Door' isn't heroic.", "Next": "wrong" }
+          { "Next": "wrong" },
+          { "Next": "right", "Effects": [ { "Type": "GrantSkillPoint", "Id": "$with" } ] },
+          { "Next": "wrong" }
         ]
       },
-      { "Id": "right", "Speaker": "hero", "Text": "Choose who gets through. ...A door with opinions. I like that more than I should." },
-      { "Id": "wrong", "Speaker": "hero", "Text": "Just the Door. Right. Somebody knock when it's my turn." }
+      { "Id": "right", "Speaker": "hero" },
+      { "Id": "wrong", "Speaker": "hero" }
     ]
   },
   {
@@ -859,15 +859,15 @@
     ],
     "Nodes": [
       {
-        "Id": "ask", "Speaker": "hero", "Text": "In my hold, the shield-wall swears together and breaks together. Here everyone runs their own way! Why won't they lock shields?",
+        "Id": "ask", "Speaker": "hero",
         "Choices": [
-          { "Label": "Shout the oath louder. They'll fall in.", "Next": "wrong" },
-          { "Label": "Forget the wall. Fight alone like they do.", "Next": "wrong" },
-          { "Label": "They're not your hold. Walk with them first -- then they'll stand with you.", "Next": "right", "Effects": [ { "Type": "GrantSkillPoint", "Id": "$with" } ] }
+          { "Next": "wrong" },
+          { "Next": "wrong" },
+          { "Next": "right", "Effects": [ { "Type": "GrantSkillPoint", "Id": "$with" } ] }
         ]
       },
-      { "Id": "right", "Speaker": "hero", "Text": "Walk with them first. Aye. A wall's built a stone at a time, not shouted into being." },
-      { "Id": "wrong", "Speaker": "hero", "Text": "Louder, then! By the old oath, they WILL lock shields. Eventually." }
+      { "Id": "right", "Speaker": "hero" },
+      { "Id": "wrong", "Speaker": "hero" }
     ]
   },
   {
@@ -879,15 +879,15 @@
     ],
     "Nodes": [
       {
-        "Id": "ask", "Speaker": "hero", "Text": "Forty winters I led the hold muster. Now a Street kid half my age calls the moves. I swore to lead, not to follow.",
+        "Id": "ask", "Speaker": "hero",
         "Choices": [
-          { "Label": "Leading means putting the right voice in front. Today that might be theirs.", "Next": "right", "Effects": [ { "Type": "GrantSkillPoint", "Id": "$with" } ] },
-          { "Label": "Then take the lead back. Age has earned it.", "Next": "wrong" },
-          { "Label": "Retire. The road is a young crew's game.", "Next": "wrong" }
+          { "Next": "right", "Effects": [ { "Type": "GrantSkillPoint", "Id": "$with" } ] },
+          { "Next": "wrong" },
+          { "Next": "wrong" }
         ]
       },
-      { "Id": "right", "Speaker": "hero", "Text": "The right voice in front. ...Fine. But the kid buys the first round when we win." },
-      { "Id": "wrong", "Speaker": "hero", "Text": "Earned it, aye. Strange how that doesn't make them listen." }
+      { "Id": "right", "Speaker": "hero" },
+      { "Id": "wrong", "Speaker": "hero" }
     ]
   },
   {
@@ -899,15 +899,15 @@
     ],
     "Nodes": [
       {
-        "Id": "ask", "Speaker": "hero", "Text": "The Red Seal Hollowed me. The Ember brought me back. It still whispers 'come home.' Is listening a sin, if it keeps me strong?",
+        "Id": "ask", "Speaker": "hero",
         "Choices": [
-          { "Label": "If it keeps you strong, use it. Strength is all that matters.", "Next": "wrong" },
-          { "Label": "Listening isn't the sin. Forgetting who you're strong for would be.", "Next": "right", "Effects": [ { "Type": "GrantSkillPoint", "Id": "$with" } ] },
-          { "Label": "Cut it out of you. Go back to the plain Red Seal blade.", "Next": "wrong" }
+          { "Next": "wrong" },
+          { "Next": "right", "Effects": [ { "Type": "GrantSkillPoint", "Id": "$with" } ] },
+          { "Next": "wrong" }
         ]
       },
-      { "Id": "right", "Speaker": "hero", "Text": "Strong for the crew, not for the Ember. ...I'll say that back to it, next time it whispers." },
-      { "Id": "wrong", "Speaker": "hero", "Text": "Use it, then. The sword agrees with you. That worries me." }
+      { "Id": "right", "Speaker": "hero" },
+      { "Id": "wrong", "Speaker": "hero" }
     ]
   },
   {
@@ -919,15 +919,15 @@
     ],
     "Nodes": [
       {
-        "Id": "ask", "Speaker": "hero", "Text": "Sorry -- I drained that brute to keep myself up. It feels like the Stills. Like taking. Am I a tithe-taker now? Sorry.",
+        "Id": "ask", "Speaker": "hero",
         "Choices": [
-          { "Label": "Yes. Stop. Taking is what the Concord does.", "Next": "wrong" },
-          { "Label": "Don't think about it. It works.", "Next": "wrong" },
-          { "Label": "Taking from a foe to protect the crew isn't the tithe. Feeling bad about it is how you know.", "Next": "right", "Effects": [ { "Type": "GrantSkillPoint", "Id": "$with" } ] }
+          { "Next": "wrong" },
+          { "Next": "wrong" },
+          { "Next": "right", "Effects": [ { "Type": "GrantSkillPoint", "Id": "$with" } ] }
         ]
       },
-      { "Id": "right", "Speaker": "hero", "Text": "Not the tithe. Oh. That's -- sorry. I mean, thank you. Truly." },
-      { "Id": "wrong", "Speaker": "hero", "Text": "Ah. Right. I'll... try not to think about it. Sorry." }
+      { "Id": "right", "Speaker": "hero" },
+      { "Id": "wrong", "Speaker": "hero" }
     ]
   },
   {
@@ -939,15 +939,15 @@
     ],
     "Nodes": [
       {
-        "Id": "ask", "Speaker": "hero", "Text": "I keep my best draughts in the satchel for an emergency. Twelve fights in, I still have all of them. Is that prudent?",
+        "Id": "ask", "Speaker": "hero",
         "Choices": [
-          { "Label": "That's hoarding. A draught saves nobody from inside a satchel.", "Next": "right", "Effects": [ { "Type": "GrantSkillPoint", "Id": "$with" } ] },
-          { "Label": "Very prudent. The real emergency hasn't come yet.", "Next": "wrong" },
-          { "Label": "Sell them. The Merchant pays well.", "Next": "wrong" }
+          { "Next": "right", "Effects": [ { "Type": "GrantSkillPoint", "Id": "$with" } ] },
+          { "Next": "wrong" },
+          { "Next": "wrong" }
         ]
       },
-      { "Id": "right", "Speaker": "hero", "Text": "Hoarding. ...The ledger never counts a bottle that stayed corked. I'll pour today." },
-      { "Id": "wrong", "Speaker": "hero", "Text": "Prudent, yes. The satchel is getting rather heavy, though." }
+      { "Id": "right", "Speaker": "hero" },
+      { "Id": "wrong", "Speaker": "hero" }
     ]
   },
   {
@@ -959,15 +959,15 @@
     ],
     "Nodes": [
       {
-        "Id": "ask", "Speaker": "hero", "Text": "That Choir singer was one blow from falling. I pushed to the front to finish it. The wounded waited. Did I do right?",
+        "Id": "ask", "Speaker": "hero",
         "Choices": [
-          { "Label": "Yes. A dead enemy hurts no one.", "Next": "wrong" },
-          { "Label": "No. The wounded were your work. Chasing a kill left them bleeding.", "Next": "right", "Effects": [ { "Type": "GrantSkillPoint", "Id": "$with" } ] },
-          { "Label": "Only if you're sure of the blow. Otherwise wait.", "Next": "wrong" }
+          { "Next": "wrong" },
+          { "Next": "right", "Effects": [ { "Type": "GrantSkillPoint", "Id": "$with" } ] },
+          { "Next": "wrong" }
         ]
       },
-      { "Id": "right", "Speaker": "hero", "Text": "My work is behind me, not in front. ...I'll stay where the hurt ones are." },
-      { "Id": "wrong", "Speaker": "hero", "Text": "A dead enemy hurts no one. True. It doesn't mend anyone, either." }
+      { "Id": "right", "Speaker": "hero" },
+      { "Id": "wrong", "Speaker": "hero" }
     ]
   },
   {
@@ -979,15 +979,15 @@
     ],
     "Nodes": [
       {
-        "Id": "ask", "Speaker": "hero", "Text": "Triage. Worst wound first. The one I treated last called me heartless. Is it heartless to be right?",
+        "Id": "ask", "Speaker": "hero",
         "Choices": [
-          { "Label": "Treat your friends first. That's loyalty.", "Next": "wrong" },
-          { "Label": "Treat the loud ones first. Keeps the peace.", "Next": "wrong" },
-          { "Label": "You were right. Now go tell them why -- the explaining is part of the medicine.", "Next": "right", "Effects": [ { "Type": "GrantSkillPoint", "Id": "$with" } ] }
+          { "Next": "wrong" },
+          { "Next": "wrong" },
+          { "Next": "right", "Effects": [ { "Type": "GrantSkillPoint", "Id": "$with" } ] }
         ]
       },
-      { "Id": "right", "Speaker": "hero", "Text": "Explaining is medicine. Fine. I'll go. After I check who's bleeding." },
-      { "Id": "wrong", "Speaker": "hero", "Text": "Noted. Next patient. Not you. Sit." }
+      { "Id": "right", "Speaker": "hero" },
+      { "Id": "wrong", "Speaker": "hero" }
     ]
   },
   {
@@ -999,15 +999,15 @@
     ],
     "Nodes": [
       {
-        "Id": "ask", "Speaker": "hero", "Text": "I read the signs: the Choir was going to sing the field cold. I knew three turns early. Nobody listened. Why?",
+        "Id": "ask", "Speaker": "hero",
         "Choices": [
-          { "Label": "Knowing early is worth nothing unless you say it plainly, in time to act.", "Next": "right", "Effects": [ { "Type": "GrantSkillPoint", "Id": "$with" } ] },
-          { "Label": "They're jealous. The wise are always alone.", "Next": "wrong" },
-          { "Label": "Stop reading signs. They only make you gloomy.", "Next": "wrong" }
+          { "Next": "right", "Effects": [ { "Type": "GrantSkillPoint", "Id": "$with" } ] },
+          { "Next": "wrong" },
+          { "Next": "wrong" }
         ]
       },
-      { "Id": "right", "Speaker": "hero", "Text": "Plainly, in time. ...The old books never mention that part. They should." },
-      { "Id": "wrong", "Speaker": "hero", "Text": "Alone, yes. As the books foretold. Remarkably unhelpful books." }
+      { "Id": "right", "Speaker": "hero" },
+      { "Id": "wrong", "Speaker": "hero" }
     ]
   },
   {
@@ -1019,15 +1019,15 @@
     ],
     "Nodes": [
       {
-        "Id": "ask", "Speaker": "hero", "Text": "My glow healed everyone at once after the big hit. It was beautiful, dear. Isn't that how a ward should work?",
+        "Id": "ask", "Speaker": "hero",
         "Choices": [
-          { "Label": "Yes. Beautiful is its own reward.", "Next": "wrong" },
-          { "Label": "A ward belongs before the blow. Healing after is mending, not warding.", "Next": "right", "Effects": [ { "Type": "GrantSkillPoint", "Id": "$with" } ] },
-          { "Label": "Skip the glow. Heal one at a time.", "Next": "wrong" }
+          { "Next": "wrong" },
+          { "Next": "right", "Effects": [ { "Type": "GrantSkillPoint", "Id": "$with" } ] },
+          { "Next": "wrong" }
         ]
       },
-      { "Id": "right", "Speaker": "hero", "Text": "Before the blow. How rude of me, keeping them waiting to get hurt. Thank you, dear." },
-      { "Id": "wrong", "Speaker": "hero", "Text": "So kind. I'm sure it'll all glow out somehow." }
+      { "Id": "right", "Speaker": "hero" },
+      { "Id": "wrong", "Speaker": "hero" }
     ]
   },
   {
@@ -1039,15 +1039,15 @@
     ],
     "Nodes": [
       {
-        "Id": "ask", "Speaker": "hero", "Text": "The road says: 'Still water, clear mind.' I sit still. My mind is clear. The fight goes on without me. Hm.",
+        "Id": "ask", "Speaker": "hero",
         "Choices": [
-          { "Label": "Then the proverb is true. Keep sitting.", "Next": "wrong" },
-          { "Label": "Stop meditating. Swing at things.", "Next": "wrong" },
-          { "Label": "Still water is clear because it moves underneath. Move between breaths.", "Next": "right", "Effects": [ { "Type": "GrantSkillPoint", "Id": "$with" } ] }
+          { "Next": "wrong" },
+          { "Next": "wrong" },
+          { "Next": "right", "Effects": [ { "Type": "GrantSkillPoint", "Id": "$with" } ] }
         ]
       },
-      { "Id": "right", "Speaker": "hero", "Text": "Move between breaths. ...The proverb was hiding that bit. Thank you." },
-      { "Id": "wrong", "Speaker": "hero", "Text": "True, true. The water is very clear. The fight is very loud." }
+      { "Id": "right", "Speaker": "hero" },
+      { "Id": "wrong", "Speaker": "hero" }
     ]
   },
   {
@@ -1059,15 +1059,15 @@
     ],
     "Nodes": [
       {
-        "Id": "ask", "Speaker": "hero", "Text": "I said the old Bloom-words over every wagon in Saltmoss before we ran. Surely that covers us all the way to Halcyon?",
+        "Id": "ask", "Speaker": "hero",
         "Choices": [
-          { "Label": "One blessing doesn't last a road this long. Say it again before every fight.", "Next": "right", "Effects": [ { "Type": "GrantSkillPoint", "Id": "$with" } ] },
-          { "Label": "It does. Words given freely never wear out.", "Next": "wrong" },
-          { "Label": "Bless only yourself. Save your breath.", "Next": "wrong" }
+          { "Next": "right", "Effects": [ { "Type": "GrantSkillPoint", "Id": "$with" } ] },
+          { "Next": "wrong" },
+          { "Next": "wrong" }
         ]
       },
-      { "Id": "right", "Speaker": "hero", "Text": "Again before every fight. My, how practical. Then I'll keep my voice warm." },
-      { "Id": "wrong", "Speaker": "hero", "Text": "Never wear out. Of course. I'm sure the wagons agree." }
+      { "Id": "right", "Speaker": "hero" },
+      { "Id": "wrong", "Speaker": "hero" }
     ]
   },
   {
@@ -1079,15 +1079,15 @@
     ],
     "Nodes": [
       {
-        "Id": "ask", "Speaker": "hero", "Text": "'The swift hand mends three.' I reached three allies in one turn. ...The fourth was the one dying. Swift enough?",
+        "Id": "ask", "Speaker": "hero",
         "Choices": [
-          { "Label": "Three is more than one. Keep it fast.", "Next": "wrong" },
-          { "Label": "Speed means nothing if it skips the one dying. Worst first, then fast.", "Next": "right", "Effects": [ { "Type": "GrantSkillPoint", "Id": "$with" } ] },
-          { "Label": "Slow down entirely. Haste is a trap.", "Next": "wrong" }
+          { "Next": "wrong" },
+          { "Next": "right", "Effects": [ { "Type": "GrantSkillPoint", "Id": "$with" } ] },
+          { "Next": "wrong" }
         ]
       },
-      { "Id": "right", "Speaker": "hero", "Text": "Worst first. Then fast. ...The proverb needs a footnote." },
-      { "Id": "wrong", "Speaker": "hero", "Text": "...Fast. Yes." }
+      { "Id": "right", "Speaker": "hero" },
+      { "Id": "wrong", "Speaker": "hero" }
     ]
   },
   {
@@ -1099,15 +1099,15 @@
     ],
     "Nodes": [
       {
-        "Id": "ask", "Speaker": "hero", "Text": "Morrow looked closer tonight. I told the crew. That's my part done, isn't it? I warned them.",
+        "Id": "ask", "Speaker": "hero",
         "Choices": [
-          { "Label": "Done. What they do with it is theirs.", "Next": "wrong" },
-          { "Label": "Keep omens quiet. They frighten the young ones.", "Next": "wrong" },
-          { "Label": "A warning nobody acts on is just weather. Help us decide what to do.", "Next": "right", "Effects": [ { "Type": "GrantSkillPoint", "Id": "$with" } ] }
+          { "Next": "wrong" },
+          { "Next": "wrong" },
+          { "Next": "right", "Effects": [ { "Type": "GrantSkillPoint", "Id": "$with" } ] }
         ]
       },
-      { "Id": "right", "Speaker": "hero", "Text": "Help decide. ...Very well. Less doom, more plan. That's oddly comforting." },
-      { "Id": "wrong", "Speaker": "hero", "Text": "Done, then. The moon will do as it does regardless." }
+      { "Id": "right", "Speaker": "hero" },
+      { "Id": "wrong", "Speaker": "hero" }
     ]
   },
   {
@@ -1119,15 +1119,15 @@
     ],
     "Nodes": [
       {
-        "Id": "ask", "Speaker": "hero", "Text": "Blade, then fire, then blade! I can do both, so I should do both every turn, right? Maximum everything!",
+        "Id": "ask", "Speaker": "hero",
         "Choices": [
-          { "Label": "Doing both every turn means doing neither well. Read the fight, pick one.", "Next": "right", "Effects": [ { "Type": "GrantSkillPoint", "Id": "$with" } ] },
-          { "Label": "Yes! Twice the practice, twice the hero.", "Next": "wrong" },
-          { "Label": "Drop the blade. Real mages don't sweat.", "Next": "wrong" }
+          { "Next": "right", "Effects": [ { "Type": "GrantSkillPoint", "Id": "$with" } ] },
+          { "Next": "wrong" },
+          { "Next": "wrong" }
         ]
       },
-      { "Id": "right", "Speaker": "hero", "Text": "Read the fight, pick one. ...One thing at a time. I can try one thing at a time." },
-      { "Id": "wrong", "Speaker": "hero", "Text": "Maximum everything! Right after this cast and this swing and this--" }
+      { "Id": "right", "Speaker": "hero" },
+      { "Id": "wrong", "Speaker": "hero" }
     ]
   },
   {
@@ -1139,15 +1139,15 @@
     ],
     "Nodes": [
       {
-        "Id": "ask", "Speaker": "hero", "Text": "On the Lantern Road we say 'a walker owns only the next step.' I'm with you for this step. Just this one.",
+        "Id": "ask", "Speaker": "hero",
         "Choices": [
-          { "Label": "Good. Never promise more than a step.", "Next": "wrong" },
-          { "Label": "You've taken a lot of 'just this one' steps with us. That's a road, not a step.", "Next": "right", "Effects": [ { "Type": "GrantSkillPoint", "Id": "$with" } ] },
-          { "Label": "Then go. Nobody needs a maybe.", "Next": "wrong" }
+          { "Next": "wrong" },
+          { "Next": "right", "Effects": [ { "Type": "GrantSkillPoint", "Id": "$with" } ] },
+          { "Next": "wrong" }
         ]
       },
-      { "Id": "right", "Speaker": "hero", "Text": "...That's a road. Huh. I suppose it is. Don't tell the other walkers." },
-      { "Id": "wrong", "Speaker": "hero", "Text": "Just this step, then. And the next. Only that one." }
+      { "Id": "right", "Speaker": "hero" },
+      { "Id": "wrong", "Speaker": "hero" }
     ]
   },
   {
@@ -1159,15 +1159,15 @@
     ],
     "Nodes": [
       {
-        "Id": "ask", "Speaker": "hero", "Text": "Status: four down, one hurt, wagons intact. Want it in writing? I write everything down. Concord habit.",
+        "Id": "ask", "Speaker": "hero",
         "Choices": [
-          { "Label": "Yes. File it with the Merchant.", "Next": "wrong" },
-          { "Label": "Longer reports. More detail.", "Next": "wrong" },
-          { "Label": "We don't need reports. We need you to talk to us like crew.", "Next": "right", "Effects": [ { "Type": "GrantSkillPoint", "Id": "$with" } ] }
+          { "Next": "wrong" },
+          { "Next": "wrong" },
+          { "Next": "right", "Effects": [ { "Type": "GrantSkillPoint", "Id": "$with" } ] }
         ]
       },
-      { "Id": "right", "Speaker": "hero", "Text": "Talk like crew. ...Copy. Adjusting. That was a joke. Mostly." },
-      { "Id": "wrong", "Speaker": "hero", "Text": "Report filed. Moving on." }
+      { "Id": "right", "Speaker": "hero" },
+      { "Id": "wrong", "Speaker": "hero" }
     ]
   },
   {
@@ -1179,15 +1179,15 @@
     ],
     "Nodes": [
       {
-        "Id": "ask", "Speaker": "hero", "Text": "...I left the Choir with their hymn turned inside out. Curses come easy now. The crew goes quiet when I pass. Good.",
+        "Id": "ask", "Speaker": "hero",
         "Choices": [
-          { "Label": "Quiet crews don't tell you when something's wrong. Let them in a little.", "Next": "right", "Effects": [ { "Type": "GrantSkillPoint", "Id": "$with" } ] },
-          { "Label": "Good. Fear keeps them in line.", "Next": "wrong" },
-          { "Label": "Then keep away from them entirely.", "Next": "wrong" }
+          { "Next": "right", "Effects": [ { "Type": "GrantSkillPoint", "Id": "$with" } ] },
+          { "Next": "wrong" },
+          { "Next": "wrong" }
         ]
       },
-      { "Id": "right", "Speaker": "hero", "Text": "...Let them in. A little. Don't spread it around." },
-      { "Id": "wrong", "Speaker": "hero", "Text": "...Good. Quiet is efficient." }
+      { "Id": "right", "Speaker": "hero" },
+      { "Id": "wrong", "Speaker": "hero" }
     ]
   },
   {
@@ -1199,15 +1199,15 @@
     ],
     "Nodes": [
       {
-        "Id": "ask", "Speaker": "hero", "Text": "The fen-rite takes seven turns to bloom. I begin it, and I wait, and I wait. The rite is patient. Why is the crew not?",
+        "Id": "ask", "Speaker": "hero",
         "Choices": [
-          { "Label": "They're not initiated. Let them wait.", "Next": "wrong" },
-          { "Label": "A rite that blooms after the fight is over helped no one. Start it sooner.", "Next": "right", "Effects": [ { "Type": "GrantSkillPoint", "Id": "$with" } ] },
-          { "Label": "Abandon rites. Plain spells only.", "Next": "wrong" }
+          { "Next": "wrong" },
+          { "Next": "right", "Effects": [ { "Type": "GrantSkillPoint", "Id": "$with" } ] },
+          { "Next": "wrong" }
         ]
       },
-      { "Id": "right", "Speaker": "hero", "Text": "Sooner. Before need, not during. ...The fen would call that wisdom. I call it late." },
-      { "Id": "wrong", "Speaker": "hero", "Text": "So it is written. So it waits." }
+      { "Id": "right", "Speaker": "hero" },
+      { "Id": "wrong", "Speaker": "hero" }
     ]
   },
   {
@@ -1219,15 +1219,15 @@
     ],
     "Nodes": [
       {
-        "Id": "ask", "Speaker": "hero", "Text": "Hold-folk say 'the slow fire burns longest!' So I warm up a few turns before I smash. Smashing is better warm!",
+        "Id": "ask", "Speaker": "hero",
         "Choices": [
-          { "Label": "Sure. Take your time.", "Next": "wrong" },
-          { "Label": "Let the shield-folk go first. Smash after.", "Next": "wrong" },
-          { "Label": "The front rank won't wait for you to warm up. Hit hardest on turn one.", "Next": "right", "Effects": [ { "Type": "GrantSkillPoint", "Id": "$with" } ] }
+          { "Next": "wrong" },
+          { "Next": "wrong" },
+          { "Next": "right", "Effects": [ { "Type": "GrantSkillPoint", "Id": "$with" } ] }
         ]
       },
-      { "Id": "right", "Speaker": "hero", "Text": "Turn one! Okay, okay -- no warm-up. Straight to SMASH." },
-      { "Id": "wrong", "Speaker": "hero", "Text": "Warm smash is best smash! Everyone knows that!" }
+      { "Id": "right", "Speaker": "hero" },
+      { "Id": "wrong", "Speaker": "hero" }
     ]
   },
   {
@@ -1239,15 +1239,15 @@
     ],
     "Nodes": [
       {
-        "Id": "ask", "Speaker": "hero", "Text": "Hit. That's me. Redline said hitters are cheap. Everybody thinks simple means dumb.",
+        "Id": "ask", "Speaker": "hero",
         "Choices": [
-          { "Label": "Simple isn't dumb. Knowing where to hit is the whole job, and you know it.", "Next": "right", "Effects": [ { "Type": "GrantSkillPoint", "Id": "$with" } ] },
-          { "Label": "They're right. Learn some fancy moves.", "Next": "wrong" },
-          { "Label": "Ignore them. Just hit.", "Next": "wrong" }
+          { "Next": "right", "Effects": [ { "Type": "GrantSkillPoint", "Id": "$with" } ] },
+          { "Next": "wrong" },
+          { "Next": "wrong" }
         ]
       },
-      { "Id": "right", "Speaker": "hero", "Text": "...Know where to hit. Yeah. I do." },
-      { "Id": "wrong", "Speaker": "hero", "Text": "...Hm. Cheap." }
+      { "Id": "right", "Speaker": "hero" },
+      { "Id": "wrong", "Speaker": "hero" }
     ]
   },
   {
@@ -1259,15 +1259,15 @@
     ],
     "Nodes": [
       {
-        "Id": "ask", "Speaker": "hero", "Text": "Swung for the big one and missed! Ha! Hold-champion's oath: always go for the knockout. Next one lands, yeah?",
+        "Id": "ask", "Speaker": "hero",
         "Choices": [
-          { "Label": "Ha! Keep swinging. Luck turns.", "Next": "wrong" },
-          { "Label": "A miss costs the same turn as a hit. Pick the moment, then swing big.", "Next": "right", "Effects": [ { "Type": "GrantSkillPoint", "Id": "$with" } ] },
-          { "Label": "Never swing big. Jab only.", "Next": "wrong" }
+          { "Next": "wrong" },
+          { "Next": "right", "Effects": [ { "Type": "GrantSkillPoint", "Id": "$with" } ] },
+          { "Next": "wrong" }
         ]
       },
-      { "Id": "right", "Speaker": "hero", "Text": "Pick the moment. ...That's a lot of turns I've thrown away. Okay. Moments." },
-      { "Id": "wrong", "Speaker": "hero", "Text": "That's the spirit! Next one for sure! Probably!" }
+      { "Id": "right", "Speaker": "hero" },
+      { "Id": "wrong", "Speaker": "hero" }
     ]
   },
   {
@@ -1279,15 +1279,15 @@
     ],
     "Nodes": [
       {
-        "Id": "ask", "Speaker": "hero", "Text": "Hehe, nobody on the road fears a girl in a panda hood -- right up till the Slam! Works on everyone, yeah?",
+        "Id": "ask", "Speaker": "hero",
         "Choices": [
-          { "Label": "Yep! Stay cute forever.", "Next": "wrong" },
-          { "Label": "Drop the cute act. Be terrifying all the time.", "Next": "wrong" },
-          { "Label": "It works once per stranger. The crew already knows -- we need you with us, not surprising us.", "Next": "right", "Effects": [ { "Type": "GrantSkillPoint", "Id": "$with" } ] }
+          { "Next": "wrong" },
+          { "Next": "wrong" },
+          { "Next": "right", "Effects": [ { "Type": "GrantSkillPoint", "Id": "$with" } ] }
         ]
       },
-      { "Id": "right", "Speaker": "hero", "Text": "With you, not surprising you. Okay! Teamwork first. Then the Slam." },
-      { "Id": "wrong", "Speaker": "hero", "Text": "Everyone! Always! ...Right?" }
+      { "Id": "right", "Speaker": "hero" },
+      { "Id": "wrong", "Speaker": "hero" }
     ]
   },
   {
@@ -1299,15 +1299,15 @@
     ],
     "Nodes": [
       {
-        "Id": "ask", "Speaker": "hero", "Text": "Thinking heavy armour. Last Bulwark nearly got me. Yes?",
+        "Id": "ask", "Speaker": "hero",
         "Choices": [
-          { "Label": "No. Weight slows the strike. You live by being gone before they turn.", "Next": "right", "Effects": [ { "Type": "GrantSkillPoint", "Id": "$with" } ] },
-          { "Label": "Yes. Living comes first.", "Next": "wrong" },
-          { "Label": "Go tank for a while. Learn to take a hit.", "Next": "wrong" }
+          { "Next": "right", "Effects": [ { "Type": "GrantSkillPoint", "Id": "$with" } ] },
+          { "Next": "wrong" },
+          { "Next": "wrong" }
         ]
       },
-      { "Id": "right", "Speaker": "hero", "Text": "Gone before they turn. Light." },
-      { "Id": "wrong", "Speaker": "hero", "Text": "Heavy, then. Slow, then." }
+      { "Id": "right", "Speaker": "hero" },
+      { "Id": "wrong", "Speaker": "hero" }
     ]
   },
   {
@@ -1319,15 +1319,15 @@
     ],
     "Nodes": [
       {
-        "Id": "ask", "Speaker": "hero", "Text": "Underspire rules: you let a guy stand back up. My mark tripped. I waited. That's class, right?",
+        "Id": "ask", "Speaker": "hero",
         "Choices": [
-          { "Label": "Of course. Honour beats winning.", "Next": "wrong" },
-          { "Label": "Respect's fine. Waiting for them to recover isn't respect, it's a gift.", "Next": "right", "Effects": [ { "Type": "GrantSkillPoint", "Id": "$with" } ] },
-          { "Label": "Never respect them. They're Concord.", "Next": "wrong" }
+          { "Next": "wrong" },
+          { "Next": "right", "Effects": [ { "Type": "GrantSkillPoint", "Id": "$with" } ] },
+          { "Next": "wrong" }
         ]
       },
-      { "Id": "right", "Speaker": "hero", "Text": "Not a gift. ...Fair. Respect them, and hit while they're down." },
-      { "Id": "wrong", "Speaker": "hero", "Text": "Class. Totally. Real classy loss." }
+      { "Id": "right", "Speaker": "hero" },
+      { "Id": "wrong", "Speaker": "hero" }
     ]
   },
   {
@@ -1339,15 +1339,15 @@
     ],
     "Nodes": [
       {
-        "Id": "ask", "Speaker": "hero", "Text": "Lunge, lunge -- nobody was ready, that's on them, right? I'm fast. They gotta keep up.",
+        "Id": "ask", "Speaker": "hero",
         "Choices": [
-          { "Label": "Right. Lunge first, explain never.", "Next": "wrong" },
-          { "Label": "Learn to retreat. Lunging's reckless.", "Next": "wrong" },
-          { "Label": "A lunge you can't take back is the crew's problem too. Call it before you go.", "Next": "right", "Effects": [ { "Type": "GrantSkillPoint", "Id": "$with" } ] }
+          { "Next": "wrong" },
+          { "Next": "wrong" },
+          { "Next": "right", "Effects": [ { "Type": "GrantSkillPoint", "Id": "$with" } ] }
         ]
       },
-      { "Id": "right", "Speaker": "hero", "Text": "Call it first. So they can, yeah, plan around -- got it. Calling it." },
-      { "Id": "wrong", "Speaker": "hero", "Text": "Right, on them, that's what I--" }
+      { "Id": "right", "Speaker": "hero" },
+      { "Id": "wrong", "Speaker": "hero" }
     ]
   },
   {
@@ -1359,15 +1359,15 @@
     ],
     "Nodes": [
       {
-        "Id": "ask", "Speaker": "hero", "Text": "'A masterless blade cuts its own path.' I chose your caravan. I don't take orders. Choosing is enough.",
+        "Id": "ask", "Speaker": "hero",
         "Choices": [
-          { "Label": "Choosing to stay means letting the crew steer sometimes. Otherwise you're only passing through.", "Next": "right", "Effects": [ { "Type": "GrantSkillPoint", "Id": "$with" } ] },
-          { "Label": "Exactly. You owe nobody anything.", "Next": "wrong" },
-          { "Label": "Then leave, if orders chafe.", "Next": "wrong" }
+          { "Next": "right", "Effects": [ { "Type": "GrantSkillPoint", "Id": "$with" } ] },
+          { "Next": "wrong" },
+          { "Next": "wrong" }
         ]
       },
-      { "Id": "right", "Speaker": "hero", "Text": "Let the crew steer. ...A blade in a sheath still travels. I'll consider it seriously." },
-      { "Id": "wrong", "Speaker": "hero", "Text": "Owe nobody. Yes. The proverb is warmer than it sounds." }
+      { "Id": "right", "Speaker": "hero" },
+      { "Id": "wrong", "Speaker": "hero" }
     ]
   },
   {
@@ -1379,15 +1379,15 @@
     ],
     "Nodes": [
       {
-        "Id": "ask", "Speaker": "hero", "Text": "Lantern Road rule: 'Paid steel, honest steel.' My contract ran out three towns ago and I'm still here. Should I bill you?",
+        "Id": "ask", "Speaker": "hero",
         "Choices": [
-          { "Label": "Yes. Ask for double -- the road is worse now.", "Next": "wrong" },
-          { "Label": "Contract's done and you stayed. That's not steel for hire anymore. Say why.", "Next": "right", "Effects": [ { "Type": "GrantSkillPoint", "Id": "$with" } ] },
-          { "Label": "Quit. No coin, no blade.", "Next": "wrong" }
+          { "Next": "wrong" },
+          { "Next": "right", "Effects": [ { "Type": "GrantSkillPoint", "Id": "$with" } ] },
+          { "Next": "wrong" }
         ]
       },
-      { "Id": "right", "Speaker": "hero", "Text": "Say why. ...Fine. I like you lot. Don't put that in the ledger." },
-      { "Id": "wrong", "Speaker": "hero", "Text": "Double, then. I'll draw up the papers. Somehow it feels worse." }
+      { "Id": "right", "Speaker": "hero" },
+      { "Id": "wrong", "Speaker": "hero" }
     ]
   },
   {
@@ -1399,15 +1399,15 @@
     ],
     "Nodes": [
       {
-        "Id": "ask", "Speaker": "hero", "Text": "'Perfect form, perfect victory,' my school taught. We lost that skirmish. But my last cut was flawless.",
+        "Id": "ask", "Speaker": "hero",
         "Choices": [
-          { "Label": "Then the form was the victory. Be at peace.", "Next": "wrong" },
-          { "Label": "Forget form. Swing wildly and hope.", "Next": "wrong" },
-          { "Label": "Your school got it backwards. The victory makes the form worth having.", "Next": "right", "Effects": [ { "Type": "GrantSkillPoint", "Id": "$with" } ] }
+          { "Next": "wrong" },
+          { "Next": "wrong" },
+          { "Next": "right", "Effects": [ { "Type": "GrantSkillPoint", "Id": "$with" } ] }
         ]
       },
-      { "Id": "right", "Speaker": "hero", "Text": "Victory first, form in its service. ...My old master is spinning in his straw hat." },
-      { "Id": "wrong", "Speaker": "hero", "Text": "Flawless. As it should be. And yet we lost. Hm." }
+      { "Id": "right", "Speaker": "hero" },
+      { "Id": "wrong", "Speaker": "hero" }
     ]
   },
   {
@@ -1419,15 +1419,15 @@
     ],
     "Nodes": [
       {
-        "Id": "ask", "Speaker": "hero", "Text": "Lifted three Concord tokens off a Bulwark today. Real ones. Nobody saw. So why's everyone yelling at me?",
+        "Id": "ask", "Speaker": "hero",
         "Choices": [
-          { "Label": "Because you stopped mid-fight to pocket them. Grab the opening first, the shiny after.", "Next": "right", "Effects": [ { "Type": "GrantSkillPoint", "Id": "$with" } ] },
-          { "Label": "Ignore them. A token's a token -- tithe can't touch a full pocket.", "Next": "wrong" },
-          { "Label": "Give the tokens back. Stealing from the Concord is still stealing.", "Next": "wrong" }
+          { "Next": "right", "Effects": [ { "Type": "GrantSkillPoint", "Id": "$with" } ] },
+          { "Next": "wrong" },
+          { "Next": "wrong" }
         ]
       },
-      { "Id": "right", "Speaker": "hero", "Text": "...Opening first, shiny after. Fine. Still keeping the tokens." },
-      { "Id": "wrong", "Speaker": "hero", "Text": "Exactly what I said. I'll buy everyone a drink in Halcyon. With their own money." }
+      { "Id": "right", "Speaker": "hero" },
+      { "Id": "wrong", "Speaker": "hero" }
     ]
   },
   {
@@ -1439,15 +1439,15 @@
     ],
     "Nodes": [
       {
-        "Id": "ask", "Speaker": "hero", "Text": "My school says: the shadow that does not move is never seen. I did not move all fight. I was also never useful.",
+        "Id": "ask", "Speaker": "hero",
         "Choices": [
-          { "Label": "Then it's a good school. Unseen is undefeated.", "Next": "wrong" },
-          { "Label": "A shadow still has to fall on something. Hidden is how you get there, not where you stop.", "Next": "right", "Effects": [ { "Type": "GrantSkillPoint", "Id": "$with" } ] },
-          { "Label": "Wear something louder. Let them see you coming for once.", "Next": "wrong" }
+          { "Next": "wrong" },
+          { "Next": "right", "Effects": [ { "Type": "GrantSkillPoint", "Id": "$with" } ] },
+          { "Next": "wrong" }
         ]
       },
-      { "Id": "right", "Speaker": "hero", "Text": "Falls on something. ...My master never mentioned that part. I suspect he was hiding too." },
-      { "Id": "wrong", "Speaker": "hero", "Text": "Undefeated. And unhelpful. I will consider whether those are the same word." }
+      { "Id": "right", "Speaker": "hero" },
+      { "Id": "wrong", "Speaker": "hero" }
     ]
   },
   {
@@ -1459,15 +1459,15 @@
     ],
     "Nodes": [
       {
-        "Id": "ask", "Speaker": "hero", "Text": "The still pond reflects the moon. I stay calm, always. The others say they can't tell if I'm even trying.",
+        "Id": "ask", "Speaker": "hero",
         "Choices": [
-          { "Label": "Calm is wasted on them. Don't change a thing.", "Next": "wrong" },
-          { "Label": "Maybe panic once in a while. It's very motivating.", "Next": "wrong" },
-          { "Label": "Calm is fine. Calm nobody can read is just quiet. Tell them what you're about to do.", "Next": "right", "Effects": [ { "Type": "GrantSkillPoint", "Id": "$with" } ] }
+          { "Next": "wrong" },
+          { "Next": "wrong" },
+          { "Next": "right", "Effects": [ { "Type": "GrantSkillPoint", "Id": "$with" } ] }
         ]
       },
-      { "Id": "right", "Speaker": "hero", "Text": "Tell them. ...I am about to go and get tea. See? Easy." },
-      { "Id": "wrong", "Speaker": "hero", "Text": "The pond stays still. The pond also stays alone, apparently." }
+      { "Id": "right", "Speaker": "hero" },
+      { "Id": "wrong", "Speaker": "hero" }
     ]
   },
   {
@@ -1479,15 +1479,15 @@
     ],
     "Nodes": [
       {
-        "Id": "ask", "Speaker": "hero", "Text": "Red splice, blue splice, green tape, new mask. I switch my style every fight so nobody can read me. Nice, right?",
+        "Id": "ask", "Speaker": "hero",
         "Choices": [
-          { "Label": "Not if your own crew can't read you either. Pick a plan, then mix it up inside it.", "Next": "right", "Effects": [ { "Type": "GrantSkillPoint", "Id": "$with" } ] },
-          { "Label": "Switch faster. Mid-fight, even. Keep everyone guessing.", "Next": "wrong" },
-          { "Label": "Burn the extras. One colour, one style, forever.", "Next": "wrong" }
+          { "Next": "right", "Effects": [ { "Type": "GrantSkillPoint", "Id": "$with" } ] },
+          { "Next": "wrong" },
+          { "Next": "wrong" }
         ]
       },
-      { "Id": "right", "Speaker": "hero", "Text": "Plan first, colours second. Ugh. That's so... sensible. Fine." },
-      { "Id": "wrong", "Speaker": "hero", "Text": "Yeah! Can't track what you can't follow. ...Wait, who was I covering?" }
+      { "Id": "right", "Speaker": "hero" },
+      { "Id": "wrong", "Speaker": "hero" }
     ]
   },
   {
@@ -1499,15 +1499,15 @@
     ],
     "Nodes": [
       {
-        "Id": "ask", "Speaker": "hero", "Text": "The bamboo bends but does not break. I slipped behind a vat-giant today -- beautifully. And then I stood there.",
+        "Id": "ask", "Speaker": "hero",
         "Choices": [
-          { "Label": "Beautiful is half of it. Keep doing the pretty ones.", "Next": "wrong" },
-          { "Label": "The good spot is the one that sets up the next hit, not the prettiest landing.", "Next": "right", "Effects": [ { "Type": "GrantSkillPoint", "Id": "$with" } ] },
-          { "Label": "Stop slipping around. Walk in the front door like the rest of us.", "Next": "wrong" }
+          { "Next": "wrong" },
+          { "Next": "right", "Effects": [ { "Type": "GrantSkillPoint", "Id": "$with" } ] },
+          { "Next": "wrong" }
         ]
       },
-      { "Id": "right", "Speaker": "hero", "Text": "Sets up the next hit. ...The bamboo also has to grow somewhere useful. Noted." },
-      { "Id": "wrong", "Speaker": "hero", "Text": "Pretty, then. The vat-giant certainly seemed impressed. Briefly." }
+      { "Id": "right", "Speaker": "hero" },
+      { "Id": "wrong", "Speaker": "hero" }
     ]
   },
   {
@@ -1519,15 +1519,15 @@
     ],
     "Nodes": [
       {
-        "Id": "ask", "Speaker": "hero", "Text": "Fire burns brightest when it is watched. I keep trying to be the loudest blade in the crew. It is exhausting.",
+        "Id": "ask", "Speaker": "hero",
         "Choices": [
-          { "Label": "Then be louder. Out-burn all of them.", "Next": "wrong" },
-          { "Label": "Go quiet like the Black Ninja. Copy whatever works for them.", "Next": "wrong" },
-          { "Label": "Stop measuring the flame against everyone else's. Burn where the crew needs heat.", "Next": "right", "Effects": [ { "Type": "GrantSkillPoint", "Id": "$with" } ] }
+          { "Next": "wrong" },
+          { "Next": "wrong" },
+          { "Next": "right", "Effects": [ { "Type": "GrantSkillPoint", "Id": "$with" } ] }
         ]
       },
-      { "Id": "right", "Speaker": "hero", "Text": "Where the crew needs heat. ...That's a much smaller fire. Also a much warmer one." },
-      { "Id": "wrong", "Speaker": "hero", "Text": "Louder, then. Brighter. ...My throat already hurts." }
+      { "Id": "right", "Speaker": "hero" },
+      { "Id": "wrong", "Speaker": "hero" }
     ]
   },
   {
@@ -1539,15 +1539,15 @@
     ],
     "Nodes": [
       {
-        "Id": "ask", "Speaker": "hero", "Text": "Saw an opening, took it. Saw another, took that too. Ended up alone behind three Red Seals. Speed's still good, yeah?",
+        "Id": "ask", "Speaker": "hero",
         "Choices": [
-          { "Label": "Speed's good. Every opening isn't. Some are just doors the enemy left open on purpose.", "Next": "right", "Effects": [ { "Type": "GrantSkillPoint", "Id": "$with" } ] },
-          { "Label": "Yeah! Faster next time and they won't even close the door.", "Next": "wrong" },
-          { "Label": "Stop taking openings. Wait for the crew to tell you.", "Next": "wrong" }
+          { "Next": "right", "Effects": [ { "Type": "GrantSkillPoint", "Id": "$with" } ] },
+          { "Next": "wrong" },
+          { "Next": "wrong" }
         ]
       },
-      { "Id": "right", "Speaker": "hero", "Text": "Doors on purpose. ...That's horrible. Who does that? The Concord does that. Got it." },
-      { "Id": "wrong", "Speaker": "hero", "Text": "Faster! Right! ...Can somebody come pull me out of there next time?" }
+      { "Id": "right", "Speaker": "hero" },
+      { "Id": "wrong", "Speaker": "hero" }
     ]
   },
   {
@@ -1559,15 +1559,15 @@
     ],
     "Nodes": [
       {
-        "Id": "ask", "Speaker": "hero", "Text": "I yell before I charge. Old moor habit -- you warn a man before you hit him. The Concord always sees me coming now.",
+        "Id": "ask", "Speaker": "hero",
         "Choices": [
-          { "Label": "Yell louder. Scare them off the line.", "Next": "wrong" },
-          { "Label": "Warn them if you like -- just line up the charge so the warning doesn't save them.", "Next": "right", "Effects": [ { "Type": "GrantSkillPoint", "Id": "$with" } ] },
-          { "Label": "Never warn anyone. That's soft hold talk.", "Next": "wrong" }
+          { "Next": "wrong" },
+          { "Next": "right", "Effects": [ { "Type": "GrantSkillPoint", "Id": "$with" } ] },
+          { "Next": "wrong" }
         ]
       },
-      { "Id": "right", "Speaker": "hero", "Text": "Line it up first. Then shout. ...My grandfather would approve. Probably." },
-      { "Id": "wrong", "Speaker": "hero", "Text": "Louder it is. I'll wake every Still between here and Halcyon." }
+      { "Id": "right", "Speaker": "hero" },
+      { "Id": "wrong", "Speaker": "hero" }
     ]
   },
   {
@@ -1579,15 +1579,15 @@
     ],
     "Nodes": [
       {
-        "Id": "ask", "Speaker": "hero", "Text": "Stripped a Concord wagon clean today. Aether packs, boots, a very nice kettle. We still lost the hill. Worth it?",
+        "Id": "ask", "Speaker": "hero",
         "Choices": [
-          { "Label": "Full wagon, good day. Hills come back.", "Next": "wrong" },
-          { "Label": "Leave the loot. We're not Redline.", "Next": "wrong" },
-          { "Label": "A full bag off a lost fight is just stuff you carry while running. Win it, then strip it.", "Next": "right", "Effects": [ { "Type": "GrantSkillPoint", "Id": "$with" } ] }
+          { "Next": "wrong" },
+          { "Next": "wrong" },
+          { "Next": "right", "Effects": [ { "Type": "GrantSkillPoint", "Id": "$with" } ] }
         ]
       },
-      { "Id": "right", "Speaker": "hero", "Text": "Win it, then strip it. Right. Still keeping the kettle." },
-      { "Id": "wrong", "Speaker": "hero", "Text": "Good day, then. ...The hill's still a problem, though, isn't it." }
+      { "Id": "right", "Speaker": "hero" },
+      { "Id": "wrong", "Speaker": "hero" }
     ]
   },
   {
@@ -1599,15 +1599,15 @@
     ],
     "Nodes": [
       {
-        "Id": "ask", "Speaker": "hero", "Text": "I'm first on the timeline every single fight. First! So how come I keep ending turns with nothing to show?",
+        "Id": "ask", "Speaker": "hero",
         "Choices": [
-          { "Label": "Being first isn't a plan. Spend the head start on something the crew can use.", "Next": "right", "Effects": [ { "Type": "GrantSkillPoint", "Id": "$with" } ] },
-          { "Label": "Be even more first. First-er. You'll get there.", "Next": "wrong" },
-          { "Label": "Slow down. Wait at the back with everyone else.", "Next": "wrong" }
+          { "Next": "right", "Effects": [ { "Type": "GrantSkillPoint", "Id": "$with" } ] },
+          { "Next": "wrong" },
+          { "Next": "wrong" }
         ]
       },
-      { "Id": "right", "Speaker": "hero", "Text": "Spend the head start. Okay. Okay okay. I can do that fast." },
-      { "Id": "wrong", "Speaker": "hero", "Text": "First-er! Yeah! ...That's what I've been doing. Huh." }
+      { "Id": "right", "Speaker": "hero" },
+      { "Id": "wrong", "Speaker": "hero" }
     ]
   },
   {
@@ -1619,15 +1619,15 @@
     ],
     "Nodes": [
       {
-        "Id": "ask", "Speaker": "hero", "Text": "Underspire rule: if it worked yesterday, do it today. My elbow-trick floored a Bulwark twice. Third time he caught it.",
+        "Id": "ask", "Speaker": "hero",
         "Choices": [
-          { "Label": "Never change what works. Elbow harder.", "Next": "wrong" },
-          { "Label": "A trick that works twice gets learned. Keep two, so the third time you switch.", "Next": "right", "Effects": [ { "Type": "GrantSkillPoint", "Id": "$with" } ] },
-          { "Label": "Fight clean. Proper form. Like the holds teach.", "Next": "wrong" }
+          { "Next": "wrong" },
+          { "Next": "right", "Effects": [ { "Type": "GrantSkillPoint", "Id": "$with" } ] },
+          { "Next": "wrong" }
         ]
       },
-      { "Id": "right", "Speaker": "hero", "Text": "Keep two. ...So I need another trick. I know a knee thing. Don't ask." },
-      { "Id": "wrong", "Speaker": "hero", "Text": "Harder elbow. Yeah. ...My elbow hurts, though." }
+      { "Id": "right", "Speaker": "hero" },
+      { "Id": "wrong", "Speaker": "hero" }
     ]
   },
   {
@@ -1639,15 +1639,15 @@
     ],
     "Nodes": [
       {
-        "Id": "ask", "Speaker": "hero", "Text": "I finish things. That's my job. So when someone else lands the last hit, it feels like I lost something.",
+        "Id": "ask", "Speaker": "hero",
         "Choices": [
-          { "Label": "Fair. Finishes are yours. Take them back.", "Next": "wrong" },
-          { "Label": "Stop finishing fights. Let the others have them.", "Next": "wrong" },
-          { "Label": "The fight isn't owed to you. Somebody finished it -- that's the job done.", "Next": "right", "Effects": [ { "Type": "GrantSkillPoint", "Id": "$with" } ] }
+          { "Next": "wrong" },
+          { "Next": "wrong" },
+          { "Next": "right", "Effects": [ { "Type": "GrantSkillPoint", "Id": "$with" } ] }
         ]
       },
-      { "Id": "right", "Speaker": "hero", "Text": "Somebody finished it. ...Weird how that's still a win. Okay." },
-      { "Id": "wrong", "Speaker": "hero", "Text": "Mine. Got it. I'll be faster to the next one." }
+      { "Id": "right", "Speaker": "hero" },
+      { "Id": "wrong", "Speaker": "hero" }
     ]
   },
   {
@@ -1659,15 +1659,15 @@
     ],
     "Nodes": [
       {
-        "Id": "ask", "Speaker": "hero", "Text": "Got my combo going. Bang, bang, bang -- then the timeline jumps and I lose it and I just keep swinging anyway.",
+        "Id": "ask", "Speaker": "hero",
         "Choices": [
-          { "Label": "A broken chain is a new start. Reset, pick the next target, build again.", "Next": "right", "Effects": [ { "Type": "GrantSkillPoint", "Id": "$with" } ] },
-          { "Label": "Keep swinging. The chain comes back if you want it enough.", "Next": "wrong" },
-          { "Label": "Forget combos. One swing, then wait.", "Next": "wrong" }
+          { "Next": "right", "Effects": [ { "Type": "GrantSkillPoint", "Id": "$with" } ] },
+          { "Next": "wrong" },
+          { "Next": "wrong" }
         ]
       },
-      { "Id": "right", "Speaker": "hero", "Text": "Reset and build. Bang, bang, -- pause -- bang. Got it." },
-      { "Id": "wrong", "Speaker": "hero", "Text": "Want it more. Yeah. Swinging louder, then." }
+      { "Id": "right", "Speaker": "hero" },
+      { "Id": "wrong", "Speaker": "hero" }
     ]
   },
   {
@@ -1679,15 +1679,15 @@
     ],
     "Nodes": [
       {
-        "Id": "ask", "Speaker": "hero", "Text": "A teacher who stops teaching is just a man with opinions. So I explain every move, mid-fight. Why does no one thank me?",
+        "Id": "ask", "Speaker": "hero",
         "Choices": [
-          { "Label": "Keep teaching. They'll thank you in Halcyon.", "Next": "wrong" },
-          { "Label": "The lesson keeps till camp. In the fight, just be the example.", "Next": "right", "Effects": [ { "Type": "GrantSkillPoint", "Id": "$with" } ] },
-          { "Label": "Stop teaching. Nobody listens anyway.", "Next": "wrong" }
+          { "Next": "wrong" },
+          { "Next": "right", "Effects": [ { "Type": "GrantSkillPoint", "Id": "$with" } ] },
+          { "Next": "wrong" }
         ]
       },
-      { "Id": "right", "Speaker": "hero", "Text": "Be the example. ...A lesson in silence. The Lantern Road would call that wisdom. I call it hard." },
-      { "Id": "wrong", "Speaker": "hero", "Text": "In Halcyon, then. I will prepare the diagrams." }
+      { "Id": "right", "Speaker": "hero" },
+      { "Id": "wrong", "Speaker": "hero" }
     ]
   },
   {
@@ -1699,15 +1699,15 @@
     ],
     "Nodes": [
       {
-        "Id": "ask", "Speaker": "hero", "Text": "Back in the moor pits they paid for the big finish. I still save my best hit for when everyone's watching.",
+        "Id": "ask", "Speaker": "hero",
         "Choices": [
-          { "Label": "Good. Give them a show. Morale matters.", "Next": "wrong" },
-          { "Label": "Stop showing off. Win ugly and quiet.", "Next": "wrong" },
-          { "Label": "There's no crowd here. The crew needs the big hit when it lands, not when it looks good.", "Next": "right", "Effects": [ { "Type": "GrantSkillPoint", "Id": "$with" } ] }
+          { "Next": "wrong" },
+          { "Next": "wrong" },
+          { "Next": "right", "Effects": [ { "Type": "GrantSkillPoint", "Id": "$with" } ] }
         ]
       },
-      { "Id": "right", "Speaker": "hero", "Text": "No crowd. ...Strange, fighting for nobody's cheers. Better, I think." },
-      { "Id": "wrong", "Speaker": "hero", "Text": "A show it is. Hold the applause till I'm done." }
+      { "Id": "right", "Speaker": "hero" },
+      { "Id": "wrong", "Speaker": "hero" }
     ]
   },
   {
@@ -1719,15 +1719,15 @@
     ],
     "Nodes": [
       {
-        "Id": "ask", "Speaker": "hero", "Text": "I don't talk. I punch. Short, tidy, done. ...The crew keeps saying they don't know where I'm going.",
+        "Id": "ask", "Speaker": "hero",
         "Choices": [
-          { "Label": "Short punches, fine. A word first about where you're headed costs you nothing.", "Next": "right", "Effects": [ { "Type": "GrantSkillPoint", "Id": "$with" } ] },
-          { "Label": "Good. Talk is wasted breath.", "Next": "wrong" },
-          { "Label": "Punch bigger. Then they'll notice.", "Next": "wrong" }
+          { "Next": "right", "Effects": [ { "Type": "GrantSkillPoint", "Id": "$with" } ] },
+          { "Next": "wrong" },
+          { "Next": "wrong" }
         ]
       },
-      { "Id": "right", "Speaker": "hero", "Text": "...Left side. Going left side. -- There. Said it." },
-      { "Id": "wrong", "Speaker": "hero", "Text": "Mm." }
+      { "Id": "right", "Speaker": "hero" },
+      { "Id": "wrong", "Speaker": "hero" }
     ]
   },
   {
@@ -1739,15 +1739,15 @@
     ],
     "Nodes": [
       {
-        "Id": "ask", "Speaker": "hero", "Text": "You learn hunting on the moor at night: wait. I wait for the perfect moment. Sometimes it doesn't come.",
+        "Id": "ask", "Speaker": "hero",
         "Choices": [
-          { "Label": "Patience always pays. Keep waiting.", "Next": "wrong" },
-          { "Label": "Some nights there's no perfect shot. Take the good one before the crew pays for the wait.", "Next": "right", "Effects": [ { "Type": "GrantSkillPoint", "Id": "$with" } ] },
-          { "Label": "Stop hunting. Just run at them.", "Next": "wrong" }
+          { "Next": "wrong" },
+          { "Next": "right", "Effects": [ { "Type": "GrantSkillPoint", "Id": "$with" } ] },
+          { "Next": "wrong" }
         ]
       },
-      { "Id": "right", "Speaker": "hero", "Text": "The good one. ...The moor wolves never told me that. They're very patient. Also very hungry." },
-      { "Id": "wrong", "Speaker": "hero", "Text": "Patient, then. The moment will come. ...Eventually." }
+      { "Id": "right", "Speaker": "hero" },
+      { "Id": "wrong", "Speaker": "hero" }
     ]
   },
   {
@@ -1759,15 +1759,15 @@
     ],
     "Nodes": [
       {
-        "Id": "ask", "Speaker": "hero", "Text": "I circle. I find the soft target. Finish it, trophy, next. Somehow the Bulwark keeps eating the people next to me.",
+        "Id": "ask", "Speaker": "hero",
         "Choices": [
-          { "Label": "Keep circling. Trophies are trophies.", "Next": "wrong" },
-          { "Label": "Take the big one head-on for once. Show off.", "Next": "wrong" },
-          { "Label": "Soft targets are fine if the hard one's handled. Check who's eating the hits for you.", "Next": "right", "Effects": [ { "Type": "GrantSkillPoint", "Id": "$with" } ] }
+          { "Next": "wrong" },
+          { "Next": "wrong" },
+          { "Next": "right", "Effects": [ { "Type": "GrantSkillPoint", "Id": "$with" } ] }
         ]
       },
-      { "Id": "right", "Speaker": "hero", "Text": "Who's eating the hits. ...Right. I owe the Knight a drink. Several." },
-      { "Id": "wrong", "Speaker": "hero", "Text": "Circling. Yeah. ...Someone's always yelling while I circle." }
+      { "Id": "right", "Speaker": "hero" },
+      { "Id": "wrong", "Speaker": "hero" }
     ]
   },
   {
@@ -1779,15 +1779,15 @@
     ],
     "Nodes": [
       {
-        "Id": "ask", "Speaker": "hero", "Text": "The longest blade cuts once. I wait the whole fight for the one perfect draw. And sometimes, the fight ends first.",
+        "Id": "ask", "Speaker": "hero",
         "Choices": [
-          { "Label": "A perfect draw that never happens is still no cut. Swing when it's good enough.", "Next": "right", "Effects": [ { "Type": "GrantSkillPoint", "Id": "$with" } ] },
-          { "Label": "Yes. One cut. That is the way.", "Next": "wrong" },
-          { "Label": "Draw twice every time. Two is safer.", "Next": "wrong" }
+          { "Next": "right", "Effects": [ { "Type": "GrantSkillPoint", "Id": "$with" } ] },
+          { "Next": "wrong" },
+          { "Next": "wrong" }
         ]
       },
-      { "Id": "right", "Speaker": "hero", "Text": "Good enough. ...The scrolls would weep. The crew might not. I choose the crew." },
-      { "Id": "wrong", "Speaker": "hero", "Text": "One cut. I will wait for it. ...Again." }
+      { "Id": "right", "Speaker": "hero" },
+      { "Id": "wrong", "Speaker": "hero" }
     ]
   },
   {
@@ -1799,15 +1799,15 @@
     ],
     "Nodes": [
       {
-        "Id": "ask", "Speaker": "hero", "Text": "Counted eleven cuts today. Eleven! New record. ...But the gremlin I was cutting still walked off.",
+        "Id": "ask", "Speaker": "hero",
         "Choices": [
-          { "Label": "More cuts means more blood. Go for twelve.", "Next": "wrong" },
-          { "Label": "Counting hits isn't the point. Count what stops moving.", "Next": "right", "Effects": [ { "Type": "GrantSkillPoint", "Id": "$with" } ] },
-          { "Label": "One big cut. Forget all the little ones.", "Next": "wrong" }
+          { "Next": "wrong" },
+          { "Next": "right", "Effects": [ { "Type": "GrantSkillPoint", "Id": "$with" } ] },
+          { "Next": "wrong" }
         ]
       },
-      { "Id": "right", "Speaker": "hero", "Text": "Count what stops. That's... a much smaller number. But a better one." },
-      { "Id": "wrong", "Speaker": "hero", "Text": "Twelve! I'll write it on the wagon." }
+      { "Id": "right", "Speaker": "hero" },
+      { "Id": "wrong", "Speaker": "hero" }
     ]
   },
   {
@@ -1819,15 +1819,15 @@
     ],
     "Nodes": [
       {
-        "Id": "ask", "Speaker": "hero", "Text": "I drank from a Red Seal today. Only a little. To stay standing. My father would have called that a good start.",
+        "Id": "ask", "Speaker": "hero",
         "Choices": [
-          { "Label": "It's survival. Don't think about it.", "Next": "wrong" },
-          { "Label": "You should have stopped. Never drink again.", "Next": "wrong" },
-          { "Label": "You know the difference between enough and more. That's yours to keep -- not his.", "Next": "right", "Effects": [ { "Type": "GrantSkillPoint", "Id": "$with" } ] }
+          { "Next": "wrong" },
+          { "Next": "wrong" },
+          { "Next": "right", "Effects": [ { "Type": "GrantSkillPoint", "Id": "$with" } ] }
         ]
       },
-      { "Id": "right", "Speaker": "hero", "Text": "Mine, not his. ...I left his house so that could be true. Thank you for reminding me." },
-      { "Id": "wrong", "Speaker": "hero", "Text": "Perhaps. ...His voice says the same thing. That is what frightens me." }
+      { "Id": "right", "Speaker": "hero" },
+      { "Id": "wrong", "Speaker": "hero" }
     ]
   },
   {
@@ -1839,15 +1839,15 @@
     ],
     "Nodes": [
       {
-        "Id": "ask", "Speaker": "hero", "Text": "I roar. They come at me. The crew is safe. Good. ...But I'm alone, and they keep coming, and I'm getting tired.",
+        "Id": "ask", "Speaker": "hero",
         "Choices": [
-          { "Label": "A roar that pulls them in needs the pack ready. Roar where we can catch it.", "Next": "right", "Effects": [ { "Type": "GrantSkillPoint", "Id": "$with" } ] },
-          { "Label": "Roar louder. Make them all come.", "Next": "wrong" },
-          { "Label": "Never roar. Hide in the tall moss.", "Next": "wrong" }
+          { "Next": "right", "Effects": [ { "Type": "GrantSkillPoint", "Id": "$with" } ] },
+          { "Next": "wrong" },
+          { "Next": "wrong" }
         ]
       },
-      { "Id": "right", "Speaker": "hero", "Text": "Roar where they catch it. ...Pack-roar. I understand. Better." },
-      { "Id": "wrong", "Speaker": "hero", "Text": "Louder. Yes. ...So tired. Louder anyway." }
+      { "Id": "right", "Speaker": "hero" },
+      { "Id": "wrong", "Speaker": "hero" }
     ]
   },
   {
@@ -1859,15 +1859,15 @@
     ],
     "Nodes": [
       {
-        "Id": "ask", "Speaker": "hero", "Text": "The tide changed me. Now people talk too much. I just do. Why does the crew keep asking what I'm doing?",
+        "Id": "ask", "Speaker": "hero",
         "Choices": [
-          { "Label": "Right. Words are for people who can't do.", "Next": "wrong" },
-          { "Label": "Your pack has people in it now. People need a sound before you go.", "Next": "right", "Effects": [ { "Type": "GrantSkillPoint", "Id": "$with" } ] },
-          { "Label": "Talk all the time. Never stop.", "Next": "wrong" }
+          { "Next": "wrong" },
+          { "Next": "right", "Effects": [ { "Type": "GrantSkillPoint", "Id": "$with" } ] },
+          { "Next": "wrong" }
         ]
       },
-      { "Id": "right", "Speaker": "hero", "Text": "A sound before I go. Like the wolves do. ...I can do a wolf sound." },
-      { "Id": "wrong", "Speaker": "hero", "Text": "Words are useless. ...Then why do they keep shouting mine?" }
+      { "Id": "right", "Speaker": "hero" },
+      { "Id": "wrong", "Speaker": "hero" }
     ]
   },
   {
@@ -1879,15 +1879,15 @@
     ],
     "Nodes": [
       {
-        "Id": "ask", "Speaker": "hero", "Text": "Caught a moor-wolf the tides changed. Beautiful. She won't listen. Should I let her go?",
+        "Id": "ask", "Speaker": "hero",
         "Choices": [
-          { "Label": "Chain her. Drag her along until she learns.", "Next": "wrong" },
-          { "Label": "Fight beside her first. She'll trust a packmate before she trusts a leash.", "Next": "right", "Effects": [ { "Type": "GrantSkillPoint", "Id": "$with" } ] },
-          { "Label": "Keep her hungry. Hungry beasts obey.", "Next": "wrong" }
+          { "Next": "wrong" },
+          { "Next": "right", "Effects": [ { "Type": "GrantSkillPoint", "Id": "$with" } ] },
+          { "Next": "wrong" }
         ]
       },
-      { "Id": "right", "Speaker": "hero", "Text": "Packmate first. ...She did watch me take a hit for her today. Maybe that's a start." },
-      { "Id": "wrong", "Speaker": "hero", "Text": "Chains, then. ...She looks at me differently already. Not better." }
+      { "Id": "right", "Speaker": "hero" },
+      { "Id": "wrong", "Speaker": "hero" }
     ]
   },
   {
@@ -1899,15 +1899,15 @@
     ],
     "Nodes": [
       {
-        "Id": "ask", "Speaker": "hero", "Text": "Rooftop rule: drop the package and go. I passed the plan to everyone. Not my problem if they botched it, right?",
+        "Id": "ask", "Speaker": "hero",
         "Choices": [
-          { "Label": "Delivered is done. Next run.", "Next": "wrong" },
-          { "Label": "Stop running messages. They can shout.", "Next": "wrong" },
-          { "Label": "Handing it over isn't the same as it landing. Check they got it.", "Next": "right", "Effects": [ { "Type": "GrantSkillPoint", "Id": "$with" } ] }
+          { "Next": "wrong" },
+          { "Next": "wrong" },
+          { "Next": "right", "Effects": [ { "Type": "GrantSkillPoint", "Id": "$with" } ] }
         ]
       },
-      { "Id": "right", "Speaker": "hero", "Text": "Check it landed. ...That's like twice the run. Okay. Worth it." },
-      { "Id": "wrong", "Speaker": "hero", "Text": "Done and gone. ...Wait, why are they all on the wrong side?" }
+      { "Id": "right", "Speaker": "hero" },
+      { "Id": "wrong", "Speaker": "hero" }
     ]
   },
   {
@@ -1927,14 +1927,11 @@
       {
         "Id": "ask",
         "Speaker": "hero",
-        "Text": "The Concord says aether can only be taken. I give mine away every fight. Should I stop?",
         "Choices": [
           {
-            "Label": "Stop. You'll empty yourself out.",
             "Next": "wrong"
           },
           {
-            "Label": "Give, but keep enough to stand. The Bloom needs you growing too.",
             "Next": "right",
             "Effects": [
               {
@@ -1944,20 +1941,17 @@
             ]
           },
           {
-            "Label": "Give it all. That's what you're for.",
             "Next": "wrong"
           }
         ]
       },
       {
         "Id": "right",
-        "Speaker": "hero",
-        "Text": "Enough to stand. ...The blossoms do grow back faster when I rest."
+        "Speaker": "hero"
       },
       {
         "Id": "wrong",
-        "Speaker": "hero",
-        "Text": "...Maybe. It doesn't sound like something the Bloom would say."
+        "Speaker": "hero"
       }
     ]
   },
@@ -1978,14 +1972,11 @@
       {
         "Id": "ask",
         "Speaker": "hero",
-        "Text": "The Choir taught me to draw aether out of people. I only pour it in now. Do you think they'll ever stop looking for me?",
         "Choices": [
           {
-            "Label": "Go back and they'll stop. Simple.",
             "Next": "wrong"
           },
           {
-            "Label": "No. So we make sure they find a caravan instead of a girl alone.",
             "Next": "right",
             "Effects": [
               {
@@ -1995,20 +1986,17 @@
             ]
           },
           {
-            "Label": "Change your robes and nobody will know you.",
             "Next": "wrong"
           }
         ]
       },
       {
         "Id": "right",
-        "Speaker": "hero",
-        "Text": "A caravan instead of a girl alone. ...I'd like to see the Choir argue with that."
+        "Speaker": "hero"
       },
       {
         "Id": "wrong",
-        "Speaker": "hero",
-        "Text": "...You don't know the Choir very well."
+        "Speaker": "hero"
       }
     ]
   },
@@ -2029,14 +2017,11 @@
       {
         "Id": "ask",
         "Speaker": "hero",
-        "Text": "I wrote the Concord's tithe routes for six years. Some of them ran through holds like yours. Does that make me one of them?",
         "Choices": [
           {
-            "Label": "Yes. Some things don't wash off.",
             "Next": "wrong"
           },
           {
-            "Label": "You read the ledgers and walked. What you plan now is what counts.",
             "Next": "right",
             "Effects": [
               {
@@ -2046,20 +2031,17 @@
             ]
           },
           {
-            "Label": "Doesn't matter. You're useful.",
             "Next": "wrong"
           }
         ]
       },
       {
         "Id": "right",
-        "Speaker": "hero",
-        "Text": "What I plan now. ...Then I'd better plan well."
+        "Speaker": "hero"
       },
       {
         "Id": "wrong",
-        "Speaker": "hero",
-        "Text": "...Noted. I'll keep that in the file."
+        "Speaker": "hero"
       }
     ]
   },
@@ -2072,15 +2054,15 @@
     ],
     "Nodes": [
       {
-        "Id": "ask", "Speaker": "hero", "Text": "The spinning wheel never stops, so it never falls. I keep moving. My crew keeps losing track of me.",
+        "Id": "ask", "Speaker": "hero",
         "Choices": [
-          { "Label": "We need to catch you mid-spin. Move where the crew can reach your gifts.", "Next": "right", "Effects": [ { "Type": "GrantSkillPoint", "Id": "$with" } ] },
-          { "Label": "Spin faster. The wheel will find them.", "Next": "wrong" },
-          { "Label": "Stop spinning. Stand next to the Cleric and wait.", "Next": "wrong" }
+          { "Next": "right", "Effects": [ { "Type": "GrantSkillPoint", "Id": "$with" } ] },
+          { "Next": "wrong" },
+          { "Next": "wrong" }
         ]
       },
-      { "Id": "right", "Speaker": "hero", "Text": "Where they can reach. ...A wheel that turns for others. The old masters would call that a prayer." },
-      { "Id": "wrong", "Speaker": "hero", "Text": "Faster. Yes. ...The world is very blurry." }
+      { "Id": "right", "Speaker": "hero" },
+      { "Id": "wrong", "Speaker": "hero" }
     ]
   },
   {
@@ -2092,15 +2074,15 @@
     ],
     "Nodes": [
       {
-        "Id": "ask", "Speaker": "hero", "Text": "Pulled a Concord aether pack apart and wired it into a mine. Runs at double spec. Stopped smoking. Mostly.",
+        "Id": "ask", "Speaker": "hero",
         "Choices": [
-          { "Label": "Push it more. Specs are a Concord lie.", "Next": "wrong" },
-          { "Label": "Overclock it, sure -- just not next to your own crew. Know where it goes.", "Next": "right", "Effects": [ { "Type": "GrantSkillPoint", "Id": "$with" } ] },
-          { "Label": "Stop building things. Too dangerous.", "Next": "wrong" }
+          { "Next": "wrong" },
+          { "Next": "right", "Effects": [ { "Type": "GrantSkillPoint", "Id": "$with" } ] },
+          { "Next": "wrong" }
         ]
       },
-      { "Id": "right", "Speaker": "hero", "Text": "Know where it'll go. ...Yeah. The Knight still has no eyebrows." },
-      { "Id": "wrong", "Speaker": "hero", "Text": "Specs are lies! Okay. Triple spec. What could happen?" }
+      { "Id": "right", "Speaker": "hero" },
+      { "Id": "wrong", "Speaker": "hero" }
     ]
   },
   {
@@ -2112,15 +2094,15 @@
     ],
     "Nodes": [
       {
-        "Id": "ask", "Speaker": "hero", "Text": "One turret is good. Two is better. I'm on four. The crew keeps tripping over them.",
+        "Id": "ask", "Speaker": "hero",
         "Choices": [
-          { "Label": "Two turrets is twice as good. Four is four times.", "Next": "wrong" },
-          { "Label": "Sell them all. Turrets are clutter.", "Next": "wrong" },
-          { "Label": "Know when to stop building and start fighting. Every turret takes a turn you didn't spend.", "Next": "right", "Effects": [ { "Type": "GrantSkillPoint", "Id": "$with" } ] }
+          { "Next": "wrong" },
+          { "Next": "wrong" },
+          { "Next": "right", "Effects": [ { "Type": "GrantSkillPoint", "Id": "$with" } ] }
         ]
       },
-      { "Id": "right", "Speaker": "hero", "Text": "A turn not spent. ...I never counted the turns. Only the turrets. Ugh." },
-      { "Id": "wrong", "Speaker": "hero", "Text": "Four times as good! ...Then why am I the one getting hit?" }
+      { "Id": "right", "Speaker": "hero" },
+      { "Id": "wrong", "Speaker": "hero" }
     ]
   },
   {
@@ -2132,15 +2114,15 @@
     ],
     "Nodes": [
       {
-        "Id": "ask", "Speaker": "hero", "Text": "I ran the numbers. Ninety percent we win if we hold. I kept it to myself till I was sure. Then we didn't hold.",
+        "Id": "ask", "Speaker": "hero",
         "Choices": [
-          { "Label": "A number you don't say out loud only helps you. Share it at sixty percent.", "Next": "right", "Effects": [ { "Type": "GrantSkillPoint", "Id": "$with" } ] },
-          { "Label": "Get it to ninety-nine before you say anything.", "Next": "wrong" },
-          { "Label": "Never calculate. Trust the gut.", "Next": "wrong" }
+          { "Next": "right", "Effects": [ { "Type": "GrantSkillPoint", "Id": "$with" } ] },
+          { "Next": "wrong" },
+          { "Next": "wrong" }
         ]
       },
-      { "Id": "right", "Speaker": "hero", "Text": "Sixty and shared. ...That feels sloppy. Sloppy that works, I suppose." },
-      { "Id": "wrong", "Speaker": "hero", "Text": "Ninety-nine. Right. I'll need more data. And more time. And less fighting." }
+      { "Id": "right", "Speaker": "hero" },
+      { "Id": "wrong", "Speaker": "hero" }
     ]
   },
   {
@@ -2152,15 +2134,15 @@
     ],
     "Nodes": [
       {
-        "Id": "ask", "Speaker": "hero", "Text": "Fixed the caravan's axle with a Bulwark gauntlet and tape. It works! ...Mostly. It squeals going downhill.",
+        "Id": "ask", "Speaker": "hero",
         "Choices": [
-          { "Label": "Works is works. Next job.", "Next": "wrong" },
-          { "Label": "'Works' isn't 'holds'. Fix it right before the road finds the weak bit for you.", "Next": "right", "Effects": [ { "Type": "GrantSkillPoint", "Id": "$with" } ] },
-          { "Label": "Junk it. Steal a new axle.", "Next": "wrong" }
+          { "Next": "wrong" },
+          { "Next": "right", "Effects": [ { "Type": "GrantSkillPoint", "Id": "$with" } ] },
+          { "Next": "wrong" }
         ]
       },
-      { "Id": "right", "Speaker": "hero", "Text": "Holds, not works. ...Fine. Taking the tape off. Sad day." },
-      { "Id": "wrong", "Speaker": "hero", "Text": "Works is works! I've got three more squeals to ignore." }
+      { "Id": "right", "Speaker": "hero" },
+      { "Id": "wrong", "Speaker": "hero" }
     ]
   },
   {
@@ -2172,15 +2154,15 @@
     ],
     "Nodes": [
       {
-        "Id": "ask", "Speaker": "hero", "Text": "In the Choir I sang to order. Now I curse for the crew, from far off. Still feels like I'm just taking orders.",
+        "Id": "ask", "Speaker": "hero",
         "Choices": [
-          { "Label": "You don't owe them a thing. Shoot for yourself.", "Next": "wrong" },
-          { "Label": "Stop shooting for anyone. Sing nothing.", "Next": "wrong" },
-          { "Label": "Following a call isn't the Choir. Choosing who you sing for is the whole difference.", "Next": "right", "Effects": [ { "Type": "GrantSkillPoint", "Id": "$with" } ] }
+          { "Next": "wrong" },
+          { "Next": "wrong" },
+          { "Next": "right", "Effects": [ { "Type": "GrantSkillPoint", "Id": "$with" } ] }
         ]
       },
-      { "Id": "right", "Speaker": "hero", "Text": "Choosing. ...The Choir never let us choose. I'll sing louder for that." },
-      { "Id": "wrong", "Speaker": "hero", "Text": "For myself, then. ...That sounds lonely from up here." }
+      { "Id": "right", "Speaker": "hero" },
+      { "Id": "wrong", "Speaker": "hero" }
     ]
   },
   {
@@ -2192,15 +2174,15 @@
     ],
     "Nodes": [
       {
-        "Id": "ask", "Speaker": "hero", "Text": "I curse the whole line so nothing reaches the crew. Every fight. Every line. I can't stop guarding.",
+        "Id": "ask", "Speaker": "hero",
         "Choices": [
-          { "Label": "We're past the fen that hunted you. Guard what's coming, not everything at once.", "Next": "right", "Effects": [ { "Type": "GrantSkillPoint", "Id": "$with" } ] },
-          { "Label": "Never let up. Hex every inch.", "Next": "wrong" },
-          { "Label": "Leave the guarding. The fen's behind you.", "Next": "wrong" }
+          { "Next": "right", "Effects": [ { "Type": "GrantSkillPoint", "Id": "$with" } ] },
+          { "Next": "wrong" },
+          { "Next": "wrong" }
         ]
       },
-      { "Id": "right", "Speaker": "hero", "Text": "What's coming. ...I was still guarding the place I ran from. Thank you." },
-      { "Id": "wrong", "Speaker": "hero", "Text": "Every inch. Yes. ...My voice is going, though." }
+      { "Id": "right", "Speaker": "hero" },
+      { "Id": "wrong", "Speaker": "hero" }
     ]
   },
   {
@@ -2212,43 +2194,43 @@
     ],
     "Nodes": [
       {
-        "Id": "ask", "Speaker": "hero", "Text": "Shoot, fall back, shoot. Nothing gets close. Nobody gets close. ...That second part was an accident.",
+        "Id": "ask", "Speaker": "hero",
         "Choices": [
-          { "Label": "Good. Keep running from everything.", "Next": "wrong" },
-          { "Label": "Distance is a tactic, not an answer. Keep the Concord out, let the crew in.", "Next": "right", "Effects": [ { "Type": "GrantSkillPoint", "Id": "$with" } ] },
-          { "Label": "Stop falling back. Plant your feet and stay.", "Next": "wrong" }
+          { "Next": "wrong" },
+          { "Next": "right", "Effects": [ { "Type": "GrantSkillPoint", "Id": "$with" } ] },
+          { "Next": "wrong" }
         ]
       },
-      { "Id": "right", "Speaker": "hero", "Text": "Let the crew in. ...Huh. Even the loud ones? Fine. Even them." },
-      { "Id": "wrong", "Speaker": "hero", "Text": "Running, then. From everything. It's what I'm good at." }
+      { "Id": "right", "Speaker": "hero" },
+      { "Id": "wrong", "Speaker": "hero" }
     ]
   },
   {
     "Id": "interlude_level10_motives",
     "Title": "Why We Ran",
     "Trigger": { "Kind": "LevelReached", "Level": 10 },
-    "Crawl": "Somewhere between one hold and the next, the crew stopped being the kids who stole a caravan.\n\nPeople know the wagons now. Holds leave gates unbarred for you. Children in the moor towns play at being you -- one of them the tithe-taker, the rest running, everyone arguing over who gets to drive.\n\nIt would be easy to keep going on that alone. Most runaways do, right up until the day the Concord catches up.\n\nBut the road has been saying something, hold after hold, and it gets louder the further you drive. The quotas are lies. The surplus goes somewhere. Someone has built a very tall tower out of other people's lives.\n\nThat changes what running is for. Running saves you. What you are turning into might have to save the holds.\n\nSo one night, around a fire beside the wagons, with Morrow filling half the sky, somebody finally asks the question every runaway avoids.\n\nWhy did you really run?",
+    "HasCrawl": true,
     "Backdrop": "cave",
     "Speakers": [
       { "Id": "lead", "Class": "$lead" },
       { "Id": "innkeeper", "Name": "Innkeeper", "Portrait": "pandagirl" }
     ],
     "Nodes": [
-      { "Id": "a", "Speaker": "innkeeper", "Text": "Ten levels of scar tissue and you still eat like the tithe-wardens are at the door. Sit. The pot can wait. I want to ask you something.", "Next": "b" },
-      { "Id": "b", "Speaker": "lead", "Text": "Ask, then.", "Next": "c" },
-      { "Id": "c", "Speaker": "innkeeper", "Text": "You ran. Everybody understands running. But you've stopped running and started fighting, and that's different. So -- what are you fighting for?",
+      { "Id": "a", "Speaker": "innkeeper", "Next": "b" },
+      { "Id": "b", "Speaker": "lead", "Next": "c" },
+      { "Id": "c", "Speaker": "innkeeper",
         "Choices": [
-          { "Label": "For the coin. A stolen caravan doesn't feed itself.", "Next": "coin", "Effects": [ { "Type": "SetFlag", "Id": "motive:coin" } ] },
-          { "Label": "For the holds. Every town that ever walked into a Still.", "Next": "people", "Effects": [ { "Type": "SetFlag", "Id": "motive:people" } ] },
-          { "Label": "For the truth. Where the tithe goes -- and who's drinking it.", "Next": "truth", "Effects": [ { "Type": "SetFlag", "Id": "motive:truth" } ] },
-          { "Label": "Honestly? For the crew. These are my people now.", "Next": "crew", "Effects": [ { "Type": "SetFlag", "Id": "motive:crew" } ] }
+          { "Next": "coin", "Effects": [ { "Type": "SetFlag", "Id": "motive:coin" } ] },
+          { "Next": "people", "Effects": [ { "Type": "SetFlag", "Id": "motive:people" } ] },
+          { "Next": "truth", "Effects": [ { "Type": "SetFlag", "Id": "motive:truth" } ] },
+          { "Next": "crew", "Effects": [ { "Type": "SetFlag", "Id": "motive:crew" } ] }
         ]
       },
-      { "Id": "coin", "Speaker": "innkeeper", "Text": "Ha. Honest, at least. Coin keeps a crew fed, and fed crews keep going. Just remember: whoever's at the top of that spire won't be paying.", "Next": "close" },
-      { "Id": "people", "Speaker": "innkeeper", "Text": "Saltmoss says that one on tithe day and forgets it by supper. You didn't forget. Keep it close -- it's the kind of reason that holds when the others snap.", "Next": "close" },
-      { "Id": "truth", "Speaker": "innkeeper", "Text": "Careful. Everyone who's said that aloud came home Hollow. But if anyone's going to put a name to it, I'd rather it was you.", "Next": "close" },
-      { "Id": "crew", "Speaker": "innkeeper", "Text": "That's the one that lasts. Not the coin, not the cause. Each other. You'll want that, where this road goes.", "Next": "close" },
-      { "Id": "close", "Speaker": "lead", "Text": "Then we keep driving. Wherever the tithe goes, we follow it -- and we all come back." }
+      { "Id": "coin", "Speaker": "innkeeper", "Next": "close" },
+      { "Id": "people", "Speaker": "innkeeper", "Next": "close" },
+      { "Id": "truth", "Speaker": "innkeeper", "Next": "close" },
+      { "Id": "crew", "Speaker": "innkeeper", "Next": "close" },
+      { "Id": "close", "Speaker": "lead" }
     ]
   },
   {
@@ -2260,10 +2242,10 @@
       { "Id": "lead", "Class": "$lead" }
     ],
     "Nodes": [
-      { "Id": "a", "Speaker": "boss", "Text": "The Saltmoss runaways. Concord wagons, Concord horses, Concord bread. You didn't think anyone would come after them?", "Next": "b" },
-      { "Id": "b", "Speaker": "lead", "Text": "You sold the holds for an exemption. Your own people. You don't get to say 'stolen' to us.", "Next": "c" },
-      { "Id": "c", "Speaker": "boss", "Text": "I bought them peace. The tithe's coming either way. And on my field, kids, the rules you think you know don't hold. Come and find out which ones.", "Next": "d" },
-      { "Id": "d", "Speaker": "lead", "Text": "Everyone, eyes open. Whatever he's got, we learn it fast and we flank it anyway." }
+      { "Id": "a", "Speaker": "boss", "Next": "b" },
+      { "Id": "b", "Speaker": "lead", "Next": "c" },
+      { "Id": "c", "Speaker": "boss", "Next": "d" },
+      { "Id": "d", "Speaker": "lead" }
     ]
   },
   {
@@ -2275,8 +2257,8 @@
       { "Id": "lead", "Class": "$lead" }
     ],
     "Nodes": [
-      { "Id": "a", "Speaker": "boss", "Text": "The pass takes a toll. Leave the wagon. This mask has knocked down braver crews -- and it always gets back up.", "Next": "b" },
-      { "Id": "b", "Speaker": "lead", "Text": "Then we put down the raiders around it first. Once nobody's left to stand with it, it stays down." }
+      { "Id": "a", "Speaker": "boss", "Next": "b" },
+      { "Id": "b", "Speaker": "lead" }
     ]
   },
   {
@@ -2288,10 +2270,10 @@
       { "Id": "lead", "Class": "$lead" }
     ],
     "Nodes": [
-      { "Id": "a", "Speaker": "boss", "Text": "THIS DIG IS CONCORD PROPERTY. TURN BACK. ...Seriously, kids, turn back. I'm not paid enough for this.", "Next": "b" },
-      { "Id": "b", "Speaker": "lead", "Text": "There's a crew in that thing. Behind the shield. They're cutting aether out of the moon and filling packs with it.", "Next": "c" },
-      { "Id": "c", "Speaker": "boss", "Text": "WALKER PROTOCOL ENGAGED. STANDARD RULES OF ENGAGEMENT: SUSPENDED. ...Sorry. It's on a card. I have to read the card.", "Next": "d" },
-      { "Id": "d", "Speaker": "lead", "Text": "Suspended. Wonderful. Watch how it moves before you commit -- walkers have patterns, and so do the people driving them." }
+      { "Id": "a", "Speaker": "boss", "Next": "b" },
+      { "Id": "b", "Speaker": "lead", "Next": "c" },
+      { "Id": "c", "Speaker": "boss", "Next": "d" },
+      { "Id": "d", "Speaker": "lead" }
     ]
   },
   {
@@ -2303,10 +2285,10 @@
       { "Id": "lead", "Class": "$lead" }
     ],
     "Nodes": [
-      { "Id": "a", "Speaker": "boss", "Text": "Oh, little drivers. You come into my fen thinking the fog is the danger. The fog is my oldest friend. I flew this ship once. Now I am the ground it landed on.", "Next": "b" },
-      { "Id": "b", "Speaker": "lead", "Text": "You were the pilot. The Concord grounded you, and you never left.", "Next": "c" },
-      { "Id": "c", "Speaker": "boss", "Text": "I learned to stay. And what staying taught me is that the way you fight -- all those tidy lines and flanks -- is only a habit. Habits break.", "Next": "d" },
-      { "Id": "d", "Speaker": "lead", "Text": "Then we'll break hers first. Stay close, keep each other standing." }
+      { "Id": "a", "Speaker": "boss", "Next": "b" },
+      { "Id": "b", "Speaker": "lead", "Next": "c" },
+      { "Id": "c", "Speaker": "boss", "Next": "d" },
+      { "Id": "d", "Speaker": "lead" }
     ]
   },
   {
@@ -2318,10 +2300,10 @@
       { "Id": "lead", "Class": "$lead" }
     ],
     "Nodes": [
-      { "Id": "a", "Speaker": "boss", "Text": "...Small. Warm. Loud. Keeper feeds the arch. Keeper was grown to feed the arch. You are not on the list.", "Next": "b" },
-      { "Id": "b", "Speaker": "lead", "Text": "It was grown in a Still. Out of tithe. Out of somebody's aether -- maybe somebody from Saltmoss.", "Next": "c" },
-      { "Id": "c", "Speaker": "boss", "Text": "Keeper does not remember somebody. Keeper remembers every fight on this ice. The old ways do not work on Keeper.", "Next": "d" },
-      { "Id": "d", "Speaker": "lead", "Text": "Then we'll find a new way. Spread out, keep moving, and don't give it a target it expects." }
+      { "Id": "a", "Speaker": "boss", "Next": "b" },
+      { "Id": "b", "Speaker": "lead", "Next": "c" },
+      { "Id": "c", "Speaker": "boss", "Next": "d" },
+      { "Id": "d", "Speaker": "lead" }
     ]
   },
   {
@@ -2333,10 +2315,10 @@
       { "Id": "lead", "Class": "$lead" }
     ],
     "Nodes": [
-      { "Id": "a", "Speaker": "boss", "Text": "Mind the floor; it's polished on the hour. You came all this way to see the tithe? Very well. Look at tank nine.", "Next": "b" },
-      { "Id": "b", "Speaker": "lead", "Text": "There's... a street in it. Chimneys. A well. A garden wall. It's turning, like it's drowning slow.", "Next": "c" },
-      { "Id": "c", "Speaker": "boss", "Text": "Fennick's Rise. All of it -- the songs, the recipes, the names of the dogs. We keep it cold until the spire calls for it. I time the flow, and nobody leaves my clocks early. In here I take my turn, and then I take yours.", "Next": "d" },
-      { "Id": "d", "Speaker": "lead", "Text": "Then the Hollow aren't empty. They're in there. Stored. -- Close in on her, everyone. Don't give her the room to take two." }
+      { "Id": "a", "Speaker": "boss", "Next": "b" },
+      { "Id": "b", "Speaker": "lead", "Next": "c" },
+      { "Id": "c", "Speaker": "boss", "Next": "d" },
+      { "Id": "d", "Speaker": "lead" }
     ]
   },
   {
@@ -2348,8 +2330,8 @@
       { "Id": "lead", "Class": "$lead" }
     ],
     "Nodes": [
-      { "Id": "a", "Speaker": "boss", "Text": "No one climbs to the cathedral. I was fired for this stair. Strike me from the side and the glaze turns it.", "Next": "b" },
-      { "Id": "b", "Speaker": "lead", "Text": "Then we come at it top to bottom, and keep at it until the porcelain cracks." }
+      { "Id": "a", "Speaker": "boss", "Next": "b" },
+      { "Id": "b", "Speaker": "lead" }
     ]
   },
   {
@@ -2361,10 +2343,10 @@
       { "Id": "lead", "Class": "$lead" }
     ],
     "Nodes": [
-      { "Id": "a", "Speaker": "boss", "Text": "So this is what the holds send. Children, in my own wagons. Do you know how long I have held the moon away from you?", "Next": "b" },
-      { "Id": "b", "Speaker": "lead", "Text": "You held nothing. The Anchors take a thread. You took the rest. Two hundred years of it.", "Next": "c" },
-      { "Id": "c", "Speaker": "boss", "Text": "And I spent it well. Without me there is no Concord, and without the Concord, no Anchors. In my spire, little thieves, I decide how a battle is fought.", "Next": "d" },
-      { "Id": "d", "Speaker": "lead", "Text": "This is it. Everything every hold ever paid is in this room. Together -- now! Let's give it back!" }
+      { "Id": "a", "Speaker": "boss", "Next": "b" },
+      { "Id": "b", "Speaker": "lead", "Next": "c" },
+      { "Id": "c", "Speaker": "boss", "Next": "d" },
+      { "Id": "d", "Speaker": "lead" }
     ]
   },
   {
@@ -2375,14 +2357,14 @@
     "Speakers": [ { "Id": "innkeeper", "Name": "Innkeeper", "Portrait": "pandagirl" } ],
     "Nodes": [
       {
-        "Id": "ask", "Speaker": "innkeeper", "Text": "Water carriers came back with half their barrels and all their nerves gone. Wolves have learned the path to the last clean well. Five fewer wolves and they'd find somewhere else to learn things.",
+        "Id": "ask", "Speaker": "innkeeper",
         "Choices": [
-          { "Label": "We'll thin the pack.", "Next": "yes", "Effects": [ { "Type": "StartQuest", "Id": "q_wells_wolves" } ] },
-          { "Label": "Not now.", "Next": "no" }
+          { "Next": "yes", "Effects": [ { "Type": "StartQuest", "Id": "q_wells_wolves" } ] },
+          { "Next": "no" }
         ]
       },
-      { "Id": "yes", "Speaker": "innkeeper", "Text": "Bless you. I'll keep something warm on the shelf for when you're back." },
-      { "Id": "no", "Speaker": "innkeeper", "Text": "Fair. It'll keep -- the wolves certainly will. It's in your journal if you change your mind." }
+      { "Id": "yes", "Speaker": "innkeeper" },
+      { "Id": "no", "Speaker": "innkeeper" }
     ]
   },
   {
@@ -2393,14 +2375,14 @@
     "Speakers": [ { "Id": "merchant", "Name": "Lantern Merchant", "Portrait": "courier" } ],
     "Nodes": [
       {
-        "Id": "ask", "Speaker": "merchant", "Text": "Here's a theory nobody's paying me for yet: the moor frogs glow brighter under a full Morrow. Their glands hold aether. Three glands and I'll know. Then somebody pays me for it.",
+        "Id": "ask", "Speaker": "merchant",
         "Choices": [
-          { "Label": "We'll bring you three.", "Next": "yes", "Effects": [ { "Type": "StartQuest", "Id": "q_frog_glands" } ] },
-          { "Label": "Not now.", "Next": "no" }
+          { "Next": "yes", "Effects": [ { "Type": "StartQuest", "Id": "q_frog_glands" } ] },
+          { "Next": "no" }
         ]
       },
-      { "Id": "yes", "Speaker": "merchant", "Text": "Fresh ones, if you can. Well -- as fresh as anything off a frog gets." },
-      { "Id": "no", "Speaker": "merchant", "Text": "The offer stands. Theories don't spoil. Glands do, but that's a later problem." }
+      { "Id": "yes", "Speaker": "merchant" },
+      { "Id": "no", "Speaker": "merchant" }
     ]
   },
   {
@@ -2411,14 +2393,14 @@
     "Speakers": [ { "Id": "with", "Class": "$with" } ],
     "Nodes": [
       {
-        "Id": "ask", "Speaker": "with", "Text": "Something I keep thinking about: the Captain's patrols look for a big caravan crew. A small one slips through. I'd like to prove it -- his own field, three of us, no more.",
+        "Id": "ask", "Speaker": "with",
         "Choices": [
-          { "Label": "Let's prove it.", "Next": "yes", "Effects": [ { "Type": "StartQuest", "Id": "q_travel_light" } ] },
-          { "Label": "Not now.", "Next": "no" }
+          { "Next": "yes", "Effects": [ { "Type": "StartQuest", "Id": "q_travel_light" } ] },
+          { "Next": "no" }
         ]
       },
-      { "Id": "yes", "Speaker": "with", "Text": "The Captain's field, three in the fight. Pick them well -- the rest can cheer from the wagons." },
-      { "Id": "no", "Speaker": "with", "Text": "Fine by me. I'll put it in the journal and keep thinking out loud." }
+      { "Id": "yes", "Speaker": "with" },
+      { "Id": "no", "Speaker": "with" }
     ]
   },
   {
@@ -2429,14 +2411,14 @@
     "Speakers": [ { "Id": "smith", "Name": "Blacksmith", "Portrait": "tinkerer" } ],
     "Nodes": [
       {
-        "Id": "ask", "Speaker": "smith", "Text": "The gremlins at the Concord dig carry cogs with teeth no file ever cut. I've worked metal my whole life and I can't say how they were made. Bring me four and I'll find out.",
+        "Id": "ask", "Speaker": "smith",
         "Choices": [
-          { "Label": "Four cogs, coming up.", "Next": "yes", "Effects": [ { "Type": "StartQuest", "Id": "q_grown_not_forged" } ] },
-          { "Label": "Not now.", "Next": "no" }
+          { "Next": "yes", "Effects": [ { "Type": "StartQuest", "Id": "q_grown_not_forged" } ] },
+          { "Next": "no" }
         ]
       },
-      { "Id": "yes", "Speaker": "smith", "Text": "Good. Don't clean them. I want to see the grain." },
-      { "Id": "no", "Speaker": "smith", "Text": "Suit yourself. It'll gnaw at me, but I've had worse company." }
+      { "Id": "yes", "Speaker": "smith" },
+      { "Id": "no", "Speaker": "smith" }
     ]
   },
   {
@@ -2447,9 +2429,9 @@
     "Once": true,
     "Speakers": [ { "Id": "smith", "Name": "Blacksmith", "Portrait": "tinkerer" }, { "Id": "lead", "Class": "$lead" } ],
     "Nodes": [
-      { "Id": "a", "Speaker": "smith", "Text": "Couldn't sleep. Those cogs weren't forged. They were grown -- in the vats, out of tithe surplus. Somebody's aether, shaped into a gear.", "Next": "b" },
-      { "Id": "b", "Speaker": "lead", "Text": "Then every Concord machine we've broken was made out of... people.", "Next": "c" },
-      { "Id": "c", "Speaker": "smith", "Text": "Out of what was taken from people. Which means the surplus isn't sitting in a vault. It's being used. I'd like to know what for. And who for." }
+      { "Id": "a", "Speaker": "smith", "Next": "b" },
+      { "Id": "b", "Speaker": "lead", "Next": "c" },
+      { "Id": "c", "Speaker": "smith" }
     ]
   },
   {
@@ -2460,14 +2442,14 @@
     "Speakers": [ { "Id": "alchemist", "Name": "Alchemist", "Portrait": "alchemist" } ],
     "Nodes": [
       {
-        "Id": "ask", "Speaker": "alchemist", "Text": "Every cure I brew for scorpion venom stops working a week later. They drink from the red rivers, and the Ember keeps changing them. Put down four and I can study this week's batch.",
+        "Id": "ask", "Speaker": "alchemist",
         "Choices": [
-          { "Label": "Four scorpions it is.", "Next": "yes", "Effects": [ { "Type": "StartQuest", "Id": "q_antivenom" } ] },
-          { "Label": "Not now.", "Next": "no" }
+          { "Next": "yes", "Effects": [ { "Type": "StartQuest", "Id": "q_antivenom" } ] },
+          { "Next": "no" }
         ]
       },
-      { "Id": "yes", "Speaker": "alchemist", "Text": "Mind the tails. I'd rather study venom than drain it out of you." },
-      { "Id": "no", "Speaker": "alchemist", "Text": "Then I'll keep guessing. Badly, probably. It's in the journal." }
+      { "Id": "yes", "Speaker": "alchemist" },
+      { "Id": "no", "Speaker": "alchemist" }
     ]
   },
   {
@@ -2478,14 +2460,14 @@
     "Speakers": [ { "Id": "alchemist", "Name": "Alchemist", "Portrait": "alchemist" } ],
     "Nodes": [
       {
-        "Id": "ask", "Speaker": "alchemist", "Text": "The fen hags were Choir once. They sing aether the other way now -- into curses -- and they bind it into their own claws. It holds. Three claws and I might learn how.",
+        "Id": "ask", "Speaker": "alchemist",
         "Choices": [
-          { "Label": "We'll bring three claws.", "Next": "yes", "Effects": [ { "Type": "StartQuest", "Id": "q_hags_hand" } ] },
-          { "Label": "Not now.", "Next": "no" }
+          { "Next": "yes", "Effects": [ { "Type": "StartQuest", "Id": "q_hags_hand" } ] },
+          { "Next": "no" }
         ]
       },
-      { "Id": "yes", "Speaker": "alchemist", "Text": "Gloves. Please. I'm serious about the gloves." },
-      { "Id": "no", "Speaker": "alchemist", "Text": "The fens aren't going anywhere. Unfortunately." }
+      { "Id": "yes", "Speaker": "alchemist" },
+      { "Id": "no", "Speaker": "alchemist" }
     ]
   },
   {
@@ -2496,14 +2478,14 @@
     "Speakers": [ { "Id": "enchantress", "Name": "Enchantress", "Portrait": "whitewitch" } ],
     "Nodes": [
       {
-        "Id": "ask", "Speaker": "enchantress", "Text": "In the Choir we were taught a hymn needs every voice, or it falls apart. They meant it as a threat. I'd like to see it mean something better. Clear the heart of the fen and let no one fall.",
+        "Id": "ask", "Speaker": "enchantress",
         "Choices": [
-          { "Label": "Nobody falls.", "Next": "yes", "Effects": [ { "Type": "StartQuest", "Id": "q_hold_the_ward" } ] },
-          { "Label": "Not now.", "Next": "no" }
+          { "Next": "yes", "Effects": [ { "Type": "StartQuest", "Id": "q_hold_the_ward" } ] },
+          { "Next": "no" }
         ]
       },
-      { "Id": "yes", "Speaker": "enchantress", "Text": "Then mind each other. That is the whole of the song." },
-      { "Id": "no", "Speaker": "enchantress", "Text": "Patience is a note too. The test will wait." }
+      { "Id": "yes", "Speaker": "enchantress" },
+      { "Id": "no", "Speaker": "enchantress" }
     ]
   },
   {
@@ -2514,14 +2496,14 @@
     "Speakers": [ { "Id": "innkeeper", "Name": "Innkeeper", "Portrait": "pandagirl" } ],
     "Nodes": [
       {
-        "Id": "ask", "Speaker": "innkeeper", "Text": "The cold off those arches gets right into the bunks. Three yeti furs and I could line them before somebody wakes up blue.",
+        "Id": "ask", "Speaker": "innkeeper",
         "Choices": [
-          { "Label": "Three furs, then.", "Next": "yes", "Effects": [ { "Type": "StartQuest", "Id": "q_long_cold" } ] },
-          { "Label": "Not now.", "Next": "no" }
+          { "Next": "yes", "Effects": [ { "Type": "StartQuest", "Id": "q_long_cold" } ] },
+          { "Next": "no" }
         ]
       },
-      { "Id": "yes", "Speaker": "innkeeper", "Text": "The big shaggy ones. Not the ones with the clubs. Well -- those too, if they insist." },
-      { "Id": "no", "Speaker": "innkeeper", "Text": "Extra blankets it is. For now." }
+      { "Id": "yes", "Speaker": "innkeeper" },
+      { "Id": "no", "Speaker": "innkeeper" }
     ]
   },
   {
@@ -2532,14 +2514,14 @@
     "Speakers": [ { "Id": "smith", "Name": "Blacksmith", "Portrait": "tinkerer" } ],
     "Nodes": [
       {
-        "Id": "ask", "Speaker": "smith", "Text": "Those ice maulers carry cores that stay cold in my hottest coals. They've been drinking what leaks from the arches. Break three. I want to know what the Anchors are feeding.",
+        "Id": "ask", "Speaker": "smith",
         "Choices": [
-          { "Label": "Three maulers.", "Next": "yes", "Effects": [ { "Type": "StartQuest", "Id": "q_cold_iron" } ] },
-          { "Label": "Not now.", "Next": "no" }
+          { "Next": "yes", "Effects": [ { "Type": "StartQuest", "Id": "q_cold_iron" } ] },
+          { "Next": "no" }
         ]
       },
-      { "Id": "yes", "Speaker": "smith", "Text": "Hit them where the frost is thinnest. And come back in one piece -- I'm not reforging you." },
-      { "Id": "no", "Speaker": "smith", "Text": "They'll still be cold tomorrow. That's rather the point." }
+      { "Id": "yes", "Speaker": "smith" },
+      { "Id": "no", "Speaker": "smith" }
     ]
   },
   {
@@ -2550,14 +2532,14 @@
     "Speakers": [ { "Id": "with", "Class": "$with" } ],
     "Nodes": [
       {
-        "Id": "ask", "Speaker": "with", "Text": "The ghosts in Halcyon -- they're people who were tithed past Hollow. Nothing left but the shape. I'd like to lay some of them to rest. Five, at least. It feels like owing someone.",
+        "Id": "ask", "Speaker": "with",
         "Choices": [
-          { "Label": "Let's give them peace.", "Next": "yes", "Effects": [ { "Type": "StartQuest", "Id": "q_city_that_stopped" } ] },
-          { "Label": "Not now.", "Next": "no" }
+          { "Next": "yes", "Effects": [ { "Type": "StartQuest", "Id": "q_city_that_stopped" } ] },
+          { "Next": "no" }
         ]
       },
-      { "Id": "yes", "Speaker": "with", "Text": "Thank you. I'll keep count." },
-      { "Id": "no", "Speaker": "with", "Text": "Later, then. They've waited this long." }
+      { "Id": "yes", "Speaker": "with" },
+      { "Id": "no", "Speaker": "with" }
     ]
   },
   {
@@ -2568,14 +2550,14 @@
     "Speakers": [ { "Id": "enchantress", "Name": "Enchantress", "Portrait": "whitewitch" } ],
     "Nodes": [
       {
-        "Id": "ask", "Speaker": "enchantress", "Text": "I know the Cantors' parts by heart. Every one of them still singing is another hold sung into a tank. Silence three, and I will believe the hymn can stop.",
+        "Id": "ask", "Speaker": "enchantress",
         "Choices": [
-          { "Label": "Three Cantors. Done.", "Next": "yes", "Effects": [ { "Type": "StartQuest", "Id": "q_hymn_stops" } ] },
-          { "Label": "Not now.", "Next": "no" }
+          { "Next": "yes", "Effects": [ { "Type": "StartQuest", "Id": "q_hymn_stops" } ] },
+          { "Next": "no" }
         ]
       },
-      { "Id": "yes", "Speaker": "enchantress", "Text": "Listen for the glyphs. When they go quiet, it's done." },
-      { "Id": "no", "Speaker": "enchantress", "Text": "The queue will still be there. That is the whole trouble." }
+      { "Id": "yes", "Speaker": "enchantress" },
+      { "Id": "no", "Speaker": "enchantress" }
     ]
   },
   {
@@ -2586,14 +2568,14 @@
     "Speakers": [ { "Id": "merchant", "Name": "Lantern Merchant", "Portrait": "courier" } ],
     "Nodes": [
       {
-        "Id": "ask", "Speaker": "merchant", "Text": "The oni are robbing every pilgrim on the stairs. Drive off three of them and the road is safe to trade on again.",
+        "Id": "ask", "Speaker": "merchant",
         "Choices": [
-          { "Label": "Three oni. Done.", "Next": "yes", "Effects": [ { "Type": "StartQuest", "Id": "q_masks_off" } ] },
-          { "Label": "Not now.", "Next": "no" }
+          { "Next": "yes", "Effects": [ { "Type": "StartQuest", "Id": "q_masks_off" } ] },
+          { "Next": "no" }
         ]
       },
-      { "Id": "yes", "Speaker": "merchant", "Text": "Mind the narrow stairs." },
-      { "Id": "no", "Speaker": "merchant", "Text": "The road will wait. The oni won't." }
+      { "Id": "yes", "Speaker": "merchant" },
+      { "Id": "no", "Speaker": "merchant" }
     ]
   },
   {
@@ -2604,14 +2586,14 @@
     "Speakers": [ { "Id": "enchantress", "Name": "Enchantress", "Portrait": "whitewitch" } ],
     "Nodes": [
       {
-        "Id": "ask", "Speaker": "enchantress", "Text": "The Confessors keep the Choir singing in the cathedral. Silence three of them and the organ starts to falter.",
+        "Id": "ask", "Speaker": "enchantress",
         "Choices": [
-          { "Label": "Three Confessors. Done.", "Next": "yes", "Effects": [ { "Type": "StartQuest", "Id": "q_organ_quiet" } ] },
-          { "Label": "Not now.", "Next": "no" }
+          { "Next": "yes", "Effects": [ { "Type": "StartQuest", "Id": "q_organ_quiet" } ] },
+          { "Next": "no" }
         ]
       },
-      { "Id": "yes", "Speaker": "enchantress", "Text": "Listen for the pipes. When they go thin, it's working." },
-      { "Id": "no", "Speaker": "enchantress", "Text": "The organ will keep playing. It always has." }
+      { "Id": "yes", "Speaker": "enchantress" },
+      { "Id": "no", "Speaker": "enchantress" }
     ]
   }
 ]

@@ -152,5 +152,66 @@ class KeySchemeTests(unittest.TestCase):
         self.assertEqual(prose_keys.text_id("bark", "bark:merc/myrmidon/pitch"), "bark-merc-myrmidon-pitch")
 
 
+class TextSourcingTests(unittest.TestCase):
+    """GG-T355 Phase 2: tools/prose_text.py (the seed's shape, span-exact stripping, the Python join) and the repo's own
+    content (no story text left in gameplay JSON, every key has a text)."""
+
+    def test_seed_entry_has_the_applier_shape(self):
+        import prose_text
+        doc = {"schema": "prose-text/1", "id": "crawl-swamp", "universe": "gridgame", "kind": "crawl", "key": "crawl:swamp",
+               "about": ["place-swamp"], "version": 1, "status": "draft", "payload": {"title": "T", "paragraphs": ["p"]}}
+        seed = prose_text.seed_entry(doc)
+        applied = prose_apply.entry(dict(doc, status="published", hash="sha256:" + "a" * 64, guid="g"))
+        self.assertEqual(list(seed), list(applied))
+        self.assertEqual((seed["guid"], seed["version"], seed["source"]), (None, 0, "seed"))
+        self.assertEqual(applied["source"], "prose")
+        self.assertTrue(seed["hash"].startswith("sha256:"))
+
+    def test_strip_file_keeps_the_rest_of_the_formatting(self):
+        import prose_text
+        text = ('[\n  {\n    "Id": "a",\n    "Description": "story",\n    "Lore": "more",\n    "Card": "ui"\n  },\n'
+                '  { "Id": "b", "Speaker": "x", "Text": "line", "Next": "c" },\n'
+                '  {\n    "Id": "c", "Text": "end",\n    "Next": null\n  }\n]\n')
+        paths = [(0, "Description"), (0, "Lore"), (1, "Text"), (2, "Text")]
+        out = prose_text.strip_file(text, paths)
+        self.assertEqual(json.loads(out), [{"Id": "a", "Card": "ui"}, {"Id": "b", "Speaker": "x", "Next": "c"},
+                                           {"Id": "c", "Next": None}])
+        self.assertIn('  { "Id": "b", "Speaker": "x", "Next": "c" },\n', out)
+        self.assertIn('    "Id": "c",\n', out)
+        self.assertNotIn(" \n", out)
+        last = prose_text.strip_file('{\n  "A": 1,\n  "B": "x"\n}\n', [("B",)])
+        self.assertEqual(last, '{\n  "A": 1\n}\n')
+
+    def test_hydrate_puts_the_words_back(self):
+        import prose_text
+        content = {"classes": [{"Id": "lich", "BossPhases": [{"HpThreshold": 0.5}]}],
+                   "dialogues": [{"Id": "d", "HasCrawl": True, "Nodes": [{"Id": "ask", "Choices": [{"Next": "heard"}]}]}],
+                   "mercenaries": [{"Class": "myrmidon"}]}
+        texts = {
+            "class:lich": {"payload": {"short": "S", "long": "L"}},
+            "bark:bossphase/lich/0": {"payload": {"lines": ["Rise!"]}},
+            "dialogue:d": {"payload": {"nodes": [{"id": "ask", "line": "Why?", "choices": [{"text": "Because", "next": "heard"}]}]}},
+            "crawl:dialogue/d": {"payload": {"paragraphs": ["One.", "Two."]}},
+            "bark:merc/myrmidon/pitch": {"payload": {"lines": ["Hire me."]}},
+        }
+        out = prose_text.hydrate(content, texts)
+        self.assertEqual((out["classes"][0]["Description"], out["classes"][0]["Lore"]), ("S", "L"))
+        self.assertEqual(out["classes"][0]["BossPhases"][0]["Announce"], "Rise!")
+        node = out["dialogues"][0]["Nodes"][0]
+        self.assertEqual((node["Text"], node["Choices"][0]["Label"]), ("Why?", "Because"))
+        self.assertEqual(out["dialogues"][0]["Crawl"], "One.\n\nTwo.")
+        self.assertEqual(out["mercenaries"][0]["Pitch"], "Hire me.")
+
+    def test_the_repo_content_holds_no_story_text_and_every_key_has_one(self):
+        import prose_text
+        root = os.path.dirname(HERE)
+        content_dir = os.path.join(root, prose_keys.CONTENT_DIR)
+        self.assertEqual(prose_text.leftovers(content_dir), [])
+        keys = prose_keys.game_keys(prose_keys.load_content(content_dir))
+        texts = prose_text.load_texts(os.path.join(content_dir, "Text"))
+        self.assertEqual(sorted(k for k in keys if k not in texts), [])
+        self.assertEqual(sorted(k for k in texts if k not in keys), [])
+
+
 if __name__ == "__main__":
     unittest.main()

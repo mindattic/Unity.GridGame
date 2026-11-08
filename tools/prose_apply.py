@@ -24,15 +24,18 @@ Text files (one per kind; written only by this script, never by hand: an edit be
     quest        -> quests.json          bark  -> barks.json       glossary    -> glossary.json
 
     {"schema": "gridgame-text/1", "kind": "crawl",
-     "texts": {"crawl:swamp": {"key", "id", "guid", "version", "hash", "about", "speakers", "payload"}, ...}}
+     "texts": {"crawl:swamp": {"key", "id", "guid", "version", "source", "hash", "about", "speakers", "payload"}, ...}}
 
 `texts` is sorted by key; files are UTF-8, two-space indented, LF, so the same texts give the same bytes. `guid` is
 the text's Prose GUID when the pulled document carries one (`guid`, or `entityId`), else null: prose-text/1 pulls
 expose only the slug id today (a Prose-side gap, docs/PROSE.md). Prose's bookkeeping (status, approvedBy, dates) is
 left out, so approved -> published unchanged writes the same bytes.
 
-On stderr it reports, per kind, how many gameplay keys still have no text (they keep their in-JSON placeholder).
-The game does not read these files yet: Phase 2 adds the ContentLoader join.
+`source` is "prose" for an applied text and "seed" for the one-time seed tools/prose_text.py made from the text the
+gameplay JSON held before Phase 2 (version 0, so any published version replaces it).
+
+On stderr it reports, per kind, how many gameplay keys still have no text. Since Phase 2 the game reads these files
+(ContentLoader joins each key onto its record; a key with no text shows a visible placeholder and is reported).
 
 Standard library only. Exit code 0 unless it could not run at all (2).
 """
@@ -68,6 +71,7 @@ def entry(doc: dict) -> dict:
         "id": doc["id"],
         "guid": doc.get("guid") or doc.get("entityId"),
         "version": doc["version"],
+        "source": "prose",
         "hash": doc.get("hash", ""),
         "about": list(doc.get("about") or []),
         "speakers": list(doc.get("speakers") or []),

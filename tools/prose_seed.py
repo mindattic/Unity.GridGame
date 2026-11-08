@@ -1,6 +1,7 @@
 #!/usr/bin/env python3
-"""GG-T355: the first seed. Converts the story text still held in GridGame's content JSON into prose-text/1 drafts
-for Prose (RFC 0017 section 7, "First seed"), so nothing is lost when Phase 2 moves text out of gameplay JSON.
+"""GG-T355: the first seed. Converted the story text GridGame's content JSON held into prose-text/1 drafts for Prose
+(RFC 0017 section 7, "First seed"). Since Phase 2 the gameplay JSON holds no story text, so this reads the content with
+Content/Text joined back on (prose_text.load_content_with_text): re-seeding drafts the game's current words.
 
     python tools/prose_seed.py <out-dir> [--content Assets/Gaiden/Resources/Content]
                                [--universe Data/Prose/gridgame.universe.json]
@@ -26,6 +27,7 @@ HERE = os.path.dirname(os.path.abspath(__file__))
 sys.path.insert(0, HERE)
 import prose_keys as K  # noqa: E402
 import prose_map  # noqa: E402
+import prose_text  # noqa: E402
 
 
 def text(kind: str, key: str, payload: dict, about=None, speakers=None) -> dict:
@@ -205,7 +207,7 @@ def main(argv=None) -> int:
     ap.add_argument("--content", default=K.CONTENT_DIR)
     ap.add_argument("--universe", default=os.path.join("Data", "Prose", "gridgame.universe.json"))
     args = ap.parse_args(argv)
-    content = K.load_content(args.content)
+    content = prose_text.load_content_with_text(args.content)  # Phase 2: the words live in Content/Text
     known = set()
     if os.path.isfile(args.universe):
         known = {e["id"] for e in K.load(args.universe).get("entities") or []}

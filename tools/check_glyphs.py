@@ -12,6 +12,7 @@ for f in ("NotoSans", "NotoSansSymbols2", "Outfit"):
     cover |= set(TTFont(os.path.join(FONTS, f + ".ttf")).getBestCmap().keys())
 files = glob.glob(os.path.join(ROOT, "Assets", "Gaiden", "App", "**", "*.cs"), recursive=True)
 files += glob.glob(os.path.join(ROOT, "Assets", "Gaiden", "Resources", "Content", "*.json"))
+files += glob.glob(os.path.join(ROOT, "Assets", "Gaiden", "Resources", "Content", "Text", "*.json"))  # story text from Prose (GG-T355)
 files += [os.path.join(ROOT, "Assets", "Gaiden", "Resources", "Credits.txt")]
 bad = {}
 for p in files:

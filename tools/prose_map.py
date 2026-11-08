@@ -39,6 +39,7 @@ import sys
 HERE = os.path.dirname(os.path.abspath(__file__))
 sys.path.insert(0, HERE)
 import prose_keys as K  # noqa: E402
+import prose_text  # noqa: E402
 
 GENERATOR = "tools/prose_map.py"
 MAPPER_VERSION = "1"
@@ -316,7 +317,7 @@ def main(argv=None) -> int:
     if not os.path.isdir(args.content):
         print(f"prose_map: no content folder at {args.content}", file=sys.stderr)
         return 2
-    doc = build(K.load_content(args.content))
+    doc = build(prose_text.load_content_with_text(args.content))  # Phase 2: story text comes from Content/Text
     os.makedirs(os.path.dirname(os.path.abspath(args.out)), exist_ok=True)
     with open(args.out, "w", encoding="utf-8", newline="\n") as f:
         json.dump(doc, f, ensure_ascii=False, indent=2)

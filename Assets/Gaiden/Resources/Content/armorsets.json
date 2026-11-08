@@ -4,7 +4,6 @@
     "Name": "Wayfarer's",
     "Weight": "Light",
     "Level": 1,
-    "Description": "Plain road leathers, patched by every traveller who wore them before you.",
     "Pieces": [
       "eq_wayfarer_head",
       "eq_wayfarer_torso",
@@ -34,7 +33,6 @@
     "Name": "Militia",
     "Weight": "Medium",
     "Level": 2,
-    "Description": "Town-watch issue: dented, dependable, stamped with a garrison mark.",
     "Pieces": [
       "eq_militia_head",
       "eq_militia_torso",
@@ -64,7 +62,6 @@
     "Name": "Bramblehide",
     "Weight": "Light",
     "Level": 3,
-    "Description": "Pelts stitched with thorny vine; it snags whatever brushes past.",
     "Pieces": [
       "eq_bramblehide_head",
       "eq_bramblehide_torso",
@@ -94,7 +91,6 @@
     "Name": "Gutterscrap",
     "Weight": "Medium",
     "Level": 7,
-    "Description": "Goblin junk hammered flat and wired together. Ugly, and harder than it looks.",
     "Pieces": [
       "eq_gutterscrap_head",
       "eq_gutterscrap_torso",
@@ -124,7 +120,6 @@
     "Name": "Sandstrider",
     "Weight": "Light",
     "Level": 8,
-    "Description": "Layered desert wraps that keep out sun, sand and stinger venom.",
     "Pieces": [
       "eq_sandstrider_head",
       "eq_sandstrider_torso",
@@ -156,7 +151,6 @@
     "Name": "Chitinguard",
     "Weight": "Heavy",
     "Level": 9,
-    "Description": "Sandmaw shell plates, lacquered and buckled over padding. Heavy as a grudge.",
     "Pieces": [
       "eq_chitinguard_head",
       "eq_chitinguard_torso",
@@ -186,7 +180,6 @@
     "Name": "Cogwright",
     "Weight": "Medium",
     "Level": 10,
-    "Description": "Gremlin gearwork rigged into a harness that hums with stored charge.",
     "Pieces": [
       "eq_cogwright_head",
       "eq_cogwright_torso",
@@ -219,7 +212,6 @@
     "Name": "Fenwalker",
     "Weight": "Light",
     "Level": 11,
-    "Description": "Oiled moss-cloth that sheds bog water and the worst of the fen's poisons.",
     "Pieces": [
       "eq_fenwalker_head",
       "eq_fenwalker_torso",
@@ -252,7 +244,6 @@
     "Name": "Hagbound",
     "Weight": "Light",
     "Level": 12,
-    "Description": "A swamp witch's ritual garb. It whispers when the moon is up.",
     "Pieces": [
       "eq_hagbound_head",
       "eq_hagbound_torso",
@@ -285,7 +276,6 @@
     "Name": "Heartwood",
     "Weight": "Medium",
     "Level": 13,
-    "Description": "Living bark grown into plates. It knits its wearer's wounds as it knits itself.",
     "Pieces": [
       "eq_heartwood_head",
       "eq_heartwood_torso",
@@ -315,7 +305,6 @@
     "Name": "Bonewarden",
     "Weight": "Heavy",
     "Level": 14,
-    "Description": "Ossuary plate: the dead lend their bones, and their indifference to curses.",
     "Pieces": [
       "eq_bonewarden_head",
       "eq_bonewarden_torso",
@@ -347,7 +336,6 @@
     "Name": "Anchorwatch",
     "Weight": "Heavy",
     "Level": 15,
-    "Description": "Fur-lined plate forged in the caverns' cold; frost slides right off it.",
     "Pieces": [
       "eq_frostmaw_head",
       "eq_frostmaw_torso",
@@ -379,7 +367,6 @@
     "Name": "Cyclopean",
     "Weight": "Heavy",
     "Level": 16,
-    "Description": "Giant-sized plate cut down to fit. Every blow lands with a giant's weight.",
     "Pieces": [
       "eq_cyclopean_head",
       "eq_cyclopean_torso",
@@ -409,7 +396,6 @@
     "Name": "Oni-Kin",
     "Weight": "Medium",
     "Level": 17,
-    "Description": "Lacquered lamellar in the demon-hunters' style, horned and fire-red.",
     "Pieces": [
       "eq_onikin_head",
       "eq_onikin_torso",
@@ -442,7 +428,6 @@
     "Name": "Porcelain",
     "Weight": "Heavy",
     "Level": 18,
-    "Description": "Glazed ceramic plate, eerily perfect. Hits skate off its polished face.",
     "Pieces": [
       "eq_porcelain_head",
       "eq_porcelain_torso",
@@ -472,7 +457,6 @@
     "Name": "Wispweave",
     "Weight": "Light",
     "Level": 22,
-    "Description": "Cloth spun from captured wisps. It glows faintly and feeds its wearer's magic.",
     "Pieces": [
       "eq_wispweave_head",
       "eq_wispweave_torso",
@@ -502,7 +486,6 @@
     "Name": "Templar's",
     "Weight": "Heavy",
     "Level": 25,
-    "Description": "Consecrated plate of the fallen order, its seals still warm with old vows.",
     "Pieces": [
       "eq_templar_head",
       "eq_templar_torso",
@@ -535,7 +518,6 @@
     "Name": "Reaper's",
     "Weight": "Light",
     "Level": 30,
-    "Description": "Cut from a reaper's own shroud. Its wearer moves like a rumor of death.",
     "Pieces": [
       "eq_reaper_head",
       "eq_reaper_torso",
@@ -568,7 +550,6 @@
     "Name": "Sanguine",
     "Weight": "Medium",
     "Level": 35,
-    "Description": "Blood-dark leather and steel from a vampire's armory. It drinks to its wearer's health.",
     "Pieces": [
       "eq_sanguine_head",
       "eq_sanguine_torso",
@@ -598,7 +579,6 @@
     "Name": "Dreadwyrm",
     "Weight": "Heavy",
     "Level": 40,
-    "Description": "Dragonscale over demon-forged plate: the last armor anyone in this land will need.",
     "Pieces": [
       "eq_dreadwyrm_head",
       "eq_dreadwyrm_torso",

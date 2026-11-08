@@ -1,0 +1,258 @@
+{
+  "schema": "gridgame-text/1",
+  "kind": "quest",
+  "texts": {
+    "quest:q_antivenom": {
+      "key": "quest:q_antivenom",
+      "id": "quest-q-antivenom",
+      "guid": null,
+      "version": 0,
+      "source": "seed",
+      "hash": "sha256:798f15212c09d67a65b722e5cd0d70765e0fd565c6a6c33e3cbf6ebae84bb2e2",
+      "about": [
+        "character-alchemist",
+        "class-scorpion",
+        "place-desert"
+      ],
+      "speakers": [],
+      "payload": {
+        "title": "Antivenom",
+        "brief": "The Shardfall scorpions drink from the red rivers, and the Ember changes their venom faster than the alchemist can brew. Put down four of them so this week's batch can be studied before it changes again.",
+        "giver": "character-alchemist",
+        "complete": "Fresh enough. The new strain clots the old cure -- so I'll make a new cure. Take these, they're the last of the old ones that still work."
+      }
+    },
+    "quest:q_city_that_stopped": {
+      "key": "quest:q_city_that_stopped",
+      "id": "quest-q-city-that-stopped",
+      "guid": null,
+      "version": 0,
+      "source": "seed",
+      "hash": "sha256:9e97bdccb9e689d60f390fd2cd5a20e0445be7851e7773889e0f8b62c982f8be",
+      "about": [
+        "class-ghost",
+        "place-cityruins"
+      ],
+      "speakers": [],
+      "payload": {
+        "title": "The Ones Who Paid",
+        "brief": "Halcyon's ghosts are what's left of people tithed past Hollow -- nothing but the shape of someone. Lay five of them to rest. Somebody should.",
+        "giver": "$party",
+        "complete": "Five laid down. Nobody in this city ever said their names. We did. That's the whole of it."
+      }
+    },
+    "quest:q_cold_iron": {
+      "key": "quest:q_cold_iron",
+      "id": "quest-q-cold-iron",
+      "guid": null,
+      "version": 0,
+      "source": "seed",
+      "hash": "sha256:fce5d75c04255bf45e4c91bbd9b8f0f6c22d9ddc0fb37082e89a06b8b609ee62",
+      "about": [
+        "character-blacksmith",
+        "class-icemauler",
+        "place-cave"
+      ],
+      "speakers": [],
+      "payload": {
+        "title": "Cold Iron",
+        "brief": "The ice maulers drink what leaks from the arches, and their cores never warm, whatever the forge does. Break three of them and bring the smith something worth hammering.",
+        "giver": "character-blacksmith",
+        "complete": "Three down, and the cores still cold in my hand. Whatever the Anchors leak, it isn't just light."
+      }
+    },
+    "quest:q_frog_glands": {
+      "key": "quest:q_frog_glands",
+      "id": "quest-q-frog-glands",
+      "guid": null,
+      "version": 0,
+      "source": "seed",
+      "hash": "sha256:7c2b3ed121f99730ae8ab79767b2f6faa69d872232a3737148511ad9a2263939",
+      "about": [
+        "character-merchant",
+        "place-greenvalley"
+      ],
+      "speakers": [],
+      "payload": {
+        "title": "What the Frogs Know",
+        "brief": "The merchant swears the moor frogs glow brighter under a full Morrow, and that the glow is aether caught in their glands. Bring three and they'll test the theory -- and find someone to pay for it.",
+        "giver": "character-merchant",
+        "complete": "Bright as a lantern, the lot of them. Aether, right in the gland. That's worth knowing, and worth paying for."
+      }
+    },
+    "quest:q_grown_not_forged": {
+      "key": "quest:q_grown_not_forged",
+      "id": "quest-q-grown-not-forged",
+      "guid": null,
+      "version": 0,
+      "source": "seed",
+      "hash": "sha256:2c100bbb102b26cc17957730a5c765fab3308380425756e871ddc1e2168a76ac",
+      "about": [
+        "character-blacksmith",
+        "place-desert"
+      ],
+      "speakers": [],
+      "payload": {
+        "title": "Grown, Not Forged",
+        "brief": "The gremlins at the Concord dig carry cogs with teeth no file ever cut. The blacksmith wants four of them on the bench to see how the Concord makes a gear without a forge.",
+        "giver": "character-blacksmith",
+        "complete": "Look at the grain -- it runs round the teeth like a tree ring. Nobody forged this. It was grown. I need to sit down."
+      }
+    },
+    "quest:q_hags_hand": {
+      "key": "quest:q_hags_hand",
+      "id": "quest-q-hags-hand",
+      "guid": null,
+      "version": 0,
+      "source": "seed",
+      "hash": "sha256:2ad46661368da6b4da8f8c4d92d0fe27a01ac4e27243854bdd89e1090e060cad",
+      "about": [
+        "character-alchemist",
+        "place-swamp"
+      ],
+      "speakers": [],
+      "payload": {
+        "title": "The Hag's Hand",
+        "brief": "The fen hags were Choir once. Now they sing aether into curses and bind them into their own claws, where they hold. Three claws, and the alchemist might learn how.",
+        "giver": "character-alchemist",
+        "complete": "Bound in the bone itself. Ugly, but it holds. Here -- the first thing I've made that'll survive the worst the fen can sing."
+      }
+    },
+    "quest:q_hold_the_ward": {
+      "key": "quest:q_hold_the_ward",
+      "id": "quest-q-hold-the-ward",
+      "guid": null,
+      "version": 0,
+      "source": "seed",
+      "hash": "sha256:8c99f265931875036d1ddd9c4f8403185fa855a2d80ed36d8e8cc1bf616b0220",
+      "about": [
+        "character-enchantress",
+        "place-swamp"
+      ],
+      "speakers": [],
+      "payload": {
+        "title": "Every Voice",
+        "brief": "The Choir taught that a hymn needs every voice or it falls apart. The Enchantress wants proof that can mean something kinder: clear the heart of the Arkgrave without anyone falling.",
+        "giver": "character-enchantress",
+        "complete": "Not one voice dropped. That is what a hymn sounds like when people sing it for each other. Keep this -- you've earned the harder lessons."
+      }
+    },
+    "quest:q_hymn_stops": {
+      "key": "quest:q_hymn_stops",
+      "id": "quest-q-hymn-stops",
+      "guid": null,
+      "version": 0,
+      "source": "seed",
+      "hash": "sha256:d7999f1aff5f4f121365517d8c01dbd855183876d208564840bfc2c114bc7b62",
+      "about": [
+        "character-enchantress",
+        "class-cultist01",
+        "place-still"
+      ],
+      "speakers": [],
+      "payload": {
+        "title": "The Hymn Stops Here",
+        "brief": "The Choir's Cantors lead the hymn that sings the holds into the Still's tanks. The Enchantress knows their parts by heart. Silence three of them, and she'll believe the hymn can stop.",
+        "giver": "character-enchantress",
+        "complete": "Three voices out of the hymn, and the tanks did not fill any faster. It can stop. It can actually stop."
+      }
+    },
+    "quest:q_long_cold": {
+      "key": "quest:q_long_cold",
+      "id": "quest-q-long-cold",
+      "guid": null,
+      "version": 0,
+      "source": "seed",
+      "hash": "sha256:77ece6557a60c56a6ac54dc84d22dd822af1b82157760f8b22683f7c436711b9",
+      "about": [
+        "character-innkeeper",
+        "place-cave"
+      ],
+      "speakers": [],
+      "payload": {
+        "title": "Furs for the Long Cold",
+        "brief": "The cold off the Anchors gets into the beds. Three yeti furs would line the bunks before somebody wakes up blue.",
+        "giver": "character-innkeeper",
+        "complete": "Warm bunks, warm crew. The arches can hum all night if they like -- we'll sleep through it."
+      }
+    },
+    "quest:q_masks_off": {
+      "key": "quest:q_masks_off",
+      "id": "quest-q-masks-off",
+      "guid": null,
+      "version": 0,
+      "source": "seed",
+      "hash": "sha256:fe7ae6d4ff915ea57088ec78c3383e418eeb72e7a8082231feacd09ccc0d946f",
+      "about": [
+        "character-merchant",
+        "class-oni00",
+        "place-lanternroad"
+      ],
+      "speakers": [],
+      "payload": {
+        "title": "Masks Off",
+        "brief": "Oni road-raiders are robbing pilgrims on the Lantern Road's narrow stairs. Drive off three of them so the road is safe to trade on again.",
+        "giver": "character-merchant",
+        "complete": "Three masks fewer on the stairs. The pilgrims are moving again, and so is trade."
+      }
+    },
+    "quest:q_organ_quiet": {
+      "key": "quest:q_organ_quiet",
+      "id": "quest-q-organ-quiet",
+      "guid": null,
+      "version": 0,
+      "source": "seed",
+      "hash": "sha256:10ce6c0579a9d8f8cea6babc78c9c678f4f67c284610cf9bf3a2553678564314",
+      "about": [
+        "character-enchantress",
+        "class-cultist03",
+        "place-cathedral"
+      ],
+      "speakers": [],
+      "payload": {
+        "title": "Quiet the Organ",
+        "brief": "The Choir's Confessors keep the hymn going under the cathedral's organ. Silence three of them, and the pipes the Hierarch drinks from begin to falter.",
+        "giver": "character-enchantress",
+        "complete": "Three voices gone, and the organ sounds thinner already."
+      }
+    },
+    "quest:q_travel_light": {
+      "key": "quest:q_travel_light",
+      "id": "quest-q-travel-light",
+      "guid": null,
+      "version": 0,
+      "source": "seed",
+      "hash": "sha256:0cf7778f0fe69e649e39f0c7f8cafb44d8d6e95cb20b58729a1b67c69e3a7623",
+      "about": [
+        "place-greenvalley"
+      ],
+      "speakers": [],
+      "payload": {
+        "title": "Travel Light",
+        "brief": "The Captain's patrols are hunting for a big caravan crew. A small one slips through. Prove it: clear the Captain's field with three heroes or fewer in the fight.",
+        "giver": "$party",
+        "complete": "Three of us, one field, nobody carried. The Concord counts heads. Turns out it can't count very well."
+      }
+    },
+    "quest:q_wells_wolves": {
+      "key": "quest:q_wells_wolves",
+      "id": "quest-q-wells-wolves",
+      "guid": null,
+      "version": 0,
+      "source": "seed",
+      "hash": "sha256:be712f10ef0392f0e94de1ab5c17e1328bec7fc7512a286d7bbdedbe14f8185b",
+      "about": [
+        "character-innkeeper",
+        "class-wolf00",
+        "place-greenvalley"
+      ],
+      "speakers": [],
+      "payload": {
+        "title": "Wolves at the Wells",
+        "brief": "The moor wolves run bold under a full Morrow, and they've learned the water carriers' path to the last clean well. Thin the pack so the barrels come back full -- and the carriers come back at all.",
+        "giver": "character-innkeeper",
+        "complete": "The carriers made the round without a single howl behind them. Drinks are on the house -- well, these are."
+      }
+    }
+  }
+}

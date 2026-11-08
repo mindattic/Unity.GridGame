@@ -1,0 +1,610 @@
+{
+  "schema": "gridgame-text/1",
+  "kind": "bark",
+  "texts": {
+    "bark:bossphase/chronomancer/0": {
+      "key": "bark:bossphase/chronomancer/0",
+      "id": "bark-bossphase-chronomancer-0",
+      "guid": null,
+      "version": 0,
+      "source": "seed",
+      "hash": "sha256:cf602a6af6d256c1ce580046e441057ea5b7fe702d9a102c1e05a54f2999a738",
+      "about": [
+        "class-chronomancer"
+      ],
+      "speakers": [
+        "class-chronomancer"
+      ],
+      "payload": {
+        "speaker": "class-chronomancer",
+        "context": "boss phase announcement",
+        "lines": [
+          "The Chronomancer rewinds its wounds!"
+        ]
+      }
+    },
+    "bark:bossphase/cyclops00/0": {
+      "key": "bark:bossphase/cyclops00/0",
+      "id": "bark-bossphase-cyclops00-0",
+      "guid": null,
+      "version": 0,
+      "source": "seed",
+      "hash": "sha256:4c377ab7b3f41c485e2e5578e31982420f3e37ef743ec5cf95aed9ac04cd941e",
+      "about": [
+        "class-cyclops00"
+      ],
+      "speakers": [
+        "class-cyclops00"
+      ],
+      "payload": {
+        "speaker": "class-cyclops00",
+        "context": "boss phase announcement",
+        "lines": [
+          "Cyclops"
+        ]
+      }
+    },
+    "bark:bossphase/cyclops00/1": {
+      "key": "bark:bossphase/cyclops00/1",
+      "id": "bark-bossphase-cyclops00-1",
+      "guid": null,
+      "version": 0,
+      "source": "seed",
+      "hash": "sha256:65e86563827cd84bc57d23fce49345e5e14e992a87072c5b80db53bee5b16dea",
+      "about": [
+        "class-cyclops00"
+      ],
+      "speakers": [
+        "class-cyclops00"
+      ],
+      "payload": {
+        "speaker": "class-cyclops00",
+        "context": "boss phase announcement",
+        "lines": [
+          "ENRAGED!"
+        ]
+      }
+    },
+    "bark:bossphase/hierarch/0": {
+      "key": "bark:bossphase/hierarch/0",
+      "id": "bark-bossphase-hierarch-0",
+      "guid": null,
+      "version": 0,
+      "source": "seed",
+      "hash": "sha256:432203c8a8549c5ab00eb99bea9b8f7adf85c10ae20c73e19eb33d52adffca37",
+      "about": [
+        "class-hierarch"
+      ],
+      "speakers": [
+        "class-hierarch"
+      ],
+      "payload": {
+        "speaker": "class-hierarch",
+        "context": "boss phase announcement",
+        "lines": [
+          "The Hierarch"
+        ]
+      }
+    },
+    "bark:bossphase/hierarch/1": {
+      "key": "bark:bossphase/hierarch/1",
+      "id": "bark-bossphase-hierarch-1",
+      "guid": null,
+      "version": 0,
+      "source": "seed",
+      "hash": "sha256:74deacac6fdc7612df6e2208c096a8cccf3dd801f88fbc40e47b3801e1ba7b96",
+      "about": [
+        "class-hierarch"
+      ],
+      "speakers": [
+        "class-hierarch"
+      ],
+      "payload": {
+        "speaker": "class-hierarch",
+        "context": "boss phase announcement",
+        "lines": [
+          "The organ pours its reservoir into the Hierarch!"
+        ]
+      }
+    },
+    "bark:bossphase/lich/0": {
+      "key": "bark:bossphase/lich/0",
+      "id": "bark-bossphase-lich-0",
+      "guid": null,
+      "version": 0,
+      "source": "seed",
+      "hash": "sha256:a76e0b4d405a26f94f37720df37714cc9840622f8e94eb574fc8566b7f81eaac",
+      "about": [
+        "class-lich"
+      ],
+      "speakers": [
+        "class-lich"
+      ],
+      "payload": {
+        "speaker": "class-lich",
+        "context": "boss phase announcement",
+        "lines": [
+          "The Lich"
+        ]
+      }
+    },
+    "bark:bossphase/lich/1": {
+      "key": "bark:bossphase/lich/1",
+      "id": "bark-bossphase-lich-1",
+      "guid": null,
+      "version": 0,
+      "source": "seed",
+      "hash": "sha256:129c31e0d83f29f4c5956a131e499c7abe96ded143668eb40e155c2615631463",
+      "about": [
+        "class-lich"
+      ],
+      "speakers": [
+        "class-lich"
+      ],
+      "payload": {
+        "speaker": "class-lich",
+        "context": "boss phase announcement",
+        "lines": [
+          "The Lich harvests your souls!"
+        ]
+      }
+    },
+    "bark:caravan/armory": {
+      "key": "bark:caravan/armory",
+      "id": "bark-caravan-armory",
+      "guid": null,
+      "version": 0,
+      "source": "seed",
+      "hash": "sha256:892b7a0547aa574939173c415ffd38c75c9a40526860f9eb620c4b4761d627d1",
+      "about": [
+        "character-old-hask"
+      ],
+      "speakers": [
+        "character-old-hask"
+      ],
+      "payload": {
+        "speaker": "character-old-hask",
+        "context": "caravan: Armory Wagon",
+        "lines": [
+          "Bring me the dented ones. The shiny ones never have stories.",
+          "Concord steel. Good steel, too. Shame about who it was bought with.",
+          "Every crack's a lesson. Some lessons are just more expensive."
+        ]
+      }
+    },
+    "bark:caravan/enchanter_wagon": {
+      "key": "bark:caravan/enchanter_wagon",
+      "id": "bark-caravan-enchanter-wagon",
+      "guid": null,
+      "version": 0,
+      "source": "seed",
+      "hash": "sha256:e3cb47fbc6377a539acd5e90fcfb6e055a0b54739638dd2134b7e9ecb57bd18a",
+      "about": [
+        "character-lio"
+      ],
+      "speakers": [
+        "character-lio"
+      ],
+      "payload": {
+        "speaker": "character-lio",
+        "context": "caravan: Enchanter's Wagon",
+        "lines": [
+          "I ground the dust fine as flour. She says it's still too coarse.",
+          "She hums while she binds. Not the Choir's tune. Her own.",
+          "Bring armor with a story in it. The workings hold tighter."
+        ]
+      }
+    },
+    "bark:caravan/mana_casks": {
+      "key": "bark:caravan/mana_casks",
+      "id": "bark-caravan-mana-casks",
+      "guid": null,
+      "version": 0,
+      "source": "seed",
+      "hash": "sha256:bf5ac2674ffa37c6d7e5e6d34db920a27471511bcdbe42069aa52f242e2b79b3",
+      "about": [
+        "character-brannoc"
+      ],
+      "speakers": [
+        "character-brannoc"
+      ],
+      "payload": {
+        "speaker": "character-brannoc",
+        "context": "caravan: Mana Casks",
+        "lines": [
+          "Casks sloshing fine today. Mind you don't sit on the blue one.",
+          "These casks came off a Concord wagon. Still stamped 'Property of the Still'. I painted a duck over it.",
+          "Full Morrow tonight. The orbs hum louder. Probably fine."
+        ]
+      }
+    },
+    "bark:caravan/medic_wagon": {
+      "key": "bark:caravan/medic_wagon",
+      "id": "bark-caravan-medic-wagon",
+      "guid": null,
+      "version": 0,
+      "source": "seed",
+      "hash": "sha256:1f6c5c8f65f0ce6a07b2180e8ece1c621094def0cf736c32ef07d920dea884df",
+      "about": [
+        "character-sister-ilsabet"
+      ],
+      "speakers": [
+        "character-sister-ilsabet"
+      ],
+      "payload": {
+        "speaker": "character-sister-ilsabet",
+        "context": "caravan: Medic Wagon",
+        "lines": [
+          "Bandages boiled, cots aired. Try to come back in one piece anyway.",
+          "If it stings, it's working. If it doesn't sting, come see me.",
+          "I took vows at a Still once. Turns out the vow was the bandages, not the singing."
+        ]
+      }
+    },
+    "bark:caravan/quartermaster_ledger": {
+      "key": "bark:caravan/quartermaster_ledger",
+      "id": "bark-caravan-quartermaster-ledger",
+      "guid": null,
+      "version": 0,
+      "source": "seed",
+      "hash": "sha256:907986fc6e2e171ff62ae5df8edefb5fb1b795128aa293767057c7fbc01dad70",
+      "about": [
+        "character-osk"
+      ],
+      "speakers": [
+        "character-osk"
+      ],
+      "payload": {
+        "speaker": "character-osk",
+        "context": "caravan: Quartermaster's Ledger",
+        "lines": [
+          "Three iron ore, one wolf pelt, half a cog. It's all in the book.",
+          "The Concord kept a ledger too. Ours adds up. That's the difference.",
+          "If it isn't in the ledger, it didn't happen. If it is, it's mine to sort."
+        ]
+      }
+    },
+    "bark:caravan/scouts": {
+      "key": "bark:caravan/scouts",
+      "id": "bark-caravan-scouts",
+      "guid": null,
+      "version": 0,
+      "source": "seed",
+      "hash": "sha256:0a3036088508ea49ff873cdf668c4aa33a1adac544c900b9402bd250c3a57324",
+      "about": [
+        "character-wren-and-dace"
+      ],
+      "speakers": [
+        "character-wren-and-dace"
+      ],
+      "payload": {
+        "speaker": "character-wren-and-dace",
+        "context": "caravan: Scouts",
+        "lines": [
+          "Tracks up ahead. Big ones. Wren says small ones. Wren is wrong.",
+          "We ride out at first light and come back before the soup's gone.",
+          "White domes off the east road. We went the long way round. You're welcome."
+        ]
+      }
+    },
+    "bark:caravan/strongbox": {
+      "key": "bark:caravan/strongbox",
+      "id": "bark-caravan-strongbox",
+      "guid": null,
+      "version": 0,
+      "source": "seed",
+      "hash": "sha256:612af90921ad82ba284d93bc6cb10a6a229a2fb6d3db996a4bcc67d7a9172b65",
+      "about": [
+        "character-penny-tallow"
+      ],
+      "speakers": [
+        "character-penny-tallow"
+      ],
+      "payload": {
+        "speaker": "character-penny-tallow",
+        "context": "caravan: Strongbox",
+        "lines": [
+          "Count twice, spend once. That's not a saying, that's a rule.",
+          "The box is locked. The key is somewhere the Concord's auditors never thought to look.",
+          "Finish the whole road and I'll show you what a bonus looks like."
+        ]
+      }
+    },
+    "bark:merc/courier/pitch": {
+      "key": "bark:merc/courier/pitch",
+      "id": "bark-merc-courier-pitch",
+      "guid": null,
+      "version": 0,
+      "source": "seed",
+      "hash": "sha256:493d1cceaac1686dc3402aa856a8e827d8094204f697e5641181ddb24623d55b",
+      "about": [
+        "class-courier"
+      ],
+      "speakers": [
+        "class-courier"
+      ],
+      "payload": {
+        "speaker": "class-courier",
+        "context": "mercenary pitch",
+        "lines": [
+          "Fastest legs in the underspire. I run orders, I run checkpoints, and I run the price up if you dawdle."
+        ]
+      }
+    },
+    "bark:merc/courier/renewal": {
+      "key": "bark:merc/courier/renewal",
+      "id": "bark-merc-courier-renewal",
+      "guid": null,
+      "version": 0,
+      "source": "seed",
+      "hash": "sha256:c69bb4d511644b5c90619001b234100801f93060ef811971f00f969d446a69a9",
+      "about": [
+        "class-courier"
+      ],
+      "speakers": [
+        "class-courier"
+      ],
+      "payload": {
+        "speaker": "class-courier",
+        "context": "mercenary renewal",
+        "lines": [
+          "Last run on this contract. Fast legs don't stay unclaimed long, so make me an offer or I'm gone."
+        ]
+      }
+    },
+    "bark:merc/doctor/pitch": {
+      "key": "bark:merc/doctor/pitch",
+      "id": "bark-merc-doctor-pitch",
+      "guid": null,
+      "version": 0,
+      "source": "seed",
+      "hash": "sha256:701102b667c062b5f0f88e3f27509643ac7c1625f4149803b626e0e02b21a8aa",
+      "about": [
+        "class-doctor"
+      ],
+      "speakers": [
+        "class-doctor"
+      ],
+      "payload": {
+        "speaker": "class-doctor",
+        "context": "mercenary pitch",
+        "lines": [
+          "I set bones and sit with the Hollow until they stop wandering, and I don't charge extra for screaming. Contract's by the battle."
+        ]
+      }
+    },
+    "bark:merc/doctor/renewal": {
+      "key": "bark:merc/doctor/renewal",
+      "id": "bark-merc-doctor-renewal",
+      "guid": null,
+      "version": 0,
+      "source": "seed",
+      "hash": "sha256:8aac00fba6d9d9d00bb035fd027c2171d51c8a71a2a581b152c7ff0b0c2dfa87",
+      "about": [
+        "class-doctor"
+      ],
+      "speakers": [
+        "class-doctor"
+      ],
+      "payload": {
+        "speaker": "class-doctor",
+        "context": "mercenary renewal",
+        "lines": [
+          "One battle left on my ledger. I've grown used to patching this lot. Shall we write another page?"
+        ]
+      }
+    },
+    "bark:merc/myrmidon/pitch": {
+      "key": "bark:merc/myrmidon/pitch",
+      "id": "bark-merc-myrmidon-pitch",
+      "guid": null,
+      "version": 0,
+      "source": "seed",
+      "hash": "sha256:67c996572f2e515bafc6233eb47138acd199a49e09db7371169b1cf6bd1a4372",
+      "about": [
+        "class-myrmidon"
+      ],
+      "speakers": [
+        "class-myrmidon"
+      ],
+      "payload": {
+        "speaker": "class-myrmidon",
+        "context": "mercenary pitch",
+        "lines": [
+          "I hold a line. You pay me by the fight, not by the hour, and I swear on my shield I don't ask which hold you've robbed."
+        ]
+      }
+    },
+    "bark:merc/myrmidon/renewal": {
+      "key": "bark:merc/myrmidon/renewal",
+      "id": "bark-merc-myrmidon-renewal",
+      "guid": null,
+      "version": 0,
+      "source": "seed",
+      "hash": "sha256:7336423f639cee33f7ca0d9b41b95f2a5178f9018bd43a8a0c6abe839c0bf930",
+      "about": [
+        "class-myrmidon"
+      ],
+      "speakers": [
+        "class-myrmidon"
+      ],
+      "payload": {
+        "speaker": "class-myrmidon",
+        "context": "mercenary renewal",
+        "lines": [
+          "One more fight on the books and my shield's my own again. Want it for longer, or do we shake hands here?"
+        ]
+      }
+    },
+    "bark:merc/prizefighter/pitch": {
+      "key": "bark:merc/prizefighter/pitch",
+      "id": "bark-merc-prizefighter-pitch",
+      "guid": null,
+      "version": 0,
+      "source": "seed",
+      "hash": "sha256:e2933cc135d1795835a81a76e8fe82554d11567690288b63c1f0f4a65365fe3f",
+      "about": [
+        "class-prizefighter"
+      ],
+      "speakers": [
+        "class-prizefighter"
+      ],
+      "payload": {
+        "speaker": "class-prizefighter",
+        "context": "mercenary pitch",
+        "lines": [
+          "Undefeated in three pit towns and two the Concord shut down. Champions cost champion money."
+        ]
+      }
+    },
+    "bark:merc/prizefighter/renewal": {
+      "key": "bark:merc/prizefighter/renewal",
+      "id": "bark-merc-prizefighter-renewal",
+      "guid": null,
+      "version": 0,
+      "source": "seed",
+      "hash": "sha256:1feeec2fb4d5ff52bc4cd8de1f575f487d66483b8a71280bf47be69643fb0ebb",
+      "about": [
+        "class-prizefighter"
+      ],
+      "speakers": [
+        "class-prizefighter"
+      ],
+      "payload": {
+        "speaker": "class-prizefighter",
+        "context": "mercenary renewal",
+        "lines": [
+          "Last bout on the card, boss. Champions get re-signed or they get scouted. Your call."
+        ]
+      }
+    },
+    "bark:merc/raider/pitch": {
+      "key": "bark:merc/raider/pitch",
+      "id": "bark-merc-raider-pitch",
+      "guid": null,
+      "version": 0,
+      "source": "seed",
+      "hash": "sha256:56cf4376853c9d692fe2d59e4763e067b991b0b4496520375e9cabef388f2bbb",
+      "about": [
+        "class-raider"
+      ],
+      "speakers": [
+        "class-raider"
+      ],
+      "payload": {
+        "speaker": "class-raider",
+        "context": "mercenary pitch",
+        "lines": [
+          "Coin up front and I'll ride wherever the wagons roll. I've dodged worse than tithe-wardens."
+        ]
+      }
+    },
+    "bark:merc/raider/renewal": {
+      "key": "bark:merc/raider/renewal",
+      "id": "bark-merc-raider-renewal",
+      "guid": null,
+      "version": 0,
+      "source": "seed",
+      "hash": "sha256:38ca55041d7856a678cca2eeafe1679413fd47eac3d95166cf0a6c86bf8dd626",
+      "about": [
+        "class-raider"
+      ],
+      "speakers": [
+        "class-raider"
+      ],
+      "payload": {
+        "speaker": "class-raider",
+        "context": "mercenary renewal",
+        "lines": [
+          "Contract's nearly spent. I'm easy either way, but I'd ride on with you if the purse is there."
+        ]
+      }
+    },
+    "bark:merc/ritualist/pitch": {
+      "key": "bark:merc/ritualist/pitch",
+      "id": "bark-merc-ritualist-pitch",
+      "guid": null,
+      "version": 0,
+      "source": "seed",
+      "hash": "sha256:eeea3ffc591525470e7c7a82ea943aac47ac4d1d36ae27f6fdd12444ea6da66d",
+      "about": [
+        "class-ritualist"
+      ],
+      "speakers": [
+        "class-ritualist"
+      ],
+      "payload": {
+        "speaker": "class-ritualist",
+        "context": "mercenary pitch",
+        "lines": [
+          "My circles still answer me, even this close to a Still. That is rarer than you think, and priced to match."
+        ]
+      }
+    },
+    "bark:merc/ritualist/renewal": {
+      "key": "bark:merc/ritualist/renewal",
+      "id": "bark-merc-ritualist-renewal",
+      "guid": null,
+      "version": 0,
+      "source": "seed",
+      "hash": "sha256:cad589303e529a486c0d99cb230df7a1773d8c7e62763b1533df89428d00ce63",
+      "about": [
+        "class-ritualist"
+      ],
+      "speakers": [
+        "class-ritualist"
+      ],
+      "payload": {
+        "speaker": "class-ritualist",
+        "context": "mercenary renewal",
+        "lines": [
+          "My circles run dry after one more working. Renew the pact, or let it lapse cleanly. Lapsed pacts never sour."
+        ]
+      }
+    },
+    "bark:surprise/cityruins-03/3": {
+      "key": "bark:surprise/cityruins-03/3",
+      "id": "bark-surprise-cityruins-03-3",
+      "guid": null,
+      "version": 0,
+      "source": "seed",
+      "hash": "sha256:61c7a0427274b4749d437c944fc93209a5821a71d7796c17be33525d66741aca",
+      "about": [
+        "class-demonlord",
+        "place-cityruins-03"
+      ],
+      "speakers": [
+        "class-demonlord"
+      ],
+      "payload": {
+        "speaker": "class-demonlord",
+        "context": "surprise wave",
+        "lines": [
+          "Your struggle amuses me. Let's end this quickly."
+        ]
+      }
+    },
+    "bark:surprise/greenvalley-01/3": {
+      "key": "bark:surprise/greenvalley-01/3",
+      "id": "bark-surprise-greenvalley-01-3",
+      "guid": null,
+      "version": 0,
+      "source": "seed",
+      "hash": "sha256:3c8b7f841c4513506a97ab8565d8f0a12dbb68908899f7f14701b315968206bf",
+      "about": [
+        "class-captain",
+        "place-greenvalley-01"
+      ],
+      "speakers": [
+        "class-captain"
+      ],
+      "payload": {
+        "speaker": "class-captain",
+        "context": "surprise wave",
+        "lines": [
+          "Imperial scum! Exterminate every last one of them!"
+        ]
+      }
+    }
+  }
+}

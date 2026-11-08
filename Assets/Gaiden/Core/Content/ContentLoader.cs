@@ -66,6 +66,8 @@ namespace GridGame.Core.Content
             AddAll(db.ArmorSets, sets, x => x.Id);
             db.ArmorSetOrder.AddRange(sets);
             db.GlossaryOrder.AddRange(ReadList<GlossaryEntry>(readText, "glossary"));
+            // GG-T355: the story words come from Prose (Content/Text/<kind>.json), joined onto the records by key.
+            ProseText.Join(db, readText);
             Glossary.Index(db);
             // First set wins a piece listed twice; Validate reports the clash.
             foreach (var set in sets)
@@ -346,6 +348,7 @@ namespace GridGame.Core.Content
             VfxCatalog.Validate(db, p);
             p.AddRange(GridGame.Core.Battle.DifficultyTable.Problems()); // the 1..10 dial (GG-T309)
             Glossary.Validate(db, p);
+            p.AddRange(db.TextProblems); // GG-T355: every key resolves, no story text in gameplay JSON, right-answer tags
             return p;
         }
 

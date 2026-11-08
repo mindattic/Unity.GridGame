@@ -2,12 +2,10 @@
  {
   "Id": "guardian",
   "Name": "Guardian",
-  "Description": "The Tank archetype: draw the enemy's eye and shrug off what lands.",
   "Nodes": [
    {
     "Id": "guardian_shield_wall",
     "Name": "Shield Wall",
-    "Description": "Learn to bash a foe off balance and open its guard.",
     "Grants": "shield_bash",
     "Cost": 1,
     "RequiredPointsInTree": 0,
@@ -16,7 +14,6 @@
    {
     "Id": "guardian_iron_will",
     "Name": "Iron Will",
-    "Description": "Shake off venom before it takes hold.",
     "Grants": "antidote",
     "Cost": 1,
     "RequiredPointsInTree": 0,
@@ -25,7 +22,6 @@
    {
     "Id": "aegisguard_opener",
     "Name": "Sacred Challenge",
-    "Description": "Force every nearby foe's eye onto you.",
     "Grants": "aegisguard_sacred_challenge",
     "Cost": 1,
     "RequiredPointsInTree": 1,
@@ -34,7 +30,6 @@
    {
     "Id": "aegisguard_stat1",
     "Name": "Vitality +3",
-    "Description": "Aegis Guard conditioning: a permanent +3 Vitality.",
     "GrantsStat": {
      "Stat": "Vitality",
      "Amount": 3
@@ -48,7 +43,6 @@
    {
     "Id": "aegisguard_core",
     "Name": "Judgment of Warding",
-    "Description": "A warded strike that punishes anything that dares test your line.",
     "Grants": "aegisguard_judgment_of_warding",
     "Cost": 2,
     "RequiredPointsInTree": 3,
@@ -59,7 +53,6 @@
    {
     "Id": "aegisguard_stat2",
     "Name": "Stamina +2",
-    "Description": "Aegis Guard conditioning: a permanent +2 Stamina.",
     "GrantsStat": {
      "Stat": "Stamina",
      "Amount": 2
@@ -73,7 +66,6 @@
    {
     "Id": "aegisguard_capstone",
     "Name": "Hands of Mercy",
-    "Description": "A tank's own patch job, no cleric required.",
     "Grants": "aegisguard_hands_of_mercy",
     "Cost": 2,
     "RequiredPointsInTree": 6,
@@ -84,7 +76,6 @@
    {
     "Id": "juggernaut_opener",
     "Name": "War Stomp",
-    "Description": "A ground-shaking stomp that staggers everything close.",
     "Grants": "juggernaut_war_stomp",
     "Cost": 1,
     "RequiredPointsInTree": 1,
@@ -93,7 +84,6 @@
    {
     "Id": "juggernaut_stat1",
     "Name": "Vitality +3",
-    "Description": "Juggernaut conditioning: a permanent +3 Vitality.",
     "GrantsStat": {
      "Stat": "Vitality",
      "Amount": 3
@@ -107,7 +97,6 @@
    {
     "Id": "juggernaut_core",
     "Name": "Unstoppable Momentum",
-    "Description": "Charge in a straight line, shrugging off anything in the way.",
     "Grants": "juggernaut_unstoppable_momentum",
     "Cost": 2,
     "RequiredPointsInTree": 3,
@@ -118,7 +107,6 @@
    {
     "Id": "juggernaut_stat2",
     "Name": "Stamina +2",
-    "Description": "Juggernaut conditioning: a permanent +2 Stamina.",
     "GrantsStat": {
      "Stat": "Stamina",
      "Amount": 2
@@ -132,7 +120,6 @@
    {
     "Id": "juggernaut_capstone",
     "Name": "Overrun",
-    "Description": "Flatten a whole line with sheer mass.",
     "Grants": "juggernaut_overrun",
     "Cost": 2,
     "RequiredPointsInTree": 6,
@@ -143,7 +130,6 @@
    {
     "Id": "warlord_opener",
     "Name": "Battle Cry",
-    "Description": "Steel the whole party's resolve.",
     "Grants": "warlord_battle_cry",
     "Cost": 1,
     "RequiredPointsInTree": 1,
@@ -152,7 +138,6 @@
    {
     "Id": "warlord_stat1",
     "Name": "Vitality +3",
-    "Description": "Warlord conditioning: a permanent +3 Vitality.",
     "GrantsStat": {
      "Stat": "Vitality",
      "Amount": 3
@@ -166,7 +151,6 @@
    {
     "Id": "warlord_core",
     "Name": "Rally Point",
-    "Description": "Plant a banner the party rallies around.",
     "Grants": "warlord_rally_point",
     "Cost": 2,
     "RequiredPointsInTree": 3,
@@ -177,7 +161,6 @@
    {
     "Id": "warlord_stat2",
     "Name": "Stamina +2",
-    "Description": "Warlord conditioning: a permanent +2 Stamina.",
     "GrantsStat": {
      "Stat": "Stamina",
      "Amount": 2
@@ -191,7 +174,6 @@
    {
     "Id": "warlord_capstone",
     "Name": "Marked for the Warband",
-    "Description": "Mark a foe every ally's blade is drawn to.",
     "Grants": "warlord_marked_for_warband",
     "Cost": 2,
     "RequiredPointsInTree": 6,
@@ -202,7 +184,6 @@
    {
     "Id": "deathguard_opener",
     "Name": "Mana Siphon",
-    "Description": "Drain a foe's focus and choke off its next spell.",
     "Grants": "deathguard_mana_siphon",
     "Cost": 1,
     "RequiredPointsInTree": 1,
@@ -211,7 +192,6 @@
    {
     "Id": "deathguard_stat1",
     "Name": "Vitality +3",
-    "Description": "Deathguard conditioning: a permanent +3 Vitality.",
     "GrantsStat": {
      "Stat": "Vitality",
      "Amount": 3
@@ -225,7 +205,6 @@
    {
     "Id": "deathguard_core",
     "Name": "Venomous Grip",
-    "Description": "A venom-laced grip that keeps gnawing after you let go.",
     "Grants": "deathguard_venomous_grip",
     "Cost": 2,
     "RequiredPointsInTree": 3,
@@ -236,7 +215,6 @@
    {
     "Id": "deathguard_stat2",
     "Name": "Stamina +2",
-    "Description": "Deathguard conditioning: a permanent +2 Stamina.",
     "GrantsStat": {
      "Stat": "Stamina",
      "Amount": 2
@@ -250,7 +228,6 @@
    {
     "Id": "deathguard_capstone",
     "Name": "Dark Communion",
-    "Description": "Feed on the fight's violence to mend your own wounds.",
     "Grants": "deathguard_dark_communion",
     "Cost": 2,
     "RequiredPointsInTree": 6,
@@ -261,7 +238,6 @@
    {
     "Id": "guardian_finale",
     "Name": "Last Bastion",
-    "Description": "Anything that lands a blow on you pays for it.",
     "Grants": "counter_attack",
     "Cost": 3,
     "RequiredPointsInTree": 10,
@@ -275,12 +251,10 @@
  {
   "Id": "warrior",
   "Name": "Warrior",
-  "Description": "The Striker archetype, brute melee: close the distance and keep swinging.",
   "Nodes": [
    {
     "Id": "warrior_cleaving_strikes",
     "Name": "Cleaving Strikes",
-    "Description": "A wide swing that catches more than one foe.",
     "Grants": "cleave",
     "Cost": 1,
     "RequiredPointsInTree": 0,
@@ -289,7 +263,6 @@
    {
     "Id": "warrior_battle_fury",
     "Name": "Battle Fury",
-    "Description": "A war cry that hardens the whole line.",
     "Grants": "war_cry",
     "Cost": 1,
     "RequiredPointsInTree": 0,
@@ -298,7 +271,6 @@
    {
     "Id": "berserker_opener",
     "Name": "Wild Swing",
-    "Description": "An all-out swing thrown with zero guard.",
     "Grants": "berserker_wildswing",
     "Cost": 1,
     "RequiredPointsInTree": 1,
@@ -307,7 +279,6 @@
    {
     "Id": "berserker_stat1",
     "Name": "Strength +3",
-    "Description": "Berserker conditioning: a permanent +3 Strength.",
     "GrantsStat": {
      "Stat": "Strength",
      "Amount": 3
@@ -321,7 +292,6 @@
    {
     "Id": "berserker_core",
     "Name": "Skull Rattle",
-    "Description": "A haymaker that rattles a foe's senses.",
     "Grants": "berserker_skullrattle",
     "Cost": 2,
     "RequiredPointsInTree": 3,
@@ -332,7 +302,6 @@
    {
     "Id": "berserker_stat2",
     "Name": "Speed +2",
-    "Description": "Berserker conditioning: a permanent +2 Speed.",
     "GrantsStat": {
      "Stat": "Speed",
      "Amount": 2
@@ -346,7 +315,6 @@
    {
     "Id": "berserker_capstone",
     "Name": "Last Man Swinging",
-    "Description": "The lower your own HP, the harder this lands.",
     "Grants": "berserker_lastmanswinging",
     "Cost": 2,
     "RequiredPointsInTree": 6,
@@ -357,7 +325,6 @@
    {
     "Id": "duelist_opener",
     "Name": "Probing Thrust",
-    "Description": "A quick thrust that reads a foe's guard.",
     "Grants": "duelist_probingthrust",
     "Cost": 1,
     "RequiredPointsInTree": 1,
@@ -366,7 +333,6 @@
    {
     "Id": "duelist_stat1",
     "Name": "Strength +3",
-    "Description": "Duelist conditioning: a permanent +3 Strength.",
     "GrantsStat": {
      "Stat": "Strength",
      "Amount": 3
@@ -380,7 +346,6 @@
    {
     "Id": "duelist_core",
     "Name": "Guard Stance",
-    "Description": "A stance that turns the next landed hit into an opening.",
     "Grants": "duelist_guardstance",
     "Cost": 2,
     "RequiredPointsInTree": 3,
@@ -391,7 +356,6 @@
    {
     "Id": "duelist_stat2",
     "Name": "Speed +2",
-    "Description": "Duelist conditioning: a permanent +2 Speed.",
     "GrantsStat": {
      "Stat": "Speed",
      "Amount": 2
@@ -405,7 +369,6 @@
    {
     "Id": "duelist_capstone",
     "Name": "Decisive Cut",
-    "Description": "The cut that ends it, once the opening is read.",
     "Grants": "duelist_decisivecut",
     "Cost": 2,
     "RequiredPointsInTree": 6,
@@ -416,7 +379,6 @@
    {
     "Id": "brawler_opener",
     "Name": "Guard Break",
-    "Description": "A shoulder-driven blow that staggers a foe back a full stride.",
     "Grants": "brawler_guard_break",
     "Cost": 1,
     "RequiredPointsInTree": 1,
@@ -425,7 +387,6 @@
    {
     "Id": "brawler_stat1",
     "Name": "Strength +3",
-    "Description": "Brawler conditioning: a permanent +3 Strength.",
     "GrantsStat": {
      "Stat": "Strength",
      "Amount": 3
@@ -439,7 +400,6 @@
    {
     "Id": "brawler_core",
     "Name": "Wide Cleave",
-    "Description": "A sweeping cut that shoves the whole line back a step.",
     "Grants": "brawler_wide_cleave",
     "Cost": 2,
     "RequiredPointsInTree": 3,
@@ -450,7 +410,6 @@
    {
     "Id": "brawler_stat2",
     "Name": "Speed +2",
-    "Description": "Brawler conditioning: a permanent +2 Speed.",
     "GrantsStat": {
      "Stat": "Speed",
      "Amount": 2
@@ -464,7 +423,6 @@
    {
     "Id": "brawler_capstone",
     "Name": "Second Wind",
-    "Description": "Grit through the pain and patch the worst of it mid-fight.",
     "Grants": "brawler_second_wind",
     "Cost": 2,
     "RequiredPointsInTree": 6,
@@ -475,7 +433,6 @@
    {
     "Id": "attrition_opener",
     "Name": "Bloodletting Bite",
-    "Description": "Mend your own wounds on an adjacent foe's blood.",
     "Grants": "attrition_bloodletting",
     "Cost": 1,
     "RequiredPointsInTree": 1,
@@ -484,7 +441,6 @@
    {
     "Id": "attrition_stat1",
     "Name": "Strength +3",
-    "Description": "Attrition conditioning: a permanent +3 Strength.",
     "GrantsStat": {
      "Stat": "Strength",
      "Amount": 3
@@ -498,7 +454,6 @@
    {
     "Id": "attrition_core",
     "Name": "Dread Aura",
-    "Description": "A creeping dread that chips and slows every nearby foe.",
     "Grants": "attrition_dreadaura",
     "Cost": 2,
     "RequiredPointsInTree": 3,
@@ -509,7 +464,6 @@
    {
     "Id": "attrition_stat2",
     "Name": "Speed +2",
-    "Description": "Attrition conditioning: a permanent +2 Speed.",
     "GrantsStat": {
      "Stat": "Speed",
      "Amount": 2
@@ -523,7 +477,6 @@
    {
     "Id": "attrition_capstone",
     "Name": "Soul Feast",
-    "Description": "Drain a distant foe's vitality and claim it as your own.",
     "Grants": "attrition_soulfeast",
     "Cost": 2,
     "RequiredPointsInTree": 6,
@@ -534,7 +487,6 @@
    {
     "Id": "warrior_finale",
     "Name": "Undying Rampage",
-    "Description": "Every landed blow heals for half the damage it deals.",
     "Grants": "lifesteal",
     "Cost": 3,
     "RequiredPointsInTree": 10,
@@ -548,12 +500,10 @@
  {
   "Id": "rogue",
   "Name": "Rogue",
-  "Description": "The Striker archetype, mobility and combo: slip in, chain the opening, slip out.",
   "Nodes": [
    {
     "Id": "rogue_light_fingers",
     "Name": "Light Fingers",
-    "Description": "Lift a little mana off every foe within reach.",
     "Grants": "steal",
     "Cost": 1,
     "RequiredPointsInTree": 0,
@@ -562,7 +512,6 @@
    {
     "Id": "rogue_feint",
     "Name": "Feint",
-    "Description": "Feint low, jab high, and leave a foe grasping at afterimages.",
     "Grants": "feint",
     "Cost": 1,
     "RequiredPointsInTree": 0,
@@ -571,7 +520,6 @@
    {
     "Id": "shadowstep_opener",
     "Name": "Fade Step",
-    "Description": "Slip half-out of the fight for a heartbeat.",
     "Grants": "shadowstep_fade_step",
     "Cost": 1,
     "RequiredPointsInTree": 1,
@@ -580,7 +528,6 @@
    {
     "Id": "shadowstep_stat1",
     "Name": "Agility +3",
-    "Description": "Shadowstep conditioning: a permanent +3 Agility.",
     "GrantsStat": {
      "Stat": "Agility",
      "Amount": 3
@@ -594,7 +541,6 @@
    {
     "Id": "shadowstep_core",
     "Name": "Smoke Veil",
-    "Description": "A veil of smoke that covers a repositioning strike.",
     "Grants": "shadowstep_smoke_veil",
     "Cost": 2,
     "RequiredPointsInTree": 3,
@@ -605,7 +551,6 @@
    {
     "Id": "shadowstep_stat2",
     "Name": "Speed +2",
-    "Description": "Shadowstep conditioning: a permanent +2 Speed.",
     "GrantsStat": {
      "Stat": "Speed",
      "Amount": 2
@@ -619,7 +564,6 @@
    {
     "Id": "shadowstep_capstone",
     "Name": "Vanishing Cut",
-    "Description": "Strike, then simply aren't there anymore.",
     "Grants": "shadowstep_vanishing_cut",
     "Cost": 2,
     "RequiredPointsInTree": 6,
@@ -630,7 +574,6 @@
    {
     "Id": "rogue_skirmisher_opener",
     "Name": "Blindside",
-    "Description": "Dart to a foe's blind side before it can turn.",
     "Grants": "skirmisher_blindside",
     "Cost": 1,
     "RequiredPointsInTree": 1,
@@ -639,7 +582,6 @@
    {
     "Id": "rogue_skirmisher_stat1",
     "Name": "Agility +3",
-    "Description": "Skirmisher conditioning: a permanent +3 Agility.",
     "GrantsStat": {
      "Stat": "Agility",
      "Amount": 3
@@ -653,7 +595,6 @@
    {
     "Id": "rogue_skirmisher_core",
     "Name": "Hit and Run",
-    "Description": "Land a quick strike and peel back out of reach.",
     "Grants": "skirmisher_hitandrun",
     "Cost": 2,
     "RequiredPointsInTree": 3,
@@ -664,7 +605,6 @@
    {
     "Id": "rogue_skirmisher_stat2",
     "Name": "Speed +2",
-    "Description": "Skirmisher conditioning: a permanent +2 Speed.",
     "GrantsStat": {
      "Stat": "Speed",
      "Amount": 2
@@ -678,7 +618,6 @@
    {
     "Id": "rogue_skirmisher_capstone",
     "Name": "Running Riot",
-    "Description": "Sprint a whole row, clipping every foe along the way.",
     "Grants": "skirmisher_runningriot",
     "Cost": 2,
     "RequiredPointsInTree": 6,
@@ -689,7 +628,6 @@
    {
     "Id": "combobrawler_opener",
     "Name": "Opening Jab",
-    "Description": "A cheap testing jab that sets up the next strike.",
     "Grants": "combobrawler_openingjab",
     "Cost": 1,
     "RequiredPointsInTree": 1,
@@ -698,7 +636,6 @@
    {
     "Id": "combobrawler_stat1",
     "Name": "Agility +3",
-    "Description": "Combo Brawler conditioning: a permanent +3 Agility.",
     "GrantsStat": {
      "Stat": "Agility",
      "Amount": 3
@@ -712,7 +649,6 @@
    {
     "Id": "combobrawler_core",
     "Name": "One-Two Flurry",
-    "Description": "A disciplined one-two that grows with every turn it lands.",
     "Grants": "combobrawler_onetwoflurry",
     "Cost": 2,
     "RequiredPointsInTree": 3,
@@ -723,7 +659,6 @@
    {
     "Id": "combobrawler_stat2",
     "Name": "Speed +2",
-    "Description": "Combo Brawler conditioning: a permanent +2 Speed.",
     "GrantsStat": {
      "Stat": "Speed",
      "Amount": 2
@@ -737,7 +672,6 @@
    {
     "Id": "combobrawler_capstone",
     "Name": "Knockout Combo",
-    "Description": "Spend the whole combo on one finishing punch.",
     "Grants": "combobrawler_knockoutcombo",
     "Cost": 2,
     "RequiredPointsInTree": 6,
@@ -748,7 +682,6 @@
    {
     "Id": "opportunist_opener",
     "Name": "Exploit",
-    "Description": "A shallow cut that leaves the wound to fester.",
     "Grants": "opportunist_exploit",
     "Cost": 1,
     "RequiredPointsInTree": 1,
@@ -757,7 +690,6 @@
    {
     "Id": "opportunist_stat1",
     "Name": "Agility +3",
-    "Description": "Opportunist conditioning: a permanent +3 Agility.",
     "GrantsStat": {
      "Stat": "Agility",
      "Amount": 3
@@ -771,7 +703,6 @@
    {
     "Id": "opportunist_core",
     "Name": "Chain the Opening",
-    "Description": "Strike hardest at a foe already marked.",
     "Grants": "opportunist_chain_the_opening",
     "Cost": 2,
     "RequiredPointsInTree": 3,
@@ -782,7 +713,6 @@
    {
     "Id": "opportunist_stat2",
     "Name": "Speed +2",
-    "Description": "Opportunist conditioning: a permanent +2 Speed.",
     "GrantsStat": {
      "Stat": "Speed",
      "Amount": 2
@@ -796,7 +726,6 @@
    {
     "Id": "opportunist_capstone",
     "Name": "Collect the Debt",
-    "Description": "The more a foe already suffers, the more flows back to you.",
     "Grants": "opportunist_collect_the_debt",
     "Cost": 2,
     "RequiredPointsInTree": 6,
@@ -807,7 +736,6 @@
    {
     "Id": "rogue_finale",
     "Name": "Flurry of Blades",
-    "Description": "Strike twice at every adjacent foe each turn.",
     "Grants": "double_attack",
     "Cost": 3,
     "RequiredPointsInTree": 10,
@@ -821,12 +749,10 @@
  {
   "Id": "ranger",
   "Name": "Ranger",
-  "Description": "The Ranged archetype: never needs to be adjacent to strike.",
   "Nodes": [
    {
     "Id": "ranger_focused_aim",
     "Name": "Focused Aim",
-    "Description": "A called shot that picks the deadliest opening.",
     "Grants": "ranged_calledshot",
     "Cost": 1,
     "RequiredPointsInTree": 0,
@@ -835,7 +761,6 @@
    {
     "Id": "ranger_covering_fire",
     "Name": "Covering Fire",
-    "Description": "Pin down a whole line or column from range.",
     "Grants": "ranged_suppressingfire",
     "Cost": 1,
     "RequiredPointsInTree": 0,
@@ -844,7 +769,6 @@
    {
     "Id": "marksman_opener",
     "Name": "Deadeye Shot",
-    "Description": "A patient, perfectly placed shot.",
     "Grants": "marksman_deadeye_shot",
     "Cost": 1,
     "RequiredPointsInTree": 1,
@@ -853,7 +777,6 @@
    {
     "Id": "marksman_stat1",
     "Name": "Agility +3",
-    "Description": "Marksman conditioning: a permanent +3 Agility.",
     "GrantsStat": {
      "Stat": "Agility",
      "Amount": 3
@@ -867,7 +790,6 @@
    {
     "Id": "marksman_core",
     "Name": "Piercing Volley",
-    "Description": "A shot that punches clean through a whole column.",
     "Grants": "marksman_piercing_volley",
     "Cost": 2,
     "RequiredPointsInTree": 3,
@@ -878,7 +800,6 @@
    {
     "Id": "marksman_stat2",
     "Name": "Luck +2",
-    "Description": "Marksman conditioning: a permanent +2 Luck.",
     "GrantsStat": {
      "Stat": "Luck",
      "Amount": 2
@@ -892,7 +813,6 @@
    {
     "Id": "marksman_capstone",
     "Name": "Execution Shot",
-    "Description": "A called shot held one beat too long for anything but the kill.",
     "Grants": "marksman_execution_shot",
     "Cost": 2,
     "RequiredPointsInTree": 6,
@@ -903,7 +823,6 @@
    {
     "Id": "trapper_opener",
     "Name": "Binding Shot",
-    "Description": "A weighted bolt that fouls a foe's footing.",
     "Grants": "trapper_binding_shot",
     "Cost": 1,
     "RequiredPointsInTree": 1,
@@ -912,7 +831,6 @@
    {
     "Id": "trapper_stat1",
     "Name": "Agility +3",
-    "Description": "Trapper conditioning: a permanent +3 Agility.",
     "GrantsStat": {
      "Stat": "Agility",
      "Amount": 3
@@ -926,7 +844,6 @@
    {
     "Id": "trapper_core",
     "Name": "Pitfall Volley",
-    "Description": "A spread of snares across a square of ground.",
     "Grants": "trapper_pitfall_volley",
     "Cost": 2,
     "RequiredPointsInTree": 3,
@@ -937,7 +854,6 @@
    {
     "Id": "trapper_stat2",
     "Name": "Luck +2",
-    "Description": "Trapper conditioning: a permanent +2 Luck.",
     "GrantsStat": {
      "Stat": "Luck",
      "Amount": 2
@@ -951,7 +867,6 @@
    {
     "Id": "trapper_capstone",
     "Name": "Snare Net",
-    "Description": "A net that stops feet and voice alike.",
     "Grants": "trapper_snare_net",
     "Cost": 2,
     "RequiredPointsInTree": 6,
@@ -962,7 +877,6 @@
    {
     "Id": "skirmisher_opener",
     "Name": "Covering Volley",
-    "Description": "Fire down a column to keep a whole lane honest.",
     "Grants": "skirmisher_covering_volley",
     "Cost": 1,
     "RequiredPointsInTree": 1,
@@ -971,7 +885,6 @@
    {
     "Id": "skirmisher_stat1",
     "Name": "Agility +3",
-    "Description": "Skirmisher conditioning: a permanent +3 Agility.",
     "GrantsStat": {
      "Stat": "Agility",
      "Amount": 3
@@ -985,7 +898,6 @@
    {
     "Id": "skirmisher_core",
     "Name": "Retreat Shot",
-    "Description": "A shot loosed while falling back.",
     "Grants": "skirmisher_retreat_shot",
     "Cost": 2,
     "RequiredPointsInTree": 3,
@@ -996,7 +908,6 @@
    {
     "Id": "skirmisher_stat2",
     "Name": "Luck +2",
-    "Description": "Skirmisher conditioning: a permanent +2 Luck.",
     "GrantsStat": {
      "Stat": "Luck",
      "Amount": 2
@@ -1010,7 +921,6 @@
    {
     "Id": "skirmisher_capstone",
     "Name": "Rapid Barrage",
-    "Description": "A full quiver loosed down the line in one breath.",
     "Grants": "skirmisher_rapid_barrage",
     "Cost": 2,
     "RequiredPointsInTree": 6,
@@ -1021,7 +931,6 @@
    {
     "Id": "ranger_finale",
     "Name": "Hunter's Resilience",
-    "Description": "Field-worn leathers turn physical blows aside - they land at 70%.",
     "Grants": "tough_hide",
     "Cost": 3,
     "RequiredPointsInTree": 10,
@@ -1035,12 +944,10 @@
  {
   "Id": "mage",
   "Name": "Mage",
-  "Description": "The Mage archetype: ranged elemental AoE damage.",
   "Nodes": [
    {
     "Id": "mage_arcane_bolt",
     "Name": "Arcane Bolt",
-    "Description": "A fast, reliable bolt of raw mana.",
     "Grants": "bolt",
     "Cost": 1,
     "RequiredPointsInTree": 0,
@@ -1049,7 +956,6 @@
    {
     "Id": "mage_chilling_frost",
     "Name": "Chilling Frost",
-    "Description": "Ice that locks a square of the field in place.",
     "Grants": "frost",
     "Cost": 1,
     "RequiredPointsInTree": 0,
@@ -1058,7 +964,6 @@
    {
     "Id": "spellblade_opener",
     "Name": "Quickstrike",
-    "Description": "A blade quickened by a sliver of spent mana.",
     "Grants": "spellblade_quickstrike",
     "Cost": 1,
     "RequiredPointsInTree": 1,
@@ -1067,7 +972,6 @@
    {
     "Id": "spellblade_stat1",
     "Name": "Intelligence +3",
-    "Description": "Spellblade conditioning: a permanent +3 Intelligence.",
     "GrantsStat": {
      "Stat": "Intelligence",
      "Amount": 3
@@ -1081,7 +985,6 @@
    {
     "Id": "spellblade_core",
     "Name": "Overchannel",
-    "Description": "Push a spell past safe limits for a harder hit.",
     "Grants": "spellblade_overchannel",
     "Cost": 2,
     "RequiredPointsInTree": 3,
@@ -1092,7 +995,6 @@
    {
     "Id": "spellblade_stat2",
     "Name": "Wisdom +2",
-    "Description": "Spellblade conditioning: a permanent +2 Wisdom.",
     "GrantsStat": {
      "Stat": "Wisdom",
      "Amount": 2
@@ -1106,7 +1008,6 @@
    {
     "Id": "spellblade_capstone",
     "Name": "Followthrough",
-    "Description": "A blade strike that carries a spell's momentum into the next.",
     "Grants": "spellblade_followthrough",
     "Cost": 2,
     "RequiredPointsInTree": 6,
@@ -1117,7 +1018,6 @@
    {
     "Id": "fieldcaster_opener",
     "Name": "Trapline",
-    "Description": "Lay a line of arcane snares ahead of the advance.",
     "Grants": "fieldcaster_trapline",
     "Cost": 1,
     "RequiredPointsInTree": 1,
@@ -1126,7 +1026,6 @@
    {
     "Id": "fieldcaster_stat1",
     "Name": "Intelligence +3",
-    "Description": "Field Caster conditioning: a permanent +3 Intelligence.",
     "GrantsStat": {
      "Stat": "Intelligence",
      "Amount": 3
@@ -1140,7 +1039,6 @@
    {
     "Id": "fieldcaster_core",
     "Name": "Ward Grid",
-    "Description": "A grid of wards that answers a whole square at once.",
     "Grants": "fieldcaster_wardgrid",
     "Cost": 2,
     "RequiredPointsInTree": 3,
@@ -1151,7 +1049,6 @@
    {
     "Id": "fieldcaster_stat2",
     "Name": "Wisdom +2",
-    "Description": "Field Caster conditioning: a permanent +2 Wisdom.",
     "GrantsStat": {
      "Stat": "Wisdom",
      "Amount": 2
@@ -1165,7 +1062,6 @@
    {
     "Id": "fieldcaster_capstone",
     "Name": "Resupply Drone",
-    "Description": "A construct that keeps the party's orbs topped up.",
     "Grants": "fieldcaster_resupplydrone",
     "Cost": 2,
     "RequiredPointsInTree": 6,
@@ -1176,7 +1072,6 @@
    {
     "Id": "hexweaver_opener",
     "Name": "Festering Mark",
-    "Description": "A curse that festers the longer it's left unanswered.",
     "Grants": "hexweaver_festeringmark",
     "Cost": 1,
     "RequiredPointsInTree": 1,
@@ -1185,7 +1080,6 @@
    {
     "Id": "hexweaver_stat1",
     "Name": "Intelligence +3",
-    "Description": "Hexweaver conditioning: a permanent +3 Intelligence.",
     "GrantsStat": {
      "Stat": "Intelligence",
      "Amount": 3
@@ -1199,7 +1093,6 @@
    {
     "Id": "hexweaver_core",
     "Name": "Curse of Fate",
-    "Description": "Bind a foe's fate to the damage it's already taken.",
     "Grants": "hexweaver_curseoffate",
     "Cost": 2,
     "RequiredPointsInTree": 3,
@@ -1210,7 +1103,6 @@
    {
     "Id": "hexweaver_stat2",
     "Name": "Wisdom +2",
-    "Description": "Hexweaver conditioning: a permanent +2 Wisdom.",
     "GrantsStat": {
      "Stat": "Wisdom",
      "Amount": 2
@@ -1224,7 +1116,6 @@
    {
     "Id": "hexweaver_capstone",
     "Name": "Blood Harvest",
-    "Description": "Reap what every prior curse has sown.",
     "Grants": "hexweaver_bloodharvest",
     "Cost": 2,
     "RequiredPointsInTree": 6,
@@ -1235,7 +1126,6 @@
    {
     "Id": "warden_opener",
     "Name": "Rune Ward",
-    "Description": "Etch a protective rune onto an ally before the blow lands.",
     "Grants": "warden_runeward",
     "Cost": 1,
     "RequiredPointsInTree": 1,
@@ -1244,7 +1134,6 @@
    {
     "Id": "warden_stat1",
     "Name": "Intelligence +3",
-    "Description": "Arcane Warden conditioning: a permanent +3 Intelligence.",
     "GrantsStat": {
      "Stat": "Intelligence",
      "Amount": 3
@@ -1258,7 +1147,6 @@
    {
     "Id": "warden_core",
     "Name": "Spellshield",
-    "Description": "A mirrored shell of mana that unpicks hexes and wards an ally.",
     "Grants": "warden_spellshield",
     "Cost": 2,
     "RequiredPointsInTree": 3,
@@ -1269,7 +1157,6 @@
    {
     "Id": "warden_stat2",
     "Name": "Wisdom +2",
-    "Description": "Arcane Warden conditioning: a permanent +2 Wisdom.",
     "GrantsStat": {
      "Stat": "Wisdom",
      "Amount": 2
@@ -1283,7 +1170,6 @@
    {
     "Id": "warden_capstone",
     "Name": "Barrier",
-    "Description": "A dome of solid mana that wards the whole party at once.",
     "Grants": "warden_barrier",
     "Cost": 2,
     "RequiredPointsInTree": 6,
@@ -1294,7 +1180,6 @@
    {
     "Id": "mage_finale",
     "Name": "Archmage's Focus",
-    "Description": "Mana discipline that knits a little strength back every turn.",
     "Grants": "regenerate",
     "Cost": 3,
     "RequiredPointsInTree": 10,
@@ -1306,7 +1191,6 @@
    {
     "Id": "mage_heavy_armor_proficiency",
     "Name": "Heavy Armor Proficiency",
-    "Description": "Earns the right to wear heavy plate and mail, regardless of class.",
     "Grants": "heavy_armor_proficiency",
     "Cost": 2,
     "RequiredPointsInTree": 8,
@@ -1317,12 +1201,10 @@
  {
   "Id": "cleric",
   "Name": "Cleric",
-  "Description": "The Healer archetype: mend and cleanse.",
   "Nodes": [
    {
     "Id": "cleric_mending_light",
     "Name": "Mending Light",
-    "Description": "A wash of light that heals the whole party at once.",
     "Grants": "mass_heal",
     "Cost": 1,
     "RequiredPointsInTree": 0,
@@ -1331,7 +1213,6 @@
    {
     "Id": "cleric_sacred_cleanse",
     "Name": "Sacred Cleanse",
-    "Description": "Purge poison from an ally's blood.",
     "Grants": "antidote",
     "Cost": 1,
     "RequiredPointsInTree": 0,
@@ -1340,7 +1221,6 @@
    {
     "Id": "aegiswardens_opener",
     "Name": "Preemptive Ward",
-    "Description": "Ward an ally before the blow ever lands.",
     "Grants": "aegiswardens_preemptiveward",
     "Cost": 1,
     "RequiredPointsInTree": 1,
@@ -1349,7 +1229,6 @@
    {
     "Id": "aegiswardens_stat1",
     "Name": "Wisdom +3",
-    "Description": "Aegis Wardens conditioning: a permanent +3 Wisdom.",
     "GrantsStat": {
      "Stat": "Wisdom",
      "Amount": 3
@@ -1363,7 +1242,6 @@
    {
     "Id": "aegiswardens_core",
     "Name": "Cleansing Vigil",
-    "Description": "A standing vigil that cleanses as it watches.",
     "Grants": "aegiswardens_cleansingvigil",
     "Cost": 2,
     "RequiredPointsInTree": 3,
@@ -1374,7 +1252,6 @@
    {
     "Id": "aegiswardens_stat2",
     "Name": "Vitality +2",
-    "Description": "Aegis Wardens conditioning: a permanent +2 Vitality.",
     "GrantsStat": {
      "Stat": "Vitality",
      "Amount": 2
@@ -1388,7 +1265,6 @@
    {
     "Id": "aegiswardens_capstone",
     "Name": "Sanctuary Rite",
-    "Description": "A rite that wards the whole party at once - the cleric's own Barrier.",
     "Grants": "aegiswardens_sanctuaryrite",
     "Cost": 2,
     "RequiredPointsInTree": 6,
@@ -1399,7 +1275,6 @@
    {
     "Id": "hexmenders_opener",
     "Name": "Thorned Hex",
-    "Description": "A hex that bites back at whatever it's cast on.",
     "Grants": "hexmenders_thornedhex",
     "Cost": 1,
     "RequiredPointsInTree": 1,
@@ -1408,7 +1283,6 @@
    {
     "Id": "hexmenders_stat1",
     "Name": "Wisdom +3",
-    "Description": "Hexmenders conditioning: a permanent +3 Wisdom.",
     "GrantsStat": {
      "Stat": "Wisdom",
      "Amount": 3
@@ -1422,7 +1296,6 @@
    {
     "Id": "hexmenders_core",
     "Name": "Harm Into Hope",
-    "Description": "Turn a foe's own hurt into an ally's healing.",
     "Grants": "hexmenders_harmintohope",
     "Cost": 2,
     "RequiredPointsInTree": 3,
@@ -1433,7 +1306,6 @@
    {
     "Id": "hexmenders_stat2",
     "Name": "Vitality +2",
-    "Description": "Hexmenders conditioning: a permanent +2 Vitality.",
     "GrantsStat": {
      "Stat": "Vitality",
      "Amount": 2
@@ -1447,7 +1319,6 @@
    {
     "Id": "hexmenders_capstone",
     "Name": "Mirrorcurse",
-    "Description": "Brand a foe with a curse that dims its sight ([Blind]).",
     "Grants": "hexmenders_mirrorcurse",
     "Cost": 2,
     "RequiredPointsInTree": 6,
@@ -1458,7 +1329,6 @@
    {
     "Id": "skirmishmenders_opener",
     "Name": "Guardian's Rush",
-    "Description": "Close the gap to the ally who needs it most.",
     "Grants": "skirmishmenders_guardiansrush",
     "Cost": 1,
     "RequiredPointsInTree": 1,
@@ -1467,7 +1337,6 @@
    {
     "Id": "skirmishmenders_stat1",
     "Name": "Wisdom +3",
-    "Description": "Skirmish-Menders conditioning: a permanent +3 Wisdom.",
     "GrantsStat": {
      "Stat": "Wisdom",
      "Amount": 3
@@ -1481,7 +1350,6 @@
    {
     "Id": "skirmishmenders_core",
     "Name": "Flowing Current",
-    "Description": "A current of healing that washes over everyone nearby.",
     "Grants": "skirmishmenders_flowingcurrent",
     "Cost": 2,
     "RequiredPointsInTree": 3,
@@ -1492,7 +1360,6 @@
    {
     "Id": "skirmishmenders_stat2",
     "Name": "Vitality +2",
-    "Description": "Skirmish-Menders conditioning: a permanent +2 Vitality.",
     "GrantsStat": {
      "Stat": "Vitality",
      "Amount": 2
@@ -1506,7 +1373,6 @@
    {
     "Id": "skirmishmenders_capstone",
     "Name": "Covering Withdrawal",
-    "Description": "Cover a wounded ally's retreat.",
     "Grants": "skirmishmenders_coveringwithdrawal",
     "Cost": 2,
     "RequiredPointsInTree": 6,
@@ -1517,7 +1383,6 @@
    {
     "Id": "cleric_finale",
     "Name": "Divine Vigor",
-    "Description": "A standing blessing that knits wounds every turn.",
     "Grants": "regenerate",
     "Cost": 3,
     "RequiredPointsInTree": 10,
@@ -1529,7 +1394,6 @@
    {
     "Id": "cleric_martial_weapons_proficiency",
     "Name": "Martial Weapons",
-    "Description": "Earns the right to wield any weapon in the armory, regardless of class.",
     "Grants": "martial_weapons_proficiency",
     "Cost": 2,
     "RequiredPointsInTree": 8,
@@ -1540,12 +1404,10 @@
  {
   "Id": "alchemist",
   "Name": "Alchemist",
-  "Description": "The Support archetype: tempo, tonics and field remedies.",
   "Nodes": [
    {
     "Id": "alchemist_quickening_brew",
     "Name": "Quickening Brew",
-    "Description": "A tonic that hastens an ally's next turn.",
     "Grants": "quicken",
     "Cost": 1,
     "RequiredPointsInTree": 0,
@@ -1554,7 +1416,6 @@
    {
     "Id": "alchemist_binding_toxin",
     "Name": "Binding Toxin",
-    "Description": "A reagent that slows whatever it touches.",
     "Grants": "slow",
     "Cost": 1,
     "RequiredPointsInTree": 0,
@@ -1563,7 +1424,6 @@
    {
     "Id": "tempoweave_opener",
     "Name": "Shortcut",
-    "Description": "Send an ally the fast way across the board.",
     "Grants": "tempoweave_shortcut",
     "Cost": 1,
     "RequiredPointsInTree": 1,
@@ -1572,7 +1432,6 @@
    {
     "Id": "tempoweave_stat1",
     "Name": "Luck +3",
-    "Description": "Tempo Weavers conditioning: a permanent +3 Luck.",
     "GrantsStat": {
      "Stat": "Luck",
      "Amount": 3
@@ -1586,7 +1445,6 @@
    {
     "Id": "tempoweave_core",
     "Name": "Stumbling Ground",
-    "Description": "Ground that turns a foe's footing against it.",
     "Grants": "tempoweave_stumble",
     "Cost": 2,
     "RequiredPointsInTree": 3,
@@ -1597,7 +1455,6 @@
    {
     "Id": "tempoweave_stat2",
     "Name": "Stamina +2",
-    "Description": "Tempo Weavers conditioning: a permanent +2 Stamina.",
     "GrantsStat": {
      "Stat": "Stamina",
      "Amount": 2
@@ -1611,7 +1468,6 @@
    {
     "Id": "tempoweave_capstone",
     "Name": "Swift Swap",
-    "Description": "Trade two combatants' places in an eyeblink.",
     "Grants": "tempoweave_swap",
     "Cost": 2,
     "RequiredPointsInTree": 6,
@@ -1622,7 +1478,6 @@
    {
     "Id": "fieldeng_opener",
     "Name": "Suppression Mine",
-    "Description": "A mine that silences whatever sets it off.",
     "Grants": "fieldeng_mine",
     "Cost": 1,
     "RequiredPointsInTree": 1,
@@ -1631,7 +1486,6 @@
    {
     "Id": "fieldeng_stat1",
     "Name": "Luck +3",
-    "Description": "Field Engineers conditioning: a permanent +3 Luck.",
     "GrantsStat": {
      "Stat": "Luck",
      "Amount": 3
@@ -1645,7 +1499,6 @@
    {
     "Id": "fieldeng_core",
     "Name": "Field Patch",
-    "Description": "A field repair kit turned on flesh instead of steel.",
     "Grants": "fieldeng_patch",
     "Cost": 2,
     "RequiredPointsInTree": 3,
@@ -1656,7 +1509,6 @@
    {
     "Id": "fieldeng_stat2",
     "Name": "Stamina +2",
-    "Description": "Field Engineers conditioning: a permanent +2 Stamina.",
     "GrantsStat": {
      "Stat": "Stamina",
      "Amount": 2
@@ -1670,7 +1522,6 @@
    {
     "Id": "fieldeng_capstone",
     "Name": "Overdrive Tap",
-    "Description": "Tap the party's own mana reserve for a burst.",
     "Grants": "fieldeng_overdrive",
     "Cost": 2,
     "RequiredPointsInTree": 6,
@@ -1681,7 +1532,6 @@
    {
     "Id": "primalpack_opener",
     "Name": "Alpha's Challenge",
-    "Description": "Call the pack's attention onto you.",
     "Grants": "primalpack_challenge",
     "Cost": 1,
     "RequiredPointsInTree": 1,
@@ -1690,7 +1540,6 @@
    {
     "Id": "primalpack_stat1",
     "Name": "Luck +3",
-    "Description": "Primal Pack conditioning: a permanent +3 Luck.",
     "GrantsStat": {
      "Stat": "Luck",
      "Amount": 3
@@ -1704,7 +1553,6 @@
    {
     "Id": "primalpack_core",
     "Name": "Pack Rally",
-    "Description": "Rally the pack behind whoever leads the charge.",
     "Grants": "primalpack_rally",
     "Cost": 2,
     "RequiredPointsInTree": 3,
@@ -1715,7 +1563,6 @@
    {
     "Id": "primalpack_stat2",
     "Name": "Stamina +2",
-    "Description": "Primal Pack conditioning: a permanent +2 Stamina.",
     "GrantsStat": {
      "Stat": "Stamina",
      "Amount": 2
@@ -1729,7 +1576,6 @@
    {
     "Id": "primalpack_capstone",
     "Name": "Den Mother's Guard",
-    "Description": "A guardian's ward, pack-taught rather than priest-taught.",
     "Grants": "primalpack_denmother",
     "Cost": 2,
     "RequiredPointsInTree": 6,
@@ -1740,7 +1586,6 @@
    {
     "Id": "alchemist_finale",
     "Name": "Elixir of Vigor",
-    "Description": "A reagent blend potent enough to mend wounds every turn, unasked.",
     "Grants": "regenerate",
     "Cost": 3,
     "RequiredPointsInTree": 10,
@@ -1752,7 +1597,6 @@
    {
     "Id": "alchemist_arcane_focus_proficiency",
     "Name": "Arcane Focus",
-    "Description": "Sharpens a hand not born to the arcane, regardless of class.",
     "Grants": "arcane_focus_proficiency",
     "Cost": 2,
     "RequiredPointsInTree": 8,

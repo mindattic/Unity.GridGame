@@ -7,8 +7,6 @@
       "Humanoid",
       "Healer"
     ],
-    "Description": "A battlefield support that sustains allies and manipulates tempo.",
-    "Lore": "Knows every reagent, every breath, and when to spend both.",
     "Card": "Backline [healer] [buffer]. Restores tempo with [cleanse] and [aid].",
     "Portrait": "Alchemist",
     "Thumbnail": {
@@ -149,8 +147,6 @@
     "Tags": [
       "Humanoid"
     ],
-    "Description": "A swift combatant who wins through speed, angles, and precision strikes.",
-    "Lore": "Years of quiet training forged a will that moves faster than thought.",
     "Card": "Mobile [striker] [flanker]. Leans on [crit] and [backstab] windows.",
     "Portrait": "Assassain",
     "Thumbnail": {
@@ -292,8 +288,6 @@
     "Tags": [
       "Humanoid"
     ],
-    "Description": "A flexible fighter with no single defining specialty.",
-    "Lore": "Walks many roads, never lost for lack of a single path.",
     "Card": "Flexible [fighter]. Converts [openings] into [combo finishes].",
     "Portrait": "Barbarian",
     "Thumbnail": {
@@ -434,8 +428,6 @@
     "Tags": [
       "Humanoid"
     ],
-    "Description": "A flexible fighter with no single defining specialty.",
-    "Lore": "Walks many roads, never lost for lack of a single path.",
     "Card": "Flexible [fighter]. Converts [openings] into [combo finishes].",
     "Portrait": "Basher",
     "Thumbnail": {
@@ -577,8 +569,6 @@
       "Beast",
       "Flying"
     ],
-    "Description": "A feral threat that overwhelms foes with instinct and power.",
-    "Lore": "Born to the deep places, it runs by instinct and strikes without doubt.",
     "Card": "Ferocious [pouncer] [mauler]. Disrupts with [roar] and [knockdown].",
     "Portrait": "Bat00",
     "Thumbnail": {
@@ -702,8 +692,6 @@
       "Beast",
       "Flying"
     ],
-    "Description": "A feral threat that overwhelms foes with instinct and power.",
-    "Lore": "Born to the deep places, it runs by instinct and strikes without doubt.",
     "Card": "Ferocious [pouncer] [mauler]. Disrupts with [roar] and [knockdown].",
     "Portrait": "Bat01",
     "Thumbnail": {
@@ -827,8 +815,6 @@
       "Beast",
       "Flying"
     ],
-    "Description": "A feral threat that overwhelms foes with instinct and power.",
-    "Lore": "Born to the deep places, it runs by instinct and strikes without doubt.",
     "Card": "Ferocious [pouncer] [mauler]. Disrupts with [roar] and [knockdown].",
     "Portrait": "Bat02",
     "Thumbnail": {
@@ -952,8 +938,6 @@
     "Tags": [
       "Humanoid"
     ],
-    "Description": "A swift combatant who wins through speed, angles, and precision strikes.",
-    "Lore": "Years of quiet training forged a will that moves faster than thought.",
     "Card": "Mobile [striker] [flanker]. Leans on [crit] and [backstab] windows.",
     "Portrait": "BlackNinja",
     "Thumbnail": {
@@ -1095,8 +1079,6 @@
       "Humanoid",
       "Magic"
     ],
-    "Description": "A ranged spellcaster that shapes the fight with arcane control and damage.",
-    "Lore": "Disciplines of ink and flame taught that power begins in focus.",
     "Card": "Arcane [controller] [debuffer]. Shapes fights with [aoe] [curse].",
     "Portrait": "BlackWitch",
     "Thumbnail": {
@@ -1241,8 +1223,6 @@
     "Tags": [
       "Humanoid"
     ],
-    "Description": "A flexible fighter with no single defining specialty.",
-    "Lore": "Walks many roads, never lost for lack of a single path.",
     "Card": "Flexible [fighter]. Converts [openings] into [combo finishes].",
     "Portrait": "BlueLion",
     "Thumbnail": {
@@ -1383,8 +1363,6 @@
     "Tags": [
       "Humanoid"
     ],
-    "Description": "A swift combatant who wins through speed, angles, and precision strikes.",
-    "Lore": "Years of quiet training forged a will that moves faster than thought.",
     "Card": "Mobile [striker] [flanker]. Leans on [crit] and [backstab] windows.",
     "Portrait": "BlueNinja",
     "Thumbnail": {
@@ -1525,8 +1503,6 @@
     "Tags": [
       "Humanoid"
     ],
-    "Description": "A flexible fighter with no single defining specialty.",
-    "Lore": "Walks many roads, never lost for lack of a single path.",
     "Card": "Flexible [fighter]. Converts [openings] into [combo finishes].",
     "Portrait": "Bruiser",
     "Thumbnail": {
@@ -1668,8 +1644,6 @@
       "Humanoid",
       "Sentient"
     ],
-    "Description": "A flexible fighter with no single defining specialty.",
-    "Lore": "Walks many roads, never lost for lack of a single path.",
     "Card": "Flexible [fighter]. Converts [openings] into [combo finishes].",
     "Portrait": "Captain",
     "Thumbnail": {
@@ -1796,8 +1770,6 @@
       "Construct",
       "Sentient"
     ],
-    "Description": "A stalwart defender that anchors the line and absorbs pressure.",
-    "Lore": "Built on vows and iron patience, they stand where others fall back.",
     "Card": "Frontline [guardian] [bruiser]. Absorbs pressure and [taunts].",
     "Portrait": "CeramicKnight00",
     "Thumbnail": {
@@ -1928,8 +1900,6 @@
       "Construct",
       "Sentient"
     ],
-    "Description": "A stalwart defender that anchors the line and absorbs pressure.",
-    "Lore": "Built on vows and iron patience, they stand where others fall back.",
     "Card": "Frontline [guardian] [bruiser]. Absorbs pressure and [taunts].",
     "Portrait": "CeramicKnight01",
     "Thumbnail": {
@@ -2060,8 +2030,6 @@
       "Construct",
       "Sentient"
     ],
-    "Description": "A stalwart defender that anchors the line and absorbs pressure.",
-    "Lore": "Built on vows and iron patience, they stand where others fall back.",
     "Card": "Frontline [guardian] [bruiser]. Absorbs pressure and [taunts].",
     "Portrait": "CeramicKnight02",
     "Thumbnail": {
@@ -2192,8 +2160,6 @@
       "Construct",
       "Sentient"
     ],
-    "Description": "A stalwart defender that anchors the line and absorbs pressure.",
-    "Lore": "Built on vows and iron patience, they stand where others fall back.",
     "Card": "Frontline [guardian] [bruiser]. Absorbs pressure and [taunts].",
     "Portrait": "CeramicKnight03",
     "Thumbnail": {
@@ -2324,8 +2290,6 @@
       "Construct",
       "Sentient"
     ],
-    "Description": "A stalwart defender that anchors the line and absorbs pressure.",
-    "Lore": "Built on vows and iron patience, they stand where others fall back.",
     "Card": "Frontline [guardian] [bruiser]. Absorbs pressure and [taunts].",
     "Portrait": "CeramicKnight04",
     "Thumbnail": {
@@ -2456,8 +2420,6 @@
       "Construct",
       "Sentient"
     ],
-    "Description": "A stalwart defender that anchors the line and absorbs pressure.",
-    "Lore": "Built on vows and iron patience, they stand where others fall back.",
     "Card": "Frontline [guardian] [bruiser]. Absorbs pressure and [taunts].",
     "Portrait": "CeramicKnight05",
     "Thumbnail": {
@@ -2588,8 +2550,6 @@
       "Construct",
       "Sentient"
     ],
-    "Description": "A stalwart defender that anchors the line and absorbs pressure.",
-    "Lore": "Built on vows and iron patience, they stand where others fall back.",
     "Card": "Frontline [guardian] [bruiser]. Absorbs pressure and [taunts].",
     "Portrait": "CeramicKnight06",
     "Thumbnail": {
@@ -2718,8 +2678,6 @@
     "Tags": [
       "Humanoid"
     ],
-    "Description": "A swift combatant who wins through speed, angles, and precision strikes.",
-    "Lore": "Years of quiet training forged a will that moves faster than thought.",
     "Card": "Mobile [striker] [flanker]. Leans on [crit] and [backstab] windows.",
     "Portrait": "ChromaNinja",
     "Thumbnail": {
@@ -2861,8 +2819,6 @@
       "Healer",
       "Humanoid"
     ],
-    "Description": "A battlefield support that sustains allies and manipulates tempo.",
-    "Lore": "Knows every reagent, every breath, and when to spend both.",
     "Card": "Backline [healer] [buffer]. Restores tempo with [cleanse] and [aid].",
     "Portrait": "Cleric",
     "Thumbnail": {
@@ -3003,8 +2959,6 @@
     "Tags": [
       "Humanoid"
     ],
-    "Description": "A battlefield support that sustains allies and manipulates tempo.",
-    "Lore": "Knows every reagent, every breath, and when to spend both.",
     "Card": "Backline [healer] [buffer]. Restores tempo with [cleanse] and [aid].",
     "Portrait": "Courier",
     "Thumbnail": {
@@ -3145,8 +3099,6 @@
       "Mechanical",
       "Undead"
     ],
-    "Description": "An unnatural entity that endures through grim resilience and dread.",
-    "Lore": "Life ended. Purpose remained. The rest is hunger and memory.",
     "Card": "Grim [attrition] [drain]. Pressures with [fear] and [rot].",
     "Portrait": "CyberZombie00",
     "Thumbnail": {
@@ -3278,8 +3230,6 @@
       "Mechanical",
       "Undead"
     ],
-    "Description": "An unnatural entity that endures through grim resilience and dread.",
-    "Lore": "Life ended. Purpose remained. The rest is hunger and memory.",
     "Card": "Grim [attrition] [drain]. Pressures with [fear] and [rot].",
     "Portrait": "CyberZombie01",
     "Thumbnail": {
@@ -3411,8 +3361,6 @@
       "Mechanical",
       "Undead"
     ],
-    "Description": "An unnatural entity that endures through grim resilience and dread.",
-    "Lore": "Life ended. Purpose remained. The rest is hunger and memory.",
     "Card": "Grim [attrition] [drain]. Pressures with [fear] and [rot].",
     "Portrait": "CyberZombie02",
     "Thumbnail": {
@@ -3544,8 +3492,6 @@
       "Mechanical",
       "Undead"
     ],
-    "Description": "An unnatural entity that endures through grim resilience and dread.",
-    "Lore": "Life ended. Purpose remained. The rest is hunger and memory.",
     "Card": "Grim [attrition] [drain]. Pressures with [fear] and [rot].",
     "Portrait": "CyberZombie03",
     "Thumbnail": {
@@ -3677,8 +3623,6 @@
       "Mechanical",
       "Undead"
     ],
-    "Description": "An unnatural entity that endures through grim resilience and dread.",
-    "Lore": "Life ended. Purpose remained. The rest is hunger and memory.",
     "Card": "Grim [attrition] [drain]. Pressures with [fear] and [rot].",
     "Portrait": "CyberZombie04",
     "Thumbnail": {
@@ -3811,8 +3755,6 @@
       "Boss",
       "Sentient"
     ],
-    "Description": "A flexible fighter with no single defining specialty.",
-    "Lore": "Walks many roads, never lost for lack of a single path.",
     "Card": "Flexible [fighter]. Converts [openings] into [combo finishes].",
     "Portrait": "Cyclops00",
     "Thumbnail": {
@@ -3926,14 +3868,12 @@
       {
         "HpThreshold": 1.0,
         "PrefersCharge": false,
-        "OnEnterAbility": null,
-        "Announce": "Cyclops"
+        "OnEnterAbility": null
       },
       {
         "HpThreshold": 0.5,
         "PrefersCharge": false,
-        "OnEnterAbility": "enrage",
-        "Announce": "ENRAGED!"
+        "OnEnterAbility": "enrage"
       }
     ],
     "ChargeAbility": null,
@@ -3951,8 +3891,6 @@
       "Boss",
       "Sentient"
     ],
-    "Description": "A flexible fighter with no single defining specialty.",
-    "Lore": "Walks many roads, never lost for lack of a single path.",
     "Card": "Flexible [fighter]. Converts [openings] into [combo finishes].",
     "Portrait": "Cyclops01",
     "Thumbnail": {
@@ -4077,8 +4015,6 @@
       "Boss",
       "Sentient"
     ],
-    "Description": "A flexible fighter with no single defining specialty.",
-    "Lore": "Walks many roads, never lost for lack of a single path.",
     "Card": "Flexible [fighter]. Converts [openings] into [combo finishes].",
     "Portrait": "Cyclops02",
     "Thumbnail": {
@@ -4202,8 +4138,6 @@
       "Humanoid",
       "Sentient"
     ],
-    "Description": "A flexible fighter with no single defining specialty.",
-    "Lore": "Walks many roads, never lost for lack of a single path.",
     "Card": "Flexible [fighter]. Converts [openings] into [combo finishes].",
     "Portrait": "Cyclops03",
     "Thumbnail": {
@@ -4326,8 +4260,6 @@
       "Humanoid",
       "Sentient"
     ],
-    "Description": "A flexible fighter with no single defining specialty.",
-    "Lore": "Walks many roads, never lost for lack of a single path.",
     "Card": "Flexible [fighter]. Converts [openings] into [combo finishes].",
     "Portrait": "Cyclops04",
     "Thumbnail": {
@@ -4450,8 +4382,6 @@
       "Humanoid",
       "Sentient"
     ],
-    "Description": "A flexible fighter with no single defining specialty.",
-    "Lore": "Walks many roads, never lost for lack of a single path.",
     "Card": "Flexible [fighter]. Converts [openings] into [combo finishes].",
     "Portrait": "Cyclops06",
     "Thumbnail": {
@@ -4573,8 +4503,6 @@
     "Tags": [
       "Humanoid"
     ],
-    "Description": "A stalwart defender that anchors the line and absorbs pressure.",
-    "Lore": "Built on vows and iron patience, they stand where others fall back.",
     "Card": "Frontline [guardian] [bruiser]. Absorbs pressure and [taunts].",
     "Portrait": "DarkTemplar",
     "Thumbnail": {
@@ -4718,8 +4646,6 @@
     "Tags": [
       "Humanoid"
     ],
-    "Description": "A stalwart defender that anchors the line and absorbs pressure.",
-    "Lore": "Built on vows and iron patience, they stand where others fall back.",
     "Card": "Frontline [guardian] [bruiser]. Absorbs pressure and [taunts].",
     "Portrait": "Defender",
     "Thumbnail": {
@@ -4865,8 +4791,6 @@
       "Humanoid",
       "Sentient"
     ],
-    "Description": "A flexible fighter with no single defining specialty.",
-    "Lore": "Walks many roads, never lost for lack of a single path.",
     "Card": "Flexible [fighter]. Converts [openings] into [combo finishes].",
     "Portrait": "DemonLord",
     "Thumbnail": {
@@ -4991,8 +4915,6 @@
     "Tags": [
       "Humanoid"
     ],
-    "Description": "A battlefield support that sustains allies and manipulates tempo.",
-    "Lore": "Knows every reagent, every breath, and when to spend both.",
     "Card": "Backline [healer] [buffer]. Restores tempo with [cleanse] and [aid].",
     "Portrait": "Dervish",
     "Thumbnail": {
@@ -5133,8 +5055,6 @@
       "Humanoid",
       "Healer"
     ],
-    "Description": "A battlefield support that sustains allies and manipulates tempo.",
-    "Lore": "Knows every reagent, every breath, and when to spend both.",
     "Card": "Backline [healer] [buffer]. Restores tempo with [cleanse] and [aid].",
     "Portrait": "Doctor",
     "Thumbnail": {
@@ -5274,8 +5194,6 @@
     "Tags": [
       "Humanoid"
     ],
-    "Description": "A battlefield support that sustains allies and manipulates tempo.",
-    "Lore": "Knows every reagent, every breath, and when to spend both.",
     "Card": "Backline [healer] [buffer]. Restores tempo with [cleanse] and [aid].",
     "Portrait": "Drifter",
     "Thumbnail": {
@@ -5420,8 +5338,6 @@
     "Tags": [
       "Humanoid"
     ],
-    "Description": "A close-quarters specialist that thrives in direct engagements.",
-    "Lore": "Every scar is a lesson. Every lesson becomes an opening.",
     "Card": "Close-range [brawler] [cleaver]. Wins trades with [stagger].",
     "Portrait": "Duelist",
     "Thumbnail": {
@@ -5563,8 +5479,6 @@
     "Tags": [
       "Humanoid"
     ],
-    "Description": "A gadgeteer who leverages devices, traps, and tactical tools.",
-    "Lore": "Blueprints and boldness turned problems into levers and switches.",
     "Card": "Tactical [engineer] [controller]. Deploys [traps] [turrets] [gadgets].",
     "Portrait": "Engineer",
     "Thumbnail": {
@@ -5705,8 +5619,6 @@
     "Tags": [
       "Humanoid"
     ],
-    "Description": "A close-quarters specialist that thrives in direct engagements.",
-    "Lore": "Every scar is a lesson. Every lesson becomes an opening.",
     "Card": "Close-range [brawler] [cleaver]. Wins trades with [stagger].",
     "Portrait": "Fencer",
     "Thumbnail": {
@@ -5848,8 +5760,6 @@
     "Tags": [
       "Humanoid"
     ],
-    "Description": "A close-quarters specialist that thrives in direct engagements.",
-    "Lore": "Every scar is a lesson. Every lesson becomes an opening.",
     "Card": "Close-range [brawler] [cleaver]. Wins trades with [stagger].",
     "Portrait": "Fighter",
     "Thumbnail": {
@@ -5991,8 +5901,6 @@
       "Beast",
       "Flying"
     ],
-    "Description": "A feral threat that overwhelms foes with instinct and power.",
-    "Lore": "Born to the deep places, it runs by instinct and strikes without doubt.",
     "Card": "Ferocious [pouncer] [mauler]. Disrupts with [roar] and [knockdown].",
     "Portrait": "FlyingMonkey",
     "Thumbnail": {
@@ -6118,8 +6026,6 @@
       "Aquatic",
       "Sentient"
     ],
-    "Description": "A feral threat that overwhelms foes with instinct and power.",
-    "Lore": "Born to the deep places, it runs by instinct and strikes without doubt.",
     "Card": "Ferocious [pouncer] [mauler]. Disrupts with [roar] and [knockdown].",
     "Portrait": "Frog00",
     "Thumbnail": {
@@ -6245,8 +6151,6 @@
       "Aquatic",
       "Sentient"
     ],
-    "Description": "A feral threat that overwhelms foes with instinct and power.",
-    "Lore": "Born to the deep places, it runs by instinct and strikes without doubt.",
     "Card": "Ferocious [pouncer] [mauler]. Disrupts with [roar] and [knockdown].",
     "Portrait": "Frog01",
     "Thumbnail": {
@@ -6371,8 +6275,6 @@
       "Aquatic",
       "Sentient"
     ],
-    "Description": "A feral threat that overwhelms foes with instinct and power.",
-    "Lore": "Born to the deep places, it runs by instinct and strikes without doubt.",
     "Card": "Ferocious [pouncer] [mauler]. Disrupts with [roar] and [knockdown].",
     "Portrait": "Frog02",
     "Thumbnail": {
@@ -6498,8 +6400,6 @@
       "Aquatic",
       "Sentient"
     ],
-    "Description": "A feral threat that overwhelms foes with instinct and power.",
-    "Lore": "Born to the deep places, it runs by instinct and strikes without doubt.",
     "Card": "Ferocious [pouncer] [mauler]. Disrupts with [roar] and [knockdown].",
     "Portrait": "Frog03",
     "Thumbnail": {
@@ -6624,8 +6524,6 @@
       "Humanoid",
       "Sentient"
     ],
-    "Description": "A flexible fighter with no single defining specialty.",
-    "Lore": "Walks many roads, never lost for lack of a single path.",
     "Card": "Flexible [fighter]. Converts [openings] into [combo finishes].",
     "Portrait": "Ganger00",
     "Thumbnail": {
@@ -6752,8 +6650,6 @@
       "Humanoid",
       "Sentient"
     ],
-    "Description": "A flexible fighter with no single defining specialty.",
-    "Lore": "Walks many roads, never lost for lack of a single path.",
     "Card": "Flexible [fighter]. Converts [openings] into [combo finishes].",
     "Portrait": "Ganger01",
     "Thumbnail": {
@@ -6879,8 +6775,6 @@
       "Humanoid",
       "Sentient"
     ],
-    "Description": "A flexible fighter with no single defining specialty.",
-    "Lore": "Walks many roads, never lost for lack of a single path.",
     "Card": "Flexible [fighter]. Converts [openings] into [combo finishes].",
     "Portrait": "Ganger02",
     "Thumbnail": {
@@ -7007,8 +6901,6 @@
       "Humanoid",
       "Sentient"
     ],
-    "Description": "A flexible fighter with no single defining specialty.",
-    "Lore": "Walks many roads, never lost for lack of a single path.",
     "Card": "Flexible [fighter]. Converts [openings] into [combo finishes].",
     "Portrait": "Ganger03",
     "Thumbnail": {
@@ -7134,8 +7026,6 @@
       "Humanoid",
       "Sentient"
     ],
-    "Description": "A flexible fighter with no single defining specialty.",
-    "Lore": "Walks many roads, never lost for lack of a single path.",
     "Card": "Flexible [fighter]. Converts [openings] into [combo finishes].",
     "Portrait": "Ganger04",
     "Thumbnail": {
@@ -7262,8 +7152,6 @@
       "Humanoid",
       "Sentient"
     ],
-    "Description": "A flexible fighter with no single defining specialty.",
-    "Lore": "Walks many roads, never lost for lack of a single path.",
     "Card": "Flexible [fighter]. Converts [openings] into [combo finishes].",
     "Portrait": "Ganger05",
     "Thumbnail": {
@@ -7389,8 +7277,6 @@
       "Humanoid",
       "Sentient"
     ],
-    "Description": "A flexible fighter with no single defining specialty.",
-    "Lore": "Walks many roads, never lost for lack of a single path.",
     "Card": "Flexible [fighter]. Converts [openings] into [combo finishes].",
     "Portrait": "Ganger06",
     "Thumbnail": {
@@ -7516,8 +7402,6 @@
     "Tags": [
       "Undead"
     ],
-    "Description": "An unnatural entity that endures through grim resilience and dread.",
-    "Lore": "Life ended. Purpose remained. The rest is hunger and memory.",
     "Card": "Grim [attrition] [drain]. Pressures with [fear] and [rot].",
     "Portrait": "Ghost",
     "Thumbnail": {
@@ -7644,8 +7528,6 @@
       "Humanoid",
       "Sentient"
     ],
-    "Description": "A flexible fighter with no single defining specialty.",
-    "Lore": "Walks many roads, never lost for lack of a single path.",
     "Card": "Flexible [fighter]. Converts [openings] into [combo finishes].",
     "Portrait": "GoblinThug00",
     "Thumbnail": {
@@ -7768,8 +7650,6 @@
     "Tags": [
       "Humanoid"
     ],
-    "Description": "A swift combatant who wins through speed, angles, and precision strikes.",
-    "Lore": "Years of quiet training forged a will that moves faster than thought.",
     "Card": "Mobile [striker] [flanker]. Leans on [crit] and [backstab] windows.",
     "Portrait": "GreenNinja",
     "Thumbnail": {
@@ -7913,8 +7793,6 @@
       "Ranged",
       "Sentient"
     ],
-    "Description": "A flexible fighter with no single defining specialty.",
-    "Lore": "Walks many roads, never lost for lack of a single path.",
     "Card": "Flexible [fighter]. Converts [openings] into [combo finishes].",
     "Portrait": "Hag00",
     "Thumbnail": {
@@ -8040,8 +7918,6 @@
       "Ranged",
       "Sentient"
     ],
-    "Description": "A flexible fighter with no single defining specialty.",
-    "Lore": "Walks many roads, never lost for lack of a single path.",
     "Card": "Flexible [fighter]. Converts [openings] into [combo finishes].",
     "Portrait": "Hag01",
     "Thumbnail": {
@@ -8166,8 +8042,6 @@
       "Humanoid",
       "Sentient"
     ],
-    "Description": "A flexible fighter with no single defining specialty.",
-    "Lore": "Walks many roads, never lost for lack of a single path.",
     "Card": "Flexible [fighter]. Converts [openings] into [combo finishes].",
     "Portrait": "Hag02",
     "Thumbnail": {
@@ -8291,8 +8165,6 @@
       "Humanoid",
       "Sentient"
     ],
-    "Description": "A flexible fighter with no single defining specialty.",
-    "Lore": "Walks many roads, never lost for lack of a single path.",
     "Card": "Flexible [fighter]. Converts [openings] into [combo finishes].",
     "Portrait": "Hag03",
     "Thumbnail": {
@@ -8415,8 +8287,6 @@
     "Tags": [
       "Humanoid"
     ],
-    "Description": "A flexible fighter with no single defining specialty.",
-    "Lore": "Walks many roads, never lost for lack of a single path.",
     "Card": "Flexible [fighter]. Converts [openings] into [combo finishes].",
     "Portrait": "Harbinger",
     "Thumbnail": {
@@ -8564,8 +8434,6 @@
       "IceAffinity",
       "Sentient"
     ],
-    "Description": "A flexible fighter with no single defining specialty.",
-    "Lore": "Walks many roads, never lost for lack of a single path.",
     "Card": "Flexible [fighter]. Converts [openings] into [combo finishes].",
     "Portrait": "IceMauler",
     "Thumbnail": {
@@ -8692,8 +8560,6 @@
     "Tags": [
       "Humanoid"
     ],
-    "Description": "A stalwart defender that anchors the line and absorbs pressure.",
-    "Lore": "Built on vows and iron patience, they stand where others fall back.",
     "Card": "Frontline [guardian] [bruiser]. Absorbs pressure and [taunts].",
     "Portrait": "JadeKnight",
     "Thumbnail": {
@@ -8837,8 +8703,6 @@
     "Tags": [
       "Humanoid"
     ],
-    "Description": "A stalwart defender that anchors the line and absorbs pressure.",
-    "Lore": "Built on vows and iron patience, they stand where others fall back.",
     "Card": "Frontline [guardian] [bruiser]. Absorbs pressure and [taunts].",
     "Portrait": "Knight",
     "Thumbnail": {
@@ -8982,8 +8846,6 @@
     "Tags": [
       "Humanoid"
     ],
-    "Description": "A close-quarters specialist that thrives in direct engagements.",
-    "Lore": "Every scar is a lesson. Every lesson becomes an opening.",
     "Card": "Close-range [brawler] [cleaver]. Wins trades with [stagger].",
     "Portrait": "Lancer",
     "Thumbnail": {
@@ -9126,8 +8988,6 @@
       "Humanoid",
       "Sentient"
     ],
-    "Description": "A flexible fighter with no single defining specialty.",
-    "Lore": "Walks many roads, never lost for lack of a single path.",
     "Card": "Flexible [fighter]. Converts [openings] into [combo finishes].",
     "Portrait": "Lurker00",
     "Thumbnail": {
@@ -9253,8 +9113,6 @@
       "Humanoid",
       "Sentient"
     ],
-    "Description": "A flexible fighter with no single defining specialty.",
-    "Lore": "Walks many roads, never lost for lack of a single path.",
     "Card": "Flexible [fighter]. Converts [openings] into [combo finishes].",
     "Portrait": "Lurker01",
     "Thumbnail": {
@@ -9380,8 +9238,6 @@
       "Humanoid",
       "Sentient"
     ],
-    "Description": "A flexible fighter with no single defining specialty.",
-    "Lore": "Walks many roads, never lost for lack of a single path.",
     "Card": "Flexible [fighter]. Converts [openings] into [combo finishes].",
     "Portrait": "Lurker02",
     "Thumbnail": {
@@ -9506,8 +9362,6 @@
     "Tags": [
       "Humanoid"
     ],
-    "Description": "A gadgeteer who leverages devices, traps, and tactical tools.",
-    "Lore": "Blueprints and boldness turned problems into levers and switches.",
     "Card": "Tactical [engineer] [controller]. Deploys [traps] [turrets] [gadgets].",
     "Portrait": "Machinist",
     "Thumbnail": {
@@ -9648,8 +9502,6 @@
       "Humanoid",
       "Sentient"
     ],
-    "Description": "An unnatural entity that endures through grim resilience and dread.",
-    "Lore": "Life ended. Purpose remained. The rest is hunger and memory.",
     "Card": "Grim [attrition] [drain]. Pressures with [fear] and [rot].",
     "Portrait": "Mannequin",
     "Thumbnail": {
@@ -9772,8 +9624,6 @@
       "Humanoid",
       "Sentient"
     ],
-    "Description": "A flexible fighter with no single defining specialty.",
-    "Lore": "Walks many roads, never lost for lack of a single path.",
     "Card": "Flexible [fighter]. Converts [openings] into [combo finishes].",
     "Portrait": "MarshShambler00",
     "Thumbnail": {
@@ -9899,8 +9749,6 @@
       "Humanoid",
       "Sentient"
     ],
-    "Description": "A flexible fighter with no single defining specialty.",
-    "Lore": "Walks many roads, never lost for lack of a single path.",
     "Card": "Flexible [fighter]. Converts [openings] into [combo finishes].",
     "Portrait": "MarshShambler01",
     "Thumbnail": {
@@ -10026,8 +9874,6 @@
       "Humanoid",
       "Sentient"
     ],
-    "Description": "A flexible fighter with no single defining specialty.",
-    "Lore": "Walks many roads, never lost for lack of a single path.",
     "Card": "Flexible [fighter]. Converts [openings] into [combo finishes].",
     "Portrait": "MarshShambler03",
     "Thumbnail": {
@@ -10152,8 +9998,6 @@
     "Tags": [
       "Humanoid"
     ],
-    "Description": "A flexible fighter with no single defining specialty.",
-    "Lore": "Walks many roads, never lost for lack of a single path.",
     "Card": "Flexible [fighter]. Converts [openings] into [combo finishes].",
     "Portrait": "MartialArtist",
     "Thumbnail": {
@@ -10296,8 +10140,6 @@
       "Humanoid",
       "Sentient"
     ],
-    "Description": "A gadgeteer who leverages devices, traps, and tactical tools.",
-    "Lore": "Blueprints and boldness turned problems into levers and switches.",
     "Card": "Tactical [engineer] [controller]. Deploys [traps] [turrets] [gadgets].",
     "Portrait": "MechaArmor00",
     "Thumbnail": {
@@ -10423,8 +10265,6 @@
       "Humanoid",
       "Sentient"
     ],
-    "Description": "A gadgeteer who leverages devices, traps, and tactical tools.",
-    "Lore": "Blueprints and boldness turned problems into levers and switches.",
     "Card": "Tactical [engineer] [controller]. Deploys [traps] [turrets] [gadgets].",
     "Portrait": "MechaArmor01",
     "Thumbnail": {
@@ -10550,8 +10390,6 @@
       "Humanoid",
       "Sentient"
     ],
-    "Description": "A gadgeteer who leverages devices, traps, and tactical tools.",
-    "Lore": "Blueprints and boldness turned problems into levers and switches.",
     "Card": "Tactical [engineer] [controller]. Deploys [traps] [turrets] [gadgets].",
     "Portrait": "MechaArmor02",
     "Thumbnail": {
@@ -10677,8 +10515,6 @@
       "Humanoid",
       "Healer"
     ],
-    "Description": "A flexible fighter with no single defining specialty.",
-    "Lore": "Walks many roads, never lost for lack of a single path.",
     "Card": "Flexible [fighter]. Converts [openings] into [combo finishes].",
     "Portrait": "Monk",
     "Thumbnail": {
@@ -10820,8 +10656,6 @@
       "Humanoid",
       "Sentient"
     ],
-    "Description": "A feral threat that overwhelms foes with instinct and power.",
-    "Lore": "Born to the deep places, it runs by instinct and strikes without doubt.",
     "Card": "Ferocious [pouncer] [mauler]. Disrupts with [roar] and [knockdown].",
     "Portrait": "MountainTroll",
     "Thumbnail": {
@@ -10945,8 +10779,6 @@
     "Tags": [
       "Humanoid"
     ],
-    "Description": "A stalwart defender that anchors the line and absorbs pressure.",
-    "Lore": "Built on vows and iron patience, they stand where others fall back.",
     "Card": "Frontline [guardian] [bruiser]. Absorbs pressure and [taunts].",
     "Portrait": "Myrmidon",
     "Thumbnail": {
@@ -11092,8 +10924,6 @@
       "Boss",
       "Sentient"
     ],
-    "Description": "A feral threat that overwhelms foes with instinct and power.",
-    "Lore": "Born to the deep places, it runs by instinct and strikes without doubt.",
     "Card": "Ferocious [pouncer] [mauler]. Disrupts with [roar] and [knockdown].",
     "Portrait": "Naga00",
     "Thumbnail": {
@@ -11221,8 +11051,6 @@
     "Tags": [
       "Humanoid"
     ],
-    "Description": "A flexible fighter with no single defining specialty.",
-    "Lore": "Walks many roads, never lost for lack of a single path.",
     "Card": "Flexible [fighter]. Converts [openings] into [combo finishes].",
     "Portrait": "NightHunter",
     "Thumbnail": {
@@ -11364,8 +11192,6 @@
     "Tags": [
       "Humanoid"
     ],
-    "Description": "A close-quarters specialist that thrives in direct engagements.",
-    "Lore": "Every scar is a lesson. Every lesson becomes an opening.",
     "Card": "Close-range [brawler] [cleaver]. Wins trades with [stagger].",
     "Portrait": "Odachi",
     "Thumbnail": {
@@ -11508,8 +11334,6 @@
       "Humanoid",
       "Sentient"
     ],
-    "Description": "A flexible fighter with no single defining specialty.",
-    "Lore": "Walks many roads, never lost for lack of a single path.",
     "Card": "Flexible [fighter]. Converts [openings] into [combo finishes].",
     "Portrait": "Oni00",
     "Thumbnail": {
@@ -11634,8 +11458,6 @@
       "Humanoid",
       "Sentient"
     ],
-    "Description": "A flexible fighter with no single defining specialty.",
-    "Lore": "Walks many roads, never lost for lack of a single path.",
     "Card": "Flexible [fighter]. Converts [openings] into [combo finishes].",
     "Portrait": "Oni01",
     "Thumbnail": {
@@ -11760,8 +11582,6 @@
       "Humanoid",
       "Sentient"
     ],
-    "Description": "A flexible fighter with no single defining specialty.",
-    "Lore": "Walks many roads, never lost for lack of a single path.",
     "Card": "Flexible [fighter]. Converts [openings] into [combo finishes].",
     "Portrait": "Oni02",
     "Thumbnail": {
@@ -11885,8 +11705,6 @@
     "Tags": [
       "Humanoid"
     ],
-    "Description": "A gadgeteer who leverages devices, traps, and tactical tools.",
-    "Lore": "Blueprints and boldness turned problems into levers and switches.",
     "Card": "Tactical [engineer] [controller]. Deploys [traps] [turrets] [gadgets].",
     "Portrait": "Operative",
     "Thumbnail": {
@@ -12031,8 +11849,6 @@
     "Tags": [
       "Humanoid"
     ],
-    "Description": "A stalwart defender that anchors the line and absorbs pressure.",
-    "Lore": "Built on vows and iron patience, they stand where others fall back.",
     "Card": "Frontline [guardian] [bruiser]. Absorbs pressure and [taunts].",
     "Portrait": "Paladin",
     "Thumbnail": {
@@ -12175,8 +11991,6 @@
     "Tags": [
       "Humanoid"
     ],
-    "Description": "A feral threat that overwhelms foes with instinct and power.",
-    "Lore": "Born to the deep places, it runs by instinct and strikes without doubt.",
     "Card": "Ferocious [pouncer] [mauler]. Disrupts with [roar] and [knockdown].",
     "Portrait": "PandaGirl",
     "Thumbnail": {
@@ -12319,8 +12133,6 @@
       "Humanoid",
       "Sentient"
     ],
-    "Description": "A flexible fighter with no single defining specialty.",
-    "Lore": "Walks many roads, never lost for lack of a single path.",
     "Card": "Flexible [fighter]. Converts [openings] into [combo finishes].",
     "Portrait": "Phantom",
     "Thumbnail": {
@@ -12445,8 +12257,6 @@
     "Tags": [
       "Humanoid"
     ],
-    "Description": "A close-quarters specialist that thrives in direct engagements.",
-    "Lore": "Every scar is a lesson. Every lesson becomes an opening.",
     "Card": "Close-range [brawler] [cleaver]. Wins trades with [stagger].",
     "Portrait": "PrizeFighter",
     "Thumbnail": {
@@ -12587,8 +12397,6 @@
     "Tags": [
       "Humanoid"
     ],
-    "Description": "A close-quarters specialist that thrives in direct engagements.",
-    "Lore": "Every scar is a lesson. Every lesson becomes an opening.",
     "Card": "Close-range [brawler] [cleaver]. Wins trades with [stagger].",
     "Portrait": "Pugilist",
     "Thumbnail": {
@@ -12730,8 +12538,6 @@
       "Humanoid",
       "Sentient"
     ],
-    "Description": "A gadgeteer who leverages devices, traps, and tactical tools.",
-    "Lore": "Blueprints and boldness turned problems into levers and switches.",
     "Card": "Tactical [engineer] [controller]. Deploys [traps] [turrets] [gadgets].",
     "Portrait": "PurplePrototype00",
     "Thumbnail": {
@@ -12854,8 +12660,6 @@
       "Humanoid",
       "Sentient"
     ],
-    "Description": "A gadgeteer who leverages devices, traps, and tactical tools.",
-    "Lore": "Blueprints and boldness turned problems into levers and switches.",
     "Card": "Tactical [engineer] [controller]. Deploys [traps] [turrets] [gadgets].",
     "Portrait": "PurplePrototype01",
     "Thumbnail": {
@@ -12978,8 +12782,6 @@
       "Humanoid",
       "Sentient"
     ],
-    "Description": "A gadgeteer who leverages devices, traps, and tactical tools.",
-    "Lore": "Blueprints and boldness turned problems into levers and switches.",
     "Card": "Tactical [engineer] [controller]. Deploys [traps] [turrets] [gadgets].",
     "Portrait": "PurplePrototype02",
     "Thumbnail": {
@@ -13102,8 +12904,6 @@
       "Humanoid",
       "Sentient"
     ],
-    "Description": "A gadgeteer who leverages devices, traps, and tactical tools.",
-    "Lore": "Blueprints and boldness turned problems into levers and switches.",
     "Card": "Tactical [engineer] [controller]. Deploys [traps] [turrets] [gadgets].",
     "Portrait": "PurplePrototype03",
     "Thumbnail": {
@@ -13226,8 +13026,6 @@
       "Humanoid",
       "Sentient"
     ],
-    "Description": "A gadgeteer who leverages devices, traps, and tactical tools.",
-    "Lore": "Blueprints and boldness turned problems into levers and switches.",
     "Card": "Tactical [engineer] [controller]. Deploys [traps] [turrets] [gadgets].",
     "Portrait": "PurplePrototype04",
     "Thumbnail": {
@@ -13349,8 +13147,6 @@
     "Tags": [
       "Humanoid"
     ],
-    "Description": "A close-quarters specialist that thrives in direct engagements.",
-    "Lore": "Every scar is a lesson. Every lesson becomes an opening.",
     "Card": "Close-range [brawler] [cleaver]. Wins trades with [stagger].",
     "Portrait": "Raider",
     "Thumbnail": {
@@ -13493,8 +13289,6 @@
       "Humanoid",
       "Sentient"
     ],
-    "Description": "A flexible fighter with no single defining specialty.",
-    "Lore": "Walks many roads, never lost for lack of a single path.",
     "Card": "Flexible [fighter]. Converts [openings] into [combo finishes].",
     "Portrait": "Reaper",
     "Thumbnail": {
@@ -13618,8 +13412,6 @@
       "Humanoid",
       "Magic"
     ],
-    "Description": "A ranged spellcaster that shapes the fight with arcane control and damage.",
-    "Lore": "Disciplines of ink and flame taught that power begins in focus.",
     "Card": "Arcane [controller] [debuffer]. Shapes fights with [aoe] [curse].",
     "Portrait": "RedMage",
     "Thumbnail": {
@@ -13764,8 +13556,6 @@
     "Tags": [
       "Humanoid"
     ],
-    "Description": "A swift combatant who wins through speed, angles, and precision strikes.",
-    "Lore": "Years of quiet training forged a will that moves faster than thought.",
     "Card": "Mobile [striker] [flanker]. Leans on [crit] and [backstab] windows.",
     "Portrait": "RedNinja",
     "Thumbnail": {
@@ -13907,8 +13697,6 @@
     "Tags": [
       "Humanoid"
     ],
-    "Description": "A flexible fighter with no single defining specialty.",
-    "Lore": "Walks many roads, never lost for lack of a single path.",
     "Card": "Flexible [fighter]. Converts [openings] into [combo finishes].",
     "Portrait": "Ripper",
     "Thumbnail": {
@@ -14051,8 +13839,6 @@
       "Humanoid",
       "Magic"
     ],
-    "Description": "A ranged spellcaster that shapes the fight with arcane control and damage.",
-    "Lore": "Disciplines of ink and flame taught that power begins in focus.",
     "Card": "Arcane [controller] [debuffer]. Shapes fights with [aoe] [curse].",
     "Portrait": "Ritualist",
     "Thumbnail": {
@@ -14197,8 +13983,6 @@
     "Tags": [
       "Humanoid"
     ],
-    "Description": "A close-quarters specialist that thrives in direct engagements.",
-    "Lore": "Every scar is a lesson. Every lesson becomes an opening.",
     "Card": "Close-range [brawler] [cleaver]. Wins trades with [stagger].",
     "Portrait": "Ronin",
     "Thumbnail": {
@@ -14342,8 +14126,6 @@
       "Magic",
       "Healer"
     ],
-    "Description": "A ranged spellcaster that shapes the fight with arcane control and damage.",
-    "Lore": "Disciplines of ink and flame taught that power begins in focus.",
     "Card": "Arcane [controller] [debuffer]. Shapes fights with [aoe] [curse].",
     "Portrait": "Sage",
     "Thumbnail": {
@@ -14485,8 +14267,6 @@
     "Name": "Sand Maw",
     "Team": "Enemy",
     "Tags": [],
-    "Description": "A feral threat that overwhelms foes with instinct and power.",
-    "Lore": "Born to the deep places, it runs by instinct and strikes without doubt.",
     "Card": "Ferocious [pouncer] [mauler]. Disrupts with [roar] and [knockdown].",
     "Portrait": "SandMaw",
     "Thumbnail": {
@@ -14610,8 +14390,6 @@
     "Tags": [
       "Humanoid"
     ],
-    "Description": "A close-quarters specialist that thrives in direct engagements.",
-    "Lore": "Every scar is a lesson. Every lesson becomes an opening.",
     "Card": "Close-range [brawler] [cleaver]. Wins trades with [stagger].",
     "Portrait": "Scorpion",
     "Thumbnail": {
@@ -14737,8 +14515,6 @@
     "Tags": [
       "Humanoid"
     ],
-    "Description": "A close-quarters specialist that thrives in direct engagements.",
-    "Lore": "Every scar is a lesson. Every lesson becomes an opening.",
     "Card": "Close-range [brawler] [cleaver]. Wins trades with [stagger].",
     "Portrait": "Sellsword",
     "Thumbnail": {
@@ -14880,8 +14656,6 @@
     "Tags": [
       "Humanoid"
     ],
-    "Description": "A stalwart defender that anchors the line and absorbs pressure.",
-    "Lore": "Built on vows and iron patience, they stand where others fall back.",
     "Card": "Frontline [guardian] [bruiser]. Absorbs pressure and [taunts].",
     "Portrait": "ShieldMaiden",
     "Thumbnail": {
@@ -15025,8 +14799,6 @@
       "Humanoid",
       "Healer"
     ],
-    "Description": "A flexible fighter with no single defining specialty.",
-    "Lore": "Walks many roads, never lost for lack of a single path.",
     "Card": "Flexible [fighter]. Converts [openings] into [combo finishes].",
     "Portrait": "Sister",
     "Thumbnail": {
@@ -15168,8 +14940,6 @@
       "Insect",
       "Undead"
     ],
-    "Description": "An unnatural entity that endures through grim resilience and dread.",
-    "Lore": "Life ended. Purpose remained. The rest is hunger and memory.",
     "Card": "Grim [attrition] [drain]. Pressures with [fear] and [rot].",
     "Portrait": "Skelepede00",
     "Thumbnail": {
@@ -15296,8 +15066,6 @@
       "Insect",
       "Undead"
     ],
-    "Description": "An unnatural entity that endures through grim resilience and dread.",
-    "Lore": "Life ended. Purpose remained. The rest is hunger and memory.",
     "Card": "Grim [attrition] [drain]. Pressures with [fear] and [rot].",
     "Portrait": "Skelepede01",
     "Thumbnail": {
@@ -15424,8 +15192,6 @@
       "Insect",
       "Undead"
     ],
-    "Description": "An unnatural entity that endures through grim resilience and dread.",
-    "Lore": "Life ended. Purpose remained. The rest is hunger and memory.",
     "Card": "Grim [attrition] [drain]. Pressures with [fear] and [rot].",
     "Portrait": "Skelepede02",
     "Thumbnail": {
@@ -15551,8 +15317,6 @@
     "Tags": [
       "Humanoid"
     ],
-    "Description": "A close-quarters specialist that thrives in direct engagements.",
-    "Lore": "Every scar is a lesson. Every lesson becomes an opening.",
     "Card": "Close-range [brawler] [cleaver]. Wins trades with [stagger].",
     "Portrait": "Slasher",
     "Thumbnail": {
@@ -15693,8 +15457,6 @@
     "Name": "Slime",
     "Team": "Enemy",
     "Tags": [],
-    "Description": "A feral threat that overwhelms foes with instinct and power.",
-    "Lore": "Born to the deep places, it runs by instinct and strikes without doubt.",
     "Card": "Ferocious [pouncer] [mauler]. Disrupts with [roar] and [knockdown].",
     "Portrait": "Slime00",
     "Thumbnail": {
@@ -15816,8 +15578,6 @@
     "Name": "Slime",
     "Team": "Enemy",
     "Tags": [],
-    "Description": "A feral threat that overwhelms foes with instinct and power.",
-    "Lore": "Born to the deep places, it runs by instinct and strikes without doubt.",
     "Card": "Ferocious [pouncer] [mauler]. Disrupts with [roar] and [knockdown].",
     "Portrait": "Slime01",
     "Thumbnail": {
@@ -15939,8 +15699,6 @@
     "Name": "Slime",
     "Team": "Enemy",
     "Tags": [],
-    "Description": "A feral threat that overwhelms foes with instinct and power.",
-    "Lore": "Born to the deep places, it runs by instinct and strikes without doubt.",
     "Card": "Ferocious [pouncer] [mauler]. Disrupts with [roar] and [knockdown].",
     "Portrait": "Slime02",
     "Thumbnail": {
@@ -16062,8 +15820,6 @@
     "Name": "Slime",
     "Team": "Enemy",
     "Tags": [],
-    "Description": "A feral threat that overwhelms foes with instinct and power.",
-    "Lore": "Born to the deep places, it runs by instinct and strikes without doubt.",
     "Card": "Ferocious [pouncer] [mauler]. Disrupts with [roar] and [knockdown].",
     "Portrait": "Slime03",
     "Thumbnail": {
@@ -16188,8 +15944,6 @@
       "Humanoid",
       "Sentient"
     ],
-    "Description": "A flexible fighter with no single defining specialty.",
-    "Lore": "Walks many roads, never lost for lack of a single path.",
     "Card": "Flexible [fighter]. Converts [openings] into [combo finishes].",
     "Portrait": "Soldier00",
     "Thumbnail": {
@@ -16314,8 +16068,6 @@
       "Humanoid",
       "Sentient"
     ],
-    "Description": "A flexible fighter with no single defining specialty.",
-    "Lore": "Walks many roads, never lost for lack of a single path.",
     "Card": "Flexible [fighter]. Converts [openings] into [combo finishes].",
     "Portrait": "Soldier01",
     "Thumbnail": {
@@ -16440,8 +16192,6 @@
       "Humanoid",
       "Sentient"
     ],
-    "Description": "A flexible fighter with no single defining specialty.",
-    "Lore": "Walks many roads, never lost for lack of a single path.",
     "Card": "Flexible [fighter]. Converts [openings] into [combo finishes].",
     "Portrait": "Soldier02",
     "Thumbnail": {
@@ -16566,8 +16316,6 @@
       "Humanoid",
       "Sentient"
     ],
-    "Description": "A flexible fighter with no single defining specialty.",
-    "Lore": "Walks many roads, never lost for lack of a single path.",
     "Card": "Flexible [fighter]. Converts [openings] into [combo finishes].",
     "Portrait": "Soldier03",
     "Thumbnail": {
@@ -16691,8 +16439,6 @@
     "Tags": [
       "Humanoid"
     ],
-    "Description": "A swift combatant who wins through speed, angles, and precision strikes.",
-    "Lore": "Years of quiet training forged a will that moves faster than thought.",
     "Card": "Mobile [striker] [flanker]. Leans on [crit] and [backstab] windows.",
     "Portrait": "Speedster",
     "Thumbnail": {
@@ -16834,8 +16580,6 @@
       "Humanoid",
       "Sentient"
     ],
-    "Description": "A flexible fighter with no single defining specialty.",
-    "Lore": "Walks many roads, never lost for lack of a single path.",
     "Card": "Flexible [fighter]. Converts [openings] into [combo finishes].",
     "Portrait": "SteppinRazor00",
     "Thumbnail": {
@@ -16958,8 +16702,6 @@
       "Humanoid",
       "Sentient"
     ],
-    "Description": "A flexible fighter with no single defining specialty.",
-    "Lore": "Walks many roads, never lost for lack of a single path.",
     "Card": "Flexible [fighter]. Converts [openings] into [combo finishes].",
     "Portrait": "SteppinRazor01",
     "Thumbnail": {
@@ -17082,8 +16824,6 @@
       "Humanoid",
       "Sentient"
     ],
-    "Description": "A flexible fighter with no single defining specialty.",
-    "Lore": "Walks many roads, never lost for lack of a single path.",
     "Card": "Flexible [fighter]. Converts [openings] into [combo finishes].",
     "Portrait": "SteppinRazor02",
     "Thumbnail": {
@@ -17206,8 +16946,6 @@
       "Humanoid",
       "Sentient"
     ],
-    "Description": "A flexible fighter with no single defining specialty.",
-    "Lore": "Walks many roads, never lost for lack of a single path.",
     "Card": "Flexible [fighter]. Converts [openings] into [combo finishes].",
     "Portrait": "SteppinRazor04",
     "Thumbnail": {
@@ -17330,8 +17068,6 @@
       "Humanoid",
       "Sentient"
     ],
-    "Description": "A flexible fighter with no single defining specialty.",
-    "Lore": "Walks many roads, never lost for lack of a single path.",
     "Card": "Flexible [fighter]. Converts [openings] into [combo finishes].",
     "Portrait": "SteppinRazor05",
     "Thumbnail": {
@@ -17453,8 +17189,6 @@
     "Tags": [
       "Humanoid"
     ],
-    "Description": "A close-quarters specialist that thrives in direct engagements.",
-    "Lore": "Every scar is a lesson. Every lesson becomes an opening.",
     "Card": "Close-range [brawler] [cleaver]. Wins trades with [stagger].",
     "Portrait": "StreetFighter",
     "Thumbnail": {
@@ -17595,8 +17329,6 @@
     "Tags": [
       "Humanoid"
     ],
-    "Description": "A swift combatant who wins through speed, angles, and precision strikes.",
-    "Lore": "Years of quiet training forged a will that moves faster than thought.",
     "Card": "Mobile [striker] [flanker]. Leans on [crit] and [backstab] windows.",
     "Portrait": "Striker",
     "Thumbnail": {
@@ -17739,8 +17471,6 @@
       "Ranged",
       "Sentient"
     ],
-    "Description": "A flexible fighter with no single defining specialty.",
-    "Lore": "Walks many roads, never lost for lack of a single path.",
     "Card": "Flexible [fighter]. Converts [openings] into [combo finishes].",
     "Portrait": "SwampMistress00",
     "Thumbnail": {
@@ -17864,8 +17594,6 @@
     "Tags": [
       "Humanoid"
     ],
-    "Description": "A close-quarters specialist that thrives in direct engagements.",
-    "Lore": "Every scar is a lesson. Every lesson becomes an opening.",
     "Card": "Close-range [brawler] [cleaver]. Wins trades with [stagger].",
     "Portrait": "SwordMaster",
     "Thumbnail": {
@@ -18007,8 +17735,6 @@
     "Tags": [
       "Humanoid"
     ],
-    "Description": "A stalwart defender that anchors the line and absorbs pressure.",
-    "Lore": "Built on vows and iron patience, they stand where others fall back.",
     "Card": "Frontline [guardian] [bruiser]. Absorbs pressure and [taunts].",
     "Portrait": "Tank",
     "Thumbnail": {
@@ -18153,8 +17879,6 @@
       "Humanoid",
       "Sentient"
     ],
-    "Description": "A gadgeteer who leverages devices, traps, and tactical tools.",
-    "Lore": "Blueprints and boldness turned problems into levers and switches.",
     "Card": "Tactical [engineer] [controller]. Deploys [traps] [turrets] [gadgets].",
     "Portrait": "TechGremlin00",
     "Thumbnail": {
@@ -18278,8 +18002,6 @@
       "Humanoid",
       "Sentient"
     ],
-    "Description": "A gadgeteer who leverages devices, traps, and tactical tools.",
-    "Lore": "Blueprints and boldness turned problems into levers and switches.",
     "Card": "Tactical [engineer] [controller]. Deploys [traps] [turrets] [gadgets].",
     "Portrait": "TechGremlin01",
     "Thumbnail": {
@@ -18402,8 +18124,6 @@
       "Humanoid",
       "Sentient"
     ],
-    "Description": "A gadgeteer who leverages devices, traps, and tactical tools.",
-    "Lore": "Blueprints and boldness turned problems into levers and switches.",
     "Card": "Tactical [engineer] [controller]. Deploys [traps] [turrets] [gadgets].",
     "Portrait": "TechGremlin02",
     "Thumbnail": {
@@ -18526,8 +18246,6 @@
     "Tags": [
       "Humanoid"
     ],
-    "Description": "A gadgeteer who leverages devices, traps, and tactical tools.",
-    "Lore": "Blueprints and boldness turned problems into levers and switches.",
     "Card": "Tactical [engineer] [controller]. Deploys [traps] [turrets] [gadgets].",
     "Portrait": "Technician",
     "Thumbnail": {
@@ -18668,8 +18386,6 @@
       "Humanoid",
       "Sentient"
     ],
-    "Description": "A stalwart defender that anchors the line and absorbs pressure.",
-    "Lore": "Built on vows and iron patience, they stand where others fall back.",
     "Card": "Frontline [guardian] [bruiser]. Absorbs pressure and [taunts].",
     "Portrait": "Templar00",
     "Thumbnail": {
@@ -18795,8 +18511,6 @@
       "Humanoid",
       "Sentient"
     ],
-    "Description": "A stalwart defender that anchors the line and absorbs pressure.",
-    "Lore": "Built on vows and iron patience, they stand where others fall back.",
     "Card": "Frontline [guardian] [bruiser]. Absorbs pressure and [taunts].",
     "Portrait": "Templar01",
     "Thumbnail": {
@@ -18921,8 +18635,6 @@
       "Humanoid",
       "Sentient"
     ],
-    "Description": "A stalwart defender that anchors the line and absorbs pressure.",
-    "Lore": "Built on vows and iron patience, they stand where others fall back.",
     "Card": "Frontline [guardian] [bruiser]. Absorbs pressure and [taunts].",
     "Portrait": "Templar02",
     "Thumbnail": {
@@ -19048,8 +18760,6 @@
       "Humanoid",
       "Sentient"
     ],
-    "Description": "A stalwart defender that anchors the line and absorbs pressure.",
-    "Lore": "Built on vows and iron patience, they stand where others fall back.",
     "Card": "Frontline [guardian] [bruiser]. Absorbs pressure and [taunts].",
     "Portrait": "Templar03",
     "Thumbnail": {
@@ -19174,8 +18884,6 @@
       "Humanoid",
       "Sentient"
     ],
-    "Description": "A stalwart defender that anchors the line and absorbs pressure.",
-    "Lore": "Built on vows and iron patience, they stand where others fall back.",
     "Card": "Frontline [guardian] [bruiser]. Absorbs pressure and [taunts].",
     "Portrait": "Templar04",
     "Thumbnail": {
@@ -19301,8 +19009,6 @@
       "Humanoid",
       "Sentient"
     ],
-    "Description": "A stalwart defender that anchors the line and absorbs pressure.",
-    "Lore": "Built on vows and iron patience, they stand where others fall back.",
     "Card": "Frontline [guardian] [bruiser]. Absorbs pressure and [taunts].",
     "Portrait": "Templar05",
     "Thumbnail": {
@@ -19426,8 +19132,6 @@
     "Tags": [
       "Humanoid"
     ],
-    "Description": "A swift combatant who wins through speed, angles, and precision strikes.",
-    "Lore": "Years of quiet training forged a will that moves faster than thought.",
     "Card": "Mobile [striker] [flanker]. Leans on [crit] and [backstab] windows.",
     "Portrait": "Thief",
     "Thumbnail": {
@@ -19570,8 +19274,6 @@
     "Tags": [
       "Humanoid"
     ],
-    "Description": "A flexible fighter with no single defining specialty.",
-    "Lore": "Walks many roads, never lost for lack of a single path.",
     "Card": "Flexible [fighter]. Converts [openings] into [combo finishes].",
     "Portrait": "Tinkerer",
     "Thumbnail": {
@@ -19712,8 +19414,6 @@
       "Aquatic",
       "Sentient"
     ],
-    "Description": "A feral threat that overwhelms foes with instinct and power.",
-    "Lore": "Born to the deep places, it runs by instinct and strikes without doubt.",
     "Card": "Ferocious [pouncer] [mauler]. Disrupts with [roar] and [knockdown].",
     "Portrait": "Toad00",
     "Thumbnail": {
@@ -19840,8 +19540,6 @@
       "PlantBased",
       "Mechanical"
     ],
-    "Description": "A feral threat that overwhelms foes with instinct and power.",
-    "Lore": "Born to the deep places, it runs by instinct and strikes without doubt.",
     "Card": "Ferocious [pouncer] [mauler]. Disrupts with [roar] and [knockdown].",
     "Portrait": "TreeGolem00",
     "Thumbnail": {
@@ -19970,8 +19668,6 @@
       "PlantBased",
       "Mechanical"
     ],
-    "Description": "A feral threat that overwhelms foes with instinct and power.",
-    "Lore": "Born to the deep places, it runs by instinct and strikes without doubt.",
     "Card": "Ferocious [pouncer] [mauler]. Disrupts with [roar] and [knockdown].",
     "Portrait": "TreeGolem01",
     "Thumbnail": {
@@ -20100,8 +19796,6 @@
       "PlantBased",
       "Mechanical"
     ],
-    "Description": "A feral threat that overwhelms foes with instinct and power.",
-    "Lore": "Born to the deep places, it runs by instinct and strikes without doubt.",
     "Card": "Ferocious [pouncer] [mauler]. Disrupts with [roar] and [knockdown].",
     "Portrait": "TreeGolem02",
     "Thumbnail": {
@@ -20230,8 +19924,6 @@
       "PlantBased",
       "Mechanical"
     ],
-    "Description": "A feral threat that overwhelms foes with instinct and power.",
-    "Lore": "Born to the deep places, it runs by instinct and strikes without doubt.",
     "Card": "Ferocious [pouncer] [mauler]. Disrupts with [roar] and [knockdown].",
     "Portrait": "TreeGolem03",
     "Thumbnail": {
@@ -20360,8 +20052,6 @@
       "PlantBased",
       "Mechanical"
     ],
-    "Description": "A feral threat that overwhelms foes with instinct and power.",
-    "Lore": "Born to the deep places, it runs by instinct and strikes without doubt.",
     "Card": "Ferocious [pouncer] [mauler]. Disrupts with [roar] and [knockdown].",
     "Portrait": "TreeGolem04",
     "Thumbnail": {
@@ -20490,8 +20180,6 @@
       "PlantBased",
       "Mechanical"
     ],
-    "Description": "A feral threat that overwhelms foes with instinct and power.",
-    "Lore": "Born to the deep places, it runs by instinct and strikes without doubt.",
     "Card": "Ferocious [pouncer] [mauler]. Disrupts with [roar] and [knockdown].",
     "Portrait": "TreeGolem06",
     "Thumbnail": {
@@ -20620,8 +20308,6 @@
     "Tags": [
       "Undead"
     ],
-    "Description": "An unnatural entity that endures through grim resilience and dread.",
-    "Lore": "Life ended. Purpose remained. The rest is hunger and memory.",
     "Card": "Grim [attrition] [drain]. Pressures with [fear] and [rot].",
     "Portrait": "Undead00",
     "Thumbnail": {
@@ -20746,8 +20432,6 @@
     "Tags": [
       "Undead"
     ],
-    "Description": "An unnatural entity that endures through grim resilience and dread.",
-    "Lore": "Life ended. Purpose remained. The rest is hunger and memory.",
     "Card": "Grim [attrition] [drain]. Pressures with [fear] and [rot].",
     "Portrait": "Undead01",
     "Thumbnail": {
@@ -20872,8 +20556,6 @@
     "Tags": [
       "Undead"
     ],
-    "Description": "An unnatural entity that endures through grim resilience and dread.",
-    "Lore": "Life ended. Purpose remained. The rest is hunger and memory.",
     "Card": "Grim [attrition] [drain]. Pressures with [fear] and [rot].",
     "Portrait": "Undead02",
     "Thumbnail": {
@@ -20998,8 +20680,6 @@
     "Tags": [
       "Undead"
     ],
-    "Description": "An unnatural entity that endures through grim resilience and dread.",
-    "Lore": "Life ended. Purpose remained. The rest is hunger and memory.",
     "Card": "Grim [attrition] [drain]. Pressures with [fear] and [rot].",
     "Portrait": "Undead04",
     "Thumbnail": {
@@ -21127,8 +20807,6 @@
       "Boss",
       "Sentient"
     ],
-    "Description": "An unnatural entity that endures through grim resilience and dread.",
-    "Lore": "Life ended. Purpose remained. The rest is hunger and memory.",
     "Card": "Grim [attrition] [drain]. Pressures with [fear] and [rot].",
     "Portrait": "Vampire",
     "Thumbnail": {
@@ -21272,8 +20950,6 @@
       "Beast",
       "Flying"
     ],
-    "Description": "A feral threat that overwhelms foes with instinct and power.",
-    "Lore": "Born to the deep places, it runs by instinct and strikes without doubt.",
     "Card": "Ferocious [pouncer] [mauler]. Disrupts with [roar] and [knockdown].",
     "Portrait": "Vulture",
     "Thumbnail": {
@@ -21396,8 +21072,6 @@
     "Tags": [
       "Humanoid"
     ],
-    "Description": "A stalwart defender that anchors the line and absorbs pressure.",
-    "Lore": "Built on vows and iron patience, they stand where others fall back.",
     "Card": "Frontline [guardian] [bruiser]. Absorbs pressure and [taunts].",
     "Portrait": "WarChief",
     "Thumbnail": {
@@ -21542,8 +21216,6 @@
       "Beast",
       "Humanoid"
     ],
-    "Description": "A feral threat that overwhelms foes with instinct and power.",
-    "Lore": "Born to the deep places, it runs by instinct and strikes without doubt.",
     "Card": "Ferocious [pouncer] [mauler]. Disrupts with [roar] and [knockdown].",
     "Portrait": "Werewolf00",
     "Thumbnail": {
@@ -21672,8 +21344,6 @@
       "Humanoid",
       "Healer"
     ],
-    "Description": "A swift combatant who wins through speed, angles, and precision strikes.",
-    "Lore": "Years of quiet training forged a will that moves faster than thought.",
     "Card": "Mobile [striker] [flanker]. Leans on [crit] and [backstab] windows.",
     "Portrait": "WhiteNinja",
     "Thumbnail": {
@@ -21818,8 +21488,6 @@
       "Magic",
       "Healer"
     ],
-    "Description": "A ranged spellcaster that shapes the fight with arcane control and damage.",
-    "Lore": "Disciplines of ink and flame taught that power begins in focus.",
     "Card": "Arcane [controller] [debuffer]. Shapes fights with [aoe] [curse].",
     "Portrait": "WhiteWitch",
     "Thumbnail": {
@@ -21961,8 +21629,6 @@
     "Tags": [
       "Humanoid"
     ],
-    "Description": "A flexible fighter with no single defining specialty.",
-    "Lore": "Walks many roads, never lost for lack of a single path.",
     "Card": "Flexible [fighter]. Converts [openings] into [combo finishes].",
     "Portrait": "WildChild",
     "Thumbnail": {
@@ -22103,8 +21769,6 @@
     "Tags": [
       "Beast"
     ],
-    "Description": "A feral threat that overwhelms foes with instinct and power.",
-    "Lore": "Born to the deep places, it runs by instinct and strikes without doubt.",
     "Card": "Ferocious [pouncer] [mauler]. Disrupts with [roar] and [knockdown].",
     "Portrait": "Wolf00",
     "Thumbnail": {
@@ -22232,8 +21896,6 @@
     "Tags": [
       "Beast"
     ],
-    "Description": "A feral threat that overwhelms foes with instinct and power.",
-    "Lore": "Born to the deep places, it runs by instinct and strikes without doubt.",
     "Card": "Ferocious [pouncer] [mauler]. Disrupts with [roar] and [knockdown].",
     "Portrait": "Wolf01",
     "Thumbnail": {
@@ -22361,8 +22023,6 @@
     "Tags": [
       "Beast"
     ],
-    "Description": "A feral threat that overwhelms foes with instinct and power.",
-    "Lore": "Born to the deep places, it runs by instinct and strikes without doubt.",
     "Card": "Ferocious [pouncer] [mauler]. Disrupts with [roar] and [knockdown].",
     "Portrait": "Wolf02",
     "Thumbnail": {
@@ -22490,8 +22150,6 @@
     "Tags": [
       "Beast"
     ],
-    "Description": "A feral threat that overwhelms foes with instinct and power.",
-    "Lore": "Born to the deep places, it runs by instinct and strikes without doubt.",
     "Card": "Ferocious [pouncer] [mauler]. Disrupts with [roar] and [knockdown].",
     "Portrait": "Wolf03",
     "Thumbnail": {
@@ -22619,8 +22277,6 @@
     "Tags": [
       "Humanoid"
     ],
-    "Description": "A swift combatant who wins through speed, angles, and precision strikes.",
-    "Lore": "Years of quiet training forged a will that moves faster than thought.",
     "Card": "Mobile [striker] [flanker]. Leans on [crit] and [backstab] windows.",
     "Portrait": "YellowNinja",
     "Thumbnail": {
@@ -22764,8 +22420,6 @@
       "Beast",
       "Humanoid"
     ],
-    "Description": "A feral threat that overwhelms foes with instinct and power.",
-    "Lore": "Born to the deep places, it runs by instinct and strikes without doubt.",
     "Card": "Ferocious [pouncer] [mauler]. Disrupts with [roar] and [knockdown].",
     "Portrait": "Yeti",
     "Thumbnail": {
@@ -22892,8 +22546,6 @@
       "Remains",
       "Construct"
     ],
-    "Description": "A cracked grave marker. Break it before the dead climb back out.",
-    "Lore": "A cracked grave marker. Break it before the dead climb back out.",
     "Card": "A cracked grave marker. Break it before the dead climb back out.",
     "Portrait": "gravestone",
     "Thumbnail": {
@@ -23029,8 +22681,6 @@
       "Remains",
       "Construct"
     ],
-    "Description": "A heap of rattling bones that wants to stand up again. Scatter it.",
-    "Lore": "A heap of rattling bones that wants to stand up again. Scatter it.",
     "Card": "A heap of rattling bones that wants to stand up again. Scatter it.",
     "Portrait": "bonepile",
     "Thumbnail": {
@@ -23165,8 +22815,6 @@
       "Remains",
       "Corpse"
     ],
-    "Description": "A fallen body in the way. Clear it with a pincer or wait for it to rot.",
-    "Lore": "A fallen body in the way. Clear it with a pincer or wait for it to rot.",
     "Card": "A fallen body in the way. Clear it with a pincer or wait for it to rot.",
     "Portrait": "corpse",
     "Thumbnail": {
@@ -23302,8 +22950,6 @@
       "Egg",
       "Aquatic"
     ],
-    "Description": "A leathery egg, still warm. Best to break it before it hatches.",
-    "Lore": "A leathery egg, still warm. Best to break it before it hatches.",
     "Card": "A leathery egg, still warm. Best to break it before it hatches.",
     "Portrait": "naga00",
     "Thumbnail": {
@@ -23384,8 +23030,6 @@
     "Tags": [
       "Humanoid"
     ],
-    "Description": "A ranged precision attacker \u2014 never needs to be adjacent to strike, and hits hardest one target at a time.",
-    "Lore": "A swamp hag who traded curses for coin, picking off the toughest target in a fight from well outside its reach.",
     "Card": "Ranged precision. Converts [patience] into a [piercing shot] nothing else in the party can match.",
     "Portrait": "hexsniper",
     "Thumbnail": {
@@ -23528,8 +23172,6 @@
     "Tags": [
       "Humanoid"
     ],
-    "Description": "A ranged controller \u2014 thins out a whole line or column from a distance while hexes slow down anything that gets close.",
-    "Lore": "A swamp hag who wardens the fens from afar, snaring anything that strays too near with a barbed little curse.",
     "Card": "Ranged control. Converts [distance] into [crowd control] that keeps the front line clean.",
     "Portrait": "hexwarden",
     "Thumbnail": {
@@ -23670,8 +23312,6 @@
     "Tags": [
       "Humanoid"
     ],
-    "Description": "A ranged skirmisher \u2014 shoots, falls back and shoots again, never letting a foe close the distance it keeps.",
-    "Lore": "A swamp hag who never stays where she fired from, drifting through the reeds a step ahead of whatever is chasing her.",
     "Card": "Ranged skirmish. Converts [footwork] into [shots] that keep a whole lane at arm's length.",
     "Portrait": "hexstalker",
     "Thumbnail": {
@@ -23809,8 +23449,6 @@
     "Name": "Chronomancer",
     "Team": "Enemy",
     "Tags": [ "Humanoid", "Caster", "Sentient" ],
-    "Description": "A caster who fights the party's tempo instead of its health.",
-    "Lore": "It does not hurry. It makes everyone else late.",
     "Card": "Charges [Temporal Drag]: the party loses [tempo] and every foe acts sooner. [Interrupt] the charge, [cleanse] Slowed or [out-haste] it. Rewinds once when badly hurt.",
     "Portrait": "chronomancer",
     "Thumbnail": {
@@ -23846,7 +23484,7 @@
     "AttackRange": 3,
     "XpReward": 14,
     "BossPhases": [
-      { "HpThreshold": 0.4, "PrefersCharge": false, "OnEnterAbility": "chrono_rewind", "Announce": "The Chronomancer rewinds its wounds!" }
+      { "HpThreshold": 0.4, "PrefersCharge": false, "OnEnterAbility": "chrono_rewind" }
     ],
     "ChargeAbility": "charge_temporal_drag",
     "ChargeShape": "Single",
@@ -23859,8 +23497,6 @@
     "Name": "The Hierarch",
     "Team": "Enemy",
     "Tags": [ "Humanoid", "Boss", "Caster", "Sentient" ],
-    "Description": "The Concord's head, two hundred years old on other people's lives.",
-    "Lore": "Called Hierarch by the faithful and the Leech by everyone else.",
     "Card": "Charges Tithe Draught, a [drain] on every hero that heals it for each one it touches. [Interrupt] the charge. At half HP the organ pours its reservoir into it. While any of its Choir still stands, it rises once.",
     "Portrait": "mannequin",
     "Thumbnail": {
@@ -23894,8 +23530,8 @@
     "Targeting": "Weakest",
     "XpReward": 30,
     "BossPhases": [
-      { "HpThreshold": 1.0, "PrefersCharge": false, "OnEnterAbility": null, "Announce": "The Hierarch" },
-      { "HpThreshold": 0.5, "PrefersCharge": true, "OnEnterAbility": "hierarch_open_reservoir", "Announce": "The organ pours its reservoir into the Hierarch!" }
+      { "HpThreshold": 1.0, "PrefersCharge": false, "OnEnterAbility": null },
+      { "HpThreshold": 0.5, "PrefersCharge": true, "OnEnterAbility": "hierarch_open_reservoir" }
     ],
     "ChargeAbility": "charge_tithe_draught",
     "ChargeShape": "Single",
@@ -23910,8 +23546,6 @@
     "Tags": [
       "Humanoid"
     ],
-    "Description": "A beast handler who turns wild monsters to the party's side instead of killing them.",
-    "Lore": "Grew up among the pack; every snarl is a word she understands.",
     "Card": "Wild monsters turn [Tamed] and fight for you.",
     "Portrait": "WildChild",
     "Thumbnail": {
@@ -24047,8 +23681,6 @@
       "Healer",
       "Humanoid"
     ],
-    "Description": "A flower-winged messenger of the Bloom who heals by giving her own essence.",
-    "Lore": "Where aether is given instead of taken, the Bloom grows. She is the proof.",
     "Card": "Backline [healer]. Free, strong heals paid in her own HP ([Essence]).",
     "Portrait": "herald",
     "Thumbnail": {
@@ -24190,8 +23822,6 @@
       "Healer",
       "Humanoid"
     ],
-    "Description": "A Choir runaway who pours aether into the party instead of singing it out of them.",
-    "Lore": "She learned the hymn backwards. The Choir wants her back very badly.",
     "Card": "Backline [healer]. Mends an ally and pours an orb into the bank.",
     "Portrait": "aetherist",
     "Thumbnail": {
@@ -24332,8 +23962,6 @@
     "Tags": [
       "Humanoid"
     ],
-    "Description": "A former Concord staff officer who plans the crew's war and rewrites the enemy's turn order.",
-    "Lore": "She planned tithe routes until she read the ledgers and saw where the surplus went.",
     "Card": "[Countermarch]: a foe's turn goes to the back of the line.",
     "Portrait": "tactician",
     "Thumbnail": {
@@ -24474,8 +24102,6 @@
       "Flying",
       "Sentient"
     ],
-    "Description": "A Murder runner spliced with black wings: it dives on the weakest hero, rakes it and is gone again.",
-    "Lore": "The Murder: Street kids spliced with black wings, who fly contraband (and people) past Concord checkpoints. They never land for long.",
     "Card": "Swift [Flanker]: strikes, then darts a tile away. Its talons can [Slow] a hero, costing the party [tempo]. [Pincer] it before it lifts off, or [cleanse] the Slow.",
     "Portrait": "harpy01",
     "Thumbnail": {
@@ -24601,8 +24227,6 @@
       "Flying",
       "Sentient"
     ],
-    "Description": "A Murder lookout whose spliced throat shrieks a gale that drags runaways out of formation.",
-    "Lore": "The Murder: Street kids spliced with black wings, who fly contraband (and people) past Concord checkpoints. They never land for long.",
     "Card": "Charges a [Gale Shriek] that blows heroes apart and breaks your [pincer] lines. [Interrupt] the charge or keep the party spread out. Hastens the harpy it backs as a [Supporter].",
     "Portrait": "harpy02",
     "Thumbnail": {
@@ -24729,8 +24353,6 @@
       "Flying",
       "Sentient"
     ],
-    "Description": "A Murder smuggler rigged with signal jammers: it hangs back and snipes the party's casters.",
-    "Lore": "The Murder: Street kids spliced with black wings, who fly contraband (and people) past Concord checkpoints. They never land for long.",
     "Card": "Hangs back and fires [shots] at your casters; its darts can [Silence]. It is frail up close: close in and [pincer] it.",
     "Portrait": "harpy03",
     "Thumbnail": {
@@ -24857,8 +24479,6 @@
       "Construct",
       "Magic"
     ],
-    "Description": "A slow, plated guardian of smoke that fires beams of leaking aether down a line.",
-    "Lore": "What forms where an Anchor leaks: smoke given a body around a cyan heart of stolen aether. It guards whatever stands nearest, and does not know why.",
     "Card": "Charges a [Void Beam] down a marked line that [Silences]: step off the line or [Interrupt] it. Its front is plated, so [pincer] it from the flanks. At half HP its core flares a [Ward].",
     "Portrait": "voidsentinel",
     "Thumbnail": {
@@ -24990,8 +24610,6 @@
       "Caster",
       "Boss"
     ],
-    "Description": "A deathless captain who rains soulfire from behind his crew, drains the party when cornered, and leaves a grave that raises him again.",
-    "Lore": "The last captain of the Ark Long Patience. When his ship came down he refused to let it die, and kept himself instead.",
     "Card": "Charges [Soulfire] on a 3×3 that [Burns]: spread out or [Interrupt] it. At half HP it harvests every hero to heal. It falls into a grave: smash the grave, or it rises again.",
     "Portrait": "lich",
     "Thumbnail": {
@@ -25110,14 +24728,12 @@
       {
         "HpThreshold": 1.0,
         "PrefersCharge": false,
-        "OnEnterAbility": null,
-        "Announce": "The Lich"
+        "OnEnterAbility": null
       },
       {
         "HpThreshold": 0.5,
         "PrefersCharge": false,
-        "OnEnterAbility": "lich_soul_harvest",
-        "Announce": "The Lich harvests your souls!"
+        "OnEnterAbility": "lich_soul_harvest"
       }
     ],
     "ChargeAbility": "charge_soulfire",
@@ -25135,8 +24751,6 @@
       "Humanoid",
       "Sentient"
     ],
-    "Description": "A black-armoured zealot whose claws drip cinders onto anyone it strikes.",
-    "Lore": "The Ember: zealots in black armour and long red capes who believe the Nearing is a homecoming. They want the Anchors broken and Morrow to finish falling.",
     "Card": "Its claws can set a hero [Burning], and an Infernalist Executioner hits burning heroes far harder: [cleanse] the burn. Can't be [Burned] itself.",
     "Portrait": "infernalist01",
     "Thumbnail": {
@@ -25265,8 +24879,6 @@
       "Humanoid",
       "Sentient"
     ],
-    "Description": "A zealot with a blood-light core in its chest that calls fire down in a cross.",
-    "Lore": "The Ember: zealots in black armour and long red capes who believe the Nearing is a homecoming. They want the Anchors broken and Morrow to finish falling.",
     "Card": "Charges [Hellfire] on a cross of tiles that [Burns]: spread out or [Interrupt] it. Hangs back from the fight.",
     "Portrait": "infernalist02",
     "Thumbnail": {
@@ -25394,8 +25006,6 @@
       "Humanoid",
       "Sentient"
     ],
-    "Description": "A zealot who opens its own veins to mend and madden its kin.",
-    "Lore": "The Ember: zealots in black armour and long red capes who believe the Nearing is a homecoming. They want the Anchors broken and Morrow to finish falling.",
     "Card": "Charges a [Blood Rite] that heals and [Empowers] its most wounded ally: kill it first or [Interrupt] the rite. Its blows [Lifesteal].",
     "Portrait": "infernalist03",
     "Thumbnail": {
@@ -25523,8 +25133,6 @@
       "Humanoid",
       "Sentient"
     ],
-    "Description": "A zealot with a red blade who finishes whatever the Ember has set alight.",
-    "Lore": "The Ember: zealots in black armour and long red capes who believe the Nearing is a homecoming. They want the Anchors broken and Morrow to finish falling.",
     "Card": "Hits [Burning] heroes 50% harder: [cleanse] the burn or keep burning heroes away from it. A duelist: [pincer] it, it hates being outnumbered.",
     "Portrait": "infernalist04",
     "Thumbnail": {
@@ -25652,8 +25260,6 @@
       "Humanoid",
       "Sentient"
     ],
-    "Description": "A white-armoured Concord soldier who keeps three tiles back and fires its siege rifle down any clear line.",
-    "Lore": "The Bulwark: the Pale Concord's soldiers, sealed in white power armour with siege rifles and an aether pack on every back. Each pack is a portable Still; where the Bulwark marches, the tithe comes with it.",
     "Card": "Shoots straight down a line from up to 3 tiles away, and a shot can [Blind]: close in and [pincer] it. Weak to Lightning.",
     "Portrait": "heavytrooper01",
     "Thumbnail": {
@@ -25781,8 +25387,6 @@
       "Humanoid",
       "Sentient"
     ],
-    "Description": "Its aether pack unfolds into a shield-Still that wards every soldier standing near it.",
-    "Lore": "The Bulwark: the Pale Concord's soldiers, sealed in white power armour with siege rifles and an aether pack on every back. Each pack is a portable Still; where the Bulwark marches, the tithe comes with it.",
     "Card": "Charges [Aegis Field], a [Ward] on every ally within 2 tiles: [Interrupt] it, and hit it from the flank, not its plate.",
     "Portrait": "heavytrooper02",
     "Thumbnail": {
@@ -25911,8 +25515,6 @@
       "Humanoid",
       "Sentient"
     ],
-    "Description": "Its pack runs open: a walking Still that drinks the aether out of whoever it points at.",
-    "Lore": "The Bulwark: the Pale Concord's soldiers, sealed in white power armour with siege rifles and an aether pack on every back. Each pack is a portable Still; where the Bulwark marches, the tithe comes with it.",
     "Card": "Charges [Aether Siphon] on your casters, and when it lands an orb leaves your bank: spend your orbs first, or [Interrupt] it.",
     "Portrait": "heavytrooper03",
     "Thumbnail": {
@@ -26039,8 +25641,6 @@
       "Humanoid",
       "Sentient"
     ],
-    "Description": "Plants its feet, braces the siege rifle on its pack and puts one round through everything in a line.",
-    "Lore": "The Bulwark: the Pale Concord's soldiers, sealed in white power armour with siege rifles and an aether pack on every back. Each pack is a portable Still; where the Bulwark marches, the tithe comes with it.",
     "Card": "Charges a slow [Siege Shot] down a marked line to the board's edge: step off the line or [Interrupt] it. It needs a long rest after.",
     "Portrait": "heavytrooper04",
     "Thumbnail": {
@@ -26169,8 +25769,6 @@
       "Undead",
       "Sentient"
     ],
-    "Description": "A grey knight that has stood on the same stone under the same arch for longer than Halcyon has had a name. It does not leave its post.",
-    "Lore": "The Anchor Watch: knights sworn to guard the Anchors forever, kept going by the arches' own leaking aether long after they should have died. Grey plate, cloaks the colour of old fire, and an oath nobody is left to release.",
     "Card": "Never leaves its post, and answers a blow from beside it with a chilling [Counterstrike] that can [Slow]: strike from range, or [pincer] it and take the hit. Its grave rises unless smashed.",
     "Portrait": "wraithknight01",
     "Thumbnail": {
@@ -26302,8 +25900,6 @@
       "Undead",
       "Sentient"
     ],
-    "Description": "The Watch's sword-arm: it walks the ice between the arches hunting anything that limps.",
-    "Lore": "The Anchor Watch: knights sworn to guard the Anchors forever, kept going by the arches' own leaking aether long after they should have died. Grey plate, cloaks the colour of old fire, and an oath nobody is left to release.",
     "Card": "Hunts the weakest hero. The first time it drops low, its oath holds: it heals and gains [Ward]. Finish it in one push, and smash its grave.",
     "Portrait": "wraithknight02",
     "Thumbnail": {
@@ -26433,8 +26029,6 @@
       "Undead",
       "Sentient"
     ],
-    "Description": "Keeps the old fire in its cloak lit, and lends it to every knight of the Watch that stands near.",
-    "Lore": "The Anchor Watch: knights sworn to guard the Anchors forever, kept going by the arches' own leaking aether long after they should have died. Grey plate, cloaks the colour of old fire, and an oath nobody is left to release.",
     "Card": "Charges [Ember Vigil], [Regen] on every ally within 2 tiles: [Interrupt] it or cut it down first. Fire burns the Watch hardest.",
     "Portrait": "wraithknight03",
     "Thumbnail": {
@@ -26562,8 +26156,6 @@
       "Humanoid",
       "Sentient"
     ],
-    "Description": "Leads the hymn that sings the aether out of a crowd. Nobody has heard its real voice; the glyphs on its poncho sing for it.",
-    "Lore": "The Choir: the Pale Concord's engineer-priests, faceless under white ponchos printed with violet circuit-glyphs. They run the Stills and sing the aether out of people. The glyphs are the hymn.",
     "Card": "Charges the [Tithe Hymn] on the whole party, which can [Silence] every hero it reaches: cast before it lands, [Interrupt] it, or [Cleanse] after.",
     "Portrait": "cultist01",
     "Thumbnail": {
@@ -26691,8 +26283,6 @@
       "Humanoid",
       "Sentient"
     ],
-    "Description": "Sings the Concord's certainty into its soldiers until they stop doubting and start hitting harder.",
-    "Lore": "The Choir: the Pale Concord's engineer-priests, faceless under white ponchos printed with violet circuit-glyphs. They run the Stills and sing the aether out of people. The glyphs are the hymn.",
     "Card": "Charges [Psalm of Certainty], [Empowers] every ally within 2 tiles: [Interrupt] it, or pull its allies away. Quick and frail.",
     "Portrait": "cultist02",
     "Thumbnail": {
@@ -26820,8 +26410,6 @@
       "Humanoid",
       "Sentient"
     ],
-    "Description": "Hears the Concord's wounded confess, then absolves them: the hurt and the curse both lifted, and a ward in their place.",
-    "Lore": "The Choir: the Pale Concord's engineer-priests, faceless under white ponchos printed with violet circuit-glyphs. They run the Stills and sing the aether out of people. The glyphs are the hymn.",
     "Card": "Charges [Absolution] on its most wounded ally: a heal, a [Cleanse] of every debuff, and a [Ward]. Kill it first, or [Interrupt] it.",
     "Portrait": "cultist03",
     "Thumbnail": {
@@ -26948,8 +26536,6 @@
       "Humanoid",
       "Sentient"
     ],
-    "Description": "The bull who takes the contracts: chain, pink sleeves, and a watch that tells it when the crew gets paid.",
-    "Lore": "The Herd: Street kids spliced with horns and bull-mass in the underspire's back-room clinics, so the Stills can't sing the aether out of them. Muscle for hire, loyal to whichever crew pays them and keeps them fed.",
     "Card": "Charges [Feed the Herd], healing and rushing every ally near it: kill it first or [Interrupt] it. Hangs back behind its crew. [Stampede]: when an ally falls, its next turn comes sooner.",
     "Portrait": "minotaur01",
     "Thumbnail": {
@@ -27078,8 +26664,6 @@
       "Humanoid",
       "Sentient"
     ],
-    "Description": "A bull in a white puffer with brass on both fists, paid to stand in front of whoever pays.",
-    "Lore": "The Herd: Street kids spliced with horns and bull-mass in the underspire's back-room clinics, so the Stills can't sing the aether out of them. Muscle for hire, loyal to whichever crew pays them and keeps them fed.",
     "Card": "Guards the crew behind a thick front: flank it, not its chest. Its punches can [Slow] a hero. [Stampede]: when an ally falls, its next turn comes sooner.",
     "Portrait": "minotaur02",
     "Thumbnail": {
@@ -27210,8 +26794,6 @@
       "Humanoid",
       "Sentient"
     ],
-    "Description": "The biggest of the crew, gas-masked, who lowers its horns and runs a whole street flat.",
-    "Lore": "The Herd: Street kids spliced with horns and bull-mass in the underspire's back-room clinics, so the Stills can't sing the aether out of them. Muscle for hire, loyal to whichever crew pays them and keeps them fed.",
     "Card": "Charges a [Bull Rush] down a marked line to the board's edge: step off the line or [Interrupt] it. [Stampede]: when an ally falls, its next turn comes sooner.",
     "Portrait": "minotaur03",
     "Thumbnail": {
@@ -27340,8 +26922,6 @@
       "Humanoid",
       "Sentient"
     ],
-    "Description": "A bull on chrome-braced legs, goggles down, who hits hardest once it's bleeding.",
-    "Lore": "The Herd: Street kids spliced with horns and bull-mass in the underspire's back-room clinics, so the Stills can't sing the aether out of them. Muscle for hire, loyal to whichever crew pays them and keeps them fed.",
     "Card": "Charges in and never backs off; below half HP it hits harder (Berserk): finish it in one push. [Stampede]: when an ally falls, its next turn comes sooner.",
     "Portrait": "minotaur04",
     "Thumbnail": {
@@ -27469,8 +27049,6 @@
     "Tags": [
       "Beast"
     ],
-    "Description": "A red-scaled hunter with a mane of blood-light and one great hooked claw.",
-    "Lore": "The Ember: what Morrow's hunger makes of a beast or a person who drinks from the Shardfall's red rivers. Whatever it was is gone; what is left can smell blood across the sand.",
     "Card": "[Bloodscent]: hits a hero below half HP 50% harder, and goes for the weakest: keep the party topped up. Can't be [Burned].",
     "Portrait": "hellspawn01",
     "Thumbnail": {
@@ -27598,8 +27176,6 @@
     "Tags": [
       "Beast"
     ],
-    "Description": "Still running with the red river it drank: it strikes, drinks, and is gone.",
-    "Lore": "The Ember: what Morrow's hunger makes of a beast or a person who drinks from the Shardfall's red rivers. Whatever it was is gone; what is left can smell blood across the sand.",
     "Card": "[Bloodscent]: hits a hero below half HP 50% harder. Strikes then darts away, healing on every blow ([Lifesteal]): [pincer] it when it lands. Can't be [Burned].",
     "Portrait": "hellspawn02",
     "Thumbnail": {
@@ -27727,8 +27303,6 @@
     "Tags": [
       "Beast"
     ],
-    "Description": "Its arm has split to the ember inside, and the red river pours out of it.",
-    "Lore": "The Ember: what Morrow's hunger makes of a beast or a person who drinks from the Shardfall's red rivers. Whatever it was is gone; what is left can smell blood across the sand.",
     "Card": "Charges a [Red Tide] that floods its target's whole row and sets everyone in it [Burning]: leave the row or [Interrupt] it. [Bloodscent]. Can't be [Burned].",
     "Portrait": "hellspawn03",
     "Thumbnail": {
@@ -27856,8 +27430,6 @@
     "Tags": [
       "Beast"
     ],
-    "Description": "Grown a hide of hot red scales that sear whatever touches them.",
-    "Lore": "The Ember: what Morrow's hunger makes of a beast or a person who drinks from the Shardfall's red rivers. Whatever it was is gone; what is left can smell blood across the sand.",
     "Card": "Strike it up close and it may set you [Burning] (Searing Scales); flank its scaled front. [Bloodscent]. Never retreats. Can't be [Burned].",
     "Portrait": "hellspawn04",
     "Thumbnail": {

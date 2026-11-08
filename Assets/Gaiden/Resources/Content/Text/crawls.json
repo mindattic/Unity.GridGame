@@ -1,0 +1,408 @@
+{
+  "schema": "gridgame-text/1",
+  "kind": "crawl",
+  "texts": {
+    "crawl:bloom": {
+      "key": "crawl:bloom",
+      "id": "crawl-bloom",
+      "guid": null,
+      "version": 0,
+      "source": "seed",
+      "hash": "sha256:871bec135ad064dae54c6d44197f4bc10750461bc33570b65243082e6c481a18",
+      "about": [
+        "place-bloom"
+      ],
+      "speakers": [],
+      "payload": {
+        "title": "The Bloom",
+        "paragraphs": [
+          "Where the Hierarch's reservoir broke, the stolen aether came down hardest, and the Bloom came up through the Concord's white stone: red blossom over broken pillars, moss in every crack.",
+          "Redline cuts it for the markets. The last Red Seal wardens want it burned. And the things the moon changed have started to guard it.",
+          "Someone has to decide what the Bloom is for."
+        ]
+      }
+    },
+    "crawl:cathedral": {
+      "key": "crawl:cathedral",
+      "id": "crawl-cathedral",
+      "guid": null,
+      "version": 0,
+      "source": "seed",
+      "hash": "sha256:cb6e1a6948e6b555c8355637f992c56e27c1795ce4a7b625a5b12c9caabf13e8",
+      "about": [
+        "place-cathedral"
+      ],
+      "speakers": [],
+      "payload": {
+        "title": "The Choir's Cathedral",
+        "paragraphs": [
+          "At the top of Halcyon's spire, above the neon, stands the Choir's cathedral: rose windows, pews by the hundred, a moon in the vault, and an organ of aether pipes glowing the colour of a cold sky.",
+          "The Choir sings the tithe up into those pipes. The organ is the reservoir.",
+          "The Hierarch drinks from it.",
+          "Silence the Choir. Break the reservoir. Give it back."
+        ]
+      }
+    },
+    "crawl:cave": {
+      "key": "crawl:cave",
+      "id": "crawl-cave",
+      "guid": null,
+      "version": 0,
+      "source": "seed",
+      "hash": "sha256:a6288d73edd1ffb30d6659f18b70cd48d5db667fe15df08dd6b18f1a66af7dab",
+      "about": [
+        "place-cave"
+      ],
+      "speakers": [],
+      "payload": {
+        "title": "The Anchor Wastes",
+        "paragraphs": [
+          "North of the last hold the world goes white. Across the ice stand the Anchors -- stone arches bigger than mountains, humming so deep you feel it in your teeth.",
+          "They were raised to push Morrow back. They still do, a little, as long as they're fed.",
+          "The Anchor Watch still walk their posts: knights sworn to guard the arches forever, kept going by the leaking aether long after they should have died. Where an arch leaks worst, Void Sentinels gather out of the smoke. And pale vat-giants, grown in the Stills, tend the stones because nothing born survives the cold.",
+          "From the crown of every arch, a beam of light runs south, all the way to Halcyon.",
+          "Watch how much of that light the Anchors keep. Then watch how much keeps going."
+        ]
+      }
+    },
+    "crawl:cave2": {
+      "key": "crawl:cave2",
+      "id": "crawl-cave2",
+      "guid": null,
+      "version": 0,
+      "source": "seed",
+      "hash": "sha256:20677b4e9d0bf8522f42695bd1df56433dbcff45f80a05aefc88db1eec6ae1e5",
+      "about": [
+        "place-cave2"
+      ],
+      "speakers": [],
+      "payload": {
+        "title": "Under the Anchors",
+        "paragraphs": [
+          "The arches were built on something.",
+          "Below the ice, below the foundations, there are stairs -- older than the Anchors, older than the Concord, cut for feet that weren't quite anyone's. The hum is louder down here, and the cold is wrong. It pulls, the way Morrow pulls.",
+          "The Anchor Watch do not go below the foundations. They won't say why. They only stand a little straighter whenever someone asks.",
+          "Whatever the Anchors are pushing against, part of it is down here too."
+        ]
+      }
+    },
+    "crawl:cityruins": {
+      "key": "crawl:cityruins",
+      "id": "crawl-cityruins",
+      "guid": null,
+      "version": 0,
+      "source": "seed",
+      "hash": "sha256:72ca6280c99dfdabba156ce5c1e8527b7d792464511da6095e909c09642969a2",
+      "about": [
+        "place-cityruins"
+      ],
+      "speakers": [],
+      "payload": {
+        "title": "Halcyon",
+        "paragraphs": [
+          "Out of the Still's back gate and up into the Spire City: neon under a pink sky, towers stacked on towers, and above them all the Hierarch's spire, drinking the beams that run north to the Anchors.",
+          "The tithe ends up here. Most of it, anyway.",
+          "The Bulwark patrols the streets in white power armour. The Choir sings from every balcony. The Kiln Guard -- porcelain knights who crack instead of bleeding -- hold the spire stairs, and the Still's clocks are still making everyone late.",
+          "But Halcyon has an underspire, and the Street has been dodging the tithe down there for two hundred years. They know the back stairs.",
+          "The Hierarch has worn the same young face for two centuries, on other people's lives.",
+          "Up the spire. Break the reservoir. Give it back."
+        ]
+      }
+    },
+    "crawl:cityruins2": {
+      "key": "crawl:cityruins2",
+      "id": "crawl-cityruins2",
+      "guid": null,
+      "version": 0,
+      "source": "seed",
+      "hash": "sha256:4fb19c79e43f73029e633bf624742d2cb7da87bb9ab6f857a7b12cac35518c2f",
+      "about": [
+        "place-cityruins2"
+      ],
+      "speakers": [],
+      "payload": {
+        "title": "The Underspire",
+        "paragraphs": [
+          "Halcyon without a Hierarch is a city holding its breath.",
+          "The Choir wants the spire back, to sing the tithe again -- honestly this time, they swear. The Red Seal wants it because order has to come from somewhere. The Street wants it because they've lived under it for two hundred years and it's their turn.",
+          "Everyone has a speech. Everyone has soldiers. Everyone is certain.",
+          "Down in the underspire, where the city's real business has always been done, the deals are being struck that will decide who sits where the Hierarch sat -- or whether anyone does.",
+          "Nobody is going to hand the spire to the people who broke the reservoir. Which is a shame. You're the only ones who've seen what's at the top."
+        ]
+      }
+    },
+    "crawl:desert": {
+      "key": "crawl:desert",
+      "id": "crawl-desert",
+      "guid": null,
+      "version": 0,
+      "source": "seed",
+      "hash": "sha256:5b2b1de8ed5dd84609b857981b2376872b590fdc4fe48f4adf6658b812945e7a",
+      "about": [
+        "place-desert"
+      ],
+      "speakers": [],
+      "payload": {
+        "title": "The Shardfall",
+        "paragraphs": [
+          "South of the moors the grass gives out and the ground turns red. This is where the pieces of Morrow came down.",
+          "Moon-shards jut from the sand like tusks, taller than towers, curved and pale. Where they crack, red water bleeds out into red rivers -- and where the rivers run, the Ember wakes.",
+          "The Infernalists walk here in black armour and long red capes. They call the Nearing a homecoming and the Anchors a cage. Whatever drinks from their rivers comes back as something else.",
+          "And out in the dunes, the Concord is digging. Shield-walkers guard a cut into the biggest shard, and the Choir's packs fill as fast as the drills can turn.",
+          "The shards aren't stone. They're full of aether, packed tight as honey in a comb.",
+          "Which raises a question nobody on this crew wants to ask out loud."
+        ]
+      }
+    },
+    "crawl:desert2": {
+      "key": "crawl:desert2",
+      "id": "crawl-desert2",
+      "guid": null,
+      "version": 0,
+      "source": "seed",
+      "hash": "sha256:b22a32bbfddd58d6004872743582cfd99c15367fc10300ee2d7c7b67070d38de",
+      "about": [
+        "place-desert2"
+      ],
+      "speakers": [],
+      "payload": {
+        "title": "Deep Shardfall",
+        "paragraphs": [
+          "With the Concord broken, nobody is digging in the Shardfall anymore. Nobody is guarding it, either.",
+          "The Ember noticed.",
+          "Deep in the red country the Infernalists are mustering -- more black armour than anyone has seen in one place, and Hellspawn in herds behind it. They are marching north. They mean to reach the Anchors, break them, and bring Morrow home.",
+          "The Anchors still need feeding. They just never needed a Hierarch to do it.",
+          "Someone has to stand between the Ember and the arches. It might as well be people who know what the arches cost."
+        ]
+      }
+    },
+    "crawl:dialogue/interlude_level10_motives": {
+      "key": "crawl:dialogue/interlude_level10_motives",
+      "id": "crawl-dialogue-interlude-level10-motives",
+      "guid": null,
+      "version": 0,
+      "source": "seed",
+      "hash": "sha256:67b93cd09de415f2e73966e6cac8306558eeb0fe134617d04276236a067bbfdd",
+      "about": [],
+      "speakers": [],
+      "payload": {
+        "title": "Why We Ran",
+        "paragraphs": [
+          "Somewhere between one hold and the next, the crew stopped being the kids who stole a caravan.",
+          "People know the wagons now. Holds leave gates unbarred for you. Children in the moor towns play at being you -- one of them the tithe-taker, the rest running, everyone arguing over who gets to drive.",
+          "It would be easy to keep going on that alone. Most runaways do, right up until the day the Concord catches up.",
+          "But the road has been saying something, hold after hold, and it gets louder the further you drive. The quotas are lies. The surplus goes somewhere. Someone has built a very tall tower out of other people's lives.",
+          "That changes what running is for. Running saves you. What you are turning into might have to save the holds.",
+          "So one night, around a fire beside the wagons, with Morrow filling half the sky, somebody finally asks the question every runaway avoids.",
+          "Why did you really run?"
+        ]
+      }
+    },
+    "crawl:ending": {
+      "key": "crawl:ending",
+      "id": "crawl-ending",
+      "guid": null,
+      "version": 0,
+      "source": "seed",
+      "hash": "sha256:287ace5f4322c20d0f7ac981a414a728a7eedd3962ae64e0b322d1372d87047b",
+      "about": [
+        "place-cathedral",
+        "place-cathedral-03"
+      ],
+      "speakers": [],
+      "payload": {
+        "title": "Still Here",
+        "paragraphs": [
+          "The Hierarch's reservoir breaks the way a dam breaks: slowly, and then all at once.",
+          "Two hundred years of stolen aether runs back down the beams it climbed -- north to the Anchors, and from the Anchors out over every hold that ever paid. Over the moors, over Saltmoss, over towns whose names you never learned, the light comes down like rain.",
+          "The tithe stops. Nobody announces it. The Stills simply stay shut, and the Choir stands in the square with nothing left to sing.",
+          "The Hollow don't wake all at once. But here and there, one stops at a door and frowns, as if trying to remember whose it is.",
+          "In the morning Morrow is still there, exactly as low as yesterday. Nobody has solved the Nearing. Nobody knows what the moon is, or what it wants, or whether it wants anything at all.",
+          "But where the stolen aether came down, the Bloom is growing -- moss and small red flowers in the cracks of the Concord's white stone. Proof, in the plainest terms there are, that giving works.",
+          "You have a caravan, a long road, and each other.",
+          "You're still here."
+        ]
+      }
+    },
+    "crawl:greenvalley": {
+      "key": "crawl:greenvalley",
+      "id": "crawl-greenvalley",
+      "guid": null,
+      "version": 0,
+      "source": "seed",
+      "hash": "sha256:e938256bd7ae27adf3b7725dad08a1ae2513080a49ae447f41c28ca2a0bb2ec8",
+      "about": [
+        "place-greenvalley"
+      ],
+      "speakers": [],
+      "payload": {
+        "title": "The Tithe Moors",
+        "paragraphs": [
+          "Grey-green moss country, cut by stone walls older than the Concord and dotted with the white domes of the Stills. Morrow sits on the horizon like a second sky.",
+          "You have a stolen caravan, a head start measured in hours, and a ledger you were never meant to see: Saltmoss's quota, in the Concord's own neat hand. The tithe-takers took three times that.",
+          "The moor roads aren't empty. Wolves run thin and bold under a full Morrow. Redline gangers sell tithe-exemption tokens at every crossroads. Hold militia patrol in green hoods for whoever pays them. And down every road, shuffling toward the nearest dome, come the Hollow in their white shrouds.",
+          "Somewhere behind you rides the Captain, who sold these holds to the Concord, and who has come to drag the runaways home.",
+          "Keep the wagons rolling."
+        ]
+      }
+    },
+    "crawl:greenvalley2": {
+      "key": "crawl:greenvalley2",
+      "id": "crawl-greenvalley2",
+      "guid": null,
+      "version": 0,
+      "source": "seed",
+      "hash": "sha256:4cc04b2b2e1759bedb99fb09a7b450e93eebacf2e201ea7bf477d128ca7d974f",
+      "about": [
+        "place-greenvalley2"
+      ],
+      "speakers": [],
+      "payload": {
+        "title": "The Moors Beyond the Stills",
+        "paragraphs": [
+          "The aether came down like rain. But rain never falls everywhere.",
+          "Past the last domes lie holds the beams never reached. Their Hollow are still Hollow. Their wells still taste of tithe. Some haven't heard the Hierarch is gone, and some of them don't believe it.",
+          "And Redline has found a new product. They're cutting the Bloom, drying it, and selling it in twists of paper with a promise that it brings back whoever you lost.",
+          "It doesn't. It only makes people hope, which is worse.",
+          "Out here the Free Holds keep their own walls. Militia in green hoods watch from the palisades, and the Captain's people still collect at the gates, for whoever pays.",
+          "The moors are wider than the map you stole. Time to finish what you started."
+        ]
+      }
+    },
+    "crawl:lanternroad": {
+      "key": "crawl:lanternroad",
+      "id": "crawl-lanternroad",
+      "guid": null,
+      "version": 0,
+      "source": "seed",
+      "hash": "sha256:c60ba18a995e4f3ae2b9731ab03341ae29bc7c0066e25bbfa33c786ed9d7f013",
+      "about": [
+        "place-lanternroad"
+      ],
+      "speakers": [],
+      "payload": {
+        "title": "The Lantern Road",
+        "paragraphs": [
+          "Out of the moors, the pilgrim road climbs into the gorges, stair after stone stair, lit by lanterns nobody admits to hanging.",
+          "The sword-schools walk it. So do the oni, masked road-raiders who wait where the stairs are narrowest.",
+          "And under a low moon, the beasts of the gorge have started to change.",
+          "The caravan climbs. On the far side of the pass, the ground turns red."
+        ]
+      }
+    },
+    "crawl:morrowsshadow": {
+      "key": "crawl:morrowsshadow",
+      "id": "crawl-morrowsshadow",
+      "guid": null,
+      "version": 0,
+      "source": "seed",
+      "hash": "sha256:6b2a84889b85b4245242a977b6c919e5aefdc1bd94d4a9e421f7c024482350e0",
+      "about": [
+        "place-morrowsshadow"
+      ],
+      "speakers": [],
+      "payload": {
+        "title": "Morrow's Shadow",
+        "paragraphs": [
+          "Far out past the last road, Morrow hangs so low it fills half the sky, and its pull lifts the ground: stones the size of houses drift over the cracked plain and never come down.",
+          "This is the Nearing, made visible.",
+          "The Ember has come here to welcome the moon home. The Void Sentinels gather where the light leaks. And everything that lives under that face has changed.",
+          "Nobody knows what Morrow wants. This is as close as anyone has come to asking."
+        ]
+      }
+    },
+    "crawl:prologue": {
+      "key": "crawl:prologue",
+      "id": "crawl-prologue",
+      "guid": null,
+      "version": 0,
+      "source": "seed",
+      "hash": "sha256:4f5d7230894cd89c536d1fd64df1c21dc65536c788c2b9132fc1e3c423b5ede0",
+      "about": [
+        "place-greenvalley"
+      ],
+      "speakers": [],
+      "payload": {
+        "title": "Tithe Day",
+        "paragraphs": [
+          "Saltmoss is a moor town of eighty roofs, one tavern and a well that has never once frozen. Above it, as above everything, hangs Morrow -- so low and so close you can watch weather cross its face.",
+          "Every spring the white dome on the hill opens its doors. The Concord calls it a Still. Everyone else calls it the tithe. You walk in, the Choir sings, you walk out a little lighter, and the Anchors in the far north go on holding the moon away for another year.",
+          "That's the bargain. Everybody pays it.",
+          "This year the tithe-takers came early, with a longer ledger and more white armour than a town of eighty roofs has ever needed. Old Marrit went in and came out Hollow -- smiling, quiet, gone. So did the cooper's twins. So did half the names above yours.",
+          "Your names are next on the page.",
+          "The Concord's supply caravan is parked behind the tavern. Horses fed. Wagons full. Every guard on the hill watching the queue instead of the road.",
+          "Nobody decided it. Somebody just started running, and then all of you were.",
+          "Don't look back at the dome. Drive."
+        ]
+      }
+    },
+    "crawl:still": {
+      "key": "crawl:still",
+      "id": "crawl-still",
+      "guid": null,
+      "version": 0,
+      "source": "seed",
+      "hash": "sha256:be8fcb6afa171ea63e1ce1fab346723b42100ca5f60c869abc520c8e81460cd9",
+      "about": [
+        "place-still"
+      ],
+      "speakers": [],
+      "payload": {
+        "title": "The Still",
+        "paragraphs": [
+          "Follow the beams south off the ice and they all come down in one place: a white dome at the foot of Halcyon's spire, bigger than any hold, clean as a plate.",
+          "The Still.",
+          "Every hold's tithe ends up in here before it climbs. Inside, the floors are polished to mirrors, and through a round window in the roof Morrow looks straight down. Tall tanks stand in rows, glowing the colour of a cold sky.",
+          "And there are queues. Hollow from every hold, still in their white tithe-shrouds, standing in line at the tanks to give what they no longer have, because it is the last thing they remember.",
+          "The Bulwark holds the gates. The Red Seal herds the lines. The Choir sings the tanks full.",
+          "We didn't come to steal it. Not yet.",
+          "We came to look."
+        ]
+      }
+    },
+    "crawl:swamp": {
+      "key": "crawl:swamp",
+      "id": "crawl-swamp",
+      "guid": null,
+      "version": 0,
+      "source": "seed",
+      "hash": "sha256:e2c78ad5fa21a48ebbf1bc1d756c0ccda5e716093374c906d2b24e0cec0572f3",
+      "about": [
+        "place-swamp"
+      ],
+      "speakers": [],
+      "payload": {
+        "title": "The Arkgrave",
+        "paragraphs": [
+          "The road west drops into fog -- warm, golden, smelling of rot and old varnish. Out of it rise the ribs of ships the size of towns.",
+          "These were the Arks, built to carry a whole city out of Morrow's reach. Every child is told they fell because the pull was too strong.",
+          "The fen-dark live among the wrecks now. Hags and Hexes, Choir runaways who learned to sing aether the wrong way round. Shamblers in the reeds. And the crew of the Ark Long Patience, whose captain refused to let his ship die and kept himself instead.",
+          "The ships' logs are still aboard, if you can read wet ink. They tell a different story from the one the children get.",
+          "At the heart of the fen waits the drowned Ark's pilot, who has been part of the swamp so long that the swamp answers to her."
+        ]
+      }
+    },
+    "crawl:swamp2": {
+      "key": "crawl:swamp2",
+      "id": "crawl-swamp2",
+      "guid": null,
+      "version": 0,
+      "source": "seed",
+      "hash": "sha256:a58d6121c2236f4cbfa3a0eb399f213ebab788ad2fa3fee00e4a1cbe833e3da5",
+      "about": [
+        "place-swamp2"
+      ],
+      "speakers": [],
+      "payload": {
+        "title": "The Drowned Arks",
+        "paragraphs": [
+          "The Long Patience still flies. A little. Its keel drags through the fog an arm's length above the fen, and its captain -- the Lich, horned and flame-lit -- has hung lanterns from the rails.",
+          "He is offering passage to anyone who wants it. Away from Morrow. Away from everything.",
+          "The rest of the fen disagrees. The drowned Arks have crews of their own, and the fen-dark have firm opinions about who leaves and who stays.",
+          "The question the Arks were built to answer is open again: when the moon comes close enough, do you hold it back, or do you go?",
+          "Nobody on this crew has a good answer. That doesn't mean you get to stop asking."
+        ]
+      }
+    }
+  }
+}

@@ -1,0 +1,2056 @@
+{
+  "schema": "gridgame-text/1",
+  "kind": "glossary",
+  "texts": {
+    "glossary:absolution": {
+      "key": "glossary:absolution",
+      "id": "glossary-absolution",
+      "guid": null,
+      "version": 0,
+      "source": "seed",
+      "hash": "sha256:e6ff42daa5da5a7d09ade282c76b50d6c595c274baaee5d986e37b0fd215965d",
+      "about": [
+        "concept-absolution"
+      ],
+      "speakers": [],
+      "payload": {
+        "term": "Absolution",
+        "definition": "A Choir Confessor's charge on its most wounded ally: a heal, a [Cleanse] of its debuffs, and a [Ward]. Kill it first, or [Interrupt] it."
+      }
+    },
+    "glossary:active": {
+      "key": "glossary:active",
+      "id": "glossary-active",
+      "guid": null,
+      "version": 0,
+      "source": "seed",
+      "hash": "sha256:0ec0e38454e647b2b82e03970c1ece04b3ef06b704bbf35a5d2643d5c1c1d563",
+      "about": [
+        "concept-active"
+      ],
+      "speakers": [],
+      "payload": {
+        "term": "Active",
+        "definition": "Used from the ability bar on your turn, paying its mana or cooldown.",
+        "aliases": [
+          "Actives"
+        ]
+      }
+    },
+    "glossary:adjacent": {
+      "key": "glossary:adjacent",
+      "id": "glossary-adjacent",
+      "guid": null,
+      "version": 0,
+      "source": "seed",
+      "hash": "sha256:af9c22ac5d1ff2049649cbb698e6b899c735f81a5a324ce4d446da08b24f9149",
+      "about": [
+        "concept-adjacent"
+      ],
+      "speakers": [],
+      "payload": {
+        "term": "adjacent",
+        "definition": "On one of the four tiles touching this one: up, down, left or right.",
+        "aliases": [
+          "next to",
+          "beside"
+        ]
+      }
+    },
+    "glossary:aegis_field": {
+      "key": "glossary:aegis_field",
+      "id": "glossary-aegis-field",
+      "guid": null,
+      "version": 0,
+      "source": "seed",
+      "hash": "sha256:4e99ecc64d2a290593c541f4b3ccfe87bfcfcda0bfb6453e03331334bea05621",
+      "about": [
+        "concept-aegis-field"
+      ],
+      "speakers": [],
+      "payload": {
+        "term": "Aegis Field",
+        "definition": "A Bulwark Shieldbearer's charge: every ally within 2 tiles of it gains [Ward]. [Interrupt] it, or pull the soldiers apart."
+      }
+    },
+    "glossary:aether_siphon": {
+      "key": "glossary:aether_siphon",
+      "id": "glossary-aether-siphon",
+      "guid": null,
+      "version": 0,
+      "source": "seed",
+      "hash": "sha256:c189472430353a97b6f472a24cb02a34485d4515571755df7477100d8f224320",
+      "about": [
+        "concept-aether-siphon"
+      ],
+      "speakers": [],
+      "payload": {
+        "term": "Aether Siphon",
+        "definition": "A Bulwark Siphoner's charge: it hits one hero, and an orb leaves the party's bank when it lands. Spend your orbs first, or [Interrupt] it."
+      }
+    },
+    "glossary:agi": {
+      "key": "glossary:agi",
+      "id": "glossary-agi",
+      "guid": null,
+      "version": 0,
+      "source": "seed",
+      "hash": "sha256:3f71810a57d0c0d31d91f40cedd28783cbbb82b80948a493d8f8ef847d182e80",
+      "about": [
+        "concept-agi"
+      ],
+      "speakers": [],
+      "payload": {
+        "term": "Agility",
+        "definition": "AGI. Quick hands: better unarmed strikes and better odds when stealing.",
+        "aliases": [
+          "AGI"
+        ]
+      }
+    },
+    "glossary:aid": {
+      "key": "glossary:aid",
+      "id": "glossary-aid",
+      "guid": null,
+      "version": 0,
+      "source": "seed",
+      "hash": "sha256:8e8a2f81f60e381d61cb9caa67d58939b3daec4ffc6da72da34761048b938f61",
+      "about": [
+        "concept-aid"
+      ],
+      "speakers": [],
+      "payload": {
+        "term": "Aid",
+        "definition": "Help for allies: heals, cures and boosts."
+      }
+    },
+    "glossary:aoe": {
+      "key": "glossary:aoe",
+      "id": "glossary-aoe",
+      "guid": null,
+      "version": 0,
+      "source": "seed",
+      "hash": "sha256:328bc636f762dd4b742c668e6bee01c8e615645ae04ccfb945f8fa67bff7becc",
+      "about": [
+        "concept-aoe"
+      ],
+      "speakers": [],
+      "payload": {
+        "term": "AoE",
+        "definition": "Area of effect: hits every target in a shape, not just one.",
+        "aliases": [
+          "Area"
+        ]
+      }
+    },
+    "glossary:asleep": {
+      "key": "glossary:asleep",
+      "id": "glossary-asleep",
+      "guid": null,
+      "version": 0,
+      "source": "seed",
+      "hash": "sha256:af764aeebc899fa759b627578b6c764f3b83c44603398a332abc616e30e817f5",
+      "about": [
+        "concept-asleep"
+      ],
+      "speakers": [],
+      "payload": {
+        "term": "Asleep",
+        "definition": "Can't move or act until something hits or moves it. A [Stun].",
+        "aliases": [
+          "Sleep",
+          "Sleeping"
+        ]
+      }
+    },
+    "glossary:attrition": {
+      "key": "glossary:attrition",
+      "id": "glossary-attrition",
+      "guid": null,
+      "version": 0,
+      "source": "seed",
+      "hash": "sha256:cfa87b4d1c919c5b41e40d100a4b78ad1d18014ec63e44ff7b9a193e3c0b655f",
+      "about": [
+        "concept-attrition"
+      ],
+      "speakers": [],
+      "payload": {
+        "term": "Attrition",
+        "definition": "Winning slowly: damage over time and outlasting the foe."
+      }
+    },
+    "glossary:backstab": {
+      "key": "glossary:backstab",
+      "id": "glossary-backstab",
+      "guid": null,
+      "version": 0,
+      "source": "seed",
+      "hash": "sha256:0245b91ad797ec1090d12cceba665e41958a4accf51a2b6e3c59346773c75d51",
+      "about": [
+        "concept-backstab"
+      ],
+      "speakers": [],
+      "payload": {
+        "term": "Backstab",
+        "definition": "A strike from behind for extra damage.",
+        "aliases": [
+          "Backstabs"
+        ]
+      }
+    },
+    "glossary:beast": {
+      "key": "glossary:beast",
+      "id": "glossary-beast",
+      "guid": null,
+      "version": 0,
+      "source": "seed",
+      "hash": "sha256:f4a88bef501d6c5299dfa1b6f886e9d147ce82486260848b07d0c13b2ce4cad5",
+      "about": [
+        "concept-beast"
+      ],
+      "speakers": [],
+      "payload": {
+        "term": "Beast",
+        "definition": "A wild animal monster: wolves, bats, the yeti. Beasts have no society, so they never make a [pincer] on their own, but a Monster Tamer can turn one [Tamed].",
+        "aliases": [
+          "Beasts"
+        ]
+      }
+    },
+    "glossary:blinded": {
+      "key": "glossary:blinded",
+      "id": "glossary-blinded",
+      "guid": null,
+      "version": 0,
+      "source": "seed",
+      "hash": "sha256:61e5d92a7e45c975a4459a8c7ca7339455c560c3d591aae507f7e5df415e179f",
+      "about": [
+        "concept-blinded"
+      ],
+      "speakers": [],
+      "payload": {
+        "term": "Blinded",
+        "definition": "Its attacks miss far more often.",
+        "aliases": [
+          "Blind",
+          "Blinds"
+        ]
+      }
+    },
+    "glossary:blood_rite": {
+      "key": "glossary:blood_rite",
+      "id": "glossary-blood-rite",
+      "guid": null,
+      "version": 0,
+      "source": "seed",
+      "hash": "sha256:7d256c42b7b964b5696480de14b8fa25c526f0c86070e1e4c59c4ee5ef46253e",
+      "about": [
+        "concept-blood-rite"
+      ],
+      "speakers": [],
+      "payload": {
+        "term": "Blood Rite",
+        "definition": "An Infernalist Bloodbinder's charge: it heals its most wounded ally and turns it [Empowered]. [Interrupt] it, or kill the binder first."
+      }
+    },
+    "glossary:bloodscent": {
+      "key": "glossary:bloodscent",
+      "id": "glossary-bloodscent",
+      "guid": null,
+      "version": 0,
+      "source": "seed",
+      "hash": "sha256:725156ea2737ed2f650adb975128e398ffcb6961346ee1b2784beeb6578f9328",
+      "about": [
+        "concept-bloodscent"
+      ],
+      "speakers": [],
+      "payload": {
+        "term": "Bloodscent",
+        "definition": "The Hellspawn's hunger: their blows land 50% harder on a hero below half HP. Heal the wounded, or keep them out of reach."
+      }
+    },
+    "glossary:blurred": {
+      "key": "glossary:blurred",
+      "id": "glossary-blurred",
+      "guid": null,
+      "version": 0,
+      "source": "seed",
+      "hash": "sha256:ccaa363b3618eecfcedf1ab01e01c215c470be0e00b750f85448fbbc89eaf780",
+      "about": [
+        "concept-blurred"
+      ],
+      "speakers": [],
+      "payload": {
+        "term": "Blurred",
+        "definition": "A brief afterimage: +15 [Evasion] for 2 turns.",
+        "aliases": [
+          "Blur",
+          "Blurs"
+        ]
+      }
+    },
+    "glossary:brawler": {
+      "key": "glossary:brawler",
+      "id": "glossary-brawler",
+      "guid": null,
+      "version": 0,
+      "source": "seed",
+      "hash": "sha256:dab6f421e7d6b211761575778a313721a37c3a96109d83128fe14131668ac268",
+      "about": [
+        "concept-brawler"
+      ],
+      "speakers": [],
+      "payload": {
+        "term": "Brawler",
+        "definition": "Close-quarters fists and grapples."
+      }
+    },
+    "glossary:bruiser": {
+      "key": "glossary:bruiser",
+      "id": "glossary-bruiser",
+      "guid": null,
+      "version": 0,
+      "source": "seed",
+      "hash": "sha256:859aa89b566a11c7cc4d651ce1b002a08bef08db20e37ad228a525e69e52ff89",
+      "about": [
+        "concept-bruiser"
+      ],
+      "speakers": [],
+      "payload": {
+        "term": "Bruiser",
+        "definition": "A tough melee hitter that trades blows head-on."
+      }
+    },
+    "glossary:buffer": {
+      "key": "glossary:buffer",
+      "id": "glossary-buffer",
+      "guid": null,
+      "version": 0,
+      "source": "seed",
+      "hash": "sha256:e2cd0624dc990fff78f1d01bda94748e8ebd435c434c37a92b1eac5b7cf17778",
+      "about": [
+        "concept-buffer"
+      ],
+      "speakers": [],
+      "payload": {
+        "term": "Buffer",
+        "definition": "Makes allies stronger with buffs."
+      }
+    },
+    "glossary:bull_rush": {
+      "key": "glossary:bull_rush",
+      "id": "glossary-bull-rush",
+      "guid": null,
+      "version": 0,
+      "source": "seed",
+      "hash": "sha256:e2e7c742bff6d7be14b8897ea2d712115bea95dd1d35f3315d2a9c008c4dcd60",
+      "about": [
+        "concept-bull-rush"
+      ],
+      "speakers": [],
+      "payload": {
+        "term": "Bull Rush",
+        "definition": "A Herd Gorer's charge down a marked line to the board's edge: every hero still on the line is trampled. Step off it, or [Interrupt] it."
+      }
+    },
+    "glossary:burning": {
+      "key": "glossary:burning",
+      "id": "glossary-burning",
+      "guid": null,
+      "version": 0,
+      "source": "seed",
+      "hash": "sha256:f4d23e5e60638d259e9217ed5184f132c7582cef354af1dcc14649fba895d572",
+      "about": [
+        "concept-burning"
+      ],
+      "speakers": [],
+      "payload": {
+        "term": "Burning",
+        "definition": "On fire: takes damage over time. Stacks up to three times.",
+        "aliases": [
+          "Burn",
+          "Burned",
+          "Burns"
+        ]
+      }
+    },
+    "glossary:cast_time": {
+      "key": "glossary:cast_time",
+      "id": "glossary-cast-time",
+      "guid": null,
+      "version": 0,
+      "source": "seed",
+      "hash": "sha256:88803aa0fa14fca9381739324bb705d2e8c5aabb6c28c4bb84c95f32f44522bf",
+      "about": [
+        "concept-cast-time"
+      ],
+      "speakers": [],
+      "payload": {
+        "term": "Cast time",
+        "definition": "Seconds a spell charges on the timeline before it goes off. Hitting the caster meanwhile can push the cast back or break it.",
+        "aliases": [
+          "Cast",
+          "Charge",
+          "Charging",
+          "Charges"
+        ]
+      }
+    },
+    "glossary:cleanse": {
+      "key": "glossary:cleanse",
+      "id": "glossary-cleanse",
+      "guid": null,
+      "version": 0,
+      "source": "seed",
+      "hash": "sha256:fc2f0ada27a46efb34fbd368dff371c52bbe798b5271c2976f0046d9e2895235",
+      "about": [
+        "concept-cleanse"
+      ],
+      "speakers": [],
+      "payload": {
+        "term": "Cleanse",
+        "definition": "Removes debuffs.",
+        "aliases": [
+          "Cleanses",
+          "Cleansing"
+        ]
+      }
+    },
+    "glossary:cleaver": {
+      "key": "glossary:cleaver",
+      "id": "glossary-cleaver",
+      "guid": null,
+      "version": 0,
+      "source": "seed",
+      "hash": "sha256:68442fd2932fdec59237bb68927ffd551bb37e7b7551b2cc808dacf768c17677",
+      "about": [
+        "concept-cleaver"
+      ],
+      "speakers": [],
+      "payload": {
+        "term": "Cleaver",
+        "definition": "Swings wide, hitting several foes at once."
+      }
+    },
+    "glossary:combo_finishes": {
+      "key": "glossary:combo_finishes",
+      "id": "glossary-combo-finishes",
+      "guid": null,
+      "version": 0,
+      "source": "seed",
+      "hash": "sha256:8b7c43ae0849b36503833ae5e1d5885eb4c68a56a522870e2951335fd11ab798",
+      "about": [
+        "concept-combo-finishes"
+      ],
+      "speakers": [],
+      "payload": {
+        "term": "Combo finishes",
+        "definition": "Follow-up blows that hit hardest after an opener.",
+        "aliases": [
+          "Combo finish",
+          "Combo"
+        ]
+      }
+    },
+    "glossary:controller": {
+      "key": "glossary:controller",
+      "id": "glossary-controller",
+      "guid": null,
+      "version": 0,
+      "source": "seed",
+      "hash": "sha256:dbae7ceba70f0bec92f2557bdf66ec61b18cb47d719e05c31fab72b523617e42",
+      "about": [
+        "concept-controller"
+      ],
+      "speakers": [],
+      "payload": {
+        "term": "Controller",
+        "definition": "Bends the fight with statuses and the timeline more than raw damage."
+      }
+    },
+    "glossary:countermarch": {
+      "key": "glossary:countermarch",
+      "id": "glossary-countermarch",
+      "guid": null,
+      "version": 0,
+      "source": "seed",
+      "hash": "sha256:dd7423eea94e9ea7f5a433a567915e69f01bf52286373b678f1396f0d8c647db",
+      "about": [
+        "concept-countermarch"
+      ],
+      "speakers": [],
+      "payload": {
+        "term": "Countermarch",
+        "definition": "The Tactician's order: a foe's timeline icon trades places with the foe whose turn is furthest off. The one about to act goes to the back; the straggler steps up."
+      }
+    },
+    "glossary:counterstrike": {
+      "key": "glossary:counterstrike",
+      "id": "glossary-counterstrike",
+      "guid": null,
+      "version": 0,
+      "source": "seed",
+      "hash": "sha256:790111c04f011a1f709592ee692ae7d3ec200658f5c21148616ded53ae542fe2",
+      "about": [
+        "concept-counterstrike"
+      ],
+      "speakers": [],
+      "payload": {
+        "term": "Counterstrike",
+        "definition": "An instant hit back at the attacker, at half power. Counterstrikes never chain.",
+        "aliases": [
+          "Counter",
+          "Counters",
+          "counter-strike",
+          "Counter Attack"
+        ]
+      }
+    },
+    "glossary:crit": {
+      "key": "glossary:crit",
+      "id": "glossary-crit",
+      "guid": null,
+      "version": 0,
+      "source": "seed",
+      "hash": "sha256:393289a9924871256f365bb0e7d830d1cbde28270bd9c86e6af4920a6e8636ea",
+      "about": [
+        "concept-crit"
+      ],
+      "speakers": [],
+      "payload": {
+        "term": "Crit",
+        "definition": "A critical hit: extra damage. The chance grows with LCK.",
+        "aliases": [
+          "Critical",
+          "Crits",
+          "Critical hit"
+        ]
+      }
+    },
+    "glossary:crowd_control": {
+      "key": "glossary:crowd_control",
+      "id": "glossary-crowd-control",
+      "guid": null,
+      "version": 0,
+      "source": "seed",
+      "hash": "sha256:af077a8b389ea274987ec7044bf089650a22f338b7d276684d6f6a9533112b2a",
+      "about": [
+        "concept-crowd-control"
+      ],
+      "speakers": [],
+      "payload": {
+        "term": "Crowd control",
+        "definition": "Stopping or slowing several foes at once."
+      }
+    },
+    "glossary:curse": {
+      "key": "glossary:curse",
+      "id": "glossary-curse",
+      "guid": null,
+      "version": 0,
+      "source": "seed",
+      "hash": "sha256:cfb3745903d8fbfa9bb332932edf1f1fe259602f251a00adc742bf060257b35d",
+      "about": [
+        "concept-curse"
+      ],
+      "speakers": [],
+      "payload": {
+        "term": "Curse",
+        "definition": "A hex that lingers on a foe and weakens it.",
+        "aliases": [
+          "Curses",
+          "Hex"
+        ]
+      }
+    },
+    "glossary:debuffer": {
+      "key": "glossary:debuffer",
+      "id": "glossary-debuffer",
+      "guid": null,
+      "version": 0,
+      "source": "seed",
+      "hash": "sha256:0a69b8b2cfeccbf5a9154f00021d1d46107a616b28831f3fc55c083f6fc38c33",
+      "about": [
+        "concept-debuffer"
+      ],
+      "speakers": [],
+      "payload": {
+        "term": "Debuffer",
+        "definition": "Weakens foes with debuffs."
+      }
+    },
+    "glossary:directly": {
+      "key": "glossary:directly",
+      "id": "glossary-directly",
+      "guid": null,
+      "version": 0,
+      "source": "seed",
+      "hash": "sha256:bd6093adb8467399b1441936dc7b3833a6ad83dc07b1cb829fb33f3606f9d187",
+      "about": [
+        "concept-directly"
+      ],
+      "speakers": [],
+      "payload": {
+        "term": "directly",
+        "definition": "Struck in melee by a foe standing next to you (a pincer, supporter or melee hit), not by a spell or a shot from range.",
+        "aliases": [
+          "direct",
+          "in melee",
+          "melee",
+          "attacked directly"
+        ]
+      }
+    },
+    "glossary:distance": {
+      "key": "glossary:distance",
+      "id": "glossary-distance",
+      "guid": null,
+      "version": 0,
+      "source": "seed",
+      "hash": "sha256:298705e0925f74999a3e39da54d6a3a5a44fed2f35595a04c3626b382bef7d2c",
+      "about": [
+        "concept-distance"
+      ],
+      "speakers": [],
+      "payload": {
+        "term": "Distance",
+        "definition": "Keeping foes away, fighting from range."
+      }
+    },
+    "glossary:dodge": {
+      "key": "glossary:dodge",
+      "id": "glossary-dodge",
+      "guid": null,
+      "version": 0,
+      "source": "seed",
+      "hash": "sha256:626ccbaf6649869944c60dc06d17b0080364ae41b4b760e769cda28f94767f13",
+      "about": [
+        "concept-dodge"
+      ],
+      "speakers": [],
+      "payload": {
+        "term": "Dodge",
+        "definition": "When an attack misses or is slipped. Hit chance starts at 80%, rises with the attacker's SPD and LCK, and stays between 5% and 95%; the defender's [Evasion] takes its share off the top, and [Blinded] attackers miss more.",
+        "aliases": [
+          "Dodges",
+          "Miss",
+          "Misses"
+        ]
+      }
+    },
+    "glossary:drain": {
+      "key": "glossary:drain",
+      "id": "glossary-drain",
+      "guid": null,
+      "version": 0,
+      "source": "seed",
+      "hash": "sha256:a52366d905d340241e9a59cfe2663bf5afeda3df5c37897cf9d9d48ae166b957",
+      "about": [
+        "concept-drain"
+      ],
+      "speakers": [],
+      "payload": {
+        "term": "Drain",
+        "definition": "Steals health or power from a foe.",
+        "aliases": [
+          "Drains"
+        ]
+      }
+    },
+    "glossary:ember_vigil": {
+      "key": "glossary:ember_vigil",
+      "id": "glossary-ember-vigil",
+      "guid": null,
+      "version": 0,
+      "source": "seed",
+      "hash": "sha256:0d45d9bdda3918ee6670c49b1fdee40e9d2392e862cf7afe25ec7e5b5cc57e8f",
+      "about": [
+        "concept-ember-vigil"
+      ],
+      "speakers": [],
+      "payload": {
+        "term": "Ember Vigil",
+        "definition": "A Watch Vigilant's charge: every ally within 2 tiles of it gains [Regen]. [Interrupt] it, or cut the Vigilant down first."
+      }
+    },
+    "glossary:empowered": {
+      "key": "glossary:empowered",
+      "id": "glossary-empowered",
+      "guid": null,
+      "version": 0,
+      "source": "seed",
+      "hash": "sha256:4d013e270c15d48836a96307eccd969cade351ba9902ca8404d4d48fabf630bb",
+      "about": [
+        "concept-empowered"
+      ],
+      "speakers": [],
+      "payload": {
+        "term": "Empowered",
+        "definition": "Deals more damage with every pincer, skill and spell for a few turns.",
+        "aliases": [
+          "Empower",
+          "Empowers"
+        ]
+      }
+    },
+    "glossary:engineer": {
+      "key": "glossary:engineer",
+      "id": "glossary-engineer",
+      "guid": null,
+      "version": 0,
+      "source": "seed",
+      "hash": "sha256:91475ae1badfb7d854e48b7167739c6e09de0d0d5a58dfd32a94a20f112ac38d",
+      "about": [
+        "concept-engineer"
+      ],
+      "speakers": [],
+      "payload": {
+        "term": "Engineer",
+        "definition": "Fights with gadgets: turrets, traps and devices placed on the board."
+      }
+    },
+    "glossary:essence": {
+      "key": "glossary:essence",
+      "id": "glossary-essence",
+      "guid": null,
+      "version": 0,
+      "source": "seed",
+      "hash": "sha256:d30baefd674b092b18cdc0c85d1b2d6e33eef6056f8b55e269182b69ab029554",
+      "about": [
+        "concept-essence"
+      ],
+      "speakers": [],
+      "payload": {
+        "term": "Essence",
+        "definition": "Healing paid for in the healer's own HP instead of mana: the Herald's gift. It never takes her last HP."
+      }
+    },
+    "glossary:evasion": {
+      "key": "glossary:evasion",
+      "id": "glossary-evasion",
+      "guid": null,
+      "version": 0,
+      "source": "seed",
+      "hash": "sha256:38f11081bc492b97cabbc9ddb3484f4541ee6f5ed1b46f83dcd44f2607654489",
+      "about": [
+        "concept-evasion"
+      ],
+      "speakers": [],
+      "payload": {
+        "term": "Evasion",
+        "definition": "Points shaved off a foe's hit chance: AGI × 0.2 + LCK × 0.1 (at most 25), plus gear and [Blurred], capped at 40. A blow it slips is a [Dodge]. [Pincer] and [Supporter] blows can't be dodged.",
+        "aliases": [
+          "Evade",
+          "Evades",
+          "Evasive"
+        ]
+      }
+    },
+    "glossary:fair": {
+      "key": "glossary:fair",
+      "id": "glossary-fair",
+      "guid": null,
+      "version": 0,
+      "source": "seed",
+      "hash": "sha256:9eeeb2468b781cdc5855dfd7a9418951b7bf608074c802e30dff9022a61f6a16",
+      "about": [
+        "concept-fair"
+      ],
+      "speakers": [],
+      "payload": {
+        "term": "fair",
+        "definition": "A fair chance: about 35% (28 to 42%)."
+      }
+    },
+    "glossary:fear": {
+      "key": "glossary:fear",
+      "id": "glossary-fear",
+      "guid": null,
+      "version": 0,
+      "source": "seed",
+      "hash": "sha256:b05c271769917e5380e3e0cd5f43114c8f8d1d56ac99ab0e9e213398f0124772",
+      "about": [
+        "concept-fear"
+      ],
+      "speakers": [],
+      "payload": {
+        "term": "Fear",
+        "definition": "Dread that weakens a foe's will to fight."
+      }
+    },
+    "glossary:feed_the_herd": {
+      "key": "glossary:feed_the_herd",
+      "id": "glossary-feed-the-herd",
+      "guid": null,
+      "version": 0,
+      "source": "seed",
+      "hash": "sha256:88edde734b8db4aaba6f89fbbfa7e06b80cec31bd36e55ca20cd9c7da0599cde",
+      "about": [
+        "concept-feed-the-herd"
+      ],
+      "speakers": [],
+      "payload": {
+        "term": "Feed the Herd",
+        "definition": "A Herd Boss's charge: every ally within 2 tiles heals and rushes its next turn. [Interrupt] it, or kill the Boss first."
+      }
+    },
+    "glossary:fighter": {
+      "key": "glossary:fighter",
+      "id": "glossary-fighter",
+      "guid": null,
+      "version": 0,
+      "source": "seed",
+      "hash": "sha256:28d585dfedd30a0d02786edea530c798f0307d63ec86f63245f1a11f19df18e4",
+      "about": [
+        "concept-fighter"
+      ],
+      "speakers": [],
+      "payload": {
+        "term": "Fighter",
+        "definition": "A frontline all-rounder: steady melee damage and staying power."
+      }
+    },
+    "glossary:flanker": {
+      "key": "glossary:flanker",
+      "id": "glossary-flanker",
+      "guid": null,
+      "version": 0,
+      "source": "seed",
+      "hash": "sha256:1742e897cd62e5ca893f14dbf00ab7a1efdd1c00546f66497280c524e4ecf5bf",
+      "about": [
+        "concept-flanker"
+      ],
+      "speakers": [],
+      "payload": {
+        "term": "Flanker",
+        "definition": "Wins from the sides and behind, where foes are open."
+      }
+    },
+    "glossary:footwork": {
+      "key": "glossary:footwork",
+      "id": "glossary-footwork",
+      "guid": null,
+      "version": 0,
+      "source": "seed",
+      "hash": "sha256:56ecc66f08a4ac534fdafeda1f56a43cd9f3829c2820949fa1dc8e9e5a06b56e",
+      "about": [
+        "concept-footwork"
+      ],
+      "speakers": [],
+      "payload": {
+        "term": "Footwork",
+        "definition": "Moving well: repositioning to set up pincers and avoid harm."
+      }
+    },
+    "glossary:frozen": {
+      "key": "glossary:frozen",
+      "id": "glossary-frozen",
+      "guid": null,
+      "version": 0,
+      "source": "seed",
+      "hash": "sha256:1058476623cb67fdec64d792ae85241570e82620b45bbb3c4341e4540ccd87da",
+      "about": [
+        "concept-frozen"
+      ],
+      "speakers": [],
+      "payload": {
+        "term": "Frozen",
+        "definition": "Encased in ice: can't move or act, and its timeline icon stops until it thaws. A [Stun].",
+        "aliases": [
+          "Freeze",
+          "Freezes"
+        ]
+      }
+    },
+    "glossary:gadgets": {
+      "key": "glossary:gadgets",
+      "id": "glossary-gadgets",
+      "guid": null,
+      "version": 0,
+      "source": "seed",
+      "hash": "sha256:546cf4253f2bbfb9ebe4a3df45f12572defca3bac25d7ad8f090708eb5dc0aa8",
+      "about": [
+        "concept-gadgets"
+      ],
+      "speakers": [],
+      "payload": {
+        "term": "Gadgets",
+        "definition": "Devices and tricks used on the board.",
+        "aliases": [
+          "Gadget"
+        ]
+      }
+    },
+    "glossary:gale_shriek": {
+      "key": "glossary:gale_shriek",
+      "id": "glossary-gale-shriek",
+      "guid": null,
+      "version": 0,
+      "source": "seed",
+      "hash": "sha256:a0d02e339cfacef5b73a35eb853b8c42dc4b4c3798b3b5cbb46ccdb90508456a",
+      "about": [
+        "concept-gale-shriek"
+      ],
+      "speakers": [],
+      "payload": {
+        "term": "Gale Shriek",
+        "definition": "A Harpy Shrieker's charge: a whirling gale that hits one hero and every hero beside it and drags each up to 2 tiles toward the harpy, out of formation. [Interrupt] it, or spread out."
+      }
+    },
+    "glossary:good": {
+      "key": "glossary:good",
+      "id": "glossary-good",
+      "guid": null,
+      "version": 0,
+      "source": "seed",
+      "hash": "sha256:dda48210590d87bb9776a04ee5d6ace2747035db15bd36f52854cc7224d3e9d0",
+      "about": [
+        "concept-good"
+      ],
+      "speakers": [],
+      "payload": {
+        "term": "good",
+        "definition": "A good chance: about 50% (43 to 62%)."
+      }
+    },
+    "glossary:guard": {
+      "key": "glossary:guard",
+      "id": "glossary-guard",
+      "guid": null,
+      "version": 0,
+      "source": "seed",
+      "hash": "sha256:001e7e1fe2d1d15e465c74d8c66780a5c029231f6d1638c6be690bf69eb00671",
+      "about": [
+        "concept-guard"
+      ],
+      "speakers": [],
+      "payload": {
+        "term": "Guard",
+        "definition": "Ends your turn early; the turn time you didn't use fills the mana bubble.",
+        "aliases": [
+          "Guards",
+          "Guarding"
+        ]
+      }
+    },
+    "glossary:guardian": {
+      "key": "glossary:guardian",
+      "id": "glossary-guardian",
+      "guid": null,
+      "version": 0,
+      "source": "seed",
+      "hash": "sha256:66e488da20885745111cb50c38e086ab261387df1dd18476f8843315a61ef892",
+      "about": [
+        "concept-guardian"
+      ],
+      "speakers": [],
+      "payload": {
+        "term": "Guardian",
+        "definition": "A protector that stands in front and takes hits for the party."
+      }
+    },
+    "glossary:haste": {
+      "key": "glossary:haste",
+      "id": "glossary-haste",
+      "guid": null,
+      "version": 0,
+      "source": "seed",
+      "hash": "sha256:6781f9e06156df1bcd5cc2a550d31f496f82aee26fbc261a5a5975ef4dafd9e3",
+      "about": [
+        "concept-haste"
+      ],
+      "speakers": [],
+      "payload": {
+        "term": "Haste",
+        "definition": "Slides a timeline icon forward so it acts sooner; the opposite of [Pushback].",
+        "aliases": [
+          "Hasten",
+          "Hastens",
+          "Quicken",
+          "Quickens",
+          "out-haste"
+        ]
+      }
+    },
+    "glossary:healer": {
+      "key": "glossary:healer",
+      "id": "glossary-healer",
+      "guid": null,
+      "version": 0,
+      "source": "seed",
+      "hash": "sha256:62d7697b098c939b37794bbee69b59fc3a459f4e4150c7477878f56d60b75b73",
+      "about": [
+        "concept-healer"
+      ],
+      "speakers": [],
+      "payload": {
+        "term": "Healer",
+        "definition": "Mends and cleanses; heals grow with WIS."
+      }
+    },
+    "glossary:hellfire": {
+      "key": "glossary:hellfire",
+      "id": "glossary-hellfire",
+      "guid": null,
+      "version": 0,
+      "source": "seed",
+      "hash": "sha256:07c98540ca06b4ae1f57c1015fbe75ff525a21fd8e41798ec42e9967a6dc4494",
+      "about": [
+        "concept-hellfire"
+      ],
+      "speakers": [],
+      "payload": {
+        "term": "Hellfire",
+        "definition": "An Infernalist Pyromancer's charge: fire on one hero and the four tiles beside it, which [Burns] each one hit. Spread out, or [Interrupt] it."
+      }
+    },
+    "glossary:int": {
+      "key": "glossary:int",
+      "id": "glossary-int",
+      "guid": null,
+      "version": 0,
+      "source": "seed",
+      "hash": "sha256:d4786b706d86e7dabfec3264da3124fbe8a90ebae8b15edd6fe4213b2ec4ec0c",
+      "about": [
+        "concept-int"
+      ],
+      "speakers": [],
+      "payload": {
+        "term": "Intelligence",
+        "definition": "INT. Raises spell damage.",
+        "aliases": [
+          "INT"
+        ]
+      }
+    },
+    "glossary:interrupt": {
+      "key": "glossary:interrupt",
+      "id": "glossary-interrupt",
+      "guid": null,
+      "version": 0,
+      "source": "seed",
+      "hash": "sha256:1fc7b98ddd9c2ace2eae2f66d200b709c4a6af572989878553bbfa21d5cbaff1",
+      "about": [
+        "concept-interrupt"
+      ],
+      "speakers": [],
+      "payload": {
+        "term": "Interrupt",
+        "definition": "Hitting a charging caster: the cast can be pushed back on the timeline or broken outright.",
+        "aliases": [
+          "Interrupts",
+          "Interrupting"
+        ]
+      }
+    },
+    "glossary:knockdown": {
+      "key": "glossary:knockdown",
+      "id": "glossary-knockdown",
+      "guid": null,
+      "version": 0,
+      "source": "seed",
+      "hash": "sha256:dd0426131c5822ec941185baf4b98832571b6f4e4d44e3238340c3790124a105",
+      "about": [
+        "concept-knockdown"
+      ],
+      "speakers": [],
+      "payload": {
+        "term": "Knockdown",
+        "definition": "Puts a foe on the ground, costing it time.",
+        "aliases": [
+          "Knockdowns"
+        ]
+      }
+    },
+    "glossary:lck": {
+      "key": "glossary:lck",
+      "id": "glossary-lck",
+      "guid": null,
+      "version": 0,
+      "source": "seed",
+      "hash": "sha256:70219c93c69d3cfb39189603ae738dcc0fbc60cba9b2fe17759fa50682cf0331",
+      "about": [
+        "concept-lck"
+      ],
+      "speakers": [],
+      "payload": {
+        "term": "Luck",
+        "definition": "LCK. Critical hits, accuracy, steals and the rare Clutch.",
+        "aliases": [
+          "LCK"
+        ]
+      }
+    },
+    "glossary:lifesteal": {
+      "key": "glossary:lifesteal",
+      "id": "glossary-lifesteal",
+      "guid": null,
+      "version": 0,
+      "source": "seed",
+      "hash": "sha256:398ddbe5a6bc8530ea2f51cc923d5acb672d858569c90cdcf996099bb2b269b8",
+      "about": [
+        "concept-lifesteal"
+      ],
+      "speakers": [],
+      "payload": {
+        "term": "Lifesteal",
+        "definition": "Heals the attacker a share of the damage its blow deals.",
+        "aliases": [
+          "Lifesteals"
+        ]
+      }
+    },
+    "glossary:likely": {
+      "key": "glossary:likely",
+      "id": "glossary-likely",
+      "guid": null,
+      "version": 0,
+      "source": "seed",
+      "hash": "sha256:b5d135d34b22246c589e95a71b8b08afe3f7beb60523eae61730b9012a732e1e",
+      "about": [
+        "concept-likely"
+      ],
+      "speakers": [],
+      "payload": {
+        "term": "likely",
+        "definition": "Likely: about 75% (63% and up)."
+      }
+    },
+    "glossary:mana_charge": {
+      "key": "glossary:mana_charge",
+      "id": "glossary-mana-charge",
+      "guid": null,
+      "version": 0,
+      "source": "seed",
+      "hash": "sha256:d9325c2b4906bf026871e2487be06205a0f923bc25d802d9bbb93373b7d948ea",
+      "about": [
+        "concept-mana-charge"
+      ],
+      "speakers": [],
+      "payload": {
+        "term": "mana charge",
+        "definition": "Fills the party's mana meter; every 100 is one orb for spells."
+      }
+    },
+    "glossary:mauler": {
+      "key": "glossary:mauler",
+      "id": "glossary-mauler",
+      "guid": null,
+      "version": 0,
+      "source": "seed",
+      "hash": "sha256:3682bdbfd078feb5532d6cda6f6ceef0af4e1d3941795fd76a3b38a0b7bf539c",
+      "about": [
+        "concept-mauler"
+      ],
+      "speakers": [],
+      "payload": {
+        "term": "Mauler",
+        "definition": "Tears into foes up close with claws and fangs."
+      }
+    },
+    "glossary:openings": {
+      "key": "glossary:openings",
+      "id": "glossary-openings",
+      "guid": null,
+      "version": 0,
+      "source": "seed",
+      "hash": "sha256:1d46360a4980294d58d0e5baa089cacc3233962c8df1a22651443daac2e04b6d",
+      "about": [
+        "concept-openings"
+      ],
+      "speakers": [],
+      "payload": {
+        "term": "Openings",
+        "definition": "A foe left exposed by a status or a missed blow: the moment to strike.",
+        "aliases": [
+          "Opening"
+        ]
+      }
+    },
+    "glossary:passive": {
+      "key": "glossary:passive",
+      "id": "glossary-passive",
+      "guid": null,
+      "version": 0,
+      "source": "seed",
+      "hash": "sha256:eca53167dce4ffe1fcf1ef30d6f54034bcbdb6dd036e33b109675d3267c98393",
+      "about": [
+        "concept-passive"
+      ],
+      "speakers": [],
+      "payload": {
+        "term": "Passive",
+        "definition": "Always on. A passive never takes a slot, mana or a turn.",
+        "aliases": [
+          "Passives"
+        ]
+      }
+    },
+    "glossary:patience": {
+      "key": "glossary:patience",
+      "id": "glossary-patience",
+      "guid": null,
+      "version": 0,
+      "source": "seed",
+      "hash": "sha256:aeab786beead959992e3e0f5defc8b1f3558f21cdddb70dc65033527988de37b",
+      "about": [
+        "concept-patience"
+      ],
+      "speakers": [],
+      "payload": {
+        "term": "Patience",
+        "definition": "Waiting for the right moment rather than rushing in."
+      }
+    },
+    "glossary:physical": {
+      "key": "glossary:physical",
+      "id": "glossary-physical",
+      "guid": null,
+      "version": 0,
+      "source": "seed",
+      "hash": "sha256:9d3eca8875b0fa43a4f974ead16cddc540c92bab94dadd9702aa380dc7b724b6",
+      "about": [
+        "concept-physical"
+      ],
+      "speakers": [],
+      "payload": {
+        "term": "Physical",
+        "definition": "Weapon damage: blades, fists, claws and arrows, as opposed to fire, ice and other magic.",
+        "aliases": [
+          "Physical damage"
+        ]
+      }
+    },
+    "glossary:piercing_shot": {
+      "key": "glossary:piercing_shot",
+      "id": "glossary-piercing-shot",
+      "guid": null,
+      "version": 0,
+      "source": "seed",
+      "hash": "sha256:0d6e5999d143dbbb092a6416effc54fdf6666cbcd02e289ebc7e27bbadb3d555",
+      "about": [
+        "concept-piercing-shot"
+      ],
+      "speakers": [],
+      "payload": {
+        "term": "Piercing shot",
+        "definition": "A shot that passes through to hit the targets behind."
+      }
+    },
+    "glossary:pincer": {
+      "key": "glossary:pincer",
+      "id": "glossary-pincer",
+      "guid": null,
+      "version": 0,
+      "source": "seed",
+      "hash": "sha256:d176f90337b50452afcc59a053da238c508557c1b0ec055d06b2024462c6cb93",
+      "about": [
+        "concept-pincer"
+      ],
+      "speakers": [],
+      "payload": {
+        "term": "Pincer",
+        "definition": "Two allies in one row or column with foes and nothing else between them: both strike every foe in the line. Heroes' main source of damage.",
+        "aliases": [
+          "Pincers",
+          "Pincered"
+        ]
+      }
+    },
+    "glossary:poisoned": {
+      "key": "glossary:poisoned",
+      "id": "glossary-poisoned",
+      "guid": null,
+      "version": 0,
+      "source": "seed",
+      "hash": "sha256:9fe96a06d31226139b1e2b93ea7d45d42b4685af6b55b32357835cd2cc8499f1",
+      "about": [
+        "concept-poisoned"
+      ],
+      "speakers": [],
+      "payload": {
+        "term": "Poisoned",
+        "definition": "Takes Poison damage over time.",
+        "aliases": [
+          "Poison",
+          "Poisons"
+        ]
+      }
+    },
+    "glossary:pouncer": {
+      "key": "glossary:pouncer",
+      "id": "glossary-pouncer",
+      "guid": null,
+      "version": 0,
+      "source": "seed",
+      "hash": "sha256:d96a12a0c07a9c011d806a8787cbe3ddab8e7e8a80d19f1386f507c9fffd73ab",
+      "about": [
+        "concept-pouncer"
+      ],
+      "speakers": [],
+      "payload": {
+        "term": "Pouncer",
+        "definition": "Leaps onto prey from a distance."
+      }
+    },
+    "glossary:prominence": {
+      "key": "glossary:prominence",
+      "id": "glossary-prominence",
+      "guid": null,
+      "version": 0,
+      "source": "seed",
+      "hash": "sha256:b15b75daa752a0e60e6cad215f21016d4282cd26ddea058f28a9b2b291a6ba4c",
+      "about": [
+        "concept-prominence"
+      ],
+      "speakers": [],
+      "payload": {
+        "term": "Prominence",
+        "definition": "The big diamond at the timeline's left end: who acts next, and in how many seconds.",
+        "aliases": [
+          "Prominence diamond"
+        ]
+      }
+    },
+    "glossary:protection": {
+      "key": "glossary:protection",
+      "id": "glossary-protection",
+      "guid": null,
+      "version": 0,
+      "source": "seed",
+      "hash": "sha256:5f4323168d225ec22587100c6b8eba9a0f0fd2cec1e1a8c4c69a7aba70de9da1",
+      "about": [
+        "concept-protection"
+      ],
+      "speakers": [],
+      "payload": {
+        "term": "Protection",
+        "definition": "Takes less damage for a short while.",
+        "aliases": [
+          "Protected"
+        ]
+      }
+    },
+    "glossary:psalm_of_certainty": {
+      "key": "glossary:psalm_of_certainty",
+      "id": "glossary-psalm-of-certainty",
+      "guid": null,
+      "version": 0,
+      "source": "seed",
+      "hash": "sha256:068adef38bf8e561fc05f1e21c72c6557c97d14ab917fd9d7d23c9cc4ee1b098",
+      "about": [
+        "concept-psalm-of-certainty"
+      ],
+      "speakers": [],
+      "payload": {
+        "term": "Psalm of Certainty",
+        "definition": "A Choir Psalmist's charge: every ally within 2 tiles of it turns [Empowered]. [Interrupt] it, or draw its allies away."
+      }
+    },
+    "glossary:pushback": {
+      "key": "glossary:pushback",
+      "id": "glossary-pushback",
+      "guid": null,
+      "version": 0,
+      "source": "seed",
+      "hash": "sha256:ca7f999e03e72a2197d411bace37f55cdbfd552a0221e1df07e367b1947d8103",
+      "about": [
+        "concept-pushback"
+      ],
+      "speakers": [],
+      "payload": {
+        "term": "Pushback",
+        "definition": "Shoves a foe's timeline icon back by seconds so it acts later: at most 2 s per action. Every hero [pincer] pushes each foe it hits back 1 s.",
+        "aliases": [
+          "Pushes back",
+          "Knocks back"
+        ]
+      }
+    },
+    "glossary:reactive": {
+      "key": "glossary:reactive",
+      "id": "glossary-reactive",
+      "guid": null,
+      "version": 0,
+      "source": "seed",
+      "hash": "sha256:8f50c07b1c82912607bebcfbc9cc598222174d65d4453078f3650553e07b0e1c",
+      "about": [
+        "concept-reactive"
+      ],
+      "speakers": [],
+      "payload": {
+        "term": "Reactive",
+        "definition": "Goes off by itself when something happens (being hit, an ally falling): no slot, no mana, no turn."
+      }
+    },
+    "glossary:red_tide": {
+      "key": "glossary:red_tide",
+      "id": "glossary-red-tide",
+      "guid": null,
+      "version": 0,
+      "source": "seed",
+      "hash": "sha256:fe1c1cdb3fd26d6886912cde0f5d68417d08392a0723682874b9c227bef8f4b3",
+      "about": [
+        "concept-red-tide"
+      ],
+      "speakers": [],
+      "payload": {
+        "term": "Red Tide",
+        "definition": "A Hellspawn Emberheart's charge: the red river floods a hero's whole row, burning everyone in it. Leave the row, or [Interrupt] it."
+      }
+    },
+    "glossary:reflect": {
+      "key": "glossary:reflect",
+      "id": "glossary-reflect",
+      "guid": null,
+      "version": 0,
+      "source": "seed",
+      "hash": "sha256:dd121447c201e23be84c8a361870045f0eff84d1b333df09d78de5a6b6c9a9d5",
+      "about": [
+        "concept-reflect"
+      ],
+      "speakers": [],
+      "payload": {
+        "term": "Reflect",
+        "definition": "Sends a share of the damage it just took back at the attacker.",
+        "aliases": [
+          "Reflects",
+          "Reflected"
+        ]
+      }
+    },
+    "glossary:regen": {
+      "key": "glossary:regen",
+      "id": "glossary-regen",
+      "guid": null,
+      "version": 0,
+      "source": "seed",
+      "hash": "sha256:b408f00f68ad78052d7449b3715faff233d7f5ac4568d81dba8429169cc9b8a8",
+      "about": [
+        "concept-regen"
+      ],
+      "speakers": [],
+      "payload": {
+        "term": "Regen",
+        "definition": "Heals a little every second for a while.",
+        "aliases": [
+          "Regenerating"
+        ]
+      }
+    },
+    "glossary:roar": {
+      "key": "glossary:roar",
+      "id": "glossary-roar",
+      "guid": null,
+      "version": 0,
+      "source": "seed",
+      "hash": "sha256:08773166c715dc1718aa57f598c5e2901d22a8162d1d7d4af0912b6659fafbc6",
+      "about": [
+        "concept-roar"
+      ],
+      "speakers": [],
+      "payload": {
+        "term": "Roar",
+        "definition": "A cry that rattles foes or rallies allies.",
+        "aliases": [
+          "Roars"
+        ]
+      }
+    },
+    "glossary:rot": {
+      "key": "glossary:rot",
+      "id": "glossary-rot",
+      "guid": null,
+      "version": 0,
+      "source": "seed",
+      "hash": "sha256:c39df1753f0bdfc93b0728c6068681f5d9c330dc13bcf37c3bdc182eac0c078c",
+      "about": [
+        "concept-rot"
+      ],
+      "speakers": [],
+      "payload": {
+        "term": "Rot",
+        "definition": "Decay that eats at foes over time."
+      }
+    },
+    "glossary:sentient": {
+      "key": "glossary:sentient",
+      "id": "glossary-sentient",
+      "guid": null,
+      "version": 0,
+      "source": "seed",
+      "hash": "sha256:19a1e6b5e69ead3b3defd4bed7302ce678b067fd59438beb6f8650ebf5b61d6a",
+      "about": [
+        "concept-sentient"
+      ],
+      "speakers": [],
+      "payload": {
+        "term": "Sentient",
+        "definition": "An enemy with a society or that plans ahead. Only Sentient foes (and every hero) can make [pincer] attacks."
+      }
+    },
+    "glossary:shots": {
+      "key": "glossary:shots",
+      "id": "glossary-shots",
+      "guid": null,
+      "version": 0,
+      "source": "seed",
+      "hash": "sha256:be22437df39ac4e90d355125b242c5d7394447b98b58170526086557e3855c7e",
+      "about": [
+        "concept-shots"
+      ],
+      "speakers": [],
+      "payload": {
+        "term": "Shots",
+        "definition": "Attacks from range.",
+        "aliases": [
+          "Shot"
+        ]
+      }
+    },
+    "glossary:siege_shot": {
+      "key": "glossary:siege_shot",
+      "id": "glossary-siege-shot",
+      "guid": null,
+      "version": 0,
+      "source": "seed",
+      "hash": "sha256:86b6296aa161d7bd3a4ca99d68f82f4044c97bd303efb0c2ecf4f8b71c5615e0",
+      "about": [
+        "concept-siege-shot"
+      ],
+      "speakers": [],
+      "payload": {
+        "term": "Siege Shot",
+        "definition": "A Bulwark Siege Gunner's charge: one round down a marked line to the board's edge that hits every hero still on it. Step off the line, or [Interrupt] it."
+      }
+    },
+    "glossary:silenced": {
+      "key": "glossary:silenced",
+      "id": "glossary-silenced",
+      "guid": null,
+      "version": 0,
+      "source": "seed",
+      "hash": "sha256:c38bb54af4cb012c75bc22ad1fd981b3d9d8dbc21c8f11f4481994af4b134fa5",
+      "about": [
+        "concept-silenced"
+      ],
+      "speakers": [],
+      "payload": {
+        "term": "Silenced",
+        "definition": "Can't cast spells; skills and items still work.",
+        "aliases": [
+          "Silence",
+          "Silences"
+        ]
+      }
+    },
+    "glossary:slight": {
+      "key": "glossary:slight",
+      "id": "glossary-slight",
+      "guid": null,
+      "version": 0,
+      "source": "seed",
+      "hash": "sha256:b43f2b4e6131cb35a9d9499867421433f9cccf1f75b98b7a825a4c2d1418c6a3",
+      "about": [
+        "concept-slight"
+      ],
+      "speakers": [],
+      "payload": {
+        "term": "slight",
+        "definition": "A slight chance: about 10% (up to 15%)."
+      }
+    },
+    "glossary:slowed": {
+      "key": "glossary:slowed",
+      "id": "glossary-slowed",
+      "guid": null,
+      "version": 0,
+      "source": "seed",
+      "hash": "sha256:1173679680d735cb3a4e332095d6f77e4652e568c13661d42852b5173aaf093d",
+      "about": [
+        "concept-slowed"
+      ],
+      "speakers": [],
+      "payload": {
+        "term": "Slowed",
+        "definition": "Its timeline icon moves at half speed, so it acts later. On a hero it also costs the party [tempo].",
+        "aliases": [
+          "Slow",
+          "Slows",
+          "Slowing"
+        ]
+      }
+    },
+    "glossary:small": {
+      "key": "glossary:small",
+      "id": "glossary-small",
+      "guid": null,
+      "version": 0,
+      "source": "seed",
+      "hash": "sha256:eec9ca09f45f542095fea3679df35f973b73681993860c2c74ea109cf39573a5",
+      "about": [
+        "concept-small"
+      ],
+      "speakers": [],
+      "payload": {
+        "term": "small",
+        "definition": "A small chance: about 20% (16 to 27%)."
+      }
+    },
+    "glossary:soulfire": {
+      "key": "glossary:soulfire",
+      "id": "glossary-soulfire",
+      "guid": null,
+      "version": 0,
+      "source": "seed",
+      "hash": "sha256:489b516585908bee7127a2129f3c1f8b0d74b79f7f8e421ba68c6b81067f8e20",
+      "about": [
+        "concept-soulfire"
+      ],
+      "speakers": [],
+      "payload": {
+        "term": "Soulfire",
+        "definition": "The Lich's charge: magenta fire on one hero and every hero in the 3×3 around it, which [Burns] each one hit. Spread out, or [Interrupt] it."
+      }
+    },
+    "glossary:spd": {
+      "key": "glossary:spd",
+      "id": "glossary-spd",
+      "guid": null,
+      "version": 0,
+      "source": "seed",
+      "hash": "sha256:5887d4f19942a0ec696f59bca9cd26b277ce6092e93740b1ee9d4349d4009e41",
+      "about": [
+        "concept-spd"
+      ],
+      "speakers": [],
+      "payload": {
+        "term": "Speed",
+        "definition": "SPD. How fast the unit's timeline icon fills, and a little accuracy.",
+        "aliases": [
+          "SPD"
+        ]
+      }
+    },
+    "glossary:sta": {
+      "key": "glossary:sta",
+      "id": "glossary-sta",
+      "guid": null,
+      "version": 0,
+      "source": "seed",
+      "hash": "sha256:5c0cfcb7c994c0d5aecd6ac5a330018652cab3112383d0cf461acb756865151c",
+      "about": [
+        "concept-sta"
+      ],
+      "speakers": [],
+      "payload": {
+        "term": "Stamina",
+        "definition": "STA. Staying power for long fights.",
+        "aliases": [
+          "STA"
+        ]
+      }
+    },
+    "glossary:stagger": {
+      "key": "glossary:stagger",
+      "id": "glossary-stagger",
+      "guid": null,
+      "version": 0,
+      "source": "seed",
+      "hash": "sha256:72190876f29f7139d1a117c90451efdd92345b5f0d61b96e89221302f23ca83c",
+      "about": [
+        "concept-stagger"
+      ],
+      "speakers": [],
+      "payload": {
+        "term": "Stagger",
+        "definition": "A hit on a charging caster that pushes its cast back on the timeline.",
+        "aliases": [
+          "Staggers",
+          "Staggering"
+        ]
+      }
+    },
+    "glossary:stampede": {
+      "key": "glossary:stampede",
+      "id": "glossary-stampede",
+      "guid": null,
+      "version": 0,
+      "source": "seed",
+      "hash": "sha256:2f5574cd8bc40b2f75755d63f31a3878d487d8a90cf461dd2518dff43accb631",
+      "about": [
+        "concept-stampede"
+      ],
+      "speakers": [],
+      "payload": {
+        "term": "Stampede",
+        "definition": "The Herd's loyalty: when any of their crew falls, every bull still standing charges, and its next turn comes sooner. Watch the bar, or [Pushback] them after."
+      }
+    },
+    "glossary:str": {
+      "key": "glossary:str",
+      "id": "glossary-str",
+      "guid": null,
+      "version": 0,
+      "source": "seed",
+      "hash": "sha256:d6eee3ec60daa99f834f58b267c1d6db04c54c80d796341bcfdf2b12dbd391fb",
+      "about": [
+        "concept-str"
+      ],
+      "speakers": [],
+      "payload": {
+        "term": "Strength",
+        "definition": "STR. Raises the damage of pincers and physical skills.",
+        "aliases": [
+          "STR"
+        ]
+      }
+    },
+    "glossary:striker": {
+      "key": "glossary:striker",
+      "id": "glossary-striker",
+      "guid": null,
+      "version": 0,
+      "source": "seed",
+      "hash": "sha256:ec569daf3710641a9195fb1d859245e5940bb00ce520f6103ef5567315c771e3",
+      "about": [
+        "concept-striker"
+      ],
+      "speakers": [],
+      "payload": {
+        "term": "Striker",
+        "definition": "Pincer damage first: grows with STR."
+      }
+    },
+    "glossary:stun": {
+      "key": "glossary:stun",
+      "id": "glossary-stun",
+      "guid": null,
+      "version": 0,
+      "source": "seed",
+      "hash": "sha256:c42206b562b2c30fca26b64c5d3c853b2b2b87a67c87ca8fca1617192f8c3da9",
+      "about": [
+        "concept-stun"
+      ],
+      "speakers": [],
+      "payload": {
+        "term": "Stun",
+        "definition": "Anything that stops a unit acting, like [Frozen] or [Asleep]; its turn waits until the status ends.",
+        "aliases": [
+          "Stunned",
+          "Stuns"
+        ]
+      }
+    },
+    "glossary:supporter": {
+      "key": "glossary:supporter",
+      "id": "glossary-supporter",
+      "guid": null,
+      "version": 0,
+      "source": "seed",
+      "hash": "sha256:8790a7c0b66f0e62d71b9c881218d4a785e48e2fab71a47136545302c4766e35",
+      "about": [
+        "concept-supporter"
+      ],
+      "speakers": [],
+      "payload": {
+        "term": "Supporter",
+        "definition": "An ally joined to a pincer attacker by an unbroken chain of allies. It adds its class's support action: a 50% strike, a heal, a buff.",
+        "aliases": [
+          "Supporters",
+          "Support"
+        ]
+      }
+    },
+    "glossary:surrounded": {
+      "key": "glossary:surrounded",
+      "id": "glossary-surrounded",
+      "guid": null,
+      "version": 0,
+      "source": "seed",
+      "hash": "sha256:9c102803924ed5f3f82f6336d1bc08ee605e35c6298632a5244754a2dccc51e4",
+      "about": [
+        "concept-surrounded"
+      ],
+      "speakers": [],
+      "payload": {
+        "term": "surrounded",
+        "definition": "With foes on two or more of the four tiles around it."
+      }
+    },
+    "glossary:tamed": {
+      "key": "glossary:tamed",
+      "id": "glossary-tamed",
+      "guid": null,
+      "version": 0,
+      "source": "seed",
+      "hash": "sha256:c1ebdd81375ee9efc2c08d09a01596a990714a3eda903baae09004c9903bce16",
+      "about": [
+        "concept-tamed"
+      ],
+      "speakers": [],
+      "payload": {
+        "term": "Tamed",
+        "definition": "A wild monster fighting for you on its own: it keeps its own turn icon, attacks your foes, carries the [Pincer] keyword and grows its bond each turn. A full bond keeps it for the battle; standing at victory, it asks to join.",
+        "aliases": [
+          "Tame",
+          "Tames",
+          "Taming"
+        ]
+      }
+    },
+    "glossary:taunting": {
+      "key": "glossary:taunting",
+      "id": "glossary-taunting",
+      "guid": null,
+      "version": 0,
+      "source": "seed",
+      "hash": "sha256:2f2fe8b91eb5a6164e19e927fbac0349800e5a97988dd648e2e2fcc7b3a14bdd",
+      "about": [
+        "concept-taunting"
+      ],
+      "speakers": [],
+      "payload": {
+        "term": "Taunting",
+        "definition": "Every enemy that can reach the taunter must attack it, which keeps casters safe.",
+        "aliases": [
+          "Taunt",
+          "Taunts"
+        ]
+      }
+    },
+    "glossary:tempo": {
+      "key": "glossary:tempo",
+      "id": "glossary-tempo",
+      "guid": null,
+      "version": 0,
+      "source": "seed",
+      "hash": "sha256:24271d1c52bde39a39900fe9e6a3c5002079d20b0a58126cccd2744a9789785f",
+      "about": [
+        "concept-tempo"
+      ],
+      "speakers": [],
+      "payload": {
+        "term": "Tempo",
+        "definition": "The party's pace. Each point of tempo slows every foe's icon; losing tempo brings their turns sooner."
+      }
+    },
+    "glossary:temporal_drag": {
+      "key": "glossary:temporal_drag",
+      "id": "glossary-temporal-drag",
+      "guid": null,
+      "version": 0,
+      "source": "seed",
+      "hash": "sha256:eb5991dd73df98c3bef9ca968cdc81430caae60ae1631b61d42ae7e52d805f36",
+      "about": [
+        "concept-temporal-drag"
+      ],
+      "speakers": [],
+      "payload": {
+        "term": "Temporal Drag",
+        "definition": "An enemy charge that Slows every hero and costs the party [tempo]. Interrupt it or cleanse the Slow."
+      }
+    },
+    "glossary:tithe_hymn": {
+      "key": "glossary:tithe_hymn",
+      "id": "glossary-tithe-hymn",
+      "guid": null,
+      "version": 0,
+      "source": "seed",
+      "hash": "sha256:e2a730f5b7fb840ccd21405da0094d3da1a9fa23f82f20a5b3484af16cedcf31",
+      "about": [
+        "concept-tithe-hymn"
+      ],
+      "speakers": [],
+      "payload": {
+        "term": "Tithe Hymn",
+        "definition": "A Choir Cantor's charge: 3 Arcane to every hero, each with a [good] chance to be [Silenced]. Cast your spells before it lands, or [Interrupt] it."
+      }
+    },
+    "glossary:traps": {
+      "key": "glossary:traps",
+      "id": "glossary-traps",
+      "guid": null,
+      "version": 0,
+      "source": "seed",
+      "hash": "sha256:6282cf210cd9d0ee2c1ea6f4c2c3b0edb6134eabfc58dba1faabf9c1fac4c470",
+      "about": [
+        "concept-traps"
+      ],
+      "speakers": [],
+      "payload": {
+        "term": "Traps",
+        "definition": "Hidden hazards on tiles that hurt or hinder whoever steps there.",
+        "aliases": [
+          "Trap"
+        ]
+      }
+    },
+    "glossary:trust": {
+      "key": "glossary:trust",
+      "id": "glossary-trust",
+      "guid": null,
+      "version": 0,
+      "source": "seed",
+      "hash": "sha256:300769aa2e9dde37ea3a94640981dfe11f28936a76e5d5e4305c1e719cded969",
+      "about": [
+        "concept-trust"
+      ],
+      "speakers": [],
+      "payload": {
+        "term": "Trust",
+        "definition": "A [Wanderer]'s gauge (full at 6): +2 for each hero pincer they're part of, as an end or a flanker, and +1 each time a hero heals them. After the battle they join only if your companion says what they want to hear, and they trust you fully, or half, with a companion from their own faction."
+      }
+    },
+    "glossary:turrets": {
+      "key": "glossary:turrets",
+      "id": "glossary-turrets",
+      "guid": null,
+      "version": 0,
+      "source": "seed",
+      "hash": "sha256:7a96b0cb91e795c03bac9bda5c518825d2c165895beda86c778f2ff799cb95ec",
+      "about": [
+        "concept-turrets"
+      ],
+      "speakers": [],
+      "payload": {
+        "term": "Turrets",
+        "definition": "Placed guns that fire on their own.",
+        "aliases": [
+          "Turret"
+        ]
+      }
+    },
+    "glossary:vit": {
+      "key": "glossary:vit",
+      "id": "glossary-vit",
+      "guid": null,
+      "version": 0,
+      "source": "seed",
+      "hash": "sha256:32e028892347aae4153222fe170e3d3eb2500f571c48d9993035a2c526f103f5",
+      "about": [
+        "concept-vit"
+      ],
+      "speakers": [],
+      "payload": {
+        "term": "Vitality",
+        "definition": "VIT. Raises max HP and softens physical blows.",
+        "aliases": [
+          "VIT"
+        ]
+      }
+    },
+    "glossary:void_beam": {
+      "key": "glossary:void_beam",
+      "id": "glossary-void-beam",
+      "guid": null,
+      "version": 0,
+      "source": "seed",
+      "hash": "sha256:fc525d264a1f02831786679da89fc7b140ef7abfdca90d49687605163c782fcf",
+      "about": [
+        "concept-void-beam"
+      ],
+      "speakers": [],
+      "payload": {
+        "term": "Void Beam",
+        "definition": "A Void Sentinel's charge: a beam down a marked line to the board's edge that hits and [Silences] every hero still on it. Step off the line, or [Interrupt] it."
+      }
+    },
+    "glossary:wanderer": {
+      "key": "glossary:wanderer",
+      "id": "glossary-wanderer",
+      "guid": null,
+      "version": 0,
+      "source": "seed",
+      "hash": "sha256:dfb192e65c91f4546765ccdbceaae507cce85290b6d721bb1a452ef3dbf9478b",
+      "about": [
+        "concept-wanderer"
+      ],
+      "speakers": [],
+      "payload": {
+        "term": "Wanderer",
+        "definition": "A hero you meet mid-battle who fights the monsters on their own: their own turn icon, never commanded, but they close [Pincer] attacks with you. Earn their [Trust]; standing at victory, a party member of your choice talks with them, and they may join.",
+        "aliases": [
+          "Wanderers",
+          "Wandering"
+        ]
+      }
+    },
+    "glossary:ward": {
+      "key": "glossary:ward",
+      "id": "glossary-ward",
+      "guid": null,
+      "version": 0,
+      "source": "seed",
+      "hash": "sha256:3f38eff3bad2be86f3a29aa8fd04ceaca5da9580d011630c58527a71402a70e3",
+      "about": [
+        "concept-ward"
+      ],
+      "speakers": [],
+      "payload": {
+        "term": "Ward",
+        "definition": "A magic shield: the next blows land much softer.",
+        "aliases": [
+          "Warded",
+          "Wards"
+        ]
+      }
+    },
+    "glossary:warm": {
+      "key": "glossary:warm",
+      "id": "glossary-warm",
+      "guid": null,
+      "version": 0,
+      "source": "seed",
+      "hash": "sha256:37106c10f49347c29021943d91168b76f0c2afc97590a2f2e8a10e3e7810a294",
+      "about": [
+        "concept-warm"
+      ],
+      "speakers": [],
+      "payload": {
+        "term": "Warm",
+        "definition": "Heated: the next Ice hit turns to Steam instead of freezing."
+      }
+    },
+    "glossary:wet": {
+      "key": "glossary:wet",
+      "id": "glossary-wet",
+      "guid": null,
+      "version": 0,
+      "source": "seed",
+      "hash": "sha256:fddc94ada43ff30aef905845a133fd72807074f8904ab4c8e077c241524070e7",
+      "about": [
+        "concept-wet"
+      ],
+      "speakers": [],
+      "payload": {
+        "term": "Wet",
+        "definition": "Soaked: Lightning hits it for x1.5, and Ice freezes it more easily.",
+        "aliases": [
+          "Soak",
+          "Soaked",
+          "Soaks"
+        ]
+      }
+    },
+    "glossary:wis": {
+      "key": "glossary:wis",
+      "id": "glossary-wis",
+      "guid": null,
+      "version": 0,
+      "source": "seed",
+      "hash": "sha256:36cb15b76c31f8c7f32c4f1411000f16fff903642a78752a85832bc69220f6e1",
+      "about": [
+        "concept-wis"
+      ],
+      "speakers": [],
+      "payload": {
+        "term": "Wisdom",
+        "definition": "WIS. Raises healing, resists spells and statuses, and holds a cast together when hit.",
+        "aliases": [
+          "WIS"
+        ]
+      }
+    }
+  }
+}

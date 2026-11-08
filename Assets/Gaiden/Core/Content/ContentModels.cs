@@ -1152,8 +1152,11 @@ namespace GridGame.Core.Content
         public bool Once;
         /// <summary>Backdrop theme id (defaults to the trigger's theme, else the camp's).</summary>
         public string Backdrop;
-        /// <summary>Story beats only (GG-T231): a text crawl, titled <see cref="Title"/>, that scrolls before the conversation.</summary>
+        /// <summary>Story beats only (GG-T231): a text crawl, titled <see cref="Title"/>, that scrolls before the conversation.
+        /// Resolved from Prose ("crawl:dialogue/&lt;id&gt;", GG-T355); dialogues.json carries only <see cref="HasCrawl"/>.</summary>
         public string Crawl;
+        /// <summary>GG-T355: this beat opens with a crawl, whose words live in Prose. The marker is what gives the key.</summary>
+        public bool HasCrawl;
         public List<DialogueSpeaker> Speakers = new List<DialogueSpeaker>();
         /// <summary>First node id; defaults to the first node.</summary>
         public string Start;

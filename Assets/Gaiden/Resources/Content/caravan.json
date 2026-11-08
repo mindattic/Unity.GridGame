@@ -6,11 +6,6 @@
     "Description": "Every battle starts with extra mana orbs.",
     "Crew": "Brannoc",
     "CrewRole": "cask-keeper",
-    "Barks": [
-      "Casks sloshing fine today. Mind you don't sit on the blue one.",
-      "These casks came off a Concord wagon. Still stamped 'Property of the Still'. I painted a duck over it.",
-      "Full Morrow tonight. The orbs hum louder. Probably fine."
-    ],
     "Levels": [
       {
         "Cost": 400,
@@ -36,11 +31,6 @@
     "Description": "The inn opens on the road, mid-expedition, at a premium.",
     "Crew": "Sister Ilsabet",
     "CrewRole": "wagon medic",
-    "Barks": [
-      "Bandages boiled, cots aired. Try to come back in one piece anyway.",
-      "If it stings, it's working. If it doesn't sting, come see me.",
-      "I took vows at a Still once. Turns out the vow was the bandages, not the singing."
-    ],
     "Levels": [
       {
         "Cost": 600,
@@ -61,11 +51,6 @@
     "Description": "A travelling forge: repairs cost less.",
     "Crew": "Old Hask",
     "CrewRole": "wagon farrier",
-    "Barks": [
-      "Bring me the dented ones. The shiny ones never have stories.",
-      "Concord steel. Good steel, too. Shame about who it was bought with.",
-      "Every crack's a lesson. Some lessons are just more expensive."
-    ],
     "Levels": [
       {
         "Cost": 350,
@@ -91,11 +76,6 @@
     "Description": "A bigger cut of the spoils when an expedition is completed.",
     "Crew": "Penny Tallow",
     "CrewRole": "purser",
-    "Barks": [
-      "Count twice, spend once. That's not a saying, that's a rule.",
-      "The box is locked. The key is somewhere the Concord's auditors never thought to look.",
-      "Finish the whole road and I'll show you what a bonus looks like."
-    ],
     "Levels": [
       {
         "Cost": 500,
@@ -116,11 +96,6 @@
     "Description": "Outriders report what each battle holds.",
     "Crew": "Wren and Dace",
     "CrewRole": "outriders",
-    "Barks": [
-      "Tracks up ahead. Big ones. Wren says small ones. Wren is wrong.",
-      "We ride out at first light and come back before the soup's gone.",
-      "White domes off the east road. We went the long way round. You're welcome."
-    ],
     "Levels": [
       {
         "Cost": 300,
@@ -136,11 +111,6 @@
     "Description": "A rune-loft for the Enchantress's work: armor enchants cost less gold.",
     "Crew": "Lio",
     "CrewRole": "rune apprentice",
-    "Barks": [
-      "I ground the dust fine as flour. She says it's still too coarse.",
-      "She hums while she binds. Not the Choir's tune. Her own.",
-      "Bring armor with a story in it. The workings hold tighter."
-    ],
     "Levels": [
       {
         "Cost": 700,
@@ -161,11 +131,6 @@
     "Description": "Every scrap is written down and nothing is wasted: salvage returns more materials.",
     "Crew": "Osk",
     "CrewRole": "quartermaster",
-    "Barks": [
-      "Three iron ore, one wolf pelt, half a cog. It's all in the book.",
-      "The Concord kept a ledger too. Ours adds up. That's the difference.",
-      "If it isn't in the ledger, it didn't happen. If it is, it's mine to sort."
-    ],
     "Levels": [
       {
         "Cost": 450,

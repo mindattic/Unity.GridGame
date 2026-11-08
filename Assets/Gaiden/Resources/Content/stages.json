@@ -101,8 +101,7 @@
             "DelayTicks": 240
           }
         ],
-        "SurpriseSpeaker": "captain",
-        "SurpriseLine": "Imperial scum! Exterminate every last one of them!"
+        "SurpriseSpeaker": "captain"
       },
       {
         "Enemies": [
@@ -2413,8 +2412,7 @@
             "DelayTicks": 240
           }
         ],
-        "SurpriseSpeaker": "demonlord",
-        "SurpriseLine": "Your struggle amuses me. Let's end this quickly."
+        "SurpriseSpeaker": "demonlord"
       },
       {
         "Enemies": [

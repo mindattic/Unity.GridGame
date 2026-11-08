@@ -3,7 +3,8 @@ The weapon roster (GG-T181): 87 base weapons on top of the 13 hand-authored orig
 across every weapon class (Simple/Martial/Arcane, GG-T52) and hero role, each with its own stat profile or
 trait, a source (Merchant shop, Forge recipe or enemy drop), a named +3 passive and an icon palette.
 
-    python tools/weapons.py            # (re)write the roster into items/recipes/droptables + icons.json
+    python tools/weapons.py            # (re)write the roster into items/recipes/droptables + icons.json, and the
+                                       # descriptions into Content/Text (seed) + Data/Prose/drafts (GG-T355)
     python tools/make_icons.py --missing
 
 The +1/+2/+3 upgrade line and the six enchant variants are generated exactly like the originals':
@@ -202,8 +203,14 @@ def base_cost(rarity, total, traits):
     return int(round(cost / 5.0)) * 5
 
 
+# GG-T355: an item's description is story text. It goes to Prose (a draft, plus a seed entry in Content/Text so the game
+# shows it until the owner approves it), never into items.json.
+STORY = {}
+
+
 def item_row(wid, name, desc, rarity, wtype, wclass, cost, dur, stats, vendor):
-    return {"Id": wid, "Name": name, "Description": desc, "Type": "Equipment", "Rarity": rarity, "Slot": "Weapon",
+    STORY[wid] = desc
+    return {"Id": wid, "Name": name, "Type": "Equipment", "Rarity": rarity, "Slot": "Weapon",
             "WeaponType": wtype, "WeaponClass": wclass, "BaseCost": cost, "SellValue": -1, "MaxStack": 1, "Durability": dur,
             "BaseHealing": 0, "BaseDamage": 0, "Stats": stats, "BattleStartManaOrbs": 0, "OnUseAbility": None,
             "Resistances": {}, "SoldByVendor": vendor, "Icon": None}
@@ -322,6 +329,8 @@ def main():
     save(os.path.join(CONTENT, "recipes.json"), recipes + new_recipes)
     save(os.path.join(CONTENT, "droptables.json"), tables)
 
+    seeded = seed_descriptions()
+
     manifest = json.load(open(MANIFEST, encoding="utf-8"))
     manifest["weapon_palette"] = palettes
     for p in set(palettes.values()):
@@ -331,7 +340,21 @@ def main():
 
     weapons = [i for i in items + new_items if i["Slot"] == "Weapon" and not re.search(r"_(plus\d|ench_[a-z]+)$", i["Id"])]
     print(f"weapons: {len(W)} generated bases, {len(weapons)} base weapons total, {len(new_items)} item rows, "
-          f"{len(new_recipes)} recipes, {len(drops)} drop entries")
+          f"{len(new_recipes)} recipes, {len(drops)} drop entries; descriptions: {seeded['seeded']} seeded, "
+          f"{seeded['kept']} already from Prose; drafts in Data/Prose/drafts (prose --texts-draft gridgame Data/Prose/drafts)")
+
+
+def seed_descriptions():
+    """The generated weapons' descriptions as Prose drafts and Content/Text seed entries (docs/PROSE.md, Phase 2)."""
+    import prose_keys
+    import prose_seed
+    import prose_text
+    universe = os.path.join(ROOT, "Data", "Prose", "gridgame.universe.json")
+    known = {e["id"] for e in prose_keys.load(universe).get("entities") or []} if os.path.isfile(universe) else set()
+    docs = [prose_seed.text("description", "item:" + iid, {"short": d},
+                            [prose_keys.item_entity(iid)] if prose_keys.item_entity(iid) in known else [])
+            for iid, d in sorted(STORY.items())]
+    return prose_text.upsert_seed(docs, os.path.join(CONTENT, "Text"), os.path.join(ROOT, "Data", "Prose", "drafts"))
 
 
 if __name__ == "__main__":

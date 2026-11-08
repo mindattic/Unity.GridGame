@@ -138,7 +138,7 @@ def game_keys(content: dict) -> dict:
     for d in content.get("dialogues") or []:
         if d.get("Id"):
             keys["dialogue:" + d["Id"]] = "conversation"
-            if d.get("Crawl"):
+            if d.get("HasCrawl") or d.get("Crawl"):  # Phase 2: the record keeps only the HasCrawl marker
                 keys["crawl:dialogue/" + d["Id"]] = "crawl"
     camp = content.get("campaign") or {}
     if isinstance(camp, dict):
@@ -153,7 +153,7 @@ def game_keys(content: dict) -> dict:
         if c.get("Id"):
             keys["class:" + c["Id"]] = "description"
             for n, ph in enumerate(c.get("BossPhases") or []):
-                if isinstance(ph, dict) and ph.get("Announce"):
+                if isinstance(ph, dict):  # every boss phase announces itself
                     keys[f"bark:bossphase/{c['Id']}/{n}"] = "bark"
     for i in content.get("items") or []:
         if isinstance(i, dict) and i.get("Id"):
@@ -171,7 +171,7 @@ def game_keys(content: dict) -> dict:
         keys["npc:" + npc] = "description"
     for s in content.get("stages") or []:
         for w, wave in enumerate(s.get("Waves") or []):
-            if s.get("Id") and isinstance(wave, dict) and wave.get("SurpriseLine"):
+            if s.get("Id") and isinstance(wave, dict) and (wave.get("SurpriseSpeaker") or wave.get("SurpriseLine")):
                 keys[f"bark:surprise/{s['Id']}/{w}"] = "bark"
     for q in content.get("quests") or []:
         if q.get("Id"):
@@ -180,7 +180,7 @@ def game_keys(content: dict) -> dict:
         if g.get("Id"):
             keys["glossary:" + g["Id"]] = "glossary"
     for u in content.get("caravan") or []:
-        if u.get("Id") and u.get("Barks"):
+        if u.get("Id") and (u.get("Crew") or u.get("Barks")):  # a crewed wagon has barks
             keys["bark:caravan/" + u["Id"]] = "bark"
     for m in content.get("mercenaries") or []:
         if m.get("Class"):

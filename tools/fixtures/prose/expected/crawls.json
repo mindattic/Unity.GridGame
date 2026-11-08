@@ -7,6 +7,7 @@
       "id": "crawl-prologue",
       "guid": null,
       "version": 1,
+      "source": "prose",
       "hash": "sha256:bbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbb",
       "about": [],
       "speakers": [],
@@ -22,6 +23,7 @@
       "id": "crawl-swamp",
       "guid": "01a1b974-0000-7000-8000-000000000001",
       "version": 2,
+      "source": "prose",
       "hash": "sha256:aaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaa",
       "about": [
         "place-swamp"

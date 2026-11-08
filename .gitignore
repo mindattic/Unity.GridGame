@@ -37,5 +37,6 @@ __pycache__/
 # config, applied.jsonl and the applied texts under Assets/Gaiden/Resources/Content/Text.
 Data/Prose/*.universe.json
 Data/Prose/pending/
+Data/Prose/drafts/
 Data/Prose/outbox.jsonl
 Data/Prose/.kit/
