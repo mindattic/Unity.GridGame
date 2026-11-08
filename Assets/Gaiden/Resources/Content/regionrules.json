@@ -102,6 +102,173 @@
     ]
   },
   {
+    "Id": "slimetrail",
+    "TileStates": [
+      {
+        "Id": "slime",
+        "Hazard": true,
+        "LifeSeconds": 14,
+        "Color": "#7fd46a",
+        "Glyph": "◍"
+      }
+    ],
+    "Hooks": [
+      {
+        "On": "EnterTile",
+        "State": "slime",
+        "Effects": [
+          {
+            "Kind": "ApplyBuff",
+            "Units": "Subject",
+            "Buff": "slowed"
+          }
+        ]
+      }
+    ]
+  },
+  {
+    "Id": "firetrail",
+    "TileStates": [
+      {
+        "Id": "fire",
+        "Hazard": true,
+        "Element": "Fire",
+        "LifeSeconds": 10,
+        "Color": "#ff6a1a",
+        "Glyph": "♨"
+      }
+    ],
+    "Hooks": [
+      {
+        "On": "EnterTile",
+        "State": "fire",
+        "Effects": [
+          {
+            "Kind": "Damage",
+            "Units": "Subject",
+            "Amount": 6,
+            "DamageType": "Fire"
+          },
+          {
+            "Kind": "ApplyBuff",
+            "Units": "Subject",
+            "Buff": "burning"
+          }
+        ]
+      },
+      {
+        "On": "TurnEnd",
+        "State": "fire",
+        "Effects": [
+          {
+            "Kind": "Damage",
+            "Units": "Subject",
+            "Amount": 4,
+            "DamageType": "Fire"
+          }
+        ]
+      }
+    ]
+  },
+  {
+    "Id": "icetrail",
+    "TileStates": [
+      {
+        "Id": "ice",
+        "Hazard": true,
+        "Element": "Ice",
+        "LifeSeconds": 12,
+        "Color": "#8cd9ff",
+        "Glyph": "❄"
+      }
+    ],
+    "Hooks": [
+      {
+        "On": "EnterTile",
+        "State": "ice",
+        "Effects": [
+          {
+            "Kind": "ApplyBuff",
+            "Units": "Subject",
+            "Buff": "slowed"
+          }
+        ]
+      },
+      {
+        "On": "EnterTile",
+        "State": "ice",
+        "Chance": 0.35,
+        "Effects": [
+          {
+            "Kind": "ApplyBuff",
+            "Units": "Subject",
+            "Buff": "frozen"
+          }
+        ]
+      }
+    ]
+  },
+  {
+    "Id": "landmines",
+    "TileStates": [
+      {
+        "Id": "mine",
+        "Hazard": true,
+        "LifeSeconds": 40,
+        "Color": "#c8b44a",
+        "Glyph": "◈"
+      },
+      {
+        "Id": "armedmine",
+        "LifeSeconds": 6,
+        "Color": "#ff3b30",
+        "Glyph": "☢",
+        "OnMark": [
+          {
+            "Kind": "Schedule",
+            "Area": "Self",
+            "Radius": 1,
+            "Event": "mineblast"
+          }
+        ]
+      }
+    ],
+    "Events": [
+      {
+        "Id": "mineblast",
+        "Seconds": 1.5,
+        "Glyph": "✱",
+        "Color": "#ff3b30",
+        "Effects": [
+          {
+            "Kind": "Damage",
+            "Area": "EventTiles",
+            "Amount": 14,
+            "DamageType": "Fire"
+          },
+          {
+            "Kind": "ClearTiles",
+            "Area": "EventTiles",
+            "State": "armedmine"
+          }
+        ]
+      }
+    ],
+    "Hooks": [
+      {
+        "On": "EnterTile",
+        "State": "mine",
+        "Effects": [
+          {
+            "Kind": "MarkTiles",
+            "Area": "Self",
+            "State": "armedmine"
+          }
+        ]
+      }
+    ]
+  },
+  {
     "Id": "holds-barricades",
     "TileStates": [
       {
@@ -163,6 +330,89 @@
             "Kind": "ClearTiles",
             "Area": "Self",
             "State": "rubble"
+          }
+        ]
+      }
+    ]
+  },
+  {
+    "Id": "shardfall-strikes",
+    "TileStates": [
+      {
+        "Id": "shard-crystal",
+        "LifeSeconds": 25,
+        "Color": "#C9B8FF",
+        "Glyph": "^"
+      }
+    ],
+    "Events": [
+      {
+        "Id": "shard-strike",
+        "Seconds": 4,
+        "Hazard": true,
+        "Glyph": "*",
+        "Color": "#B48CFF",
+        "Effects": [
+          {
+            "Kind": "Damage",
+            "Area": "EventTiles",
+            "Units": "OnArea",
+            "Team": "Any",
+            "Amount": 40,
+            "DamageType": "Arcane"
+          },
+          {
+            "Kind": "MarkTiles",
+            "Area": "EventTiles",
+            "State": "shard-crystal"
+          }
+        ]
+      }
+    ],
+    "Hooks": [
+      {
+        "On": "WaveSpawn",
+        "Effects": [
+          {
+            "Kind": "Schedule",
+            "Area": "RandomUnits",
+            "Team": "Hero",
+            "Count": 1,
+            "Radius": 1,
+            "Event": "shard-strike",
+            "Seconds": 6
+          }
+        ]
+      },
+      {
+        "On": "TurnEnd",
+        "Team": "Enemy",
+        "Every": 3,
+        "Effects": [
+          {
+            "Kind": "Schedule",
+            "Area": "RandomUnits",
+            "Team": "Hero",
+            "Count": 1,
+            "Radius": 1,
+            "Event": "shard-strike"
+          }
+        ]
+      },
+      {
+        "On": "TurnEnd",
+        "Team": "Any",
+        "State": "shard-crystal",
+        "Effects": [
+          {
+            "Kind": "ApplyBuff",
+            "Units": "Subject",
+            "Buff": "ward"
+          },
+          {
+            "Kind": "ClearTiles",
+            "Area": "Self",
+            "State": "shard-crystal"
           }
         ]
       }

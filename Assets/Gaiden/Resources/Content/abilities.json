@@ -10074,5 +10074,43 @@
     "Amount": 3
    }
   ]
+ },
+ {
+  "IsTeleport": false,
+  "Icon": null,
+  "CastVfx": null,
+  "ProjectileVfx": null,
+  "ImpactVfx": null,
+  "LingerVfx": null,
+  "Sfx": null,
+  "ApplyBuff": null,
+  "ApplyBuffChance": 1.0,
+  "RemovesDebuffs": false,
+  "StealsMana": false,
+  "HastenU": 0.0,
+  "BaseHeal": 0,
+  "Id": "charge_call_shards",
+  "RecoverSeconds": 1.0,
+  "Name": "Call the Shards",
+  "Description": "Calls a shard strike down on a hero and the tiles around them; it lands a few seconds later.",
+  "Kind": "Spell",
+  "Cost": 0,
+  "CastTime": 2.0,
+  "CooldownTurns": 0,
+  "Shape": "SingleActor",
+  "Radius": 0,
+  "Mode": "PickActor",
+  "Filter": "EnemyOnly",
+  "Motion": "None",
+  "DamageType": "Arcane",
+  "BaseDamage": 0,
+  "RuleEffects": [
+   {
+    "Kind": "Schedule",
+    "Area": "Target",
+    "Radius": 1,
+    "Event": "shard-strike"
+   }
+  ]
  }
 ]

@@ -2386,6 +2386,46 @@ art first) built around its rule. GG-T359 is the framework; the regions' own rul
   areas and a hook's `Chance` draw from the battle Rng. Hooks inside hooks stop four deep. Nothing runs in a preview.
 - *(Tests: `RegionRuleTests`, written, not run.)*
 
+#### 14.20.1 The Free Holds: hold barricades (GG-T360)
+
+The first region rule (`holds-barricades`, theme `greenvalley2`, stages 28-29): a siege.
+
+- **Barricades.** Every wave clears the last wave's barricades and throws up four new ones on free tiles (`barricade`, a
+  `Blocks` state: a wall to movement, spawns and every planner, so it splits pincer lines).
+- **Breaking one.** A hero ending their turn beside a barricade (Manhattan 1) wears it down by one; at 3 it falls to
+  `rubble`: the barricade's pickup. The first hero to step onto it is `empowered` and clears it (an `EnterTile` hook);
+  unclaimed rubble lasts 20 clock seconds.
+- **Hold monsters** (Mannequin placeholder art, words in Prose `class:<id>`):
+  - **Holdwright** (Guardian brain): its charge `charge_raise_barricade` raises two barricades, shores up every standing
+    one (counter -1, one more hero turn to break) and gives allies within 1 tile Protection.
+  - **Hold Ram** (Berserker brain): its charge `charge_ram_smash` knocks its target back and smashes every barricade within
+    2 tiles to rubble, which the heroes can then claim: a double-edged foe.
+  - **Hold Marksman** (Kiter brain, range 3, targets the squishy): leaves a barricade where it falls (`OnDeathRule`).
+- **Waves.** Each Free Holds stage keeps its militia (4+ soldiers), Redline (a ganger), Free Holds I's two Hollow and Free
+  Holds II's Captain finale, and fields all three hold monsters, two foes a wave and three in the finale; every wave
+  signature stays unique.
+- Balance unmeasured (owner rule: no soak). *(Tests: `FreeHoldsTests.The_free_holds_fight_behind_barricades_with_their_own_builders_rams_and_marksmen`, written, not run.)*
+
+#### 14.20.2 Deep Shardfall: shard strikes (GG-T363)
+
+The region rule `shardfall-strikes` (theme `desert2`, stages 34-35): read the timeline, step out from under the sky.
+
+- **Shard strikes.** A `shard-strike` rule event targets a random hero and the four tiles around them: its icon rides the
+  timeline for 4 s and its tiles pulse, then it lands for 40 Arcane damage on every unit there, foe or hero, so a foe lured
+  under a strike takes it too. One is called as each wave spawns (6 s out), and again every third foe turn.
+- **Crystals.** Every tile a strike lands on grows a `shard-crystal` (25 s). A unit ending its turn on one takes a Ward
+  and uses the crystal up. (The ticket's "bonus mana on a pincer" waits on a mana effect for rules; the Ward plays the
+  same role: go stand where the sky just fell.)
+- **Shardfall monsters** (Mannequin placeholder art, words in Prose `class:<id>`):
+  - **Shardcaller** (Kiter, range 3, targets the squishy): its charge `charge_call_shards` calls a strike onto a hero and
+    the tiles around them, on top of the region's own.
+  - **Crystal Brute** (Relentless): immune to `shard-strike`, so it walks through the strikes; it seeds crystal on its tile
+    and the four around it where it falls.
+  - **Shard Skitter** (Skirmisher, fast): its death calls a strike onto its own tile and the four around it, the tiles its
+    pincer stands on, so the heroes who caught it have 4 s to get clear.
+- **Waves.** Two foes a wave, three in the finale (the Captain, a Crystal Brute and the sandmaw); signatures stay unique.
+- Balance unmeasured (owner rule: no soak). *(Tests: `DeepShardfallTests`, written, not run.)*
+
 ### 14.21 Cracking floors (added 2026-11-08, owner direction, GG-T368)
 
 Owner: *"cracking floors which open up holes to fall into that takes off some life and respawns actor next to hole (what
@@ -2431,26 +2471,6 @@ use: holes (`TileStateDef.Pit`), state entry effects (`TileStateDef.OnMark`) and
 - **Placed in** Frostmaw Caverns III (`cave-03`) and The Choir's Cathedral II (`cathedral-02`), stage `Rules`. Its name
   and description are the Prose text `rule:crackingfloor` (seeded placeholder).
 - *(Tests: `CrackingFloorTests`, written, not run.)*
-
-#### 14.20.1 The Free Holds: hold barricades (GG-T360)
-
-The first region rule (`holds-barricades`, theme `greenvalley2`, stages 28-29): a siege.
-
-- **Barricades.** Every wave clears the last wave's barricades and throws up four new ones on free tiles (`barricade`, a
-  `Blocks` state: a wall to movement, spawns and every planner, so it splits pincer lines).
-- **Breaking one.** A hero ending their turn beside a barricade (Manhattan 1) wears it down by one; at 3 it falls to
-  `rubble`: the barricade's pickup. The first hero to step onto it is `empowered` and clears it (an `EnterTile` hook);
-  unclaimed rubble lasts 20 clock seconds.
-- **Hold monsters** (Mannequin placeholder art, words in Prose `class:<id>`):
-  - **Holdwright** (Guardian brain): its charge `charge_raise_barricade` raises two barricades, shores up every standing
-    one (counter -1, one more hero turn to break) and gives allies within 1 tile Protection.
-  - **Hold Ram** (Berserker brain): its charge `charge_ram_smash` knocks its target back and smashes every barricade within
-    2 tiles to rubble, which the heroes can then claim: a double-edged foe.
-  - **Hold Marksman** (Kiter brain, range 3, targets the squishy): leaves a barricade where it falls (`OnDeathRule`).
-- **Waves.** Each Free Holds stage keeps its militia (4+ soldiers), Redline (a ganger), Free Holds I's two Hollow and Free
-  Holds II's Captain finale, and fields all three hold monsters, two foes a wave and three in the finale; every wave
-  signature stays unique.
-- Balance unmeasured (owner rule: no soak). *(Tests: `FreeHoldsTests.The_free_holds_fight_behind_barricades_with_their_own_builders_rams_and_marksmen`, written, not run.)*
 
 ## 15. Save
 

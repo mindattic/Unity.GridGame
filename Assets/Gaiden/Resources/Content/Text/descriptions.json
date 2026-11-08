@@ -734,6 +734,22 @@
         "long": "Knows every reagent, every breath, and when to spend both."
       }
     },
+    "class:crystalbrute": {
+      "key": "class:crystalbrute",
+      "id": "description-class-crystalbrute",
+      "guid": null,
+      "version": 0,
+      "source": "seed",
+      "hash": "sha256:662acaa12598a7fac912cfa81e3236ef28450bc175a2f430f7c03227954ef85d",
+      "about": [
+        "class-crystalbrute"
+      ],
+      "speakers": [],
+      "payload": {
+        "short": "A hulk grown over with shard crystal, that walks through the strikes it shrugs off.",
+        "long": "It stood under the fall too long, and the fall stayed."
+      }
+    },
     "class:cultist01": {
       "key": "class:cultist01",
       "id": "description-class-cultist01",
@@ -2684,6 +2700,38 @@
       "payload": {
         "short": "A close-quarters specialist that thrives in direct engagements.",
         "long": "Every scar is a lesson. Every lesson becomes an opening."
+      }
+    },
+    "class:shardcaller": {
+      "key": "class:shardcaller",
+      "id": "description-class-shardcaller",
+      "guid": null,
+      "version": 0,
+      "source": "seed",
+      "hash": "sha256:45f9fc30d39ecab45ffec5b9d210c89f3399392f2991f22263188a2662505c71",
+      "about": [
+        "class-shardcaller"
+      ],
+      "speakers": [],
+      "payload": {
+        "short": "A Shardfall seer who pulls the sky down onto whoever they point at.",
+        "long": "They do not throw the shards. They only tell them where to land."
+      }
+    },
+    "class:shardskitter": {
+      "key": "class:shardskitter",
+      "id": "description-class-shardskitter",
+      "guid": null,
+      "version": 0,
+      "source": "seed",
+      "hash": "sha256:7b983b5262642a678bdb5e403afc455dc053f8d9c89725c8c570ac6df8ae23e7",
+      "about": [
+        "class-shardskitter"
+      ],
+      "speakers": [],
+      "payload": {
+        "short": "A crystal-backed skitterer whose death calls a strike down on its killers.",
+        "long": "Catch it if you like. Then run."
       }
     },
     "class:shieldmaiden": {
@@ -23130,6 +23178,20 @@
       "payload": {
         "name": "Hold Barricades",
         "short": "Every wave, the holds throw up barricades. Stand beside one to wear it down; when it falls, step onto the rubble to be Empowered."
+      }
+    },
+    "rule:shardfall-strikes": {
+      "key": "rule:shardfall-strikes",
+      "id": "description-rule-shardfall-strikes",
+      "guid": null,
+      "version": 0,
+      "source": "seed",
+      "hash": "sha256:5641e937b8c52fd6a6383755ec68c6eee01cefb37c6d21325a7aad26b2966450",
+      "about": [],
+      "speakers": [],
+      "payload": {
+        "name": "Shardfall",
+        "short": "Shards fall on the party: each strike shows on the timeline and its tiles light up before it lands. Where one lands it leaves a crystal; end a turn on it for a Ward."
       }
     },
     "skillnode:aegisguard_capstone": {

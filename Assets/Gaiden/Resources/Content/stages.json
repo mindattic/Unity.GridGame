@@ -129,6 +129,7 @@
   },
   {
     "Id": "greenvalley-02",
+    "Rules": [ "slimetrail" ],
     "Name": "Green Valley II",
     "Theme": "greenvalley",
     "Background": null,
@@ -933,6 +934,7 @@
   },
   {
     "Id": "desert-03",
+    "Rules": [ "firetrail" ],
     "Name": "Sandsea Reaches III",
     "Theme": "desert",
     "Background": null,
@@ -1497,6 +1499,7 @@
   },
   {
     "Id": "cave-02",
+    "Rules": [ "icetrail" ],
     "Name": "Frostmaw Caverns II",
     "Theme": "cave",
     "Background": null,
@@ -1993,6 +1996,7 @@
   },
   {
     "Id": "still-03",
+    "Rules": [ "landmines" ],
     "Name": "The Still III",
     "Theme": "still",
     "Background": null,
@@ -3656,7 +3660,7 @@
             "Y": -1
           },
           {
-            "Class": "techgremlin01",
+            "Class": "shardskitter",
             "Level": 1,
             "X": -1,
             "Y": -1
@@ -3688,7 +3692,7 @@
             "Y": -1
           },
           {
-            "Class": "mechaarmor01",
+            "Class": "shardcaller",
             "Level": 1,
             "X": -1,
             "Y": -1
@@ -3704,7 +3708,7 @@
             "Y": -1
           },
           {
-            "Class": "vulture",
+            "Class": "crystalbrute",
             "Level": 1,
             "X": -1,
             "Y": -1
@@ -3747,7 +3751,7 @@
             "Y": -1
           },
           {
-            "Class": "purpleprototype01",
+            "Class": "shardcaller",
             "Level": 1,
             "X": -1,
             "Y": -1
@@ -3763,7 +3767,7 @@
             "Y": -1
           },
           {
-            "Class": "mechaarmor02",
+            "Class": "crystalbrute",
             "Level": 1,
             "X": -1,
             "Y": -1
@@ -3779,7 +3783,7 @@
             "Y": -1
           },
           {
-            "Class": "purpleprototype02",
+            "Class": "shardskitter",
             "Level": 1,
             "X": -1,
             "Y": -1
@@ -3795,7 +3799,7 @@
             "Y": -1
           },
           {
-            "Class": "purpleprototype04",
+            "Class": "shardcaller",
             "Level": 1,
             "X": -1,
             "Y": -1
@@ -3811,7 +3815,7 @@
             "Y": -1
           },
           {
-            "Class": "soldier00",
+            "Class": "crystalbrute",
             "Level": 1,
             "X": -1,
             "Y": -1

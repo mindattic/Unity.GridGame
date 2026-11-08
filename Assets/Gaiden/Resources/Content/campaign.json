@@ -147,6 +147,9 @@
       "Stages": [
         "desert-04",
         "desert-05"
+      ],
+      "Rules": [
+        "shardfall-strikes"
       ]
     },
     {
