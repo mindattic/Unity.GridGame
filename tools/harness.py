@@ -1144,7 +1144,7 @@ def storyarc(run="storyarc", capture=True):
     pushed to Lv 10 and a forced win -> the wanderer talk on the results -> the Lv 10 interlude -> Camp; then Rested at 0
     refuses a launch and the 1g/1s refill relaunches it. Part 2, on a stocked save: hire a mercenary, the Quests
     journal, a 1s Summon, a Diamond bought and spent on a lucky craft, Green Valley III's boss intro and rule-break
-    banner, then cityruins-03's intro, a forced win, the ending crawl, the rolling credits and the Title."""
+    banner, then cathedral-03's intro (the finale since GG-T350), a forced win, the ending crawl, the rolling credits and the Title."""
     ok, notes, seen = {}, {}, []
     st = lambda: call("state")
     save = lambda: st().get("save") or {}
@@ -1276,11 +1276,11 @@ def storyarc(run="storyarc", capture=True):
             finish_dialogue(); time.sleep(1.0)
     ok["portrait_talks_return"] = st()["screen"] == "hub"
 
-    # The finale: cityruins-03 -> intro -> win -> ending crawl -> rolling credits -> Title.
-    call("devstage", stage="cityruins-03")
-    call("launch", stage="cityruins-03"); time.sleep(1.5)
+    # The finale (GG-T350: the Choir's Cathedral): cathedral-03 -> intro -> win -> ending crawl -> rolling credits -> Title.
+    call("devstage", stage="cathedral-03")
+    call("launch", stage="cathedral-03"); time.sleep(1.5)
     _drain_story(seen, "24-cr3")
-    ok["vampire_boss_intro"] = "boss_intro_cityruins" in save().get("seen", [])
+    ok["hierarch_boss_intro"] = "boss_intro_cathedral" in save().get("seen", [])
     ok["cr3_in_battle"] = _wait_screen("battle", 8)
     notes["cr3_banners"] = _watch_banners(10)
     shot("25-cr3-battle")

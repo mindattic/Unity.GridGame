@@ -501,7 +501,7 @@
     "Id": "templar",
     "Name": "Templar's",
     "Weight": "Heavy",
-    "Level": 24,
+    "Level": 25,
     "Description": "Consecrated plate of the fallen order, its seals still warm with old vows.",
     "Pieces": [
       "eq_templar_head",
@@ -534,7 +534,7 @@
     "Id": "reaper",
     "Name": "Reaper's",
     "Weight": "Light",
-    "Level": 26,
+    "Level": 28,
     "Description": "Cut from a reaper's own shroud. Its wearer moves like a rumor of death.",
     "Pieces": [
       "eq_reaper_head",
@@ -567,7 +567,7 @@
     "Id": "sanguine",
     "Name": "Sanguine",
     "Weight": "Medium",
-    "Level": 28,
+    "Level": 31,
     "Description": "Blood-dark leather and steel from a vampire's armory. It drinks to its wearer's health.",
     "Pieces": [
       "eq_sanguine_head",
@@ -597,7 +597,7 @@
     "Id": "dreadwyrm",
     "Name": "Dreadwyrm",
     "Weight": "Heavy",
-    "Level": 31,
+    "Level": 34,
     "Description": "Dragonscale over demon-forged plate: the last armor anyone in this land will need.",
     "Pieces": [
       "eq_dreadwyrm_head",

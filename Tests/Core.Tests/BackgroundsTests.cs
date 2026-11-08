@@ -31,6 +31,7 @@ namespace GridGame.Tests
             ["cave"] = ("anchorwastes", 4, 1536, 3072),
             ["still"] = ("still", 6, 768, 1536),
             ["cityruins"] = ("halcyon", 14, 1536, 3072),
+            ["cathedral"] = ("cathedral", 4, 768, 1536), // GG-T350: the owner's four cathedral landscapes, native size
         };
 
         private static IEnumerable<ThemeDef> MainThemes => Real.Campaign.Themes.Where(t => Backdrops.BaseTheme(t.Id) == t.Id);

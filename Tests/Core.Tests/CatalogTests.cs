@@ -261,7 +261,18 @@ namespace GridGame.Tests
                 Assert.That(string.IsNullOrEmpty(cls.Name), Is.False, cls.Id);
                 var st = GridGame.Core.Rules.Formulas.StatsAtLevel(cls, 10);
                 Assert.That(GridGame.Core.Rules.Formulas.MaxHp(st, 10) > 0, Is.True, cls.Id);
-                Assert.That(System.IO.File.Exists(System.IO.Path.Combine(RepoRoot, "Assets", "Gaiden", "Resources", "Portraits", cls.Id + ".png")), Is.True, $"missing portrait for {cls.Id}");
+                // A class whose art isn't made yet declares the mannequin placeholder (GG-T351/GG-T350: the Hierarch):
+                // Art.Portrait falls back to Portraits/mannequin, so the class carries the mannequin's own framing.
+                bool placeholder = cls.Portrait == "mannequin" && cls.Id != "mannequin";
+                var portraitId = placeholder ? "mannequin" : cls.Id;
+                Assert.That(System.IO.File.Exists(System.IO.Path.Combine(RepoRoot, "Assets", "Gaiden", "Resources", "Portraits", portraitId + ".png")), Is.True, $"missing portrait for {cls.Id}");
+                if (placeholder)
+                {
+                    var m = Real.Classes["mannequin"];
+                    Assert.That((cls.Thumbnail.Zoom, cls.Thumbnail.X, cls.Thumbnail.Y), Is.EqualTo((m.Thumbnail.Zoom, m.Thumbnail.X, m.Thumbnail.Y)), $"{cls.Id} frames the mannequin like the mannequin");
+                    Assert.That((cls.Figure.X, cls.Figure.Y, cls.Figure.W, cls.Figure.H), Is.EqualTo((m.Figure.X, m.Figure.Y, m.Figure.W, m.Figure.H)), $"{cls.Id} uses the mannequin's figure box");
+                    Assert.That(System.IO.File.Exists(System.IO.Path.Combine(RepoRoot, "Assets", "Gaiden", "Resources", "Portraits", cls.Id + ".png")), Is.False, $"{cls.Id} has its own art now: drop the placeholder");
+                }
                 // Every thumbnail is the portrait framed by this window (BIBLE §12.1.1); there are no thumb images.
                 Assert.That(cls.Thumbnail, Is.Not.Null, $"no Thumbnail for {cls.Id}");
             }

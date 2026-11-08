@@ -6,8 +6,8 @@
   },
   "Ending": {
     "Title": "Still Here",
-    "Backdrop": "cityruins",
-    "Stage": "cityruins-03",
+    "Backdrop": "cathedral",
+    "Stage": "cathedral-03",
     "Crawl": "The Hierarch's reservoir breaks the way a dam breaks: slowly, and then all at once.\n\nTwo hundred years of stolen aether runs back down the beams it climbed -- north to the Anchors, and from the Anchors out over every hold that ever paid. Over the moors, over Saltmoss, over towns whose names you never learned, the light comes down like rain.\n\nThe tithe stops. Nobody announces it. The Stills simply stay shut, and the Choir stands in the square with nothing left to sing.\n\nThe Hollow don't wake all at once. But here and there, one stops at a door and frowns, as if trying to remember whose it is.\n\nIn the morning Morrow is still there, exactly as low as yesterday. Nobody has solved the Nearing. Nobody knows what the moon is, or what it wants, or whether it wants anything at all.\n\nBut where the stolen aether came down, the Bloom is growing -- moss and small red flowers in the cracks of the Concord's white stone. Proof, in the plainest terms there are, that giving works.\n\nYou have a caravan, a long road, and each other.\n\nYou're still here."
   },
   "Themes": [
@@ -93,6 +93,18 @@
         "cityruins-01",
         "cityruins-02",
         "cityruins-03"
+      ]
+    },
+    {
+      "Id": "cathedral",
+      "MilestoneReward": "tome_counter_attack",
+      "Name": "The Choir's Cathedral",
+      "Backgrounds": "cathedral",
+      "Crawl": "At the top of Halcyon's spire, above the neon, stands the Choir's cathedral: rose windows, pews by the hundred, a moon in the vault, and an organ of aether pipes glowing the colour of a cold sky.\n\nThe Choir sings the tithe up into those pipes. The organ is the reservoir.\n\nThe Hierarch drinks from it.\n\nSilence the Choir. Break the reservoir. Give it back.",
+      "Stages": [
+        "cathedral-01",
+        "cathedral-02",
+        "cathedral-03"
       ]
     },
     {

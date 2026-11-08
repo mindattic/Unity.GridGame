@@ -73,10 +73,10 @@ The power. Everything it owns is white: armour, robes, domes, flesh grown in its
   little scrap-rats that maintain them.
 - **The Chronomancer** (`chronomancer`): an Anchor engineer. Her clockwork rings are Anchor tech in miniature — she
   doesn't push Morrow back, she pushes *time* back, and makes everyone near her late.
-- **The Hierarch** (the `vampire` art, as the final boss): the Concord's head, pale, beautiful, two hundred years old on
-  other people's lives. Called "Hierarch" by the faithful and "the Leech" by everyone else. The finale currently fields
-  the hero class `vampire`; give the Hierarch its own enemy class (`hierarch`, reusing the vampire portrait) so the
-  boss and the playable hero are different people.
+- **The Hierarch** (`hierarch`, the final boss): the Concord's head, pale, beautiful, two hundred years old on
+  other people's lives. Called "Hierarch" by the faithful and "the Leech" by everyone else. Its own enemy class since
+  GG-T350, so the boss and the playable `vampire` hero are different people; it has no portrait yet and shows the
+  mannequin placeholder until its art is made (owner 2026-11-07, GG-T351).
 - **Chromed Hollow** (`cyberzombie00–04`): Hollow the Concord fitted with chrome harness and sent back to work.
 - The `mannequin` is a Choir training dummy (Test stages only).
 
@@ -164,7 +164,7 @@ New heroes from the owner's art:
 
 ## 5. The campaign
 
-Twelve themes, in order: seven in the main campaign, five in the postgame. Each theme's crawl opens it; its party talk
+Thirteen themes, in order: eight in the main campaign, five in the postgame. Each theme's crawl opens it; its party talk
 carries one piece of the plot.
 
 Owner, 2026-11-07 (GG-T344): *"I will generate more landscapes from which you can extrapolate more story, settings
@@ -210,20 +210,28 @@ levels, etc"* — new chapters are read out of the owner's landscapes the same w
    *were*. The Hollow are not empty — they are **stored**, here, in tanks, a hold to a tank, until the Hierarch drinks
    them. Which means it can be given back. (This is why, at the ending, the Hollow begin to remember.)
 7. **Halcyon** (`cityruins`). Out of the Still's back gate and up into the Spire City. The Bulwark, the Choir, the Kiln
-   Guard, the Chronomancer. Up the spire. *Boss (finale): the **Hierarch**.* The crew breaks the Hierarch's reservoir;
-   two centuries of stolen aether pour back down the beams into the holds.
+   Guard, the Chronomancer. Up the spire. *Boss (III): a **Kiln Guard captain** (`ceramicknight06`, AxisWard) holding
+   the spire stair to the cathedral* (GG-T350; the Hierarch moved up to the cathedral).
+8. **The Choir's Cathedral** (`cathedral`, GG-T350, from four landscapes the owner made; the main campaign's finale).
+   *Structural entry only; the chapter's story is authored in Prose (GG-T355) and its in-game text is placeholder
+   draft.* Where: the cathedral at the top of Halcyon's spire — rose windows, pews by the hundred, a moon in the vault,
+   and an organ of aether pipes glowing cyan. The organ **is the Hierarch's reservoir**: the Choir sings the tithe up
+   into the pipes, and the Hierarch drinks from them. Who: the Choir (`cultist01–03`) and the Concord — the Bulwark,
+   the Kiln Guard, the Red Seal (§3.1). Stages *I–III* climb from the nave to the organ. *Boss (finale, III): the
+   **Hierarch** (`hierarch`, Undying while its Choir still sings).* The crew breaks the Hierarch's reservoir; two
+   centuries of stolen aether pour back down the beams into the holds.
 
 **Ending** — *"Still Here."* The tithe stops. The Hollow begin, very slowly, to remember. Morrow still hangs exactly as
 low as yesterday; nobody has solved the Nearing. But where the stolen aether came down, the Bloom is growing, and the
 crew has a caravan, a road, and proof that giving works. Roll credits.
 
 **Postgame** (the road after the Hierarch — open on purpose, no final answer):
-8. **The Moors Beyond the Stills** (`greenvalley2`) — holds that never got their aether back, and Redline selling the
+9. **The Moors Beyond the Stills** (`greenvalley2`) — holds that never got their aether back, and Redline selling the
    Bloom as a drug.
-9. **Deep Shardfall** (`desert2`) — the Ember grows bolder with the Concord broken; the Infernalists march on the Anchors.
-10. **The Drowned Arks** (`swamp2`) — the *Long Patience* still flies, a little; the Lich offers passage to anyone.
-11. **Under the Anchors** (`cave2`) — what the arches are actually built on.
-12. **The Underspire** (`cityruins2`) — Halcyon without a Hierarch: the Choir, the Red Seal and the Street all want the
+10. **Deep Shardfall** (`desert2`) — the Ember grows bolder with the Concord broken; the Infernalists march on the Anchors.
+11. **The Drowned Arks** (`swamp2`) — the *Long Patience* still flies, a little; the Lich offers passage to anyone.
+12. **Under the Anchors** (`cave2`) — what the arches are actually built on.
+13. **The Underspire** (`cityruins2`) — Halcyon without a Hierarch: the Choir, the Red Seal and the Street all want the
     spire.
 
 **Prologue** — *"Tithe Day."* Saltmoss, the white dome on the hill, the crew's names in the ledger, the run.

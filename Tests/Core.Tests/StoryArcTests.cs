@@ -16,7 +16,7 @@ namespace GridGame.Tests
         private static bool PortraitOnDisk(string id) =>
             File.Exists(Path.Combine(TestKit.RepoRoot, "Assets", "Gaiden", "Resources", "Portraits", id + ".png"));
 
-        private static readonly string[] Finales = { "greenvalley-03", "lanternroad-03", "desert-03", "swamp-03", "cave-03", "still-03", "cityruins-03" };
+        private static readonly string[] Finales = { "greenvalley-03", "lanternroad-03", "desert-03", "swamp-03", "cave-03", "still-03", "cityruins-03", "cathedral-03" };
 
         [Test]
         public void Shipped_story_content_validates()
@@ -26,12 +26,12 @@ namespace GridGame.Tests
         }
 
         [Test]
-        public void The_campaign_has_a_prologue_and_an_ending_after_the_vampire_lord()
+        public void The_campaign_has_a_prologue_and_an_ending_after_the_hierarch()
         {
             Assert.That(Real.Campaign.Prologue?.Crawl, Is.Not.Null.And.Not.Empty);
             Assert.That(Real.Campaign.Ending?.Crawl, Is.Not.Null.And.Not.Empty);
-            Assert.That(Real.Campaign.Ending.Stage, Is.EqualTo("cityruins-03"));
-            Assert.That(Real.Stage("cityruins-03").Waves.Last().Enemies.Any(e => e.Class == "vampire"), "the ending follows the Vampire Lord's stage");
+            Assert.That(Real.Campaign.Ending.Stage, Is.EqualTo("cathedral-03"), "GG-T350: the cathedral is the finale");
+            Assert.That(Real.Stage("cathedral-03").Waves.Last().Enemies.Any(e => e.Class == "hierarch"), "the ending follows the Hierarch's stage");
         }
 
         [Test]
@@ -90,19 +90,20 @@ namespace GridGame.Tests
         public void The_ending_is_due_once_after_the_final_victory_and_new_game_plus_restores_it()
         {
             var s = Progression.NewGame(Real, "T");
-            Assert.That(Story.EndingDue(Real, s, false, "cityruins-03"), Is.False, "not on a defeat");
+            Assert.That(Story.EndingDue(Real, s, false, "cathedral-03"), Is.False, "not on a defeat");
             Assert.That(Story.EndingDue(Real, s, true, "cave-03"), Is.False, "not on another stage");
-            Assert.That(Story.EndingDue(Real, s, true, "cityruins-03"), Is.True);
+            Assert.That(Story.EndingDue(Real, s, true, "cityruins-03"), Is.False, "GG-T350: Halcyon is no longer the finale");
+            Assert.That(Story.EndingDue(Real, s, true, "cathedral-03"), Is.True);
             Story.MarkEndingSeen(s);
-            Assert.That(Story.EndingDue(Real, s, true, "cityruins-03"), Is.False, "plays once");
+            Assert.That(Story.EndingDue(Real, s, true, "cathedral-03"), Is.False, "plays once");
 
             s.HighestClearedStage = Real.CampaignStages().Count - 1;
             Assert.That(Progression.StartNewGamePlus(Real, s).Ok);
-            Assert.That(Story.EndingDue(Real, s, true, "cityruins-03"), Is.True, "New Game+ plays the ending again");
+            Assert.That(Story.EndingDue(Real, s, true, "cathedral-03"), Is.True, "New Game+ plays the ending again");
 
             var t = Progression.NewGame(Real, "T");
             t.TestMode = true;
-            Assert.That(Story.EndingDue(Real, t, true, "cityruins-03"), Is.False, "Test Mode never sees story");
+            Assert.That(Story.EndingDue(Real, t, true, "cathedral-03"), Is.False, "Test Mode never sees story");
         }
 
         private static ContentDb Fixture(DialogueDef d)

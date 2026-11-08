@@ -161,6 +161,25 @@ def lanternroad(arr, mask, h, w):
     return out
 
 
+def cathedral(arr, mask, h, w):
+    """GG-T350 The Choir's Cathedral: one polished slab of the nave's dark blue-grey marble (a board cell is one slab,
+    so no inner seams), faint pale veining, and the organ's cyan aether-light pooled on the face."""
+    r, yy, xx = rng_fields(h, w, SEED + 8)
+    stone = np.array([52, 62, 84], dtype=np.float32)
+    vein = np.array([150, 170, 190], dtype=np.float32)
+    aether = np.array([96, 214, 226], dtype=np.float32)
+    cloud = smooth_noise(r, h, w, 18)
+    body = stone[None, None, :] * (0.86 + 0.18 * cloud[:, :, None])
+    ridge = np.abs(smooth_noise(r, h, w, 10) - 0.5)
+    v = np.clip((0.04 - ridge) / 0.04, 0, 1)[:, :, None] * 0.35
+    out = body * (1 - v) + vein[None, None, :] * v
+    cy, cx = h * 0.3, w * 0.5
+    glow = np.exp(-(((yy - cy) / (h * 0.6)) ** 2 + ((xx - cx) / (w * 0.6)) ** 2))[:, :, None] * 0.2
+    grain = r.uniform(-5, 5, size=(h, w)).astype(np.float32)
+    out = out * (1 - glow) + aether[None, None, :] * glow + grain[:, :, None]
+    return out
+
+
 BIOMES = {
     "greenvalley": greenvalley,
     "desert": desert,
@@ -169,6 +188,7 @@ BIOMES = {
     "cityruins": cityruins,
     "still": still,
     "lanternroad": lanternroad,
+    "cathedral": cathedral,
 }
 
 

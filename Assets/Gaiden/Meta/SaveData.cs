@@ -24,7 +24,7 @@ namespace GridGame.Meta
 
     public sealed class SaveData
     {
-        public const int CurrentVersion = 6;
+        public const int CurrentVersion = 7;
 
         public int Version = CurrentVersion;
         public string Name = "Lightbearer";
@@ -382,6 +382,10 @@ namespace GridGame.Meta
         /// and how many stages it brought (save v6).</summary>
         public const int LanternRoadInsertedAt = 3, LanternRoadStageCount = 3;
 
+        /// <summary>GG-T350: where The Choir's Cathedral went into the campaign order (after Halcyon, the new finale), and how
+        /// many stages it brought (save v7).</summary>
+        public const int CathedralInsertedAt = 21, CathedralStageCount = 3;
+
         public static readonly HashSet<string> RetiredAbilities = new HashSet<string>(StringComparer.OrdinalIgnoreCase) { "scan" };
 
         /// <summary>Upgrades an older save in place. Unknown future versions are rejected. <paramref name="c"/>
@@ -469,6 +473,14 @@ namespace GridGame.Meta
                 // count and keeps the same frontier; the Lantern Road opens behind it, replayable like any earlier stage.
                 if (s.HighestClearedStage >= LanternRoadInsertedAt) s.HighestClearedStage += LanternRoadStageCount;
                 s.Version = 6;
+            }
+            if (s.Version < 7)
+            {
+                // GG-T350: The Choir's Cathedral (three stages) was inserted after Halcyon as the new finale, at campaign
+                // index CathedralInsertedAt. Same rule as v5/v6: a save already into the postgame moves up by its stage
+                // count and keeps the same frontier. A save whose furthest clear is Halcyon III finds the cathedral next.
+                if (s.HighestClearedStage >= CathedralInsertedAt) s.HighestClearedStage += CathedralStageCount;
+                s.Version = 7;
             }
             foreach (var h in s.Roster)
             {

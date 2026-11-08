@@ -191,7 +191,8 @@ namespace GridGame.Tests
                 ["swamp-03"] = ("swampmistress00", RuleBreak.MireSwap),
                 ["cave-03"] = ("cyclops02", RuleBreak.GravityStamp),
                 ["still-03"] = ("chronomancer", RuleBreak.TwinTurn), // GG-T344: the keeper of the Still's clocks
-                ["cityruins-03"] = ("vampire", RuleBreak.Undying),
+                ["cityruins-03"] = ("ceramicknight06", RuleBreak.AxisWard), // GG-T350: a Kiln Guard captain holds the spire stair
+                ["cathedral-03"] = ("hierarch", RuleBreak.Undying), // GG-T350: the Hierarch, at the top of the spire
             };
             foreach (var kv in expected)
             {

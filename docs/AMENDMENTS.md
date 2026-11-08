@@ -1084,3 +1084,17 @@ Owner, with four new landscapes of a lantern-lit mountain pilgrim road: *"I will
   - Balance (24 seeds, campaign parties, difficulty 10): the road measures casual 19, 16 and 15/24, smart 24/24. Two light trims where the three-level shift pushed a later stage lower: Shardfall III wave 5 (−1 soldier, casual 11 → 14/24) and Arkgrave II wave 4 (−1 toad, 1 → 5/24).
   - Background luminance: three of the four landscapes measure a mean luminance of 0.22–0.23, just under POL-H3's 0.25 floor (a soft check). They are kept as the owner made them, at native resolution.
 - *(Tests: `LanternRoadTests`.)*
+
+## 2026-11-07 — The Choir's Cathedral: an eighth main theme and the new finale, after Halcyon (owner, GG-T350)
+
+Owner, with four landscapes of a cathedral (aether organ pipes glowing cyan, rose windows, a moon overhead), and STORY.md §3.1's standing ask for a separate Hierarch class.
+
+- **Was:** seven main themes, Halcyon the finale with the Hierarch fielded as the playable `vampire` class (Halcyon III, Undying), the ending after `cityruins-03`, 21 main stages (31 in all), armor sets up to level 31.
+- **Now:** **The Choir's Cathedral** (`cathedral`, three stages, levels 22–24) follows Halcyon as the finale ([BIBLE §22.3.3](BIBLE.md)): the cathedral at the top of the spire, where the Choir sings the tithe into the organ that is the Hierarch's reservoir. The ending follows `cathedral-03`.
+  - **The Hierarch** is its own enemy class `hierarch` (drain charge Tithe Draught, Open the Reservoir at half HP, lifesteal, Undying beside its Choir). It has **no portrait**: per GG-T351 it uses the mannequin, declared as `"Portrait": "mannequin"` with the mannequin's Thumbnail and Figure.
+  - **Halcyon III** ends on a Kiln Guard captain (`ceramicknight06`) with **AxisWard** instead of the Hierarch, so three rules are now shared by two finales each (TwinTurn, AxisWard, Undying).
+  - **Story text is placeholder draft** (Prose, GG-T355): the crawl, the party talk, the Kiln Guard's intro and `q_organ_quiet` are short and functional; the Hierarch's intro lines moved verbatim from Halcyon. STORY.md has a structural entry only.
+  - Save v7 shifts `HighestClearedStage` by three for saves already in the postgame; the `story:ending` flag is untouched.
+  - Armor sets: Templar's 25, Reaper's 28, Sanguine 31, Dreadwyrm 34 (spread rather than shifted, to keep a set at least every five levels).
+  - Balance (24 seeds, campaign parties, difficulty 10): Cathedral casual 17, 19 and 16/24, smart 24/24; Halcyon casual 9/17/15 → 9/17/16, smart 24/24 (the Reaper left Halcyon III's finale wave with the Hierarch).
+- *(Tests: `CathedralTests`.)*

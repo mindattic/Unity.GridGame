@@ -29,7 +29,7 @@ namespace GridGame.Tests
         {
             var problems = ContentLoader.Validate(Real, PortraitOnDisk).Where(p => p.StartsWith("quest") || p.Contains("quest_")).ToList();
             Assert.That(problems, Is.Empty, string.Join("\n", problems));
-            Assert.That(Real.QuestOrder.Count, Is.InRange(8, 12));
+            Assert.That(Real.QuestOrder.Count, Is.InRange(8, 13)); // GG-T350: one per main theme (eight with the cathedral) plus a few extra
             var main = Real.Campaign.Themes.Where(t => t.Stages.All(id => Real.Stages[id].LevelOverride == null)).Select(t => t.Id); // GG-T344: six, with The Still
             Assert.That(main.All(t => Real.QuestOrder.Any(q => q.Theme == t)), Is.True, "every main biome has a quest");
             foreach (var q in Real.QuestOrder)

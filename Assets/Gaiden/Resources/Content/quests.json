@@ -82,5 +82,12 @@
     "TurnIn": "Five laid down. Nobody in this city ever said their names. We did. That's the whole of it.",
     "Objective": { "Kind": "Defeat", "Id": "ghost", "Count": 5 },
     "RewardGold": 700, "RewardItem": "holy_water", "RewardItemCount": 3, "RewardSkillPoints": 1
+  },
+  {
+    "Id": "q_organ_quiet", "Name": "Quiet the Organ", "Giver": "Enchantress", "Theme": "cathedral", "Unlock": "cathedral-01",
+    "Summary": "The Choir's Confessors keep the hymn going under the cathedral's organ. Silence three of them, and the pipes the Hierarch drinks from begin to falter.",
+    "TurnIn": "Three voices gone, and the organ sounds thinner already.",
+    "Objective": { "Kind": "Defeat", "Id": "cultist03", "Count": 3 },
+    "RewardGold": 800, "RewardItem": "x_potion", "RewardSkillPoints": 1
   }
 ]

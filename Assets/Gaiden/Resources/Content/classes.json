@@ -23855,6 +23855,55 @@
     "Brain": "Kiter"
   },
   {
+    "Id": "hierarch",
+    "Name": "The Hierarch",
+    "Team": "Enemy",
+    "Tags": [ "Humanoid", "Boss", "Caster", "Sentient" ],
+    "Description": "The Concord's head, two hundred years old on other people's lives.",
+    "Lore": "Called Hierarch by the faithful and the Leech by everyone else.",
+    "Card": "Charges Tithe Draught, a [drain] on every hero that heals it for each one it touches. [Interrupt] the charge. At half HP the organ pours its reservoir into it. While any of its Choir still stands, it rises once.",
+    "Portrait": "mannequin",
+    "Thumbnail": {
+      "Zoom": 2.3786,
+      "X": 0.493,
+      "Y": 0.2102
+    },
+    "Figure": {
+      "X": 0,
+      "Y": 0,
+      "W": 1,
+      "H": 1
+    },
+    "Footprint": { "W": 1, "H": 1 },
+    "Support": {
+      "Effect": "Status",
+      "Magnitude": 0.5,
+      "Target": "Attacker",
+      "Range": 2,
+      "Buff": "slowed",
+      "Label": "Mesmerize"
+    },
+    "BaseStats": { "Strength": 14, "Vitality": 15, "Agility": 10, "Speed": 11, "Stamina": 16, "Intelligence": 14, "Wisdom": 12, "Luck": 9 },
+    "Growth": { "Strength": 0.85, "Vitality": 0.9, "Agility": 0.5, "Speed": 0.5, "Stamina": 0.95, "Intelligence": 0.7, "Wisdom": 0.7, "Luck": 0.4 },
+    "Milestones": [],
+    "Resistances": {},
+    "Abilities": [ "charge_tithe_draught", "hierarch_open_reservoir", "vampires_kiss" ],
+    "DefaultLoadout": [],
+    "DropTable": "vampire",
+    "MoveRange": 1,
+    "Targeting": "Weakest",
+    "XpReward": 30,
+    "BossPhases": [
+      { "HpThreshold": 1.0, "PrefersCharge": false, "OnEnterAbility": null, "Announce": "The Hierarch" },
+      { "HpThreshold": 0.5, "PrefersCharge": true, "OnEnterAbility": "hierarch_open_reservoir", "Announce": "The organ pours its reservoir into the Hierarch!" }
+    ],
+    "ChargeAbility": "charge_tithe_draught",
+    "ChargeShape": "Single",
+    "Trap": null,
+    "SnakeSegments": 0,
+    "Brain": "Hunter"
+  },
+  {
     "Id": "monstertamer",
     "Name": "Monster Tamer",
     "Team": "Hero",
