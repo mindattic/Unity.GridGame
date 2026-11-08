@@ -334,6 +334,22 @@
         "long": "Knows every reagent, every breath, and when to spend both."
       }
     },
+    "class:anchorhulk": {
+      "key": "class:anchorhulk",
+      "id": "description-class-anchorhulk",
+      "guid": null,
+      "version": 0,
+      "source": "seed",
+      "hash": "sha256:2bc32dc96a18877a882b359a231e733bafa7cd53fb7f3a9e7b543a149e64de05",
+      "about": [
+        "class-anchorhulk"
+      ],
+      "speakers": [],
+      "payload": {
+        "short": "A chained hulk so heavy the heave never moves it.",
+        "long": "They tried to sink it once, as an anchor. It walked back up."
+      }
+    },
     "class:assassain": {
       "key": "class:assassain",
       "id": "description-class-assassain",
@@ -652,6 +668,22 @@
       "payload": {
         "short": "A stalwart defender that anchors the line and absorbs pressure.",
         "long": "Built on vows and iron patience, they stand where others fall back."
+      }
+    },
+    "class:chainwarden": {
+      "key": "class:chainwarden",
+      "id": "description-class-chainwarden",
+      "guid": null,
+      "version": 0,
+      "source": "seed",
+      "hash": "sha256:4e083b331747e5af2d8bcb55bc4bd95a35bbe92d90ad61d5ede37ee237a76ba9",
+      "about": [
+        "class-chainwarden"
+      ],
+      "speakers": [],
+      "payload": {
+        "short": "A keeper of the anchor chains who drags the anchor to wherever the party stands.",
+        "long": "The chains are older than the warden. The warden intends to outlast them anyway."
       }
     },
     "class:chromaninja": {
@@ -1772,6 +1804,22 @@
       "payload": {
         "short": "A hold carpenter who builds faster than a siege can break.",
         "long": "Every hold has one: the woman with nails in her teeth and a wall going up behind her."
+      }
+    },
+    "class:hookthrower": {
+      "key": "class:hookthrower",
+      "id": "description-class-hookthrower",
+      "guid": null,
+      "version": 0,
+      "source": "seed",
+      "hash": "sha256:d78c8460d13aaecb43cf6f412d54f470f34cdf4dbad6d9ebf095578e8e9a12b2",
+      "about": [
+        "class-hookthrower"
+      ],
+      "speakers": [],
+      "payload": {
+        "short": "A line-thrower who hooks one hero out of formation.",
+        "long": "Under the Anchors, everyone learns to throw a line. Some learn to aim it at people."
       }
     },
     "class:icemauler": {
@@ -23150,6 +23198,20 @@
       "speakers": [],
       "payload": {
         "short": "A Lantern Road trader who follows the caravan; sells to everyone, informs on no one."
+      }
+    },
+    "rule:anchor-pull": {
+      "key": "rule:anchor-pull",
+      "id": "description-rule-anchor-pull",
+      "guid": null,
+      "version": 0,
+      "source": "seed",
+      "hash": "sha256:6653212d0ff3d102283a6b585232a29a99011e7c131a8b6571a498ead3f53016",
+      "about": [],
+      "speakers": [],
+      "payload": {
+        "name": "The Anchor's Heave",
+        "short": "An anchor is sunk somewhere on the field each wave. Every few seconds it heaves, and everyone within three tiles is dragged a step toward it. Set up a line the heave will close."
       }
     },
     "rule:crackingfloor": {

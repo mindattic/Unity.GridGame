@@ -159,6 +159,9 @@
       "Stages": [
         "cave-04",
         "cave-05"
+      ],
+      "Rules": [
+        "anchor-pull"
       ]
     },
     {

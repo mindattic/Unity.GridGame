@@ -2426,6 +2426,26 @@ The region rule `shardfall-strikes` (theme `desert2`, stages 34-35): read the ti
 - **Waves.** Two foes a wave, three in the finale (the Captain, a Crystal Brute and the sandmaw); signatures stay unique.
 - Balance unmeasured (owner rule: no soak). *(Tests: `DeepShardfallTests`, written, not run.)*
 
+#### 14.20.3 Under the Anchors: the anchor's heave (GG-T364)
+
+The region rule `anchor-pull` (theme `cave2`, stages 36-37): the field itself moves the pieces.
+
+- **The anchor.** Each wave sinks the named anchor `deep` on a random free tile, drawn as an `anchor-post` (a `Blocks`
+  state), and cancels the last wave's heave.
+- **The heave.** A repeating `anchor-heave` rule event (5 s, not a hazard: it moves, it doesn't hurt) rides the timeline;
+  when it lands every unit within 3 tiles of the anchor, hero or foe, is pulled one tile toward it, a free tile at a
+  time. A heave can close a pincer the party set up, or break one: read the icon and line up for it.
+- **Anchor monsters** (Mannequin placeholder art, words in Prose `class:<id>`):
+  - **Chain Warden** (Guardian, targets the squishy): its charge `charge_drag_anchor` hauls the anchor two tiles toward
+    a hero (the post moves with it), so the next heave drags the party in.
+  - **Anchor Hulk** (Sluggish): immune to `anchor-pull`, the one piece the heave never moves; a fixed end for a pincer
+    or a wall the party is pulled against.
+  - **Hookthrower** (Kiter, range 3): its charge `charge_hook_line` pulls one hero two tiles out of formation.
+- **Waves.** Two foes a wave, three in the finale (the yeti, the ice mauler and a Chain Warden); signatures stay unique.
+  The heave's tiles are the ones around the anchor when the wave spawned; the pull itself follows the anchor.
+- No collision damage yet (the framework moves a unit a free tile at a time and stops it when blocked). Balance unmeasured
+  (owner rule: no soak). *(Tests: `UnderTheAnchorsTests`, written, not run.)*
+
 ### 14.21 Cracking floors (added 2026-11-08, owner direction, GG-T368)
 
 Owner: *"cracking floors which open up holes to fall into that takes off some life and respawns actor next to hole (what

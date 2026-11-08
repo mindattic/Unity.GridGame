@@ -4010,7 +4010,7 @@
             "Y": -1
           },
           {
-            "Class": "skelepede01",
+            "Class": "chainwarden",
             "Level": 1,
             "X": -1,
             "Y": -1
@@ -4018,7 +4018,20 @@
         ]
       },
       {
-        "Group": "ceramicknight-column-2"
+        "Enemies": [
+          {
+            "Class": "ceramicknight02",
+            "Level": 1,
+            "X": -1,
+            "Y": -1
+          },
+          {
+            "Class": "hookthrower",
+            "Level": 1,
+            "X": -1,
+            "Y": -1
+          }
+        ]
       },
       {
         "Enemies": [
@@ -4029,7 +4042,7 @@
             "Y": -1
           },
           {
-            "Class": "oni01",
+            "Class": "anchorhulk",
             "Level": 1,
             "X": -1,
             "Y": -1
@@ -4082,13 +4095,13 @@
       {
         "Enemies": [
           {
-            "Class": "ceramicknight02",
+            "Class": "ceramicknight03",
             "Level": 1,
             "X": -1,
             "Y": -1
           },
           {
-            "Class": "ceramicknight03",
+            "Class": "hookthrower",
             "Level": 1,
             "X": -1,
             "Y": -1
@@ -4104,7 +4117,7 @@
             "Y": -1
           },
           {
-            "Class": "cyclops03",
+            "Class": "anchorhulk",
             "Level": 1,
             "X": -1,
             "Y": -1
@@ -4120,7 +4133,7 @@
             "Y": -1
           },
           {
-            "Class": "oni02",
+            "Class": "chainwarden",
             "Level": 1,
             "X": -1,
             "Y": -1
@@ -4158,7 +4171,7 @@
             "Y": -1
           },
           {
-            "Class": "cyclops06",
+            "Class": "chainwarden",
             "Level": 1,
             "X": -1,
             "Y": -1

@@ -10112,5 +10112,86 @@
     "Event": "shard-strike"
    }
   ]
+ },
+ {
+  "IsTeleport": false,
+  "Icon": null,
+  "CastVfx": null,
+  "ProjectileVfx": null,
+  "ImpactVfx": null,
+  "LingerVfx": null,
+  "Sfx": null,
+  "ApplyBuff": null,
+  "ApplyBuffChance": 1.0,
+  "RemovesDebuffs": false,
+  "StealsMana": false,
+  "HastenU": 0.0,
+  "BaseHeal": 0,
+  "Id": "charge_drag_anchor",
+  "RecoverSeconds": 1.0,
+  "Name": "Drag the Anchor",
+  "Description": "Hauls the anchor two tiles toward a hero, so the next heave drags the party with it.",
+  "Kind": "Spell",
+  "Cost": 0,
+  "CastTime": 2.0,
+  "CooldownTurns": 0,
+  "Shape": "SingleActor",
+  "Radius": 0,
+  "Mode": "PickActor",
+  "Filter": "EnemyOnly",
+  "Motion": "None",
+  "DamageType": "Physical",
+  "BaseDamage": 0,
+  "RuleEffects": [
+   {
+    "Kind": "ClearTiles",
+    "Area": "WithState",
+    "State": "anchor-post"
+   },
+   {
+    "Kind": "MoveAnchor",
+    "Area": "Target",
+    "Anchor": "deep",
+    "Amount": 2,
+    "Move": "Toward"
+   },
+   {
+    "Kind": "MarkTiles",
+    "Area": "Anchor",
+    "Anchor": "deep",
+    "State": "anchor-post"
+   }
+  ]
+ },
+ {
+  "IsTeleport": false,
+  "Icon": null,
+  "CastVfx": null,
+  "ProjectileVfx": null,
+  "ImpactVfx": null,
+  "LingerVfx": null,
+  "Sfx": null,
+  "ApplyBuff": null,
+  "ApplyBuffChance": 1.0,
+  "RemovesDebuffs": false,
+  "StealsMana": false,
+  "HastenU": 0.0,
+  "BaseHeal": 0,
+  "Id": "charge_hook_line",
+  "RecoverSeconds": 1.0,
+  "Name": "Hook Line",
+  "Description": "Hooks a hero and hauls them two tiles out of formation.",
+  "Kind": "Spell",
+  "Cost": 0,
+  "CastTime": 2.0,
+  "CooldownTurns": 0,
+  "Shape": "SingleActor",
+  "Radius": 0,
+  "Mode": "PickActor",
+  "Filter": "EnemyOnly",
+  "Motion": "None",
+  "DamageType": "Physical",
+  "BaseDamage": 8,
+  "Pull": 2
  }
 ]

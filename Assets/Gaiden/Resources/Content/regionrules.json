@@ -417,5 +417,73 @@
         ]
       }
     ]
+  },
+  {
+    "Id": "anchor-pull",
+    "TileStates": [
+      {
+        "Id": "anchor-post",
+        "Blocks": true,
+        "Color": "#5B6B7A",
+        "Glyph": "@"
+      }
+    ],
+    "Events": [
+      {
+        "Id": "anchor-heave",
+        "Seconds": 5,
+        "Repeat": true,
+        "Hazard": false,
+        "Glyph": "@",
+        "Color": "#7FA3C2",
+        "Effects": [
+          {
+            "Kind": "MoveUnits",
+            "Area": "Anchor",
+            "Anchor": "deep",
+            "Radius": 3,
+            "Units": "OnArea",
+            "Team": "Any",
+            "Amount": 1,
+            "Move": "Toward"
+          }
+        ]
+      }
+    ],
+    "Hooks": [
+      {
+        "On": "WaveSpawn",
+        "Effects": [
+          {
+            "Kind": "AdjustEvents",
+            "Event": "anchor-heave",
+            "Cancel": true
+          },
+          {
+            "Kind": "ClearTiles",
+            "Area": "WithState",
+            "State": "anchor-post"
+          },
+          {
+            "Kind": "PlaceAnchor",
+            "Area": "RandomFree",
+            "Anchor": "deep"
+          },
+          {
+            "Kind": "MarkTiles",
+            "Area": "Anchor",
+            "Anchor": "deep",
+            "State": "anchor-post"
+          },
+          {
+            "Kind": "Schedule",
+            "Area": "Anchor",
+            "Anchor": "deep",
+            "Radius": 3,
+            "Event": "anchor-heave"
+          }
+        ]
+      }
+    ]
   }
 ]

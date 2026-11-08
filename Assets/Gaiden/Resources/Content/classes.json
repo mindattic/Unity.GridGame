@@ -28334,5 +28334,380 @@
         "Event": "shard-strike"
       }
     ]
+  },
+  {
+    "Id": "chainwarden",
+    "Name": "Chain Warden",
+    "Team": "Enemy",
+    "Tags": [
+      "Humanoid",
+      "Sentient"
+    ],
+    "Card": "Patient [controller]. Hauls the anchor to wherever the party stands.",
+    "Portrait": "mannequin",
+    "Thumbnail": {
+      "Zoom": 2.3786,
+      "X": 0.493,
+      "Y": 0.2102
+    },
+    "Figure": {
+      "X": 0,
+      "Y": 0,
+      "W": 1,
+      "H": 1
+    },
+    "Footprint": {
+      "W": 1,
+      "H": 1
+    },
+    "Support": {
+      "Effect": "Buff",
+      "Target": "Attacker",
+      "Range": 1,
+      "Buff": "protection",
+      "Label": "Close Ranks"
+    },
+    "BaseStats": {
+      "Strength": 13,
+      "Vitality": 16,
+      "Agility": 9,
+      "Speed": 9,
+      "Stamina": 15,
+      "Intelligence": 12,
+      "Wisdom": 13,
+      "Luck": 8
+    },
+    "Growth": {
+      "Strength": 0.7,
+      "Vitality": 0.7,
+      "Agility": 0.7,
+      "Speed": 0.7,
+      "Stamina": 0.7,
+      "Intelligence": 0.7,
+      "Wisdom": 0.7,
+      "Luck": 0.7
+    },
+    "Milestones": [
+      {
+        "Level": 5,
+        "Growth": {
+          "Strength": 0.24,
+          "Vitality": 0.24,
+          "Agility": 0.24,
+          "Speed": 0.24,
+          "Stamina": 0.24,
+          "Intelligence": 0.24,
+          "Wisdom": 0.24,
+          "Luck": 0.24
+        }
+      },
+      {
+        "Level": 10,
+        "Growth": {
+          "Strength": 0.32,
+          "Vitality": 0.32,
+          "Agility": 0.32,
+          "Speed": 0.32,
+          "Stamina": 0.32,
+          "Intelligence": 0.32,
+          "Wisdom": 0.32,
+          "Luck": 0.32
+        }
+      },
+      {
+        "Level": 20,
+        "Growth": {
+          "Strength": 0.42,
+          "Vitality": 0.42,
+          "Agility": 0.42,
+          "Speed": 0.42,
+          "Stamina": 0.42,
+          "Intelligence": 0.42,
+          "Wisdom": 0.42,
+          "Luck": 0.42
+        }
+      },
+      {
+        "Level": 40,
+        "Growth": {
+          "Strength": 0.56,
+          "Vitality": 0.56,
+          "Agility": 0.56,
+          "Speed": 0.56,
+          "Stamina": 0.56,
+          "Intelligence": 0.56,
+          "Wisdom": 0.56,
+          "Luck": 0.56
+        }
+      }
+    ],
+    "Resistances": {},
+    "Abilities": [
+      "counter_attack"
+    ],
+    "DefaultLoadout": [],
+    "DropTable": "soldier",
+    "MoveRange": 1,
+    "Targeting": "Squishy",
+    "XpReward": 12,
+    "BossPhases": [],
+    "ChargeAbility": "charge_drag_anchor",
+    "ChargeShape": "Single",
+    "Trap": null,
+    "SnakeSegments": 0,
+    "Brain": "Guardian",
+    "Remains": "corpse",
+    "ArmorPlate": 18
+  },
+  {
+    "Id": "anchorhulk",
+    "Name": "Anchor Hulk",
+    "Team": "Enemy",
+    "Tags": [
+      "Construct"
+    ],
+    "Card": "Immovable [guardian]. The heave never moves it.",
+    "Portrait": "mannequin",
+    "Thumbnail": {
+      "Zoom": 2.3786,
+      "X": 0.493,
+      "Y": 0.2102
+    },
+    "Figure": {
+      "X": 0,
+      "Y": 0,
+      "W": 1,
+      "H": 1
+    },
+    "Footprint": {
+      "W": 1,
+      "H": 1
+    },
+    "Support": {
+      "Effect": "Buff",
+      "Target": "Attacker",
+      "Range": 1,
+      "Buff": "protection",
+      "Label": "Close Ranks"
+    },
+    "BaseStats": {
+      "Strength": 16,
+      "Vitality": 21,
+      "Agility": 5,
+      "Speed": 5,
+      "Stamina": 19,
+      "Intelligence": 5,
+      "Wisdom": 9,
+      "Luck": 6
+    },
+    "Growth": {
+      "Strength": 0.7,
+      "Vitality": 0.7,
+      "Agility": 0.7,
+      "Speed": 0.7,
+      "Stamina": 0.7,
+      "Intelligence": 0.7,
+      "Wisdom": 0.7,
+      "Luck": 0.7
+    },
+    "Milestones": [
+      {
+        "Level": 5,
+        "Growth": {
+          "Strength": 0.24,
+          "Vitality": 0.24,
+          "Agility": 0.24,
+          "Speed": 0.24,
+          "Stamina": 0.24,
+          "Intelligence": 0.24,
+          "Wisdom": 0.24,
+          "Luck": 0.24
+        }
+      },
+      {
+        "Level": 10,
+        "Growth": {
+          "Strength": 0.32,
+          "Vitality": 0.32,
+          "Agility": 0.32,
+          "Speed": 0.32,
+          "Stamina": 0.32,
+          "Intelligence": 0.32,
+          "Wisdom": 0.32,
+          "Luck": 0.32
+        }
+      },
+      {
+        "Level": 20,
+        "Growth": {
+          "Strength": 0.42,
+          "Vitality": 0.42,
+          "Agility": 0.42,
+          "Speed": 0.42,
+          "Stamina": 0.42,
+          "Intelligence": 0.42,
+          "Wisdom": 0.42,
+          "Luck": 0.42
+        }
+      },
+      {
+        "Level": 40,
+        "Growth": {
+          "Strength": 0.56,
+          "Vitality": 0.56,
+          "Agility": 0.56,
+          "Speed": 0.56,
+          "Stamina": 0.56,
+          "Intelligence": 0.56,
+          "Wisdom": 0.56,
+          "Luck": 0.56
+        }
+      }
+    ],
+    "Resistances": {},
+    "Abilities": [
+      "counter_attack"
+    ],
+    "DefaultLoadout": [],
+    "DropTable": "soldier",
+    "MoveRange": 1,
+    "Targeting": "Closest",
+    "XpReward": 12,
+    "BossPhases": [],
+    "ChargeAbility": null,
+    "ChargeShape": "Single",
+    "Trap": null,
+    "SnakeSegments": 0,
+    "Brain": "Sluggish",
+    "Remains": "corpse",
+    "ArmorPlate": 18,
+    "RuleImmune": [
+      "anchor-pull"
+    ]
+  },
+  {
+    "Id": "hookthrower",
+    "Name": "Hookthrower",
+    "Team": "Enemy",
+    "Tags": [
+      "Humanoid",
+      "Sentient"
+    ],
+    "Card": "Wiry [controller]. Hooks one hero out of the line.",
+    "Portrait": "mannequin",
+    "Thumbnail": {
+      "Zoom": 2.3786,
+      "X": 0.493,
+      "Y": 0.2102
+    },
+    "Figure": {
+      "X": 0,
+      "Y": 0,
+      "W": 1,
+      "H": 1
+    },
+    "Footprint": {
+      "W": 1,
+      "H": 1
+    },
+    "Support": {
+      "Effect": "Buff",
+      "Target": "Attacker",
+      "Range": 1,
+      "Buff": "protection",
+      "Label": "Close Ranks"
+    },
+    "BaseStats": {
+      "Strength": 14,
+      "Vitality": 12,
+      "Agility": 14,
+      "Speed": 11,
+      "Stamina": 12,
+      "Intelligence": 8,
+      "Wisdom": 9,
+      "Luck": 11
+    },
+    "Growth": {
+      "Strength": 0.7,
+      "Vitality": 0.7,
+      "Agility": 0.7,
+      "Speed": 0.7,
+      "Stamina": 0.7,
+      "Intelligence": 0.7,
+      "Wisdom": 0.7,
+      "Luck": 0.7
+    },
+    "Milestones": [
+      {
+        "Level": 5,
+        "Growth": {
+          "Strength": 0.24,
+          "Vitality": 0.24,
+          "Agility": 0.24,
+          "Speed": 0.24,
+          "Stamina": 0.24,
+          "Intelligence": 0.24,
+          "Wisdom": 0.24,
+          "Luck": 0.24
+        }
+      },
+      {
+        "Level": 10,
+        "Growth": {
+          "Strength": 0.32,
+          "Vitality": 0.32,
+          "Agility": 0.32,
+          "Speed": 0.32,
+          "Stamina": 0.32,
+          "Intelligence": 0.32,
+          "Wisdom": 0.32,
+          "Luck": 0.32
+        }
+      },
+      {
+        "Level": 20,
+        "Growth": {
+          "Strength": 0.42,
+          "Vitality": 0.42,
+          "Agility": 0.42,
+          "Speed": 0.42,
+          "Stamina": 0.42,
+          "Intelligence": 0.42,
+          "Wisdom": 0.42,
+          "Luck": 0.42
+        }
+      },
+      {
+        "Level": 40,
+        "Growth": {
+          "Strength": 0.56,
+          "Vitality": 0.56,
+          "Agility": 0.56,
+          "Speed": 0.56,
+          "Stamina": 0.56,
+          "Intelligence": 0.56,
+          "Wisdom": 0.56,
+          "Luck": 0.56
+        }
+      }
+    ],
+    "Resistances": {},
+    "Abilities": [
+      "counter_attack"
+    ],
+    "DefaultLoadout": [],
+    "DropTable": "soldier",
+    "MoveRange": 1,
+    "Targeting": "Squishy",
+    "XpReward": 12,
+    "BossPhases": [],
+    "ChargeAbility": "charge_hook_line",
+    "ChargeShape": "Single",
+    "Trap": null,
+    "SnakeSegments": 0,
+    "Brain": "Kiter",
+    "Remains": "corpse",
+    "ArmorPlate": 18,
+    "AttackRange": 3
   }
 ]
