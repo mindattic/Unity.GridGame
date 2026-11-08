@@ -193,6 +193,11 @@ namespace GridGame.Core.Battle
                     foreach (var u in RuleUnitsOf(e, ctx)) if (u.Alive) ApplyBuff(u, buff, buff.Duration);
                     break;
                 }
+                case RuleEffectKind.GrantOrbs:
+                    foreach (var u in RuleUnitsOf(e, ctx))
+                        if (u.Alive && u.IsHero)
+                            for (int i = 0; i < e.Amount; i++) MintOrb(u.Id, "rule:" + (ctx.Rule ?? ctx.Event ?? ctx.Ability));
+                    break;
                 case RuleEffectKind.MoveUnits: MoveUnits(e, ctx); break;
                 case RuleEffectKind.Schedule: ScheduleRuleEvent(e, ctx); break;
                 case RuleEffectKind.AdjustEvents: AdjustRuleEvents(e); break;

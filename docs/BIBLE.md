@@ -2356,7 +2356,8 @@ art first) built around its rule. GG-T359 is the framework; the regions' own rul
   it becomes its `Becomes` state, or clears), `Damage`, `Heal`, `ApplyBuff`, `MoveUnits` (toward/away from an anchor or
   a point, or a direction, a free tile at a time), `Schedule` (a timeline event), `AdjustEvents` (later, sooner, or
   `Cancel`: the rule timers), `PlaceAnchor` / `MoveAnchor` (named board points) and `SetFlag` / `ClearFlag` (board-wide
-  flags; `mask-timeline` makes the view hide whose foe icon is whose). An effect's tiles are its `Area` (`Self`,
+  flags; `mask-timeline` makes the view hide whose foe icon is whose) and `GrantOrbs` (Amount mana orbs into the party's
+  bank per hero reached, GG-T376). An effect's tiles are its `Area` (`Self`,
   `Target`, `Anchor`, `EventTiles`, `Tiles`, `Row`, `Column`, `RandomFree`, `RandomUnits`, `WithState`, `All`, grown by
   `Radius`); unit effects reach the units on the area, the subject, or everyone, filtered by `Team`.
 - **Persistent tile state.** A painted tile (`TileMark`) keeps its state, the rule that painted it, a counter and an
@@ -2414,8 +2415,8 @@ The region rule `shardfall-strikes` (theme `desert2`, stages 34-35): read the ti
   timeline for 4 s and its tiles pulse, then it lands for 40 Arcane damage on every unit there, foe or hero, so a foe lured
   under a strike takes it too. One is called as each wave spawns (6 s out), and again every third foe turn.
 - **Crystals.** Every tile a strike lands on grows a `shard-crystal` (25 s). A unit ending its turn on one takes a Ward
-  and uses the crystal up. (The ticket's "bonus mana on a pincer" waits on a mana effect for rules; the Ward plays the
-  same role: go stand where the sky just fell.)
+  and uses the crystal up; a hero also mints the party a mana orb (`GrantOrbs`, GG-T376): go stand where the sky just
+  fell.
 - **Shardfall monsters** (Mannequin placeholder art, words in Prose `class:<id>`):
   - **Shardcaller** (Kiter, range 3, targets the squishy): its charge `charge_call_shards` calls a strike onto a hero and
     the tiles around them, on top of the region's own.

@@ -27,6 +27,8 @@ namespace GridGame.Tests
 
             var crystal = db.TryRegionRule("shardfall-strikes").Hooks.Single(h => h.State == "shard-crystal");
             Assert.That((crystal.On, crystal.Effects[0].Buff), Is.EqualTo((RuleHook.TurnEnd, "ward")));
+            var orb = crystal.Effects.Single(e => e.Kind == RuleEffectKind.GrantOrbs); // GG-T376: the ticket's bonus mana
+            Assert.That((orb.Units, orb.Team, orb.Amount), Is.EqualTo((RuleUnits.Subject, RuleTeam.Hero, 1)));
         }
 
         [Test]

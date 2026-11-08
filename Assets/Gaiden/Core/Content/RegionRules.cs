@@ -59,6 +59,8 @@ namespace GridGame.Core.Content
         SetFlag,
         /// <summary>Lower a board-wide Flag.</summary>
         ClearFlag,
+        /// <summary>Mint Amount mana orbs into the party's bank for each hero among the units (GG-T376).</summary>
+        GrantOrbs,
     }
 
     /// <summary>Which tiles a rule effect works on.</summary>
@@ -348,7 +350,8 @@ namespace GridGame.Core.Content
                 {
                     case RuleEffectKind.MarkTiles: if (e.State == null) p.Add($"{w}: needs a State"); break;
                     case RuleEffectKind.Damage:
-                    case RuleEffectKind.Heal: if (e.Amount <= 0) p.Add($"{w}: Amount must be positive"); break;
+                    case RuleEffectKind.Heal:
+                    case RuleEffectKind.GrantOrbs: if (e.Amount <= 0) p.Add($"{w}: Amount must be positive"); break;
                     case RuleEffectKind.ApplyBuff: if (e.Buff == null) p.Add($"{w}: needs a Buff"); break;
                     case RuleEffectKind.MoveUnits:
                     case RuleEffectKind.MoveAnchor:

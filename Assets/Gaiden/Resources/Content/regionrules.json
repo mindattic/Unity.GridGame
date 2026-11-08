@@ -410,6 +410,12 @@
             "Buff": "ward"
           },
           {
+            "Kind": "GrantOrbs",
+            "Units": "Subject",
+            "Team": "Hero",
+            "Amount": 1
+          },
+          {
             "Kind": "ClearTiles",
             "Area": "Self",
             "State": "shard-crystal"
