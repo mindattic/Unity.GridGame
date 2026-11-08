@@ -320,6 +320,9 @@ namespace GridGame.App
                 // GG-T365: so does darkness, for a foe out of sight.
                 if (owner != null && owner.Team == Team.Enemy && (RegionBoard.MasksTimeline(State) || RegionBoard.Hidden(State, owner)))
                 {
+                    // GG-T379: a hidden mimic's icon wears a hero's face instead.
+                    var face = RegionBoard.MimicFace(State, owner);
+                    if (face != null) { Ui.PortraitThumb(art, face.Def.Id); return; }
                     art.style.backgroundColor = Palette.Ink;
                     var q = new Label("?") { pickingMode = PickingMode.Ignore };
                     q.style.position = Position.Absolute;

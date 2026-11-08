@@ -131,6 +131,17 @@ namespace GridGame.Core.Battle
         /// <summary>True when the timeline should mask enemy turn icons (a rule raised <see cref="RuleFlags.MaskTimeline"/>).</summary>
         public static bool MasksTimeline(BattleState s) => s.Region.HasFlag(RuleFlags.MaskTimeline);
 
+        /// <summary>A class tag: while hidden, the foe's timeline icon wears a hero's face (GG-T379).</summary>
+        public const string MimicTag = "Mimic";
+
+        /// <summary>The hero whose face a hidden mimic's timeline icon shows (one per mimic, by id), else null (GG-T379).</summary>
+        public static Unit MimicFace(BattleState s, Unit u)
+        {
+            if (u?.Def == null || !u.Def.HasTag(MimicTag) || !Hidden(s, u)) return null;
+            var heroes = s.Units.FindAll(h => h.Alive && h.IsHero);
+            return heroes.Count == 0 ? null : heroes[u.Id % heroes.Count];
+        }
+
         /// <summary>How far (Manhattan) a hero sees under <see cref="RuleFlags.Darkness"/> (GG-T365).</summary>
         public const int DarkSight = 2;
 

@@ -1134,6 +1134,22 @@
         "long": "Every scar is a lesson. Every lesson becomes an opening."
       }
     },
+    "class:duskmimic": {
+      "key": "class:duskmimic",
+      "id": "description-class-duskmimic",
+      "guid": null,
+      "version": 0,
+      "source": "seed",
+      "hash": "sha256:d44998750b26b9ca77733a8d533f482255ae9ca005b9526a8dcd1c186232a80f",
+      "about": [
+        "class-duskmimic"
+      ],
+      "speakers": [],
+      "payload": {
+        "short": "A shape in the dark whose turn on the timeline wears a hero's face.",
+        "long": "Under Morrow, you learn to count your friends twice."
+      }
+    },
     "class:duskstalker": {
       "key": "class:duskstalker",
       "id": "description-class-duskstalker",

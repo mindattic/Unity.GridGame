@@ -2504,7 +2504,15 @@ The region rule `morrows-dark` (theme `morrowsshadow`, stages 38-40): the finale
 - **Holy light** (GG-T377): the Aegisguard's Judgment of Warding lights the tiles around its target and the Merchant's
   Holy Burst flask a wider patch: `holy-light`, a `Lights` state lasting 12 s. It is its own rule (`holy-light`), so
   painting it elsewhere never brings Morrow's dark along; a foe starting its turn in holy light is Blinded.
-- Not yet: a mimic with a false timeline icon. Balance unmeasured (owner rule: no soak). *(Tests: `MorrowsShadowTests.Morrows_shadow_is_fought_in_the_dark_by_its_own_monsters`, written, not run.)*
+- The Dusk Mimic (§14.20.7, GG-T379) wears a hero's face on the dark timeline. Balance unmeasured (owner rule: no soak). *(Tests: `MorrowsShadowTests.Morrows_shadow_is_fought_in_the_dark_by_its_own_monsters`, written, not run.)*
+
+#### 14.20.7 The Dusk Mimic (GG-T379)
+
+Morrow's Shadow I and II each field a **Dusk Mimic** (Ambusher, Mannequin placeholder art, words in Prose
+`class:duskmimic`), tagged `Mimic` (`RegionBoard.MimicTag`). While it is hidden in the dark its timeline icon shows a
+living hero's portrait (`RegionBoard.MimicFace`, one hero per mimic by id) instead of the "?", so the party can misread
+whose turn is coming; seen, it shows its own. Balance unmeasured (owner rule: no soak). *(Tests:
+`MorrowsShadowTests.Morrows_shadow_is_fought_in_the_dark_by_its_own_monsters`, written, not run.)*
 
 ### 14.21 Cracking floors (added 2026-11-08, owner direction, GG-T368)
 

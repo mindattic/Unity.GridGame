@@ -26,7 +26,7 @@ namespace GridGame.Tests
         private static bool ShadowFoe(string cls) =>
             cls == "voidsentinel" || cls == "demonlord" || cls.StartsWith("infernalist") || cls.StartsWith("hellspawn")
             || cls.StartsWith("wolf") || cls.StartsWith("werewolf") || cls == "yeti" || cls == "vulture" || cls == "flyingmonkey"
-            || DarkMonsters.Contains(cls); // GG-T365
+            || DarkMonsters.Contains(cls) || cls == "duskmimic"; // GG-T365, GG-T379
 
         private static readonly string[] DarkMonsters = { "lampsnuffer", "duskstalker", "gloommender" };
 
@@ -50,6 +50,10 @@ namespace GridGame.Tests
             Assert.That(db.TileStateRule["holy-light"], Is.EqualTo("holy-light"));
             foreach (var a in new[] { "aegisguard_judgment_of_warding", "flask_holy_burst" })
                 Assert.That(db.TryAbility(a).RuleEffects.Single().State, Is.EqualTo("holy-light"), a);
+            // GG-T379: the mimic.
+            Assert.That(db.Classes["duskmimic"].HasTag(RegionBoard.MimicTag), Is.True);
+            Assert.That(new[] { "morrowsshadow-01", "morrowsshadow-02" }.All(id =>
+                db.Stages[id].Waves.SelectMany(w => w.Enemies).Any(e => e.Class == "duskmimic")), Is.True);
             foreach (var m in DarkMonsters)
                 Assert.That(db.Classes[m].Portrait, Is.EqualTo("mannequin"), $"{m}: placeholder art until its portrait lands");
         }
