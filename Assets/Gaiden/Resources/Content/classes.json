@@ -24134,6 +24134,149 @@
     "HomeTree": "cleric"
   },
   {
+    "Id": "aetherist",
+    "Name": "Aetherist",
+    "Team": "Hero",
+    "Tags": [
+      "Healer",
+      "Humanoid"
+    ],
+    "Description": "A Choir runaway who pours aether into the party instead of singing it out of them.",
+    "Lore": "She learned the hymn backwards. The Choir wants her back very badly.",
+    "Card": "Backline [healer]. Mends an ally and pours an orb into the bank.",
+    "Portrait": "aetherist",
+    "Thumbnail": {
+      "Zoom": 2.816,
+      "X": 0.488,
+      "Y": 0.1087
+    },
+    "Figure": {
+      "X": 0.0264,
+      "Y": 0.0332,
+      "W": 0.8877,
+      "H": 0.9434
+    },
+    "Footprint": {
+      "W": 1,
+      "H": 1
+    },
+    "BaseStats": {
+      "Strength": 7,
+      "Vitality": 9,
+      "Agility": 11,
+      "Speed": 12,
+      "Stamina": 12,
+      "Intelligence": 18,
+      "Wisdom": 18,
+      "Luck": 12
+    },
+    "Growth": {
+      "Strength": 0.55,
+      "Vitality": 0.6,
+      "Agility": 0.6,
+      "Speed": 0.65,
+      "Stamina": 0.65,
+      "Intelligence": 0.95,
+      "Wisdom": 0.9,
+      "Luck": 0.6
+    },
+    "Milestones": [
+      {
+        "Level": 5,
+        "Growth": {
+          "Strength": 0.19,
+          "Vitality": 0.21,
+          "Agility": 0.21,
+          "Speed": 0.23,
+          "Stamina": 0.23,
+          "Intelligence": 0.33,
+          "Wisdom": 0.32,
+          "Luck": 0.21
+        }
+      },
+      {
+        "Level": 10,
+        "Growth": {
+          "Strength": 0.25,
+          "Vitality": 0.27,
+          "Agility": 0.27,
+          "Speed": 0.29,
+          "Stamina": 0.29,
+          "Intelligence": 0.43,
+          "Wisdom": 0.41,
+          "Luck": 0.27
+        }
+      },
+      {
+        "Level": 20,
+        "Growth": {
+          "Strength": 0.33,
+          "Vitality": 0.36,
+          "Agility": 0.36,
+          "Speed": 0.39,
+          "Stamina": 0.39,
+          "Intelligence": 0.57,
+          "Wisdom": 0.54,
+          "Luck": 0.36
+        }
+      },
+      {
+        "Level": 40,
+        "Growth": {
+          "Strength": 0.44,
+          "Vitality": 0.48,
+          "Agility": 0.48,
+          "Speed": 0.52,
+          "Stamina": 0.52,
+          "Intelligence": 0.76,
+          "Wisdom": 0.72,
+          "Luck": 0.48
+        }
+      }
+    ],
+    "Resistances": {},
+    "Abilities": [
+      "heal",
+      "mass_heal",
+      "antidote",
+      "regen",
+      "rejuvenate",
+      "silence",
+      "quicken",
+      "sleep",
+      "aetherist_aetherpour",
+      "aegiswardens_preemptiveward",
+      "aegiswardens_cleansingvigil",
+      "aegiswardens_sanctuaryrite",
+      "arcane_insight",
+      "pure_spirit"
+    ],
+    "DefaultLoadout": [
+      "heal",
+      "aegiswardens_preemptiveward",
+      "item:x_potion",
+      "aetherist_aetherpour",
+      "aegiswardens_sanctuaryrite"
+    ],
+    "DropTable": null,
+    "MoveRange": 1,
+    "XpReward": 10,
+    "BossPhases": [],
+    "ChargeAbility": null,
+    "ChargeShape": "Single",
+    "Trap": null,
+    "SnakeSegments": 0,
+    "Role": "Healer",
+    "Support": {
+      "Effect": "Heal",
+      "Magnitude": 0.1,
+      "Target": "Attacker",
+      "Range": 3,
+      "Label": "Cyan Current"
+    },
+    "HomeTree": "cleric"
+  },
+  {
     "Id": "harpy01",
     "Name": "Harpy Raider",
     "Team": "Enemy",

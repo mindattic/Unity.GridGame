@@ -132,6 +132,52 @@ namespace GridGame.Tests
             Assert.That(Formulas.LifeCostHp(db.Abilities["herald_lifegift"], giver), Is.EqualTo(0));
         }
 
+        // ── GG-T337 the Aetherist ───────────────────────────────────────────────────
+
+        [Test]
+        public void Aetherist_is_a_healer_with_a_valid_kit() => AssertKit("aetherist", "Healer", "aetherist_aetherpour", "cleric");
+
+        [Test]
+        public void Aetherist_is_recruited_as_a_wanderer_of_the_fen_dark() => AssertWanderer("aetherist", "fendark");
+
+        [Test]
+        public void Aetherist_has_an_advice_quiz() => AssertQuiz("aetherist");
+
+        [Test]
+        public void Aetherist_has_her_figure_and_thumbnail() =>
+            AssertArt("aetherist", (0.0264f, 0.0332f, 0.8877f, 0.9434f), (2.816f, 0.4880f, 0.1087f));
+
+        [Test]
+        public void Aether_pour_heals_an_ally_and_pours_an_orb_into_the_bank()
+        {
+            var db = WithReal("aetherist_aetherpour");
+            Assert.That(db.Abilities["aetherist_aetherpour"].PoursOrbs, Is.True);
+            var s = Board(db, "aetherist_aetherpour");
+            var caster = Hero(s, "knight");
+            var cleric = Hero(s, "cleric");
+            cleric.Hp = 5;
+            int orbs = s.Bank.Count;
+            var ev = BattleEngine.Apply(s, new UseSlotCommand { HeroId = caster.Id, Slot = 0, Target = cleric.Pos });
+            Assert.That(cleric.Hp, Is.GreaterThan(5), "the ally is mended");
+            Assert.That(ev.OfType<OrbMintedEvent>().Count(o => o.Reason == "aether"), Is.EqualTo(1));
+            Assert.That(s.Bank.Count, Is.EqualTo(System.Math.Min(s.Bank.Capacity, orbs + 1)));
+            Assert.That(caster.Cooldowns["aetherist_aetherpour"], Is.GreaterThan(0), "a Skill on a cooldown, not a free orb every action");
+            AssertEventInvariants(ev);
+        }
+
+        [Test]
+        public void A_bare_orb_grant_still_resolves_on_its_own()
+        {
+            var meditate = Real.Abilities["meditate"];
+            Assert.That(meditate.PoursOrbs, Is.False, "Meditate is the whole ability: no target needed");
+            var db = WithReal("meditate");
+            var s = Board(db, "meditate");
+            int orbs = s.Bank.Count;
+            var ev = BattleEngine.Apply(s, new UseSlotCommand { HeroId = Hero(s, "knight").Id, Slot = 0, Target = Hero(s, "knight").Pos });
+            Assert.That(s.Bank.Count, Is.EqualTo(System.Math.Min(s.Bank.Capacity, orbs + 1)));
+            Assert.That(ev.OfType<OrbMintedEvent>().Count(), Is.EqualTo(1));
+        }
+
         [Test]
         public void A_life_cost_must_pay_for_an_ally_heal()
         {

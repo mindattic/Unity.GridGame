@@ -9605,5 +9605,35 @@
    ],
    "Callout": "Rebloom"
   }
+ },
+ {
+  "Kind": "Skill",
+  "Cost": 0,
+  "CastTime": 0.0,
+  "CooldownTurns": 4,
+  "Shape": "SingleActor",
+  "Radius": 0,
+  "Mode": "PickActor",
+  "Filter": "AllyOnly",
+  "Motion": "None",
+  "DamageType": "Arcane",
+  "BaseDamage": 0,
+  "BaseHeal": 15,
+  "ApplyBuff": null,
+  "ApplyBuffChance": 1.0,
+  "RemovesDebuffs": false,
+  "StealsMana": false,
+  "HastenU": 0.0,
+  "IsTeleport": false,
+  "Icon": null,
+  "CastVfx": "BlueGlow",
+  "ProjectileVfx": null,
+  "ImpactVfx": "HealAura",
+  "LingerVfx": "BuffLife",
+  "Sfx": null,
+  "Id": "aetherist_aetherpour",
+  "Name": "Aether Pour",
+  "Description": "Pours aether in instead of drawing it out: an ally mends 15 HP and one orb flows into the party's bank.",
+  "GrantsOrbs": 1
  }
 ]

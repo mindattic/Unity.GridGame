@@ -1923,6 +1923,57 @@
     ]
   },
   {
+    "Id": "talk_quiz_aetherist",
+    "Title": "Advice",
+    "Trigger": {
+      "Kind": "Talk",
+      "Id": "aetherist"
+    },
+    "Speakers": [
+      {
+        "Id": "hero",
+        "Class": "$with"
+      }
+    ],
+    "Nodes": [
+      {
+        "Id": "ask",
+        "Speaker": "hero",
+        "Text": "The Choir taught me to draw aether out of people. I only pour it in now. Do you think they'll ever stop looking for me?",
+        "Choices": [
+          {
+            "Label": "Go back and they'll stop. Simple.",
+            "Next": "wrong"
+          },
+          {
+            "Label": "No. So we make sure they find a caravan instead of a girl alone.",
+            "Next": "right",
+            "Effects": [
+              {
+                "Type": "GrantSkillPoint",
+                "Id": "$with"
+              }
+            ]
+          },
+          {
+            "Label": "Change your robes and nobody will know you.",
+            "Next": "wrong"
+          }
+        ]
+      },
+      {
+        "Id": "right",
+        "Speaker": "hero",
+        "Text": "A caravan instead of a girl alone. ...I'd like to see the Choir argue with that."
+      },
+      {
+        "Id": "wrong",
+        "Speaker": "hero",
+        "Text": "...You don't know the Choir very well."
+      }
+    ]
+  },
+  {
     "Id": "talk_quiz_dervish",
     "Title": "Advice",
     "Trigger": { "Kind": "Talk", "Id": "dervish" },

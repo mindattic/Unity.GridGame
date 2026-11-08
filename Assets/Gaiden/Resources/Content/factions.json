@@ -17,7 +17,7 @@
   {
     "Id": "fendark", "Name": "the Fen-dark",
     "Heroes": [ "blackwitch", "whitewitch", "ritualist", "hexwarden", "hexsniper", "hexstalker", "harbinger", "redmage", "alchemist",
-      "doctor", "sister", "cleric", "vampire" ]
+      "doctor", "sister", "cleric", "vampire", "aetherist" ]
   },
   {
     "Id": "ember", "Name": "the Ember",

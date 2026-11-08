@@ -1159,6 +1159,10 @@
   "herald_rebloom": [
    "lorc/feather",
    "moss"
+  ],
+  "aetherist_aetherpour": [
+   "lorc/droplets",
+   "teal"
   ]
  },
  "item": {

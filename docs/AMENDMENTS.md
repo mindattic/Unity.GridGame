@@ -1039,6 +1039,7 @@ Owner 2026-11-07: the Herald, Aetherist and Tactician from the owner's art are r
 - **Was:** a new hero joined through the Summon Circle's gold pool (the Monster Tamer, GG-T303), a story beat, an authored guest or recruitable, or a mercenary contract.
 - **Now:** these heroes have no other way in, so they are only met as wanderers ([BIBLE §25.11.2.1](BIBLE.md)) or drawn for a Diamond. The Herald belongs to the Bloom, which has no heroes of its own in `factions.json`, so she is filed with **the Wild**, the closest faction.
 - **Essence (new mechanic):** the Herald's Lifegift is the first heal paid in the caster's own HP instead of mana or a cooldown alone (`AbilityDef.LifeCost`); it never takes her last HP.
+- **Orbs that ride a heal (GG-T337):** an orb grant used to be a whole ability on its own (Meditate, ethers). The Aetherist's Aether Pour heals an ally and then pours one orb into the bank (`AbilityDef.PoursOrbs`); she is filed with the Fen-dark, where the Choir's runaways go.
 - *(Tests: `WandererHeroesTests`.)*
 
 ## 2026-11-07 — A random summon for Diamonds (owner, GG-T343)

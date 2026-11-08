@@ -571,6 +571,10 @@ namespace GridGame.Core.Content
         /// (at least 1 HP, never its last one). 0 = free. A heal only (BaseHeal &gt; 0, AllyOnly), 0..<see cref="MaxLifeCost"/>.</summary>
         public float LifeCost;
         public const float MaxLifeCost = 0.5f;
+        /// <summary>GG-T337 (the Aetherist): an orb grant that rides a per-target effect (a heal, a hit, a buff) instead of
+        /// being the whole ability (Meditate, an ether). It resolves on its targets first, then pours
+        /// <see cref="GrantsOrbs"/> into the bank.</summary>
+        public bool PoursOrbs => GrantsOrbs > 0 && (BaseHeal > 0 || BaseDamage > 0 || ApplyBuff != null);
     }
 
     public sealed class BuffDef
