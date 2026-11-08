@@ -138,6 +138,8 @@ namespace GridGame.Core.Content
         /// <summary>MarkTiles: leave a tile that already holds another state alone (after any elemental reaction), so a
         /// monster's trail never paints over a crack, a barricade or another rule's mark (GG-T370).</summary>
         public bool KeepMarks;
+        /// <summary>MoveUnits: a unit stopped by another unit in its way takes this much damage, and so does that unit (GG-T378).</summary>
+        public int CollideDamage;
     }
 
     /// <summary>A persistent tile state a rule paints on the board (drawn on the tile; a mark lives until cleared or its LifeSeconds run out).</summary>
@@ -336,6 +338,7 @@ namespace GridGame.Core.Content
                 if (e.Event != null && db.TryRuleEvent(e.Event) == null) p.Add($"{w}: unknown rule event '{e.Event}'");
                 if (e.Buff != null && db.TryBuff(e.Buff) == null) p.Add($"{w}: unknown buff '{e.Buff}'");
                 if (e.Radius < 0 || e.Radius > 8) p.Add($"{w}: Radius outside 0..8");
+                if (e.CollideDamage < 0) p.Add($"{w}: CollideDamage can't be negative");
                 switch (e.Area)
                 {
                     case RuleArea.Tiles: if (e.Tiles.Count == 0) p.Add($"{w}: area Tiles lists none"); break;

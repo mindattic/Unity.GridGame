@@ -28,6 +28,7 @@ namespace GridGame.Tests
             Assert.That((heave.Repeat, heave.Hazard), Is.EqualTo((true, false)), "it moves, it doesn't hurt");
             var pull = heave.Effects.Single();
             Assert.That((pull.Kind, pull.Move, pull.Amount, pull.Radius, pull.Team), Is.EqualTo((RuleEffectKind.MoveUnits, RuleMove.Toward, 1, 3, RuleTeam.Any)));
+            Assert.That(pull.CollideDamage, Is.GreaterThan(0), "GG-T378: dragged into someone, both take the knock");
         }
 
         [Test]

@@ -451,7 +451,8 @@
             "Units": "OnArea",
             "Team": "Any",
             "Amount": 1,
-            "Move": "Toward"
+            "Move": "Toward",
+            "CollideDamage": 12
           }
         ]
       }

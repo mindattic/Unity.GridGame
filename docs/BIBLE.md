@@ -2444,8 +2444,8 @@ The region rule `anchor-pull` (theme `cave2`, stages 36-37): the field itself mo
   - **Hookthrower** (Kiter, range 3): its charge `charge_hook_line` pulls one hero two tiles out of formation.
 - **Waves.** Two foes a wave, three in the finale (the yeti, the ice mauler and a Chain Warden); signatures stay unique.
   The heave's tiles are the ones around the anchor when the wave spawned; the pull itself follows the anchor.
-- No collision damage yet (the framework moves a unit a free tile at a time and stops it when blocked). Balance unmeasured
-  (owner rule: no soak). *(Tests: `UnderTheAnchorsTests`, written, not run.)*
+- **Collisions** (GG-T378): a unit the heave drags into another unit stops there, and both take 12 Physical
+  (`RuleEffectDef.CollideDamage`). Balance unmeasured (owner rule: no soak). *(Tests: `UnderTheAnchorsTests`, written, not run.)*
 
 #### 14.20.4 The Drowned Arks: the rising tide (GG-T362)
 

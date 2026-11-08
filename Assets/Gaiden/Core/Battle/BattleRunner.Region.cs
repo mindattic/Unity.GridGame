@@ -585,7 +585,17 @@ namespace GridGame.Core.Battle
                     if (dir == null) break;
                     var next = u.Pos + dir.Value;
                     if (TryShoveIntoPit(u, next)) break; // carried into an open hole (GG-T368)
-                    if (!S.FreeToEnter(next)) break;
+                    if (!S.FreeToEnter(next))
+                    {
+                        // GG-T378: dragged into another unit, both take the knock.
+                        var blocker = S.UnitAt(next);
+                        if (e.CollideDamage > 0 && blocker != null && blocker != u && blocker.Alive && !blocker.IsCorpse && !blocker.IsRemains)
+                        {
+                            Damage(u, e.CollideDamage, null, HitKind.Normal, DamageType.Physical, RuleLabel(ctx));
+                            if (blocker.Alive && !S.IsOver) Damage(blocker, e.CollideDamage, null, HitKind.Normal, DamageType.Physical, RuleLabel(ctx));
+                        }
+                        break;
+                    }
                     var from = u.Pos;
                     if (!Relocate(u, next)) break;
                     Emit(new DisplacedEvent { UnitId = u.Id, From = from, To = next, ByUnitId = -1 });
