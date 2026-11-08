@@ -178,6 +178,9 @@ def build(content: dict, known: set) -> list:
         for n in t.get("Nodes") or []:
             if n.get("Id") and n.get("Description"):
                 out.append(text("description", "skillnode:" + n["Id"], {"short": n["Description"]}))
+    for r in content.get("regionrules") or []:  # GG-T359: rule:<id>, the rule's name and description
+        if isinstance(r, dict) and r.get("Id") and r.get("Description"):
+            out.append(text("description", "rule:" + r["Id"], {"name": r.get("Name") or r["Id"], "short": r["Description"]}))
     for npc in K.NPCS:
         eid = K.character_entity(npc)
         out.append(text("description", "npc:" + npc, {"short": prose_map.NPC_SUMMARY[npc]}, [eid] if eid in known else []))
