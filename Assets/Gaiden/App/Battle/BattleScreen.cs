@@ -741,6 +741,20 @@ namespace GridGame.App
 
         public string BannerText => banner?.text;
 
+        // GG-T358: the battle-start announcements (a wanderer, a guest) play in the opening beats and the billboard
+        // drops each line after 1.6 s, so a poll that arrives a moment late misses them. Automation reads this
+        // history of every banner and billboard line this battle has shown (newest last, capped) instead.
+        private const int ShownLinesCap = 200;
+        private readonly List<string> shownLines = new List<string>();
+        public IReadOnlyList<string> ShownLines => shownLines;
+
+        private void NoteShown(string text)
+        {
+            if (string.IsNullOrEmpty(text)) return;
+            shownLines.Add(text);
+            if (shownLines.Count > ShownLinesCap) shownLines.RemoveAt(0);
+        }
+
         /// <summary>Dev/automation helper: put a buff on a unit and refresh its view.</summary>
         /// <summary>Dev/automation helper: put an ability ("poison") or item ("item:healing_potion_basic:3") in a hero's bar slot.</summary>
         public bool DevSetBar(int unitId, int slot, string entry)
@@ -1345,6 +1359,7 @@ namespace GridGame.App
             if (banner == null) return;
             text ??= "";
             banner.text = text;
+            NoteShown(text);
             banner.style.fontSize = text.Length > 44 ? 32 : text.Length > 32 ? 38 : 48;
             banner.style.top = Space.S0;
             if (bannerScrollRoutine != null) { App.StopCoroutine(bannerScrollRoutine); bannerScrollRoutine = null; }

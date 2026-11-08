@@ -36,6 +36,7 @@ Screenshots land in artifacts/<run>/. Design coordinates are 1170x2532 (top-left
 import hashlib
 import json
 import os
+import re
 import subprocess
 import sys
 import time
@@ -1122,15 +1123,54 @@ def _drain_story(seen, tag, limit=30):
 _ANNOUNCE = ("wandering", "ignores", "rises", "joins the fight")
 
 
+_TEXT_DIR = os.path.join(ROOT, "Assets", "Gaiden", "Resources", "Content", "Text")
+_prose_texts = None
+
+
+def prose_text(key):
+    """GG-T358: a story text's payload from Content/Text by key: the Prose snapshot the build ships (GG-T355,
+    Core/Content/ProseText.cs). Story words change in Prose, so a check reads them here and never pins wording."""
+    global _prose_texts
+    if _prose_texts is None:
+        _prose_texts = {}
+        for f in sorted(os.listdir(_TEXT_DIR)):
+            if f.endswith(".json"):
+                with open(os.path.join(_TEXT_DIR, f), encoding="utf-8") as fh:
+                    _prose_texts.update(json.load(fh).get("texts") or {})
+    return (_prose_texts.get(key) or {}).get("payload") or {}
+
+
+def _squash(s):
+    """Whitespace-collapsed, with rich-text tags (a highlighted [term] is drawn as <color=..>term</color>) removed."""
+    return " ".join(re.sub(r"<[^>]+>", "", str(s)).split())
+
+
+def crawl_opening(key, n=40):
+    """The first words of a crawl's first paragraph (Content/Text), which the crawl screen shows under its title;
+    stops short of any [glossary term], whose brackets the screen doesn't draw."""
+    paras = prose_text(key).get("paragraphs") or []
+    return _squash(paras[0]).split("[", 1)[0][:n].rstrip() if paras else None
+
+
+def shows_text(expected, texts):
+    """Whether any of the screen's texts holds `expected` (whitespace- and markup-insensitive). A missing text never
+    matches."""
+    return bool(expected) and any(expected in _squash(t) for t in texts)
+
+
 def _watch_banners(seconds=8.0, until_battle_ends=False):
     """Every distinct battle banner shown over the next few seconds, plus billboard announcements read off the screen
-    (wanderers, rule-breaks). With until_battle_ends, keeps watching until the screen leaves the battle."""
+    (wanderers, rule-breaks). Includes the battle's banner/billboard history (GG-T358), so an opening announcement
+    the billboard dropped before the watch began still counts. With until_battle_ends, keeps watching until the
+    screen leaves the battle."""
     out, end = [], time.time() + seconds
     while time.time() < end:
         st = call("state")
         if st["screen"] != "battle":
             break
-        texts = [(call("banner") or {}).get("text")] + [str(t) for t in call("texts") if any(k in str(t).lower() for k in _ANNOUNCE)]
+        b = call("banner") or {}
+        texts = [b.get("text")] + [str(t) for t in (b.get("shown") or [])] \
+            + [str(t) for t in call("texts") if any(k in str(t).lower() for k in _ANNOUNCE)]
         for t in texts:
             if t and t not in out:
                 out.append(t)
@@ -1156,7 +1196,7 @@ def storyarc(run="storyarc", capture=True):
     ok["prologue_plays"] = _wait_screen("crawl", 6)
     if ok["prologue_plays"]:
         time.sleep(3.0); shot("02-prologue-mid")
-        ok["prologue_is_tithe_day"] = any("Tithe Day" in str(t) for t in call("texts"))
+        ok["prologue_crawl_text"] = shows_text(crawl_opening("crawl:prologue"), call("texts"))
         call("clicktext", text="Skip")
     ok["prologue_then_camp"] = _wait_screen("hub", 8)
     time.sleep(0.8); shot("03-camp")
@@ -1171,6 +1211,8 @@ def storyarc(run="storyarc", capture=True):
     banners = _watch_banners(8)
     notes["gv1_banners"] = banners
     shot("05-gv1-wanderer")
+    # The billboard plays in the opening beats and drops after 1.6 s, before the story drain hands over; the banner
+    # history (_watch_banners) still has it (GG-T358). The words are the game's own (BattleScreen.Wanderer), not Prose.
     ok["wanderer_billboard"] = any("wandering" in b.lower() for b in banners)
     lead = (save().get("party") or ["paladin"])[0]
     call("devxp", hero=lead, level=10)
@@ -1187,7 +1229,7 @@ def storyarc(run="storyarc", capture=True):
     before = len(seen)
     _drain_story(seen, "07-after-gv1")
     played = " ".join(t for _, t in seen[before:])
-    ok["lv10_interlude_crawl"] = "What We Swore For" in played
+    ok["lv10_interlude_crawl"] = shows_text(crawl_opening("crawl:dialogue/interlude_level10_motives"), [played])
     ok["lv10_interlude_seen"] = "interlude_level10_motives" in save().get("seen", [])
     ok["back_at_camp"] = _wait_screen("hub", 6)
     shot("08-camp-after")
@@ -1290,7 +1332,7 @@ def storyarc(run="storyarc", capture=True):
     ok["ending_crawl"] = _wait_screen("crawl", 6)
     if ok["ending_crawl"]:
         time.sleep(3.0); shot("27-ending-crawl")
-        ok["ending_is_still_here"] = any("Still Here" in str(t) for t in call("texts"))
+        ok["ending_crawl_text"] = shows_text(crawl_opening("crawl:ending"), call("texts"))
         call("clicktext", text="Skip")
     ok["credits_roll"] = _wait_screen("credits-roll", 6)
     if ok["credits_roll"]:

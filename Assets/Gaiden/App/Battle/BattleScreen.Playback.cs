@@ -1139,6 +1139,7 @@ namespace GridGame.App
         private void Billboard(string text, Texture2D icon, Color color)
         {
             if (string.IsNullOrEmpty(text)) return;
+            NoteShown(text);
             if (billboard == null)
             {
                 billboard = Ui.Window(null, App.Overlay, "window--compact");

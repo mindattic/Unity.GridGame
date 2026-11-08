@@ -615,7 +615,12 @@ namespace GridGame.App.Automation
                     foreach (var cam in Camera.allCameras) cam.enabled = q["on"] == "1";
                     return new { ok = true };
                 case "banner":
-                    return new { text = (app.Router.Current as BattleScreen)?.BannerText };
+                {
+                    // GG-T358: "shown" is every banner/billboard line this battle has put up, so an opening announcement
+                    // the billboard already dropped is still readable.
+                    var bnr = app.Router.Current as BattleScreen;
+                    return new { text = bnr?.BannerText, shown = bnr?.ShownLines?.ToList() };
+                }
                 case "press":
                     StartCoroutine(Press(F(q["x"]), F(q["y"]), F(q["ms"], 600) / 1000f, reply));
                     return Pending;
