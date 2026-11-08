@@ -51,6 +51,7 @@ namespace GridGame.Core.Content
             db.Summon = ReadOne<SummonDef>(readText, "summon") ?? new SummonDef();
             db.Vfx = ReadOne<VfxStyleSheet>(readText, "vfxstyle") ?? new VfxStyleSheet();
             db.VfxPrefabs = ReadOne<VfxCatalog>(readText, "vfx") ?? new VfxCatalog();
+            db.Elements = ReadOne<ElementTableDef>(readText, "elements") ?? new ElementTableDef(); // GG-T371
             db.Mercenaries.AddRange(ReadList<MercenaryDef>(readText, "mercenaries"));
             db.Factions.AddRange(ReadList<FactionDef>(readText, "factions"));
             AddAll(db.Caravan, ReadList<CaravanUpgradeDef>(readText, "caravan"), x => x.Id);
@@ -241,6 +242,7 @@ namespace GridGame.Core.Content
             ValidateCrawl(db, db.Campaign.Prologue, "campaign Prologue", false, p);
             ValidateCrawl(db, db.Campaign.Ending, "campaign Ending", true, p);
             foreach (var t in db.Traps.Values) NeedBuff(t.ApplyBuff, $"trap {t.Id}");
+            ElementCounters.Validate(db, p); // GG-T371: there is always a way (campaign foes, rule-breakers, traps, GG-T359 hazard tiles)
             RegionRuleCatalog.Validate(db, p); // GG-T359
             foreach (var pk in db.Pickups.Values)
             {

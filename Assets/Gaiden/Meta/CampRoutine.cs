@@ -153,7 +153,40 @@ namespace GridGame.Meta
                 }
                 if (!ok || s.Count(potion.Id) <= before) break;
             }
+
+            // GG-T371 (§3.3.1): there is always a way. Carry the Merchant's counter for the next stage: a flask of an
+            // element its walls don't resist, the Disarm Kit or Purifying Salts for what its foes lay.
+            if (merchant) StockCounters(c, s, log, Note);
             return log;
+        }
+
+        /// <summary>Copies of each counter consumable the routine keeps for the next stage (GG-T371).</summary>
+        public const int CounterStock = 1;
+
+        /// <summary>GG-T371: buy <see cref="ElementCounters.CountersFor"/> the next uncleared campaign stage, one of each, only
+        /// while it is cheap against the purse (a quarter of the gold or less), and slot it into a dead bar slot so the battle
+        /// bot can throw it.</summary>
+        private static void StockCounters(ContentDb c, SaveData s, List<string> log, System.Action<Result> note)
+        {
+            var next = c.CampaignStages().Skip(s.HighestClearedStage + 1).FirstOrDefault();
+            int unlocked = System.Math.Min(Progression.UnlockedSlots(s), Progression.MaxBarSlots);
+            foreach (var item in ElementCounters.CountersFor(c, next))
+            {
+                int want = System.Math.Min(CounterStock, item.MaxStack) - s.Count(item.Id);
+                if (want > 0 && s.Gold >= item.BaseCost * want * 4) note(Shop.Buy(c, s, new Dictionary<string, int> { [item.Id] = want }));
+                if (s.Count(item.Id) <= 0) continue;
+                string entry = "item:" + item.Id;
+                foreach (var id in s.Party)
+                {
+                    var h = s.Hero(id);
+                    if (h == null || h.Bar.Contains(entry)) continue;
+                    int dead = -1;
+                    for (int i = 0; i < unlocked && i < h.Bar.Count; i++) if (IsDeadSlot(s, h.Bar[i])) { dead = i; break; }
+                    if (dead < 0) continue;
+                    if (Abilities.Assign(c, s, h, dead, entry).Ok) log.Add($"{c.TryClass(h.ClassId)?.Name ?? h.ClassId} slotted {item.Name} (slot {dead + 1})");
+                    break;
+                }
+            }
         }
 
         /// <summary>Text in a camp log line that records learning an ability ("Cleric learned Rejuvenate (280g)");

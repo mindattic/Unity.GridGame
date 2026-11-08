@@ -1210,3 +1210,17 @@ Owner: *"with 12 mana slots that means some of these spells need to get much mor
 | Sanctuary Rite, Frost | 2 | 7 |
 | Meteor | 2 | 10 |
 | *(unchanged)* Heal, Antidote, Sleep, Silence, Regen, Drench, Runeward, Marked for Warband, Swap, Hands of Mercy, Dark Communion, Pre-emptive Ward, Overdrive (1); Flowing Current, Slow, Stumble, Spellshield, Overchannel, Drain Life, Den Mother, Blood Harvest (2); Shock Wave, Cross Hit (3); Haste Field (4); Stasis (5) | | |
+
+## 2026-11-08 — There is always a way: elemental counters at the Merchant (owner, GG-T371)
+
+Owner: *"always a way to defeat them (cast fire against ice, be able to buy a consumable with elemental effects in case your party doesn't have what it needs specced into the build, there is always a way)."* [BIBLE §3.3.1](BIBLE.md) added.
+
+- **Was:** enemy resistances and weaknesses (Poison-immune constructs, Fire-resistant Infernalists, Holy-fearing undead) were plain numbers. The only elemental consumables were Flame Oil and Holy Water, both drops, and the Hand Grenade (Fire). Nothing guaranteed a party without the right spells an answer, or a way off a trap.
+- **Now:**
+  - `elements.json` is the elemental interaction table: counters, statuses, what each element breaks or exploits, and its tile reactions on traps (and GG-T359 tile states).
+  - The Merchant always sells a flask of each element (45–60 g), Purifying Salts (30 g) and a Disarm Kit (40 g).
+  - A hero's damaging ability clears the traps its element reacts with.
+  - `ContentLoader.Validate` refuses content where a campaign foe, rule-break boss, trap or hazard tile has no counter the Merchant sells.
+  - The camp bot buys the next stage's counters.
+- **Unmeasured** (no soak run): the bot's extra spend and any flask use, pending the owner's `/test`.
+- *(Tests: `AlwaysAWayTests`, written and not run.)*

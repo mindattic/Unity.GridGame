@@ -162,6 +162,7 @@ namespace GridGame.Core.Battle
         /// <summary>The dispatcher (§6): per target, cleanse → fire×wet/frozen → steal → damage → blind roll → heal → hasten → buff.</summary>
         private void ResolveAbility(Unit caster, AbilityDef a, Coord anchor, Unit pickedUnit)
         {
+            if (ResolveTileReactions(caster, a, anchor)) return; // GG-T371: a hero's tool or element on the traps it covers
             ResolveAbilityEffects(caster, a, anchor, pickedUnit);
             RegionAbility(caster, a, anchor); // GG-T359: its region rule effects, once it has resolved
         }

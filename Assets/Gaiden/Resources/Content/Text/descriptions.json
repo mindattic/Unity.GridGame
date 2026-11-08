@@ -3754,6 +3754,19 @@
         "short": "A battered strongbox left on the road. Open it from the bag."
       }
     },
+    "item:cons_disarm_kit": {
+      "key": "item:cons_disarm_kit",
+      "id": "description-item-cons-disarm-kit",
+      "guid": null,
+      "version": 0,
+      "source": "seed",
+      "hash": "sha256:8d0aae312056d62d4bedf91b7ad430ee80b6570e4925fc0c8654d3dca5d50bc4",
+      "about": [],
+      "speakers": [],
+      "payload": {
+        "short": "Pliers, wire and a steady hand in a leather roll. Pulls the teeth of mines, snares and caltrops before anyone steps on them."
+      }
+    },
     "item:cons_grenade": {
       "key": "item:cons_grenade",
       "id": "description-item-cons-grenade",
@@ -3767,6 +3780,19 @@
       "speakers": [],
       "payload": {
         "short": "Lob it: a 3×3 fire blast for 28."
+      }
+    },
+    "item:cons_purifying_salts": {
+      "key": "item:cons_purifying_salts",
+      "id": "description-item-cons-purifying-salts",
+      "guid": null,
+      "version": 0,
+      "source": "seed",
+      "hash": "sha256:67f28f89d4b079af71850c94e80b4c319e21f931b8eca212566ae5f3b6bbb60d",
+      "about": [],
+      "speakers": [],
+      "payload": {
+        "short": "Coarse white salt blessed at a wayside shrine. Scattered over fouled ground, it washes away slime, mire, quicksand and poison clouds."
       }
     },
     "item:cons_sleep_dart": {
@@ -21647,6 +21673,97 @@
       "speakers": [],
       "payload": {
         "short": "Volatile flask. Deals fire damage — beasts and ice-kin burn well."
+      }
+    },
+    "item:flask_arcane": {
+      "key": "item:flask_arcane",
+      "id": "description-item-flask-arcane",
+      "guid": null,
+      "version": 0,
+      "source": "seed",
+      "hash": "sha256:006184148b28819899cdf42101c5e37e3e4d9deb09b7da9151e43c99b8a43915",
+      "about": [],
+      "speakers": [],
+      "payload": {
+        "short": "Raw aether, humming in a crystal vial. It slips past armor plates and may leave a caster silenced."
+      }
+    },
+    "item:flask_fire": {
+      "key": "item:flask_fire",
+      "id": "description-item-flask-fire",
+      "guid": null,
+      "version": 0,
+      "source": "seed",
+      "hash": "sha256:cfb25e4f81f9150fe9c09953a1cc0529597e5a0b0e2dcdf8897aeac9efe4ae4b",
+      "about": [],
+      "speakers": [],
+      "payload": {
+        "short": "A stoppered bottle of lamp-black oil that bursts into flame where it lands. Fire thaws the frozen and burns slime away."
+      }
+    },
+    "item:flask_frost": {
+      "key": "item:flask_frost",
+      "id": "description-item-flask-frost",
+      "guid": null,
+      "version": 0,
+      "source": "seed",
+      "hash": "sha256:8223a8e0a60d0cd50919104cd26f2563587cf2ac3394139a9592e0dbd9ef9bd4",
+      "about": [],
+      "speakers": [],
+      "payload": {
+        "short": "Rime-sealed glass that shatters into a killing cold. Ice answers fire, and freezes mire and quicksand solid."
+      }
+    },
+    "item:flask_holy": {
+      "key": "item:flask_holy",
+      "id": "description-item-flask-holy",
+      "guid": null,
+      "version": 0,
+      "source": "seed",
+      "hash": "sha256:0a98a40154e511efdf4de4e2d8f97e83f4c48857bef5945bc2fca4638e5a4533",
+      "about": [],
+      "speakers": [],
+      "payload": {
+        "short": "Water drawn from a shrine spring and sealed with a prayer. The dark and the dead flinch from it; it clears poison clouds."
+      }
+    },
+    "item:flask_shadow": {
+      "key": "item:flask_shadow",
+      "id": "description-item-flask-shadow",
+      "guid": null,
+      "version": 0,
+      "source": "seed",
+      "hash": "sha256:404794682d82946081b69acea7846631882e5719cb0ac0547dd1754c0efd2a64",
+      "about": [],
+      "speakers": [],
+      "payload": {
+        "short": "Ink-dark smoke trapped in black glass. It bites the holy and the arcane, and may leave its victims blinded."
+      }
+    },
+    "item:flask_storm": {
+      "key": "item:flask_storm",
+      "id": "description-item-flask-storm",
+      "guid": null,
+      "version": 0,
+      "source": "seed",
+      "hash": "sha256:a97c16a42eb95d06e07200db11650a4c3dd2013e939db42f72ced4164bb1b302",
+      "about": [],
+      "speakers": [],
+      "payload": {
+        "short": "A jar of bottled thunder. It strikes hardest on the soaked and sets off shock mines harmlessly."
+      }
+    },
+    "item:flask_venom": {
+      "key": "item:flask_venom",
+      "id": "description-item-flask-venom",
+      "guid": null,
+      "version": 0,
+      "source": "seed",
+      "hash": "sha256:ebc747ec884f85653b4f89cd131e58f4784787ffbf02a9cf4ea04958c978030f",
+      "about": [],
+      "speakers": [],
+      "payload": {
+        "short": "Swamp venom in a thin clay shell. It bursts into a green haze that sickens anything that breathes it."
       }
     },
     "item:greater_antidote": {

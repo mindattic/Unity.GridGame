@@ -28,6 +28,8 @@ namespace GridGame.Core.Content
         public VfxStyleSheet Vfx = new VfxStyleSheet();
         /// <summary>vfx.json (GG-T269): the effect prefabs vfxstyle.json points at.</summary>
         public VfxCatalog VfxPrefabs = new VfxCatalog();
+        /// <summary>elements.json (GG-T371): the elemental interaction table (counters, statuses, tile reactions).</summary>
+        public ElementTableDef Elements = new ElementTableDef();
         /// <summary>mercenaries.json (GG-T233), in file order.</summary>
         public readonly List<MercenaryDef> Mercenaries = new List<MercenaryDef>();
         public MercenaryDef TryMercenary(string classId) => Mercenaries.Find(m => string.Equals(m.Class, classId, StringComparison.OrdinalIgnoreCase));

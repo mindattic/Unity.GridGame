@@ -1019,6 +1019,61 @@ final = round(base × resistance × (Lightning on Wet ? 1.5 : 1) × incoming-dam
 
 Current content authors no class resistances; the only resistance gear is the Sunfire Amulet (Fire ×0.7).
 
+*Amended 2026-11-08 (GG-T371):* several enemy families now author resistances (ceramic knights, cyber zombies and tree golems Poison ×0; harpies, heavy troopers and minotaurs weak to Lightning; the Lich and the Void Sentinel resist Dark and fear Holy; Infernalists and Hellspawn resist Fire and fear Ice; wraith knights the reverse; cultists resist Arcane and fear Dark). §3.3.1 guarantees each one a counter for sale.
+
+#### 3.3.1 There is always a way (GG-T371, added 2026-11-08)
+
+Owner: "always a way to defeat them (cast fire against ice, be able to buy a consumable with elemental effects in case your party doesn't have what it needs specced into the build, there is always a way)." No fight may require a build the party lacks: every wall a foe or the board puts up has a counter the Merchant always sells.
+
+- **The interaction table** (`elements.json`, `ElementTableDef`, one row per `DamageType`, content-validated):
+
+| Element | Counters (beats foes that resist) | Its flask's status | Breaks / exploits | Tiles it clears |
+|---|---|---|---|---|
+| Physical | — | — | — | — |
+| Fire | Ice | [Burning] | breaks [Frozen] and [Wet] | slime trail, venom snare, poison cloud |
+| Ice | Fire | [Frozen] | — | mire, quicksand (frozen solid) |
+| Lightning | Poison, Arcane | — | exploits [Wet] (×1.5) | shock mine (set off harmlessly) |
+| Poison | — | [Poisoned] | — | — |
+| Holy | Dark | — | — | poison cloud |
+| Dark | Holy, Arcane | [Blinded] | — | — |
+| Arcane | Physical (spells go around plates) | [Silenced] | — | — |
+
+  - *Breaks / exploits* record what the dispatcher already does (§6); a test keeps the two in step.
+  - *Tile reactions* (`TileReactionDef`: `On` a trap or tile-state id, `Kind` Clear, or Becomes `Into`) mirror GG-T359's ClearTiles and MarkTiles. GG-T370's hazard trails (slime, fire, ice, mines) add their tile-state ids to these rows.
+  - Two *tool sets* sit beside the elements (`Reactions`): **disarm** (venom snare, shock mine, caltrops) and **cleanse** (slime trail, mire, quicksand, poison cloud).
+  - `RuleBreaks` records how each rule-break (§14.9) is answered. All five are Positional today.
+- **In battle** (`BattleRunner.Elements.cs`): a hero's ability runs its tile reactions on the traps it covers. That is its tool set (`AbilityDef.TileReaction`), plus its element's row when it deals damage.
+  - A tile pick is legal when it clears a trap, even with nobody in reach (throw the kit at the mine). A tile-only use resolves without a "Missed!".
+  - Each cleared trap emits `TrapClearedEvent`: the board resyncs, the trap cue plays and "Cleared!" floats.
+  - Enemy abilities leave the board alone.
+- **The Merchant's counters** (`tools/counter_items.py`). All are Common, stack 5, and `SoldByVendor`, so they are on the shelf from the first expedition (§25.1). Names are labels; descriptions are Prose `item:<id>` texts.
+
+| Item | Price | Effect (picks a tile; a plus of radius 1 unless noted) |
+|---|---|---|
+| Fire Flask | 55 | 20 fire + [Burning] |
+| Frost Flask | 60 | 16 ice + a [good] chance of [Frozen] |
+| Storm Flask | 55 | 20 lightning (×1.5 on [Wet]) |
+| Venom Flask | 45 | 12 poison + [Poisoned] |
+| Blessed Flask | 55 | 20 holy |
+| Shadow Flask | 55 | 20 dark + a [fair] chance of [Blinded] |
+| Aether Flask | 55 | 20 arcane + a [fair] chance of [Silenced] |
+| Purifying Salts | 30 | a 3×3 area: the cleanse set |
+| Disarm Kit | 40 | a 3×3 area: the disarm set |
+
+  They are priced between a Healing Potion (25) and a Hand Grenade (90, 28 fire in a 3×3). Flame Oil (70, one foe) and Holy Water stay drops.
+- **The validator** (`ElementCounters.Validate`, run by `ContentLoader.Validate`) checks every enemy class a campaign stage fields, rule-break bosses and laid eggs included. A foe's multiplier per type is its `Resistances` × its unconditional `ReductionMultiplier` passives.
+  1. Some Merchant consumable hurts it at full strength (×1 or better).
+  2. Each weakness (above ×1) is a type the Merchant sells.
+  3. For each element it resists, the table names a counter; the foe doesn't resist that counter too; the Merchant sells it.
+  4. A foe with an armor plate (§13.5) has a non-Physical Merchant consumable it doesn't block (at or below `HeavyResistance`, 0.25).
+  5. An element-gated ward (a buff it can raise that takes ×0.25 or less) is broken (`Breaks`) by an element the Merchant sells.
+  6. Every rule-break in a campaign stage has a `RuleBreaks` row: Positional, or an Element or Item the Merchant sells.
+  7. Every trap, and every GG-T359 tile state marked Hazard, is cleared by some Merchant consumable.
+
+  It also checks the table's shape: a row per type, known buffs, trap and tile-state ids, reaction sets. Each problem names the stage, the foe and the gap. Current content passes with none.
+- **The camp bot** (`CampRoutine`, §25.3.3) buys the next stage's counters (`ElementCounters.CountersFor`).
+- *(Tests: `AlwaysAWayTests`, written and not run.)*
+
 ---
 
 ## 4. The AbilityBar
@@ -1107,6 +1162,7 @@ On a fresh save (2 slots) the starting trio's potion sits in locked slot 3 until
 | `Revives` | first fallen hero returns on the free tile nearest the user with `BaseHealing` HP; refused if nobody has fallen | Revival Charm (50) |
 | `Escape` | battle ends as **Escaped** ([§22.2](#222-failure-path-detail)) | Smoke Bomb |
 | `OutOfBattleOnly` | no battle effect; Camp only | Tent |
+| `OnUseAbility` + `TileReaction` | the ability also clears the traps it covers ([§3.3.1](#331-there-is-always-a-way-gg-t371-added-2026-11-08)) | Purifying Salts, Disarm Kit (the elemental flasks are `OnUseAbility` hits) |
 
 ### 4.4 Click flow per kind
 
@@ -2027,6 +2083,8 @@ Owner: "a boss who 'breaks the rules' as far as standard gameplay goes." Each ma
 *Amended 2026-11-07 (GG-T350):* The Choir's Cathedral (§22.3.3) is an eighth main biome and the new finale. The Hierarch keeps **Undying** and moves to the Cathedral III; Halcyon III gets a Kiln Guard captain with **AxisWard**, so each of TwinTurn, AxisWard and Undying is shared by two finales and MireSwap and GravityStamp stay unique.
 
 A frozen or sleeping rule-breaker skips its rule along with its turn. The bot handles them without special-casing beyond pincer scoring: a warded row pincer is worth +3 (it cracks the ward) instead of +10 (`HeroBot.ScoreMove`), so it prefers a column pincer. *(Tests: `RuleBreakTests` — the arrival banner on the flagged spawn only; TwinTurn's second turn and its engaged counter; AxisWard's glancing row pincer, landing column pincer and shatter; MireSwap's swap and its no-ally counter; GravityStamp's warning then pull, out-of-reach heroes untouched; Undying's single rise with a thrall standing, and staying down with none or once risen; the eight main finales carry exactly these rule-breaks and no other stage does; validation of a guest rule-break and a big-body swap.)*
+
+*Amended 2026-11-08 (GG-T371):* elements.json's `RuleBreaks` lists how each rule is answered. All five are Positional (any party can do it), and `ContentLoader.Validate` refuses a campaign rule-break with no row, or with an Element or Item counter the Merchant doesn't sell (§3.3.1).
 
 ### 14.10 The Chronomancer (added 2026-11-05, owner direction, GG-T275)
 
@@ -3150,6 +3208,7 @@ The first time the player opens a Camp station, a one-time **camp tip** points a
 - **Potion economy (amended 2026-10-15, GG-T44):** every healing/cure consumable (Healing Potion, Hi-Potion, X-Potion, Revival Charm, Antidote, Eye Drops, Remedy, Tent) is now `SoldByVendor`, not just Healing Potion — the Merchant is the convenient, always-available path. Each one's Alchemy brew (§25.3) costs **2.5–5×** less gold per unit, because its reagents come from field drops instead of a gold price; gathering and brewing is the efficient path, buying stays the convenient one. *(Test: `Every_sold_healing_or_cure_potion_is_meaningfully_cheaper_brewed_than_bought`.)*
 - **Fresh baseline gear (amended 2026-10-19, GG-T84):** the 16 unenhanced **Common** weapons, armor and relics (Rusty Sword, Bronze Dagger, Iron Sword, Hunter's Bow; Padded Vest, Leather Armor, Chain Mail, Iron Helm, Leather Boots, Iron Sabatons, Leather Leggings, Leather Gloves; Iron Talisman, Bone Amulet, Copper Ring, Copper Earring) are now `SoldByVendor`, bought new at full `BaseCost` and full durability -- before this, 0 of 155 equipment defs were sold and the worn Bargain shelf was the only gear buy path, so "buy replacements" at camp (owner, 2026-10-19) was impossible. Uncommon-and-up and every enhanced (+N) tier stay drop/forge-only. Where the Forge can make a sold piece, its gold cost stays under 60% of the buy price (materials come from drops), mirroring the potion rule: forging is the efficient path, buying the convenient one. *(Test: `The_merchant_sells_fresh_baseline_gear_and_only_baseline_gear`.)*
 - **Bargain (added 2026-10-15, owner direction, US-246, GG-T38):** a rotating "Used / Bargain" shelf of `Meta.Bargains.ShelfSize` = 4 worn weapons/armor, picked from every equipment `ItemDef` with `Durability > 0` and `Slot` Weapon or Armor, at **35–60%** of `BaseCost` but only **10–40%** of `Durability` left — cheap power now, a real risk of shattering mid-combat before it can be repaired. Rolled deterministically from `SaveData.BargainRotation` (so reopening the Merchant never rerolls it, and the same save always replays the same shelf) and turns over once per finished battle, win or lose (`Bargains.Rotate`, called from `BattleFactory.Commit`). Each row shows a durability gauge before purchase; buying files the rolled durability straight into `SaveData.Worn` (§24.5) so equipping it carries that wear, not factory-fresh. A piece already owned (every weapon/armor is `MaxStack` 1) can't be bought again until it leaves the bag. *(Tests: `Tests/Core.Tests/BargainShelfTests.cs`.)*
+- **Always a way (added 2026-11-08, owner, GG-T371):** the seven elemental flasks, Purifying Salts and the Disarm Kit are `SoldByVendor` from the start ([§3.3.1](#331-there-is-always-a-way-gg-t371-added-2026-11-08)), so a party never needs a build it lacks to answer a foe or a hazard.
 
 ### 25.2 Blacksmith
 
@@ -3176,6 +3235,8 @@ The first time the player opens a Camp station, a one-time **camp tip** points a
 **Amended 2026-10-19 (GG-T87):** the routine now works the two Camp services it used to skip. **Bounty Board** (§22.4): a finished contract is claimed; an active one the uncleared campaign stages can no longer finish is abandoned; with none active it accepts the posted contract the stages ahead would complete soonest (cheapest reward breaks ties) — a playthrough meets each stage once and this player doesn't grind replays, so a contract whose kill count outnumbers every remaining spawn of its target is never taken. (Content note: Slime Culling wants 5 `slime00` kills but the whole campaign spawns only 3, so it is completable only by replaying stages; Wolf Pack's 3 kills need all three `wolf00` spawns, the last at stage 15.) **Summon Circle** (§25.10): when a party slot is open and `Summon.Price` is affordable, it recruits the first pool class not yet in the roster, before the gear pass so the newcomer is equipped the same visit; a full party never spends on a reserve recruit. Every real new game starts with a full five, so `BalanceReport.Campaign_pacing_table` gained a `greedy+camp trio-start` row (three starters) to put recruiting in the loop; the table header now reports recruits and bounties claimed, and the `+camp` rows assert a bounty is claimed whenever a run finishes (and the trio row that someone is recruited). Greedy+camp and trio-start still finish 4/4. **Amended 2026-10-19 (GG-T118):** every new game now starts with three ([§25.17](#2517-small-start-story-recruits-gg-t118)), so the default rows are trio starts that gain story recruits; the old trio-start row became `greedy+camp trio no-story` (it still asserts a Summon Circle recruit) and a `greedy five-start (pre-GG-T118)` row keeps the old start as the yardstick. *(Tests: `CampRoutine_recruits_into_an_open_party_slot_when_affordable`, `CampRoutine_does_not_recruit_with_a_full_party`, `CampRoutine_claims_a_finished_bounty_and_accepts_only_an_achievable_one`, `Campaign_pacing_table`.)*
 
 **Amended 2026-10-19 (GG-T119):** the routine uses only the services whose Camp NPC has joined (§25.0.1) — no Blacksmith: no salvage, repair or forging; no Innkeeper: no rest; no Merchant: no Bargains or potion buying; no Alchemist: no brewing. Equipping owned gear, learning, bounties and recruiting are always available. *(Tests: `Camp_routine_uses_no_service_whose_npc_has_not_joined`, `Camp_routine_uses_each_service_once_its_npc_joins`.)*
+
+**Amended 2026-11-08 (GG-T371):** with the Merchant joined, the routine buys the next campaign stage's counters (§3.3.1) last: one of each while it costs a quarter of the gold or less, slotted into a dead bar slot. *(Tests: `Camp_routine_buys_the_counter_the_next_stage_needs`, `Camp_routine_buys_no_counter_without_the_merchant`.)*
 
 ### 25.3.4 Enchantress (GG-T119)
 

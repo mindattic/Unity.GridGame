@@ -1,0 +1,106 @@
+{
+  "HeavyResistance": 0.25,
+  "Elements": [
+    {
+      "Type": "Physical",
+      "Counters": [],
+      "Status": null,
+      "Breaks": [],
+      "Exploits": [],
+      "Tiles": []
+    },
+    {
+      "Type": "Fire",
+      "Counters": ["Ice"],
+      "Status": "burning",
+      "Breaks": ["frozen", "wet"],
+      "Exploits": [],
+      "Tiles": [
+        { "On": "slime_trail", "Kind": "Clear" },
+        { "On": "venom_snare", "Kind": "Clear" },
+        { "On": "miasma", "Kind": "Clear" }
+      ]
+    },
+    {
+      "Type": "Ice",
+      "Counters": ["Fire"],
+      "Status": "frozen",
+      "Breaks": [],
+      "Exploits": [],
+      "Tiles": [
+        { "On": "mire", "Kind": "Clear" },
+        { "On": "quicksand", "Kind": "Clear" }
+      ]
+    },
+    {
+      "Type": "Lightning",
+      "Counters": ["Poison", "Arcane"],
+      "Status": null,
+      "Breaks": [],
+      "Exploits": ["wet"],
+      "Tiles": [
+        { "On": "shock_mine", "Kind": "Clear" }
+      ]
+    },
+    {
+      "Type": "Poison",
+      "Counters": [],
+      "Status": "poisoned",
+      "Breaks": [],
+      "Exploits": [],
+      "Tiles": []
+    },
+    {
+      "Type": "Holy",
+      "Counters": ["Dark"],
+      "Status": null,
+      "Breaks": [],
+      "Exploits": [],
+      "Tiles": [
+        { "On": "miasma", "Kind": "Clear" }
+      ]
+    },
+    {
+      "Type": "Dark",
+      "Counters": ["Holy", "Arcane"],
+      "Status": "blinded",
+      "Breaks": [],
+      "Exploits": [],
+      "Tiles": []
+    },
+    {
+      "Type": "Arcane",
+      "Counters": ["Physical"],
+      "Status": "silenced",
+      "Breaks": [],
+      "Exploits": [],
+      "Tiles": []
+    }
+  ],
+  "Reactions": [
+    {
+      "Id": "disarm",
+      "Tiles": [
+        { "On": "venom_snare", "Kind": "Clear" },
+        { "On": "shock_mine", "Kind": "Clear" },
+        { "On": "caltrops", "Kind": "Clear" }
+      ]
+    },
+    {
+      "Id": "cleanse",
+      "Tiles": [
+        { "On": "slime_trail", "Kind": "Clear" },
+        { "On": "mire", "Kind": "Clear" },
+        { "On": "quicksand", "Kind": "Clear" },
+        { "On": "miasma", "Kind": "Clear" }
+      ]
+    }
+  ],
+  "RuleBreaks": [
+    { "Rule": "TwinTurn", "Counter": "Positional" },
+    { "Rule": "AxisWard", "Counter": "Positional" },
+    { "Rule": "MireSwap", "Counter": "Positional" },
+    { "Rule": "GravityStamp", "Counter": "Positional" },
+    { "Rule": "Undying", "Counter": "Positional" }
+  ]
+}

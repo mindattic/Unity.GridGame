@@ -583,6 +583,9 @@ namespace GridGame.Core.Content
         /// <summary>Countermarch (GG-T336, the Tactician): the picked foe's turn icon trades places on the timeline with the
         /// foe whose turn is furthest off (<see cref="Battle.Countermarch"/>). A picked single foe from a Skill or Spell.</summary>
         public bool SwapsTurns;
+        /// <summary>GG-T371: a tool's tile reaction set (elements.json Reactions: "disarm", "cleanse") applied to every tile it
+        /// covers; a hero ability that deals damage also carries its element's own Tiles reactions.</summary>
+        public string TileReaction;
         /// <summary>Region rule effects (GG-T359) run once this resolves: the caster is their subject and the anchor
         /// their Target (mark/clear/modify tiles, queue or retime events, move anchors, raise flags).</summary>
         public List<RuleEffectDef> RuleEffects = new List<RuleEffectDef>();
