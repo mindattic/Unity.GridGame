@@ -376,6 +376,333 @@
     ]
   },
   {
+    "Id": "lanternroad-01",
+    "Name": "The Lantern Road I",
+    "Theme": "lanternroad",
+    "Background": null,
+    "Music": "Battle",
+    "IsTest": false,
+    "Waves": [
+      {
+        "Enemies": [
+          {
+            "Class": "wolf00",
+            "Level": 1,
+            "X": -1,
+            "Y": -1
+          },
+          {
+            "Class": "wolf01",
+            "Level": 1,
+            "X": -1,
+            "Y": -1
+          }
+        ]
+      },
+      {
+        "Enemies": [
+          {
+            "Class": "bat00",
+            "Level": 1,
+            "X": -1,
+            "Y": -1
+          },
+          {
+            "Class": "bat01",
+            "Level": 1,
+            "X": -1,
+            "Y": -1
+          },
+          {
+            "Class": "bat02",
+            "Level": 1,
+            "X": -1,
+            "Y": -1
+          }
+        ]
+      },
+      {
+        "Enemies": [
+          {
+            "Class": "oni00",
+            "Level": 1,
+            "X": -1,
+            "Y": -1
+          },
+          {
+            "Class": "oni02",
+            "Level": 1,
+            "X": -1,
+            "Y": -1
+          }
+        ]
+      },
+      {
+        "Enemies": [
+          {
+            "Class": "steppinrazor00",
+            "Level": 1,
+            "X": -1,
+            "Y": -1
+          },
+          {
+            "Class": "steppinrazor02",
+            "Level": 1,
+            "X": -1,
+            "Y": -1
+          }
+        ]
+      },
+      {
+        "Enemies": [
+          {
+            "Class": "oni02",
+            "Level": 1,
+            "X": -1,
+            "Y": -1
+          },
+          {
+            "Class": "wolf02",
+            "Level": 1,
+            "X": -1,
+            "Y": -1
+          },
+          {
+            "Class": "bat00",
+            "Level": 1,
+            "X": -1,
+            "Y": -1
+          }
+        ]
+      }
+    ]
+  },
+  {
+    "Id": "lanternroad-02",
+    "Name": "The Lantern Road II",
+    "Theme": "lanternroad",
+    "Background": null,
+    "Music": "Battle",
+    "IsTest": false,
+    "Blocks": [
+      {
+        "X": 1,
+        "Y": 3
+      },
+      {
+        "X": 4,
+        "Y": 4
+      }
+    ],
+    "Waves": [
+      {
+        "Enemies": [
+          {
+            "Class": "flyingmonkey",
+            "Level": 1,
+            "X": -1,
+            "Y": -1
+          },
+          {
+            "Class": "bat02",
+            "Level": 1,
+            "X": -1,
+            "Y": -1
+          }
+        ]
+      },
+      {
+        "Enemies": [
+          {
+            "Class": "steppinrazor04",
+            "Level": 1,
+            "X": -1,
+            "Y": -1
+          },
+          {
+            "Class": "steppinrazor05",
+            "Level": 1,
+            "X": -1,
+            "Y": -1
+          },
+          {
+            "Class": "wolf03",
+            "Level": 1,
+            "X": -1,
+            "Y": -1
+          }
+        ]
+      },
+      {
+        "Enemies": [
+          {
+            "Class": "oni01",
+            "Level": 1,
+            "X": -1,
+            "Y": -1
+          },
+          {
+            "Class": "oni02",
+            "Level": 1,
+            "X": -1,
+            "Y": -1
+          }
+        ]
+      },
+      {
+        "Enemies": [
+          {
+            "Class": "werewolf00",
+            "Level": 1,
+            "X": -1,
+            "Y": -1
+          },
+          {
+            "Class": "wolf00",
+            "Level": 1,
+            "X": -1,
+            "Y": -1
+          },
+          {
+            "Class": "wolf02",
+            "Level": 1,
+            "X": -1,
+            "Y": -1
+          }
+        ]
+      },
+      {
+        "Enemies": [
+          {
+            "Class": "ganger05",
+            "Level": 1,
+            "X": -1,
+            "Y": -1
+          },
+          {
+            "Class": "soldier00",
+            "Level": 1,
+            "X": -1,
+            "Y": -1
+          }
+        ]
+      }
+    ]
+  },
+  {
+    "Id": "lanternroad-03",
+    "Name": "The Lantern Road III",
+    "Theme": "lanternroad",
+    "Background": null,
+    "Music": "Battle",
+    "IsTest": false,
+    "Blocks": [
+      {
+        "X": 1,
+        "Y": 4
+      },
+      {
+        "X": 4,
+        "Y": 3
+      }
+    ],
+    "Waves": [
+      {
+        "Enemies": [
+          {
+            "Class": "bat01",
+            "Level": 1,
+            "X": -1,
+            "Y": -1
+          },
+          {
+            "Class": "bat02",
+            "Level": 1,
+            "X": -1,
+            "Y": -1
+          },
+          {
+            "Class": "flyingmonkey",
+            "Level": 1,
+            "X": -1,
+            "Y": -1
+          }
+        ]
+      },
+      {
+        "Enemies": [
+          {
+            "Class": "steppinrazor04",
+            "Level": 1,
+            "X": -1,
+            "Y": -1
+          },
+          {
+            "Class": "steppinrazor05",
+            "Level": 1,
+            "X": -1,
+            "Y": -1
+          }
+        ]
+      },
+      {
+        "Enemies": [
+          {
+            "Class": "wolf01",
+            "Level": 1,
+            "X": -1,
+            "Y": -1
+          },
+          {
+            "Class": "werewolf00",
+            "Level": 1,
+            "X": -1,
+            "Y": -1
+          }
+        ]
+      },
+      {
+        "Enemies": [
+          {
+            "Class": "oni01",
+            "Level": 1,
+            "X": -1,
+            "Y": -1
+          },
+          {
+            "Class": "steppinrazor02",
+            "Level": 1,
+            "X": -1,
+            "Y": -1
+          }
+        ]
+      },
+      {
+        "Enemies": [
+          {
+            "Class": "oni02",
+            "Level": 1,
+            "X": -1,
+            "Y": -1,
+            "RuleBreak": "Undying"
+          },
+          {
+            "Class": "oni00",
+            "Level": 1,
+            "X": -1,
+            "Y": -1
+          },
+          {
+            "Class": "wolf02",
+            "Level": 1,
+            "X": -1,
+            "Y": -1
+          }
+        ]
+      }
+    ]
+  },
+  {
     "Id": "desert-01",
     "Name": "Sandsea Reaches I",
     "Theme": "desert",
@@ -728,12 +1055,6 @@
             "Y": -1
           },
           {
-            "Class": "soldier03",
-            "Level": 1,
-            "X": -1,
-            "Y": -1
-          },
-          {
             "Class": "mechaarmor01",
             "RuleBreak": "AxisWard",
             "Level": 1,
@@ -914,12 +1235,6 @@
           },
           {
             "Class": "frog03",
-            "Level": 1,
-            "X": -1,
-            "Y": -1
-          },
-          {
-            "Class": "toad00",
             "Level": 1,
             "X": -1,
             "Y": -1

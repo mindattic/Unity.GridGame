@@ -24,6 +24,18 @@
       ]
     },
     {
+      "Id": "lanternroad",
+      "MilestoneReward": "tome_steadfast",
+      "Name": "The Lantern Road",
+      "Backgrounds": "lanternroad",
+      "Crawl": "Out of the moors, the pilgrim road climbs into the gorges, stair after stone stair, lit by lanterns nobody admits to hanging.\n\nThe sword-schools walk it. So do the oni, masked road-raiders who wait where the stairs are narrowest.\n\nAnd under a low moon, the beasts of the gorge have started to change.\n\nThe caravan climbs. On the far side of the pass, the ground turns red.",
+      "Stages": [
+        "lanternroad-01",
+        "lanternroad-02",
+        "lanternroad-03"
+      ]
+    },
+    {
       "Id": "desert",
       "MilestoneReward": "tome_thorns",
       "Name": "The Shardfall",

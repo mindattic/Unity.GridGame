@@ -1060,3 +1060,16 @@ Owner: *"make sure the source files for the Backgrounds all get proper naming to
   - The 19 files that existed were renamed with their `.meta`, so they keep their GUIDs; the other 14 are new.
   - The owner's queued region art (GG-T345 to GG-T350) is copied under each ticket's attachment folder as `<region>_NN.png` (`lanternroad_`, `freeholds_`, `bloom_`, `morrowsshadow_`, `underspire_`, `cathedral_`), at its native 768×1536.
 - *(Tests: `BackgroundsTests`, `StillTests`.)*
+
+## 2026-11-07 — The Lantern Road: a seventh main theme between the Tithe Moors and the Shardfall (owner, GG-T345)
+
+Owner, with four new landscapes of a lantern-lit mountain pilgrim road: *"I will generate more landscapes from which you can extrapolate more story, settings levels, etc"*.
+
+- **Was:** six main themes, the Shardfall at levels 4–6 right after the Tithe Moors, 18 main stages (28 in all), Halcyon at 16–18, armor sets up to level 28.
+- **Now:** **The Lantern Road** (`lanternroad`, three stages) sits between the Tithe Moors and the Shardfall ([BIBLE §22.3.2](BIBLE.md)): the crew climbs the pilgrim road out of the moors toward the desert. It runs at 4–6, and every later chapter moves three levels (the Shardfall 7–9 … Halcyon 19–21); armor sets from level 4 up move three (Dreadwyrm 31).
+  - Existing units only: oni road-raiders, the gorge's moon-changed Wild (wolves, a werewolf, bats, a flying monkey, steppin razors), a little Redline and militia. The finale reuses **Undying** on an oni (`oni02`), so it shares its rule with the Hierarch, as the Still III shares TwinTurn with the Captain.
+  - **Story text is placeholder draft:** story is authored in Prose, not in this repo (Prose RFC 0017, GG-T355). The crawl, the party talk, the boss intro and the side quest (`q_masks_off`) are short and functional; STORY.md has a structural entry only.
+  - Save v6 shifts `HighestClearedStage` up by three for saves already past the Tithe Moors, so nobody's frontier moves.
+  - Balance (24 seeds, campaign parties, difficulty 10): the road measures casual 19, 16 and 15/24, smart 24/24. Two light trims where the three-level shift pushed a later stage lower: Shardfall III wave 5 (−1 soldier, casual 11 → 14/24) and Arkgrave II wave 4 (−1 toad, 1 → 5/24).
+  - Background luminance: three of the four landscapes measure a mean luminance of 0.22–0.23, just under POL-H3's 0.25 floor (a soft check). They are kept as the owner made them, at native resolution.
+- *(Tests: `LanternRoadTests`.)*

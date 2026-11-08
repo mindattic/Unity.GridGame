@@ -142,6 +142,25 @@ def still(arr, mask, h, w):
     return out
 
 
+def lanternroad(arr, mask, h, w):
+    """GG-T345 The Lantern Road: one worn, moonlit blue-grey flagstone of the pilgrim stairs (a board cell is one stone,
+    so no inner seams), moss in the low spots and a warm pool of lantern light on the face."""
+    r, yy, xx = rng_fields(h, w, SEED + 7)
+    stone = np.array([84, 96, 118], dtype=np.float32)
+    moss = np.array([62, 88, 70], dtype=np.float32)
+    lamp = np.array([214, 150, 72], dtype=np.float32)
+    wear = smooth_noise(r, h, w, 16)
+    lows = smooth_noise(r, h, w, 24)
+    grain = r.uniform(-9, 9, size=(h, w)).astype(np.float32)
+    body = stone[None, None, :] * (0.84 + 0.16 * wear[:, :, None])
+    t = np.clip((lows - 0.62) / 0.25, 0, 1)[:, :, None] * 0.6
+    out = body * (1 - t) + moss[None, None, :] * t
+    cy, cx = h * 0.35, w * 0.7
+    glow = np.exp(-(((yy - cy) / (h * 0.55)) ** 2 + ((xx - cx) / (w * 0.55)) ** 2))[:, :, None] * 0.22
+    out = out * (1 - glow) + lamp[None, None, :] * glow + grain[:, :, None]
+    return out
+
+
 BIOMES = {
     "greenvalley": greenvalley,
     "desert": desert,
@@ -149,6 +168,7 @@ BIOMES = {
     "cave": cave,
     "cityruins": cityruins,
     "still": still,
+    "lanternroad": lanternroad,
 }
 
 

@@ -164,7 +164,7 @@ New heroes from the owner's art:
 
 ## 5. The campaign
 
-Eleven themes, in order: six in the main campaign, five in the postgame. Each theme's crawl opens it; its party talk
+Twelve themes, in order: seven in the main campaign, five in the postgame. Each theme's crawl opens it; its party talk
 carries one piece of the plot.
 
 Owner, 2026-11-07 (GG-T344): *"I will generate more landscapes from which you can extrapolate more story, settings
@@ -173,16 +173,23 @@ levels, etc"* — new chapters are read out of the owner's landscapes the same w
 1. **The Tithe Moors** (`greenvalley`). Tithe day at Saltmoss. The crew runs with a Concord caravan. Moor roads full of
    wolves, Redline, militia and the first Hollow. *Boss (III): the **Captain**, who sold the holds and has come to
    drag the runaways back.* What the crew learns: the tithe-takers took far more than the quota.
-2. **The Shardfall** (`desert`). South over the moors to where Morrow's pieces came down. Red rivers, moon-tusks, the
+2. **The Lantern Road** (`lanternroad`, GG-T345, from four landscapes the owner made). *Structural entry only; the
+   chapter's story is authored in Prose (GG-T355) and its in-game text is placeholder draft.* Where: the lantern-lit
+   pilgrim road that climbs out of the Tithe Moors through mountain gorges (stone stairs, shrines, torii, bamboo, rope
+   lines of paper lanterns, a low moon) toward the Shardfall. Who: the Lantern Road's sword-schools walk it (§3.4); the
+   **oni** (`oni00–02`) raid it; the gorge's moon-changed Wild (wolves, a werewolf, bats, a flying monkey, steppin
+   razors, §3.7) hunt it; a little Redline and militia still trail the caravan. Stages *I–III* climb the stairs to the
+   pass. *Boss (III): an **oni** chief (`oni02`, Undying) whose mask gets back up once.*
+3. **The Shardfall** (`desert`). South over the moors to where Morrow's pieces came down. Red rivers, moon-tusks, the
    Ember's first Infernalists and Hellspawn. A Concord dig is cutting aether out of the shards. *Boss: a **shield-walker**
    commanding the dig.* Learned: the shards are full of aether — the moon is *made* of what it pulls.
-3. **The Arkgrave** (`swamp`). Into the fog-fens where the Arks fell. Hags, Hexes, shamblers, the Lich's crew. The
+4. **The Arkgrave** (`swamp`). Into the fog-fens where the Arks fell. Hags, Hexes, shamblers, the Lich's crew. The
    ship logs say the Arks didn't fail on their own: the Concord grounded them so no one could leave the tithe.
    *Boss: the **Swamp Mistress**.*
-4. **The Anchor Wastes** (`cave`). North across the ice to the arches. Wraith Knights, Void Sentinels, vat-giants. The
+5. **The Anchor Wastes** (`cave`). North across the ice to the arches. Wraith Knights, Void Sentinels, vat-giants. The
    crew sees the beams running from the Anchors to Halcyon — and how little of the light the Anchors keep. *Boss: a
    **vat-giant** keeping the great Anchor.* Learned: the surplus goes to the Hierarch.
-5. **The Still** (`still`, GG-T344, from six landscapes the owner made). The crew follows the beams south to where they
+6. **The Still** (`still`, GG-T344, from six landscapes the owner made). The crew follows the beams south to where they
    meet: the **great Still** at the foot of Halcyon's spire, a white dome bigger than any hold. Every Anchor beam's tithe
    is collected here, into the tanks, before it climbs to the Hierarch. The crew breaks in to see the tithe with their
    own eyes. Inside: floors polished to mirrors, a moon-oculus that frames Morrow overhead, catwalks and rails, arched
@@ -202,7 +209,7 @@ levels, etc"* — new chapters are read out of the owner's landscapes the same w
    a hold's chimneys, a well, a garden wall, a whole street, small and drowned and turning. The tithe carries what people
    *were*. The Hollow are not empty — they are **stored**, here, in tanks, a hold to a tank, until the Hierarch drinks
    them. Which means it can be given back. (This is why, at the ending, the Hollow begin to remember.)
-6. **Halcyon** (`cityruins`). Out of the Still's back gate and up into the Spire City. The Bulwark, the Choir, the Kiln
+7. **Halcyon** (`cityruins`). Out of the Still's back gate and up into the Spire City. The Bulwark, the Choir, the Kiln
    Guard, the Chronomancer. Up the spire. *Boss (finale): the **Hierarch**.* The crew breaks the Hierarch's reservoir;
    two centuries of stolen aether pour back down the beams into the holds.
 
@@ -211,12 +218,12 @@ low as yesterday; nobody has solved the Nearing. But where the stolen aether cam
 crew has a caravan, a road, and proof that giving works. Roll credits.
 
 **Postgame** (the road after the Hierarch — open on purpose, no final answer):
-7. **The Moors Beyond the Stills** (`greenvalley2`) — holds that never got their aether back, and Redline selling the
+8. **The Moors Beyond the Stills** (`greenvalley2`) — holds that never got their aether back, and Redline selling the
    Bloom as a drug.
-8. **Deep Shardfall** (`desert2`) — the Ember grows bolder with the Concord broken; the Infernalists march on the Anchors.
-9. **The Drowned Arks** (`swamp2`) — the *Long Patience* still flies, a little; the Lich offers passage to anyone.
-10. **Under the Anchors** (`cave2`) — what the arches are actually built on.
-11. **The Underspire** (`cityruins2`) — Halcyon without a Hierarch: the Choir, the Red Seal and the Street all want the
+9. **Deep Shardfall** (`desert2`) — the Ember grows bolder with the Concord broken; the Infernalists march on the Anchors.
+10. **The Drowned Arks** (`swamp2`) — the *Long Patience* still flies, a little; the Lich offers passage to anyone.
+11. **Under the Anchors** (`cave2`) — what the arches are actually built on.
+12. **The Underspire** (`cityruins2`) — Halcyon without a Hierarch: the Choir, the Red Seal and the Street all want the
     spire.
 
 **Prologue** — *"Tithe Day."* Saltmoss, the white dome on the hill, the crew's names in the ledger, the run.

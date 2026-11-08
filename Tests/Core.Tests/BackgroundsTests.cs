@@ -25,6 +25,7 @@ namespace GridGame.Tests
         private static readonly Dictionary<string, (string set, int count, int w, int h)> Expected = new Dictionary<string, (string, int, int, int)>
         {
             ["greenvalley"] = ("tithemoors", 5, 1536, 3072),
+            ["lanternroad"] = ("lanternroad", 4, 768, 1536), // GG-T345: the owner's four lantern-road landscapes, native size
             ["desert"] = ("shardfall", 5, 1536, 3072),
             ["swamp"] = ("arkgrave", 5, 1536, 3072),
             ["cave"] = ("anchorwastes", 4, 1536, 3072),

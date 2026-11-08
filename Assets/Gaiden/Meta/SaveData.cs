@@ -24,7 +24,7 @@ namespace GridGame.Meta
 
     public sealed class SaveData
     {
-        public const int CurrentVersion = 5;
+        public const int CurrentVersion = 6;
 
         public int Version = CurrentVersion;
         public string Name = "Lightbearer";
@@ -378,6 +378,10 @@ namespace GridGame.Meta
         /// <summary>GG-T344: where The Still went into the campaign order, and how many stages it brought (save v5).</summary>
         public const int StillInsertedAt = 12, StillStageCount = 3;
 
+        /// <summary>GG-T345: where The Lantern Road went into the campaign order (between the Tithe Moors and the Shardfall),
+        /// and how many stages it brought (save v6).</summary>
+        public const int LanternRoadInsertedAt = 3, LanternRoadStageCount = 3;
+
         public static readonly HashSet<string> RetiredAbilities = new HashSet<string>(StringComparer.OrdinalIgnoreCase) { "scan" };
 
         /// <summary>Upgrades an older save in place. Unknown future versions are rejected. <paramref name="c"/>
@@ -457,6 +461,14 @@ namespace GridGame.Meta
                 // the Still opens behind it, replayable like any earlier stage).
                 if (s.HighestClearedStage >= StillInsertedAt) s.HighestClearedStage += StillStageCount;
                 s.Version = 5;
+            }
+            if (s.Version < 6)
+            {
+                // GG-T345: The Lantern Road (three stages) was inserted between the Tithe Moors and the Shardfall, at campaign
+                // index LanternRoadInsertedAt. Same rule as v5: a save already past the Tithe Moors moves up by its stage
+                // count and keeps the same frontier; the Lantern Road opens behind it, replayable like any earlier stage.
+                if (s.HighestClearedStage >= LanternRoadInsertedAt) s.HighestClearedStage += LanternRoadStageCount;
+                s.Version = 6;
             }
             foreach (var h in s.Roster)
             {

@@ -38,8 +38,8 @@ namespace GridGame.Tests
 
             var save = Progression.NewGame(db, "T");
             var levels = still.Stages.Select(id => Progression.StageRecommendedLevel(db, save, db.Stages[id])).ToList();
-            Assert.That(levels, Is.EqualTo(new[] { 13, 14, 15 }), "between the Anchor Wastes (10-12) and Halcyon");
-            Assert.That(Progression.StageRecommendedLevel(db, save, db.Stages["cityruins-03"]), Is.EqualTo(18));
+            Assert.That(levels, Is.EqualTo(new[] { 16, 17, 18 }), "between the Anchor Wastes (13-15 since GG-T345's Lantern Road) and Halcyon");
+            Assert.That(Progression.StageRecommendedLevel(db, save, db.Stages["cityruins-03"]), Is.EqualTo(21));
             foreach (var id in still.Stages)
             {
                 var st = db.Stages[id];
@@ -113,7 +113,7 @@ namespace GridGame.Tests
         {
             var db = Real;
             var order = db.CampaignStages().Select(s => s.Id).ToList();
-            Assert.That(order.IndexOf("still-01"), Is.EqualTo(SaveMigrations.StillInsertedAt));
+            Assert.That(order.IndexOf("still-01"), Is.EqualTo(SaveMigrations.StillInsertedAt + SaveMigrations.LanternRoadStageCount), "GG-T345: the Lantern Road went in ahead of it");
 
             var past = new SaveData { Version = 4, HighestClearedStage = 13 }; // old index 13 = Halcyon II
             SaveMigrations.Migrate(past);

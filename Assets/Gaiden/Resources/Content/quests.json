@@ -21,6 +21,13 @@
     "RewardGold": 200, "RewardItem": "tome_steadfast", "RewardSkillPoints": 1
   },
   {
+    "Id": "q_masks_off", "Name": "Masks Off", "Giver": "Lantern Merchant", "Theme": "lanternroad", "Unlock": "lanternroad-01",
+    "Summary": "Oni road-raiders are robbing pilgrims on the Lantern Road's narrow stairs. Drive off three of them so the road is safe to trade on again.",
+    "TurnIn": "Three masks fewer on the stairs. The pilgrims are moving again, and so is trade.",
+    "Objective": { "Kind": "Defeat", "Id": "oni00", "Count": 3 },
+    "RewardGold": 300, "RewardItem": "hi_potion", "RewardItemCount": 2
+  },
+  {
     "Id": "q_grown_not_forged", "Name": "Grown, Not Forged", "Giver": "Blacksmith", "Theme": "desert", "Unlock": "desert-01",
     "Summary": "The gremlins at the Concord dig carry cogs with teeth no file ever cut. The blacksmith wants four of them on the bench to see how the Concord makes a gear without a forge.",
     "TurnIn": "Look at the grain -- it runs round the teeth like a tree ring. Nobody forged this. It was grown. I need to sit down.",

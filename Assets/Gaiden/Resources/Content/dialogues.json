@@ -383,6 +383,19 @@
     ]
   },
   {
+    "Id": "lanternroad_party_talk",
+    "Title": "Lanterns on the stairs",
+    "Trigger": { "Kind": "ThemeStart", "Id": "lanternroad" },
+    "Speakers": [
+      { "Id": "lead", "Class": "$lead" },
+      { "Id": "merchant", "Name": "Lantern Merchant", "Portrait": "courier" }
+    ],
+    "Nodes": [
+      { "Id": "a", "Speaker": "lead", "Text": "Who keeps all these lanterns lit?", "Next": "b" },
+      { "Id": "b", "Speaker": "merchant", "Text": "Nobody, and everybody. Keep to the light, keep the wagon moving, and don't stop where the stairs narrow. That's where the masks wait." }
+    ]
+  },
+  {
     "Id": "desert_party_talk",
     "Title": "What the shards are",
     "Trigger": { "Kind": "ThemeStart", "Id": "desert" },
@@ -2062,6 +2075,19 @@
     ]
   },
   {
+    "Id": "boss_intro_lanternroad",
+    "Title": "The Mask on the Pass",
+    "Trigger": { "Kind": "StageStart", "Id": "lanternroad-03" },
+    "Speakers": [
+      { "Id": "boss", "Class": "oni02" },
+      { "Id": "lead", "Class": "$lead" }
+    ],
+    "Nodes": [
+      { "Id": "a", "Speaker": "boss", "Text": "The pass takes a toll. Leave the wagon. This mask has knocked down braver crews -- and it always gets back up.", "Next": "b" },
+      { "Id": "b", "Speaker": "lead", "Text": "Then we put down the raiders around it first. Once nobody's left to stand with it, it stays down." }
+    ]
+  },
+  {
     "Id": "boss_intro_desert",
     "Title": "The Walker at the Dig",
     "Trigger": { "Kind": "StageStart", "Id": "desert-03" },
@@ -2345,6 +2371,24 @@
       },
       { "Id": "yes", "Speaker": "enchantress", "Text": "Listen for the glyphs. When they go quiet, it's done." },
       { "Id": "no", "Speaker": "enchantress", "Text": "The queue will still be there. That is the whole trouble." }
+    ]
+  },
+  {
+    "Id": "quest_offer_masks_off",
+    "Title": "Masks off",
+    "Trigger": { "Kind": "Talk", "Id": "npc:merchant" },
+    "Conditions": [ { "Type": "QuestAvailable", "Id": "q_masks_off" } ],
+    "Speakers": [ { "Id": "merchant", "Name": "Lantern Merchant", "Portrait": "courier" } ],
+    "Nodes": [
+      {
+        "Id": "ask", "Speaker": "merchant", "Text": "The oni are robbing every pilgrim on the stairs. Drive off three of them and the road is safe to trade on again.",
+        "Choices": [
+          { "Label": "Three oni. Done.", "Next": "yes", "Effects": [ { "Type": "StartQuest", "Id": "q_masks_off" } ] },
+          { "Label": "Not now.", "Next": "no" }
+        ]
+      },
+      { "Id": "yes", "Speaker": "merchant", "Text": "Mind the narrow stairs." },
+      { "Id": "no", "Speaker": "merchant", "Text": "The road will wait. The oni won't." }
     ]
   }
 ]
