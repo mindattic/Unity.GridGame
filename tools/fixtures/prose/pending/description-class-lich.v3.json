@@ -1,0 +1,18 @@
+{
+  "schema": "prose-text/1",
+  "id": "description-class-lich",
+  "universe": "gridgame",
+  "kind": "description",
+  "key": "class:lich",
+  "about": [
+    "class-lich"
+  ],
+  "speakers": [],
+  "version": 3,
+  "status": "approved",
+  "hash": "sha256:cccccccccccccccccccccccccccccccccccccccccccccccccccccccccccccccc",
+  "payload": {
+    "short": "The last captain of the Long Patience.",
+    "long": "He still keeps the watch."
+  }
+}

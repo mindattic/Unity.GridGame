@@ -1,0 +1,22 @@
+{
+  "schema": "prose-text/1",
+  "id": "crawl-swamp",
+  "universe": "gridgame",
+  "kind": "crawl",
+  "key": "crawl:swamp",
+  "about": [
+    "place-swamp"
+  ],
+  "speakers": [],
+  "version": 2,
+  "status": "published",
+  "hash": "sha256:aaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaa",
+  "payload": {
+    "title": "The Arkgrave",
+    "paragraphs": [
+      "Fog over fallen ships.",
+      "Their magic was tithed away."
+    ]
+  },
+  "guid": "01a1b974-0000-7000-8000-000000000001"
+}

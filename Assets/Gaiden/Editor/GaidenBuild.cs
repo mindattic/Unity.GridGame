@@ -71,8 +71,54 @@ namespace GridGame.EditorTools
             Build(BuildTarget.WebGL, "Build/WebGL", CommandLine("-dev"));
         }
 
+        /// <summary>GG-T355: true once this editor session pulled Prose text for the build in progress.</summary>
+        internal static bool ProseSynced;
+
+        /// <summary>
+        /// GG-T355 (docs/PROSE.md, "Build-time pull"): pull the latest published story text from Prose into
+        /// Content/Text (tools/prose-sync.ps1: kit pull + kit apply) so a build ships what Prose has published.
+        /// Never fails the build: the script warns and keeps the committed snapshot when the Hub is offline. Skipped
+        /// with -skipProse on the command line or GG_SKIP_PROSE=1, and when tools/build.ps1 already ran it
+        /// (GG_PROSE_SYNCED=1).
+        /// </summary>
+        public static void SyncProse()
+        {
+            if (ProseSynced) return;
+            ProseSynced = true;
+            if (CommandLine("-skipProse") || Environment.GetEnvironmentVariable("GG_SKIP_PROSE") == "1")
+            {
+                Debug.Log("[Build] Prose sync skipped: committed Content/Text snapshot");
+                return;
+            }
+            if (Environment.GetEnvironmentVariable("GG_PROSE_SYNCED") == "1") return;
+            var script = Path.GetFullPath("tools/prose-sync.ps1");
+            if (!File.Exists(script)) { Debug.LogWarning("[Build] no tools/prose-sync.ps1; committed Content/Text snapshot"); return; }
+            try
+            {
+                var psi = new System.Diagnostics.ProcessStartInfo("powershell",
+                    $"-NoProfile -ExecutionPolicy Bypass -File \"{script}\"")
+                {
+                    UseShellExecute = false, RedirectStandardOutput = true, RedirectStandardError = true,
+                    CreateNoWindow = true, WorkingDirectory = Path.GetFullPath("."),
+                };
+                using var p = System.Diagnostics.Process.Start(psi);
+                var stdout = p.StandardOutput.ReadToEndAsync();
+                var stderr = p.StandardError.ReadToEndAsync();
+                if (!p.WaitForExit(5 * 60 * 1000))
+                {
+                    try { p.Kill(); } catch { /* already gone */ }
+                    Debug.LogWarning("[Build] Prose sync timed out; committed Content/Text snapshot");
+                    return;
+                }
+                Debug.Log("[Build] Prose sync:\n" + stdout.Result + stderr.Result);
+                AssetDatabase.Refresh();
+            }
+            catch (Exception e) { Debug.LogWarning("[Build] Prose sync failed (" + e.Message + "); committed Content/Text snapshot"); }
+        }
+
         private static void Build(BuildTarget target, string output, bool development)
         {
+            SyncProse();
             EnsureScene();
             Directory.CreateDirectory(Path.GetDirectoryName(Path.GetFullPath(output)) ?? ".");
             var options = new BuildPlayerOptions
@@ -108,6 +154,16 @@ namespace GridGame.EditorTools
             Debug.Log("[Build] compile OK");
             if (Application.isBatchMode) EditorApplication.Exit(0);
         }
+    }
+
+    /// <summary>
+    /// GG-T355: a build started any other way (File > Build) still pulls Prose text first. Builds through
+    /// <see cref="GaidenBuild"/> have already synced, so this does nothing for them.
+    /// </summary>
+    public sealed class GaidenProsePreBuild : UnityEditor.Build.IPreprocessBuildWithReport
+    {
+        public int callbackOrder => -100;
+        public void OnPreprocessBuild(BuildReport report) => GaidenBuild.SyncProse();
     }
 
     /// <summary>Import settings by folder so no asset ever needs hand-tuning in the Inspector.</summary>

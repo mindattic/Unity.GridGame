@@ -1,0 +1,18 @@
+{
+  "schema": "prose-text/1",
+  "id": "book-letter",
+  "universe": "gridgame",
+  "kind": "book",
+  "key": "book:letter",
+  "about": [],
+  "speakers": [],
+  "version": 1,
+  "status": "approved",
+  "hash": "sha256:2222222222222222222222222222222222222222222222222222222222222222",
+  "payload": {
+    "title": "x",
+    "pages": [
+      "y"
+    ]
+  }
+}

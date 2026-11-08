@@ -1,0 +1,19 @@
+{
+  "schema": "gridgame-text/1",
+  "kind": "glossary",
+  "texts": {
+    "glossary:pincer": {
+      "key": "glossary:pincer",
+      "id": "glossary-pincer",
+      "guid": null,
+      "version": 1,
+      "hash": "sha256:9999999999999999999999999999999999999999999999999999999999999999",
+      "about": [],
+      "speakers": [],
+      "payload": {
+        "term": "Pincer",
+        "definition": "old"
+      }
+    }
+  }
+}

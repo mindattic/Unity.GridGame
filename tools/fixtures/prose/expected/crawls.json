@@ -1,0 +1,39 @@
+{
+  "schema": "gridgame-text/1",
+  "kind": "crawl",
+  "texts": {
+    "crawl:prologue": {
+      "key": "crawl:prologue",
+      "id": "crawl-prologue",
+      "guid": null,
+      "version": 1,
+      "hash": "sha256:bbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbb",
+      "about": [],
+      "speakers": [],
+      "payload": {
+        "title": "Tithe Day",
+        "paragraphs": [
+          "Saltmoss pays."
+        ]
+      }
+    },
+    "crawl:swamp": {
+      "key": "crawl:swamp",
+      "id": "crawl-swamp",
+      "guid": "01a1b974-0000-7000-8000-000000000001",
+      "version": 2,
+      "hash": "sha256:aaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaa",
+      "about": [
+        "place-swamp"
+      ],
+      "speakers": [],
+      "payload": {
+        "title": "The Arkgrave",
+        "paragraphs": [
+          "Fog over fallen ships.",
+          "Their magic was tithed away."
+        ]
+      }
+    }
+  }
+}

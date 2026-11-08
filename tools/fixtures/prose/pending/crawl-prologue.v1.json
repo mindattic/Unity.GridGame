@@ -1,0 +1,18 @@
+{
+  "schema": "prose-text/1",
+  "id": "crawl-prologue",
+  "universe": "gridgame",
+  "kind": "crawl",
+  "key": "crawl:prologue",
+  "about": [],
+  "speakers": [],
+  "version": 1,
+  "status": "approved",
+  "hash": "sha256:bbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbb",
+  "payload": {
+    "title": "Tithe Day",
+    "paragraphs": [
+      "Saltmoss pays."
+    ]
+  }
+}

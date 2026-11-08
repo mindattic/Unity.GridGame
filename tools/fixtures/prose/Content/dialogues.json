@@ -1,0 +1,23 @@
+[
+  {
+    "Id": "wanderer_ember",
+    "Title": "t",
+    "Trigger": {
+      "Kind": "Wanderer",
+      "Id": "ember"
+    },
+    "Speakers": [
+      {
+        "Id": "hero",
+        "Class": "$hero"
+      }
+    ],
+    "Nodes": [
+      {
+        "Id": "ask",
+        "Speaker": "hero",
+        "Text": "x"
+      }
+    ]
+  }
+]

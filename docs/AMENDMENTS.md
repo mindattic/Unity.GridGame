@@ -1144,3 +1144,11 @@ Owner, with ten landscapes of a colossal moon over cracked plains with floating 
   - Armor sets: Reaper's 30, Sanguine 35, Dreadwyrm 40 (Templar's stays 25).
   - Balance is unmeasured (no soak run), pending the owner's `/test`.
 - *(Tests: `MorrowsShadowTests`, `BackgroundsTests`.)*
+
+## 2026-11-07 — Story moves to Prose: GridGame becomes a Prose consumer, Phase 1 tooling (owner, GG-T355)
+
+Owner: *"the Game handles gameplay, and Prose handles narrative"*; *"everything will be assigned guids and retrieved at compile time … pulled from a dedicated literary system."*
+
+- **Was:** story text authored in this repo (docs/STORY.md as the source, text inside classes/dialogues/campaign/quests/glossary JSON).
+- **Now:** Prose (universe `gridgame`, Prose RFC 0017) is the only store of story; this repo keeps gameplay. Phase 1 adds the conduit: `Data/Prose/prose.config.json`, the mapper `tools/prose_map.py` (1697 game entities with travel geography), the applier `tools/prose_apply.py` (Content/Text/<kind>.json keyed by key, with the Prose GUID slot), the shared key scheme `tools/prose_keys.py`, the seed `tools/prose_seed.py` (today's 1976 texts drafted into Prose, none approved: RFC 0009), and a build-time pull (`tools/prose-sync.ps1`, `tools/build.ps1 -SkipProse`, `GaidenBuild.SyncProse`) that never fails a build when Prose is down. The owner's War in Heaven canon is Prose-authored entities tagged DECIDED/PROPOSED/RETIRED. Details: [PROSE.md](PROSE.md).
+- **Not yet:** the game still reads text from gameplay JSON. Phase 2 strips it out, applies the approved text and adds the ContentLoader join and its tests.

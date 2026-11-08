@@ -1,0 +1,52 @@
+{
+  "schema": "prose-text/1",
+  "id": "conversation-wanderer-ember",
+  "universe": "gridgame",
+  "kind": "conversation",
+  "key": "dialogue:wanderer_ember",
+  "about": [
+    "faction-ember"
+  ],
+  "speakers": [
+    "$hero"
+  ],
+  "version": 1,
+  "status": "approved",
+  "hash": "sha256:dddddddddddddddddddddddddddddddddddddddddddddddddddddddddddddddd",
+  "payload": {
+    "title": "A face from the Ember",
+    "start": "ask",
+    "nodes": [
+      {
+        "id": "ask",
+        "speaker": "$hero",
+        "line": "Why should I walk with you?",
+        "choices": [
+          {
+            "text": "Because you're good.",
+            "next": "heard",
+            "tags": [
+              "right-answer"
+            ]
+          },
+          {
+            "text": "Because we pay.",
+            "next": "unheard"
+          }
+        ]
+      },
+      {
+        "id": "heard",
+        "speaker": "$hero",
+        "line": "Wanted, not owed.",
+        "next": "$outcome"
+      },
+      {
+        "id": "unheard",
+        "speaker": "$hero",
+        "line": "No.",
+        "next": "$outcome"
+      }
+    ]
+  }
+}

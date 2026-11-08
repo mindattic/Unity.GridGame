@@ -1,0 +1,13 @@
+{
+  "schema": "prose-text/1",
+  "id": "glossary-pincer",
+  "universe": "gridgame",
+  "kind": "glossary",
+  "key": "glossary:pincer",
+  "about": [],
+  "speakers": [],
+  "version": 1,
+  "status": "retired",
+  "hash": "sha256:eeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeee",
+  "payload": {}
+}

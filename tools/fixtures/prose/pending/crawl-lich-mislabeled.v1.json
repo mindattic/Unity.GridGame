@@ -1,0 +1,18 @@
+{
+  "schema": "prose-text/1",
+  "id": "crawl-lich-mislabeled",
+  "universe": "gridgame",
+  "kind": "crawl",
+  "key": "class:lich",
+  "about": [],
+  "speakers": [],
+  "version": 1,
+  "status": "approved",
+  "hash": "sha256:0000000000000000000000000000000000000000000000000000000000000000",
+  "payload": {
+    "title": "x",
+    "paragraphs": [
+      "y"
+    ]
+  }
+}

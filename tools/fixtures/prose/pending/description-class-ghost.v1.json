@@ -1,0 +1,15 @@
+{
+  "schema": "prose-text/1",
+  "id": "description-class-ghost",
+  "universe": "gridgame",
+  "kind": "description",
+  "key": "class:ghost",
+  "about": [],
+  "speakers": [],
+  "version": 1,
+  "status": "approved",
+  "hash": "sha256:ffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffff",
+  "payload": {
+    "short": "No such class."
+  }
+}

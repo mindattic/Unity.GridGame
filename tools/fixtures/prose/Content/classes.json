@@ -1,0 +1,16 @@
+[
+  {
+    "Id": "lich",
+    "Name": "Lich",
+    "Team": "Enemy",
+    "Description": "placeholder",
+    "Lore": "placeholder"
+  },
+  {
+    "Id": "herald",
+    "Name": "Herald",
+    "Team": "Hero",
+    "Description": "placeholder",
+    "Lore": "placeholder"
+  }
+]

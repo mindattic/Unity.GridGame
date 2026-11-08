@@ -31,3 +31,11 @@ __pycache__/
 /content-drafts/
 /_portrait_repairs/
 /_portrait_repairs_originals/
+
+# GG-T355: the Prose conduit (docs/PROSE.md). The universe file is rebuilt from the content JSON by the mapper
+# (tools/prose_map.py); the consumer kit's pending texts, Outbox journal and scratch are local. Committed: the kit
+# config, applied.jsonl and the applied texts under Assets/Gaiden/Resources/Content/Text.
+Data/Prose/*.universe.json
+Data/Prose/pending/
+Data/Prose/outbox.jsonl
+Data/Prose/.kit/
