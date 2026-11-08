@@ -167,21 +167,31 @@ def method_smoke(im):
 #  2. Colour-to-alpha.  For a known B, the least alpha that explains pixel I as some colour F over B is, per channel,
 #     (I-B)/(255-B) above B and (B-I)/B below it, maxed over channels (the per-pixel largest achievable distance,
 #     GIMP's colour-to-alpha / Porter-Duff unmixing). It is exact where the art was anti-aliased against B.
-#  3. Trimap.  The old silhouette S (a >= 0.5) gives the trimap: deeper than BAND px inside S is certain figure, pixels
-#     already transparent and background-coloured (u < BG_U) are certain background, and only the band between is
-#     solved. In the band, background is what is reachable from certain background through background-coloured pixels
-#     (4-connected, so a closed line-art outline protects white cloth). That removes the old cut's leftover white
-#     blocks and fringes, and turns enclosed false holes (transparent, but figure-coloured) back into figure.
-#  4. Edge-aware refinement.  The band's colour alpha is smoothed with a guided filter (He et al., the local-linear
+#  3. Trimap.  The old silhouette S (a >= 0.5) gives the trimap: deeper than BAND px inside S (2 px when an aligned
+#     original is given: that cut came from the AI matte, whose figure/background call is trusted) is certain figure,
+#     pixels already transparent and background-coloured (u < BG_U) are certain background, and only the band between
+#     is solved. In the band, background is what is reachable from certain background through background-coloured
+#     pixels (4-connected, so a closed line-art outline protects white cloth). That removes the old cut's leftover
+#     white blocks and fringes, and turns enclosed false holes (transparent, but figure-coloured) back into figure. An
+#     intrusion into S that runs on until the certain core is not closed off by any outline: it is white cloth or hair
+#     touching the white background, so it stays figure (white-on-white is not separable by colour).
+#  4. Two-colour unmixing.  With the nearest certain-figure colour F as the known foreground, an edge pixel solves as
+#     a = (I-B).(F-B)/|F-B|^2, bounded below by the colour-to-alpha u (the least alpha any F allows). Plain u alone
+#     would read a pale figure colour (a pale leaf, light fur) as a translucent dark one and paint a dark rim on it.
+#  5. Edge-aware refinement.  The band's alpha is smoothed with a guided filter (He et al., the local-linear
 #     closed-form-matting approximation; grey guide, r=1) to drop JPEG noise without crossing image edges. Where the
 #     art carries no mixing at all (a hard 0/255 cut whose rim pixels are pure figure colour), alpha is the coverage of
 #     the silhouette's smoothed contour: supersampled x4, Gaussian (sigma 0.5 px), thresholded at 0.5 and box-averaged
-#     back, so a straight edge stays crisp and a diagonal or curve gets its sub-pixel coverage.
-#  5. Decontamination.  Edge colour is un-premultiplied: F = (I - (1-u)*B)/u, blended toward the nearest certain
-#     figure colour where u is too small for that to be stable. Transparent pixels near the figure take the nearest
+#     back, so a straight edge stays crisp and a diagonal or curve gets its sub-pixel coverage. Thin strands (under 42%
+#     figure in their 5x5 window) are exempt from the smoothing, which would break them.
+#  6. Decontamination.  Edge colour is un-premultiplied: F = (I - (1-a)*B)/a, blended toward the nearest certain
+#     figure colour where a is too small for that to be stable. Transparent pixels near the figure take the nearest
 #     figure colour too, so bilinear sampling and mips bleed figure colour, not white.
-#  6. Specks of fewer than SPECK px not touching the figure are dropped. Soft regions away from any hard pixel (smoke,
-#     flame, glow kept by the smoke cut) are left exactly as they were.
+#  7. Specks of fewer than SPECK px, and islands the old cut did not have at all (paper grain, JPEG noise), are
+#     dropped. Soft regions away from any hard pixel (smoke, flame, glow kept by the smoke cut) are left exactly as
+#     they were.
+# White-on-white is the method's limit: a white figure (the mannequin) or white hair whose outline is open can still
+# lose edge pixels, so look at a re-cut on a dark background before keeping it.
 # Pixels outside the band are untouched, so interior detail and placement stay pixel for pixel.
 
 MATTE_BAND = 10     # px inside the old silhouette that may still be background (the old cut's leftover white blocks)
@@ -229,7 +239,11 @@ def matte(im, source=None, bg=None):
     hard = a0 >= 0.96
     # Soft regions with no hard pixel within 2 px: translucent smoke/glow the old cut kept on purpose. Leave them.
     smoke = (a0 > 0.04) & ~hard & ~ndimage.binary_dilation(hard, iterations=2)
-    core = ndimage.binary_erosion(solid, iterations=MATTE_BAND, border_value=1)
+    # With an aligned original the old cut came from the AI matte, whose figure/background call is trusted (it keeps
+    # white cloth against the white panel); only its rim is re-solved. A bare cut-out may hide whole blocks of the old
+    # background inside its silhouette, so its band is wider.
+    depth = MATTE_BAND if source is None else 2
+    core = ndimage.binary_erosion(solid, iterations=depth, border_value=1)
     band = ~core & ndimage.binary_dilation(solid | (a0 > 0.04), iterations=2) & ~smoke
     # Certain background: already transparent and background-coloured. Flood through background-coloured band pixels.
     seeds = (a0 <= 0.04) & (u < MATTE_BG_U)
@@ -237,6 +251,12 @@ def matte(im, source=None, bg=None):
     lab, _ = ndimage.label(bgc)
     hit = np.unique(lab[seeds & bgc])
     bgr = np.isin(lab, hit[hit != 0])
+    # Leftover background inside the old silhouette is closed off by the figure's outline within the band; a flood
+    # that runs on until the certain-figure core is white cloth or hair the outline doesn't close, so it stays figure.
+    intr, ni = ndimage.label(bgr & solid)
+    if ni:
+        reach = np.unique(intr[ndimage.binary_dilation(core) & (intr > 0)])
+        bgr &= ~np.isin(intr, reach[reach != 0])
     # The figure in the band: everything not background. Its edge is the transition to solve.
     fig = (core | (band & ~bgr) | smoke | ((a0 > 0.04) & ~band & ~bgr))
     trans = band & (ndimage.binary_dilation(bgr, iterations=2) | ndimage.binary_dilation(~fig, iterations=1))
@@ -251,6 +271,9 @@ def matte(im, source=None, bg=None):
     fb2 = (fb * fb).sum(axis=2)
     ap = np.clip(((I - B) * fb).sum(axis=2) / np.maximum(fb2, 1.0), 0, 1)
     ap = np.where(fb2 < 40.0 ** 2, np.where(u < MATTE_BG_U, u, 1.0), ap)  # F too close to B to separate by colour
+    # Colour-to-alpha is the least alpha any foreground colour allows, so it bounds the projection from below (the
+    # nearest certain colour can be unrepresentative: a thin red line beside a dark body).
+    ap = np.maximum(ap, u)
     grey = I.mean(axis=2) / 255.0
     ug = np.clip(guided_filter(grey, ap, 1, 1e-3), 0, 1)
     ug = np.where(ap < 0.02, ap, ug)  # the filter must not lift clean background
@@ -272,6 +295,7 @@ def matte(im, source=None, bg=None):
     figm = fig & ~smoke | core
     thin = figm & (ndimage.uniform_filter(figm.astype(np.float32), 5) < 0.42)
     a_new = np.where(thin, 1.0 if hard_src else np.maximum(ug, np.where(has_mix, 0.0, 1.0)), a_new)
+    a_new = np.where(u >= MATTE_BG_U, np.maximum(a_new, u), a_new)  # the colour bound holds after filtering too
     alpha = a0.copy()
     alpha[band] = np.where(fig[band], 1.0, 0.0)
     alpha[trans] = a_new[trans]
@@ -282,6 +306,9 @@ def matte(im, source=None, bg=None):
     if n:
         sizes = ndimage.sum(np.ones_like(alpha), lab, index=np.arange(1, n + 1))
         drop = np.isin(lab, np.where(sizes < MATTE_SPECK)[0] + 1) & band
+        # Islands the old cut did not have at all (source paper grain, JPEG noise) are not figure either.
+        had = np.unique(lab[(a0 > 0.04) & (lab > 0)])
+        drop |= (lab > 0) & ~np.isin(lab, had)
         alpha[drop] = 0.0
     # Decontaminate: un-premultiply the background out of edge colour with the solved alpha; a pixel that solved as
     # pure figure keeps its colour, and tiny-alpha pixels take the nearest figure colour.
