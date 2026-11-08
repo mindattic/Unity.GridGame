@@ -25,11 +25,13 @@ Assets/Gaiden/Resources/Content/Text/*.json <──tools/prose_apply.py── pe
 | Config | `Data/Prose/prose.config.json` | consumer and universe `gridgame`, kinds, choice tags; committed |
 | Key scheme | `tools/prose_keys.py` | shared by the mapper, the seed and the applier |
 | Mapper | `tools/prose_map.py` | content JSON (read only) → interchange file (gitignored), deterministic, no balance numbers |
-| Seed | `tools/prose_seed.py` | today's in-repo text → `prose-text/1` drafts (the first seed, RFC 0017 §7) |
+| Seed | `tools/prose_seed.py` | the game's words → `prose-text/1` drafts (the first seed, RFC 0017 §7); reads Content/Text since Phase 2 |
+| Text tool | `tools/prose_text.py` | Phase 2: `check` (no story in gameplay JSON, every key has a text), the one-time `snapshot`, the Python join, `upsert_seed` for generators |
+| Loader join | `Core/Content/ProseText.cs` | reads Content/Text into the models, placeholders and `TextRef` (id, GUID, version) |
 | Applier | `tools/prose_apply.py` (+ `tools/test_prose_apply.py`, fixture `tools/fixtures/prose/`) | pending texts → `Content/Text/<kind>.json` |
 | Build-time pull | `tools/prose-sync.ps1`, `tools/build.ps1`, `GaidenBuild.SyncProse` | kit pull + apply before every build |
 
-Gitignored (local): `Data/Prose/*.universe.json`, `pending/`, `outbox.jsonl`, `.kit/`. Committed: the config,
+Gitignored (local): `Data/Prose/*.universe.json`, `pending/`, `drafts/`, `outbox.jsonl`, `.kit/`. Committed: the config,
 `applied.jsonl` and the applied texts under `Content/Text`.
 
 ## Commands
@@ -44,7 +46,8 @@ $kit = 'D:\Projects\MindAttic\Prose\consumer-kit\kit.ps1'
 & $kit apply                    # tools/prose_apply.py writes Content/Text, the kit records applied.jsonl
 & $kit status                   # entity and text counts on the Hub
 
-python tools/prose_seed.py <dir>          # re-seed in-repo text as drafts (only while text still lives in gameplay JSON)
+python tools/prose_seed.py <dir>          # draft the game's current words (Content/Text joined on) for Prose
+python tools/prose_text.py check         # no story text in gameplay JSON, every key has a text, no orphans
 prose --texts-draft gridgame <dir>        # drafts; identical content changes nothing
 python -m unittest tools/test_prose_apply.py   # the applier's tests (run only when the owner asks)
 ```
@@ -63,7 +66,7 @@ A text's `key` is the game's lookup handle; it keeps the game's own ids verbatim
 ids slugged. A key exists exactly when the gameplay record it names exists (`prose_keys.game_keys`), which is how the
 applier tells an orphan from a text to apply.
 
-| Kind | Key | Text id | Source today |
+| Kind | Key | Text id | Gameplay record (the words were here before Phase 2) |
 |---|---|---|---|
 | conversation | `dialogue:<dialogueId>` | `conversation-<id>` | dialogues.json, every dialogue (title, nodes, choices) |
 | crawl | `crawl:prologue`, `crawl:ending` | `crawl-prologue`, `crawl-ending` | campaign.json Prologue/Ending |
@@ -136,8 +139,9 @@ The owner wants every text and entity to carry its Prose GUID through the condui
 - **The gap, as of 2026-11-07:** `prose-text/1` documents expose only the slug `id`, and interchange entities only
   their slug. Prose stores both as entity rows with GUIDs, but neither pull nor export returns them, so `guid` is null
   today.
-- **Also in the kit:** it writes `applied.jsonl` itself (id, version, hash, key, kind), so it has to record `guid` as
-  well.
+- **Also in the kit:** it writes `applied.jsonl` itself (id, version, hash, key, kind), and since Prose PRS-T923 it
+  records a pulled text's `guid` there too.
+- **In the game** (Phase 2): the GUID and version reach `ContentDb.TryText(key)` (`TextRef.Guid`, `TextRef.Version`).
 - **The fix belongs in Prose.** Add `guid` to `prose-text/1` and to the interchange export, and have the kit log it.
   The applier needs no change.
 
@@ -156,19 +160,53 @@ Every build ships the latest **published** Prose text.
   Unity's command line.
 - **Defaults** can be overridden with `PROSE_KIT` (the path to `kit.ps1`) and `PROSE_HUB` (the Hub URL).
 
-## Phase 2 (still to do, after the content agents land)
+## Phase 2 (done 2026-11-07): the game reads every story string from Content/Text
 
-1. **Move the text out.**
-   - Strip the narrative fields from gameplay JSON: class Description/Lore; dialogue Title, node Text and choice Label;
-     crawls; quest Name/Summary/TurnIn; glossary Text; item, armor set and skill-tree descriptions; barks;
-     mercenary lines; boss announcements; surprise lines.
-   - Gameplay records keep only their ids (the keys derive from them).
-2. **Apply the approved text.** After the owner approves the seeded drafts, run `kit pull` and `kit apply` so
-   `Content/Text/*.json` holds every text, and commit it with `applied.jsonl`.
-3. **The loader join.** `ContentLoader` reads `Content/Text/<kind>.json` and joins each text onto its record by key.
-   Conversations join by node id and choice order.
-4. **Validation (tests):**
-   - every gameplay key resolves to a text;
-   - no narrative field is left in gameplay JSON;
-   - the `right-answer` tags match `Wanderers.RightAnswer` and the quiz rewards.
-5. **docs/STORY.md** becomes a pointer to the `gridgame` universe.
+1. **The seed snapshot.** `python tools/prose_text.py snapshot` (one-time, refuses to run again) wrote
+   `Content/Text/*.json` from the text the gameplay JSON held, *not* from Prose: nothing is approved yet and only the
+   owner approves. Each entry is exactly what the applier writes (same key, text id and payload as the Prose draft),
+   with `guid` null, `version` 0 and `source` `"seed"` (an applied text says `"prose"`). The seed is recorded in
+   `Data/Prose/applied.jsonl` (`status` `"seed"`, `version` 0), which the kit's format allows: any published version is
+   higher, so the next build-time pull replaces each seed as soon as the owner publishes its text. 1976 texts:
+   conversation 132, crawl 18, description 1671, quest 13, bark 28, glossary 114. The game reads the same words as before.
+2. **Stripped from gameplay JSON** (2802 fields; `ProseText.NarrativeFields` / `prose_text.NARRATIVE`):
+
+   | File | Fields moved to Prose | Kept (gameplay, UI) |
+   |---|---|---|
+   | classes.json | `Description`, `Lore`, `BossPhases[].Announce` | Name, Card, Support.Label, everything else |
+   | dialogues.json | node `Text`, choice `Label`, `Crawl` (now the `HasCrawl` marker) | Id, Title (the Talk row label), Trigger, Conditions, Effects, Speakers, node ids, Next, choice order |
+   | campaign.json | `Prologue.Crawl`, `Ending.Crawl`, `Themes[].Crawl` | titles, theme names, backdrops, stages |
+   | quests.json | `Summary`, `TurnIn` | Name, Giver, objective, rewards |
+   | glossary.json | `Text` | Term, Aliases, link |
+   | items.json, armorsets.json | `Description` | Name, PassiveName/PassiveDescription, stats |
+   | skilltrees.json | tree and node `Description` | names, grants, costs |
+   | caravan.json | `Barks` | Description and level text (mechanics), Crew |
+   | mercenaries.json | `Pitch`, `Renewal` | rate, terms, temperament |
+   | stages.json | `Waves[].SurpriseLine` | `SurpriseSpeaker` (the marker for its key) |
+
+   A key exists exactly when its gameplay record does; the optional ones hang on a marker: a dialogue's crawl on
+   `HasCrawl`, a surprise line on `SurpriseSpeaker`, caravan barks on `Crew`; every boss phase announces.
+3. **The join** (`ProseText.Join`, called by `ContentLoader.Load`) reads `Content/Text/<kind>.json` and fills the same
+   model fields consumers always read, so no screen changed. Conversations join by node id (lines) and choice order
+   (choice texts); crawls are their paragraphs joined by a blank line; a bark's first line is a one-liner.
+   - **A missing key** shows `(missing text: <key>)` (a dialogue node `(missing text: dialogue:<id>#<node>)`), is recorded
+     in `ContentDb.TextProblems`, reported by `ContentLoader.Validate` and logged as a `[Content]` warning by `GameApp`.
+     It never throws, nor does an unreadable text file.
+   - **Debugging and telemetry:** `ContentDb.TryText(key)` gives a `TextRef` (key, kind, Prose text id, GUID, version,
+     source, hash, missing). NPC blurbs (`npc:<id>`) are in `ContentDb.NpcBlurbs`.
+   - A hand-built fixture with no Content/Text at all is not joined (`TextJoined` false) and keeps the words it was given.
+4. **Validation** (`ContentLoader.Validate`, via the join): every key resolves; no orphan text; no story text in gameplay
+   JSON (a field put back is reported and Prose's text wins); conversation shape agrees (nodes, choice count, each
+   choice's `next`); the `right-answer` tag sits exactly on the answers the game rewards (`ProseText.RewardsRightAnswer`:
+   a wanderer's `heard` reply, which is `Wanderers.RightAnswer`, or a choice that grants a skill point).
+   *(Tests: `TextSourcingTests` (C#) and `TextSourcingTests` in `tools/test_prose_apply.py`; written, run when the owner
+   asks.)*
+5. **New content gets a key, its words go to Prose.** A new record's key exists as soon as the record does; until its
+   text is approved it shows the placeholder and Validate names it. Draft the words in Prose
+   (`prose --texts-draft gridgame <dir>`). Generators use `prose_text.upsert_seed`, which writes a seed entry (never over
+   a Prose-applied text) and a draft in `Data/Prose/drafts/` (`tools/weapons.py` does this for weapon descriptions).
+   BIBLE §20 has the new-unit steps.
+6. **docs/STORY.md** is a pointer to the `gridgame` universe.
+
+**Still open (Prose side):** GUIDs in `prose-text/1` pulls (the kit already records a pulled `guid`), and the owner's
+approval, kind by kind (see Commands). Then `tools/prose-sync.ps1` replaces the seed text by text.

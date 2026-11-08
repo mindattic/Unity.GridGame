@@ -1153,6 +1153,16 @@ Owner: *"the Game handles gameplay, and Prose handles narrative"*; *"everything 
 - **Now:** Prose (universe `gridgame`, Prose RFC 0017) is the only store of story; this repo keeps gameplay. Phase 1 adds the conduit: `Data/Prose/prose.config.json`, the mapper `tools/prose_map.py` (1697 game entities with travel geography), the applier `tools/prose_apply.py` (Content/Text/<kind>.json keyed by key, with the Prose GUID slot), the shared key scheme `tools/prose_keys.py`, the seed `tools/prose_seed.py` (today's 1976 texts drafted into Prose, none approved: RFC 0009), and a build-time pull (`tools/prose-sync.ps1`, `tools/build.ps1 -SkipProse`, `GaidenBuild.SyncProse`) that never fails a build when Prose is down. The owner's War in Heaven canon is Prose-authored entities tagged DECIDED/PROPOSED/RETIRED. Details: [PROSE.md](PROSE.md).
 - **Not yet:** the game still reads text from gameplay JSON. Phase 2 strips it out, applies the approved text and adds the ContentLoader join and its tests.
 
+## 2026-11-07 — Story text leaves the gameplay JSON: the game reads every story string from Prose (owner, GG-T355 Phase 2)
+
+Owner: *"all dialog/conversations, descriptions, screen crawls, everything is sourced from prose"*; *"the Game handles gameplay, and Prose handles narrative."*
+
+- **Was:** the words sat in the gameplay JSON (class `Description`/`Lore`, dialogue lines and choices, crawls, quest briefs, glossary definitions, item/armor-set/skill-tree descriptions, barks), and docs/STORY.md was "the single source for every word of story" ([BIBLE §27.1](BIBLE.md)).
+- **Now:** 2802 narrative fields are gone from 11 content files. The game reads 1976 texts from `Resources/Content/Text/*.json`, joined onto its models by key (`ProseText.Join`), so every screen reads the same fields as before. A missing key shows `(missing text: <key>)`, is logged and fails `Validate`, never crashes. `ContentDb.TryText` exposes each text's Prose id, GUID and version. Until the owner approves in Prose, `Content/Text` holds the **seed**, the old in-JSON text (version 0, `source` `seed`, recorded in `Data/Prose/applied.jsonl`), so the game reads exactly what it did. docs/STORY.md is a pointer to the `gridgame` universe. Rules: [BIBLE §27.2](BIBLE.md); details: [PROSE.md](PROSE.md).
+- **Kept in the game** (UI and mechanics): names, dialogue `Title`, quest `Giver`, glossary `Term`/`Aliases`, ability text and callouts, class `Card`, item passives, caravan descriptions and level text, the tutorial, credits. PROSE.md's Phase 1 list also named dialogue Title, quest Name and glossary Term; they stay as labels.
+- **Markers:** a dialogue keeps `HasCrawl` (its crawl's words are in Prose), and a surprise line's key hangs on `SurpriseSpeaker`. Every boss phase announces, and every crewed caravan wagon barks.
+- *(Tests: `TextSourcingTests`, written and not run; `tools/test_prose_apply.py`.)*
+
 ## 2026-11-07 — The postgame in story order on one rising level curve (GG-T357)
 
 - **Was:** the Bloom (25–27), then the five older postgame chapters in their base themes' order (Free Holds, Deep Shardfall, Drowned Arks, Under the Anchors, Underspire), all at level 15 with three- and four-foe waves built for that level, then Morrow's Shadow (28–30).
